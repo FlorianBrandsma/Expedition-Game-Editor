@@ -1,0 +1,3 @@
+Een stukje tekst wat de inhoud van de quest beschrijft.|DevNotes
+$Vervolg van dezelfde quest.|DevNotes
+$Laatste gedeelte van de quest.|DevNotes
