@@ -1,7 +1,0 @@
-//Journal text
-//Interactables, trigger, rotation, position
-//Delay: wait time, yield (amount of times), animation
-//Monologue, animation, rotate toggle
-//Event: type, event (or item) (number, name), (if item) required amount
-//Reward: item, amount
-//$ (SPLIT)
