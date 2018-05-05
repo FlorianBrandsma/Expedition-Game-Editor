@@ -3499,7 +3499,6 @@ GameObject:
   - 223: {fileID: 1969403822}
   - 114: {fileID: 1969403821}
   - 114: {fileID: 1969403820}
-  - 114: {fileID: 1969403824}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3529,7 +3528,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1969403819}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -3587,21 +3586,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -13}
   m_SizeDelta: {x: 800, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1969403824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1969403819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126b01be4ae15474582f8daf50cba367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ReferencePixelsPerUnit: 100
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
 --- !u!1001 &1985852018
 Prefab:
   m_ObjectHideFlags: 0

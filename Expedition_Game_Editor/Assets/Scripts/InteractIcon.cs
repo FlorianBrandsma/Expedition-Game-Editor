@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//OLD SCRIPT - REVIEW
+
 public class InteractIcon : MonoBehaviour
 {
     public Transform target;

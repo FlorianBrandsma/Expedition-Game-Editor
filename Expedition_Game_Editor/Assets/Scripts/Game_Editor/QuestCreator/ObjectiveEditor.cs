@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+//OLD SCRIPT - DELETE
+
 public class ObjectiveEditor : MonoBehaviour
 {
     public ScrollRect mainList;

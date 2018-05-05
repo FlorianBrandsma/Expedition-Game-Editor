@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 
 //OLD SCRIPT - DELETE
+
 public class EditorMenu : MonoBehaviour
 {
     private List<Button> menuTiles = new List<Button>();

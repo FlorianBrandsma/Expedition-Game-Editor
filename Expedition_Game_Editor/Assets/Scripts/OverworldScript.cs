@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+//OLD SCRIPT - REVIEW
+
 public class OverworldScript : MonoBehaviour
 {
     string levelString;

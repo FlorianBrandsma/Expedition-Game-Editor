@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
+//OLD SCRIPT - REVIEW
+
 public class CycleManager : MonoBehaviour
 {
     public Gradient nightDayColor;

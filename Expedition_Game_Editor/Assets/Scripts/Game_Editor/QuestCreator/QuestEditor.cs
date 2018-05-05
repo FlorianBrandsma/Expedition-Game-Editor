@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//OLD SCRIPT - DELETE
+
 public class QuestEditor : MonoBehaviour {
 
 	// Use this for initialization

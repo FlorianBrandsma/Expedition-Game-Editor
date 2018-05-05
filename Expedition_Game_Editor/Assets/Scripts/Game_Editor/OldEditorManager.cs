@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+//OLD SCRIPT - DELETE
+
 public class OldEditorManager : MonoBehaviour
 {
     static public List<Button> textDisplayList = new List<Button>();

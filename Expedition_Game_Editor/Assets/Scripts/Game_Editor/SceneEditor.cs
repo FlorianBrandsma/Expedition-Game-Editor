@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+//OLD SCRIPT - DELETE
+
 public class SceneEditor : MonoBehaviour
 {
     public int curScene;
@@ -186,7 +188,7 @@ public class SceneEditor : MonoBehaviour
 
     void SetName()
     {
-        speakerName.text = Resources.Load<GameObject>("Objects/Characters/" + characterSlots[speaker].GetComponent<TileFormat>().tileInfo[1]).GetComponent<CharacterInfo>().charName[OldEditorManager.activeLanguage];
+        //speakerName.text = Resources.Load<GameObject>("Objects/Characters/" + characterSlots[speaker].GetComponent<TileFormat>().tileInfo[1]).GetComponent<CharacterInfo>().charName[OldEditorManager.activeLanguage];
     }
 
     public void RemoveScene()

@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+//OLD SCRIPT - DELETE
+
 public class DialogueDeveloper : MonoBehaviour
 {
     static public string file;
@@ -234,7 +236,7 @@ public class DialogueDeveloper : MonoBehaviour
                 lastSpeaker = speaker[i - 1];
 
             //Name = CharacterSlot > Character > Name
-            string newSpeaker = Resources.Load<GameObject>("Objects/Characters/" + characters[i].Split(',')[speaker[i]]).GetComponent<CharacterInfo>().charName[OldEditorManager.activeLanguage];
+            //string newSpeaker = Resources.Load<GameObject>("Objects/Characters/" + characters[i].Split(',')[speaker[i]]).GetComponent<CharacterInfo>().charName[OldEditorManager.activeLanguage];
             /*
             editor_option.header.text = speaker[i] != lastSpeaker ? newSpeaker : "";
             editor_option.GetComponent<RectTransform>() = new Vector2(editor_option.sizeDelta.x, sizeList[i]);
