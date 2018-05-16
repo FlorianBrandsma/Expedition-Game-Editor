@@ -32,12 +32,9 @@ public class RowManager : MonoBehaviour, IEditor
 
     public bool get_select, set_select;
 
-    public void OpenEditor()
+    public void SetRows()
     {
         id_list.Clear();
-
-        string selected_table = GetComponent<SubEditor>().table;
-        int selected_id = GetComponent<SubEditor>().id;
 
         for (int i = 0; i < 15; i++)
         {
@@ -47,30 +44,36 @@ public class RowManager : MonoBehaviour, IEditor
             //Display: All <Phase> where <Quest>_id = 1
 
             //SELECT id FROM (TABLE) WHERE ID = (ID) AND INDEX = (i)
-            id_list.Add(i+1);
+            id_list.Add(i + 1);
         }
+    }
 
-        //Probably wrong id
+    public void OpenEditor(bool enable)
+    {
+        string selected_table = GetComponent<SubEditor>().table;
+        int selected_id = GetComponent<SubEditor>().id;
+
+        //Probably wrong id - replaces the string of IDs with just the selected id
         Path new_select_path    = new Path(select_path, new List<int> { selected_id });
         Path new_edit_path      = new Path(edit_path,   new List<int> { selected_id });
 
-        ListManager listManager = GetComponent<ListOptions>().option_list.GetComponent<ListManager>();
+        ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
 
         //Pass all possible information to the List
         listManager.SetupList(sort_type, table, id_list, row_size, new_select_path, new_edit_path, zigzag, get_select, set_select);
     
-        gameObject.SetActive(true);
+        gameObject.SetActive(enable);
     }
 
     public void CloseEditor()
     {
         CloseList();
-
+        
         gameObject.SetActive(false);
     }
 
     void CloseList()
     {
-        GetComponent<ListOptions>().option_list.GetComponent<ListManager>().CloseList();
+        GetComponent<ListProperties>().main_list.GetComponent<ListManager>().CloseList();
     }
 }

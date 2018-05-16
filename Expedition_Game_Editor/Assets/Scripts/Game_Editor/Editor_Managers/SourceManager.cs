@@ -3,13 +3,13 @@ using System.Collections;
 
 public class SourceManager : MonoBehaviour, IEditor
 {
-    public void OpenEditor()
+    public void OpenEditor(bool enable)
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(enable);
     }
 
     public void CloseEditor()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

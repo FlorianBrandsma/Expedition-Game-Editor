@@ -69,9 +69,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
             new_element.gameObject.SetActive(true);
         }
-
-        list_manager.edit_button.onClick.RemoveAllListeners();
-        list_manager.edit_button.onClick.AddListener(delegate { list_manager.OpenEditor(list_manager.NewPath(edit_path, NavigationManager.set_id)); });
     }
 
     void SetElement(RectTransform rect, int index)
@@ -83,7 +80,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         rect.transform.localPosition = new Vector2(0, (list_manager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
 
         if (GetComponent<ListManager>().slider.gameObject.activeInHierarchy)
-                rect.anchorMax = new Vector2(0.9f, 1);
+            rect.anchorMax = new Vector2(0.9f, 1);
     }
 
     float ListPosition(int i)

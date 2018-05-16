@@ -26,17 +26,6 @@ public class TabManager : MonoBehaviour
         return new_tab;
     }
 
-    public void SetAnchors(int index, int tabs)
-    {
-        RectTransform new_tab = tab_list[index].GetComponent<RectTransform>();
-
-        new_tab.anchorMin = new Vector2(index * (1f / tabs), 1);
-        new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
-
-        new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
-        new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);    
-    }
-
     public void SetTab(Path path, GameObject[] editor, int index, int editor_depth)
     {
         Button new_tab = SpawnTab();
@@ -51,18 +40,31 @@ public class TabManager : MonoBehaviour
             new_tab.onClick.AddListener(delegate {
                 OpenSource(path, index, editor_depth);
             });
-        } else {
+        }
+        else
+        {
             new_tab.onClick.AddListener(delegate {
                 OpenEditor(path, index, editor_depth);
             });
         }
-            
+
         new_tab.gameObject.SetActive(true);
+    }
+
+    public void SetAnchors(int index, int tabs)
+    {
+        RectTransform new_tab = tab_list[index].GetComponent<RectTransform>();
+
+        new_tab.anchorMin = new Vector2(index * (1f / tabs), 1);
+        new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
+
+        new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
+        new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);    
     }
 
     void OpenEditor(Path path, int index, int editor_depth)
     {
-        NavigationManager.navigation_manager.OpenEditor(NewEditor(path, index, editor_depth), true, false);
+        NavigationManager.navigation_manager.OpenStructure(NewEditor(path, index, editor_depth), true, false);
     }
 
     void OpenSource(Path path, int index, int editor_depth)
@@ -92,8 +94,9 @@ public class TabManager : MonoBehaviour
         return new_path;
     }
 
-    public void ResetTabs()
+    public void CloseTabs()
     {
+        
         for (int i = 0; i < tab_list.Count; i++)
         {
             tab_list[i].onClick.RemoveAllListeners();

@@ -406,8 +406,8 @@ public class OverworldScript : MonoBehaviour
                 //Grid grens: hoger dan Z 2.33 = tevoorschijn, lager dan Z 0.5f = tevoorschijn
 
                 //Hoger dan Z 2.33 = weg                                                                //Lager dan Z 0.5f = weg
-                if (newPos.y - (y * tileSize) > (Camera.main.transform.position.z + (tileSize * 2.33f)) || newPos.y - (y * tileSize) < (Camera.main.transform.position.z - (tileSize * 0.5f)) ||
-                    (((newPos.x + (x * tileSize)) - Camera.main.transform.position.x) / tileSize) - 1.25f > (((newPos.y -(y * tileSize)) - Camera.main.transform.position.z) / tileSize) )
+                if    (newPos.y - (y * tileSize) > (Camera.main.transform.position.z + (tileSize * 2.33f)) ||  newPos.y - (y * tileSize) < (Camera.main.transform.position.z - (tileSize * 0.5f)) ||
+                    (((newPos.x + (x * tileSize)) - Camera.main.transform.position.x) / tileSize) - 1.25f > (((newPos.y - (y * tileSize)) - Camera.main.transform.position.z) / tileSize) )
                     break;
 
                 //Afstand tussen Tile X en Cam X, gedeeld door grootte van Tile, plus 1.2 (voor speling) kleiner dan -Tile Z en Cam Z, gedeeld door grootte van Tile

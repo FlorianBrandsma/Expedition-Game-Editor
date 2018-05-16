@@ -7,9 +7,13 @@ using System.IO;
 
 public class SubEditor : MonoBehaviour
 {
+    //Always activate specific editors across a path
+    public bool force_activation;
+
     public string table;
     public int id;
 
+    //Activate parent objects that aren't editors
     public GameObject[] editor_parent;
 
     public GameObject tab_manager;
@@ -17,7 +21,6 @@ public class SubEditor : MonoBehaviour
 
     public GameObject[] editor;
     
-    public GameObject[] editor_options;
     public bool lock_position;
 
     private float option_width;
@@ -26,11 +29,30 @@ public class SubEditor : MonoBehaviour
 
     public void OpenEditor(Path path, int editor_depth)
     {
-        id = path.id[editor_depth];
+        //Set rows before opening editors
+        if (GetComponent<RowManager>() != null)
+            GetComponent<RowManager>().SetRows();
 
-        editor_depth++;
+        if (GetComponent<LanguageManager>() != null)
+            GetComponent<LanguageManager>().SetLanguages();
 
-        gameObject.GetComponent<IEditor>().OpenEditor();
+        if (GetComponent<StructureManager>() != null)
+            GetComponent<StructureManager>().SetStructure(table, id);
+
+        if (force_activation)
+            gameObject.GetComponent<IEditor>().OpenEditor(true);
+
+        if (editor_depth == path.editor.Count)
+        {
+            if(path.id.Count > 0)
+                id = path.id[editor_depth - 1];
+
+            gameObject.GetComponent<IEditor>().OpenEditor(true);
+
+            //SubEditor > ListOptions > RowManager > ListManager > Organizer
+            if (GetComponent<ListProperties>() != null)
+                GetComponent<ListProperties>().SetList();
+        }
 
         for (int i = 0; i < editor_parent.Length; i++)
             editor_parent[i].SetActive(true);
@@ -38,40 +60,11 @@ public class SubEditor : MonoBehaviour
         if (preview_window != null)
             preview_window.gameObject.SetActive(true);
 
-        for (int i = 0; i < editor_options.Length; i++)
-            SetOptions(i);
-
-        //SubEditor > ListOptions > RowManager > ListManager > Organizer
-        if (GetComponent<ListOptions>() != null && editor_depth == path.editor.Count) //Kan dit weg?
-            GetComponent<ListOptions>().SetList();
-
         if (tab_manager != null)
-        {
-            SetTabs(path, editor_depth);       
-        } else {
-            if (editor_depth < path.editor.Count)
-            {
-                editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth);
-            }
-        }
-    }
+            SetTabs(path, editor_depth);
 
-    void SelectEditor(Path path, int editor_depth)
-    {
-        editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth);
-    }
-
-    void SetOptions(int option_index)
-    {
-        if (!lock_position)
-        {
-            option_width = editor_options[option_index].GetComponent<RectTransform>().rect.width -
-                            editor_options[option_index].GetComponent<RectTransform>().sizeDelta.x;
-
-            editor_options[option_index].transform.localPosition = new Vector2((option_width * (option_index - 2)), 0);
-        }
-
-        editor_options[option_index].SetActive(true);
+        if (tab_manager == null && editor_depth < path.editor.Count)
+            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);
     }
 
     void SetTabs(Path path, int editor_depth)
@@ -91,7 +84,7 @@ public class SubEditor : MonoBehaviour
 
         //Automatically open next editor if the depth is lower than the count
         if (editor_depth < path.editor.Count)
-            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth);    
+            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);  
     }
 
     void SelectTab(int selected_tab, int index)
@@ -109,14 +102,11 @@ public class SubEditor : MonoBehaviour
 
         editor_index++;
 
-        for (int i = 0; i < editor_options.Length; i++)
-            CloseOptions(i);
-
         if (tab_manager != null)
-            tab_manager.GetComponent<TabManager>().ResetTabs();
-
-        if (editor_index < path.Count)
-            editor[path[editor_index]].GetComponent<SubEditor>().CloseEditor(path, editor_index);
+            tab_manager.GetComponent<TabManager>().CloseTabs();
+        
+        if (editor_index <= path.Count)
+            editor[path[editor_index-1]].GetComponent<SubEditor>().CloseEditor(path, editor_index);
 
         if (preview_window != null)
             preview_window.gameObject.SetActive(false);
@@ -125,10 +115,5 @@ public class SubEditor : MonoBehaviour
             editor_parent[i].SetActive(false);
 
         gameObject.GetComponent<IEditor>().CloseEditor();
-    }
-
-    void CloseOptions(int option_index)
-    {
-        editor_options[option_index].SetActive(false);
     }
 }

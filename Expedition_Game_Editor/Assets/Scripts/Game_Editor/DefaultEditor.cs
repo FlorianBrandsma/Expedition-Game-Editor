@@ -3,9 +3,9 @@ using System.Collections;
 
 public class DefaultEditor : MonoBehaviour, IEditor
 {
-    public void OpenEditor()
+    public void OpenEditor(bool enable)
     {
-        gameObject.SetActive(true);
+        gameObject.SetActive(enable);
     }
 
     public void CloseEditor()

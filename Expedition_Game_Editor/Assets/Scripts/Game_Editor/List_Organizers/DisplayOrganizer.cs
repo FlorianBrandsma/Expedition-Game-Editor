@@ -121,7 +121,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             
             RectTransform new_element = list_manager.SpawnElement(element_list, element_prefab);
 
-            new_element.transform.SetParent(list_manager.list_parent, false);
+            //new_element.transform.SetParent(list_manager.list_parent, false);
 
             SetElement(new_element, i);
 

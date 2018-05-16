@@ -3,6 +3,6 @@ using System.Collections;
 
 public interface IEditor
 {
-    void OpenEditor();
+    void OpenEditor(bool enable);
     void CloseEditor();
 }

@@ -9,6 +9,9 @@ public class ListManager : MonoBehaviour
 {
     IOrganizer organizer;
 
+    private Path select_path;
+    private Path edit_path;
+    
     public List<int> id_list = new List<int>();
 
     public string table;
@@ -16,9 +19,6 @@ public class ListManager : MonoBehaviour
     public RectTransform main_list,
                          list_parent,
                          number_parent;
-
-    public float list_size;
-    public float list_offset;
 
     public Slider slider;
 
@@ -31,8 +31,13 @@ public class ListManager : MonoBehaviour
 
     public bool source;
 
-    public Button add_button;
-    public Button edit_button;
+    public GameObject list_options;
+
+
+    private Button edit_button;
+
+
+    OptionOrganizer optionOrganizer;
 
     public void SetupList(int new_sort_type, string new_table, List<int> new_id_list, float new_base_height, Path base_select_path, Path base_edit_path, bool zigzag, bool new_get_select, bool new_set_select)
     {
@@ -40,6 +45,9 @@ public class ListManager : MonoBehaviour
         id_list = new List<int>(new_id_list);
 
         table = new_table;
+
+        select_path = base_select_path;
+        edit_path = base_edit_path;
 
         sort_type = new_sort_type;
 
@@ -66,13 +74,7 @@ public class ListManager : MonoBehaviour
 
         organizer.OpenList(new_base_height);
 
-        if(edit_button != null)
-        {
-            DisableEditing();
-        }
-
-        if (base_edit_path.editor.Count > 0)
-            EnableAdding(base_edit_path);
+        optionOrganizer = list_options.GetComponent<OptionOrganizer>();
     }
 
     public void SetList(float rect_width)
@@ -80,9 +82,6 @@ public class ListManager : MonoBehaviour
         //Exception: not nice
         if(sort_type == 0)
             GetComponent<DisplayOrganizer>().SetList(rect_width);
-
-        //Return Vector2 instead of int
-        //list_parent.sizeDelta = new Vector2(list_parent.sizeDelta.x, organizer.GetListSize());
 
         list_parent.sizeDelta = organizer.GetListSize();
 
@@ -94,6 +93,9 @@ public class ListManager : MonoBehaviour
         slider.gameObject.SetActive(list_parent.sizeDelta.y > main_list.rect.max.y * 2);
 
         organizer.SetRows();
+
+        if (edit_path.editor.Count > 0)
+            EnableAdding(edit_path);
     }
 
     public void UpdateRows()
@@ -109,7 +111,7 @@ public class ListManager : MonoBehaviour
 
     public void OpenEditor(Path new_editor)
     {
-        NavigationManager.navigation_manager.OpenEditor(new_editor, source, false);
+        NavigationManager.navigation_manager.OpenStructure(new_editor, source, false);
     }
 
     public void OpenSource(Path new_editor)
@@ -118,9 +120,9 @@ public class ListManager : MonoBehaviour
     }
 
     public void SelectElement(int id, bool edit)
-    {     
+    {
         if (edit)
-            EnableEditing();
+            EnableEditing(edit_path);
 
         organizer.SelectElement(id);
 
@@ -129,15 +131,12 @@ public class ListManager : MonoBehaviour
 
     public void EnableAdding(Path add_path)
     {
-        add_button.onClick.RemoveAllListeners();
-        //Temp id
-        add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 0)); });
-
-        main_list.offsetMin = new Vector2(main_list.offsetMin.x, list_size);
+        Button add_button = GetComponent<OptionManager>().AddButton();
 
         add_button.GetComponentInChildren<Text>().text = "Add " + table;
 
-        add_button.gameObject.SetActive(true); 
+        //Temp id
+        add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 0)); });
     }
 
     public Path NewPath(Path path, int index)
@@ -155,35 +154,25 @@ public class ListManager : MonoBehaviour
         return new_path;
     }
 
-    public void DisableAdding()
+    public void EnableEditing(Path edit_path)
     {
-        main_list.offsetMin = new Vector2(main_list.offsetMin.x, list_size - list_offset);
+        if(edit_button == null)
+            edit_button = GetComponent<OptionManager>().AddButton();
+        else
+            edit_button.onClick.RemoveAllListeners();
 
-        add_button.gameObject.SetActive(false);
-    }
+        edit_button.onClick.AddListener(delegate { OpenEditor(NewPath(edit_path, NavigationManager.set_id)); });
 
-    public void EnableEditing()
-    {
-        if (add_button != null)
-            add_button.GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 1);
+        edit_button.GetComponentInChildren<Text>().text = "Edit";
 
-        edit_button.gameObject.SetActive(true);
-    }
-
-    void DisableEditing()
-    {
-        if (add_button != null)
-            add_button.GetComponent<RectTransform>().anchorMax = new Vector2(1, 1);
-
-        edit_button.gameObject.SetActive(false);
+        GetComponent<OptionManager>().optionOrganizer.SortOptions();
     }
 
     public void CloseList()
     {
-        organizer.CloseList();
+        edit_button = null;
 
-        if(add_button != null)
-            DisableAdding();
+        organizer.CloseList();
 
         gameObject.SetActive(false);
     }
@@ -196,6 +185,9 @@ public class ListManager : MonoBehaviour
                 return list[i];
         }
         RectTransform new_element = Instantiate(element_prefab);
+
+        new_element.transform.SetParent(list_parent, false);
+
         list.Add(new_element);
 
         return new_element;

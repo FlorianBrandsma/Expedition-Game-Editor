@@ -92,9 +92,10 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
             new_element.gameObject.SetActive(true);
         }
-
-        list_manager.edit_button.onClick.RemoveAllListeners();
-        list_manager.edit_button.onClick.AddListener(delegate { list_manager.OpenEditor(list_manager.NewPath(edit_path, NavigationManager.set_id)); });
+        /*
+        list_manager.list_options.GetComponent<OptionOrganizer>().edit_button.onClick.RemoveAllListeners();
+        list_manager.list_options.GetComponent<OptionOrganizer>().edit_button.onClick.AddListener(delegate { list_manager.OpenEditor(list_manager.NewPath(edit_path, NavigationManager.set_id)); });
+        */
     }
 
     void SetElement(RectTransform rect, int x)

@@ -9,14 +9,14 @@ using System.IO;
 
 public class TaskEditor : MonoBehaviour, IEditor
 {
-    public void OpenEditor()
+    public void OpenEditor(bool enable)
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(enable);
     }
 
     public void CloseEditor()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     private int curStep;
