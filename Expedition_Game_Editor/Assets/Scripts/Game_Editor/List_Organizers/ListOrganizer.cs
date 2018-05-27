@@ -19,7 +19,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public bool get_select, set_select;
 
-    ListManager list_manager;
+    ListManager listManager;
 
     public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select)
     {
@@ -31,30 +31,30 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void OpenList(float new_height)
     {
-        list_manager = GetComponent<ListManager>();
+        listManager = GetComponent<ListManager>();
 
         base_size = new_height;
     }
 
     public Vector2 GetListSize()
     {
-        return new Vector2(list_manager.list_parent.sizeDelta.x, base_size * list_manager.id_list.Count);
+        return new Vector2(listManager.list_parent.sizeDelta.x, base_size * listManager.id_list.Count);
     }
 
     public void SetRows()
     {
-        for (int i = 0; i < list_manager.id_list.Count; i++)
+        for (int i = 0; i < listManager.id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
             //    break;
 
-            RectTransform new_element = list_manager.SpawnElement(element_list, element_prefab);
+            RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
 
-            new_element.transform.SetParent(list_manager.list_parent, false);
+            new_element.transform.SetParent(listManager.list_parent, false);
 
             SetElement(new_element, i);
 
-            string header = list_manager.table + " " + i;
+            string header = listManager.table + " " + i;
 
             new_element.name = header;
 
@@ -65,7 +65,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             int index = i;
             
             //Review
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { list_manager.SelectElement(list_manager.id_list[index], (edit_path.editor.Count > 0)); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[index], listManager.editable); });
 
             new_element.gameObject.SetActive(true);
         }
@@ -77,7 +77,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, base_size);
 
-        rect.transform.localPosition = new Vector2(0, (list_manager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
+        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
 
         if (GetComponent<ListManager>().slider.gameObject.activeInHierarchy)
             rect.anchorMax = new Vector2(0.9f, 1);
@@ -85,7 +85,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     float ListPosition(int i)
     {
-        return list_manager.list_parent.TransformPoint(new Vector2(0, (list_manager.list_parent.sizeDelta.y / 2.222f) - (base_size * i))).y;
+        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (base_size * i))).y;
     }
 
     public void SelectElement(int id)
@@ -102,7 +102,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        list_manager.ResetElement(element_list);
+        listManager.ResetElement(element_list);
 
         ResetSelection();
 

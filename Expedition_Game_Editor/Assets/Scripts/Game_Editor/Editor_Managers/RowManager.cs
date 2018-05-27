@@ -25,8 +25,8 @@ public class RowManager : MonoBehaviour, IEditor
     //private int id;
     //item type per tab
 
-    public List<int> select_path;
-    public List<int> edit_path;
+    public int[] select_index;
+    public int[] edit_index;
 
     public bool zigzag;
 
@@ -48,27 +48,88 @@ public class RowManager : MonoBehaviour, IEditor
         }
     }
 
-    public void OpenEditor(bool enable)
+    public void OpenEditor()
     {
+        ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
+
         string selected_table = GetComponent<SubEditor>().table;
         int selected_id = GetComponent<SubEditor>().id;
 
-        //Probably wrong id - replaces the string of IDs with just the selected id
-        Path new_select_path    = new Path(select_path, new List<int> { selected_id });
-        Path new_edit_path      = new Path(edit_path,   new List<int> { selected_id });
+        //Let every sub-editor remember it's path, as the path to manipulate
 
-        ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
+        Path select_path;
+        Path edit_path;
+
+        if (edit_index.Length == 1)
+        {
+            //1. Get current Path
+            //2. Get new index
+            //3. Add new index
+            //4. Add new id
+
+            Path this_path = GetComponent<SubEditor>().path;
+
+            List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id }, false);
+
+            select_path = new Path(CombinePath(this_path.editor, select_index, true), new_id_path);
+            edit_path = new Path(CombinePath(this_path.editor, edit_index, true), new_id_path);
+
+        } else {
+
+            //1. Clear existing path
+            //2. Create new select path using select_index
+            //3. Create new edit path using edit_index
+            //4. Create new ID (fill with 0s to the length of the new path. replace last index with selected id)
+
+            select_path = CreatePath(select_index, selected_id);
+            edit_path = CreatePath(edit_index, selected_id);
+        }
 
         //Pass all possible information to the List
-        listManager.SetupList(sort_type, table, id_list, row_size, new_select_path, new_edit_path, zigzag, get_select, set_select);
-    
-        gameObject.SetActive(enable);
+        listManager.SetupList(sort_type, table, id_list, row_size, select_path, edit_path, (edit_index.Length > 0), zigzag, get_select, set_select);
+
+        gameObject.SetActive(true);
+    }
+
+    private Path CreatePath(int[] new_editor, int new_id)
+    {
+        Path new_path = new Path(new List<int>(), new List<int>());
+
+        for (int i = 0; i < new_editor.Length; i++)
+        {
+            new_path.editor.Add(new_editor[i]);
+
+            if(i < new_editor.Length - 1)
+                new_path.id.Add(0);
+        }
+
+        return new_path;
+    }
+
+    private List<int> CombinePath(List<int> path, int[] new_index, bool add)
+    {
+        List<int> new_path = new List<int>();
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            new_path.Add(path[i]);
+        }
+
+        for(int i = 0; i < new_index.Length; i++)
+        {
+            if (!add)
+                new_path[new_path.Count - (i + 1)] = new_index[i];
+            else
+                new_path.Add(new_index[i]);
+        }
+
+        return new_path;
     }
 
     public void CloseEditor()
     {
         CloseList();
-        
+
         gameObject.SetActive(false);
     }
 

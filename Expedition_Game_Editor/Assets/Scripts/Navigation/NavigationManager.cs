@@ -47,14 +47,16 @@ public class NavigationManager : MonoBehaviour
 
     private void Start()
     {
-        OpenStructure(new Path(new List<int>() { 5 },   new List<int>() { 0 }), false, false);
-        OpenSource(new Path(new List<int>() {  },   new List<int>() {  }));    
+        LanguageManager.GetLanguage();
+
+        OpenStructure(  new Path(new List<int>() { 5 }, new List<int>() { 0 }), false, false);
+        OpenSource(     new Path(new List<int>() {  },  new List<int>() {  }));    
     }
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape) && history.Count > 1)
-            PreviousEditor();
+            PreviousEditor();    
     }
 
     public void OpenStructure(Path path, bool temporary, bool previous)
@@ -74,6 +76,8 @@ public class NavigationManager : MonoBehaviour
 
         if (previous)
             history.RemoveAt(history.Count - 1);
+        
+            
 
         if (path.editor.Count > 0)
         {
@@ -84,7 +88,12 @@ public class NavigationManager : MonoBehaviour
 
     public void PreviousEditor()
     {
-        OpenStructure(history[history.Count - 2], false, true);  
+        // Dirty fix: Unity dropdown closes with the same button as "previous" (hardcoded)
+        // Closing a dropdown starts a "Fade" coroutine. 
+        // Disabling the dropdown causes the fading list to get stuck.
+
+        if (GameObject.Find("Dropdown List") == null)
+            OpenStructure(history[history.Count - 2], false, true);  
     }
 
     public void OpenSource(Path path)
@@ -117,5 +126,17 @@ public class NavigationManager : MonoBehaviour
     {
         get_id = false;
         set_id = 0;
+    }
+
+    public void RefreshStructure()
+    {
+        CloseEditor(active_path, default_editor);
+
+        default_editor.GetComponent<SubEditor>().OpenEditor(active_path, 0);
+        default_editor.GetComponent<OptionManager>().optionOrganizer.SortOptions();
+    }
+    public void RefreshSource()
+    {
+        OpenSource(source_history);
     }
 }

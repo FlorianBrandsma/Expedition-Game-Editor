@@ -21,7 +21,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public bool get_select, set_select;
 
-    ListManager list_manager;
+    ListManager listManager;
 
     public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select)
     {
@@ -33,7 +33,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void OpenList(float new_size)
     {
-        list_manager = GetComponent<ListManager>();
+        listManager = GetComponent<ListManager>();
 
         base_size = new_size;
 
@@ -49,7 +49,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         int x = 0;
 
-        while (-(x * new_size / 2f) + (x * new_size) < list_manager.main_list.rect.max.x)
+        while (-(x * new_size / 2f) + (x * new_size) < listManager.main_list.rect.max.x)
             x++;
 
         return x - 1;
@@ -57,14 +57,14 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public Vector2 GetListSize()
     {
-        return new Vector2(list_manager.list_parent.sizeDelta.x, ((list_manager.id_list.Count + (list_manager.id_list.Count % list_width)) * base_size) / list_width);
+        return new Vector2(listManager.list_parent.sizeDelta.x, ((listManager.id_list.Count + (listManager.id_list.Count % list_width)) * base_size) / list_width);
     }
 
     public void SetRows()
     {
         //int y = 0;
 
-        for (int x = 0; x < list_manager.id_list.Count; x++)
+        for (int x = 0; x < listManager.id_list.Count; x++)
         {
             /*
             while (ListPosition(y) < listMax.y)
@@ -77,10 +77,10 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                 break;
                 */
 
-            RectTransform new_element = list_manager.SpawnElement(element_list, element_prefab);
-            new_element.transform.SetParent(list_manager.list_parent, false);
+            RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
+            new_element.transform.SetParent(listManager.list_parent, false);
 
-            new_element.name = list_manager.table + " " + x;
+            new_element.name = listManager.table + " " + x;
 
             SetElement(new_element, x);
 
@@ -88,7 +88,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             int index = x;
 
             //Review
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { list_manager.SelectElement(list_manager.id_list[index], (edit_path.editor.Count > 0)); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[index], listManager.editable); });
 
             new_element.gameObject.SetActive(true);
         }
@@ -108,7 +108,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             offset_x = 10;
 
         rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_width - 1)) + (x % list_width * base_size) - offset_x,
-                                                     -(base_size * 0.5f) + (list_manager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(x / list_width) * base_size)); 
+                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(x / list_width) * base_size)); 
     }
 
     public void SelectElement(int id)
@@ -125,7 +125,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        list_manager.ResetElement(element_list);
+        listManager.ResetElement(element_list);
 
         ResetSelection();
 

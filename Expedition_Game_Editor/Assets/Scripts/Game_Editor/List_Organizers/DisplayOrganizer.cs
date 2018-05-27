@@ -29,19 +29,19 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     private float[] left_anchor  = new float[] { 0.1f, 1 };
     private float[] right_anchor = new float[] { 0, 0.9f };
 
-    ListManager list_manager;
+    ListManager listManager;
 
-    public void SetProperties(Path base_select_path, Path base_edit_path, bool zigzag)
+    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_zigzag)
     {
-        select_path = base_select_path;
-        edit_path = base_edit_path;
+        select_path = new_select_path;
+        edit_path = new_edit_path;
 
-        zigzag = this.zigzag;
+        zigzag = new_zigzag;
     }
 
     public void OpenList(float new_size)
     {
-        list_manager = GetComponent<ListManager>();
+        listManager = GetComponent<ListManager>();
 
         base_size = new_size;
 
@@ -57,13 +57,13 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         if (zigzag)
             new_anchors = right_anchor;
 
-        for (int i = 0; i < list_manager.id_list.Count; i++)
+        for (int i = 0; i < listManager.id_list.Count; i++)
         {
-            string new_header = list_manager.id_list[i].ToString();
+            string new_header = listManager.id_list[i].ToString();
 
             if (i > 0)
             {
-                if (new_header == "id: " + list_manager.id_list[i - 1])
+                if (new_header == "id: " + listManager.id_list[i - 1])
                     new_header = "";
 
                 if (zigzag)
@@ -89,13 +89,13 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
         float position_sum = 0;
 
-        for (int i = 0; i < list_manager.id_list.Count; i++)
+        for (int i = 0; i < listManager.id_list.Count; i++)
         {
-            string new_header = list_manager.table + " " + i;
+            string new_header = listManager.table + " " + i;
 
             if (i > 0)
             {   //If header is the same as the previous one
-                if (new_header == list_manager.table + " " + (i - 1))
+                if (new_header == listManager.table + " " + (i - 1))
                     new_header = "";
             }
 
@@ -109,33 +109,33 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     public Vector2 GetListSize()
     {
-        return new Vector2(list_manager.list_parent.sizeDelta.x, row_height.Sum());
+        return new Vector2(listManager.list_parent.sizeDelta.x, row_height.Sum());
     }
 
     public void SetRows()
     {
-        for (int i = 0; i < list_manager.id_list.Count; i++)
+        for (int i = 0; i < listManager.id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
             //    break;
             
-            RectTransform new_element = list_manager.SpawnElement(element_list, element_prefab);
+            RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
 
             //new_element.transform.SetParent(list_manager.list_parent, false);
 
             SetElement(new_element, i);
 
-            string new_header = list_manager.table + " " + i;
+            string new_header = listManager.table + " " + i;
             string content = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
-            if (i > 0 && new_header == list_manager.table + " " + (i - 1))
+            if (i > 0 && new_header == listManager.table + " " + (i - 1))
                 new_header = "";
 
             new_element.name = new_header;
 
             ListElement list_element = new_element.GetComponent<ListElement>();
 
-            list_element.id.text = list_manager.id_list[i].ToString();
+            list_element.id.text = listManager.id_list[i].ToString();
             list_element.header.text = new_header;
             list_element.content.text = content;
 
@@ -143,28 +143,47 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             list_element.SetOffset();
             
             //OpenEditor
-            int index = i;
+            int id = listManager.id_list[i];
 
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { list_manager.OpenEditor(list_manager.NewPath(select_path, index)); });
-            new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { list_manager.OpenEditor(list_manager.NewPath(edit_path, index)); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(select_path, id)); });
+            new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(edit_path, id)); });
 
-            new_element.gameObject.SetActive(true);
+            new_element.gameObject.SetActive(true);  
         }
     }
 
     void SetElement(RectTransform rect, int index)
     {
-        rect.offsetMin = new Vector2(rect.offsetMin.x, list_manager.list_parent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
+        rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.list_parent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
         rect.offsetMax = new Vector2(rect.offsetMax.x, -row_offset_max[index]);
 
         //Zigzag enabled
         rect.anchorMin = new Vector2(x_anchors[index][0], 0);
         rect.anchorMax = new Vector2(x_anchors[index][1], 1);
+
+        //SetNumbers(index);
+        //Debug.Log(rect.transform.localPosition.y);
     }
+
+    void SetVerticalNumbers()
+    {
+
+    }
+
+    /*
+    void SetNumbers(int i)
+    {
+        Text newDigit = OldEditorManager.SpawnText();
+        newDigit.text = (i + 1).ToString();
+        newDigit.transform.SetParent(numberParent, false);
+
+        newDigit.transform.localPosition = new Vector2(0, listParent.sizeDelta.y / 2f - (posList[i].y));
+    }
+    */
 
     float ListPosition(int i)
     {
-        return list_manager.list_parent.TransformPoint(new Vector2(0, (list_manager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
+        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
     }
 
     public void SelectElement(int id)
@@ -182,7 +201,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     {
         element_selection.gameObject.SetActive(false);
 
-        list_manager.ResetElement(element_list);
+        listManager.ResetElement(element_list);
 
         gameObject.SetActive(false);
     }  

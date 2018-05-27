@@ -35,6 +35,16 @@ public class TabManager : MonoBehaviour
         //When removed, change gameobject[] editor to string editor_name
         new_tab.GetComponentInChildren<Text>().text = editor[index].name;
 
+        //probably wrong
+        //Previously, opening a tab through a path looked like: "0,1"
+        //Now it tries "0,0,1" and opens a tab immediately
+
+        //This happens because it takes the tabs as part of the path, while the editor tries to ignore them.
+        //Ex: open third tab, the path becomes "2,0,1"
+
+        //Solutions:
+        //1. 
+
         if (source)
         {
             new_tab.onClick.AddListener(delegate {

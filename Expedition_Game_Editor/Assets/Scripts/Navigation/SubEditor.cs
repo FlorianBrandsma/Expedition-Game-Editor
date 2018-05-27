@@ -7,8 +7,12 @@ using System.IO;
 
 public class SubEditor : MonoBehaviour
 {
+    public Path path;
+
     //Always activate specific editors across a path
     public bool force_activation;
+
+    public Text header;
 
     public string table;
     public int id;
@@ -27,27 +31,36 @@ public class SubEditor : MonoBehaviour
 
     public RectTransform preview_window;
 
-    public void OpenEditor(Path path, int editor_depth)
+    public void OpenEditor(Path new_path, int editor_depth)
     {
+        path = new_path;
+
+        if (editor_depth > 0)
+        {
+            if (path.id.Count > 0)
+                id = path.id[editor_depth - 1]; 
+        }
+
         //Set rows before opening editors
+        //Or not
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().SetRows();
 
-        if (GetComponent<LanguageManager>() != null)
-            GetComponent<LanguageManager>().SetLanguages();
+        if (header != null)
+            SetHeader(table + " " + id);
 
+        if (GetComponent<LanguageManager>() != null)
+            GetComponent<LanguageManager>().SortLanguages();
+           
         if (GetComponent<StructureManager>() != null)
-            GetComponent<StructureManager>().SetStructure(table, id);
+            GetComponent<StructureManager>().SortStructure(path, editor_depth, table, id);
 
         if (force_activation)
-            gameObject.GetComponent<IEditor>().OpenEditor(true);
+            gameObject.GetComponent<IEditor>().OpenEditor();
 
         if (editor_depth == path.editor.Count)
         {
-            if(path.id.Count > 0)
-                id = path.id[editor_depth - 1];
-
-            gameObject.GetComponent<IEditor>().OpenEditor(true);
+            gameObject.GetComponent<IEditor>().OpenEditor();
 
             //SubEditor > ListOptions > RowManager > ListManager > Organizer
             if (GetComponent<ListProperties>() != null)
@@ -65,6 +78,26 @@ public class SubEditor : MonoBehaviour
 
         if (tab_manager == null && editor_depth < path.editor.Count)
             editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);
+    }
+
+    public string PathString(Path path)
+    {
+        string path_string = "editor: ";
+
+        for (int i = 0; i < path.editor.Count; i++)
+        {
+            path_string += path.editor[i] + ",";
+        }
+
+        path_string += "id: ";
+
+        for (int i = 0; i < path.id.Count; i++)
+        {
+            path_string += path.id[i] + ",";
+        }
+
+
+        return path_string;
     }
 
     void SetTabs(Path path, int editor_depth)
@@ -96,17 +129,23 @@ public class SubEditor : MonoBehaviour
     }
     //update history (?)
 
+    void SetHeader(string header_text)
+    {
+        header.text = header_text;
+        header.gameObject.SetActive(true);
+    }
+
     public void CloseEditor(List<int> path, int editor_index)
     {
         NavigationManager.get_id = false;
 
         editor_index++;
 
+        if (header != null)
+            header.gameObject.SetActive(false);
+
         if (tab_manager != null)
             tab_manager.GetComponent<TabManager>().CloseTabs();
-        
-        if (editor_index <= path.Count)
-            editor[path[editor_index-1]].GetComponent<SubEditor>().CloseEditor(path, editor_index);
 
         if (preview_window != null)
             preview_window.gameObject.SetActive(false);
@@ -115,5 +154,21 @@ public class SubEditor : MonoBehaviour
             editor_parent[i].SetActive(false);
 
         gameObject.GetComponent<IEditor>().CloseEditor();
+
+        if (editor_index <= path.Count)
+            editor[path[editor_index - 1]].GetComponent<SubEditor>().CloseEditor(path, editor_index);
+    }
+
+    public Path CopyPath(Path path, int depth)
+    {
+        Path new_path = new Path(new List<int>(), new List<int>());
+
+        for (int i = 0; i < depth; i++)
+            new_path.editor.Add(path.editor[i]);
+
+        for (int i = 0; i < depth; i++)
+            new_path.id.Add(path.id[i]);
+
+        return new_path;
     }
 }

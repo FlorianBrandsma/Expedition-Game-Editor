@@ -9,6 +9,8 @@ public class ListManager : MonoBehaviour
 {
     IOrganizer organizer;
 
+    public bool editable;
+
     private Path select_path;
     private Path edit_path;
     
@@ -39,41 +41,44 @@ public class ListManager : MonoBehaviour
 
     OptionOrganizer optionOrganizer;
 
-    public void SetupList(int new_sort_type, string new_table, List<int> new_id_list, float new_base_height, Path base_select_path, Path base_edit_path, bool zigzag, bool new_get_select, bool new_set_select)
+    public void SetupList(int new_sort_type, string new_table, List<int> new_id_list, float new_base_height, Path new_select_path, Path new_edit_path, bool new_editable, bool zigzag, bool new_get_select, bool new_set_select)
     {
         id_list.Clear();
         id_list = new List<int>(new_id_list);
 
         table = new_table;
 
-        select_path = base_select_path;
-        edit_path = base_edit_path;
+        select_path = new_select_path;
+        edit_path = new_edit_path;
+
+        editable = new_editable;
 
         sort_type = new_sort_type;
 
         get_select = new_get_select;
         set_select = new_set_select;
 
-        switch(sort_type)
+        switch (sort_type)
         {
             case 0:
                 organizer = GetComponent<DisplayOrganizer>();
-                GetComponent<DisplayOrganizer>().SetProperties(base_select_path, base_edit_path, zigzag);
+                GetComponent<DisplayOrganizer>().SetProperties(select_path, edit_path, zigzag);
                 break;
             case 1:
                 organizer = GetComponent<ListOrganizer>();
-                GetComponent<ListOrganizer>().SetProperties(base_edit_path, get_select, set_select);
+                GetComponent<ListOrganizer>().SetProperties(edit_path, get_select, set_select);
                 break;
             case 2:
                 organizer = GetComponent<GridOrganizer>();
-                GetComponent<GridOrganizer>().SetProperties(base_edit_path, get_select, set_select);
+                GetComponent<GridOrganizer>().SetProperties(edit_path, get_select, set_select);
                 break;
             default:
                 break;
         }
 
-        organizer.OpenList(new_base_height);
 
+        organizer.OpenList(new_base_height);
+        
         optionOrganizer = list_options.GetComponent<OptionOrganizer>();
     }
 
@@ -94,7 +99,7 @@ public class ListManager : MonoBehaviour
 
         organizer.SetRows();
 
-        if (edit_path.editor.Count > 0)
+        if (editable)
             EnableAdding(edit_path);
     }
 
@@ -135,21 +140,30 @@ public class ListManager : MonoBehaviour
 
         add_button.GetComponentInChildren<Text>().text = "Add " + table;
 
-        //Temp id
-        add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 0)); });
+        //TEMPORARY ID! Create placeholder and display in the future
+        add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 1)); });
     }
 
-    public Path NewPath(Path path, int index)
+    public List<int> NewSelect(List<int> select_path, int new_index)
+    {
+        return null;
+    }
+    public List<int> NewEdit(List<int> edit_path, int new_index)
+    {
+        return null;
+    }
+
+    public Path NewPath(Path path, int id)
     {
         Path new_path = new Path(new List<int>(), new List<int>());
 
         for (int i = 0; i < path.editor.Count; i++)
-        {
             new_path.editor.Add(path.editor[i]);
-            new_path.id.Add(0);
-        }
 
-        new_path.id[new_path.id.Count - 1] = id_list[index];
+        for(int i = 0; i < path.id.Count; i++)
+            new_path.id.Add(path.id[i]);
+
+        new_path.id.Add(id);
 
         return new_path;
     }
@@ -203,5 +217,22 @@ public class ListManager : MonoBehaviour
             if (list[i].GetComponent<ListElement>().edit_button != null)
                 list[i].GetComponent<ListElement>().edit_button.onClick.RemoveAllListeners();
         }
+    }
+
+    static public Text SpawnText(List<Text> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (!list[i].gameObject.activeInHierarchy)
+            {
+                list[i].gameObject.SetActive(true);
+                return list[i];
+            }
+        }
+
+        Text new_text = Instantiate(Resources.Load<Text>("Editor/Text"));
+        list.Add(new_text);
+
+        return new_text;
     }
 }

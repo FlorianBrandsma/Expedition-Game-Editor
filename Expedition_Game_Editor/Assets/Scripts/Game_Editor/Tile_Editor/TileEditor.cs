@@ -3,9 +3,9 @@ using System.Collections;
 
 public class TileEditor : MonoBehaviour, IEditor
 {
-    public void OpenEditor(bool enable)
+    public void OpenEditor()
     {
-        gameObject.SetActive(enable);
+        gameObject.SetActive(true);
     }
 
     public void CloseEditor()

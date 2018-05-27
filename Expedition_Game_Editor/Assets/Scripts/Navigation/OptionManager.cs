@@ -54,8 +54,6 @@ public class OptionManager : MonoBehaviour
 
         Dropdown new_option = Instantiate(Resources.Load<Dropdown>("Editor/Options/Dropdown"));
 
-        new_option.name = gameObject.name;
-
         new_option.transform.SetParent(option_parent.transform, false);
 
         dropdown_pool.Add(new_option);
@@ -80,8 +78,6 @@ public class OptionManager : MonoBehaviour
         }
 
         Button new_option = Instantiate(Resources.Load<Button>("Editor/Options/Button"));
-
-        new_option.name = gameObject.name;
 
         new_option.transform.SetParent(option_parent.transform, false);
 
