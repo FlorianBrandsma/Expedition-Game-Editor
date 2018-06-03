@@ -53,28 +53,10 @@ public class OptionOrganizer : MonoBehaviour
     public void CloseOptions()
     {
         for (int i = 0; i < options.Count; i++)
-        {
-            if (options[i].GetComponent<Dropdown>() != null)
-            {
-                Transform dropdown_list = options[i].FindChild("Dropdown List");
-
-                StartCoroutine(Test());
-            }
-
             options[i].gameObject.SetActive(false);
-
-        }
-            
 
         SetEditorSize(false);
 
         options.Clear();
-    }
-
-    IEnumerator Test()
-    {
-        yield return new WaitForSeconds(3);
-
-        Debug.Log("TEST");
     }
 }

@@ -76,13 +76,10 @@ public class ListManager : MonoBehaviour
                 break;
         }
 
-
-        organizer.OpenList(new_base_height);
-        
-        optionOrganizer = list_options.GetComponent<OptionOrganizer>();
+        organizer.SetListSize(new_base_height); 
     }
 
-    public void SetList(float rect_width)
+    public void SetListSize(float rect_width)
     {
         //Exception: not nice
         if(sort_type == 0)
@@ -97,10 +94,17 @@ public class ListManager : MonoBehaviour
 
         slider.gameObject.SetActive(list_parent.sizeDelta.y > main_list.rect.max.y * 2);
 
-        organizer.SetRows();
+        SetRows();
+    }
+
+    public void SetRows()
+    {
+        optionOrganizer = list_options.GetComponent<OptionOrganizer>();
 
         if (editable)
             EnableAdding(edit_path);
+
+        organizer.SetRows();
     }
 
     public void UpdateRows()
@@ -144,33 +148,9 @@ public class ListManager : MonoBehaviour
         add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 1)); });
     }
 
-    public List<int> NewSelect(List<int> select_path, int new_index)
-    {
-        return null;
-    }
-    public List<int> NewEdit(List<int> edit_path, int new_index)
-    {
-        return null;
-    }
-
-    public Path NewPath(Path path, int id)
-    {
-        Path new_path = new Path(new List<int>(), new List<int>());
-
-        for (int i = 0; i < path.editor.Count; i++)
-            new_path.editor.Add(path.editor[i]);
-
-        for(int i = 0; i < path.id.Count; i++)
-            new_path.id.Add(path.id[i]);
-
-        new_path.id.Add(id);
-
-        return new_path;
-    }
-
     public void EnableEditing(Path edit_path)
     {
-        if(edit_button == null)
+        if (edit_button == null)
             edit_button = GetComponent<OptionManager>().AddButton();
         else
             edit_button.onClick.RemoveAllListeners();
@@ -180,6 +160,37 @@ public class ListManager : MonoBehaviour
         edit_button.GetComponentInChildren<Text>().text = "Edit";
 
         GetComponent<OptionManager>().optionOrganizer.SortOptions();
+    }
+
+    //Not sure
+    public List<int> NewSelect(List<int> select_path, int new_index)
+    {
+        return null;
+    }
+    public List<int> NewEdit(List<int> edit_path, int new_index)
+    {
+        return null;
+    }
+
+    
+
+    public Path NewPath(Path path, int id)
+    {
+        Path new_path = new Path(new List<int>(), new List<int>());
+
+        for (int i = 0; i < path.editor.Count; i++)
+            new_path.editor.Add(path.editor[i]);
+
+        for (int i = 0; i < path.id.Count; i++)
+            new_path.id.Add(path.id[i]);
+
+        //Trouble
+        if (new_path.id.Count < new_path.editor.Count)
+            new_path.id.Add(id);
+        else
+            new_path.id[new_path.id.Count - 1] = id;
+
+        return new_path;
     }
 
     public void CloseList()

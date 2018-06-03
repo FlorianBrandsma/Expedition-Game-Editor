@@ -39,7 +39,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         zigzag = new_zigzag;
     }
 
-    public void OpenList(float new_size)
+    public void SetListSize(float new_size)
     {
         listManager = GetComponent<ListManager>();
 

@@ -11,54 +11,82 @@ public class TabManager : MonoBehaviour
 
     public bool source;
 
-    public Button SpawnTab()
+    private GameObject[] editor;
+
+    public void SetTabs(Path path, GameObject[] new_editor, int editor_depth)
     {
-        for (int i = 0; i < tab_list.Count; i++)
+        editor = new_editor;
+
+        for (int tab = 0; tab < editor.Length; tab++)
         {
-            if (!tab_list[i].gameObject.activeInHierarchy)
-                return tab_list[i];
+            Button new_tab = SpawnTab();
+
+            //FIX TAB PNG; THEN REMOVE THIS
+            SetAnchors(tab, editor.Length);
+
+            new_tab.GetComponentInChildren<Text>().text = editor[tab].name;
+
+            int temp_int = tab;
+
+            if (source)
+            {
+                new_tab.onClick.AddListener(delegate
+                {
+                    OpenSource(path, temp_int, editor_depth);
+                });
+            }
+            else
+            {
+                new_tab.onClick.AddListener(delegate
+                {
+                    OpenEditor(path, temp_int, editor_depth);
+                });
+            }
+
+            new_tab.gameObject.SetActive(true);
         }
 
-        Button new_tab = Instantiate(Resources.Load<Button>("Editor/Tab"));
-        new_tab.transform.SetParent(transform, false);
-        tab_list.Add(new_tab);
-
-        return new_tab;
+        SelectTab(path.editor[editor_depth]);
     }
 
-    public void SetTab(Path path, GameObject[] editor, int index, int editor_depth)
+    public void SetLocalTabs(GameObject[] new_editor)
     {
-        Button new_tab = SpawnTab();
+        editor = new_editor;
 
-        //FIX TAB PNG; THEN REMOVE THIS
-        SetAnchors(index, editor.Length);
-        //When removed, change gameobject[] editor to string editor_name
-        new_tab.GetComponentInChildren<Text>().text = editor[index].name;
-
-        //probably wrong
-        //Previously, opening a tab through a path looked like: "0,1"
-        //Now it tries "0,0,1" and opens a tab immediately
-
-        //This happens because it takes the tabs as part of the path, while the editor tries to ignore them.
-        //Ex: open third tab, the path becomes "2,0,1"
-
-        //Solutions:
-        //1. 
-
-        if (source)
+        for (int tab = 0; tab < editor.Length; tab++)
         {
-            new_tab.onClick.AddListener(delegate {
-                OpenSource(path, index, editor_depth);
-            });
-        }
-        else
-        {
-            new_tab.onClick.AddListener(delegate {
-                OpenEditor(path, index, editor_depth);
-            });
+            Button new_tab = SpawnTab();
+
+            //FIX TAB PNG; THEN REMOVE THIS
+            SetAnchors(tab, editor.Length);
+
+            new_tab.GetComponentInChildren<Text>().text = editor[tab].name;
+
+            int temp_int = tab;
+
+            new_tab.onClick.AddListener(delegate { OpenLocalEditor(temp_int); });
+
+            new_tab.gameObject.SetActive(true);
         }
 
-        new_tab.gameObject.SetActive(true);
+        OpenLocalEditor(0);
+    }
+
+    public void OpenLocalEditor(int selected_tab)
+    {
+        CloseLocalEditors();
+
+        SelectTab(selected_tab);
+
+        editor[selected_tab].GetComponent<IEditor>().OpenEditor();
+    }
+
+    void CloseLocalEditors()
+    {
+        for (int tab = 0; tab < editor.Length; tab++)
+        {
+            editor[tab].SetActive(false);
+        }
     }
 
     public void SetAnchors(int index, int tabs)
@@ -72,14 +100,25 @@ public class TabManager : MonoBehaviour
         new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);    
     }
 
-    void OpenEditor(Path path, int index, int editor_depth)
+    void OpenEditor(Path path, int selected_tab, int editor_depth)
     {
-        NavigationManager.navigation_manager.OpenStructure(NewEditor(path, index, editor_depth), true, false);
+        NavigationManager.navigation_manager.OpenStructure(NewEditor(path, selected_tab, editor_depth), true, false);
     }
 
-    void OpenSource(Path path, int index, int editor_depth)
+    void OpenSource(Path path, int selected_tab, int editor_depth)
     {
-        NavigationManager.navigation_manager.OpenSource(NewEditor(path, index, editor_depth));
+        NavigationManager.navigation_manager.OpenSource(NewEditor(path, selected_tab, editor_depth));
+    }
+
+    void SelectTab(int selected_tab)
+    {
+        for (int tab = 0; tab < tab_list.Count; tab++) 
+        {
+            if (tab == selected_tab)
+                tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_A");
+            else
+                tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
+        }
     }
 
     Path NewEditor(Path path, int index, int editor_depth)
@@ -104,13 +143,30 @@ public class TabManager : MonoBehaviour
         return new_path;
     }
 
+    public Button SpawnTab()
+    {
+        for (int i = 0; i < tab_list.Count; i++)
+        {
+            if (!tab_list[i].gameObject.activeInHierarchy)
+                return tab_list[i];
+        }
+
+        Button new_tab = Instantiate(Resources.Load<Button>("Editor/Tab"));
+        new_tab.transform.SetParent(transform, false);
+        tab_list.Add(new_tab);
+
+        return new_tab;
+    }
+
     public void CloseTabs()
     {
-        
-        for (int i = 0; i < tab_list.Count; i++)
+        //In case of problems: use tab_list[i].Count
+        //and put an if statement before closing editor
+        for (int i = 0; i < editor.Length; i++)
         {
             tab_list[i].onClick.RemoveAllListeners();
             tab_list[i].gameObject.SetActive(false);
+            editor[i].gameObject.SetActive(false);
         }
     }
 }

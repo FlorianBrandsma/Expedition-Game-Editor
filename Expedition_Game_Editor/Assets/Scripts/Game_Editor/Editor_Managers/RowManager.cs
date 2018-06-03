@@ -32,23 +32,17 @@ public class RowManager : MonoBehaviour, IEditor
 
     public bool get_select, set_select;
 
-    public void SetRows()
+    public void GetRows()
     {
         id_list.Clear();
 
         for (int i = 0; i < 15; i++)
         {
-            //Example:
-            //Phase Menu
-            //Selected: <Quest> 1
-            //Display: All <Phase> where <Quest>_id = 1
-
-            //SELECT id FROM (TABLE) WHERE ID = (ID) AND INDEX = (i)
             id_list.Add(i + 1);
         }
     }
 
-    public void OpenEditor()
+    public void SetupRows(bool main_editor)
     {
         ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
 
@@ -71,11 +65,11 @@ public class RowManager : MonoBehaviour, IEditor
 
             List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id }, false);
 
-            select_path = new Path(CombinePath(this_path.editor, select_index, true), new_id_path);
-            edit_path = new Path(CombinePath(this_path.editor, edit_index, true), new_id_path);
-
-        } else {
-
+            select_path = new Path(CombinePath(this_path.editor, select_index, main_editor), new_id_path);
+            edit_path = new Path(CombinePath(this_path.editor, edit_index, main_editor), new_id_path);
+        }
+        else
+        {
             //1. Clear existing path
             //2. Create new select path using select_index
             //3. Create new edit path using edit_index
@@ -87,8 +81,11 @@ public class RowManager : MonoBehaviour, IEditor
 
         //Pass all possible information to the List
         listManager.SetupList(sort_type, table, id_list, row_size, select_path, edit_path, (edit_index.Length > 0), zigzag, get_select, set_select);
+    }
 
-        gameObject.SetActive(true);
+    public void OpenEditor()
+    {
+        //gameObject.SetActive(true);
     }
 
     private Path CreatePath(int[] new_editor, int new_id)

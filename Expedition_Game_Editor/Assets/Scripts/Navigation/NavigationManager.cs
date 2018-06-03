@@ -76,8 +76,6 @@ public class NavigationManager : MonoBehaviour
 
         if (previous)
             history.RemoveAt(history.Count - 1);
-        
-            
 
         if (path.editor.Count > 0)
         {
@@ -101,6 +99,8 @@ public class NavigationManager : MonoBehaviour
         CloseEditor(source_history, source_editor);
 
         source_editor.GetComponent<SubEditor>().OpenEditor(path, 0);
+
+        //Necessary?
         source_editor.GetComponent<OptionManager>().optionOrganizer.SortOptions();
 
         source_history = path;
@@ -113,6 +113,8 @@ public class NavigationManager : MonoBehaviour
         if (path.editor.Count > 0)
         {
             base_editor.GetComponent<SubEditor>().CloseEditor(path.editor, 0);
+
+            //Necessary?
             base_editor.GetComponent<OptionManager>().optionOrganizer.CloseOptions();
         }           
     }

@@ -29,7 +29,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         set_select = new_set_select;
     }
 
-    public void OpenList(float new_height)
+    public void SetListSize(float new_height)
     {
         listManager = GetComponent<ListManager>();
 

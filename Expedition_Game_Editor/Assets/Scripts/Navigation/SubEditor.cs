@@ -21,13 +21,12 @@ public class SubEditor : MonoBehaviour
     public GameObject[] editor_parent;
 
     public GameObject tab_manager;
+    public bool open_local;
     private List<Button> tabs = new List<Button>();
 
     public GameObject[] editor;
     
     public bool lock_position;
-
-    private float option_width;
 
     public RectTransform preview_window;
 
@@ -41,13 +40,8 @@ public class SubEditor : MonoBehaviour
                 id = path.id[editor_depth - 1]; 
         }
 
-        //Set rows before opening editors
-        //Or not
         if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().SetRows();
-
-        if (header != null)
-            SetHeader(table + " " + id);
+            GetComponent<RowManager>().GetRows();
 
         if (GetComponent<LanguageManager>() != null)
             GetComponent<LanguageManager>().SortLanguages();
@@ -56,15 +50,20 @@ public class SubEditor : MonoBehaviour
             GetComponent<StructureManager>().SortStructure(path, editor_depth, table, id);
 
         if (force_activation)
-            gameObject.GetComponent<IEditor>().OpenEditor();
-
-        if (editor_depth == path.editor.Count)
         {
             gameObject.GetComponent<IEditor>().OpenEditor();
 
-            //SubEditor > ListOptions > RowManager > ListManager > Organizer
+        } else if (editor_depth == path.editor.Count) {
+
+            //Move to RowManager or something
+            if (header != null)
+                SetHeader(table + " " + id);
+
+            gameObject.GetComponent<IEditor>().OpenEditor();
+
+            //SubEditor > ListProperties > RowManager > ListManager > Organizer
             if (GetComponent<ListProperties>() != null)
-                GetComponent<ListProperties>().SetList();
+                GetComponent<ListProperties>().SetList();   
         }
 
         for (int i = 0; i < editor_parent.Length; i++)
@@ -76,57 +75,28 @@ public class SubEditor : MonoBehaviour
         if (tab_manager != null)
             SetTabs(path, editor_depth);
 
-        if (tab_manager == null && editor_depth < path.editor.Count)
-            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);
-    }
-
-    public string PathString(Path path)
-    {
-        string path_string = "editor: ";
-
-        for (int i = 0; i < path.editor.Count; i++)
-        {
-            path_string += path.editor[i] + ",";
-        }
-
-        path_string += "id: ";
-
-        for (int i = 0; i < path.id.Count; i++)
-        {
-            path_string += path.id[i] + ",";
-        }
-
-
-        return path_string;
+        //Open next editor in line
+        if(editor_depth < path.editor.Count)
+            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);   
     }
 
     void SetTabs(Path path, int editor_depth)
     {
-        if (editor_depth == path.editor.Count)
+        TabManager tabManager = tab_manager.GetComponent<TabManager>();
+
+        if (!open_local)
         {
-            path.editor.Add(0);
-            path.id.Add(0);
-        }
+            if (editor_depth == path.editor.Count)
+            {
+                path.editor.Add(0);
+                path.id.Add(0);
+            }
 
-        for (int i = 0; i < editor.Length; i++)
-        {
-            tab_manager.GetComponent<TabManager>().SetTab(path, editor, i, editor_depth);
-
-            SelectTab(path.editor[editor_depth], i);
-        }
-
-        //Automatically open next editor if the depth is lower than the count
-        if (editor_depth < path.editor.Count)
-            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);  
+            tabManager.SetTabs(path, editor, editor_depth);
+        } else
+            tabManager.SetLocalTabs(editor);
     }
 
-    void SelectTab(int selected_tab, int index)
-    {
-        if (selected_tab == index)
-            tab_manager.GetComponent<TabManager>().tab_list[index].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_A");
-        else 
-            tab_manager.GetComponent<TabManager>().tab_list[index].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
-    }
     //update history (?)
 
     void SetHeader(string header_text)

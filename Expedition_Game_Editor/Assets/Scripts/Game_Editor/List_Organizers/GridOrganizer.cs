@@ -31,7 +31,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         set_select = new_set_select;
     }
 
-    public void OpenList(float new_size)
+    public void SetListSize(float new_size)
     {
         listManager = GetComponent<ListManager>();
 
