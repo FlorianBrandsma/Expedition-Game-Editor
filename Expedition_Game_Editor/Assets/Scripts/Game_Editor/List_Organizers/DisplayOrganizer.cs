@@ -12,37 +12,39 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     public RectTransform element_prefab;
     public RectTransform element_selection;
-    
+
+    private bool visible_only;
+    private bool zigzag;
+
     private Path select_path;
     private Path edit_path;
 
     private float base_size;
     private float bonus_height = 25;
 
-    private bool zigzag;
+    private List<float> row_height     = new List<float>(); //Individual heights
+    private List<float> row_offset_max = new List<float>(); //Combined heights
 
-    public List<float> row_height     = new List<float>(); //Individual heights
-    public List<float> row_offset_max = new List<float>(); //Combined heights
-
-    public List<float[]> x_anchors    = new List<float[]>();
+    private List<float[]> x_anchors    = new List<float[]>();
 
     private float[] left_anchor  = new float[] { 0.1f, 1 };
     private float[] right_anchor = new float[] { 0, 0.9f };
 
     ListManager listManager;
 
-    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_zigzag)
+    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_visible_only, bool new_zigzag)
     {
+        listManager = GetComponent<ListManager>();
+
         select_path = new_select_path;
         edit_path = new_edit_path;
 
+        visible_only = new_visible_only;
         zigzag = new_zigzag;
     }
 
     public void SetListSize(float new_size)
     {
-        listManager = GetComponent<ListManager>();
-
         base_size = new_size;
 
         SetAnchors();

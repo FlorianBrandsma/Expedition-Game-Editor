@@ -17,23 +17,27 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     private float base_size;
 
-    public bool get_select, set_select;
+    private bool visible_only;
+
+    private bool get_select, set_select;
 
     ListManager listManager;
 
-    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select)
+    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only)
     {
+        listManager = GetComponent<ListManager>();
+
         edit_path = new_edit_path;
+
+        visible_only = new_visible_only;
 
         get_select = new_get_select;
         set_select = new_set_select;
     }
 
-    public void SetListSize(float new_height)
+    public void SetListSize(float new_size)
     {
-        listManager = GetComponent<ListManager>();
-
-        base_size = new_height;
+        base_size = new_size;
     }
 
     public Vector2 GetListSize()

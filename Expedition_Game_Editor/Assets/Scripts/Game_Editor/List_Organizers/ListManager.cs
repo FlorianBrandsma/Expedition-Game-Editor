@@ -25,7 +25,6 @@ public class ListManager : MonoBehaviour
     public Slider slider;
 
     public int selected_id;
-    private bool get_select, set_select;
 
     public int sort_type;
 
@@ -35,48 +34,49 @@ public class ListManager : MonoBehaviour
 
     public GameObject list_options;
 
-
     private Button edit_button;
-
 
     OptionOrganizer optionOrganizer;
 
-    public void SetupList(int new_sort_type, string new_table, List<int> new_id_list, float new_base_height, Path new_select_path, Path new_edit_path, bool new_editable, bool zigzag, bool new_get_select, bool new_set_select)
+    public void SetAxis(bool horizontal, bool vertical)
+    {
+        main_list.GetComponent<ScrollRect>().horizontal = horizontal;
+        main_list.GetComponent<ScrollRect>().vertical = vertical;
+    }
+
+    public void SetupList(RowManager rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
     {
         id_list.Clear();
-        id_list = new List<int>(new_id_list);
+        id_list = new List<int>(rowManager.id_list);
 
-        table = new_table;
+        table = rowManager.table;
 
         select_path = new_select_path;
         edit_path = new_edit_path;
 
-        editable = new_editable;
+        editable = (rowManager.edit_index.Length > 0);
 
-        sort_type = new_sort_type;
-
-        get_select = new_get_select;
-        set_select = new_set_select;
+        sort_type = rowManager.sort_type;
 
         switch (sort_type)
         {
             case 0:
                 organizer = GetComponent<DisplayOrganizer>();
-                GetComponent<DisplayOrganizer>().SetProperties(select_path, edit_path, zigzag);
+                GetComponent<DisplayOrganizer>().SetProperties(select_path, edit_path, rowManager.visible_only, rowManager.zigzag);
                 break;
             case 1:
                 organizer = GetComponent<ListOrganizer>();
-                GetComponent<ListOrganizer>().SetProperties(edit_path, get_select, set_select);
+                GetComponent<ListOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, rowManager.visible_only);
                 break;
             case 2:
                 organizer = GetComponent<GridOrganizer>();
-                GetComponent<GridOrganizer>().SetProperties(edit_path, get_select, set_select);
+                GetComponent<GridOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, rowManager.visible_only, rowManager.coordinate_mode, rowManager.limitless);
                 break;
             default:
                 break;
         }
 
-        organizer.SetListSize(new_base_height); 
+        organizer.SetListSize(rowManager.row_size); 
     }
 
     public void SetListSize(float rect_width)
@@ -195,6 +195,9 @@ public class ListManager : MonoBehaviour
 
     public void CloseList()
     {
+        main_list.GetComponent<ScrollRect>().horizontal = false;
+        main_list.GetComponent<ScrollRect>().vertical = false;
+
         edit_button = null;
 
         organizer.CloseList();

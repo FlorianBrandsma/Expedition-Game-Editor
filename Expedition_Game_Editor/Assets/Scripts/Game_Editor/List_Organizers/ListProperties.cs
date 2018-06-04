@@ -11,6 +11,8 @@ public class ListProperties : MonoBehaviour
     //Main editors create the select/edit delegates
     public bool main_editor;
 
+    public bool horizontal, vertical;
+
     public bool auto_select;
 
     public RowManager rowManager;
@@ -31,6 +33,7 @@ public class ListProperties : MonoBehaviour
 
         rowManager.SetupRows(main_editor);
 
+        main_list.GetComponent<ListManager>().SetAxis(horizontal, vertical);
         main_list.GetComponent<ListManager>().SetListSize(max_anchor.x);
 
         //Automatically selects and highlights an element(id) on startup

@@ -19,22 +19,33 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     private float list_width;
 
-    public bool get_select, set_select;
+    private bool get_select, set_select;
 
-    ListManager listManager;
+    private bool visible_only;
+    private bool coordinate_mode;
+    private bool limitless;
 
-    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select)
+    private ListManager listManager;
+
+    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only, bool new_coordinate_mode, bool new_limitless)
     {
+        listManager = GetComponent<ListManager>();
+
         edit_path = new_edit_path;
 
         get_select = new_get_select;
         set_select = new_set_select;
+
+        visible_only = new_visible_only;
+        coordinate_mode = new_coordinate_mode;
+        limitless = new_limitless;
+
+        //Add horizontal/vertical options to listproperties
+        GetComponent<ScrollRect>().horizontal = coordinate_mode;
     }
 
     public void SetListSize(float new_size)
     {
-        listManager = GetComponent<ListManager>();
-
         base_size = new_size;
 
         SetList();

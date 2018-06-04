@@ -16,8 +16,11 @@ using System.IO;
 
 public class RowManager : MonoBehaviour, IEditor
 {
-    List<int> id_list = new List<int>();
+    public List<int> id_list = new List<int>();
 
+    //0: Display
+    //1: Buttons
+    //2: Grid
     public int sort_type;
     public int row_size = 50;
 
@@ -28,7 +31,13 @@ public class RowManager : MonoBehaviour, IEditor
     public int[] select_index;
     public int[] edit_index;
 
+    //Only spawn visible elements
+    public bool visible_only;
+
     public bool zigzag;
+    //Sort Grid as coordinates
+    public bool coordinate_mode;
+    public bool limitless;
 
     public bool get_select, set_select;
 
@@ -80,7 +89,8 @@ public class RowManager : MonoBehaviour, IEditor
         }
 
         //Pass all possible information to the List
-        listManager.SetupList(sort_type, table, id_list, row_size, select_path, edit_path, (edit_index.Length > 0), zigzag, get_select, set_select);
+        //listManager.SetupList(sort_type, table, id_list, row_size, select_path, edit_path, (edit_index.Length > 0), zigzag, get_select, set_select);
+        listManager.SetupList(this, id_list, select_path, edit_path);
     }
 
     public void OpenEditor()
