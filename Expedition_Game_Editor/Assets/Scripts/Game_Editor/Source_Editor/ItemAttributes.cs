@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SourceEditor : MonoBehaviour, IEditor
+public class ItemAttributes : MonoBehaviour, IEditor
 {
     public void OpenEditor()
     {

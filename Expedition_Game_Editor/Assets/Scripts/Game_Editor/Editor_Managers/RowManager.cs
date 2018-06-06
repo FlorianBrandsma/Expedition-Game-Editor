@@ -133,6 +133,22 @@ public class RowManager : MonoBehaviour, IEditor
         return new_path;
     }
 
+    public void SaveEdit()
+    {
+        ApplyEdit();
+        CancelEdit();
+    }
+
+    public void ApplyEdit()
+    {
+
+    }
+
+    public void CancelEdit()
+    {
+        NavigationManager.navigation_manager.PreviousEditor();
+    }
+
     public void CloseEditor()
     {
         CloseList();

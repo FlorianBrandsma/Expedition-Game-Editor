@@ -8,6 +8,22 @@ public class StructureChapter : MonoBehaviour, IEditor
         gameObject.SetActive(true);
     }
 
+    public void SaveEdit()
+    {
+        ApplyEdit();
+        CancelEdit();
+    }
+
+    public void ApplyEdit()
+    {
+
+    }
+
+    public void CancelEdit()
+    {
+        NavigationManager.navigation_manager.PreviousEditor();
+    }
+
     public void CloseEditor()
     {
         gameObject.SetActive(false);

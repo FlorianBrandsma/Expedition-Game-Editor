@@ -993,6 +993,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -2752,7 +2753,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -3666,6 +3667,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -3977,6 +3979,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -6943,6 +6946,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -7671,7 +7675,6 @@ GameObject:
   - 223: {fileID: 223280776}
   - 114: {fileID: 223280774}
   - 114: {fileID: 223280773}
-  - 114: {fileID: 223280778}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -7762,28 +7765,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &223280778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 223280772}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f0ca3b2c3d159c4881ea25798c26ce2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorSelection: {fileID: 0}
-  editors:
-  - {fileID: 0}
-  - {fileID: 2082631207}
-  - {fileID: 0}
-  - {fileID: 0}
-  buttonSelection: {fileID: 0}
-  numberParent:
-  - {fileID: 392514434}
-  - {fileID: 1630384957}
-  editorMenu: {fileID: 1374861247}
 --- !u!1 &225901908
 GameObject:
   m_ObjectHideFlags: 0
@@ -10144,6 +10125,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -13239,6 +13221,7 @@ MonoBehaviour:
   table: Phase
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -13410,6 +13393,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 1590588647}
   open_local: 0
   editor:
@@ -14395,6 +14379,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -14820,6 +14805,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 1098415023}
   open_local: 0
   editor:
@@ -15172,6 +15158,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -18302,7 +18289,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -21096,7 +21083,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -21500,6 +21487,7 @@ MonoBehaviour:
   - {fileID: 1468977618}
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -21963,7 +21951,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -25519,7 +25507,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quit
+  m_Text: Cancel
 --- !u!222 &638643162
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26266,6 +26254,58 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 674090435}
+--- !u!1 &674646145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 674646146}
+  - 114: {fileID: 674646147}
+  m_Layer: 0
+  m_Name: Action_Buttons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &674646146
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 674646145}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 1828605501}
+  - {fileID: 745800144}
+  - {fileID: 1351660682}
+  m_Father: {fileID: 1643687624}
+  m_RootOrder: 5
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 32.5}
+  m_SizeDelta: {x: 0, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &674646147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 674646145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518d20f7325a15c42831c7d9acbe3418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  save_button: {fileID: 1351660683}
+  apply_button: {fileID: 0}
+  cancel_button: {fileID: 1828605502}
+  trash_toggle: {fileID: 745800147}
 --- !u!1 &677134875
 GameObject:
   m_ObjectHideFlags: 0
@@ -27065,6 +27105,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -28307,6 +28348,7 @@ MonoBehaviour:
   - {fileID: 1468977618}
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -28954,7 +28996,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -28986,7 +29028,6 @@ GameObject:
   - 222: {fileID: 745800148}
   - 114: {fileID: 745800147}
   - 114: {fileID: 745800146}
-  - 114: {fileID: 745800145}
   m_Layer: 9
   m_Name: Trash_Toggle
   m_TagString: Untagged
@@ -29008,27 +29049,13 @@ RectTransform:
   m_Children:
   - {fileID: 1298156460}
   - {fileID: 338763878}
-  m_Father: {fileID: 1643687624}
-  m_RootOrder: 5
+  m_Father: {fileID: 674646146}
+  m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 32.5}
+  m_AnchoredPosition: {x: 0, y: 20}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &745800145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000010479463902, guid: dd67f19745208f94c959f4b1dfd0ad95,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 745800143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 996d60206233631459a7c41fcb2e2a6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: {fileID: 0}
-  dialogueNumber: 0
 --- !u!114 &745800146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30021,6 +30048,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 214916379}
   open_local: 1
   editor:
@@ -31256,6 +31284,7 @@ MonoBehaviour:
   editor_parent:
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -33883,6 +33912,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -35976,6 +36006,7 @@ MonoBehaviour:
   table: Quest
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -36143,6 +36174,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 1098415023}
   open_local: 0
   editor:
@@ -37264,6 +37296,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -37530,6 +37563,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -39367,6 +39401,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -45444,6 +45479,7 @@ MonoBehaviour:
   - {fileID: 1468977618}
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -46067,6 +46103,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 1098415023}
   open_local: 0
   editor:
@@ -47256,6 +47293,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -47358,6 +47396,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 214916379}
   open_local: 1
   editor:
@@ -48372,6 +48411,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -50952,6 +50992,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -52503,12 +52544,12 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1983866515}
-  m_Father: {fileID: 1643687624}
-  m_RootOrder: 7
+  m_Father: {fileID: 674646146}
+  m_RootOrder: 2
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -40, y: 32.5}
-  m_SizeDelta: {x: 50, y: 40}
+  m_AnchoredPosition: {x: -45, y: 20}
+  m_SizeDelta: {x: 65, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1351660683
 MonoBehaviour:
@@ -52559,7 +52600,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1351660684
@@ -55990,6 +56031,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -57773,6 +57815,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -58137,7 +58180,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -58229,6 +58272,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -58297,6 +58341,7 @@ MonoBehaviour:
   editor_parent:
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 214916379}
   open_local: 0
   editor:
@@ -59879,7 +59924,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -61741,7 +61786,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1628976939}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e93f9bc282a064db04cf5148d871ec, type: 3}
+  m_Script: {fileID: 11500000, guid: f2ca6bed8206abb4cbe4568ef77868d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1628976942
@@ -61760,6 +61805,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -62226,7 +62272,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -62351,9 +62397,7 @@ RectTransform:
   - {fileID: 1986235832}
   - {fileID: 1468977619}
   - {fileID: 214916380}
-  - {fileID: 745800144}
-  - {fileID: 1828605501}
-  - {fileID: 1351660682}
+  - {fileID: 674646146}
   m_Father: {fileID: 874085006}
   m_RootOrder: 0
   m_AnchorMin: {x: 0.45, y: 0}
@@ -62575,6 +62619,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -64553,6 +64598,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -65835,6 +65881,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -67908,7 +67955,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -68316,7 +68363,7 @@ GameObject:
   - 114: {fileID: 1828605503}
   - 114: {fileID: 1828605502}
   m_Layer: 5
-  m_Name: Quit_Button
+  m_Name: Cancel_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68334,12 +68381,12 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 638643160}
-  m_Father: {fileID: 1643687624}
-  m_RootOrder: 6
+  m_Father: {fileID: 674646146}
+  m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 40, y: 32.5}
-  m_SizeDelta: {x: 50, y: 40}
+  m_AnchoredPosition: {x: 45, y: 20}
+  m_SizeDelta: {x: 65, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1828605502
 MonoBehaviour:
@@ -68381,7 +68428,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: CloseEditor
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -68390,7 +68437,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1828605503
@@ -69553,6 +69600,7 @@ MonoBehaviour:
   table: Zone
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -72116,6 +72164,7 @@ MonoBehaviour:
   - {fileID: 1468977618}
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -74523,7 +74572,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -74919,6 +74968,7 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -75161,6 +75211,7 @@ MonoBehaviour:
   editor_parent:
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []
@@ -75387,7 +75438,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280778}
+      - m_Target: {fileID: 0}
         m_MethodName: ChangeEditor
         m_Mode: 1
         m_Arguments:
@@ -75957,12 +76008,10 @@ MonoBehaviour:
   table: 
   id: 0
   editor_parent: []
-  tab_manager: {fileID: 214916379}
-  open_local: 1
-  editor:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  button_manager: {fileID: 674646145}
+  tab_manager: {fileID: 0}
+  open_local: 0
+  editor: []
   lock_position: 0
   preview_window: {fileID: 0}
 --- !u!222 &2005408094
@@ -76591,6 +76640,7 @@ MonoBehaviour:
   table: Chapter
   id: 0
   editor_parent: []
+  button_manager: {fileID: 0}
   tab_manager: {fileID: 0}
   open_local: 0
   editor:
@@ -76928,6 +76978,7 @@ MonoBehaviour:
   - {fileID: 1468977618}
   - {fileID: 1643687623}
   - {fileID: 874085005}
+  button_manager: {fileID: 674646145}
   tab_manager: {fileID: 0}
   open_local: 0
   editor: []

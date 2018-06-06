@@ -20,8 +20,11 @@ public class SubEditor : MonoBehaviour
     //Activate parent objects that aren't editors
     public GameObject[] editor_parent;
 
+    public GameObject button_manager;
+
     public GameObject tab_manager;
     public bool open_local;
+
     private List<Button> tabs = new List<Button>();
 
     public GameObject[] editor;
@@ -72,6 +75,9 @@ public class SubEditor : MonoBehaviour
         if (preview_window != null)
             preview_window.gameObject.SetActive(true);
 
+        if (button_manager != null)
+            button_manager.GetComponent<ButtonActionManager>().SetButtons(GetComponent<IEditor>());
+
         if (tab_manager != null)
             SetTabs(path, editor_depth);
 
@@ -116,6 +122,9 @@ public class SubEditor : MonoBehaviour
 
         if (tab_manager != null)
             tab_manager.GetComponent<TabManager>().CloseTabs();
+
+        if (button_manager != null)
+            button_manager.GetComponent<ButtonActionManager>().CloseButtons();
 
         if (preview_window != null)
             preview_window.gameObject.SetActive(false);
