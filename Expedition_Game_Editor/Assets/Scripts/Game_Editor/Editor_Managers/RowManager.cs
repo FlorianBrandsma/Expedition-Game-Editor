@@ -37,7 +37,6 @@ public class RowManager : MonoBehaviour, IEditor
     public bool zigzag;
     //Sort Grid as coordinates
     public bool coordinate_mode;
-    public bool limitless;
 
     public bool get_select, set_select;
 

@@ -22,12 +22,12 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     private bool get_select, set_select;
 
     private bool visible_only;
+    private bool show_numbers;
     private bool coordinate_mode;
-    private bool limitless;
 
     private ListManager listManager;
 
-    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only, bool new_coordinate_mode, bool new_limitless)
+    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only, bool new_show_numbers, bool new_coordinate_mode)
     {
         listManager = GetComponent<ListManager>();
 
@@ -37,8 +37,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         set_select = new_set_select;
 
         visible_only = new_visible_only;
+        show_numbers = new_show_numbers;
         coordinate_mode = new_coordinate_mode;
-        limitless = new_limitless;
 
         //Add horizontal/vertical options to listproperties
         GetComponent<ScrollRect>().horizontal = coordinate_mode;
@@ -75,6 +75,14 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         //int y = 0;
 
+        if (!coordinate_mode)
+            SetDefaultRows();
+        else
+            SetCoordinateRows();
+    }
+
+    void SetDefaultRows()
+    {
         for (int x = 0; x < listManager.id_list.Count; x++)
         {
             /*
@@ -93,7 +101,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
             new_element.name = listManager.table + " " + x;
 
-            SetElement(new_element, x);
+            SetDefaultElement(new_element, x);
 
             //OpenEditor
             int index = x;
@@ -109,22 +117,38 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         */
     }
 
-    void SetElement(RectTransform rect, int x)
+    void SetDefaultElement(RectTransform rect, int x)
     {
         rect.sizeDelta = new Vector2(base_size, base_size);
 
         float offset_x = 0f;
+        float offset_y = 0f;
 
-        if (GetComponent<ListManager>().slider.gameObject.activeInHierarchy)
+        if (GetComponent<ListManager>().vertical_slider.gameObject.activeInHierarchy)
             offset_x = 10;
+        if (GetComponent<ListManager>().horizontal_slider.gameObject.activeInHierarchy)
+            offset_y = 10;
 
         rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_width - 1)) + (x % list_width * base_size) - offset_x,
-                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(x / list_width) * base_size)); 
+                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(x / list_width) * base_size) - offset_y);
+    }
+
+    void SetCoordinateRows()
+    {
+
+    }
+
+    void SetCoordinateElement()
+    {
+
     }
 
     public void SelectElement(int id)
     {
-        SetElement(element_selection, id - 1);
+        if (!coordinate_mode)
+            SetDefaultElement(element_selection, id - 1);
+        else
+            SetCoordinateElement();
 
         element_selection.gameObject.SetActive(true);
     }
@@ -136,6 +160,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
+        listManager.ResetText();
+
         listManager.ResetElement(element_list);
 
         ResetSelection();

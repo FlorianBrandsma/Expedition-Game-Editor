@@ -18,18 +18,20 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     private float base_size;
 
     private bool visible_only;
+    private bool show_numbers;
 
     private bool get_select, set_select;
 
     ListManager listManager;
 
-    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only)
+    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only, bool new_show_numbers)
     {
         listManager = GetComponent<ListManager>();
 
         edit_path = new_edit_path;
 
         visible_only = new_visible_only;
+        show_numbers = new_show_numbers;
 
         get_select = new_get_select;
         set_select = new_set_select;
@@ -83,7 +85,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
         rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
 
-        if (GetComponent<ListManager>().slider.gameObject.activeInHierarchy)
+        if (GetComponent<ListManager>().vertical_slider.gameObject.activeInHierarchy)
             rect.anchorMax = new Vector2(0.9f, 1);
     }
 
@@ -106,6 +108,8 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
+        listManager.ResetText();
+
         listManager.ResetElement(element_list);
 
         ResetSelection();

@@ -9,6 +9,8 @@ public class ListManager : MonoBehaviour
 {
     IOrganizer organizer;
 
+    public List<Text> number_list = new List<Text>();
+
     public bool editable;
 
     private Path select_path;
@@ -18,11 +20,16 @@ public class ListManager : MonoBehaviour
 
     public string table;
 
-    public RectTransform main_list,
-                         list_parent,
-                         number_parent;
+    public RectTransform    main_list,
+                            list_parent;
 
-    public Slider slider;
+    public RectTransform    horizontal_number_parent,
+                            vertical_number_parent;
+
+    private bool show_numbers;
+
+    public Slider   horizontal_slider,
+                    vertical_slider;
 
     public int selected_id;
 
@@ -44,6 +51,11 @@ public class ListManager : MonoBehaviour
         main_list.GetComponent<ScrollRect>().vertical = vertical;
     }
 
+    public void ShowNumbers(bool new_show_numbers)
+    {
+        show_numbers = new_show_numbers;
+    }
+
     public void SetupList(RowManager rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
     {
         id_list.Clear();
@@ -62,15 +74,15 @@ public class ListManager : MonoBehaviour
         {
             case 0:
                 organizer = GetComponent<DisplayOrganizer>();
-                GetComponent<DisplayOrganizer>().SetProperties(select_path, edit_path, rowManager.visible_only, rowManager.zigzag);
+                GetComponent<DisplayOrganizer>().SetProperties(select_path, edit_path, rowManager.visible_only, show_numbers, rowManager.zigzag);
                 break;
             case 1:
                 organizer = GetComponent<ListOrganizer>();
-                GetComponent<ListOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, rowManager.visible_only);
+                GetComponent<ListOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, show_numbers, rowManager.visible_only);
                 break;
             case 2:
                 organizer = GetComponent<GridOrganizer>();
-                GetComponent<GridOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, rowManager.visible_only, rowManager.coordinate_mode, rowManager.limitless);
+                GetComponent<GridOrganizer>().SetProperties(edit_path, rowManager.get_select, rowManager.set_select, show_numbers, rowManager.visible_only, rowManager.coordinate_mode);
                 break;
             default:
                 break;
@@ -91,8 +103,10 @@ public class ListManager : MonoBehaviour
         listMax = main_list.TransformPoint(new Vector2(0, main_list.rect.max.y));
 
         main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 1f;
 
-        slider.gameObject.SetActive(list_parent.sizeDelta.y > main_list.rect.max.y * 2);
+        vertical_slider.gameObject.SetActive(list_parent.sizeDelta.y > main_list.rect.max.y * 2);
+        horizontal_slider.gameObject.SetActive(list_parent.sizeDelta.x > main_list.rect.max.x * 2);
 
         SetRows();
     }
@@ -109,13 +123,32 @@ public class ListManager : MonoBehaviour
 
     public void UpdateRows()
     {
-        SetSlider();
+        if(show_numbers)
+            SetNumberSliders();
+
+        SetSliders();
     }
 
-    void SetSlider()
+    void SetNumberSliders()
     {
-        if (slider.gameObject.activeInHierarchy)
-            slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
+        vertical_number_parent.transform.localPosition = new Vector2(0, list_parent.transform.localPosition.y);
+    }
+
+    public void SetNumbers(RectTransform parent, int index, Vector2 new_position)
+    {
+        Text newDigit = ListManager.SpawnText(number_list);
+        newDigit.text = (index + 1).ToString();
+        newDigit.transform.SetParent(parent, false);
+
+        newDigit.transform.localPosition = new_position;
+    }
+
+    void SetSliders()
+    {
+        if (vertical_slider.gameObject.activeInHierarchy)
+            vertical_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
+        if (horizontal_slider.gameObject.activeInHierarchy)
+            horizontal_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
     }
 
     public void OpenEditor(Path new_editor)
@@ -248,5 +281,13 @@ public class ListManager : MonoBehaviour
         list.Add(new_text);
 
         return new_text;
+    }
+
+    public void ResetText()
+    {
+        for (int i = 0; i < number_list.Count; i++)
+        {
+            number_list[i].gameObject.SetActive(false);
+        }
     }
 }

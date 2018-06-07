@@ -12,6 +12,7 @@ public class ListProperties : MonoBehaviour
     public bool main_editor;
 
     public bool horizontal, vertical;
+    public bool show_numbers;
 
     public bool auto_select;
 
@@ -31,9 +32,12 @@ public class ListProperties : MonoBehaviour
 
         SetListAnchors();
 
+        main_list.GetComponent<ListManager>().ShowNumbers(show_numbers);
+
         rowManager.SetupRows(main_editor);
 
         main_list.GetComponent<ListManager>().SetAxis(horizontal, vertical);
+        
         main_list.GetComponent<ListManager>().SetListSize(max_anchor.x);
 
         //Automatically selects and highlights an element(id) on startup

@@ -14,6 +14,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     public RectTransform element_selection;
 
     private bool visible_only;
+    private bool show_numbers;
     private bool zigzag;
 
     private Path select_path;
@@ -32,7 +33,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     ListManager listManager;
 
-    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_visible_only, bool new_zigzag)
+    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_visible_only, bool new_show_numbers, bool new_zigzag)
     {
         listManager = GetComponent<ListManager>();
 
@@ -40,6 +41,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         edit_path = new_edit_path;
 
         visible_only = new_visible_only;
+        show_numbers = new_show_numbers;
         zigzag = new_zigzag;
     }
 
@@ -163,25 +165,9 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         rect.anchorMin = new Vector2(x_anchors[index][0], 0);
         rect.anchorMax = new Vector2(x_anchors[index][1], 1);
 
-        //SetNumbers(index);
-        //Debug.Log(rect.transform.localPosition.y);
+        if (show_numbers)
+            listManager.SetNumbers(listManager.vertical_number_parent, index, new Vector2(0, rect.transform.localPosition.y));
     }
-
-    void SetVerticalNumbers()
-    {
-
-    }
-
-    /*
-    void SetNumbers(int i)
-    {
-        Text newDigit = OldEditorManager.SpawnText();
-        newDigit.text = (i + 1).ToString();
-        newDigit.transform.SetParent(numberParent, false);
-
-        newDigit.transform.localPosition = new Vector2(0, listParent.sizeDelta.y / 2f - (posList[i].y));
-    }
-    */
 
     float ListPosition(int i)
     {
@@ -202,8 +188,9 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     public void CloseList()
     {
         element_selection.gameObject.SetActive(false);
-
+        
         listManager.ResetElement(element_list);
+        listManager.ResetText();
 
         gameObject.SetActive(false);
     }  
