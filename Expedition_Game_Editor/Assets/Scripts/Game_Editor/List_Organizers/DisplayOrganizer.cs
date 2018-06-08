@@ -33,16 +33,19 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     ListManager listManager;
 
-    public void SetProperties(Path new_select_path, Path new_edit_path, bool new_visible_only, bool new_show_numbers, bool new_zigzag)
+    public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
     {
         listManager = GetComponent<ListManager>();
 
         select_path = new_select_path;
         edit_path = new_edit_path;
+    }
 
-        visible_only = new_visible_only;
-        show_numbers = new_show_numbers;
-        zigzag = new_zigzag;
+    public void SetProperties(ListProperties listProperties)
+    {
+        visible_only = listProperties.visible_only;
+        show_numbers = listProperties.enable_numbers;
+        zigzag = listProperties.zigzag;
     }
 
     public void SetListSize(float new_size)
@@ -113,11 +116,12 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     public Vector2 GetListSize()
     {
-        return new Vector2(listManager.list_parent.sizeDelta.x, row_height.Sum());
+        return new Vector2(0, row_height.Sum());
     }
 
     public void SetRows()
     {
+        
         for (int i = 0; i < listManager.id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
@@ -152,7 +156,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(select_path, id)); });
             new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(edit_path, id)); });
 
-            new_element.gameObject.SetActive(true);  
+            new_element.gameObject.SetActive(true);
         }
     }
 
@@ -191,7 +195,5 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         
         listManager.ResetElement(element_list);
         listManager.ResetText();
-
-        gameObject.SetActive(false);
     }  
 }

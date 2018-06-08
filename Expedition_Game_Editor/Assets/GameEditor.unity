@@ -3996,17 +3996,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 2
-  row_size: 75
+  id_list: 
   table: Element
   select_index: 
   edit_index: 0000000000000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &96380957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4019,13 +4013,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 75
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 96380956}
 --- !u!114 &96380958
 MonoBehaviour:
@@ -13193,17 +13193,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 0
-  row_size: 50
+  id_list: 
   table: Quest
   select_index: 00000000
   edit_index: 01000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 0
 --- !u!114 &337895389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13240,13 +13234,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 1
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 337895388}
 --- !u!114 &337895391
 MonoBehaviour:
@@ -14396,17 +14396,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 1
-  row_size: 40
+  id_list: 
   table: Item
   select_index: 
   edit_index: 0000000001000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &362944449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14419,13 +14413,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 40
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 362944448}
 --- !u!114 &362944450
 MonoBehaviour:
@@ -19481,7 +19481,6 @@ MonoBehaviour:
   horizontal_slider: {fileID: 601051716}
   vertical_slider: {fileID: 524631690}
   selected_id: 0
-  sort_type: 0
   source: 0
   list_options: {fileID: 1959041973}
 --- !u!114 &468197036
@@ -21520,13 +21519,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 1
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 1
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 2020116197}
 --- !u!1 &500551346
 GameObject:
@@ -28472,13 +28477,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 1
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 1
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 1751448739}
 --- !u!1 &728739754
 GameObject:
@@ -36068,17 +36079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 0
-  row_size: 50
+  id_list: 
   table: Objective
   select_index: 00000000
   edit_index: 01000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 0
 --- !u!114 &936426584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36115,13 +36120,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 1
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 936426583}
 --- !u!114 &936426586
 MonoBehaviour:
@@ -37403,17 +37414,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 2
-  row_size: 75
+  id_list: 
   table: Map_portal
   select_index: 
   edit_index: 
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &972388445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37426,13 +37431,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 75
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 972388444}
 --- !u!1 &972750303
 GameObject:
@@ -45604,13 +45615,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 1
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 1
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 936426583}
 --- !u!1 &1176172490
 GameObject:
@@ -46040,7 +46057,6 @@ MonoBehaviour:
   horizontal_slider: {fileID: 1543172372}
   vertical_slider: {fileID: 2051380329}
   selected_id: 0
-  sort_type: 0
   source: 1
   list_options: {fileID: 1126313875}
 --- !u!114 &1184606188
@@ -47507,17 +47523,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 2
-  row_size: 75
+  id_list: 
   table: Map_scenery
   select_index: 
   edit_index: 
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &1215485022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47530,13 +47540,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 75
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1215485021}
 --- !u!1 &1215727543
 GameObject:
@@ -51206,17 +51222,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 1
-  row_size: 40
+  id_list: 
   table: Item
   select_index: 
   edit_index: 0000000001000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &1303199241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51229,13 +51239,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 40
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1303199240}
 --- !u!114 &1303199242
 MonoBehaviour:
@@ -56200,17 +56216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 1
-  row_size: 40
+  id_list: 
   table: Map
   select_index: 
   edit_index: 0100000000000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &1478548941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56258,13 +56268,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 40
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1478548940}
 --- !u!114 &1478548944
 MonoBehaviour:
@@ -58029,17 +58045,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 2
-  row_size: 75
+  id_list: 
   table: Element
   select_index: 
   edit_index: 0000000000000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &1529904372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58052,13 +58062,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 75
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1529904371}
 --- !u!114 &1529904373
 MonoBehaviour:
@@ -64998,17 +65014,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 1
-  row_size: 40
+  id_list: 
   table: Item
   select_index: 
   edit_index: 0000000001000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 1
 --- !u!114 &1705809269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65021,13 +65031,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 1184606183}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 40
   horizontal: 0
   vertical: 1
-  show_numbers: 0
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1705809268}
 --- !u!114 &1705809270
 MonoBehaviour:
@@ -66304,17 +66320,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 0
-  row_size: 50
+  id_list: 
   table: Chapter
   select_index: 00000000
   edit_index: 01000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 0
 --- !u!114 &1751448740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66351,13 +66361,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 1
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1751448739}
 --- !u!114 &1751448742
 MonoBehaviour:
@@ -70004,17 +70020,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 2
-  row_size: 50
+  id_list: 
   table: Map
   select_index: 
   edit_index: 
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 1
-  get_select: 1
-  set_select: 0
 --- !u!114 &1851839777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70027,13 +70037,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 1
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 1
+  base_size: 50
   horizontal: 1
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 1851839776}
 --- !u!114 &1851839778
 MonoBehaviour:
@@ -72633,13 +72649,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 1
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 1
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 936426583}
 --- !u!1 &1921171363
 GameObject:
@@ -75692,13 +75714,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 1
+  base_size: 50
   horizontal: 1
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 0
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 1851839776}
 --- !u!1 &1988740296
 GameObject:
@@ -77065,17 +77093,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e08b0996d3231f45a8304e2958dbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_list: 
   sort_type: 0
-  row_size: 50
+  id_list: 
   table: Phase
   select_index: 00000000
   edit_index: 01000000
-  visible_only: 0
-  zigzag: 0
-  coordinate_mode: 0
-  get_select: 0
-  set_select: 0
 --- !u!114 &2020116198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77112,13 +77134,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 1, y: 1}
   main_editor: 1
+  auto_select: 0
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 0
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 1, y: 1}
   rowManager: {fileID: 2020116197}
 --- !u!114 &2020116200
 MonoBehaviour:
@@ -77460,13 +77488,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_list: {fileID: 468197030}
-  min_anchor: {x: 0, y: 0}
-  max_anchor: {x: 0.45, y: 1}
   main_editor: 0
+  auto_select: 1
+  get_select: 0
+  set_select: 0
+  visible_only: 0
+  zigzag: 0
+  coordinate_mode: 0
+  base_size: 50
   horizontal: 0
   vertical: 1
-  show_numbers: 1
-  auto_select: 1
+  enable_numbers: 1
+  min_anchor: {x: 0, y: 0}
+  max_anchor: {x: 0.45, y: 1}
   rowManager: {fileID: 337895388}
 --- !u!1 &2028639656
 GameObject:

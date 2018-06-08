@@ -5,16 +5,27 @@ public class ListProperties : MonoBehaviour
 {
     public RectTransform main_list;
 
-    public Vector2 min_anchor;
-    public Vector2 max_anchor;
-
     //Main editors create the select/edit delegates
     public bool main_editor;
+ 
+    public bool auto_select;
+
+    public bool get_select, set_select;
+
+    //Only spawn visible elements
+    public bool visible_only;
+
+    public bool zigzag;
+    //Sort Grid as coordinates
+    public bool coordinate_mode;
+
+    public float base_size;
 
     public bool horizontal, vertical;
-    public bool show_numbers;
+    public bool enable_numbers;
 
-    public bool auto_select;
+    public Vector2 min_anchor;
+    public Vector2 max_anchor;
 
     public RowManager rowManager;
 
@@ -30,15 +41,9 @@ public class ListProperties : MonoBehaviour
         //2. ListProperties > RowManager > ListManager > Organizer
         //3. ListProperties > ListManager > Organizer
 
+        rowManager.InitializeRows(main_editor);
+        main_list.GetComponent<ListManager>().SetProperties(this);
         SetListAnchors();
-
-        main_list.GetComponent<ListManager>().ShowNumbers(show_numbers);
-
-        rowManager.SetupRows(main_editor);
-
-        main_list.GetComponent<ListManager>().SetAxis(horizontal, vertical);
-        
-        main_list.GetComponent<ListManager>().SetListSize(max_anchor.x);
 
         //Automatically selects and highlights an element(id) on startup
         if (auto_select)
@@ -49,6 +54,8 @@ public class ListProperties : MonoBehaviour
     {
         main_list.anchorMin = min_anchor;
         main_list.anchorMax = max_anchor;
+
+        main_list.GetComponent<ListManager>().SetListSize(max_anchor.x, base_size);
 
         main_list.gameObject.SetActive(true);
     }

@@ -24,17 +24,17 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     ListManager listManager;
 
-    public void SetProperties(Path new_edit_path, bool new_get_select, bool new_set_select, bool new_visible_only, bool new_show_numbers)
+    public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
     {
         listManager = GetComponent<ListManager>();
 
         edit_path = new_edit_path;
+    }
 
-        visible_only = new_visible_only;
-        show_numbers = new_show_numbers;
-
-        get_select = new_get_select;
-        set_select = new_set_select;
+    public void SetProperties(ListProperties listProperties)
+    {
+        visible_only = listProperties.visible_only;
+        show_numbers = listProperties.enable_numbers;
     }
 
     public void SetListSize(float new_size)
@@ -44,7 +44,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public Vector2 GetListSize()
     {
-        return new Vector2(listManager.list_parent.sizeDelta.x, base_size * listManager.id_list.Count);
+        return new Vector2(0, base_size * listManager.id_list.Count);
     }
 
     public void SetRows()
@@ -113,7 +113,5 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         listManager.ResetElement(element_list);
 
         ResetSelection();
-
-        gameObject.SetActive(false);
     }
 }
