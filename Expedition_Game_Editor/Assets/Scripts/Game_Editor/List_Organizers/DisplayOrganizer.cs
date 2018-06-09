@@ -14,7 +14,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     public RectTransform element_selection;
 
     private bool visible_only;
-    private bool show_numbers;
+    private bool enable_numbers;
     private bool zigzag;
 
     private Path select_path;
@@ -44,7 +44,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     public void SetProperties(ListProperties listProperties)
     {
         visible_only = listProperties.visible_only;
-        show_numbers = listProperties.enable_numbers;
+        enable_numbers = listProperties.enable_numbers;
         zigzag = listProperties.zigzag;
     }
 
@@ -169,8 +169,10 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         rect.anchorMin = new Vector2(x_anchors[index][0], 0);
         rect.anchorMax = new Vector2(x_anchors[index][1], 1);
 
-        if (show_numbers)
+        if (enable_numbers)
+        {
             listManager.SetNumbers(listManager.vertical_number_parent, index, new Vector2(0, rect.transform.localPosition.y));
+        }        
     }
 
     float ListPosition(int i)
@@ -183,7 +185,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         element_selection.gameObject.SetActive(true);
         //Get correct index based off the ID
         SetElement(element_selection, id-1);
-
+        
         //If selection is below X ...
         //Move list up
         //main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.75f;

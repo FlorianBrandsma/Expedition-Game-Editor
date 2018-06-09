@@ -3,6 +3,10 @@ using System.Collections;
 
 public class ListProperties : MonoBehaviour
 {
+    public RectTransform editor_parent;
+
+    public RectTransform list_area;
+
     public RectTransform main_list;
 
     //Main editors create the select/edit delegates
@@ -52,8 +56,8 @@ public class ListProperties : MonoBehaviour
 
     void SetListAnchors()
     {
-        main_list.anchorMin = min_anchor;
-        main_list.anchorMax = max_anchor;
+        list_area.anchorMin = min_anchor;
+        list_area.anchorMax = max_anchor;
 
         main_list.GetComponent<ListManager>().SetListSize(max_anchor.x, base_size);
 

@@ -15,8 +15,6 @@ public class OptionOrganizer : MonoBehaviour
 
     public int wrap_limit;
 
-    public float collapsed_anchor;
-
     public void SortOptions()
     {
         for (int i = 0; i < options.Count; i++)
@@ -44,7 +42,7 @@ public class OptionOrganizer : MonoBehaviour
     {
         if(collapse)
         {
-            main_editor_parent.anchorMin = new Vector2(0, collapsed_anchor);
+            main_editor_parent.anchorMin = new Vector2(GetComponent<RectTransform>().anchorMin.x, GetComponent<RectTransform>().anchorMax.y);
         } else {
             main_editor_parent.anchorMin = Vector2.zero;
         }  

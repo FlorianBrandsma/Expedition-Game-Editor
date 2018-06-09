@@ -23,6 +23,8 @@ public class RowManager : MonoBehaviour, IEditor
 
     public List<int> id_list = new List<int>();
 
+    public int id_count;
+
     public string table;
     //private int id;
     //item type per tab
@@ -34,7 +36,7 @@ public class RowManager : MonoBehaviour, IEditor
     {
         id_list.Clear();
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < id_count; i++)
         {
             id_list.Add(i + 1);
         }

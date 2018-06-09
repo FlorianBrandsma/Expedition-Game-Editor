@@ -12,8 +12,6 @@ public class SubEditor : MonoBehaviour
     //Always activate specific editors across a path
     public bool force_activation;
 
-    public Text header;
-
     public string table;
     public int id;
 
@@ -30,6 +28,11 @@ public class SubEditor : MonoBehaviour
     public GameObject[] editor;
     
     public bool lock_position;
+
+    public RectTransform editor_rect;
+
+    public Vector2 min_anchor;
+    public Vector2 max_anchor;
 
     public RectTransform preview_window;
 
@@ -58,13 +61,12 @@ public class SubEditor : MonoBehaviour
 
         } else if (editor_depth == path.editor.Count) {
 
-            //Move to RowManager or something
-            if (header != null)
-                SetHeader(table + " " + id);
-
             gameObject.GetComponent<IEditor>().OpenEditor();
 
             //SubEditor > ListProperties > RowManager > ListManager > Organizer
+            if (editor_rect != null)
+                SetAnchors();
+
             if (GetComponent<ListProperties>() != null)
                 GetComponent<ListProperties>().SetList();   
         }
@@ -103,12 +105,10 @@ public class SubEditor : MonoBehaviour
             tabManager.SetLocalTabs(editor);
     }
 
-    //update history (?)
-
-    void SetHeader(string header_text)
+    void SetAnchors()
     {
-        header.text = header_text;
-        header.gameObject.SetActive(true);
+        editor_rect.anchorMin = min_anchor;
+        editor_rect.anchorMax = max_anchor;
     }
 
     public void CloseEditor(List<int> path, int editor_index)
@@ -116,9 +116,6 @@ public class SubEditor : MonoBehaviour
         NavigationManager.get_id = false;
 
         editor_index++;
-
-        if (header != null)
-            header.gameObject.SetActive(false);
 
         if (tab_manager != null)
             tab_manager.GetComponent<TabManager>().CloseTabs();

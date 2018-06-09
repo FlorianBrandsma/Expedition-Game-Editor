@@ -22,7 +22,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     private bool get_select, set_select;
 
     private bool visible_only;
-    private bool show_numbers;
+    private bool enable_numbers;
     private bool coordinate_mode;
 
     private ListManager listManager;
@@ -37,7 +37,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     public void SetProperties(ListProperties listProperties)
     {
         visible_only = listProperties.visible_only;
-        show_numbers = listProperties.enable_numbers;
+        enable_numbers = listProperties.enable_numbers;
         coordinate_mode = listProperties.coordinate_mode;
     }
 
@@ -58,10 +58,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
             new_size = new Vector2(temp_width * base_size, ((listManager.id_list.Count + (listManager.id_list.Count % temp_width)) * base_size) / temp_width);
         } else
-            new_size = new Vector2(listManager.id_list.Count * base_size, listManager.id_list.Count * base_size);
-
-        //Change coordinate size after id_list is no longer placeholder
-        //new_size = new Vector2(Mathf.Sqrt(listManager.id_list.Count) * base_size, Mathf.Sqrt(listManager.id_list.Count) * base_size);
+            new_size = new Vector2(Mathf.Sqrt(listManager.id_list.Count) * base_size, Mathf.Sqrt(listManager.id_list.Count) * base_size);
 
         list_size = new_size / base_size;
 
@@ -104,24 +101,33 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
                 SetElement(new_element, index);
 
-                //Review
-                new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[index], listManager.editable); });
+                int temp_index = index;
+
+                new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[temp_index], listManager.editable); });
 
                 new_element.gameObject.SetActive(true);
 
                 index++;
 
-                //TEMPORARY
-                if (coordinate_mode && index == listManager.id_list.Count * listManager.id_list.Count)
-                    break;
-
                 if (!coordinate_mode && index == listManager.id_list.Count)
                     break;
             }
-        } 
+        }
+
+        if (enable_numbers)
+            InitializeNumbers();
     }
 
-    void SetElement(RectTransform rect, int x)
+    void InitializeNumbers()
+    {
+        for(int y = 0; y < list_size.y; y++)
+            listManager.SetNumbers(listManager.vertical_number_parent, y, new Vector2(0, -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (y * base_size)));
+
+        for (int x = 0; x < list_size.x; x++)
+            listManager.SetNumbers(listManager.horizontal_number_parent, x, new Vector2(-((base_size * 0.5f) * (list_size.x - 1)) + (x * base_size), 0));
+    }
+
+    void SetElement(RectTransform rect, int index)
     {
         rect.sizeDelta = new Vector2(base_size, base_size);
         /*
@@ -133,15 +139,16 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         if (GetComponent<ListManager>().horizontal_slider.gameObject.activeInHierarchy)
             offset_y = 10;
         */
-        rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (x % list_size.x * base_size),
-                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(x / list_size.x) * base_size));
+
+        rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
+                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
+
+        
     }
 
     public void SelectElement(int id)
     {
-        if (!coordinate_mode)
-            SetElement(element_selection, id - 1);
-
+        SetElement(element_selection, id - 1);
 
         element_selection.gameObject.SetActive(true);
     }

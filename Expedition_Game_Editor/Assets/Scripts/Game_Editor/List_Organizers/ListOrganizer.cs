@@ -84,9 +84,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, base_size);
 
         rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
-
-        if (GetComponent<ListManager>().vertical_slider.gameObject.activeInHierarchy)
-            rect.anchorMax = new Vector2(0.9f, 1);
     }
 
     float ListPosition(int i)
