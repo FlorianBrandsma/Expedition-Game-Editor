@@ -171,7 +171,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
         if (enable_numbers)
         {
-            listManager.SetNumbers(listManager.vertical_number_parent, index, new Vector2(0, rect.transform.localPosition.y));
+            listManager.numberManager.SetNumbers(listManager.numberManager.vertical_number_parent, index, new Vector2(0, rect.transform.localPosition.y));
         }        
     }
 
@@ -195,7 +195,6 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     {
         element_selection.gameObject.SetActive(false);
         
-        listManager.ResetElement(element_list);
-        listManager.ResetText();
+        listManager.ResetElement(element_list); 
     }  
 }

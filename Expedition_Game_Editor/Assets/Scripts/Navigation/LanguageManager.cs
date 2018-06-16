@@ -18,7 +18,7 @@ public class LanguageManager : MonoBehaviour
 
     public void SortLanguages()
     {
-        Dropdown language_dropdown = GetComponent<OptionManager>().AddDropdown();
+        Dropdown language_dropdown = GetComponent<SubEditor>().optionManager.AddDropdown();
 
         language_dropdown.onValueChanged.RemoveAllListeners();
 

@@ -13,7 +13,7 @@ public class TabManager : MonoBehaviour
 
     private GameObject[] editor;
 
-    public void SetTabs(Path path, GameObject[] new_editor, int editor_depth)
+    public void SetEditorTabs(Path path, GameObject[] new_editor, int editor_depth)
     {
         editor = new_editor;
 
@@ -49,7 +49,7 @@ public class TabManager : MonoBehaviour
         SelectTab(path.editor[editor_depth]);
     }
 
-    public void SetLocalTabs(GameObject[] new_editor)
+    public void SetFieldTabs(GameObject[] new_editor)
     {
         editor = new_editor;
 
@@ -64,28 +64,28 @@ public class TabManager : MonoBehaviour
 
             int temp_int = tab;
 
-            new_tab.onClick.AddListener(delegate { OpenLocalEditor(temp_int); });
+            new_tab.onClick.AddListener(delegate { OpenFieldEditor(temp_int); });
 
             new_tab.gameObject.SetActive(true);
         }
 
-        OpenLocalEditor(0);
+        OpenFieldEditor(0);
     }
 
-    public void OpenLocalEditor(int selected_tab)
+    public void OpenFieldEditor(int selected_tab)
     {
-        CloseLocalEditors();
+        CloseFieldEditors();
 
         SelectTab(selected_tab);
 
-        editor[selected_tab].GetComponent<IEditor>().OpenEditor();
+        editor[selected_tab].GetComponent<EditorField>().OpenField();
     }
 
-    void CloseLocalEditors()
+    void CloseFieldEditors()
     {
         for (int tab = 0; tab < editor.Length; tab++)
         {
-            editor[tab].SetActive(false);
+            editor[tab].GetComponent<EditorField>().CloseField();
         }
     }
 

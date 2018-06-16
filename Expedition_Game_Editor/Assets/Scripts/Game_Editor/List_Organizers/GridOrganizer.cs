@@ -121,10 +121,10 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     void InitializeNumbers()
     {
         for(int y = 0; y < list_size.y; y++)
-            listManager.SetNumbers(listManager.vertical_number_parent, y, new Vector2(0, -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (y * base_size)));
+            listManager.numberManager.SetNumbers(listManager.numberManager.vertical_number_parent, y, new Vector2(0, -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (y * base_size)));
 
         for (int x = 0; x < list_size.x; x++)
-            listManager.SetNumbers(listManager.horizontal_number_parent, x, new Vector2(-((base_size * 0.5f) * (list_size.x - 1)) + (x * base_size), 0));
+            listManager.numberManager.SetNumbers(listManager.numberManager.horizontal_number_parent, x, new Vector2(-((base_size * 0.5f) * (list_size.x - 1)) + (x * base_size), 0));
     }
 
     void SetElement(RectTransform rect, int index)
@@ -160,8 +160,6 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        listManager.ResetText();
-
         listManager.ResetElement(element_list);
 
         ResetSelection();

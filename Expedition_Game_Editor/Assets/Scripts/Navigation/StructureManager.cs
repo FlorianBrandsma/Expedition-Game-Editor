@@ -29,7 +29,7 @@ public class StructureManager : MonoBehaviour
     {
         SetRows();
 
-        Dropdown structure_dropdown = GetComponent<OptionManager>().AddDropdown();
+        Dropdown structure_dropdown = GetComponent<SubEditor>().optionManager.AddDropdown();
 
         structure_dropdown.options.Clear();
 

@@ -105,8 +105,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        listManager.ResetText();
-
         listManager.ResetElement(element_list);
 
         ResetSelection();

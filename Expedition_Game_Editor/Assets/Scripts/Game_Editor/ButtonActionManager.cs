@@ -10,7 +10,7 @@ public class ButtonActionManager : MonoBehaviour
 
     public Toggle   trash_toggle;
 
-    public void SetButtons(IEditor editor)
+    public void SetButtons(SubEditor editor)
     {
         save_button.onClick.AddListener( delegate { editor.SaveEdit(); });
 

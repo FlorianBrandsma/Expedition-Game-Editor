@@ -10,10 +10,44 @@ public class OptionManager : MonoBehaviour
     static List<Dropdown> dropdown_pool = new List<Dropdown>();
     static List<Button> button_pool = new List<Button>();
 
-    public GameObject option_parent;
+    private List<RectTransform> options = new List<RectTransform>();
 
-    public OptionOrganizer optionOrganizer;
+    public RectTransform main_editor_parent;
 
+    public int wrap_limit;
+
+    public void SortOptions()
+    {
+        for (int i = 0; i < options.Count; i++)
+        {
+            RectTransform new_option = options[i];
+
+            if (options.Count <= wrap_limit)
+            {
+                new_option.anchorMin = new Vector2(      i * (1f / wrap_limit), 1);
+                new_option.anchorMax = new Vector2((i + 1) * (1f / wrap_limit), 1);
+            } else {
+                new_option.anchorMin = new Vector2(      i * (1f / options.Count), 1);
+                new_option.anchorMax = new Vector2((i + 1) * (1f / options.Count), 1);
+            }
+
+            new_option.offsetMin = new Vector2(-2.5f, new_option.offsetMin.y);
+            new_option.offsetMax = new Vector2( 2.5f, new_option.offsetMax.y);
+        }
+
+        if(options.Count > 0)
+            SetEditorSize(true);
+    }
+
+    public void SetEditorSize(bool collapse)
+    {
+        if(collapse)
+        {
+            main_editor_parent.anchorMin = new Vector2(GetComponent<RectTransform>().anchorMin.x, GetComponent<RectTransform>().anchorMax.y);
+        } else {
+            main_editor_parent.anchorMin = Vector2.zero;
+        }  
+    }
 
     public Dropdown AddDropdown()
     {
@@ -35,8 +69,22 @@ public class OptionManager : MonoBehaviour
 
     public void AddOptions(RectTransform new_option)
     {
-        optionOrganizer.options.Add(new_option);
+        options.Add(new_option);
+
+        SortOptions();
     }
+
+    public void CloseOptions()
+    {
+        foreach (RectTransform option in options)
+            option.gameObject.SetActive(false);
+
+        SetEditorSize(false);
+
+        options.Clear();
+    }
+
+    #region Spawners
 
     Dropdown SpawnDropdown()
     {
@@ -44,7 +92,7 @@ public class OptionManager : MonoBehaviour
         {
             if (!dropdown_pool[i].gameObject.activeInHierarchy)
             {
-                dropdown_pool[i].transform.SetParent(option_parent.transform, false);
+                dropdown_pool[i].transform.SetParent(transform, false);
 
                 dropdown_pool[i].gameObject.SetActive(true);
 
@@ -54,13 +102,13 @@ public class OptionManager : MonoBehaviour
 
         Dropdown new_option = Instantiate(Resources.Load<Dropdown>("Editor/Options/Dropdown"));
 
-        new_option.transform.SetParent(option_parent.transform, false);
+        new_option.transform.SetParent(transform, false);
 
         dropdown_pool.Add(new_option);
 
         return new_option;
     }
-    
+
     Button SpawnButton()
     {
         for (int i = 0; i < button_pool.Count; i++)
@@ -69,7 +117,7 @@ public class OptionManager : MonoBehaviour
             {
                 button_pool[i].onClick.RemoveAllListeners();
 
-                button_pool[i].transform.SetParent(option_parent.transform, false);
+                button_pool[i].transform.SetParent(transform, false);
 
                 button_pool[i].gameObject.SetActive(true);
 
@@ -79,10 +127,11 @@ public class OptionManager : MonoBehaviour
 
         Button new_option = Instantiate(Resources.Load<Button>("Editor/Options/Button"));
 
-        new_option.transform.SetParent(option_parent.transform, false);
+        new_option.transform.SetParent(transform, false);
 
         button_pool.Add(new_option);
 
         return new_option;
     }
+    #endregion
 }

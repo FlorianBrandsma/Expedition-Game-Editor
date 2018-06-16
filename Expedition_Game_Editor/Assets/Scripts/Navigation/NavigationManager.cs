@@ -35,8 +35,8 @@ public class NavigationManager : MonoBehaviour
 
     private Path active_path        = new Path(new List<int>(), new List<int>());
 
-    public GameObject default_editor;
-    public GameObject source_editor;
+    public SubEditor default_editor;
+    public SubEditor source_editor;
 
     static public NavigationManager navigation_manager;
 
@@ -49,7 +49,7 @@ public class NavigationManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        OpenStructure(  new Path(new List<int>() { 5 }, new List<int>() { 0 }), false, false);
+        OpenStructure(  new Path(new List<int>() { 0,0 }, new List<int>() { 0,0 }), false, false);
         OpenSource(     new Path(new List<int>() {  },  new List<int>() {  }));    
     }
 
@@ -61,8 +61,7 @@ public class NavigationManager : MonoBehaviour
 
     public void OpenStructure(Path path, bool temporary, bool previous)
     {
-        if(active_path != null)
-            CloseEditor(active_path, default_editor);
+        CloseEditor(active_path, default_editor);
 
         active_path = path;
 
@@ -79,8 +78,7 @@ public class NavigationManager : MonoBehaviour
 
         if (path.editor.Count > 0)
         {
-            default_editor.GetComponent<SubEditor>().OpenEditor(path, 0);
-            default_editor.GetComponent<OptionManager>().optionOrganizer.SortOptions();
+            default_editor.OpenEditor(path, 0);
         }
     }
 
@@ -98,25 +96,17 @@ public class NavigationManager : MonoBehaviour
     {
         CloseEditor(source_history, source_editor);
 
-        source_editor.GetComponent<SubEditor>().OpenEditor(path, 0);
-
-        //Necessary?
-        source_editor.GetComponent<OptionManager>().optionOrganizer.SortOptions();
+        source_editor.OpenEditor(path, 0);
 
         source_history = path;
     }
 
-    void CloseEditor(Path path, GameObject base_editor)
+    void CloseEditor(Path path, SubEditor base_editor)
     {
         ResetSelection();
 
         if (path.editor.Count > 0)
-        {
-            base_editor.GetComponent<SubEditor>().CloseEditor(path.editor, 0);
-
-            //Necessary?
-            base_editor.GetComponent<OptionManager>().optionOrganizer.CloseOptions();
-        }           
+            base_editor.CloseEditor(path.editor, 0); 
     }
 
     static public void SelectElement(int id)
@@ -134,9 +124,9 @@ public class NavigationManager : MonoBehaviour
     {
         CloseEditor(active_path, default_editor);
 
-        default_editor.GetComponent<SubEditor>().OpenEditor(active_path, 0);
-        default_editor.GetComponent<OptionManager>().optionOrganizer.SortOptions();
+        default_editor.OpenEditor(active_path, 0);
     }
+
     public void RefreshSource()
     {
         OpenSource(source_history);

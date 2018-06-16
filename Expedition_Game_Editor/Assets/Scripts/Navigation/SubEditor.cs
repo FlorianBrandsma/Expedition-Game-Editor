@@ -20,8 +20,7 @@ public class SubEditor : MonoBehaviour
 
     public GameObject button_manager;
 
-    public GameObject tab_manager;
-    public bool open_local;
+    public TabManager tabManager;
 
     private List<Button> tabs = new List<Button>();
 
@@ -35,6 +34,8 @@ public class SubEditor : MonoBehaviour
     public Vector2 max_anchor;
 
     public RectTransform preview_window;
+
+    public OptionManager optionManager;
 
     public void OpenEditor(Path new_path, int editor_depth)
     {
@@ -55,54 +56,49 @@ public class SubEditor : MonoBehaviour
         if (GetComponent<StructureManager>() != null)
             GetComponent<StructureManager>().SortStructure(path, editor_depth, table, id);
 
-        if (force_activation)
-        {
-            gameObject.GetComponent<IEditor>().OpenEditor();
-
-        } else if (editor_depth == path.editor.Count) {
-
-            gameObject.GetComponent<IEditor>().OpenEditor();
-
-            //SubEditor > ListProperties > RowManager > ListManager > Organizer
-            if (editor_rect != null)
-                SetAnchors();
-
-            if (GetComponent<ListProperties>() != null)
-                GetComponent<ListProperties>().SetList();   
-        }
-
-        for (int i = 0; i < editor_parent.Length; i++)
-            editor_parent[i].SetActive(true);
+        if (editor_rect != null)
+            editor_rect.gameObject.SetActive(true);
 
         if (preview_window != null)
             preview_window.gameObject.SetActive(true);
 
         if (button_manager != null)
-            button_manager.GetComponent<ButtonActionManager>().SetButtons(GetComponent<IEditor>());
+            button_manager.GetComponent<ButtonActionManager>().SetButtons(this);
 
-        if (tab_manager != null)
+        if (tabManager != null)
             SetTabs(path, editor_depth);
 
+        if (editor_depth == path.editor.Count)
+            OpenChildEditor();
+
         //Open next editor in line
-        if(editor_depth < path.editor.Count)
-            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);   
+        if (editor_depth < path.editor.Count)
+            editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);    
+    }
+
+    void OpenChildEditor()
+    {
+        for (int i = 0; i < editor_parent.Length; i++)
+            editor_parent[i].SetActive(true);
+
+        GetComponent<IEditor>().OpenEditor();
+
+        if (editor_rect != null)
+            SetAnchors();
+
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().SetList();
     }
 
     void SetTabs(Path path, int editor_depth)
     {
-        TabManager tabManager = tab_manager.GetComponent<TabManager>();
-
-        if (!open_local)
+        if (editor_depth == path.editor.Count)
         {
-            if (editor_depth == path.editor.Count)
-            {
-                path.editor.Add(0);
-                path.id.Add(0);
-            }
+            path.editor.Add(0);
+            path.id.Add(0);
+        }
 
-            tabManager.SetTabs(path, editor, editor_depth);
-        } else
-            tabManager.SetLocalTabs(editor);
+        tabManager.SetEditorTabs(path, editor, editor_depth);
     }
 
     void SetAnchors()
@@ -111,14 +107,38 @@ public class SubEditor : MonoBehaviour
         editor_rect.anchorMax = max_anchor;
     }
 
+    public void SaveEdit()
+    {
+        GetComponent<IEditor>().SaveEdit();
+    }
+
+    public void ApplyEdit()
+    {
+        GetComponent<IEditor>().ApplyEdit();
+    }
+
+    public void CancelEdit()
+    {
+        GetComponent<IEditor>().CancelEdit();
+    }
+
     public void CloseEditor(List<int> path, int editor_index)
     {
         NavigationManager.get_id = false;
 
         editor_index++;
 
-        if (tab_manager != null)
-            tab_manager.GetComponent<TabManager>().CloseTabs();
+        if (GetComponent<RowManager>() != null)
+            GetComponent<RowManager>().CloseList();
+
+        if (optionManager != null)
+            optionManager.CloseOptions();
+
+        if (editor_rect != null)
+            editor_rect.gameObject.SetActive(false);
+
+        if (tabManager != null)
+            tabManager.GetComponent<TabManager>().CloseTabs();
 
         if (button_manager != null)
             button_manager.GetComponent<ButtonActionManager>().CloseButtons();

@@ -14,7 +14,7 @@ using System.IO;
 //Element size
 //Element placement (zigzag)
 
-public class RowManager : MonoBehaviour, IEditor
+public class RowManager : MonoBehaviour
 {
     //0: Display
     //1: Buttons
@@ -28,6 +28,8 @@ public class RowManager : MonoBehaviour, IEditor
     public string table;
     //private int id;
     //item type per tab
+
+    public bool combine_path;
 
     public int[] select_index;
     public int[] edit_index;
@@ -52,7 +54,7 @@ public class RowManager : MonoBehaviour, IEditor
         Path select_path;
         Path edit_path;
 
-        if (edit_index.Length == 1)
+        if (combine_path)
         {
             //1. Get current Path
             //2. Get new index
@@ -82,11 +84,6 @@ public class RowManager : MonoBehaviour, IEditor
 
         ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
         listManager.InitializeList(this, id_list, select_path, edit_path);
-    }
-
-    public void OpenEditor()
-    {
-        //gameObject.SetActive(true);
     }
 
     private Path CreatePath(int[] new_editor, int new_id)
@@ -124,30 +121,7 @@ public class RowManager : MonoBehaviour, IEditor
         return new_path;
     }
 
-    public void SaveEdit()
-    {
-        ApplyEdit();
-        CancelEdit();
-    }
-
-    public void ApplyEdit()
-    {
-
-    }
-
-    public void CancelEdit()
-    {
-        NavigationManager.navigation_manager.PreviousEditor();
-    }
-
-    public void CloseEditor()
-    {
-        CloseList();
-
-        gameObject.SetActive(false);
-    }
-
-    void CloseList()
+    public void CloseList()
     {
         GetComponent<ListProperties>().main_list.GetComponent<ListManager>().CloseList();
     }
