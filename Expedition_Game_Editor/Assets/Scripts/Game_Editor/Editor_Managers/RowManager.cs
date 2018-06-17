@@ -46,8 +46,8 @@ public class RowManager : MonoBehaviour
 
     public void InitializeRows(bool main_editor)
     {
-        string selected_table = GetComponent<SubEditor>().table;
-        int selected_id = GetComponent<SubEditor>().id;
+        string selected_table = GetComponent<IEditorData>().GetTable();
+        int selected_id = GetComponent<IEditorData>().GetID();
 
         //Let every sub-editor remember it's path, as the path to manipulate
 
@@ -61,7 +61,7 @@ public class RowManager : MonoBehaviour
             //3. Add new index
             //4. Add new id
 
-            Path this_path = GetComponent<SubEditor>().path;
+            Path this_path = GetComponent<IEditorData>().GetPath();
 
             List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id }, false);
 

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class SubEditor : MonoBehaviour
+public class SubEditor : MonoBehaviour, IEditorData
 {
     public Path path;
 
@@ -18,7 +18,7 @@ public class SubEditor : MonoBehaviour
     //Activate parent objects that aren't editors
     public GameObject[] editor_parent;
 
-    public GameObject button_manager;
+    public ButtonActionManager buttonActionManager;
 
     public TabManager tabManager;
 
@@ -35,7 +35,7 @@ public class SubEditor : MonoBehaviour
 
     public RectTransform preview_window;
 
-    public OptionManager optionManager;
+    public ActionManager actionManager;
 
     public void OpenEditor(Path new_path, int editor_depth)
     {
@@ -52,6 +52,9 @@ public class SubEditor : MonoBehaviour
 
         if (GetComponent<LanguageManager>() != null)
             GetComponent<LanguageManager>().SortLanguages();
+
+        if (GetComponent<TimeManager>() != null)
+            GetComponent<TimeManager>().SortTimes();
            
         if (GetComponent<StructureManager>() != null)
             GetComponent<StructureManager>().SortStructure(path, editor_depth, table, id);
@@ -62,8 +65,8 @@ public class SubEditor : MonoBehaviour
         if (preview_window != null)
             preview_window.gameObject.SetActive(true);
 
-        if (button_manager != null)
-            button_manager.GetComponent<ButtonActionManager>().SetButtons(this);
+        if (buttonActionManager != null)
+            buttonActionManager.SetButtons(this);
 
         if (tabManager != null)
             SetTabs(path, editor_depth);
@@ -81,10 +84,12 @@ public class SubEditor : MonoBehaviour
         for (int i = 0; i < editor_parent.Length; i++)
             editor_parent[i].SetActive(true);
 
-        GetComponent<IEditor>().OpenEditor();
-
         if (editor_rect != null)
             SetAnchors();
+
+        GetComponent<IEditor>().OpenEditor();
+
+        
 
         if (GetComponent<ListProperties>() != null)
             GetComponent<ListProperties>().SetList();
@@ -131,17 +136,17 @@ public class SubEditor : MonoBehaviour
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().CloseList();
 
-        if (optionManager != null)
-            optionManager.CloseOptions();
+        if (actionManager != null)
+            actionManager.CloseOptions();
 
         if (editor_rect != null)
             editor_rect.gameObject.SetActive(false);
 
         if (tabManager != null)
-            tabManager.GetComponent<TabManager>().CloseTabs();
+            tabManager.CloseTabs();
 
-        if (button_manager != null)
-            button_manager.GetComponent<ButtonActionManager>().CloseButtons();
+        if (buttonActionManager != null)
+            buttonActionManager.CloseButtons();
 
         if (preview_window != null)
             preview_window.gameObject.SetActive(false);
@@ -167,4 +172,23 @@ public class SubEditor : MonoBehaviour
 
         return new_path;
     }
+
+    #region ISubEditor
+
+    public Path GetPath()
+    {
+        return path;
+    }
+
+    public string GetTable()
+    {
+        return table;
+    }
+
+    public int GetID()
+    {
+        return id;
+    }
+
+    #endregion
 }

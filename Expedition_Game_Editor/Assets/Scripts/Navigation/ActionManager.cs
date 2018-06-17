@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class OptionManager : MonoBehaviour
+public class ActionManager : MonoBehaviour
 {
     static List<Dropdown> dropdown_pool = new List<Dropdown>();
     static List<Button> button_pool = new List<Button>();
@@ -100,7 +100,7 @@ public class OptionManager : MonoBehaviour
             }
         }
 
-        Dropdown new_option = Instantiate(Resources.Load<Dropdown>("Editor/Options/Dropdown"));
+        Dropdown new_option = Instantiate(Resources.Load<Dropdown>("Editor/Actions/Dropdown"));
 
         new_option.transform.SetParent(transform, false);
 
@@ -125,7 +125,7 @@ public class OptionManager : MonoBehaviour
             }
         }
 
-        Button new_option = Instantiate(Resources.Load<Button>("Editor/Options/Button"));
+        Button new_option = Instantiate(Resources.Load<Button>("Editor/Actions/Button"));
 
         new_option.transform.SetParent(transform, false);
 

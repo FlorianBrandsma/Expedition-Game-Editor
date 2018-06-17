@@ -4,6 +4,8 @@ using System.Collections;
 public class ListProperties : MonoBehaviour
 {
     public RectTransform editor_parent;
+    public Vector2 min_anchor;
+    public Vector2 max_anchor;
 
     public RectTransform list_area;
 
@@ -20,16 +22,17 @@ public class ListProperties : MonoBehaviour
     public bool visible_only;
 
     public bool zigzag;
-    //Sort Grid as coordinates
-    public bool coordinate_mode;
+    //Spawn tiles in rect without altering size
+    public bool fit_axis;
+    public bool slideshow;
 
     public float base_size;
 
     public bool horizontal, vertical;
-    public bool enable_numbers;
 
-    public Vector2 min_anchor;
-    public Vector2 max_anchor;
+    public Vector2 grid_size;
+
+    public bool enable_numbers;
 
     public RowManager rowManager;
 

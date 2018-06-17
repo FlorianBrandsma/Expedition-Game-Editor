@@ -13,6 +13,8 @@ public class TabManager : MonoBehaviour
 
     private GameObject[] editor;
 
+    private int active_tab = -1;
+
     public void SetEditorTabs(Path path, GameObject[] new_editor, int editor_depth)
     {
         editor = new_editor;
@@ -74,19 +76,19 @@ public class TabManager : MonoBehaviour
 
     public void OpenFieldEditor(int selected_tab)
     {
-        CloseFieldEditors();
+        CloseFieldEditor();
 
         SelectTab(selected_tab);
 
         editor[selected_tab].GetComponent<EditorField>().OpenField();
+
+        active_tab = selected_tab;
     }
 
-    void CloseFieldEditors()
+    void CloseFieldEditor()
     {
-        for (int tab = 0; tab < editor.Length; tab++)
-        {
-            editor[tab].GetComponent<EditorField>().CloseField();
-        }
+        if(active_tab >= 0)
+            editor[active_tab].GetComponent<EditorField>().CloseField();      
     }
 
     public void SetAnchors(int index, int tabs)
@@ -168,5 +170,7 @@ public class TabManager : MonoBehaviour
             tab_list[i].gameObject.SetActive(false);
             editor[i].gameObject.SetActive(false);
         }
+
+        active_tab = -1;
     }
 }

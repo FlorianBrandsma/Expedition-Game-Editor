@@ -61,6 +61,14 @@ public class EditorField : MonoBehaviour
 
     public void CloseField()
     {
+        CloseSegments();
+
         gameObject.SetActive(false);
+    }
+
+    public void CloseSegments()
+    {   
+        foreach (GameObject segment in segments)
+            segment.GetComponent<EditorSegment>().CloseSegment();    
     }
 }

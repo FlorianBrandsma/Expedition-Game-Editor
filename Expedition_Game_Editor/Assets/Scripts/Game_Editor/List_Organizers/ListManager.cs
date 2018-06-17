@@ -35,7 +35,8 @@ public class ListManager : MonoBehaviour
     public SliderManager sliderManager;
     public NumberManager numberManager;
 
-    public OptionManager optionManager;
+    public ActionManager actionManager;
+    private Button edit_button;
 
     public void InitializeList(RowManager rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
     {
@@ -132,7 +133,7 @@ public class ListManager : MonoBehaviour
 
     public void EnableAdding(Path add_path)
     {
-        Button add_button = optionManager.AddButton();
+        Button add_button = actionManager.AddButton();
 
         add_button.GetComponentInChildren<Text>().text = "Add " + table;
 
@@ -142,7 +143,10 @@ public class ListManager : MonoBehaviour
 
     public void EnableEditing(Path edit_path)
     {
-        Button edit_button = optionManager.AddButton();
+        if (edit_button != null)
+            edit_button.onClick.RemoveAllListeners();
+         else 
+            edit_button = actionManager.AddButton();
 
         edit_button.GetComponentInChildren<Text>().text = "Edit";
 
@@ -182,6 +186,8 @@ public class ListManager : MonoBehaviour
 
     public void CloseList()
     {
+        edit_button = null;
+
         main_list.GetComponent<ScrollRect>().horizontal = false;
         main_list.GetComponent<ScrollRect>().vertical = false;
 

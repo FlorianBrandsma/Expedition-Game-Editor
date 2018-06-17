@@ -23,7 +23,12 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     private bool visible_only;
     private bool enable_numbers;
-    private bool coordinate_mode;
+    private bool fit_axis;
+    private bool slideshow;
+
+    private bool horizontal, vertical;
+
+    private Vector2 grid_size;
 
     private ListManager listManager;
 
@@ -38,7 +43,12 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         visible_only = listProperties.visible_only;
         enable_numbers = listProperties.enable_numbers;
-        coordinate_mode = listProperties.coordinate_mode;
+        fit_axis = listProperties.fit_axis;
+        slideshow = listProperties.slideshow;
+        grid_size = listProperties.grid_size;
+
+        horizontal = listProperties.horizontal;
+        vertical = listProperties.vertical;
     }
 
     public void SetListSize(float new_size)
@@ -52,13 +62,23 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         Vector2 new_size;
 
-        if (!coordinate_mode)
+        if (fit_axis)
         {
-            int temp_width = GetListWidth(base_size);
+            int list_width = GetListWidth(base_size);
+            int list_height = GetListHeight(base_size);
 
-            new_size = new Vector2(temp_width * base_size, ((listManager.id_list.Count + (listManager.id_list.Count % temp_width)) * base_size) / temp_width);
-        } else
-            new_size = new Vector2(Mathf.Sqrt(listManager.id_list.Count) * base_size, Mathf.Sqrt(listManager.id_list.Count) * base_size);
+            new_size = new Vector2( horizontal  ? list_width * base_size : list_width * base_size, 
+                                    vertical    ? ((listManager.id_list.Count + (listManager.id_list.Count % list_width)) * base_size) / list_width : list_height * base_size);
+        } else {
+
+            new_size = new Vector2( horizontal  ? grid_size.x * base_size : base_size,
+                                    vertical    ? grid_size.y * base_size : base_size);
+        }
+            
+        //Instead of sqrt size, use vertical/horizontal to determine the size
+        //vertical * horizontal (either no lower than 1)
+        //In case of regions: they're a given
+        //Summary: don't use id_list to determine the size for "coordinate mode"
 
         list_size = new_size / base_size;
 
@@ -75,10 +95,20 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         return x - 1;
     }
 
+    int GetListHeight(float new_size)
+    {
+        int y = 0;
+
+        while (-(y * new_size / 2f) + (y * new_size) < listManager.main_list.rect.max.y)
+            y++;
+
+        return y - 1;
+    }
+
     public void SetRows()
     {
         int index = 0;
-
+        
         for (int y = 0; y < list_size.y; y++)
         {
             for (int x = 0; x < list_size.x; x++)
@@ -109,7 +139,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
                 index++;
 
-                if (!coordinate_mode && index == listManager.id_list.Count)
+                if (index == listManager.id_list.Count)
                     break;
             }
         }
@@ -130,6 +160,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     void SetElement(RectTransform rect, int index)
     {
         rect.sizeDelta = new Vector2(base_size, base_size);
+
         /*
         float offset_x = 0f;
         float offset_y = 0f;
@@ -142,8 +173,6 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
         rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
                                                      -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
-
-        
     }
 
     public void SelectElement(int id)

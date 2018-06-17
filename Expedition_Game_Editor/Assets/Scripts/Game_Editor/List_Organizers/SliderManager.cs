@@ -20,7 +20,6 @@ public class SliderManager : MonoBehaviour
         main_list = new_main_list;
         list_parent = new_list_parent;
 
-
         if (list_parent.sizeDelta.y > main_list.rect.max.y * 2)
         {
             main_list.offsetMax = new Vector2(-vertical_slider.GetComponent<RectTransform>().rect.width, main_list.offsetMax.y);
@@ -41,18 +40,21 @@ public class SliderManager : MonoBehaviour
             horizontal_slider.gameObject.SetActive(true);
         }
 
-        if (vertical_slider.gameObject.activeInHierarchy)
-            horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(-slider_offset, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
+        if(horizontal_slider != null && vertical_slider != null)
+        {
+            if (vertical_slider.gameObject.activeInHierarchy)
+                horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(-slider_offset, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
 
-        if (horizontal_slider.gameObject.activeInHierarchy)
-            vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, slider_offset);
+            if (horizontal_slider.gameObject.activeInHierarchy)
+                vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, slider_offset);
+        }
     }
 
     public void UpdateSliders()
     {
-        if (vertical_slider.gameObject.activeInHierarchy)
+        if (vertical_slider != null && vertical_slider.gameObject.activeInHierarchy)
             vertical_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
-        if (horizontal_slider.gameObject.activeInHierarchy)
+        if (horizontal_slider != null && horizontal_slider.gameObject.activeInHierarchy)
             horizontal_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
     }
 
@@ -61,14 +63,18 @@ public class SliderManager : MonoBehaviour
         main_list.offsetMin = new Vector2(main_list.offsetMin.x, 0);
         main_list.offsetMax = new Vector2(0, main_list.offsetMax.y);
 
-        listManager.horizontal_offset = 0;
-        listManager.vertical_offset = 0;
+        if (horizontal_slider != null)
+        {
+            listManager.vertical_offset = 0;
+            horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(0, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
+            horizontal_slider.gameObject.SetActive(false);
+        }
 
-        horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(0, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
-        vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, 0);
-
-        vertical_slider.gameObject.SetActive(false);
-        horizontal_slider.gameObject.SetActive(false);
+        if (vertical_slider != null)
+        {
+            listManager.horizontal_offset = 0;
+            vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, 0);
+            vertical_slider.gameObject.SetActive(false);
+        } 
     }
-
 }

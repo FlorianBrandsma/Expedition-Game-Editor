@@ -9,14 +9,12 @@ public class FieldManager : MonoBehaviour, IEditor
 
     public TabManager tabManager;
 
-    //Move local to field
-
     public void OpenEditor()
     {
-        if(tabManager != null)
-            SetTabs();
-
         gameObject.SetActive(true);
+
+        if (tabManager != null)
+            SetTabs();
     }
 
     void SetTabs()
@@ -43,9 +41,17 @@ public class FieldManager : MonoBehaviour, IEditor
 
     public void CloseEditor()
     {
+        CloseFields();
+
         if (tabManager != null)
             tabManager.CloseTabs();
 
         gameObject.SetActive(false);
+    }
+
+    void CloseFields()
+    {
+        foreach (GameObject field in fields)
+            field.GetComponent<EditorField>().CloseField();
     }
 }
