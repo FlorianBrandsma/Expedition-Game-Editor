@@ -18,13 +18,12 @@ public class ListManager : MonoBehaviour
 
     public string table;
 
+    public RectTransform    list_area { get; set; }
     public RectTransform    main_list,
                             list_parent;
 
-    private bool    enable_numbers;
-
-    public float    horizontal_offset;
-    public float    vertical_offset;
+    public Vector2  list_size { get; set; }
+    public float    base_size { get; set; }
 
     public int selected_id;
 
@@ -32,8 +31,7 @@ public class ListManager : MonoBehaviour
 
     public bool source;
 
-    public SliderManager sliderManager;
-    public NumberManager numberManager;
+    public OverlayManager overlayManager;
 
     public ActionManager actionManager;
     private Button edit_button;
@@ -50,48 +48,61 @@ public class ListManager : MonoBehaviour
 
         editable = (rowManager.edit_index.Length > 0);
 
-        if (rowManager.sort_type == 0)
-            organizer = GetComponent<DisplayOrganizer>();
-        else if (rowManager.sort_type == 1)
-            organizer = GetComponent<ListOrganizer>();
-        else if (rowManager.sort_type == 2)
-            organizer = GetComponent<GridOrganizer>();
+        //Possibly add/destroy components
+        switch(rowManager.sort_type)
+        {
+            case 0: organizer = gameObject.AddComponent<DisplayOrganizer>(); break;
+            case 1: organizer = gameObject.AddComponent<ListOrganizer>(); break;
+            case 2: organizer = gameObject.AddComponent<GridOrganizer>(); break;
+            default: break;
+        }
 
         organizer.InitializeOrganizer(select_path, edit_path);
+
+        overlayManager.InitializeOverlay(this);
     }
 
     public void SetProperties(ListProperties listProperties)
     {
+        list_area = listProperties.list_area;
+
+        base_size = listProperties.base_size;
+
         main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
         main_list.GetComponent<ScrollRect>().vertical = listProperties.vertical;
 
-        enable_numbers = listProperties.enable_numbers;
-
-        if (numberManager != null)
-            numberManager.InitializeNumbers(this, main_list, list_parent);
-
         organizer.SetProperties(listProperties);
+
+        overlayManager.SetOverlayProperties(listProperties);
     }
 
-    public void SetListSize(float rect_width, float base_size)
+    public void SetListSize(float base_size)
     {
         organizer.SetListSize(base_size);
-
-        if (organizer is DisplayOrganizer)
-            GetComponent<DisplayOrganizer>().SetList(rect_width);
-
-        list_parent.sizeDelta = organizer.GetListSize();
+        
+        list_parent.sizeDelta = organizer.GetListSize(true);
 
         listMin = main_list.TransformPoint(new Vector2(0, main_list.rect.min.y));
         listMax = main_list.TransformPoint(new Vector2(0, main_list.rect.max.y));
-
-        if(sliderManager != null)
-            sliderManager.SetSliders(this, main_list, list_parent);
 
         main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
         main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
 
         SetRows();
+
+        list_size = organizer.GetListSize(false);
+
+        overlayManager.SetOverlay();
+
+        //Activate all overlay components
+
+        //overlayManager.SetOverlay(overlayManager.sliderManager);  
+        //Set numbers
+        //Set slideshow
+
+        //combine?
+
+        //Instead of "enabling numbers", add and remove organizer components. component = enabled
     }
 
     public void SetRows()
@@ -104,11 +115,7 @@ public class ListManager : MonoBehaviour
 
     public void UpdateRows()
     {
-        if(enable_numbers)
-            numberManager.UpdateNumberPositions();
-
-        if(sliderManager != null)
-            sliderManager.UpdateSliders();
+        overlayManager.UpdateOverlay();
     }
 
     public void OpenEditor(Path new_editor)
@@ -152,19 +159,7 @@ public class ListManager : MonoBehaviour
 
         edit_button.onClick.AddListener(delegate { OpenEditor(NewPath(edit_path, NavigationManager.set_id)); });
     }
-    
-
-    //Not sure
-    public List<int> NewSelect(List<int> select_path, int new_index)
-    {
-        return null;
-    }
-    public List<int> NewEdit(List<int> edit_path, int new_index)
-    {
-        return null;
-    }
-
-    
+        
     public Path NewPath(Path path, int id)
     {
         Path new_path = new Path(new List<int>(), new List<int>());
@@ -175,7 +170,7 @@ public class ListManager : MonoBehaviour
         for (int i = 0; i < path.id.Count; i++)
             new_path.id.Add(path.id[i]);
 
-        //Trouble
+        //Trouble (edit: is it?)
         if (new_path.id.Count < new_path.editor.Count)
             new_path.id.Add(id);
         else
@@ -191,21 +186,20 @@ public class ListManager : MonoBehaviour
         main_list.GetComponent<ScrollRect>().horizontal = false;
         main_list.GetComponent<ScrollRect>().vertical = false;
 
-        if(sliderManager != null)
-            sliderManager.CloseSliders();
-
-        if (enable_numbers)
-            numberManager.CloseNumbers();   
+        overlayManager.CloseOverlay();
 
         organizer.CloseList();
     }
 
     public RectTransform SpawnElement(List<RectTransform> list, RectTransform element_prefab)
     {
-        for (int i = 0; i < list.Count; i++)
+        foreach(RectTransform element in list)
         {
-            if (!list[i].gameObject.activeInHierarchy)
-                return list[i];
+            if (!element.gameObject.activeInHierarchy)
+            {
+                element.transform.SetParent(list_parent, false);
+                return element;
+            }     
         }
 
         RectTransform new_element = Instantiate(element_prefab);

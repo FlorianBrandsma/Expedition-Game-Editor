@@ -7,6 +7,8 @@ public class ListProperties : MonoBehaviour
     public Vector2 min_anchor;
     public Vector2 max_anchor;
 
+    public Vector2 grid_size;
+
     public RectTransform list_area;
 
     public RectTransform main_list;
@@ -24,15 +26,14 @@ public class ListProperties : MonoBehaviour
     public bool zigzag;
     //Spawn tiles in rect without altering size
     public bool fit_axis;
-    public bool slideshow;
 
     public float base_size;
 
     public bool horizontal, vertical;
 
-    public Vector2 grid_size;
-
+    public bool enable_sliders;
     public bool enable_numbers;
+    public bool enable_slideshow;
 
     public RowManager rowManager;
 
@@ -62,7 +63,7 @@ public class ListProperties : MonoBehaviour
         list_area.anchorMin = min_anchor;
         list_area.anchorMax = max_anchor;
 
-        main_list.GetComponent<ListManager>().SetListSize(max_anchor.x, base_size);
+        main_list.GetComponent<ListManager>().SetListSize(base_size);
 
         main_list.gameObject.SetActive(true);
     }

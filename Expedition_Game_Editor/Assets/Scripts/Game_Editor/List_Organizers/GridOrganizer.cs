@@ -8,10 +8,13 @@ using System.Linq;
 
 public class GridOrganizer : MonoBehaviour, IOrganizer
 {
-    private List<RectTransform> element_list = new List<RectTransform>();
+    bool activated;
 
-    public RectTransform element_prefab;
-    public RectTransform element_selection;
+    static public List<RectTransform> element_list = new List<RectTransform>();
+    private List<RectTransform> element_list_local = new List<RectTransform>();
+
+    static public List<RectTransform> selection_list = new List<RectTransform>();
+    private RectTransform element_selection;
 
     private Path edit_path;
 
@@ -21,10 +24,9 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     private bool get_select, set_select;
 
-    private bool visible_only;
-    private bool enable_numbers;
     private bool fit_axis;
-    private bool slideshow;
+
+    private bool visible_only;
 
     private bool horizontal, vertical;
 
@@ -42,9 +44,9 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     public void SetProperties(ListProperties listProperties)
     {
         visible_only = listProperties.visible_only;
-        enable_numbers = listProperties.enable_numbers;
+        
         fit_axis = listProperties.fit_axis;
-        slideshow = listProperties.slideshow;
+
         grid_size = listProperties.grid_size;
 
         horizontal = listProperties.horizontal;
@@ -54,11 +56,9 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     public void SetListSize(float new_size)
     {
         base_size = new_size;
-
-        //SetAnchors();
     }
 
-    public Vector2 GetListSize()
+    public Vector2 GetListSize(bool exact)
     {
         Vector2 new_size;
 
@@ -75,14 +75,12 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                                     vertical    ? grid_size.y * base_size : base_size);
         }
             
-        //Instead of sqrt size, use vertical/horizontal to determine the size
-        //vertical * horizontal (either no lower than 1)
-        //In case of regions: they're a given
-        //Summary: don't use id_list to determine the size for "coordinate mode"
-
         list_size = new_size / base_size;
 
-        return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);  
+        if (exact)
+            return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
+        else
+            return list_size;
     }
 
     int GetListWidth(float new_size)
@@ -107,6 +105,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void SetRows()
     {
+        RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/Grid/Grid_Prefab");
+
         int index = 0;
         
         for (int y = 0; y < list_size.y; y++)
@@ -125,7 +125,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                     */
 
                 RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
-                new_element.transform.SetParent(listManager.list_parent, false);
+
+                element_list_local.Add(new_element);
 
                 new_element.name = listManager.table + " " + index;
 
@@ -135,51 +136,33 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
                 new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[temp_index], listManager.editable); });
 
-                new_element.gameObject.SetActive(true);
-
                 index++;
 
                 if (index == listManager.id_list.Count)
                     break;
             }
         }
-
-        if (enable_numbers)
-            InitializeNumbers();
     }
 
-    void InitializeNumbers()
+    void SetElement(RectTransform element, int index)
     {
-        for(int y = 0; y < list_size.y; y++)
-            listManager.numberManager.SetNumbers(listManager.numberManager.vertical_number_parent, y, new Vector2(0, -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (y * base_size)));
+        element.sizeDelta = new Vector2(base_size, base_size);
 
-        for (int x = 0; x < list_size.x; x++)
-            listManager.numberManager.SetNumbers(listManager.numberManager.horizontal_number_parent, x, new Vector2(-((base_size * 0.5f) * (list_size.x - 1)) + (x * base_size), 0));
-    }
+        element.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
+                                                        -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
 
-    void SetElement(RectTransform rect, int index)
-    {
-        rect.sizeDelta = new Vector2(base_size, base_size);
-
-        /*
-        float offset_x = 0f;
-        float offset_y = 0f;
-
-        if (GetComponent<ListManager>().vertical_slider.gameObject.activeInHierarchy)
-            offset_x = 10;
-        if (GetComponent<ListManager>().horizontal_slider.gameObject.activeInHierarchy)
-            offset_y = 10;
-        */
-
-        rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
-                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
+        element.gameObject.SetActive(true);
     }
 
     public void SelectElement(int id)
     {
-        SetElement(element_selection, id - 1);
+        if (element_selection == null)
+        {
+            element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/Grid/Grid_Selection"));
+            element_selection.SetAsFirstSibling();
+        }
 
-        element_selection.gameObject.SetActive(true);
+        SetElement(element_selection, id - 1); 
     }
 
     public void ResetSelection()
@@ -189,8 +172,11 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        listManager.ResetElement(element_list);
+        if (element_selection != null)
+            ResetSelection();
 
-        ResetSelection();
+        listManager.ResetElement(element_list_local);
+
+        DestroyImmediate(this);
     } 
 }

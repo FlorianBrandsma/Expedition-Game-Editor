@@ -8,17 +8,17 @@ using System.Linq;
 
 public class ListOrganizer : MonoBehaviour, IOrganizer
 {
-    private List<RectTransform> element_list = new List<RectTransform>();
+    static public List<RectTransform> element_list = new List<RectTransform>();
+    private List<RectTransform> element_list_local = new List<RectTransform>();
 
-    public RectTransform element_prefab;
-    public RectTransform element_selection;
+    static public List<RectTransform> selection_list = new List<RectTransform>();
+    private RectTransform element_selection;
 
     private Path edit_path;
 
     private float base_size;
 
     private bool visible_only;
-    private bool show_numbers;
 
     private bool get_select, set_select;
 
@@ -34,7 +34,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     public void SetProperties(ListProperties listProperties)
     {
         visible_only = listProperties.visible_only;
-        show_numbers = listProperties.enable_numbers;
     }
 
     public void SetListSize(float new_size)
@@ -42,13 +41,15 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         base_size = new_size;
     }
 
-    public Vector2 GetListSize()
+    public Vector2 GetListSize(bool exact)
     {
         return new Vector2(0, base_size * listManager.id_list.Count);
     }
 
     public void SetRows()
     {
+        RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/List/List_Prefab");
+
         for (int i = 0; i < listManager.id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
@@ -56,8 +57,8 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
             RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
 
-            new_element.transform.SetParent(listManager.list_parent, false);
-
+            element_list_local.Add(new_element);
+          
             SetElement(new_element, i);
 
             string header = listManager.table + " " + i;
@@ -72,18 +73,18 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             
             //Review
             new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[index], listManager.editable); });
-
-            new_element.gameObject.SetActive(true);
         }
     }
 
-    void SetElement(RectTransform rect, int index)
+    void SetElement(RectTransform element, int index)
     {
-        rect.anchorMax = new Vector2(1, 1);
+        element.anchorMax = new Vector2(1, 1);
 
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, base_size);
+        element.sizeDelta = new Vector2(element.sizeDelta.x, base_size);
 
-        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
+        element.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
+
+        element.gameObject.SetActive(true);
     }
 
     float ListPosition(int i)
@@ -93,9 +94,14 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void SelectElement(int id)
     {
-        SetElement(element_selection, id - 1);
+        if (element_selection == null)
+        {
+            element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/List/List_Selection"));
+            element_selection.SetAsFirstSibling();
+        }
+            
 
-        element_selection.gameObject.SetActive(true);  
+        SetElement(element_selection, id - 1);
     }
 
     public void ResetSelection()
@@ -105,8 +111,11 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        listManager.ResetElement(element_list);
+        if (element_selection != null)
+            ResetSelection();
 
-        ResetSelection();
+        listManager.ResetElement(element_list_local);
+
+        DestroyImmediate(this);
     }
 }

@@ -4,55 +4,94 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class NumberManager : MonoBehaviour
+public class NumberManager : MonoBehaviour, IOverlay
 {
-    private List<Text>      number_list = new List<Text>();
+    static public List<RectTransform> number_parent_list = new List<RectTransform>();
+    private List<RectTransform> number_parent_list_local = new List<RectTransform>();
 
-    public RectTransform    horizontal_number_parent,
-                            vertical_number_parent;
+    static public List<Text> number_list = new List<Text>();
+    private List<Text> number_list_local = new List<Text>();
 
-    RectTransform main_list, list_parent;
+    private RectTransform   main_list, 
+                            list_parent;
 
-    ListManager listManager;
+    private RectTransform   horizontal_parent,
+                            vertical_parent;
 
-    public void InitializeNumbers(ListManager new_listManager, RectTransform new_main_list, RectTransform new_list_parent)
+    OverlayManager          overlayManager;
+
+    public void InitializeOverlay(RectTransform new_main_list, RectTransform new_list_parent)
     {
-        listManager = new_listManager;
+        overlayManager = GetComponent<OverlayManager>();
+
         main_list = new_main_list;
         list_parent = new_list_parent;
     }
 
-    public void SetNumbers(RectTransform parent, int index, Vector2 new_position)
+    public void SetOverlay()
     {
-        Text newDigit = SpawnText(number_list);
-        newDigit.text = (index + 1).ToString();
-        newDigit.transform.SetParent(parent, false);
+        Vector2 list_size = overlayManager.listManager.list_size;
 
-        if (parent == vertical_number_parent)
-            newDigit.transform.localPosition = new Vector2(new_position.x, new_position.y - listManager.vertical_offset);
-        else
-            newDigit.transform.localPosition = new Vector2(new_position.x + listManager.horizontal_offset, new_position.y);
+        Vector2 base_size = new Vector2(list_parent.rect.width / list_size.x, list_parent.rect.height / list_size.y);
+
+        if(list_size.x > 0)
+        {
+            horizontal_parent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().ScrollParent();
+
+            for (int x = 0; x < list_size.x; x++)
+                SetNumbers(overlayManager.horizontal_min, x, -((base_size.x * 0.5f) * (list_size.x - 1)) + (x * base_size.x));
+        }
+
+        if(list_size.y > 0)
+        {
+            vertical_parent = overlayManager.vertical_min.GetComponent<OverlayBorder>().ScrollParent();
+
+            for (int y = 0; y < list_size.y; y++)
+                SetNumbers(overlayManager.vertical_min, y, -(base_size.y * 0.5f) + (list_parent.sizeDelta.y / 2f) - (y * base_size.y));
+        }
     }
 
-    public void UpdateNumberPositions()
+    public void UpdateOverlay()
     {
-        vertical_number_parent.transform.localPosition = new Vector2(0, list_parent.transform.localPosition.y + main_list.offsetMin.y);
-        horizontal_number_parent.transform.localPosition = new Vector2(list_parent.transform.localPosition.x + main_list.offsetMax.x, 0);
+        if (vertical_parent != null)
+            vertical_parent.transform.localPosition = new Vector2(0, list_parent.transform.localPosition.y );
+
+        if (horizontal_parent != null)
+            horizontal_parent.transform.localPosition = new Vector2(list_parent.transform.localPosition.x, 0);
     }
 
-    public void CloseNumbers()
+    public void CloseOverlay()
     {
-        ResetText();
+        ResetText(number_list_local);
+
+        DestroyImmediate(this);
+    }
+
+    public void SetNumbers(RectTransform number_parent, int index, float new_position)
+    {
+        OverlayBorder overlayBorder = number_parent.GetComponent<OverlayBorder>();
+        
+        Text new_text = SpawnText(number_list);
+        number_list_local.Add(new_text);
+
+        new_text.text = (index + 1).ToString();
+        new_text.transform.SetParent(overlayBorder.scroll_parent, false);
+
+        if (overlayBorder.vertical)
+            new_text.transform.localPosition = new Vector2(0, new_position);
+        
+        if(overlayBorder.horizontal)
+            new_text.transform.localPosition = new Vector2(new_position, 0);  
     }
 
     static public Text SpawnText(List<Text> list)
     {
-        for (int i = 0; i < list.Count; i++)
+        foreach(Text element in list)
         {
-            if (!list[i].gameObject.activeInHierarchy)
+            if (!element.gameObject.activeInHierarchy)
             {
-                list[i].gameObject.SetActive(true);
-                return list[i];
+                element.gameObject.SetActive(true);
+                return element;
             }
         }
 
@@ -62,11 +101,11 @@ public class NumberManager : MonoBehaviour
         return new_text;
     }
 
-    public void ResetText()
+    public void ResetText(List<Text> list)
     {
-        for (int i = 0; i < number_list.Count; i++)
-        {
-            number_list[i].gameObject.SetActive(false);
-        }
+        foreach(Text element in list)
+            element.gameObject.SetActive(false);   
     }
+
+    //Spawn pages
 }

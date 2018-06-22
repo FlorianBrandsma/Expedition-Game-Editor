@@ -8,13 +8,13 @@ using System.Linq;
 
 public class DisplayOrganizer : MonoBehaviour, IOrganizer
 {
-    private List<RectTransform> element_list = new List<RectTransform>();
+    static public List<RectTransform> element_list = new List<RectTransform>();
+    private List<RectTransform> element_list_local = new List<RectTransform>();
 
-    public RectTransform element_prefab;
-    public RectTransform element_selection;
+    static public List<RectTransform> selection_list = new List<RectTransform>();
+    private RectTransform element_selection;
 
     private bool visible_only;
-    private bool enable_numbers;
     private bool zigzag;
 
     private Path select_path;
@@ -44,7 +44,6 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
     public void SetProperties(ListProperties listProperties)
     {
         visible_only = listProperties.visible_only;
-        enable_numbers = listProperties.enable_numbers;
         zigzag = listProperties.zigzag;
     }
 
@@ -79,6 +78,8 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
             x_anchors.Add(new_anchors);
         }
+
+        SetList(listManager.list_area.anchorMax.x);
     }
 
     float[] SwapAnchors(float[] old_anchors)
@@ -91,6 +92,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     public void SetList(float rect_width)
     {
+        //Simplify this. Remove "bonus height" from name removal
         row_offset_max.Clear();
         row_height.Clear();
 
@@ -114,14 +116,18 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    public Vector2 GetListSize()
+    public Vector2 GetListSize(bool exact)
     {
-        return new Vector2(0, row_height.Sum());
+        if (exact)
+            return new Vector2(0, row_height.Sum());
+        else
+            return new Vector2(0,listManager.id_list.Count);
     }
 
     public void SetRows()
     {
-        
+        RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/Display/Display_Prefab");
+
         for (int i = 0; i < listManager.id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
@@ -129,7 +135,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             
             RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
 
-            //new_element.transform.SetParent(list_manager.list_parent, false);
+            element_list_local.Add(new_element);
 
             SetElement(new_element, i);
 
@@ -155,8 +161,6 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
             new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(select_path, id)); });
             new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(edit_path, id)); });
-
-            new_element.gameObject.SetActive(true);
         }
     }
 
@@ -169,10 +173,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         rect.anchorMin = new Vector2(x_anchors[index][0], 0);
         rect.anchorMax = new Vector2(x_anchors[index][1], 1);
 
-        if (enable_numbers)
-        {
-            listManager.numberManager.SetNumbers(listManager.numberManager.vertical_number_parent, index, new Vector2(0, rect.transform.localPosition.y));
-        }        
+        rect.gameObject.SetActive(true);
     }
 
     float ListPosition(int i)
@@ -182,7 +183,13 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
     public void SelectElement(int id)
     {
-        element_selection.gameObject.SetActive(true);
+        if(element_selection == null)
+        {
+            element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/Display/Display_Selection"));
+            element_selection.SetAsFirstSibling();
+        }
+
+        //element_selection.gameObject.SetActive(true);
         //Get correct index based off the ID
         SetElement(element_selection, id-1);
         
@@ -191,10 +198,18 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         //main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 0.75f;
     }
 
-    public void CloseList()
+    public void ResetSelection()
     {
         element_selection.gameObject.SetActive(false);
+    }
+
+    public void CloseList()
+    {
+        if(element_selection != null)
+            ResetSelection();
         
-        listManager.ResetElement(element_list); 
-    }  
+        listManager.ResetElement(element_list_local);
+
+        DestroyImmediate(this);
+    }
 }

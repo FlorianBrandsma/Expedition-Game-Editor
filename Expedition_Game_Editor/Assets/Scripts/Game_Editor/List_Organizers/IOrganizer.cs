@@ -14,7 +14,7 @@ public interface IOrganizer
 
     void SelectElement(int id);
 
-    Vector2 GetListSize();
+    Vector2 GetListSize(bool exact);
 
     void CloseList();
 }

@@ -1,80 +1,92 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SliderManager : MonoBehaviour
+public class SliderManager : MonoBehaviour, IOverlay
 {
-    public Slider   horizontal_slider,
+    static public List<Slider> slider_list = new List<Slider>();
+    private List<Slider> slider_list_local = new List<Slider>();
+
+    private Slider  horizontal_slider,
                     vertical_slider;
 
-    public float    slider_offset;
+    private RectTransform   main_list, 
+                            list_parent;
 
-    RectTransform   main_list, list_parent;
+    OverlayManager          overlayManager;
 
-    ListManager listManager;
-
-    public void SetSliders(ListManager new_listManager, RectTransform new_main_list, RectTransform new_list_parent)
+    public void InitializeOverlay(RectTransform new_main_list, RectTransform new_list_parent)
     {
-        listManager = new_listManager;
+        overlayManager = GetComponent<OverlayManager>();
+
         main_list = new_main_list;
         list_parent = new_list_parent;
-
+    }
+    
+    public void SetOverlay()
+    {
         if (list_parent.sizeDelta.y > main_list.rect.max.y * 2)
         {
-            main_list.offsetMax = new Vector2(-vertical_slider.GetComponent<RectTransform>().rect.width, main_list.offsetMax.y);
+            vertical_slider = SpawnSlider("Vertical");
 
-            listManager.horizontal_offset = vertical_slider.GetComponent<RectTransform>().rect.width / 2f;
+            slider_list_local.Add(vertical_slider);
+
+            overlayManager.SetParent(   vertical_slider.GetComponent<RectTransform>(),
+                                        overlayManager.vertical_max);
 
             vertical_slider.gameObject.SetActive(true);
         }
 
         if ((list_parent.sizeDelta.x + main_list.rect.width) > main_list.rect.max.x * 2)
         {
-            main_list.offsetMin = new Vector2(main_list.offsetMin.x, horizontal_slider.GetComponent<RectTransform>().rect.height);
+            horizontal_slider = SpawnSlider("Horizontal");
 
-            list_parent.sizeDelta = new Vector2(list_parent.sizeDelta.x + horizontal_slider.GetComponent<RectTransform>().rect.height, list_parent.sizeDelta.y);
+            slider_list_local.Add(horizontal_slider);
 
-            listManager.vertical_offset = horizontal_slider.GetComponent<RectTransform>().rect.height / 2f;
+            overlayManager.SetParent(   horizontal_slider.GetComponent<RectTransform>(), 
+                                        overlayManager.horizontal_max);
 
             horizontal_slider.gameObject.SetActive(true);
         }
 
-        if(horizontal_slider != null && vertical_slider != null)
-        {
-            if (vertical_slider.gameObject.activeInHierarchy)
-                horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(-slider_offset, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
-
-            if (horizontal_slider.gameObject.activeInHierarchy)
-                vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, slider_offset);
-        }
+        overlayManager.SetOverlaySize();
     }
 
-    public void UpdateSliders()
+    public void UpdateOverlay()
     {
-        if (vertical_slider != null && vertical_slider.gameObject.activeInHierarchy)
+        if (vertical_slider != null)
             vertical_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
-        if (horizontal_slider != null && horizontal_slider.gameObject.activeInHierarchy)
+        if (horizontal_slider != null)
             horizontal_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
     }
 
-    public void CloseSliders()
+    public void CloseOverlay()
     {
-        main_list.offsetMin = new Vector2(main_list.offsetMin.x, 0);
-        main_list.offsetMax = new Vector2(0, main_list.offsetMax.y);
+        ResetSliders();
 
-        if (horizontal_slider != null)
+        DestroyImmediate(this);
+    }
+
+    public Slider SpawnSlider(string axis)
+    {
+        foreach(Slider slider in slider_list)
         {
-            listManager.vertical_offset = 0;
-            horizontal_slider.GetComponent<RectTransform>().offsetMax = new Vector2(0, horizontal_slider.GetComponent<RectTransform>().offsetMax.y);
-            horizontal_slider.gameObject.SetActive(false);
+            if (!slider.gameObject.activeInHierarchy)
+                return slider;      
         }
 
-        if (vertical_slider != null)
-        {
-            listManager.horizontal_offset = 0;
-            vertical_slider.GetComponent<RectTransform>().offsetMin = new Vector2(vertical_slider.GetComponent<RectTransform>().offsetMin.x, 0);
-            vertical_slider.gameObject.SetActive(false);
-        } 
+        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_" + axis));
+
+        slider_list.Add(new_slider);
+
+        return new_slider;
+    }
+
+    public void ResetSliders()
+    {
+        foreach (Slider slider in slider_list_local)
+            slider.gameObject.SetActive(false);
     }
 }

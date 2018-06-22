@@ -74,6 +74,8 @@ public class TabManager : MonoBehaviour
         OpenFieldEditor(0);
     }
 
+    //InitializeEditorField()
+
     public void OpenFieldEditor(int selected_tab)
     {
         CloseFieldEditor();
