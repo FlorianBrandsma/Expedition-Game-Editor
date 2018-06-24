@@ -9,9 +9,6 @@ public class SubEditor : MonoBehaviour, IEditorData
 {
     public Path path;
 
-    //Always activate specific editors across a path
-    public bool force_activation;
-
     public string table;
     public int id;
 
@@ -26,8 +23,6 @@ public class SubEditor : MonoBehaviour, IEditorData
 
     public GameObject[] editor;
     
-    public bool lock_position;
-
     public RectTransform editor_rect;
 
     public Vector2 min_anchor;
@@ -50,6 +45,9 @@ public class SubEditor : MonoBehaviour, IEditorData
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().GetRows();
 
+        if (GetComponent<ButtonManager>() != null)
+            GetComponent<ButtonManager>().SortButtons();
+
         if (GetComponent<LanguageManager>() != null)
             GetComponent<LanguageManager>().SortLanguages();
 
@@ -70,8 +68,7 @@ public class SubEditor : MonoBehaviour, IEditorData
 
         if (tabManager != null)
             SetTabs(path, editor_depth);
-
-        if (editor_depth == path.editor.Count)
+        else if (editor_depth == path.editor.Count)
             OpenChildEditor();
 
         //Open next editor in line
@@ -79,20 +76,9 @@ public class SubEditor : MonoBehaviour, IEditorData
             editor[path.editor[editor_depth]].GetComponent<SubEditor>().OpenEditor(path, editor_depth + 1);    
     }
 
-    void OpenChildEditor()
+    public void FilterRows(List<int> list)
     {
-        for (int i = 0; i < editor_parent.Length; i++)
-            editor_parent[i].SetActive(true);
-
-        if (editor_rect != null)
-            SetAnchors();
-
-        GetComponent<IEditor>().OpenEditor();
-
         
-
-        if (GetComponent<ListProperties>() != null)
-            GetComponent<ListProperties>().SetList();
     }
 
     void SetTabs(Path path, int editor_depth)
@@ -104,6 +90,22 @@ public class SubEditor : MonoBehaviour, IEditorData
         }
 
         tabManager.SetEditorTabs(path, editor, editor_depth);
+
+        OpenChildEditor();
+    }
+
+    void OpenChildEditor()
+    {
+        for (int i = 0; i < editor_parent.Length; i++)
+            editor_parent[i].SetActive(true);
+
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().SetList();
+
+        if (editor_rect != null)
+            SetAnchors();
+
+        GetComponent<IEditor>().OpenEditor();   
     }
 
     void SetAnchors()

@@ -8,36 +8,33 @@ public class OverlayBorder : MonoBehaviour
 
     public bool     always_active;
 
-    public bool     active { get; set; }
+    //public bool     active { get; set; }
 
     public bool     horizontal, 
                     vertical;
 
-    private Vector2 offset_min;
-    private Vector2 offset_max;
+    public Vector2 offset_min;
+    public Vector2 offset_max;
 
     public RectTransform scroll_parent { get; set; }
 
-    private void Awake()
-    {
-        offset_min = GetComponent<RectTransform>().offsetMin;
-        offset_max = GetComponent<RectTransform>().offsetMax;
-    }
-
     public void Activate()
-    {
-        active = true;
-    }
-
-    public void Deactivate()
     {
         GetComponent<RectTransform>().offsetMin = offset_min;
         GetComponent<RectTransform>().offsetMax = offset_max;
 
-        active = false;
+        if (always_active)
+            gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        
 
         if(scroll_parent != null)
             ResetScrollParent();
+
+        gameObject.SetActive(false);
     }
 
     public RectTransform ScrollParent()

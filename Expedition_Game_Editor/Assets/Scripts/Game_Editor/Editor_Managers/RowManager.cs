@@ -39,9 +39,7 @@ public class RowManager : MonoBehaviour
         id_list.Clear();
 
         for (int i = 0; i < id_count; i++)
-        {
-            id_list.Add(i + 1);
-        }
+            id_list.Add(i + 1);       
     }
 
     public void InitializeRows(bool main_editor)
@@ -53,7 +51,7 @@ public class RowManager : MonoBehaviour
 
         Path select_path;
         Path edit_path;
-
+        Debug.Log("test");
         if (combine_path)
         {
             //1. Get current Path

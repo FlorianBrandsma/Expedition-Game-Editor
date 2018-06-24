@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class EditorField : MonoBehaviour
+public class SegmentManager : MonoBehaviour, IEditor
 {
 	public GameObject[] 	segments;
 
@@ -17,16 +17,16 @@ public class EditorField : MonoBehaviour
 
     bool changed;
 	
-    public void OpenField()
+    public void OpenEditor()
     {
         gameObject.SetActive(true);
-        OpenSegments();
+        InitializeSegments();
     }
 
-    void OpenSegments()
+    void InitializeSegments()
     {
         foreach (GameObject segment in segments)
-            segment.GetComponent<EditorSegment>().OpenSegment();
+            segment.GetComponent<EditorSegment>().InitializeSegment();
     }
 
     public void PlaceSegments(int newSegment)
@@ -59,7 +59,22 @@ public class EditorField : MonoBehaviour
 		slider.gameObject.SetActive(listParent.sizeDelta.y > mainList.rect.max.y / 4);
     }
 
-    public void CloseField()
+    public void SaveEdit()
+    {
+
+    }
+
+    public void ApplyEdit()
+    {
+
+    }
+
+    public void CancelEdit()
+    {
+
+    }
+
+    public void CloseEditor()
     {
         CloseSegments();
 

@@ -116,19 +116,19 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    public Vector2 GetListSize(bool exact)
+    public Vector2 GetListSize(List<int> id_list, bool exact)
     {
         if (exact)
             return new Vector2(0, row_height.Sum());
         else
-            return new Vector2(0,listManager.id_list.Count);
+            return new Vector2(0, id_list.Count);
     }
 
-    public void SetRows()
+    public void SetRows(List<int> id_list)
     {
         RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/Display/Display_Prefab");
 
-        for (int i = 0; i < listManager.id_list.Count; i++)
+        for (int i = 0; i < id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
             //    break;
@@ -149,7 +149,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
             ListElement list_element = new_element.GetComponent<ListElement>();
 
-            list_element.id.text = listManager.id_list[i].ToString();
+            list_element.id.text = id_list[i].ToString();
             list_element.header.text = new_header;
             list_element.content.text = content;
 
@@ -157,11 +157,17 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             list_element.SetOffset();
             
             //OpenEditor
-            int id = listManager.id_list[i];
+            int id = id_list[i];
 
             new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(select_path, id)); });
             new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(edit_path, id)); });
         }
+    }
+
+    public void ResetRows(List<int> filter)
+    {
+        CloseList();
+        SetRows(filter);
     }
 
     void SetElement(RectTransform rect, int index)
@@ -181,7 +187,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
     }
 
-    public void SelectElement(int id)
+    public void SelectElement(int index)
     {
         if(element_selection == null)
         {
@@ -191,7 +197,7 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
 
         //element_selection.gameObject.SetActive(true);
         //Get correct index based off the ID
-        SetElement(element_selection, id-1);
+        SetElement(element_selection, index - 1);
         
         //If selection is below X ...
         //Move list up

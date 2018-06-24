@@ -41,16 +41,16 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         base_size = new_size;
     }
 
-    public Vector2 GetListSize(bool exact)
+    public Vector2 GetListSize(List<int> id_list, bool exact)
     {
-        return new Vector2(0, base_size * listManager.id_list.Count);
+        return new Vector2(0, base_size * id_list.Count);
     }
 
-    public void SetRows()
+    public void SetRows(List<int> id_list)
     {
         RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/List/List_Prefab");
 
-        for (int i = 0; i < listManager.id_list.Count; i++)
+        for (int i = 0; i < id_list.Count; i++)
         {
             //if (ListPosition(i) > listMin.y)
             //    break;
@@ -72,8 +72,14 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             int index = i;
             
             //Review
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[index], listManager.editable); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(index, listManager.editable); });
         }
+    }
+
+    public void ResetRows(List<int> filter)
+    {
+        CloseList();
+        SetRows(filter);
     }
 
     void SetElement(RectTransform element, int index)
@@ -92,16 +98,15 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (base_size * i))).y;
     }
 
-    public void SelectElement(int id)
+    public void SelectElement(int index)
     {
         if (element_selection == null)
         {
             element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/List/List_Selection"));
             element_selection.SetAsFirstSibling();
         }
-            
 
-        SetElement(element_selection, id - 1);
+        SetElement(element_selection, index);
     }
 
     public void ResetSelection()

@@ -10,7 +10,6 @@ public class ListProperties : MonoBehaviour
     public Vector2 grid_size;
 
     public RectTransform list_area;
-
     public RectTransform main_list;
 
     //Main editors create the select/edit delegates
@@ -37,6 +36,8 @@ public class ListProperties : MonoBehaviour
 
     public RowManager rowManager;
 
+    public IEditorData activator { get; set; }
+
     public void SetList()
     {
         //1. Change the overall size of the list parent by changing it's Anchors
@@ -50,7 +51,10 @@ public class ListProperties : MonoBehaviour
         //3. ListProperties > ListManager > Organizer
 
         rowManager.InitializeRows(main_editor);
+
+        activator = GetComponent<IEditorData>();
         main_list.GetComponent<ListManager>().SetProperties(this);
+
         SetListAnchors();
 
         //Automatically selects and highlights an element(id) on startup

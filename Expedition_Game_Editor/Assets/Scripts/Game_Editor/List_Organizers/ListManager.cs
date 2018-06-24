@@ -7,13 +7,15 @@ using System.IO;
 
 public class ListManager : MonoBehaviour
 {
+    public IEditorData activator { get; set; }
+
     IOrganizer organizer;
 
     public bool editable;
 
     private Path select_path;
     private Path edit_path;
-    
+
     public List<int> id_list = new List<int>();
 
     public string table;
@@ -31,14 +33,17 @@ public class ListManager : MonoBehaviour
 
     public bool source;
 
-    public OverlayManager overlayManager;
+    public RowManager rowManager { get; set; }
 
+    public OverlayManager overlayManager;
     public ActionManager actionManager;
+
     private Button edit_button;
 
-    public void InitializeList(RowManager rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
+    public void InitializeList(RowManager new_rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
     {
-        id_list.Clear();
+        rowManager = new_rowManager;
+
         id_list = new List<int>(rowManager.id_list);
 
         table = rowManager.table;
@@ -48,7 +53,6 @@ public class ListManager : MonoBehaviour
 
         editable = (rowManager.edit_index.Length > 0);
 
-        //Possibly add/destroy components
         switch(rowManager.sort_type)
         {
             case 0: organizer = gameObject.AddComponent<DisplayOrganizer>(); break;
@@ -64,6 +68,8 @@ public class ListManager : MonoBehaviour
 
     public void SetProperties(ListProperties listProperties)
     {
+        activator = listProperties.activator;
+
         list_area = listProperties.list_area;
 
         base_size = listProperties.base_size;
@@ -79,30 +85,25 @@ public class ListManager : MonoBehaviour
     public void SetListSize(float base_size)
     {
         organizer.SetListSize(base_size);
-        
-        list_parent.sizeDelta = organizer.GetListSize(true);
 
-        listMin = main_list.TransformPoint(new Vector2(0, main_list.rect.min.y));
-        listMax = main_list.TransformPoint(new Vector2(0, main_list.rect.max.y));
+        //Activate Borders here
+        overlayManager.ActivateOverlay(organizer);
+
+        overlayManager.SetOverlaySize();
+
+        list_parent.sizeDelta = organizer.GetListSize(id_list, true);
+
+        list_size = organizer.GetListSize(id_list, false);
+
+        //listMin = main_list.TransformPoint(new Vector2(0, main_list.rect.min.y));
+        //listMax = main_list.TransformPoint(new Vector2(0, main_list.rect.max.y));
 
         main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
         main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
 
         SetRows();
 
-        list_size = organizer.GetListSize(false);
-
-        overlayManager.SetOverlay();
-
-        //Activate all overlay components
-
-        //overlayManager.SetOverlay(overlayManager.sliderManager);  
-        //Set numbers
-        //Set slideshow
-
-        //combine?
-
-        //Instead of "enabling numbers", add and remove organizer components. component = enabled
+        overlayManager.SetOverlay();   
     }
 
     public void SetRows()
@@ -110,7 +111,7 @@ public class ListManager : MonoBehaviour
         if (editable)
             EnableAdding(edit_path);
 
-        organizer.SetRows();
+        organizer.SetRows(id_list);
     }
 
     public void UpdateRows()
@@ -128,14 +129,14 @@ public class ListManager : MonoBehaviour
         NavigationManager.navigation_manager.OpenSource(new_editor);
     }
 
-    public void SelectElement(int id, bool edit)
+    public void SelectElement(int index, bool edit)
     {
         if (edit)
             EnableEditing(edit_path);
 
-        organizer.SelectElement(id);
+        organizer.SelectElement(index);
 
-        NavigationManager.SelectElement(id);
+        NavigationManager.SelectElement(index);
     }
 
     public void EnableAdding(Path add_path)
@@ -150,6 +151,14 @@ public class ListManager : MonoBehaviour
 
     public void EnableEditing(Path edit_path)
     {
+        //-!MAYBE
+        //reset action buttons
+        //add all buttons to button manager
+        //assign path in button manager
+
+        //move "newpath" to button manager
+        //!-
+
         if (edit_button != null)
             edit_button.onClick.RemoveAllListeners();
          else 

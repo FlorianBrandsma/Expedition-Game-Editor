@@ -12,6 +12,9 @@ public class SliderManager : MonoBehaviour, IOverlay
     private Slider  horizontal_slider,
                     vertical_slider;
 
+    private bool    horizontal,
+                    vertical;
+
     private RectTransform   main_list, 
                             list_parent;
 
@@ -22,36 +25,49 @@ public class SliderManager : MonoBehaviour, IOverlay
         overlayManager = GetComponent<OverlayManager>();
 
         main_list = new_main_list;
-        list_parent = new_list_parent;
+        list_parent = new_list_parent; 
     }
     
+    public void ActivateOverlay(IOrganizer organizer)
+    {
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.id_list, true);
+
+        if(main_list.GetComponent<ScrollRect>().vertical)
+        {
+            if (list_size.y > (main_list.rect.max.y * 2) - overlayManager.horizontal_max.rect.height)
+                overlayManager.vertical_max.gameObject.SetActive(true);
+        }
+
+        if(main_list.GetComponent<ScrollRect>().horizontal)
+        {
+            if ((list_size.x + main_list.rect.width) > (main_list.rect.max.x * 2) - overlayManager.vertical_max.rect.width)
+                overlayManager.horizontal_max.gameObject.SetActive(true);
+        } 
+    }
+
     public void SetOverlay()
     {
-        if (list_parent.sizeDelta.y > main_list.rect.max.y * 2)
+        if (overlayManager.vertical_max.gameObject.activeInHierarchy)
         {
             vertical_slider = SpawnSlider("Vertical");
 
             slider_list_local.Add(vertical_slider);
 
-            overlayManager.SetParent(   vertical_slider.GetComponent<RectTransform>(),
-                                        overlayManager.vertical_max);
+            vertical_slider.transform.SetParent(overlayManager.vertical_max, false);
 
             vertical_slider.gameObject.SetActive(true);
         }
 
-        if ((list_parent.sizeDelta.x + main_list.rect.width) > main_list.rect.max.x * 2)
+        if (overlayManager.horizontal_max.gameObject.activeInHierarchy)
         {
             horizontal_slider = SpawnSlider("Horizontal");
 
             slider_list_local.Add(horizontal_slider);
 
-            overlayManager.SetParent(   horizontal_slider.GetComponent<RectTransform>(), 
-                                        overlayManager.horizontal_max);
+            horizontal_slider.transform.SetParent(overlayManager.horizontal_max, false);
 
             horizontal_slider.gameObject.SetActive(true);
         }
-
-        overlayManager.SetOverlaySize();
     }
 
     public void UpdateOverlay()

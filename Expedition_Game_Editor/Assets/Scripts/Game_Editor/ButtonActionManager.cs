@@ -12,9 +12,10 @@ public class ButtonActionManager : MonoBehaviour
 
     public void SetButtons(SubEditor editor)
     {
-        save_button.onClick.AddListener( delegate { editor.SaveEdit(); });
+        if (save_button != null)
+            save_button.onClick.AddListener(delegate { editor.SaveEdit(); });
 
-        if(apply_button != null)
+        if (apply_button != null)
             apply_button.onClick.AddListener(delegate { editor.ApplyEdit(); });
 
         cancel_button.onClick.AddListener(delegate { editor.CancelEdit(); });
@@ -22,7 +23,8 @@ public class ButtonActionManager : MonoBehaviour
 
     public void CloseButtons()
     {
-        save_button.onClick.RemoveAllListeners();
+        if (save_button != null)
+            save_button.onClick.RemoveAllListeners();
 
         if(apply_button != null)
             apply_button.onClick.RemoveAllListeners();

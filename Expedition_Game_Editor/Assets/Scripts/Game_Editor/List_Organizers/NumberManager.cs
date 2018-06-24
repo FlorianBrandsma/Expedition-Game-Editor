@@ -28,13 +28,24 @@ public class NumberManager : MonoBehaviour, IOverlay
         list_parent = new_list_parent;
     }
 
+    public void ActivateOverlay(IOrganizer organizer)
+    {
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.id_list, false);
+
+        if (list_size.x > 0)
+            overlayManager.horizontal_min.gameObject.SetActive(true);
+
+        if (list_size.y > 0)
+            overlayManager.vertical_min.gameObject.SetActive(true);
+    }
+
     public void SetOverlay()
     {
         Vector2 list_size = overlayManager.listManager.list_size;
 
         Vector2 base_size = new Vector2(list_parent.rect.width / list_size.x, list_parent.rect.height / list_size.y);
 
-        if(list_size.x > 0)
+        if(overlayManager.horizontal_min.gameObject.activeInHierarchy)
         {
             horizontal_parent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().ScrollParent();
 
@@ -42,7 +53,7 @@ public class NumberManager : MonoBehaviour, IOverlay
                 SetNumbers(overlayManager.horizontal_min, x, -((base_size.x * 0.5f) * (list_size.x - 1)) + (x * base_size.x));
         }
 
-        if(list_size.y > 0)
+        if(overlayManager.vertical_min.gameObject.activeInHierarchy)
         {
             vertical_parent = overlayManager.vertical_min.GetComponent<OverlayBorder>().ScrollParent();
 

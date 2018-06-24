@@ -58,57 +58,63 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         base_size = new_size;
     }
 
-    public Vector2 GetListSize(bool exact)
+    public Vector2 GetListSize(List<int> id_list, bool exact)
     {
         Vector2 new_size;
 
         if (fit_axis)
         {
-            int list_width = GetListWidth(base_size);
-            int list_height = GetListHeight(base_size);
+            int list_width  = GetListWidth();
+            int list_height = GetListHeight();
 
-            new_size = new Vector2( horizontal  ? list_width * base_size : list_width * base_size, 
-                                    vertical    ? ((listManager.id_list.Count + (listManager.id_list.Count % list_width)) * base_size) / list_width : list_height * base_size);
+            if (list_width > id_list.Count)
+                list_width = id_list.Count;
+
+            if (list_height > id_list.Count)
+                list_height = id_list.Count;
+
+            new_size = new Vector2( horizontal  ? ((id_list.Count + (id_list.Count % list_height)) * base_size) / list_height : list_width * base_size, 
+                                    vertical    ? ((id_list.Count + (id_list.Count % list_width))  * base_size) / list_width : list_height * base_size);
         } else {
 
             new_size = new Vector2( horizontal  ? grid_size.x * base_size : base_size,
                                     vertical    ? grid_size.y * base_size : base_size);
         }
             
-        list_size = new_size / base_size;
-
         if (exact)
             return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
         else
-            return list_size;
+            return new_size / base_size;
     }
 
-    int GetListWidth(float new_size)
+    public int GetListWidth()
     {
         int x = 0;
 
-        while (-(x * new_size / 2f) + (x * new_size) < listManager.main_list.rect.max.x)
+        while (-(x * base_size / 2f) + (x * base_size) < listManager.main_list.rect.max.x)
             x++;
 
         return x - 1;
     }
 
-    int GetListHeight(float new_size)
+    public int GetListHeight()
     {
         int y = 0;
 
-        while (-(y * new_size / 2f) + (y * new_size) < listManager.main_list.rect.max.y)
+        while (-(y * base_size / 2f) + (y * base_size) < listManager.main_list.rect.max.y)
             y++;
 
         return y - 1;
     }
 
-    public void SetRows()
+    public void SetRows(List<int> id_list)
     {
         RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/Grid/Grid_Prefab");
 
-        int index = 0;
-        
+        int i = 0;
+
+        list_size = GetListSize(id_list, false);
+
         for (int y = 0; y < list_size.y; y++)
         {
             for (int x = 0; x < list_size.x; x++)
@@ -123,35 +129,31 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                 if (ListPosition(y) > listMin.y)
                     break;
                     */
-
+                
                 RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
 
                 element_list_local.Add(new_element);
 
-                new_element.name = listManager.table + " " + index;
+                new_element.name = listManager.table + " " + i;
 
-                SetElement(new_element, index);
+                SetElement(new_element, i);
 
-                int temp_index = index;
+                int index = i;
 
-                new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(listManager.id_list[temp_index], listManager.editable); });
+                new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(index, listManager.editable); });
 
-                index++;
+                i++;
 
-                if (index == listManager.id_list.Count)
+                if (i == listManager.id_list.Count)
                     break;
             }
         }
     }
 
-    void SetElement(RectTransform element, int index)
+    public void ResetRows(List<int> filter)
     {
-        element.sizeDelta = new Vector2(base_size, base_size);
-
-        element.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
-                                                        -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
-
-        element.gameObject.SetActive(true);
+        CloseList();
+        SetRows(filter);
     }
 
     public void SelectElement(int id)
@@ -162,7 +164,17 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             element_selection.SetAsFirstSibling();
         }
 
-        SetElement(element_selection, id - 1); 
+        SetElement(element_selection, id);
+    }
+
+    void SetElement(RectTransform element, int index)
+    {
+        element.sizeDelta = new Vector2(base_size, base_size);
+
+        element.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
+                                                        -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
+
+        element.gameObject.SetActive(true);
     }
 
     public void ResetSelection()

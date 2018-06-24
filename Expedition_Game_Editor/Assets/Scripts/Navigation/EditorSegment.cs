@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EditorSegment : MonoBehaviour, IEditorData
 {
@@ -9,17 +10,35 @@ public class EditorSegment : MonoBehaviour, IEditorData
     public GameObject content;
     bool collapsed;
 
-    public void OpenSegment()
+    private RowManager rowManager;
+
+    public void InitializeSegment()
     {
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().GetRows();
 
+        OpenSegment();
+
+        CollapseSegment(false); 
+    }
+
+    public void FilterRows(List<int> list)
+    {
+        if (GetComponent<RowManager>() != null)
+        {
+            GetComponent<RowManager>().CloseList();
+            GetComponent<RowManager>().id_list = new List<int>(list);
+        }
+
+        OpenSegment();
+    }
+
+    public void OpenSegment()
+    {
         GetComponent<IEditor>().OpenEditor();
 
         if (GetComponent<ListProperties>() != null)
             GetComponent<ListProperties>().SetList();
-
-        CollapseSegment(false);
     }
 
     public void CollapseSegment()
