@@ -51,7 +51,7 @@ public class RowManager : MonoBehaviour
 
         Path select_path;
         Path edit_path;
-        Debug.Log("test");
+
         if (combine_path)
         {
             //1. Get current Path

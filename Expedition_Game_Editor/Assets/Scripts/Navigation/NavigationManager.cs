@@ -92,6 +92,9 @@ public class NavigationManager : MonoBehaviour
             OpenStructure(history[history.Count - 2], false, true);  
     }
 
+    //Open temporary window
+    //Does not close -!any!- other editors
+
     public void OpenSource(Path path)
     {
         CloseEditor(source_history, source_editor);

@@ -9,33 +9,34 @@ public class ActionManager : MonoBehaviour
 {
     static List<Dropdown> dropdown_pool = new List<Dropdown>();
     static List<Button> button_pool = new List<Button>();
+    static List<Button> mini_button_pool = new List<Button>();
 
-    private List<RectTransform> options = new List<RectTransform>();
+    private List<RectTransform> actions = new List<RectTransform>();
 
     public RectTransform main_editor_parent;
 
     public int wrap_limit;
 
-    public void SortOptions()
+    public void SortActions()
     {
-        for (int i = 0; i < options.Count; i++)
+        for (int i = 0; i < actions.Count; i++)
         {
-            RectTransform new_option = options[i];
+            RectTransform new_option = actions[i];
 
-            if (options.Count <= wrap_limit)
+            if (actions.Count <= wrap_limit)
             {
                 new_option.anchorMin = new Vector2(      i * (1f / wrap_limit), 1);
                 new_option.anchorMax = new Vector2((i + 1) * (1f / wrap_limit), 1);
             } else {
-                new_option.anchorMin = new Vector2(      i * (1f / options.Count), 1);
-                new_option.anchorMax = new Vector2((i + 1) * (1f / options.Count), 1);
+                new_option.anchorMin = new Vector2(      i * (1f / actions.Count), 1);
+                new_option.anchorMax = new Vector2((i + 1) * (1f / actions.Count), 1);
             }
 
             new_option.offsetMin = new Vector2(-2.5f, new_option.offsetMin.y);
             new_option.offsetMax = new Vector2( 2.5f, new_option.offsetMax.y);
         }
 
-        if(options.Count > 0)
+        if(actions.Count > 0)
             SetEditorSize(true);
     }
 
@@ -51,87 +52,121 @@ public class ActionManager : MonoBehaviour
 
     public Dropdown AddDropdown()
     {
-        Dropdown new_option = SpawnDropdown();
+        Dropdown new_action = SpawnDropdown();
 
-        AddOptions(new_option.GetComponent<RectTransform>());
+        AddActions(new_action.GetComponent<RectTransform>());
 
-        return new_option;
+        return new_action;
     }
 
     public Button AddButton()
     {
-        Button new_option = SpawnButton();
+        Button new_action = SpawnButton();
 
-        AddOptions(new_option.GetComponent<RectTransform>());
+        AddActions(new_action.GetComponent<RectTransform>());
 
-        return new_option;
+        return new_action;
     }
 
-    public void AddOptions(RectTransform new_option)
+    public Button AddMiniButton()
     {
-        options.Add(new_option);
+        Button new_action = SpawnMiniButton();
 
-        SortOptions();
+        AddActions(new_action.GetComponent<RectTransform>());
+
+        return new_action;
     }
 
-    public void CloseOptions()
+    public void AddActions(RectTransform new_action)
     {
-        foreach (RectTransform option in options)
-            option.gameObject.SetActive(false);
+        actions.Add(new_action);
+
+        SortActions();
+    }
+
+    public void CloseActions()
+    {
+        foreach (RectTransform action in actions)
+            action.gameObject.SetActive(false);
 
         SetEditorSize(false);
 
-        options.Clear();
+        actions.Clear();
     }
 
     #region Spawners
 
     Dropdown SpawnDropdown()
     {
-        for (int i = 0; i < dropdown_pool.Count; i++)
+        foreach(Dropdown dropdown in dropdown_pool)
         {
-            if (!dropdown_pool[i].gameObject.activeInHierarchy)
+            if (!dropdown.gameObject.activeInHierarchy)
             {
-                dropdown_pool[i].transform.SetParent(transform, false);
+                dropdown.transform.SetParent(transform, false);
 
-                dropdown_pool[i].gameObject.SetActive(true);
+                dropdown.gameObject.SetActive(true);
 
-                return dropdown_pool[i];
+                return dropdown;
             }
         }
 
-        Dropdown new_option = Instantiate(Resources.Load<Dropdown>("Editor/Actions/Dropdown"));
+        Dropdown new_action = Instantiate(Resources.Load<Dropdown>("Editor/Actions/Dropdown"));
 
-        new_option.transform.SetParent(transform, false);
+        new_action.transform.SetParent(transform, false);
 
-        dropdown_pool.Add(new_option);
+        dropdown_pool.Add(new_action);
 
-        return new_option;
+        return new_action;
     }
 
     Button SpawnButton()
     {
-        for (int i = 0; i < button_pool.Count; i++)
+        foreach(Button button in button_pool)
         {
-            if (!button_pool[i].gameObject.activeInHierarchy)
+            if (!button.gameObject.activeInHierarchy)
             {
-                button_pool[i].onClick.RemoveAllListeners();
+                button.onClick.RemoveAllListeners();
 
-                button_pool[i].transform.SetParent(transform, false);
+                button.transform.SetParent(transform, false);
 
-                button_pool[i].gameObject.SetActive(true);
+                button.gameObject.SetActive(true);
 
-                return button_pool[i];
+                return button;
             }
         }
 
-        Button new_option = Instantiate(Resources.Load<Button>("Editor/Actions/Button"));
+        Button new_action = Instantiate(Resources.Load<Button>("Editor/Actions/Button"));
 
-        new_option.transform.SetParent(transform, false);
+        new_action.transform.SetParent(transform, false);
 
-        button_pool.Add(new_option);
+        button_pool.Add(new_action);
 
-        return new_option;
+        return new_action;
+    }
+
+    Button SpawnMiniButton()
+    {
+        foreach(Button button in mini_button_pool)
+        {
+            if (!button.gameObject.activeInHierarchy)
+            {
+                button.onClick.RemoveAllListeners();
+
+                button.transform.SetParent(transform, false);
+
+                button.gameObject.SetActive(true);
+
+                return button;
+            }
+        }
+
+        Button new_action = Instantiate(Resources.Load<Button>("Editor/Actions/Mini_Button"));
+
+        new_action.transform.SetParent(transform, false);
+
+        mini_button_pool.Add(new_action);
+
+        return new_action;
     }
     #endregion
 }

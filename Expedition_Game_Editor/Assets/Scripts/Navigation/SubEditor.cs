@@ -45,8 +45,8 @@ public class SubEditor : MonoBehaviour, IEditorData
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().GetRows();
 
-        if (GetComponent<ButtonManager>() != null)
-            GetComponent<ButtonManager>().SortButtons();
+        if (GetComponent<MiniButtonManager>() != null)
+            GetComponent<MiniButtonManager>().SortButtons();
 
         if (GetComponent<LanguageManager>() != null)
             GetComponent<LanguageManager>().SortLanguages();
@@ -139,7 +139,7 @@ public class SubEditor : MonoBehaviour, IEditorData
             GetComponent<RowManager>().CloseList();
 
         if (actionManager != null)
-            actionManager.CloseOptions();
+            actionManager.CloseActions();
 
         if (editor_rect != null)
             editor_rect.gameObject.SetActive(false);
