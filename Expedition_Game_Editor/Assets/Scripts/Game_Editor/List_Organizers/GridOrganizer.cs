@@ -80,7 +80,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             new_size = new Vector2( horizontal  ? grid_size.x * base_size : base_size,
                                     vertical    ? grid_size.y * base_size : base_size);
         }
-            
+
         if (exact)
             return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
         else

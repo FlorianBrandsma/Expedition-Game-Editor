@@ -159,8 +159,8 @@ public class DisplayOrganizer : MonoBehaviour, IOrganizer
             //OpenEditor
             int id = id_list[i];
 
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(select_path, id)); });
-            new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenEditor(listManager.NewPath(edit_path, id)); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenPath(listManager.NewPath(select_path, id)); });
+            new_element.GetComponent<ListElement>().edit_button.onClick.AddListener(delegate { listManager.OpenPath(listManager.NewPath(edit_path, id)); });
         }
     }
 

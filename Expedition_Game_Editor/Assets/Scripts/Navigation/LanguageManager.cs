@@ -16,9 +16,9 @@ public class LanguageManager : MonoBehaviour
         active_language = 0;
     }
 
-    public void SortLanguages()
+    public void SetLanguages()
     {
-        Dropdown language_dropdown = GetComponent<SubEditor>().actionManager.AddDropdown();
+        Dropdown language_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
         language_dropdown.onValueChanged.RemoveAllListeners();
 
@@ -40,17 +40,11 @@ public class LanguageManager : MonoBehaviour
     {
         active_language = new_language;
 
-        ResetStructure();
-        ResetSource();
+        ResetEditor();
     }
 
-    static void ResetStructure()
+    static void ResetEditor()
     {
-        NavigationManager.navigation_manager.RefreshStructure();
-    }
-
-    static void ResetSource()
-    {
-        NavigationManager.navigation_manager.RefreshSource();
+        EditorManager.editorManager.ResetEditor();
     }
 }

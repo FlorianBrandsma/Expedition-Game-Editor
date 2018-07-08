@@ -22,6 +22,6 @@ public class ObjectiveSegmentFormat : MonoBehaviour
         
         collapsed = !collapsed;
 
-        organizer.GetComponent<SegmentManager>().PlaceSegments(segmentNumber);
+        //organizer.GetComponent<SubEditor>().PlaceSegments(segmentNumber);
     }
 }

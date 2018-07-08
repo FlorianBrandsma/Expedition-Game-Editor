@@ -7,11 +7,11 @@ using System.IO;
 
 public class ListManager : MonoBehaviour
 {
-    public IEditorData activator { get; set; }
+    IController controller { get; set; }
 
     IOrganizer organizer;
 
-    public bool editable;
+    public bool editable { get; set; }
 
     private Path select_path;
     private Path edit_path;
@@ -68,7 +68,7 @@ public class ListManager : MonoBehaviour
 
     public void SetProperties(ListProperties listProperties)
     {
-        activator = listProperties.activator;
+        controller = listProperties.controller;
 
         list_area = listProperties.list_area;
 
@@ -108,9 +108,6 @@ public class ListManager : MonoBehaviour
 
     public void SetRows()
     {
-        if (editable)
-            EnableAdding(edit_path);
-
         organizer.SetRows(id_list);
     }
 
@@ -119,34 +116,19 @@ public class ListManager : MonoBehaviour
         overlayManager.UpdateOverlay();
     }
 
-    public void OpenEditor(Path new_editor)
+    public void OpenPath(Path new_path)
     {
-        NavigationManager.navigation_manager.OpenStructure(new_editor, source, false);
+        EditorManager.editorManager.windows[0].InitializePath(new_path, true);
     }
 
-    public void OpenSource(Path new_editor)
+    public void SelectElement(int index, bool editable)
     {
-        NavigationManager.navigation_manager.OpenSource(new_editor);
-    }
-
-    public void SelectElement(int index, bool edit)
-    {
-        if (edit)
+        if (editable)
             EnableEditing(edit_path);
 
         organizer.SelectElement(index);
 
-        NavigationManager.SelectElement(index);
-    }
-
-    public void EnableAdding(Path add_path)
-    {
-        Button add_button = actionManager.AddButton();
-
-        add_button.GetComponentInChildren<Text>().text = "Add " + table;
-
-        //TEMPORARY ID! Create placeholder and display in the future
-        add_button.onClick.AddListener(delegate { OpenEditor(NewPath(add_path, 1)); });
+        //NavigationManager.SelectElement(index);
     }
 
     public void EnableEditing(Path edit_path)
@@ -166,7 +148,7 @@ public class ListManager : MonoBehaviour
 
         edit_button.GetComponentInChildren<Text>().text = "Edit";
 
-        edit_button.onClick.AddListener(delegate { OpenEditor(NewPath(edit_path, NavigationManager.set_id)); });
+        edit_button.onClick.AddListener(delegate { OpenPath(NewPath(edit_path, SelectionManager.set_id)); });
     }
         
     public Path NewPath(Path path, int id)

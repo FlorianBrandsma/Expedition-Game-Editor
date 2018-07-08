@@ -17,9 +17,9 @@ public class TimeManager : MonoBehaviour
         active_time = 0;
     }
 
-    public void SortTimes()
+    public void SetTimes()
     {
-        Dropdown time_dropdown = GetComponent<SubEditor>().actionManager.AddDropdown();
+        Dropdown time_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
         time_dropdown.onValueChanged.RemoveAllListeners();
 
@@ -41,7 +41,7 @@ public class TimeManager : MonoBehaviour
 
     void SetBase()
     {
-        Button base_button = GetComponent<SubEditor>().actionManager.AddButton();
+        Button base_button = GetComponent<EditorController>().actionManager.AddButton();
 
         base_button.GetComponentInChildren<Text>().text = "Import " + times[base_time];
 
@@ -52,11 +52,11 @@ public class TimeManager : MonoBehaviour
     {
         active_time = new_time;
 
-        ResetStructure();
+        ResetEditor();
     }
 
-    static void ResetStructure()
+    static void ResetEditor()
     {
-        NavigationManager.navigation_manager.RefreshStructure();
+        EditorManager.editorManager.ResetEditor();
     }
 }

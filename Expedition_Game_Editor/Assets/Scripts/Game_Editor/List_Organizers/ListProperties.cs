@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(RowManager))]
+
 public class ListProperties : MonoBehaviour
 {
-    public RectTransform editor_parent;
-    public Vector2 min_anchor;
-    public Vector2 max_anchor;
-
     public Vector2 grid_size;
 
     public RectTransform list_area;
     public RectTransform main_list;
-
+    /*
     //Main editors create the select/edit delegates
     public bool main_editor;
- 
+    //Was false in SecondaryWindow
+    */
     public bool auto_select;
 
     public bool get_select, set_select;
@@ -34,9 +33,7 @@ public class ListProperties : MonoBehaviour
     public bool enable_numbers;
     public bool enable_slideshow;
 
-    public RowManager rowManager;
-
-    public IEditorData activator { get; set; }
+    public IController controller { get; set; }
 
     public void SetList()
     {
@@ -50,28 +47,20 @@ public class ListProperties : MonoBehaviour
         //2. ListProperties > RowManager > ListManager > Organizer
         //3. ListProperties > ListManager > Organizer
 
-        rowManager.InitializeRows(main_editor);
+        //3.7.2018 ListProperties and RowManager are now interwoven
 
-        activator = GetComponent<IEditorData>();
+        GetComponent<RowManager>().SetRows();
+
+        controller = GetComponent<IController>();
         main_list.GetComponent<ListManager>().SetProperties(this);
-
-        SetListAnchors();
-
-        //Automatically selects and highlights an element(id) on startup
-        if (auto_select)
-            SelectElement(GetComponent<SubEditor>().id);
-    }
-
-    void SetListAnchors()
-    {
-        list_area.anchorMin = min_anchor;
-        list_area.anchorMax = max_anchor;
 
         main_list.GetComponent<ListManager>().SetListSize(base_size);
 
-        main_list.gameObject.SetActive(true);
+        //Automatically selects and highlights an element(id) on startup
+        if (auto_select)
+            SelectElement(GetComponent<EditorController>().id);
     }
-    
+       
     void SelectElement(int id)
     {
         main_list.GetComponent<ListManager>().SelectElement(id, false);

@@ -2,31 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EditorSegment : MonoBehaviour, IEditorData
+public class EditorSegment : MonoBehaviour, IController
 {
-    public string table;
-    public int id;
+    private SubEditor subEditor { get; set; }
 
-    public GameObject content;
-    bool collapsed;
+    public string   table { get; set; }
+    public int      id    { get; set; }
 
     private RowManager rowManager;
 
-    public void InitializeSegment()
+    public void InitializeSegment(SubEditor new_subEditor)
     {
+        subEditor = new_subEditor;
+
         if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().GetRows();
+            GetComponent<RowManager>().InitializeRows();
 
         OpenSegment();
-
-        CollapseSegment(false); 
     }
 
     public void FilterRows(List<int> list)
     {
         if (GetComponent<RowManager>() != null)
         {
-            GetComponent<RowManager>().CloseList();
+            GetComponent<RowManager>().CloseRows();
             GetComponent<RowManager>().id_list = new List<int>(list);
         }
 
@@ -41,24 +40,18 @@ public class EditorSegment : MonoBehaviour, IEditorData
             GetComponent<ListProperties>().SetList();
     }
 
-    public void CollapseSegment()
-    {
-        CollapseSegment(collapsed);
-    }
-
-    void CollapseSegment(bool collapse)
-    {
-        content.SetActive(!collapse);
-        collapsed = collapse;
-    }
-
     public void CloseSegment()
     {
         if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().CloseList();
+            GetComponent<RowManager>().CloseRows();
     }
 
-    #region ISubEditor
+    #region IController
+
+    public EditorField GetField()
+    {
+        return subEditor.controller.editorField;
+    }
 
     public Path GetPath()
     {

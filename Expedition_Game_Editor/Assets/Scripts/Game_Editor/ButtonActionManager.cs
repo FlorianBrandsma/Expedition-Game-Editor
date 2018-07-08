@@ -6,19 +6,19 @@ public class ButtonActionManager : MonoBehaviour
 {
     public Button   save_button,
                     apply_button,
-                    cancel_button;
+                    close_button;
 
     public Toggle   trash_toggle;
 
-    public void SetButtons(SubEditor editor)
+    public void SetButtons(EditorController controller)
     {
         if (save_button != null)
-            save_button.onClick.AddListener(delegate { editor.SaveEdit(); });
+            save_button.onClick.AddListener(delegate { controller.SaveEdit(); });
 
         if (apply_button != null)
-            apply_button.onClick.AddListener(delegate { editor.ApplyEdit(); });
-
-        cancel_button.onClick.AddListener(delegate { editor.CancelEdit(); });
+            apply_button.onClick.AddListener(delegate { controller.ApplyEdit(); });
+        
+        close_button.onClick.AddListener(delegate { controller.CancelEdit(); });
     }
 
     public void CloseButtons()
@@ -29,7 +29,7 @@ public class ButtonActionManager : MonoBehaviour
         if(apply_button != null)
             apply_button.onClick.RemoveAllListeners();
 
-        cancel_button.onClick.RemoveAllListeners();
+        close_button.onClick.RemoveAllListeners();
 
         trash_toggle.isOn = false;
     }

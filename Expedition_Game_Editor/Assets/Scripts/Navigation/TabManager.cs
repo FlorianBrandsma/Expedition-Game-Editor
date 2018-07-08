@@ -7,19 +7,24 @@ using System.IO;
 
 public class TabManager : MonoBehaviour
 {
+    private EditorController subEditor;
+
     public List<Button> tab_list = new List<Button>();
 
     public bool tab_parent;
-
-    public bool source;
 
     private GameObject[] editor;
 
     private int active_tab = -1;
 
-    public void SetEditorTabs(Path path, GameObject[] new_editor, int editor_depth)
+    public void SetEditorTabs(EditorController new_subEditor, Path path, GameObject[] new_editor, int editor_depth)
     {
+        subEditor = new_subEditor;
+
         editor = new_editor;
+
+        if (editor.Length > 0)
+            gameObject.SetActive(true);
 
         for (int tab = 0; tab < editor.Length; tab++)
         {
@@ -32,88 +37,33 @@ public class TabManager : MonoBehaviour
 
             int temp_int = tab;
 
-            if (source)
+            new_tab.onClick.AddListener(delegate
             {
-                new_tab.onClick.AddListener(delegate
-                {
-                    OpenSource(path, temp_int, editor_depth);
-                });
-            }
-            else
-            {
-                new_tab.onClick.AddListener(delegate
-                {
-                    OpenEditor(path, temp_int, editor_depth);
-                });
-            }
+                OpenPath(path, temp_int, editor_depth);
+            });
 
             new_tab.gameObject.SetActive(true);
         }
 
+        
+            
         SelectTab(path.editor[editor_depth]);
     }
-    /*
-    public void SetFieldTabs(GameObject[] new_editor)
-    {
-        editor = new_editor;
-
-        for (int tab = 0; tab < editor.Length; tab++)
-        {
-            Button new_tab = SpawnTab();
-
-            //FIX TAB PNG; THEN REMOVE THIS
-            SetAnchors(tab, editor.Length);
-
-            new_tab.GetComponentInChildren<Text>().text = editor[tab].name;
-
-            int temp_int = tab;
-
-            new_tab.onClick.AddListener(delegate { OpenFieldEditor(temp_int); });
-
-            new_tab.gameObject.SetActive(true);
-        }
-
-        OpenFieldEditor(0);
-    }
-
-    //InitializeEditorField()
-
-    public void OpenFieldEditor(int selected_tab)
-    {
-        CloseFieldEditor();
-
-        SelectTab(selected_tab);
-
-        editor[selected_tab].GetComponent<SegmentManager>().OpenEditor();
-
-        active_tab = selected_tab;
-    }
-
-    void CloseFieldEditor()
-    {
-        if(active_tab >= 0)
-            editor[active_tab].GetComponent<SegmentManager>().CloseEditor();      
-    }
-    */
-    public void SetAnchors(int index, int tabs)
+    
+    void SetAnchors(int index, int tabs)
     {
         RectTransform new_tab = tab_list[index].GetComponent<RectTransform>();
 
-        new_tab.anchorMin = new Vector2(index * (1f / tabs), 1);
+        new_tab.anchorMin = new Vector2(index * (1f / tabs), 0);
         new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
 
         new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
-        new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);    
+        new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);      
     }
 
-    void OpenEditor(Path path, int selected_tab, int editor_depth)
+    void OpenPath(Path path, int selected_tab, int editor_depth)
     {
-        NavigationManager.navigation_manager.OpenStructure(NewEditor(path, selected_tab, editor_depth), true, false);
-    }
-
-    void OpenSource(Path path, int selected_tab, int editor_depth)
-    {
-        NavigationManager.navigation_manager.OpenSource(NewEditor(path, selected_tab, editor_depth));
+        subEditor.GetField().windowManager.InitializePath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth), false);
     }
 
     void SelectTab(int selected_tab)
@@ -127,7 +77,20 @@ public class TabManager : MonoBehaviour
         }
     }
 
-    Path NewEditor(Path path, int index, int editor_depth)
+    Path TrimPath(Path path, int editor_depth)
+    {
+        Path new_path = new Path(new List<int>(), new List<int>());
+
+        for (int i = 0; i < editor_depth; i++)
+        {
+            new_path.editor.Add(path.editor[i]);
+            new_path.id.Add(path.id[i]);
+        }
+
+        return new_path;
+    }
+
+    Path NewPath(Path path, int index, int editor_depth)
     {
         //Copy the old editor. Any changes made to "path" are visible throughout the entire code
         Path new_path = new Path(new List<int>(), new List<int>());
@@ -174,6 +137,8 @@ public class TabManager : MonoBehaviour
             tab_list[i].gameObject.SetActive(false);
             editor[i].gameObject.SetActive(false);
         }
+
+        gameObject.SetActive(false);
 
         active_tab = -1;
     }

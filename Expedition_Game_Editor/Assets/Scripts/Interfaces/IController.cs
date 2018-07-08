@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IEditorData
+public interface IController
 {
+    EditorField GetField();
     Path GetPath();
     string GetTable();
     int GetID();

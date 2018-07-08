@@ -31,10 +31,15 @@ public class RowManager : MonoBehaviour
 
     public bool combine_path;
 
+    public bool relative_index;
+
     public int[] select_index;
     public int[] edit_index;
 
-    public void GetRows()
+    public Path select_path { get; set; }
+    public Path edit_path   { get; set; }
+
+    public void InitializeRows()
     {
         id_list.Clear();
 
@@ -42,15 +47,12 @@ public class RowManager : MonoBehaviour
             id_list.Add(i + 1);       
     }
 
-    public void InitializeRows(bool main_editor)
+    public void SetRows()
     {
-        string selected_table = GetComponent<IEditorData>().GetTable();
-        int selected_id = GetComponent<IEditorData>().GetID();
+        string selected_table = GetComponent<IController>().GetTable();
+        int selected_id = GetComponent<IController>().GetID();
 
         //Let every sub-editor remember it's path, as the path to manipulate
-
-        Path select_path;
-        Path edit_path;
 
         if (combine_path)
         {
@@ -59,12 +61,15 @@ public class RowManager : MonoBehaviour
             //3. Add new index
             //4. Add new id
 
-            Path this_path = GetComponent<IEditorData>().GetPath();
+            Path this_path = GetComponent<IController>().GetPath();
+            //Must be: path it's currently on (using depth)
 
-            List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id }, false);
+            List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id });
 
-            select_path = new Path(CombinePath(this_path.editor, select_index, main_editor), new_id_path);
-            edit_path = new Path(CombinePath(this_path.editor, edit_index, main_editor), new_id_path);
+            select_path = new Path(CombinePath(this_path.editor, select_index), new_id_path);
+            edit_path = new Path(CombinePath(this_path.editor, edit_index), new_id_path);
+
+            //Debug.Log(EditorManager.PathString(select_path));
         }
         else
         {
@@ -99,7 +104,7 @@ public class RowManager : MonoBehaviour
         return new_path;
     }
 
-    private List<int> CombinePath(List<int> path, int[] new_index, bool add)
+    private List<int> CombinePath(List<int> path, int[] new_index)
     {
         List<int> new_path = new List<int>();
 
@@ -110,16 +115,16 @@ public class RowManager : MonoBehaviour
 
         for(int i = 0; i < new_index.Length; i++)
         {
-            if (!add)
-                new_path[new_path.Count - (i + 1)] = new_index[i];
-            else
+            if (relative_index)
                 new_path.Add(new_index[i]);
+            else
+                new_path[new_path.Count - (i + 1)] = new_index[i];
         }
 
         return new_path;
     }
 
-    public void CloseList()
+    public void CloseRows()
     {
         GetComponent<ListProperties>().main_list.GetComponent<ListManager>().CloseList();
     }

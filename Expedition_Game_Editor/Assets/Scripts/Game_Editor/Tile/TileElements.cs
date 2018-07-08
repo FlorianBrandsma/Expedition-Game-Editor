@@ -5,7 +5,7 @@ public class TileElements : MonoBehaviour, IEditor
 {
     public void OpenEditor()
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
     }
 
     public void SaveEdit()
@@ -21,11 +21,11 @@ public class TileElements : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        NavigationManager.navigation_manager.PreviousEditor();
+        //NavigationManager.navigation_manager.PreviousEditor();
     }
 
     public void CloseEditor()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }

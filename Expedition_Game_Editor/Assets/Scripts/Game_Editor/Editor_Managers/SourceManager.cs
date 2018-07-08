@@ -21,11 +21,11 @@ public class SourceManager : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        NavigationManager.navigation_manager.PreviousEditor();
+        //NavigationManager.navigation_manager.PreviousEditor();
     }
 
     public void CloseEditor()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }

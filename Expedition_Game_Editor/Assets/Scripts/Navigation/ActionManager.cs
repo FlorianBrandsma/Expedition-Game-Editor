@@ -13,7 +13,7 @@ public class ActionManager : MonoBehaviour
 
     private List<RectTransform> actions = new List<RectTransform>();
 
-    public RectTransform main_editor_parent;
+    public RectTransform footer;
 
     public int wrap_limit;
 
@@ -37,17 +37,7 @@ public class ActionManager : MonoBehaviour
         }
 
         if(actions.Count > 0)
-            SetEditorSize(true);
-    }
-
-    public void SetEditorSize(bool collapse)
-    {
-        if(collapse)
-        {
-            main_editor_parent.anchorMin = new Vector2(GetComponent<RectTransform>().anchorMin.x, GetComponent<RectTransform>().anchorMax.y);
-        } else {
-            main_editor_parent.anchorMin = Vector2.zero;
-        }  
+            footer.gameObject.SetActive(true);
     }
 
     public Dropdown AddDropdown()
@@ -89,7 +79,7 @@ public class ActionManager : MonoBehaviour
         foreach (RectTransform action in actions)
             action.gameObject.SetActive(false);
 
-        SetEditorSize(false);
+        footer.gameObject.SetActive(false);
 
         actions.Clear();
     }

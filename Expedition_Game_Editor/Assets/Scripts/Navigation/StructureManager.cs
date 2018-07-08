@@ -7,6 +7,8 @@ using System.IO;
 
 public class StructureManager : MonoBehaviour
 {
+    private EditorController editorController;
+
     List<int> id_list = new List<int>();
 
     void SetRows()
@@ -25,11 +27,13 @@ public class StructureManager : MonoBehaviour
         }
     }
 
-    public void SortStructure(Path path, int depth, string table, int id)
+    public void SetStructure(EditorController new_editorController, Path path, int depth, string table, int id)
     {
+        editorController = new_editorController;
+
         SetRows();
 
-        Dropdown structure_dropdown = GetComponent<SubEditor>().actionManager.AddDropdown();
+        Dropdown structure_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
         structure_dropdown.options.Clear();
 
@@ -45,14 +49,14 @@ public class StructureManager : MonoBehaviour
 
         structure_dropdown.value = id_list.IndexOf(id);
 
-        structure_dropdown.onValueChanged.AddListener(delegate { OpenStructure(NewPath(GetComponent<SubEditor>().path, depth, structure_dropdown)); });
+        structure_dropdown.onValueChanged.AddListener(delegate { OpenStructure(NewPath(GetComponent<EditorController>().controller_path, depth, structure_dropdown)); });
 
         //Open Editor
     }
 
-    public void OpenStructure(Path new_editor)
+    public void OpenStructure(Path new_path)
     {
-        NavigationManager.navigation_manager.OpenStructure(new_editor, false, false);
+        editorController.editorField.windowManager.InitializePath(new_path, true);
     }
 
     public string PathString(Path path)
