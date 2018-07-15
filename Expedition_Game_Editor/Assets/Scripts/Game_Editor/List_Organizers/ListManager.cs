@@ -27,6 +27,8 @@ public class ListManager : MonoBehaviour
     public Vector2  list_size { get; set; }
     public float    base_size { get; set; }
 
+    private bool selectable;
+
     public int selected_id;
 
     Vector3 listMin, listMax;
@@ -47,7 +49,7 @@ public class ListManager : MonoBehaviour
         id_list = new List<int>(rowManager.id_list);
 
         table = rowManager.table;
-
+        
         select_path = new_select_path;
         edit_path = new_edit_path;
 
@@ -76,6 +78,8 @@ public class ListManager : MonoBehaviour
 
         main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
         main_list.GetComponent<ScrollRect>().vertical = listProperties.vertical;
+
+        selectable = listProperties.selectable;
 
         organizer.SetProperties(listProperties);
 
@@ -111,6 +115,11 @@ public class ListManager : MonoBehaviour
         organizer.SetRows(id_list);
     }
 
+    public void ResetRows()
+    {
+        organizer.ResetRows(id_list);
+    }
+
     public void UpdateRows()
     {
         overlayManager.UpdateOverlay();
@@ -118,15 +127,20 @@ public class ListManager : MonoBehaviour
 
     public void OpenPath(Path new_path)
     {
-        EditorManager.editorManager.windows[0].InitializePath(new_path, true);
+        EditorManager.editorManager.windows[0].InitializePath(new_path);
     }
 
     public void SelectElement(int index, bool editable)
     {
-        if (editable)
-            EnableEditing(edit_path);
+        if (selectable)
+        {
+            //Debug.Log("Select " + index);
 
-        organizer.SelectElement(index);
+            if (editable)
+                EnableEditing(edit_path);
+
+            organizer.SelectElement(index);
+        }
 
         //NavigationManager.SelectElement(index);
     }

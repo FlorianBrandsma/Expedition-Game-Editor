@@ -56,7 +56,7 @@ public class StructureManager : MonoBehaviour
 
     public void OpenStructure(Path new_path)
     {
-        editorController.editorField.windowManager.InitializePath(new_path, true);
+        editorController.editorField.windowManager.InitializePath(new_path);
     }
 
     public string PathString(Path path)

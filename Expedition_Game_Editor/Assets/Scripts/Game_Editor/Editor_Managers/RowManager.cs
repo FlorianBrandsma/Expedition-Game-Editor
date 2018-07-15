@@ -87,6 +87,8 @@ public class RowManager : MonoBehaviour
 
         ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
         listManager.InitializeList(this, id_list, select_path, edit_path);
+
+        GetComponent<ListProperties>().SetList();
     }
 
     private Path CreatePath(int[] new_editor, int new_id)

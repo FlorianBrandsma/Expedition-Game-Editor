@@ -36,8 +36,8 @@ public class EditorSegment : MonoBehaviour, IController
     {
         GetComponent<IEditor>().OpenEditor();
 
-        if (GetComponent<ListProperties>() != null)
-            GetComponent<ListProperties>().SetList();
+        if (GetComponent<RowManager>() != null)
+            GetComponent<RowManager>().SetRows();
     }
 
     public void CloseSegment()

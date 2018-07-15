@@ -1161,6 +1161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -1491,7 +1492,7 @@ GameObject:
   - 4: {fileID: 27695981}
   - 114: {fileID: 27695983}
   m_Layer: 0
-  m_Name: Region
+  m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1523,6 +1524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -1568,7 +1570,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: -42.5}
   m_SizeDelta: {x: -130, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &29325300
@@ -4766,6 +4768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -5924,6 +5927,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -5966,6 +5970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -9267,6 +9272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 768795516}
   editorField: {fileID: 1685155425}
   table: 
@@ -10541,7 +10547,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 480}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.979
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -11722,6 +11728,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -11764,6 +11771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -13727,6 +13735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 1069878633}
   table: 
@@ -13749,9 +13758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584ff53dc050ad34aa4631672191ed9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  languages:
-  - English
-  - Dutch
 --- !u!1 &282900180
 GameObject:
   m_ObjectHideFlags: 0
@@ -14135,6 +14141,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -14177,6 +14184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -17171,6 +17179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: Phase
@@ -17195,7 +17204,8 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 1069878631}
   main_list: {fileID: 468197030}
-  auto_select: 0
+  selectable: 1
+  auto_select: 1
   get_select: 0
   set_select: 0
   visible_only: 0
@@ -19427,6 +19437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -21823,6 +21834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -26260,6 +26272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 497874097}
   editorField: {fileID: 1685155425}
   table: 
@@ -26292,7 +26305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &502461789
@@ -28512,6 +28525,63 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 557126047}
+--- !u!1 &557259092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1000013004787528, guid: b090ed54697655341ab54c1a5c5d763b,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 557259093}
+  - 222: {fileID: 557259095}
+  - 114: {fileID: 557259094}
+  m_Layer: 5
+  m_Name: Right_Action_Bar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &557259093
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224000010583334986, guid: b090ed54697655341ab54c1a5c5d763b,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 557259092}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1.0000004, z: 1.0000004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1559060554}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -15, y: 20}
+  m_SizeDelta: {x: 30, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &557259094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 557259092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef949c55329b91648b3a2d2e4c21dc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footer: {fileID: 0}
+  wrap_limit: 1
+--- !u!222 &557259095
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222000010311354834, guid: b090ed54697655341ab54c1a5c5d763b,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 557259092}
 --- !u!1 &558181396
 GameObject:
   m_ObjectHideFlags: 0
@@ -28857,6 +28927,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -28899,6 +28970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -34248,6 +34320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -36034,6 +36107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 726423269}
   editorField: {fileID: 1685155425}
   table: 
@@ -36079,7 +36153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &728739754
@@ -36261,6 +36335,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -36303,6 +36378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -38316,7 +38392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorLayout: {fileID: 768795516}
+  historyManager: {fileID: 0}
+  editorLayout: {fileID: 0}
   editorField: {fileID: 1685155425}
   table: 
   id: 0
@@ -38350,7 +38427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &768842405
@@ -43552,6 +43629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -45919,6 +45997,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -45961,6 +46040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -46524,6 +46604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: Quest
@@ -46548,7 +46629,8 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 1069878631}
   main_list: {fileID: 468197030}
-  auto_select: 0
+  selectable: 1
+  auto_select: 1
   get_select: 0
   set_select: 0
   visible_only: 0
@@ -48416,6 +48498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -48800,6 +48883,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 1490964408}
   main_list: {fileID: 604499842}
+  selectable: 0
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -50224,6 +50308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 768795516}
   editorField: {fileID: 1685155425}
   table: 
@@ -53673,7 +53758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
+  parent_rect: {fileID: 2082631208}
   sibling_rect: {fileID: 0}
   left: 1
   top: 0
@@ -56679,8 +56764,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_SizeDelta: {x: -10, y: -11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1144933477
 MonoBehaviour:
@@ -58072,7 +58157,7 @@ GameObject:
   - 222: {fileID: 1170581803}
   - 114: {fileID: 1170581802}
   m_Layer: 5
-  m_Name: Corner_Action_Bar
+  m_Name: Left_Action_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58108,7 +58193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef949c55329b91648b3a2d2e4c21dc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footer: {fileID: 1559060554}
+  footer: {fileID: 0}
   wrap_limit: 1
 --- !u!222 &1170581803
 CanvasRenderer:
@@ -58393,6 +58478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1173900953}
   editorField: {fileID: 1685155425}
   table: 
@@ -58438,7 +58524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &1176172490
@@ -60213,7 +60299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorLayout: {fileID: 1215727547}
+  historyManager: {fileID: 0}
+  editorLayout: {fileID: 0}
   editorField: {fileID: 1685155425}
   table: 
   id: 0
@@ -60248,7 +60335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &1217910235
@@ -61495,6 +61582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1215727547}
   editorField: {fileID: 1685155425}
   table: 
@@ -62897,10 +62985,10 @@ RectTransform:
   - {fileID: 139974910}
   m_Father: {fileID: 2144475589}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 65, y: -20}
-  m_SizeDelta: {x: 130, y: 40}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -20}
+  m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1252763612
 MonoBehaviour:
@@ -64234,6 +64322,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -64276,6 +64365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -66703,6 +66793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1986235833}
   editorField: {fileID: 1685155425}
   table: 
@@ -68122,7 +68213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
+  parent_rect: {fileID: 1374861248}
   sibling_rect: {fileID: 0}
   left: 0
   top: 0
@@ -68425,6 +68516,7 @@ GameObject:
   - 114: {fileID: 1374861251}
   - 114: {fileID: 1374861249}
   - 114: {fileID: 1374861250}
+  - 114: {fileID: 1374861252}
   m_Layer: 5
   m_Name: Secondary_Window (div)
   m_TagString: Untagged
@@ -68466,9 +68558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  history_min: 0
-  history_max: 1
-  base_controller: {fileID: 1981489547}
+  baseController: {fileID: 1981489547}
   editor_fields:
   - {fileID: 1367463360}
 --- !u!114 &1374861250
@@ -68482,7 +68572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
+  parent_rect: {fileID: 223280777}
   sibling_rect: {fileID: 2082631210}
   left: 1
   top: 0
@@ -68501,6 +68591,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorDependency: {fileID: 0}
+--- !u!114 &1374861252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1374861247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903f2d0f5625d834c945c0002500e1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sibling_historyManager: {fileID: 2082631211}
 --- !u!1 &1376702304
 GameObject:
   m_ObjectHideFlags: 0
@@ -74680,6 +74782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -74738,6 +74841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -75237,6 +75341,7 @@ RectTransform:
   m_Children:
   - {fileID: 1170581801}
   - {fileID: 1959041974}
+  - {fileID: 557259093}
   m_Father: {fileID: 2082631208}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -76493,6 +76598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -79382,6 +79488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1215727547}
   editorField: {fileID: 1685155425}
   table: 
@@ -80183,6 +80290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1215727547}
   editorField: {fileID: 1685155425}
   table: 
@@ -81988,7 +82096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
+  parent_rect: {fileID: 2082631208}
   sibling_rect: {fileID: 1069878632}
   left: 0
   top: 0
@@ -82794,7 +82902,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: -42.5}
-  m_SizeDelta: {x: -129, y: 40}
+  m_SizeDelta: {x: -130, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711499384
 MonoBehaviour:
@@ -84207,6 +84315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: 
@@ -84231,7 +84340,8 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 1069878631}
   main_list: {fileID: 468197030}
-  auto_select: 0
+  selectable: 1
+  auto_select: 1
   get_select: 0
   set_select: 0
   visible_only: 0
@@ -85148,6 +85258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 1069878633}
   table: 
@@ -87951,6 +88062,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -87993,6 +88105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -88246,6 +88359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: 
@@ -89109,6 +89223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -89237,6 +89352,7 @@ MonoBehaviour:
   grid_size: {x: 10, y: 10}
   list_area: {fileID: 1069878631}
   main_list: {fileID: 468197030}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -89260,6 +89376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: 
@@ -90378,6 +90495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1986235833}
   editorField: {fileID: 1685155425}
   table: 
@@ -92367,6 +92485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1921046946}
   editorField: {fileID: 1685155425}
   table: 
@@ -92387,7 +92506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.6, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &1922234507
@@ -94963,8 +95082,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 15, y: 20}
-  m_SizeDelta: {x: -30, y: 40}
+  m_AnchoredPosition: {x: 0, y: 20}
+  m_SizeDelta: {x: -60, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1959041975
 CanvasRenderer:
@@ -95210,7 +95329,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1965491591
@@ -95551,6 +95670,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 80706162}
   main_list: {fileID: 927175879}
+  selectable: 1
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -95593,6 +95713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 1981489549}
   editorField: {fileID: 1367463360}
   table: 
@@ -96161,6 +96282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -96181,6 +96303,7 @@ GameObject:
   - 114: {fileID: 1981489548}
   - 114: {fileID: 1981489549}
   - 114: {fileID: 1981489547}
+  - 114: {fileID: 1981489550}
   m_Layer: 5
   m_Name: Controllers
   m_TagString: Untagged
@@ -96215,6 +96338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 1367463360}
   table: 
@@ -96225,7 +96349,7 @@ MonoBehaviour:
   - {fileID: 1585400771}
   - {fileID: 1851672789}
   - {fileID: 27695980}
-  actionManager: {fileID: 0}
+  actionManager: {fileID: 557259094}
 --- !u!114 &1981489548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96253,6 +96377,19 @@ MonoBehaviour:
   anchor_min: {x: 0.75, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
+--- !u!114 &1981489550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1981489545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e968a465e93a34cb50079af1e596eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  select_path: 
+  type: ArrowRight
 --- !u!1 &1982844135
 GameObject:
   m_ObjectHideFlags: 0
@@ -96533,7 +96670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!114 &1986235834
@@ -96547,7 +96684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorLayout: {fileID: 1986235833}
+  historyManager: {fileID: 0}
+  editorLayout: {fileID: 0}
   editorField: {fileID: 1685155425}
   table: 
   id: 0
@@ -97160,6 +97298,7 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 0}
   main_list: {fileID: 0}
+  selectable: 0
   auto_select: 0
   get_select: 0
   set_select: 0
@@ -97183,6 +97322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 0}
   editorLayout: {fileID: 0}
   editorField: {fileID: 0}
   table: 
@@ -97547,6 +97687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 1374861252}
   editorLayout: {fileID: 1986235833}
   editorField: {fileID: 1685155425}
   table: 
@@ -98399,6 +98540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 1573325185}
   editorField: {fileID: 1069878633}
   table: Chapter
@@ -98423,7 +98565,8 @@ MonoBehaviour:
   grid_size: {x: 0, y: 0}
   list_area: {fileID: 1069878631}
   main_list: {fileID: 468197030}
-  auto_select: 0
+  selectable: 1
+  auto_select: 1
   get_select: 0
   set_select: 0
   visible_only: 0
@@ -98754,6 +98897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  historyManager: {fileID: 2082631211}
   editorLayout: {fileID: 2026191810}
   editorField: {fileID: 1685155425}
   table: 
@@ -98786,7 +98930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutManager: {fileID: 1685155424}
-  anchor_min: {x: 0.5, y: 0}
+  anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
   overwrite: 1
 --- !u!1 &2028639656
@@ -101798,13 +101942,14 @@ GameObject:
   - 114: {fileID: 2082631212}
   - 114: {fileID: 2082631209}
   - 114: {fileID: 2082631210}
+  - 114: {fileID: 2082631211}
   m_Layer: 5
   m_Name: Primary_Window (layout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2082631208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -101838,9 +101983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  history_min: 1
-  history_max: 0
-  base_controller: {fileID: 1783068727}
+  baseController: {fileID: 1783068727}
   editor_fields:
   - {fileID: 1069878633}
   - {fileID: 1685155425}
@@ -101855,13 +101998,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
+  parent_rect: {fileID: 223280777}
   sibling_rect: {fileID: 0}
   left: 1
   top: 0
   header: {fileID: 0}
   content: {fileID: 995570909}
   footer: {fileID: 1559060554}
+--- !u!114 &2082631211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2082631207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903f2d0f5625d834c945c0002500e1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sibling_historyManager: {fileID: 0}
 --- !u!114 &2082631212
 MonoBehaviour:
   m_ObjectHideFlags: 0

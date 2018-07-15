@@ -7,7 +7,7 @@ using System.IO;
 
 public class TabManager : MonoBehaviour
 {
-    private EditorController subEditor;
+    private EditorController editorController;
 
     public List<Button> tab_list = new List<Button>();
 
@@ -17,9 +17,9 @@ public class TabManager : MonoBehaviour
 
     private int active_tab = -1;
 
-    public void SetEditorTabs(EditorController new_subEditor, Path path, GameObject[] new_editor, int editor_depth)
+    public void SetEditorTabs(EditorController new_controller, Path path, GameObject[] new_editor, int editor_depth)
     {
-        subEditor = new_subEditor;
+        editorController = new_controller;
 
         editor = new_editor;
 
@@ -44,9 +44,7 @@ public class TabManager : MonoBehaviour
 
             new_tab.gameObject.SetActive(true);
         }
-
         
-            
         SelectTab(path.editor[editor_depth]);
     }
     
@@ -63,7 +61,7 @@ public class TabManager : MonoBehaviour
 
     void OpenPath(Path path, int selected_tab, int editor_depth)
     {
-        subEditor.GetField().windowManager.InitializePath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth), false);
+        editorController.GetField().windowManager.InitializePath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
     }
 
     void SelectTab(int selected_tab)
@@ -131,6 +129,7 @@ public class TabManager : MonoBehaviour
     {
         //In case of problems: use tab_list[i].Count
         //and put an if statement before closing editor
+
         for (int i = 0; i < editor.Length; i++)
         {
             tab_list[i].onClick.RemoveAllListeners();

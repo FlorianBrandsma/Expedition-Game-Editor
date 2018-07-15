@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class Path
 {
@@ -20,6 +21,17 @@ public class Path
     {
         editor.Clear();
         id.Clear();
+    }
+
+    public bool Equals(Path path)
+    {
+        if (!editor.SequenceEqual(path.editor))
+            return false;
+
+        if (!id.SequenceEqual(path.id))
+            return false;
+
+        return true;
     }
 }
 
@@ -45,8 +57,8 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        windows[0].InitializePath(new Path(new List<int> { 0,0 }, new List<int> { 0,0 }), true);
-        windows[1].InitializePath(new Path(new List<int> { }, new List<int> { }), true);
+        windows[0].InitializePath(new Path(new List<int> { 0,0 }, new List<int> { 0,0 }));
+        windows[1].InitializePath(new Path(new List<int> { }, new List<int> { }));
     }
 
     private void Update()
@@ -61,32 +73,17 @@ public class EditorManager : MonoBehaviour
                 PreviousEditor();
             }
         }
-        
-        if (Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            windows[0].InitializePath(new Path(new List<int> { 0, 0, 1 }, new List<int> { 0, 0, 0 }), true);
-            //windows[1].OpenPath(new Path(new List<int> { }, new List<int> { }), false);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            windows[0].InitializePath(new Path(new List<int> { 0, 1, 0 }, new List<int> { 0, 0, 0 }), true);
-            //windows[1].OpenPath(new Path(new List<int> { }, new List<int> { }), false);
-        }
-
-    }
-
-    public void OpenEditor(Path path, bool previous)
-    {
-
     }
 
     public void PreviousEditor()
     {
         for (int i = windows.Length; i > 0; i--)
         {
-            if (windows[i - 1].history.Count > 1)
+            HistoryManager historyManager = windows[i - 1].GetComponent<HistoryManager>();
+
+            if (historyManager.history.Count > 0)
             {
-                windows[i - 1].PreviousEditor();
+                historyManager.PreviousEditor();
                 break;
             }
         }
@@ -96,10 +93,8 @@ public class EditorManager : MonoBehaviour
     {
         windows[0].ResetPath();
 
-        /*
         foreach (WindowManager window in windows)
             window.ResetPath();
-*/
     }
 
     static public void SelectElement(int id)

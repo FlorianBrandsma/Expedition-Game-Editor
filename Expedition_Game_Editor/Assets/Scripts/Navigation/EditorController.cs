@@ -7,11 +7,15 @@ using System.IO;
 
 public class EditorController : MonoBehaviour, IController
 {
+    public HistoryManager historyManager;
+
     public EditorLayout editorLayout;
 
     public EditorField editorField;
 
     public Path controller_path;
+
+    private int depth;
 
     public string table;
     public int id;
@@ -29,24 +33,27 @@ public class EditorController : MonoBehaviour, IController
 
     public void InitializePath(Path new_path, int editor_depth)
     {
-        editorField.target_editor = this;
+        depth = editor_depth;
 
-        if (editor_depth > 0)
+        editorField.target_editor = this;
+        editorField.windowManager.main_target_editor = this;
+
+        if (depth > 0)
         {
             if (new_path.id.Count > 0)
-                id = new_path.id[editor_depth - 1];
+                id = new_path.id[depth - 1];
         }
 
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().InitializeRows();
 
         if (tabManager != null)
-            InitializeTabs(new_path, editor_depth);
+            InitializeTabs(new_path);
 
-        if (editor_depth < new_path.editor.Count)
-            editor[new_path.editor[editor_depth]].GetComponent<EditorController>().InitializePath(new_path, editor_depth + 1);
+        if (depth < new_path.editor.Count)
+            editor[new_path.editor[depth]].GetComponent<EditorController>().InitializePath(new_path, depth + 1);
 
-        controller_path = TrimPath(new_path, editor_depth);
+        controller_path = TrimPath(new_path);
     }
 
     public void InitializeLayout()
@@ -54,7 +61,7 @@ public class EditorController : MonoBehaviour, IController
         editorLayout.InitializeLayout();
     }
 
-    public void SetPath(Path new_path, int editor_depth)
+    public void SetPath(Path new_path)
     {
         if (GetComponent<MiniButtonManager>() != null)
             GetComponent<MiniButtonManager>().SetButtons();
@@ -66,16 +73,16 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<TimeManager>().SetTimes();
 
         if (GetComponent<StructureManager>() != null)
-            GetComponent<StructureManager>().SetStructure(this, new_path, editor_depth, table, id);
+            GetComponent<StructureManager>().SetStructure(this, new_path, depth, table, id);
 
         if (buttonActionManager != null)
             buttonActionManager.SetButtons(this);
 
         if (tabManager != null)
-            SetTabs(new_path, editor_depth);
+            SetTabs(new_path);
 
-        if (editor_depth < new_path.editor.Count)
-            editor[new_path.editor[editor_depth]].GetComponent<EditorController>().SetPath(new_path, editor_depth + 1);
+        if (depth < new_path.editor.Count)
+            editor[new_path.editor[depth]].GetComponent<EditorController>().SetPath(new_path);
     }
 
     public void SetLayout()
@@ -92,32 +99,35 @@ public class EditorController : MonoBehaviour, IController
     {
         if (GetComponent<EditManager>() != null)
             GetComponent<EditManager>().SetEdit();
+
+        if (GetComponent<RowManager>() != null)
+            GetComponent<RowManager>().SetRows();
+
+        if (GetComponent<PreviewProperties>() != null)
+            GetComponent<PreviewProperties>().SetPreview();
     }
 
     public void OpenEditor()
     {
-        if (GetComponent<ListProperties>() != null)
-            GetComponent<ListProperties>().SetList();
-
-        if (GetComponent<PreviewProperties>() != null)
-            GetComponent<PreviewProperties>().SetPreview();
-
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().OpenEditor();
+
+        if (historyManager != null)
+            historyManager.AddHistory(controller_path);
     }
 
-    void InitializeTabs(Path new_path, int editor_depth)
+    void InitializeTabs(Path new_path)
     {
-        if (editor_depth == new_path.editor.Count)
+        if (depth == new_path.editor.Count)
         {
             new_path.editor.Add(0);
             new_path.id.Add(0);
         }
     }
 
-    void SetTabs(Path new_path, int editor_depth)
+    void SetTabs(Path new_path)
     {
-        tabManager.SetEditorTabs(this, new_path, editor, editor_depth);
+        tabManager.SetEditorTabs(this, new_path, editor, depth);
     }
 
     public void FilterRows(List<int> list)
@@ -144,7 +154,7 @@ public class EditorController : MonoBehaviour, IController
         EditorManager.editorManager.PreviousEditor();
     }
 
-    public void ClosePath(Path new_path, int editor_depth)
+    public void ClosePath(Path path)
     {
         if (actionManager != null)
             actionManager.CloseActions();
@@ -155,27 +165,27 @@ public class EditorController : MonoBehaviour, IController
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
+        if (depth < path.editor.Count)
+            editor[path.editor[depth]].GetComponent<EditorController>().ClosePath(path);
+    }
+
+    public void CloseEditor()
+    {  
         if (GetComponent<RowManager>() != null)
             GetComponent<RowManager>().CloseRows();
 
         if (GetComponent<PreviewProperties>() != null)
             GetComponent<PreviewProperties>().ClosePreview();
 
-        if (editor_depth < new_path.editor.Count)
-            editor[new_path.editor[editor_depth]].GetComponent<EditorController>().ClosePath(new_path, editor_depth + 1);
-    }
-
-    public void CloseEditor()
-    {
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().CloseEditor();
     }
 
-    Path TrimPath(Path path, int editor_depth)
+    Path TrimPath(Path path)
     {
         Path new_path = new Path(new List<int>(), new List<int>());
 
-        for (int i = 0; i < editor_depth; i++)
+        for (int i = 0; i < depth; i++)
         {
             new_path.editor.Add(path.editor[i]);
             new_path.id.Add(path.id[i]);

@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 public class EditorField : MonoBehaviour
-{  
+{
+    public Path active_path = new Path(new List<int>(), new List<int>());
+
     public EditorController target_editor { get; set; }
+
+    public EditorController active_target { get; set; }
 
     public WindowManager windowManager { get; set; }
 
@@ -16,59 +25,51 @@ public class EditorField : MonoBehaviour
         windowManager = new_windowManager;
     }
 
-    public void ActivateDependency()
+    public void InitializePath(Path path)
     {
-        if (target_editor != null)
+        if(target_editor != null)
+        {
+            //Activate necessary components to visualize the target editor
             target_editor.GetComponent<EditorDependency>().Activate();
-    }
 
-    public void SetDependency()
-    {
-        if (target_editor != null)
-            target_editor.GetComponent<EditorDependency>().SetDependency();
-    }
-
-    public void DeactivateDependency()
-    {
-        if (target_editor != null)
-            target_editor.GetComponent<EditorDependency>().Deactivate();
-    }
-
-    public void CloseDependency()
-    {
-        if (target_editor != null)
-            target_editor.GetComponent<EditorDependency>().CloseDependency();
-    }
-
-    public void InitializeLayout()
-    {
-        if (target_editor != null)
+            //First wave layout: Adjust size of fields and windows
             target_editor.InitializeLayout();
+        }  
     }
 
-    public void CloseLayout()
+    public void SetPath(Path path)
     {
         if (target_editor != null)
-            target_editor.CloseLayout();
-    }
+        {
+            //Activate target specific elements before second layout wave
+            target_editor.GetComponent<EditorDependency>().Activate();
 
-    public void SetEditor()
-    {
-        if (target_editor != null)
             target_editor.SetEditor();
+
+            //Adjust size of dependency content based on active headers and footers
+            target_editor.GetComponent<EditorDependency>().SetDependency();
+
+            //Open the editor
+            if (target_editor.controller_path.Equals(path))
+                target_editor.OpenEditor();
+        }
     }
 
-    public void OpenEditor()
+    public void ClosePath(Path active_path, Path new_path)
     {
         if (target_editor != null)
-            target_editor.OpenEditor();
-    }
+        {
+            target_editor.GetComponent<EditorDependency>().CloseDependency();
 
-    public void CloseEditor()
-    {
-        if (target_editor != null)
+            windowManager.baseController.ClosePath(active_path);
+
+            target_editor.CloseLayout();
+
+            target_editor.GetComponent<EditorDependency>().Deactivate();
+
             target_editor.CloseEditor();
 
-        target_editor = null;
+            target_editor = null;
+        }  
     }
 }

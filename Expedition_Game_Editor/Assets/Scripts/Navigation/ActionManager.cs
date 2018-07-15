@@ -36,7 +36,7 @@ public class ActionManager : MonoBehaviour
             new_option.offsetMax = new Vector2( 2.5f, new_option.offsetMax.y);
         }
 
-        if(actions.Count > 0)
+        if(actions.Count > 0 && footer != null)
             footer.gameObject.SetActive(true);
     }
 
@@ -79,7 +79,8 @@ public class ActionManager : MonoBehaviour
         foreach (RectTransform action in actions)
             action.gameObject.SetActive(false);
 
-        footer.gameObject.SetActive(false);
+        if(footer != null)
+            footer.gameObject.SetActive(false);
 
         actions.Clear();
     }

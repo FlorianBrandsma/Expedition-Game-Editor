@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LayoutManager : MonoBehaviour
 {
-    public LayoutManager parent_rect;
+    public RectTransform parent_rect;
     public LayoutManager sibling_rect;
 
     //Sibling relative position (choose one)
@@ -31,8 +31,17 @@ public class LayoutManager : MonoBehaviour
 
         if (overwrite)
         {
-            rect.anchorMin = new_anchor_min;
+            Vector2 UI_size = EditorManager.UI.rect.size;
+            Vector2 parent_size = parent_rect.rect.size;
+
+            Vector2 scaled_anchor_min = new Vector2(FixedAnchor((parent_size.x - (UI_size.x - (UI_size.x * new_anchor_min.x))) / parent_size.x),
+                                                    FixedAnchor(0));
+
+
+
+            rect.anchorMin = scaled_anchor_min;
             rect.anchorMax = new_anchor_max;
+
         } else {
 
             rect.anchorMin = new Vector2(   rect.anchorMin.x,
@@ -47,6 +56,17 @@ public class LayoutManager : MonoBehaviour
 
         if(sibling_rect != null)
             sibling_rect.InitializeLayout(anchor_min, anchor_max, false);
+    }
+
+    float FixedAnchor(float anchor)
+    {
+        if (anchor < 0)
+            return 0;
+
+        if (anchor > 1)
+            return 1;
+
+        return anchor;
     }
 
     public void SetLayout()

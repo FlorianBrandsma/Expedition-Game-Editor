@@ -14,6 +14,8 @@ public class ListProperties : MonoBehaviour
     public bool main_editor;
     //Was false in SecondaryWindow
     */
+
+    public bool selectable;
     public bool auto_select;
 
     public bool get_select, set_select;
@@ -47,20 +49,26 @@ public class ListProperties : MonoBehaviour
         //2. ListProperties > RowManager > ListManager > Organizer
         //3. ListProperties > ListManager > Organizer
 
-        //3.7.2018 ListProperties and RowManager are now interwoven
-
-        GetComponent<RowManager>().SetRows();
+        //GetComponent<RowManager>().SetRows();
 
         controller = GetComponent<IController>();
         main_list.GetComponent<ListManager>().SetProperties(this);
 
         main_list.GetComponent<ListManager>().SetListSize(base_size);
 
-        //Automatically selects and highlights an element(id) on startup
-        if (auto_select)
-            SelectElement(GetComponent<EditorController>().id);
+        //Automatically selects and highlights an element on startup by id
+        if (controller.GetField().target_editor != controller.GetField().windowManager.main_target_editor)
+        {
+            if (auto_select)
+                SelectElement(controller.GetField().windowManager.main_target_editor.id);
+        }     
     }
        
+    public void ResetList()
+    {
+        main_list.GetComponent<ListManager>().ResetRows();
+    }
+
     void SelectElement(int id)
     {
         main_list.GetComponent<ListManager>().SelectElement(id, false);

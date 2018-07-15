@@ -10,9 +10,11 @@ public class MiniButtonManager : MonoBehaviour
     public int[]    select_path;
     public string   type;
 
+    Button button;
+
     public void SetButtons()
     {
-        Button button = GetComponent<EditorController>().actionManager.AddMiniButton();
+        button = GetComponent<EditorController>().actionManager.AddMiniButton();
         button.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture2D>("Textures/Icons/" + type);
     }
 }

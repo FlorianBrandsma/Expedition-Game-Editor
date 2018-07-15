@@ -9,7 +9,7 @@ public class LanguageManager : MonoBehaviour
 {
     static public int active_language;
 
-    public string[] languages;
+    private string[] languages = new string[] {"English", "Dutch" };
 
     static public void GetLanguage()
     {
