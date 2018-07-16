@@ -33,6 +33,19 @@ public class Path
 
         return true;
     }
+
+    public Path CreateEditorPath(int[] new_editor)
+    {
+        Path path = new Path(new List<int>(), new List<int>());
+
+        for(int i = 0; i < new_editor.Length; i++)
+        {
+            path.editor.Add(new_editor[i]);
+            path.id.Add(0);
+        }
+
+        return path;
+    }
 }
 
 public class EditorManager : MonoBehaviour
@@ -57,8 +70,9 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        windows[0].InitializePath(new Path(new List<int> { 0,0 }, new List<int> { 0,0 }));
-        windows[1].InitializePath(new Path(new List<int> { }, new List<int> { }));
+        windows[0].OpenPath(new Path(new List<int> { 0, 0 }, new List<int> { 0, 0 }));
+        windows[1].OpenPath(new Path(new List<int> { 0 }, new List<int> { 0 }));
+        windows[2].OpenPath(new Path(new List<int> {  }, new List<int> {  }));
     }
 
     private void Update()
@@ -81,7 +95,7 @@ public class EditorManager : MonoBehaviour
         {
             HistoryManager historyManager = windows[i - 1].GetComponent<HistoryManager>();
 
-            if (historyManager.history.Count > 0)
+            if (historyManager.history.Count > historyManager.history_min)
             {
                 historyManager.PreviousEditor();
                 break;

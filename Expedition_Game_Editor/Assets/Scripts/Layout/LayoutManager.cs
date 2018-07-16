@@ -37,8 +37,6 @@ public class LayoutManager : MonoBehaviour
             Vector2 scaled_anchor_min = new Vector2(FixedAnchor((parent_size.x - (UI_size.x - (UI_size.x * new_anchor_min.x))) / parent_size.x),
                                                     FixedAnchor(0));
 
-
-
             rect.anchorMin = scaled_anchor_min;
             rect.anchorMax = new_anchor_max;
 

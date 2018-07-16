@@ -11,17 +11,19 @@ public class HistoryManager : MonoBehaviour
 
     public HistoryManager sibling_historyManager;
 
+    public int history_min;
+
     public void AddHistory(Path path)
     {
         if (history.Count > 0 && path.editor.Count == history[history.Count - 1].editor.Count)
             history[history.Count - 1] = path;
         else
-            history.Add(path);     
+            history.Add(path);        
     }
 
     public void PreviousEditor()
     {
-        if(history.Count > 1 || sibling_historyManager != null)
+        if(history.Count > history_min || sibling_historyManager != null)
         {
             history.RemoveAt(history.Count - 1);
 
@@ -33,6 +35,6 @@ public class HistoryManager : MonoBehaviour
     }
     public void InitializePath()
     {
-        GetComponent<WindowManager>().InitializePath(history[history.Count - 1]);
+        GetComponent<WindowManager>().OpenPath(history[history.Count - 1]);
     }
 }

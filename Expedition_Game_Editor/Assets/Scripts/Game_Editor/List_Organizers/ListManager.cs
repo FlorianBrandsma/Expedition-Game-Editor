@@ -127,7 +127,7 @@ public class ListManager : MonoBehaviour
 
     public void OpenPath(Path new_path)
     {
-        EditorManager.editorManager.windows[0].InitializePath(new_path);
+        EditorManager.editorManager.windows[0].OpenPath(new_path);
     }
 
     public void SelectElement(int index, bool editable)

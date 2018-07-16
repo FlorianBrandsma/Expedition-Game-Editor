@@ -30,7 +30,8 @@ public class EditorField : MonoBehaviour
         if(target_editor != null)
         {
             //Activate necessary components to visualize the target editor
-            target_editor.GetComponent<EditorDependency>().Activate();
+            if(target_editor.GetComponent<EditorDependency>() != null)
+                target_editor.GetComponent<EditorDependency>().Activate();
 
             //First wave layout: Adjust size of fields and windows
             target_editor.InitializeLayout();
@@ -42,12 +43,13 @@ public class EditorField : MonoBehaviour
         if (target_editor != null)
         {
             //Activate target specific elements before second layout wave
-            target_editor.GetComponent<EditorDependency>().Activate();
+            //target_editor.GetComponent<EditorDependency>().Activate();
 
             target_editor.SetEditor();
 
             //Adjust size of dependency content based on active headers and footers
-            target_editor.GetComponent<EditorDependency>().SetDependency();
+            if (target_editor.GetComponent<EditorDependency>() != null)
+                target_editor.GetComponent<EditorDependency>().SetDependency();
 
             //Open the editor
             if (target_editor.controller_path.Equals(path))
@@ -59,13 +61,15 @@ public class EditorField : MonoBehaviour
     {
         if (target_editor != null)
         {
-            target_editor.GetComponent<EditorDependency>().CloseDependency();
+            if (target_editor.GetComponent<EditorDependency>() != null)
+                target_editor.GetComponent<EditorDependency>().CloseDependency();
 
             windowManager.baseController.ClosePath(active_path);
 
             target_editor.CloseLayout();
 
-            target_editor.GetComponent<EditorDependency>().Deactivate();
+            if (target_editor.GetComponent<EditorDependency>() != null)
+                target_editor.GetComponent<EditorDependency>().Deactivate();
 
             target_editor.CloseEditor();
 

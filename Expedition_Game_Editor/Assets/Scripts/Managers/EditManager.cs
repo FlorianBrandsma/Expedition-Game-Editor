@@ -20,7 +20,7 @@ public class EditManager : MonoBehaviour
             add_button.GetComponentInChildren<Text>().text = "Add " + rowManager.table;
 
             //TEMPORARY ID! Create placeholder and display in the future
-            add_button.onClick.AddListener(delegate { EditorManager.editorManager.windows[0].InitializePath(NewPath(rowManager.edit_path, 1)); });
+            add_button.onClick.AddListener(delegate { EditorManager.editorManager.windows[0].OpenPath(NewPath(rowManager.edit_path, 1)); });
         }
     }
 

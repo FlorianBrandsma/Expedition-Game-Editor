@@ -15,6 +15,8 @@ public class WindowManager : MonoBehaviour
 
     public EditorController main_target_editor { get; set; }
 
+    public WindowManager sibling_window;
+
     public void InitializeWindow()
     {
         foreach (EditorField field in editor_fields)
@@ -40,8 +42,16 @@ public class WindowManager : MonoBehaviour
         //Set everything along the path
         foreach (EditorField field in editor_fields)
             field.SetPath(path);
-            
-        active_path = path; 
+
+        active_path = path;
+    }
+
+    public void OpenPath(Path path)
+    {
+        InitializePath(path);
+
+        if (sibling_window != null)
+            sibling_window.ResetPath();
     }
 
     public void ResetPath()

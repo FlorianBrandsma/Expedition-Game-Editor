@@ -10,11 +10,20 @@ public class MiniButtonManager : MonoBehaviour
     public int[]    select_path;
     public string   type;
 
-    Button button;
+    public WindowManager windowManager;
 
     public void SetButtons()
     {
-        button = GetComponent<EditorController>().actionManager.AddMiniButton();
+        Button button = GetComponent<EditorController>().actionManager.AddMiniButton();
         button.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture2D>("Textures/Icons/" + type);
+
+        button.onClick.AddListener(delegate { OpenPath();});
+    }
+
+    void OpenPath()
+    {
+        Path path = new Path(new List<int>(), new List<int>());
+
+        windowManager.OpenPath(path.CreateEditorPath(select_path));
     }
 }

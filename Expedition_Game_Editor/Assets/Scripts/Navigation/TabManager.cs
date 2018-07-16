@@ -61,7 +61,7 @@ public class TabManager : MonoBehaviour
 
     void OpenPath(Path path, int selected_tab, int editor_depth)
     {
-        editorController.GetField().windowManager.InitializePath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
+        editorController.GetField().windowManager.OpenPath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
     }
 
     void SelectTab(int selected_tab)

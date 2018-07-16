@@ -58,7 +58,8 @@ public class EditorController : MonoBehaviour, IController
 
     public void InitializeLayout()
     {
-        editorLayout.InitializeLayout();
+        if(editorLayout != null)
+            editorLayout.InitializeLayout();
     }
 
     public void SetPath(Path new_path)
@@ -92,7 +93,8 @@ public class EditorController : MonoBehaviour, IController
 
     public void CloseLayout()
     {
-        editorLayout.CloseLayout();
+        if(editorLayout != null)
+            editorLayout.CloseLayout();
     }
 
     public void SetEditor()

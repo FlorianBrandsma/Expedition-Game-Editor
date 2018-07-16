@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class SliderManager : MonoBehaviour, IOverlay
 {
-    static public List<Slider> slider_list = new List<Slider>();
+    static public List<Slider> horizontal_slider_list = new List<Slider>();
+    static public List<Slider> vertical_slider_list = new List<Slider>();
     private List<Slider> slider_list_local = new List<Slider>();
 
     private Slider  horizontal_slider,
@@ -49,7 +50,7 @@ public class SliderManager : MonoBehaviour, IOverlay
     {
         if (overlayManager.vertical_max.gameObject.activeInHierarchy)
         {
-            vertical_slider = SpawnSlider("Vertical");
+            vertical_slider = SpawnVerticalSlider();
 
             slider_list_local.Add(vertical_slider);
 
@@ -60,7 +61,7 @@ public class SliderManager : MonoBehaviour, IOverlay
 
         if (overlayManager.horizontal_max.gameObject.activeInHierarchy)
         {
-            horizontal_slider = SpawnSlider("Horizontal");
+            horizontal_slider = SpawnHorizontalSlider();
 
             slider_list_local.Add(horizontal_slider);
 
@@ -85,17 +86,32 @@ public class SliderManager : MonoBehaviour, IOverlay
         DestroyImmediate(this);
     }
 
-    public Slider SpawnSlider(string axis)
+    public Slider SpawnHorizontalSlider()
     {
-        foreach(Slider slider in slider_list)
+        foreach(Slider slider in horizontal_slider_list)
         {
             if (!slider.gameObject.activeInHierarchy)
                 return slider;      
         }
 
-        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_" + axis));
+        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Horizontal"));
 
-        slider_list.Add(new_slider);
+        horizontal_slider_list.Add(new_slider);
+
+        return new_slider;
+    }
+
+    public Slider SpawnVerticalSlider()
+    {
+        foreach (Slider slider in vertical_slider_list)
+        {
+            if (!slider.gameObject.activeInHierarchy)
+                return slider;
+        }
+
+        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Vertical"));
+
+        vertical_slider_list.Add(new_slider);
 
         return new_slider;
     }
