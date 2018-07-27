@@ -16,10 +16,11 @@ using System.IO;
 
 public class RowManager : MonoBehaviour
 {
-    //0: Display
+    //0: Label
     //1: Buttons
     //2: Grid
-    public int sort_type;
+
+    public Enums.SortType sort_type;
 
     public List<int> id_list = new List<int>();
 
@@ -33,18 +34,21 @@ public class RowManager : MonoBehaviour
 
     public bool relative_index;
 
-    public int[] select_index;
-    public int[] edit_index;
+    public List<int> select_index;
+    public List<int> edit_index;
 
     public Path select_path { get; set; }
     public Path edit_path   { get; set; }
-
+    
     public void InitializeRows()
     {
         id_list.Clear();
 
         for (int i = 0; i < id_count; i++)
-            id_list.Add(i + 1);       
+            id_list.Add(i + 1);
+
+        //Init select
+        //Init edit
     }
 
     public void SetRows()
@@ -64,12 +68,10 @@ public class RowManager : MonoBehaviour
             Path this_path = GetComponent<IController>().GetPath();
             //Must be: path it's currently on (using depth)
 
-            List<int> new_id_path = CombinePath(this_path.id, new int[] { selected_id });
+            List<int> new_id_path = CombinePath(this_path.id, new List<int> { selected_id });
 
             select_path = new Path(CombinePath(this_path.editor, select_index), new_id_path);
-            edit_path = new Path(CombinePath(this_path.editor, edit_index), new_id_path);
-
-            //Debug.Log(EditorManager.PathString(select_path));
+            edit_path = new Path(CombinePath(this_path.editor, edit_index), new_id_path); 
         }
         else
         {
@@ -79,43 +81,42 @@ public class RowManager : MonoBehaviour
             //4. Create new ID (fill with 0s to the length of the new path. replace last index with selected id)
 
             select_path = CreatePath(select_index, selected_id);
-            edit_path = CreatePath(edit_index, selected_id);
+            edit_path = CreatePath(edit_index, selected_id);        
         }
 
-        //Pass all possible information to the List
-        //listManager.SetupList(sort_type, table, id_list, row_size, select_path, edit_path, (edit_index.Length > 0), zigzag, get_select, set_select);
-
         ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
-        listManager.InitializeList(this, id_list, select_path, edit_path);
+
+        listManager.InitializeList(this);
 
         GetComponent<ListProperties>().SetList();
     }
 
-    private Path CreatePath(int[] new_editor, int new_id)
+    private Path CreatePath(List<int> new_editor, int new_id)
     {
         Path new_path = new Path(new List<int>(), new List<int>());
 
-        for (int i = 0; i < new_editor.Length; i++)
+        for (int i = 0; i < new_editor.Count; i++)
         {
             new_path.editor.Add(new_editor[i]);
 
-            if(i < new_editor.Length - 1)
+            if(i < new_editor.Count - 1)
                 new_path.id.Add(0);
         }
+
+        if(new_path.id.Count > 0)
+            new_path.id[new_path.id.Count - 1] = new_id;
 
         return new_path;
     }
 
-    private List<int> CombinePath(List<int> path, int[] new_index)
+    private List<int> CombinePath(List<int> path, List<int> new_index)
     {
         List<int> new_path = new List<int>();
 
         for (int i = 0; i < path.Count; i++)
-        {
             new_path.Add(path[i]);
-        }
 
-        for(int i = 0; i < new_index.Length; i++)
+        for (int i = 0; i < new_index.Count; i++)
         {
             if (relative_index)
                 new_path.Add(new_index[i]);

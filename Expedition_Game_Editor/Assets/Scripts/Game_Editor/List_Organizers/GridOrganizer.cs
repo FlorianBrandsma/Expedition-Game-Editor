@@ -16,13 +16,11 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     static public List<RectTransform> selection_list = new List<RectTransform>();
     private RectTransform element_selection;
 
-    private Path edit_path;
-
     private float base_size;
 
     private Vector2 list_size;
 
-    private bool get_select, set_select;
+    private Enums.SelectionType selectionType;
 
     private bool fit_axis;
 
@@ -37,12 +35,12 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
     {
         listManager = GetComponent<ListManager>();
-
-        edit_path = new_edit_path;
     }
 
     public void SetProperties(ListProperties listProperties)
     {
+        selectionType = listProperties.selectionType;
+
         visible_only = listProperties.visible_only;
         
         fit_axis = listProperties.fit_axis;
@@ -131,16 +129,19 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                     */
                 
                 RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
-
                 element_list_local.Add(new_element);
 
-                new_element.name = listManager.table + " " + i;
+                SelectionElement selectionElement = new_element.GetComponent<SelectionElement>();
+                selectionElement.InitializeSelection(listManager, i, selectionType);
 
-                SetElement(new_element, i);
+                //Debugging
+                new_element.name = listManager.table + " " + i;
 
                 int index = i;
 
-                new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(index, listManager.editable); });
+                new_element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(selectionElement); });
+
+                SetElement(new_element, selectionElement.id);
 
                 i++;
 
@@ -156,25 +157,27 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         SetRows(filter);
     }
 
-    public void SelectElement(int id)
+    void SetElement(RectTransform element, int id)
     {
-        if (element_selection == null)
-        {
-            element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/Grid/Grid_Selection"));
-            element_selection.SetAsFirstSibling();
-        }
+        int index = listManager.id_list.IndexOf(id);
 
-        SetElement(element_selection, id);
-    }
-
-    void SetElement(RectTransform element, int index)
-    {
         element.sizeDelta = new Vector2(base_size, base_size);
 
         element.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
                                                         -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
 
         element.gameObject.SetActive(true);
+    }
+
+    public SelectionElement GetElement(int index)
+    {
+        return element_list_local[index].GetComponent<SelectionElement>();
+    }
+
+    public void SelectElement(SelectionElement selection)
+    {
+        if (selectionType != Enums.SelectionType.None)
+            selection.SelectElement();
     }
 
     public void ResetSelection()

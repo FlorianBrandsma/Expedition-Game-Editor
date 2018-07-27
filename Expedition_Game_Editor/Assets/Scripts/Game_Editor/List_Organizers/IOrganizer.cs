@@ -9,7 +9,7 @@ public interface IOrganizer
     void SetListSize(float new_size);
     void SetRows(List<int> id_list);
     void ResetRows(List<int> filter);
-    void SelectElement(int id);
+    SelectionElement GetElement(int index);
     Vector2 GetListSize(List<int> id_list, bool exact);
     void CloseList();
 }

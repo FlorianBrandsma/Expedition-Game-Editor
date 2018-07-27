@@ -27,7 +27,7 @@ public class ListManager : MonoBehaviour
     public Vector2  list_size { get; set; }
     public float    base_size { get; set; }
 
-    private bool selectable;
+    private bool auto_select;
 
     public int selected_id;
 
@@ -40,9 +40,11 @@ public class ListManager : MonoBehaviour
     public OverlayManager overlayManager;
     public ActionManager actionManager;
 
+    public SelectionField selectionField;
+
     private Button edit_button;
 
-    public void InitializeList(RowManager new_rowManager, List<int> new_id_list, Path new_select_path, Path new_edit_path)
+    public void InitializeList(RowManager new_rowManager)
     {
         rowManager = new_rowManager;
 
@@ -50,16 +52,17 @@ public class ListManager : MonoBehaviour
 
         table = rowManager.table;
         
-        select_path = new_select_path;
-        edit_path = new_edit_path;
+        select_path = rowManager.select_path;
+        edit_path = rowManager.edit_path;
 
-        editable = (rowManager.edit_index.Length > 0);
+        if(actionManager != null)
+            editable = (rowManager.edit_index.Count > 0);
 
         switch(rowManager.sort_type)
         {
-            case 0: organizer = gameObject.AddComponent<DisplayOrganizer>(); break;
-            case 1: organizer = gameObject.AddComponent<ListOrganizer>(); break;
-            case 2: organizer = gameObject.AddComponent<GridOrganizer>(); break;
+            case Enums.SortType.Panel: organizer = gameObject.AddComponent<PanelOrganizer>();   break;
+            case Enums.SortType.List:  organizer = gameObject.AddComponent<ListOrganizer>();    break;
+            case Enums.SortType.Grid:  organizer = gameObject.AddComponent<GridOrganizer>();    break;
             default: break;
         }
 
@@ -79,7 +82,7 @@ public class ListManager : MonoBehaviour
         main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
         main_list.GetComponent<ScrollRect>().vertical = listProperties.vertical;
 
-        selectable = listProperties.selectable;
+        auto_select = listProperties.auto_select;
 
         organizer.SetProperties(listProperties);
 
@@ -113,6 +116,13 @@ public class ListManager : MonoBehaviour
     public void SetRows()
     {
         organizer.SetRows(id_list);
+
+        //Automatically selects and highlights an element on startup by id
+        if (controller.GetField().target_editor != controller.GetField().windowManager.main_target_editor)
+        {
+            if (auto_select)
+                AutoSelectElement(controller.GetField().windowManager.main_target_editor.id);
+        }
     }
 
     public void ResetRows()
@@ -130,41 +140,45 @@ public class ListManager : MonoBehaviour
         EditorManager.editorManager.windows[0].OpenPath(new_path);
     }
 
-    public void SelectElement(int index, bool editable)
+    public void AutoSelectElement(int id)
     {
-        if (selectable)
-        {
-            //Debug.Log("Select " + index);
+        organizer.GetElement(id_list.IndexOf(id)).SelectElement();
+    }
 
-            if (editable)
-                EnableEditing(edit_path);
+    public void ActivateSelection()
+    {
+        if (editable)
+            EnableEditing(edit_path);
+    }
 
-            organizer.SelectElement(index);
-        }
-
-        //NavigationManager.SelectElement(index);
+    public void DeactivateSelection(bool reset)
+    {
+        if (editable)
+            DisableEditing(reset);
     }
 
     public void EnableEditing(Path edit_path)
     {
-        //-!MAYBE
-        //reset action buttons
-        //add all buttons to button manager
-        //assign path in button manager
-
-        //move "newpath" to button manager
-        //!-
-
-        if (edit_button != null)
-            edit_button.onClick.RemoveAllListeners();
-         else 
+        if (edit_button == null)
             edit_button = actionManager.AddButton();
 
         edit_button.GetComponentInChildren<Text>().text = "Edit";
 
-        edit_button.onClick.AddListener(delegate { OpenPath(NewPath(edit_path, SelectionManager.set_id)); });
+        edit_button.onClick.AddListener(delegate { OpenPath(NewPath(edit_path, selectionField.selection.id)); });
     }
         
+    public void DisableEditing(bool reset)
+    {
+        if(edit_button != null)
+        {
+            edit_button.onClick.RemoveAllListeners();
+
+            actionManager.RemoveAction(edit_button.GetComponent<RectTransform>(), reset);
+
+            edit_button = null;
+        }
+    }
+
     public Path NewPath(Path path, int id)
     {
         Path new_path = new Path(new List<int>(), new List<int>());
@@ -186,7 +200,7 @@ public class ListManager : MonoBehaviour
 
     public void CloseList()
     {
-        edit_button = null;
+        DeactivateSelection(false);
 
         main_list.GetComponent<ScrollRect>().horizontal = false;
         main_list.GetComponent<ScrollRect>().vertical = false;
@@ -203,11 +217,15 @@ public class ListManager : MonoBehaviour
             if (!element.gameObject.activeInHierarchy)
             {
                 element.transform.SetParent(list_parent, false);
+
+                element.GetComponent<SelectionElement>().selectionField = selectionField;
+
                 return element;
             }     
         }
 
         RectTransform new_element = Instantiate(element_prefab);
+        new_element.GetComponent<SelectionElement>().selectionField = selectionField;
 
         new_element.transform.SetParent(list_parent, false);
 
@@ -223,8 +241,8 @@ public class ListManager : MonoBehaviour
             list[i].gameObject.SetActive(false);
             list[i].GetComponent<Button>().onClick.RemoveAllListeners();
 
-            if (list[i].GetComponent<ListElement>().edit_button != null)
-                list[i].GetComponent<ListElement>().edit_button.onClick.RemoveAllListeners();
+            if (list[i].GetComponent<SelectionElement>().edit_button != null)
+                list[i].GetComponent<SelectionElement>().edit_button.onClick.RemoveAllListeners();
         }
     }
 }

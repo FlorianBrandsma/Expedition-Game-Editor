@@ -1,52 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-public class Path
-{
-    public List<int> editor { get; set; }
-    public List<int> id { get; set; }
-
-    public Path(List<int> new_editor, List<int> new_id)
-    {
-        editor = new_editor;
-        id = new_id;
-    }
-
-    public void Clear()
-    {
-        editor.Clear();
-        id.Clear();
-    }
-
-    public bool Equals(Path path)
-    {
-        if (!editor.SequenceEqual(path.editor))
-            return false;
-
-        if (!id.SequenceEqual(path.id))
-            return false;
-
-        return true;
-    }
-
-    public Path CreateEditorPath(int[] new_editor)
-    {
-        Path path = new Path(new List<int>(), new List<int>());
-
-        for(int i = 0; i < new_editor.Length; i++)
-        {
-            path.editor.Add(new_editor[i]);
-            path.id.Add(0);
-        }
-
-        return path;
-    }
-}
 
 public class EditorManager : MonoBehaviour
 {
@@ -70,9 +23,9 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        windows[0].OpenPath(new Path(new List<int> { 0, 0 }, new List<int> { 0, 0 }));
-        windows[1].OpenPath(new Path(new List<int> { 0 }, new List<int> { 0 }));
-        windows[2].OpenPath(new Path(new List<int> {  }, new List<int> {  }));
+        windows[0].InitializePath(new Path(new List<int> { 0, 0 }, new List<int> { 0, 0 }));
+        windows[1].InitializePath(new Path(new List<int> { 0 }, new List<int> { 0 }));
+        windows[2].InitializePath(new Path(new List<int> { }, new List<int> { }));
     }
 
     private void Update()
@@ -132,3 +85,6 @@ public class EditorManager : MonoBehaviour
         return str;
     }
 }
+
+
+

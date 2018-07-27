@@ -15,10 +15,8 @@ public class ListProperties : MonoBehaviour
     //Was false in SecondaryWindow
     */
 
-    public bool selectable;
     public bool auto_select;
-
-    public bool get_select, set_select;
+    public Enums.SelectionType selectionType;
 
     //Only spawn visible elements
     public bool visible_only;
@@ -54,23 +52,11 @@ public class ListProperties : MonoBehaviour
         controller = GetComponent<IController>();
         main_list.GetComponent<ListManager>().SetProperties(this);
 
-        main_list.GetComponent<ListManager>().SetListSize(base_size);
-
-        //Automatically selects and highlights an element on startup by id
-        if (controller.GetField().target_editor != controller.GetField().windowManager.main_target_editor)
-        {
-            if (auto_select)
-                SelectElement(controller.GetField().windowManager.main_target_editor.id);
-        }     
+        main_list.GetComponent<ListManager>().SetListSize(base_size);  
     }
        
     public void ResetList()
     {
         main_list.GetComponent<ListManager>().ResetRows();
-    }
-
-    void SelectElement(int id)
-    {
-        main_list.GetComponent<ListManager>().SelectElement(id, false);
-    }  
+    } 
 }

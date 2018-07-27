@@ -14,25 +14,23 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     static public List<RectTransform> selection_list = new List<RectTransform>();
     private RectTransform element_selection;
 
-    private Path edit_path;
+    private Enums.SelectionType selectionType;
 
     private float base_size;
 
     private bool visible_only;
-
-    private bool get_select, set_select;
 
     ListManager listManager;
 
     public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
     {
         listManager = GetComponent<ListManager>();
-
-        edit_path = new_edit_path;
     }
 
     public void SetProperties(ListProperties listProperties)
     {
+        selectionType = listProperties.selectionType;
+
         visible_only = listProperties.visible_only;
     }
 
@@ -56,23 +54,21 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             //    break;
 
             RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
-
             element_list_local.Add(new_element);
-          
-            SetElement(new_element, i);
+
+            SelectionElement selectionElement = new_element.GetComponent<SelectionElement>();
+            selectionElement.InitializeSelection(listManager, i, selectionType);
 
             string header = listManager.table + " " + i;
+            selectionElement.header.text = header;
 
+            //Debugging
             new_element.name = header;
 
-            ListElement list_element = new_element.GetComponent<ListElement>();
-            list_element.header.text = header;
-
-            //OpenEditor
-            int index = i;
-            
             //Review
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.SelectElement(index, listManager.editable); });
+            new_element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(selectionElement); });
+
+            SetElement(new_element, selectionElement.id);
         }
     }
 
@@ -82,8 +78,10 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         SetRows(filter);
     }
 
-    void SetElement(RectTransform element, int index)
+    void SetElement(RectTransform element, int id)
     {
+        int index = listManager.id_list.IndexOf(id);
+
         element.anchorMax = new Vector2(1, 1);
 
         element.sizeDelta = new Vector2(element.sizeDelta.x, base_size);
@@ -93,20 +91,20 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         element.gameObject.SetActive(true);
     }
 
+    public SelectionElement GetElement(int index)
+    {
+        return element_list_local[index].GetComponent<SelectionElement>();
+    }
+
     float ListPosition(int i)
     {
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (base_size * i))).y;
     }
 
-    public void SelectElement(int index)
+    public void SelectElement(SelectionElement selection)
     {
-        if (element_selection == null)
-        {
-            element_selection = listManager.SpawnElement(selection_list, Resources.Load<RectTransform>("Editor/Organizer/List/List_Selection"));
-            element_selection.SetAsFirstSibling();
-        }
-
-        SetElement(element_selection, index);
+        if(selectionType != Enums.SelectionType.None)
+            selection.SelectElement();
     }
 
     public void ResetSelection()

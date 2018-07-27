@@ -13,7 +13,7 @@ public class EditManager : MonoBehaviour
     {
         RowManager rowManager = GetComponent<RowManager>();
 
-        if(rowManager.edit_index.Length > 0)
+        if(rowManager.edit_index.Count > 0)
         {
             Button add_button = GetComponent<EditorController>().actionManager.AddButton();
 
@@ -26,8 +26,9 @@ public class EditManager : MonoBehaviour
 
     public Path NewPath(Path path, int id)
     {
+        
         Path new_path = new Path(new List<int>(), new List<int>());
-
+        
         for (int i = 0; i < path.editor.Count; i++)
             new_path.editor.Add(path.editor[i]);
 
@@ -41,5 +42,6 @@ public class EditManager : MonoBehaviour
             new_path.id[new_path.id.Count - 1] = id;
 
         return new_path;
+        
     }
 }

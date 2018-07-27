@@ -59,6 +59,9 @@ public class EditorField : MonoBehaviour
 
     public void ClosePath(Path active_path, Path new_path)
     {
+        if (GetComponent<SelectionField>() != null)
+            GetComponent<SelectionField>().DeactivateSelection();
+
         if (target_editor != null)
         {
             if (target_editor.GetComponent<EditorDependency>() != null)

@@ -67,11 +67,23 @@ public class ActionManager : MonoBehaviour
         return new_action;
     }
 
-    public void AddActions(RectTransform new_action)
+    public void AddActions(RectTransform action)
     {
-        actions.Add(new_action);
+        actions.Add(action);
 
         SortActions();
+    }
+
+    public void RemoveAction(RectTransform action, bool reset)
+    {
+        if(action.gameObject.activeInHierarchy)
+        {
+            actions.RemoveAt(actions.IndexOf(action));
+            action.gameObject.SetActive(false);
+        }
+        
+        if (reset)
+            SortActions();
     }
 
     public void CloseActions()

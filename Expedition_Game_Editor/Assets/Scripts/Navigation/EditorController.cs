@@ -67,6 +67,9 @@ public class EditorController : MonoBehaviour, IController
         if (GetComponent<MiniButtonManager>() != null)
             GetComponent<MiniButtonManager>().SetButtons();
 
+        if (GetComponent<DisplayManager>() != null)
+            GetComponent<DisplayManager>().InitializeDisplay();
+
         if (GetComponent<LanguageManager>() != null)
             GetComponent<LanguageManager>().SetLanguages();
 

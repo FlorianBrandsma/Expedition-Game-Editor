@@ -25,6 +25,10 @@ public class WindowManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
+        //Remove selection
+        //Don't remove selection on _every_ path change
+        //SelectionManager.selectionManager.DeactivateSelection();
+
         //Close the initialization of previous path
         foreach (EditorField field in editor_fields)
             field.ClosePath(active_path, path);

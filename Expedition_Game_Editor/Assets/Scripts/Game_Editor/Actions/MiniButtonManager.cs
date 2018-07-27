@@ -7,8 +7,8 @@ using System.IO;
 
 public class MiniButtonManager : MonoBehaviour
 {
-    public int[]    select_path;
-    public string   type;
+    public List<int>    select_path;
+    public string       type;
 
     public WindowManager windowManager;
 
@@ -24,6 +24,6 @@ public class MiniButtonManager : MonoBehaviour
     {
         Path path = new Path(new List<int>(), new List<int>());
 
-        windowManager.OpenPath(path.CreateEditorPath(select_path));
+        windowManager.OpenPath(path.CreateEdit(select_path));
     }
 }
