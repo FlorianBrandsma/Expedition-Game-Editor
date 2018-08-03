@@ -19,7 +19,14 @@ public class Enums
     public enum SelectionType
     {
         None,
+        Select,
+        Automatic,
+    };
+
+    public enum SelectionProperty
+    {
+        None,
         Get,
         Set,
-    };
+    }
 }

@@ -18,7 +18,10 @@ public class ListManager : MonoBehaviour
 
     public List<int> id_list = new List<int>();
 
+    public PathManager pathManager { get; set; }
+
     public string table;
+    public int type;
 
     public RectTransform    list_area { get; set; }
     public RectTransform    main_list,
@@ -27,38 +30,41 @@ public class ListManager : MonoBehaviour
     public Vector2  list_size { get; set; }
     public float    base_size { get; set; }
 
-    private bool auto_select;
+    public Enums.SelectionProperty selectionProperty { get; set; }
+    public Enums.SelectionType selectionType { get; set; }
+    private bool always_on;
 
     public int selected_id;
 
-    Vector3 listMin, listMax;
-
     public bool source;
 
-    public RowManager rowManager { get; set; }
+    public ListData listData { get; set; }
 
     public OverlayManager overlayManager;
     public ActionManager actionManager;
 
-    public SelectionField selectionField;
+    public SelectionGroup selectionGroup { get; set; }
 
     private Button edit_button;
 
-    public void InitializeList(RowManager new_rowManager)
+    public void InitializeList(ListData new_listData)
     {
-        rowManager = new_rowManager;
+        listData = new_listData;
 
-        id_list = new List<int>(rowManager.id_list);
+        id_list = new List<int>(listData.id_list);
 
-        table = rowManager.table;
-        
-        select_path = rowManager.select_path;
-        edit_path = rowManager.edit_path;
+        table = listData.data.table;
+        type  = listData.data.type;
 
+        select_path = listData.select_path;
+        edit_path = listData.edit_path;
+
+        /*
         if(actionManager != null)
-            editable = (rowManager.edit_index.Count > 0);
+            editable = (rowManager.pathManager.edit.editor.Count > 0);
+        */
 
-        switch(rowManager.sort_type)
+        switch(listData.sort_type)
         {
             case Enums.SortType.Panel: organizer = gameObject.AddComponent<PanelOrganizer>();   break;
             case Enums.SortType.List:  organizer = gameObject.AddComponent<ListOrganizer>();    break;
@@ -75,6 +81,8 @@ public class ListManager : MonoBehaviour
     {
         controller = listProperties.controller;
 
+        selectionGroup = controller.field.selectionGroup;
+
         list_area = listProperties.list_area;
 
         base_size = listProperties.base_size;
@@ -82,7 +90,14 @@ public class ListManager : MonoBehaviour
         main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
         main_list.GetComponent<ScrollRect>().vertical = listProperties.vertical;
 
-        auto_select = listProperties.auto_select;
+        selectionProperty = listProperties.selectionProperty;
+        selectionType = listProperties.selectionType;
+        always_on = listProperties.always_on;
+ 
+        /*
+        if(selectionType != Enums.SelectionType.None && selectionProperty != Enums.SelectionProperty.Set)
+            Debug.Log(this + ":" + EditorManager.PathString(pathManager.structure));
+        */
 
         organizer.SetProperties(listProperties);
 
@@ -102,9 +117,6 @@ public class ListManager : MonoBehaviour
 
         list_size = organizer.GetListSize(id_list, false);
 
-        //listMin = main_list.TransformPoint(new Vector2(0, main_list.rect.min.y));
-        //listMax = main_list.TransformPoint(new Vector2(0, main_list.rect.max.y));
-
         main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
         main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
 
@@ -117,12 +129,16 @@ public class ListManager : MonoBehaviour
     {
         organizer.SetRows(id_list);
 
-        //Automatically selects and highlights an element on startup by id
-        if (controller.GetField().target_editor != controller.GetField().windowManager.main_target_editor)
+        if (selectionType == Enums.SelectionType.Automatic)
         {
-            if (auto_select)
-                AutoSelectElement(controller.GetField().windowManager.main_target_editor.id);
+            AutoSelectElement(controller.field.windowManager.main_target_editor.data.id);
         }
+
+        //Automatically selects and highlights an element on startup by id
+        if (controller.field.target_editor != controller.field.windowManager.main_target_editor)
+        {
+            
+        }    
     }
 
     public void ResetRows()
@@ -135,13 +151,11 @@ public class ListManager : MonoBehaviour
         overlayManager.UpdateOverlay();
     }
 
-    public void OpenPath(Path new_path)
-    {
-        EditorManager.editorManager.windows[0].OpenPath(new_path);
-    }
-
     public void AutoSelectElement(int id)
     {
+        if (id <= 0)
+            id = 1;
+
         organizer.GetElement(id_list.IndexOf(id)).SelectElement();
     }
 
@@ -159,12 +173,14 @@ public class ListManager : MonoBehaviour
 
     public void EnableEditing(Path edit_path)
     {
+        /*
         if (edit_button == null)
             edit_button = actionManager.AddButton();
 
         edit_button.GetComponentInChildren<Text>().text = "Edit";
 
-        edit_button.onClick.AddListener(delegate { OpenPath(NewPath(edit_path, selectionField.selection.id)); });
+        edit_button.onClick.AddListener(delegate { OpenPath(NewPath(edit_path, selectionGroup.selection.data.id)); });
+        */
     }
         
     public void DisableEditing(bool reset)
@@ -183,14 +199,14 @@ public class ListManager : MonoBehaviour
     {
         Path new_path = new Path(new List<int>(), new List<int>());
 
-        for (int i = 0; i < path.editor.Count; i++)
-            new_path.editor.Add(path.editor[i]);
+        for (int i = 0; i < path.structure.Count; i++)
+            new_path.structure.Add(path.structure[i]);
 
         for (int i = 0; i < path.id.Count; i++)
             new_path.id.Add(path.id[i]);
 
         //Trouble (edit: is it?)
-        if (new_path.id.Count < new_path.editor.Count)
+        if (new_path.id.Count < new_path.structure.Count)
             new_path.id.Add(id);
         else
             new_path.id[new_path.id.Count - 1] = id;
@@ -210,39 +226,44 @@ public class ListManager : MonoBehaviour
         organizer.CloseList();
     }
 
-    public RectTransform SpawnElement(List<RectTransform> list, RectTransform element_prefab)
+    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, int index)
     {
-        foreach(RectTransform element in list)
+        foreach(SelectionElement element in list)
         {
             if (!element.gameObject.activeInHierarchy)
             {
-                element.transform.SetParent(list_parent, false);
-
-                element.GetComponent<SelectionElement>().selectionField = selectionField;
-
+                SetElement(element, index);
                 return element;
             }     
         }
 
-        RectTransform new_element = Instantiate(element_prefab);
-        new_element.GetComponent<SelectionElement>().selectionField = selectionField;
+        SelectionElement new_element = Instantiate(element_prefab);
 
-        new_element.transform.SetParent(list_parent, false);
+        SetElement(new_element, index);
 
         list.Add(new_element);
 
         return new_element;
     }
 
-    public void ResetElement(List<RectTransform> list)
+    public void SetElement(SelectionElement element, int index)
+    {
+        element.InitializeSelection(this, index);
+
+        element.selectionGroup = selectionGroup;
+
+        element.transform.SetParent(list_parent, false);
+    }
+
+    public void ResetElement(List<SelectionElement> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
             list[i].gameObject.SetActive(false);
             list[i].GetComponent<Button>().onClick.RemoveAllListeners();
 
-            if (list[i].GetComponent<SelectionElement>().edit_button != null)
-                list[i].GetComponent<SelectionElement>().edit_button.onClick.RemoveAllListeners();
+            if (list[i].edit_button != null)
+                list[i].edit_button.onClick.RemoveAllListeners();
         }
     }
 }

@@ -18,10 +18,15 @@ public class EditorField : MonoBehaviour
 
     public RectTransform field_rect { get; set; }
 
+    public SelectionGroup selectionGroup { get; set; }
+
     public void InitializeField(WindowManager new_windowManager)
     {
         field_rect = GetComponent<RectTransform>();
 
+        selectionGroup = GetComponent<SelectionGroup>();
+
+        //Remove this later
         windowManager = new_windowManager;
     }
 
@@ -52,15 +57,15 @@ public class EditorField : MonoBehaviour
                 target_editor.GetComponent<EditorDependency>().SetDependency();
 
             //Open the editor
-            if (target_editor.controller_path.Equals(path))
+            if (target_editor.data.path.Equals(path))
                 target_editor.OpenEditor();
         }
     }
 
     public void ClosePath(Path active_path, Path new_path)
     {
-        if (GetComponent<SelectionField>() != null)
-            GetComponent<SelectionField>().DeactivateSelection();
+        if (GetComponent<SelectionGroup>() != null)
+            GetComponent<SelectionGroup>().Deactivate();
 
         if (target_editor != null)
         {

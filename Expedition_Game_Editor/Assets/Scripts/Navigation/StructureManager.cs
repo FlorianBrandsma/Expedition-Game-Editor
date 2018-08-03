@@ -49,7 +49,7 @@ public class StructureManager : MonoBehaviour
 
         structure_dropdown.value = id_list.IndexOf(id);
 
-        structure_dropdown.onValueChanged.AddListener(delegate { OpenStructure(NewPath(GetComponent<EditorController>().controller_path, depth, structure_dropdown)); });
+        structure_dropdown.onValueChanged.AddListener(delegate { OpenStructure(NewPath(GetComponent<EditorController>().data.path, depth, structure_dropdown)); });
 
         //Open Editor
     }
@@ -63,9 +63,9 @@ public class StructureManager : MonoBehaviour
     {
         string path_string = "editor: ";
 
-        for(int i = 0; i < path.editor.Count; i++)
+        for(int i = 0; i < path.structure.Count; i++)
         {
-            path_string += path.editor[i] + ",";
+            path_string += path.structure[i] + ",";
         }
 
         path_string += "id: ";
@@ -80,10 +80,10 @@ public class StructureManager : MonoBehaviour
 
     public Path NewPath(Path path, int depth, Dropdown dropdown)
     {
-        Path new_path = new Path(new List<int>(), new List<int>());
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
 
         for (int i = 0; i < depth; i++)
-            new_path.editor.Add(path.editor[i]);
+            new_path.structure.Add(path.structure[i]);
 
         for (int i = 0; i < depth; i++)
             new_path.id.Add(path.id[i]);

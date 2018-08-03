@@ -8,11 +8,13 @@ using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer
 {
-    static public List<RectTransform> element_list = new List<RectTransform>();
-    private List<RectTransform> element_list_local = new List<RectTransform>();
+    static public List<SelectionElement> element_list = new List<SelectionElement>();
+    private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    static public List<RectTransform> selection_list = new List<RectTransform>();
-    private RectTransform element_selection;
+    //static public List<SelectionElement> selection_list = new List<SelectionElement>();
+    //private SelectionElement element_selection;
+
+    private Enums.SelectionProperty selectionProperty;
 
     private bool visible_only;
     private bool zigzag;
@@ -43,6 +45,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public void SetProperties(ListProperties listProperties)
     {
+        selectionProperty = listProperties.selectionProperty;
+
         visible_only = listProperties.visible_only;
         zigzag = listProperties.zigzag;
     }
@@ -126,40 +130,29 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public void SetRows(List<int> id_list)
     {
-        RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/Panel/Panel_Prefab");
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Panel/Panel_Prefab");
 
         for (int i = 0; i < id_list.Count; i++)
         {
-            //if (ListPosition(i) > listMin.y)
-            //    break;
-            
-            RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
-            element_list_local.Add(new_element);
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, i);
+            element_list_local.Add(element);
 
-            SelectionElement selectionElement = new_element.GetComponent<SelectionElement>();
-            selectionElement.InitializeSelection(listManager, i, Enums.SelectionType.None);
-
-            string new_header = listManager.table + " " + i;
+            string new_header = element.data.table + " " + i;
             string content = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
-            //If this header is the same as the previous one
-            if (i > 0 && new_header == element_list_local[i-1].GetComponent<SelectionElement>().header.text)
-                new_header = "";
-
-            selectionElement.id_text.text = id_list[i].ToString();
-            selectionElement.header.text = new_header;
-            selectionElement.content.text = content;
+            element.id_text.text = element.data.id.ToString();
+            element.header.text = new_header;
+            element.content.text = content;
 
             //Debugging
-            new_element.name = new_header;
+            element.name = new_header;
 
-            //OpenEditor
-            int id = id_list[i];
+            /*
+            //Tackle this fella next
+            
+            */
 
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { listManager.OpenPath(listManager.NewPath(select_path, id)); });
-            selectionElement.edit_button.onClick.AddListener(delegate { listManager.OpenPath(listManager.NewPath(edit_path, id)); });
-
-            SetElement(new_element, selectionElement.id);
+            SetElement(element);
         }
     }
 
@@ -169,9 +162,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
         SetRows(filter);
     }
 
-    void SetElement(RectTransform rect, int id)
+    void SetElement(SelectionElement element)
     {
-        int index = listManager.id_list.IndexOf(id);
+        RectTransform rect = element.GetComponent<RectTransform>();
+
+        int index = listManager.id_list.IndexOf(element.data.id);
 
         rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.list_parent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
         rect.offsetMax = new Vector2(rect.offsetMax.x, -row_offset_max[index]);
@@ -185,7 +180,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public SelectionElement GetElement(int index)
     {
-        return element_list_local[index].GetComponent<SelectionElement>();
+        return element_list_local[index];
     }
 
     float ListPosition(int i)
@@ -195,10 +190,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public void CloseList()
     {
-        /*
-        if(element_selection != null)
-            ResetSelection();
-        */
         listManager.ResetElement(element_list_local);
 
         DestroyImmediate(this);

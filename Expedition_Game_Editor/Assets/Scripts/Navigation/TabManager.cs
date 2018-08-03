@@ -45,7 +45,7 @@ public class TabManager : MonoBehaviour
             new_tab.gameObject.SetActive(true);
         }
         
-        SelectTab(path.editor[editor_depth]);
+        SelectTab(path.structure[editor_depth]);
     }
     
     void SetAnchors(int index, int tabs)
@@ -61,7 +61,7 @@ public class TabManager : MonoBehaviour
 
     void OpenPath(Path path, int selected_tab, int editor_depth)
     {
-        editorController.GetField().windowManager.OpenPath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
+        editorController.editorField.windowManager.OpenPath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
     }
 
     void SelectTab(int selected_tab)
@@ -77,11 +77,11 @@ public class TabManager : MonoBehaviour
 
     Path TrimPath(Path path, int editor_depth)
     {
-        Path new_path = new Path(new List<int>(), new List<int>());
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
 
         for (int i = 0; i < editor_depth; i++)
         {
-            new_path.editor.Add(path.editor[i]);
+            new_path.structure.Add(path.structure[i]);
             new_path.id.Add(path.id[i]);
         }
 
@@ -91,21 +91,21 @@ public class TabManager : MonoBehaviour
     Path NewPath(Path path, int index, int editor_depth)
     {
         //Copy the old editor. Any changes made to "path" are visible throughout the entire code
-        Path new_path = new Path(new List<int>(), new List<int>());
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
 
-        for (int i = 0; i < path.editor.Count; i++)
+        for (int i = 0; i < path.structure.Count; i++)
         {
-            new_path.editor.Add(path.editor[i]);
+            new_path.structure.Add(path.structure[i]);
             new_path.id.Add(path.id[i]);
         }
 
         //Set the editor option based on the tab index
-        new_path.editor[editor_depth] = index;
+        new_path.structure[editor_depth] = index;
 
         //In case there are more options than the current editor depth
         //Make it 0 so it always opens the first tab
-        if (new_path.editor.Count > (editor_depth + 1))
-            new_path.editor[new_path.editor.Count - 1] = 0;
+        if (new_path.structure.Count > (editor_depth + 1))
+            new_path.structure[new_path.structure.Count - 1] = 0;
 
         return new_path;
     }

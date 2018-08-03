@@ -8,12 +8,10 @@ using System.Linq;
 
 public class ListOrganizer : MonoBehaviour, IOrganizer
 {
-    static public List<RectTransform> element_list = new List<RectTransform>();
-    private List<RectTransform> element_list_local = new List<RectTransform>();
+    static public List<SelectionElement> element_list = new List<SelectionElement>();
+    private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    static public List<RectTransform> selection_list = new List<RectTransform>();
-    private RectTransform element_selection;
-
+    private Enums.SelectionProperty selectionProperty;
     private Enums.SelectionType selectionType;
 
     private float base_size;
@@ -29,6 +27,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void SetProperties(ListProperties listProperties)
     {
+        selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
 
         visible_only = listProperties.visible_only;
@@ -46,29 +45,23 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
     public void SetRows(List<int> id_list)
     {
-        RectTransform element_prefab = Resources.Load<RectTransform>("Editor/Organizer/List/List_Prefab");
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/List/List_Prefab");
 
         for (int i = 0; i < id_list.Count; i++)
         {
-            //if (ListPosition(i) > listMin.y)
-            //    break;
-
-            RectTransform new_element = listManager.SpawnElement(element_list, element_prefab);
-            element_list_local.Add(new_element);
-
-            SelectionElement selectionElement = new_element.GetComponent<SelectionElement>();
-            selectionElement.InitializeSelection(listManager, i, selectionType);
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, i);
+            element_list_local.Add(element);
 
             string header = listManager.table + " " + i;
-            selectionElement.header.text = header;
+            element.header.text = header;
 
             //Debugging
-            new_element.name = header;
+            element.name = header;
 
             //Review
-            new_element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(selectionElement); });
+            //element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(element); });
 
-            SetElement(new_element, selectionElement.id);
+            SetElement(element);
         }
     }
 
@@ -78,22 +71,24 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         SetRows(filter);
     }
 
-    void SetElement(RectTransform element, int id)
+    void SetElement(SelectionElement element)
     {
-        int index = listManager.id_list.IndexOf(id);
+        RectTransform rect = element.GetComponent<RectTransform>();
 
-        element.anchorMax = new Vector2(1, 1);
+        int index = listManager.id_list.IndexOf(element.data.id);
 
-        element.sizeDelta = new Vector2(element.sizeDelta.x, base_size);
+        rect.anchorMax = new Vector2(1, 1);
 
-        element.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, base_size);
 
-        element.gameObject.SetActive(true);
+        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (base_size * index) - (base_size * 0.5f));
+
+        rect.gameObject.SetActive(true);
     }
 
     public SelectionElement GetElement(int index)
     {
-        return element_list_local[index].GetComponent<SelectionElement>();
+        return element_list_local[index];
     }
 
     float ListPosition(int i)
@@ -107,16 +102,8 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             selection.SelectElement();
     }
 
-    public void ResetSelection()
-    {
-        element_selection.gameObject.SetActive(false);
-    }
-
     public void CloseList()
     {
-        if (element_selection != null)
-            ResetSelection();
-
         listManager.ResetElement(element_list_local);
 
         DestroyImmediate(this);

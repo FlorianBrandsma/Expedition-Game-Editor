@@ -23,9 +23,12 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        windows[0].InitializePath(new Path(new List<int> { 0, 0 }, new List<int> { 0, 0 }));
-        windows[1].InitializePath(new Path(new List<int> { 0 }, new List<int> { 0 }));
-        windows[2].InitializePath(new Path(new List<int> { }, new List<int> { }));
+        //Open path using path manager
+        /*
+        windows[0].InitializePath(new Path(windows[0], new List<int> { 0, 0 },  new List<int> { 0, 0 }));
+        windows[1].InitializePath(new Path(windows[1], new List<int> { 0 },     new List<int> { 0 }));
+        windows[2].InitializePath(new Path(windows[2], new List<int> { },       new List<int> { }));
+        */
     }
 
     private void Update()
@@ -40,6 +43,16 @@ public class EditorManager : MonoBehaviour
                 PreviousEditor();
             }
         }
+    }
+
+    public void InitializePath(Path path)
+    {
+        //path.window.InitializePath(path);
+    }
+
+    public void OpenPath(Path path)
+    {
+        //path.window.OpenPath(path);
     }
 
     public void PreviousEditor()
@@ -77,10 +90,15 @@ public class EditorManager : MonoBehaviour
 
     static public string PathString(Path path)
     {
-        string str = "editor:";
+        string str = "structure: ";
 
-        for (int i = 0; i < path.editor.Count; i++)
-            str += path.editor[i] + ",";
+        for (int i = 0; i < path.structure.Count; i++)
+            str += path.structure[i] + ",";
+
+        str += "id: ";
+
+        for (int i = 0; i < path.id.Count; i++)
+            str += path.id[i] + ",";
 
         return str;
     }

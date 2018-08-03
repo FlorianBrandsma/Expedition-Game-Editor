@@ -15,7 +15,7 @@ public class HistoryManager : MonoBehaviour
 
     public void AddHistory(Path path)
     {
-        if (history.Count > 0 && path.editor.Count == history[history.Count - 1].editor.Count)
+        if (history.Count > 0 && path.structure.Count == history[history.Count - 1].structure.Count)
             history[history.Count - 1] = path;
         else
             history.Add(path);        

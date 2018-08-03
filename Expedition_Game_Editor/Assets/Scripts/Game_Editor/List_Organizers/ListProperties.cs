@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(RowManager))]
+[RequireComponent(typeof(ListData))]
 
 public class ListProperties : MonoBehaviour
 {
@@ -15,8 +15,9 @@ public class ListProperties : MonoBehaviour
     //Was false in SecondaryWindow
     */
 
-    public bool auto_select;
     public Enums.SelectionType selectionType;
+    public Enums.SelectionProperty selectionProperty;
+    public bool always_on;
 
     //Only spawn visible elements
     public bool visible_only;

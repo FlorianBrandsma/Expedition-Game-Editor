@@ -3,26 +3,24 @@ using System.Linq;
 
 public class Path
 {
-    public List<int> editor { get; set; }
-    public List<int> id     { get; set; }
-    public bool adaptive    { get; set; }
+    public List<int> structure  { get; set; }
+    public List<int> id         { get; set; }
 
-
-    public Path(List<int> new_editor, List<int> new_id)
+    public Path(List<int> new_structure, List<int> new_id)
     {
-        editor = new_editor;
-        id = new_id;
+        structure = new_structure;
+        id = new_id; 
     }
 
     public void Clear()
     {
-        editor.Clear();
+        structure.Clear();
         id.Clear();
     }
 
     public bool Equals(Path path)
     {
-        if (!editor.SequenceEqual(path.editor))
+        if (!structure.SequenceEqual(path.structure))
             return false;
 
         if (!id.SequenceEqual(path.id))
@@ -49,7 +47,7 @@ public class Path
 
         for (int i = 0; i < base_editor.Count; i++)
         {
-            path.editor.Add(base_editor[i]);
+            path.structure.Add(base_editor[i]);
             path.id.Add(0);
         }
 

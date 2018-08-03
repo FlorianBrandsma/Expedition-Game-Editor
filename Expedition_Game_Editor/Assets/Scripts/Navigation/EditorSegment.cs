@@ -4,29 +4,28 @@ using System.Collections.Generic;
 
 public class EditorSegment : MonoBehaviour, IController
 {
-    private SubEditor subEditor { get; set; }
+    private SubController subController { get; set; }
 
-    public string   table { get; set; }
-    public int      id    { get; set; }
+    public ElementData data;
 
-    private RowManager rowManager;
+    private ListData listData;
 
-    public void InitializeSegment(SubEditor new_subEditor)
+    public void InitializeSegment(SubController new_subController)
     {
-        subEditor = new_subEditor;
+        subController = new_subController;
 
-        if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().InitializeRows();
+        if (GetComponent<ListData>() != null)
+            GetComponent<ListData>().InitializeRows();
 
         OpenSegment();
     }
 
     public void FilterRows(List<int> list)
     {
-        if (GetComponent<RowManager>() != null)
+        if (GetComponent<ListData>() != null)
         {
-            GetComponent<RowManager>().CloseRows();
-            GetComponent<RowManager>().id_list = new List<int>(list);
+            GetComponent<ListData>().CloseRows();
+            GetComponent<ListData>().id_list = new List<int>(list);
         }
 
         OpenSegment();
@@ -36,37 +35,28 @@ public class EditorSegment : MonoBehaviour, IController
     {
         GetComponent<IEditor>().OpenEditor();
 
-        if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().SetRows();
+        if (GetComponent<ListData>() != null)
+            GetComponent<ListData>().SetRows();
     }
 
     public void CloseSegment()
     {
-        if (GetComponent<RowManager>() != null)
-            GetComponent<RowManager>().CloseRows();
+        if (GetComponent<ListData>() != null)
+            GetComponent<ListData>().CloseRows();
     }
 
     #region IController
 
-    public EditorField GetField()
+    ElementData IController.data
     {
-        return subEditor.controller.editorField;
+        get { return data; }
+        set { }
     }
 
-    public Path GetPath()
+    EditorField IController.field
     {
-        return null;
+        get { return subController.controller.editorField; }
+        set { }
     }
-
-    public string GetTable()
-    {
-        return table;
-    }
-
-    public int GetID()
-    {
-        return id;
-    }
-
     #endregion
 }
