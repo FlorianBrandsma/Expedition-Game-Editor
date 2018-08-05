@@ -3,7 +3,7 @@ using System.Collections;
 
 public interface IOverlay
 {
-    void InitializeOverlay(RectTransform main_list, RectTransform parent_list);
+    void InitializeOverlay(ListManager listManager);
     void ActivateOverlay(IOrganizer organizer);
     void SetOverlay();
     void UpdateOverlay();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public interface IOrganizer
 {
-    void InitializeOrganizer(Path select_path, Path edit_path);
+    void InitializeOrganizer();
     void SetProperties(ListProperties listProperties);
     void SetListSize(float new_size);
     void SetRows(List<int> id_list);

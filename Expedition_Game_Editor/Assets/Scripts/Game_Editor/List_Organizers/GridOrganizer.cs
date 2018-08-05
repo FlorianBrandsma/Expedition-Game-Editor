@@ -11,7 +11,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    private Enums.SelectionProperty selectionProperty;
+    //private Enums.SelectionProperty selectionProperty;
     private Enums.SelectionType selectionType;
 
     private float base_size;
@@ -20,7 +20,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     private bool fit_axis;
 
-    private bool visible_only;
+    //private bool visible_only;
 
     private bool horizontal, vertical;
 
@@ -28,17 +28,17 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     private ListManager listManager;
 
-    public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
+    public void InitializeOrganizer()
     {
         listManager = GetComponent<ListManager>();
     }
 
     public void SetProperties(ListProperties listProperties)
     {
-        selectionProperty = listProperties.selectionProperty;
+        //selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
 
-        visible_only = listProperties.visible_only;
+        //visible_only = listProperties.visible_only;
         
         fit_axis = listProperties.fit_axis;
 
@@ -118,11 +118,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                 element_list_local.Add(element);
 
                 //Debugging
-                element.name = listManager.table + " " + i;
-
-                int index = i;
-
-                //element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(element); });
+                element.name = listManager.listData.data.table + " " + i;
 
                 SetElement(element);
 
@@ -149,7 +145,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         rect.sizeDelta = new Vector2(base_size, base_size);
 
         rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
-                                                    -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
+                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
 
         rect.gameObject.SetActive(true);
     }

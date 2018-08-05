@@ -8,7 +8,7 @@ using System.Linq;
 
 public class EditorField : MonoBehaviour
 {
-    public Path active_path = new Path(new List<int>(), new List<int>());
+    public Path active_path;
 
     public EditorController target_editor { get; set; }
 

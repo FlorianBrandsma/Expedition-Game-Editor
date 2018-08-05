@@ -15,8 +15,6 @@ public class TabManager : MonoBehaviour
 
     private GameObject[] editor;
 
-    private int active_tab = -1;
-
     public void SetEditorTabs(EditorController new_controller, Path path, GameObject[] new_editor, int editor_depth)
     {
         editorController = new_controller;
@@ -138,7 +136,5 @@ public class TabManager : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-
-        active_tab = -1;
     }
 }

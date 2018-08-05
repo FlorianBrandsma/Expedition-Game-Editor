@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 
 public class OverlayManager : MonoBehaviour
 {
-    private List<Text>      number_list = new List<Text>();
-
     private RectTransform   main_list, 
                             list_parent;
 
@@ -15,9 +13,6 @@ public class OverlayManager : MonoBehaviour
                             vertical_min,
                             horizontal_max,
                             vertical_max;
-
-    private bool            horizontal, 
-                            vertical;
 
     public ListManager      listManager { get; set; }
 
@@ -46,7 +41,7 @@ public class OverlayManager : MonoBehaviour
             gameObject.AddComponent<SlideshowManager>();
 
         foreach (IOverlay overlay in GetComponents<IOverlay>())
-            overlay.InitializeOverlay(main_list, list_parent);
+            overlay.InitializeOverlay(listManager);
     }
 
     public void ActivateOverlay(IOrganizer organizer)

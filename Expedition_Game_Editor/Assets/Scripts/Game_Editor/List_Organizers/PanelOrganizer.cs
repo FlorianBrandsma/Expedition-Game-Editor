@@ -11,12 +11,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    //static public List<SelectionElement> selection_list = new List<SelectionElement>();
-    //private SelectionElement element_selection;
-
-    private Enums.SelectionProperty selectionProperty;
-
-    private bool visible_only;
+    //private bool visible_only;
     private bool zigzag;
 
     private Path select_path;
@@ -35,19 +30,14 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     ListManager listManager;
 
-    public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
+    public void InitializeOrganizer()
     {
         listManager = GetComponent<ListManager>();
-        
-        select_path = new_select_path;
-        edit_path = new_edit_path;
     }
 
     public void SetProperties(ListProperties listProperties)
     {
-        selectionProperty = listProperties.selectionProperty;
-
-        visible_only = listProperties.visible_only;
+        //visible_only = listProperties.visible_only;
         zigzag = listProperties.zigzag;
     }
 
@@ -104,11 +94,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
         for (int i = 0; i < listManager.id_list.Count; i++)
         {
-            string new_header = listManager.table + " " + i;
+            string new_header = listManager.listData.data.table + " " + i;
 
             if (i > 0)
             {   //If header is the same as the previous one
-                if (new_header == listManager.table + " " + (i - 1))
+                if (new_header == listManager.listData.data.table + " " + (i - 1))
                     new_header = "";
             }
 
@@ -146,11 +136,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
             //Debugging
             element.name = new_header;
-
-            /*
-            //Tackle this fella next
-            
-            */
 
             SetElement(element);
         }

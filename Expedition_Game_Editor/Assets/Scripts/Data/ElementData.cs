@@ -8,5 +8,5 @@ public class ElementData
     public string table;
     public int id;
     public int type;
-    public Path path = new Path(new List<int>(), new List<int>());
+    public Path path = new Path(null, new List<int>(), new List<int>());
 }

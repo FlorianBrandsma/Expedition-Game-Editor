@@ -23,12 +23,9 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        //Open path using path manager
-        /*
-        windows[0].InitializePath(new Path(windows[0], new List<int> { 0, 0 },  new List<int> { 0, 0 }));
-        windows[1].InitializePath(new Path(windows[1], new List<int> { 0 },     new List<int> { 0 }));
-        windows[2].InitializePath(new Path(windows[2], new List<int> { },       new List<int> { }));
-        */
+        InitializePath(new PathManager.Primary().Initialize());
+        InitializePath(new PathManager.Secondary().Initialize());
+        InitializePath(new PathManager.Tertiary().Initialize());
     }
 
     private void Update()
@@ -47,12 +44,12 @@ public class EditorManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        //path.window.InitializePath(path);
+        path.window.InitializePath(path);
     }
 
     public void OpenPath(Path path)
     {
-        //path.window.OpenPath(path);
+        path.window.OpenPath(path);
     }
 
     public void PreviousEditor()

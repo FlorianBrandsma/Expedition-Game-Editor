@@ -4,9 +4,8 @@ using System.Collections.Generic;
 
 public class EditorPath
 {
-    public Path select  = new Path(new WindowManager(), new List<int>(), new List<int>());
-    public Path edit    = new Path(new WindowManager(), new List<int>(), new List<int>());
-    public bool adaptive = false;
+    public Path source  = new Path(null, new List<int>(), new List<int>());
+    public Path edit    = new Path(null, new List<int>(), new List<int>());
 
     public EditorPath(ElementData data)
     {
@@ -14,63 +13,73 @@ public class EditorPath
         {
             case "Chapter":
 
-                PathManager.Chapter chapter = new PathManager.Chapter(data);
+                PathManager.Structure chapter = new PathManager.Structure(data);
 
-                select  = chapter.Select();
+                source  = chapter.Source();
                 edit    = chapter.Edit();
 
                 break;
 
             case "Phase":
 
-                PathManager.Phase phase = new PathManager.Phase(data);
+                PathManager.Structure phase = new PathManager.Structure(data);
 
-                select  = phase.Select();
+                source  = phase.Source();
                 edit    = phase.Edit();
 
                 break;
 
             case "Quest":
 
-                PathManager.Quest quest = new PathManager.Quest(data);
+                PathManager.Structure quest = new PathManager.Structure(data);
 
-                select  = quest.Select();
+                source  = quest.Source();
                 edit    = quest.Edit();
 
                 break;
 
             case "Objective":
 
-                PathManager.Objective objective = new PathManager.Objective(data);
+                PathManager.Structure objective = new PathManager.Structure(data);
 
-                select  = objective.Select();
+                source  = objective.Source();
                 edit    = objective.Edit();
 
                 break;
 
             case "Region":
 
+                PathManager.Region region = new PathManager.Region(data);
 
+                source = region.Source();
+                edit = region.Edit();
 
-                //edit = new Path(new List<int>() { 0, 1 }, new List<int>());
                 break;
+
             case "Terrain":
-                //select = new Path(new List<int>() { 0, 1, 0 }, new List<int>());
-                break;
 
+                PathManager.Terrain terrain = new PathManager.Terrain(data);
+
+                edit = terrain.Edit();
+
+                break;
 
             case "Item":
 
                 PathManager.Item item = new PathManager.Item(data);
 
-                select  = item.Select();
-                edit    = item.Select();
+                source  = item.Source();
+                edit    = item.Edit();
 
                 break;
 
             case "Element":
-                //select = new Path(new List<int>() { 0, 1, data.type }, new List<int>());
-                //edit = new Path(new List<int>() { 0, 2, 1 }, new List<int>());
+
+                PathManager.Element element = new PathManager.Element(data);
+
+                source = element.Source();
+                edit = element.Edit();
+
                 break;
 
             default: break;

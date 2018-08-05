@@ -22,26 +22,21 @@ public class EditorController : MonoBehaviour, IController
     //Footer
     public ButtonActionManager buttonActionManager;
 
-    private List<Button> tabs = new List<Button>();
-
     public GameObject[] editor;
  
     public ActionManager actionManager;
 
     public void InitializePath(Path new_path, int editor_depth)
     {
-        depth = editor_depth;
-
         editorField.target_editor = this;
         editorField.windowManager.main_target_editor = this;
 
-        /*
-        if (depth > 0)
-        {
-            if (new_path.id.Count > 0)
-                data.id = new_path.id[depth - 1];
-        }
-        */
+        depth = editor_depth;
+
+        data.path = TrimPath(new_path);
+
+        if (depth > 0 && new_path.id.Count > 0)
+            data.id = new_path.id[depth - 1];
 
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().InitializeRows();
@@ -50,9 +45,7 @@ public class EditorController : MonoBehaviour, IController
             InitializeTabs(new_path);
 
         if (depth < new_path.structure.Count)
-            editor[new_path.structure[depth]].GetComponent<EditorController>().InitializePath(new_path, depth + 1);
-
-        data.path = TrimPath(new_path);
+            editor[new_path.structure[depth]].GetComponent<EditorController>().InitializePath(new_path, depth + 1); 
     }
 
     public void InitializeLayout()
@@ -76,7 +69,7 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<TimeManager>().SetTimes();
 
         if (GetComponent<StructureManager>() != null)
-            GetComponent<StructureManager>().SetStructure(this, new_path, depth, data.table, data.id);
+            GetComponent<StructureManager>().SetStructure(GetComponent<ListData>());
 
         if (buttonActionManager != null)
             buttonActionManager.SetButtons(this);
@@ -187,7 +180,7 @@ public class EditorController : MonoBehaviour, IController
 
     Path TrimPath(Path path)
     {
-        Path new_path = new Path(new List<int>(), new List<int>());
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
 
         for (int i = 0; i < depth; i++)
         {
@@ -200,7 +193,7 @@ public class EditorController : MonoBehaviour, IController
 
     public Path CopyPath(Path path, int depth)
     {
-        Path new_path = new Path(new List<int>(), new List<int>());
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
 
         for (int i = 0; i < depth; i++)
             new_path.structure.Add(path.structure[i]);

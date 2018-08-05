@@ -3,11 +3,13 @@ using System.Linq;
 
 public class Path
 {
+    public WindowManager window { get; set; }
     public List<int> structure  { get; set; }
     public List<int> id         { get; set; }
 
-    public Path(List<int> new_structure, List<int> new_id)
+    public Path(WindowManager new_window, List<int> new_structure, List<int> new_id)
     {
+        window = new_window;
         structure = new_structure;
         id = new_id; 
     }
@@ -43,7 +45,7 @@ public class Path
     //Create a new path based on editor and id lists
     public Path CreateEdit(List<int> base_editor, List<int> base_id)
     {
-        Path path = new Path(new List<int>(), new List<int>());
+        Path path = new Path(null, new List<int>(), new List<int>());
 
         for (int i = 0; i < base_editor.Count; i++)
         {

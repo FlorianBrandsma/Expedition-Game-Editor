@@ -7,7 +7,7 @@ using System.IO;
 
 public class WindowManager : MonoBehaviour
 {
-    public Path active_path = new Path(new List<int>(), new List<int>());
+    public Path active_path = new Path(null, new List<int>(), new List<int>());
 
     public EditorController baseController;
 

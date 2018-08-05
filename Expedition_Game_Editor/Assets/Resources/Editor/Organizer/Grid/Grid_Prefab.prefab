@@ -73,10 +73,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  table: 
-  id: 0
-  get: 0
-  set: 0
+  data:
+    table: 
+    id: 0
+    type: 0
+  selectionType: 0
+  selectionProperty: 0
+  selectionGroup: {fileID: 0}
   id_text: {fileID: 0}
   header: {fileID: 0}
   content: {fileID: 0}

@@ -6,26 +6,21 @@ using UnityEngine.EventSystems;
 
 public class NumberManager : MonoBehaviour, IOverlay
 {
-    static public List<RectTransform> number_parent_list = new List<RectTransform>();
-    private List<RectTransform> number_parent_list_local = new List<RectTransform>();
-
     static public List<Text> number_list = new List<Text>();
     private List<Text> number_list_local = new List<Text>();
 
-    private RectTransform   main_list, 
-                            list_parent;
+    private RectTransform   list_parent;
 
     private RectTransform   horizontal_parent,
                             vertical_parent;
 
     OverlayManager          overlayManager;
 
-    public void InitializeOverlay(RectTransform new_main_list, RectTransform new_list_parent)
+    public void InitializeOverlay(ListManager listManager)
     {
         overlayManager = GetComponent<OverlayManager>();
 
-        main_list = new_main_list;
-        list_parent = new_list_parent;
+        list_parent = listManager.list_parent;
     }
 
     public void ActivateOverlay(IOrganizer organizer)
@@ -117,6 +112,4 @@ public class NumberManager : MonoBehaviour, IOverlay
         foreach(Text element in list)
             element.gameObject.SetActive(false);   
     }
-
-    //Spawn pages
 }

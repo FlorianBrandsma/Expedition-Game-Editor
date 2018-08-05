@@ -7,91 +7,28 @@ using System.IO;
 
 public class StructureManager : MonoBehaviour
 {
-    private EditorController editorController;
-
-    List<int> id_list = new List<int>();
-
-    void SetRows()
+    public void SetStructure(ListData listData)
     {
-        id_list.Clear();
-
-        for (int i = 0; i < 15; i++)
-        {
-            //Example:
-            //Phase Menu
-            //Selected: <Quest> 1
-            //Display: All <Phase> where <Quest>_id = 1
-
-            //SELECT id FROM (TABLE) WHERE ID = (ID) AND INDEX = (i)
-            id_list.Add(i + 1);
-        }
-    }
-
-    public void SetStructure(EditorController new_editorController, Path path, int depth, string table, int id)
-    {
-        editorController = new_editorController;
-
-        SetRows();
-
         Dropdown structure_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
         structure_dropdown.options.Clear();
-
         structure_dropdown.onValueChanged.RemoveAllListeners();
 
-        //Separate for-loops to assign value inbetween without triggering "OnValueChange" (endless loop)
-        for (int i = 0; i < id_list.Count; i++)
+        for (int i = 0; i < listData.id_list.Count; i++)
         {
-            structure_dropdown.options.Add(new Dropdown.OptionData(table + " " + id_list[i]));
+            structure_dropdown.options.Add(new Dropdown.OptionData(listData.controller.data.table + " " + i));
         }
 
-        structure_dropdown.captionText.text = table + " " + id;
+        int selected_index = listData.id_list.IndexOf(listData.controller.data.id);
 
-        structure_dropdown.value = id_list.IndexOf(id);
+        structure_dropdown.captionText.text = listData.controller.data.table + " " + selected_index;
+        structure_dropdown.value = selected_index;
 
-        structure_dropdown.onValueChanged.AddListener(delegate { OpenStructure(NewPath(GetComponent<EditorController>().data.path, depth, structure_dropdown)); });
-
-        //Open Editor
+        structure_dropdown.onValueChanged.AddListener(delegate { OpenPath(listData.controller.data.path, listData.id_list[structure_dropdown.value]); });
     }
 
-    public void OpenStructure(Path new_path)
+    public void OpenPath(Path path, int id)
     {
-        editorController.editorField.windowManager.OpenPath(new_path);
-    }
-
-    public string PathString(Path path)
-    {
-        string path_string = "editor: ";
-
-        for(int i = 0; i < path.structure.Count; i++)
-        {
-            path_string += path.structure[i] + ",";
-        }
-
-        path_string += "id: ";
-
-        for(int i = 0; i < path.id.Count; i++)
-        {
-            path_string += path.id[i] + ",";
-        }
-
-        return path_string;
-    }
-
-    public Path NewPath(Path path, int depth, Dropdown dropdown)
-    {
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
-
-        for (int i = 0; i < depth; i++)
-            new_path.structure.Add(path.structure[i]);
-
-        for (int i = 0; i < depth; i++)
-            new_path.id.Add(path.id[i]);
-
-        int id = id_list[dropdown.value];
-
-        new_path.id[new_path.id.Count - 1] = id;
-
-        return new_path;
+        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, id));
     }
 }

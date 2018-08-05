@@ -11,26 +11,26 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    private Enums.SelectionProperty selectionProperty;
+    //private Enums.SelectionProperty selectionProperty;
     private Enums.SelectionType selectionType;
 
     private float base_size;
 
-    private bool visible_only;
+    //private bool visible_only;
 
     ListManager listManager;
 
-    public void InitializeOrganizer(Path new_select_path, Path new_edit_path)
+    public void InitializeOrganizer()
     {
         listManager = GetComponent<ListManager>();
     }
 
     public void SetProperties(ListProperties listProperties)
     {
-        selectionProperty = listProperties.selectionProperty;
+        //selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
 
-        visible_only = listProperties.visible_only;
+        //visible_only = listProperties.visible_only;
     }
 
     public void SetListSize(float new_size)
@@ -52,7 +52,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab, i);
             element_list_local.Add(element);
 
-            string header = listManager.table + " " + i;
+            string header = listManager.listData.data.table + " " + i;
             element.header.text = header;
 
             //Debugging

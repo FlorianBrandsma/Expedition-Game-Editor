@@ -13,20 +13,16 @@ public class SliderManager : MonoBehaviour, IOverlay
     private Slider  horizontal_slider,
                     vertical_slider;
 
-    private bool    horizontal,
-                    vertical;
-
-    private RectTransform   main_list, 
-                            list_parent;
+    private RectTransform   main_list;
 
     OverlayManager          overlayManager;
 
-    public void InitializeOverlay(RectTransform new_main_list, RectTransform new_list_parent)
+    public void InitializeOverlay(ListManager listManager)
     {
         overlayManager = GetComponent<OverlayManager>();
 
-        main_list = new_main_list;
-        list_parent = new_list_parent; 
+        main_list = listManager.main_list;
+
     }
     
     public void ActivateOverlay(IOrganizer organizer)

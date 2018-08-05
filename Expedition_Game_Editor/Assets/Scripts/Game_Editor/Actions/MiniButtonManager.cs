@@ -22,7 +22,7 @@ public class MiniButtonManager : MonoBehaviour
 
     void OpenPath()
     {
-        Path path = new Path(new List<int>(), new List<int>());
+        Path path = new Path(windowManager, new List<int>(), new List<int>());
 
         windowManager.OpenPath(path.CreateEdit(select_path));
     }

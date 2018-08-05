@@ -5,12 +5,65 @@ using System.Collections.Generic;
 public class PathManager
 {
     #region Paths
+
+    #region Initializers
+
+    #region Primary
+
+    public class Primary
+    {
+        WindowManager window = EditorManager.editorManager.windows[0];
+
+        List<int> source = new List<int>() { 0, 0 };
+
+        public Path Initialize()
+        {
+            return CreatePath(window, source);
+        }
+    }
+
+    #endregion
+
+    #region Secondary
+
+    public class Secondary
+    {
+        WindowManager window = EditorManager.editorManager.windows[1];
+
+        List<int> source = new List<int>() { 0 };
+
+        public Path Initialize()
+        {
+            return CreatePath(window, source);
+        }
+    }
+
+    #endregion
+
+    #region Tertiary
+
+    public class Tertiary
+    {
+        WindowManager window = EditorManager.editorManager.windows[2];
+
+        List<int> source = new List<int>() { };
+
+        public Path Initialize()
+        {
+            return CreatePath(window, source);
+        }
+    }
+
+    #endregion
+
+    #endregion
+
     #region Structure
     public class Structure
     {
         WindowManager window = EditorManager.editorManager.windows[0];
 
-        List<int> select = new List<int>() { 0 };
+        List<int> source = new List<int>() { 0 };
         List<int> edit = new List<int>() { 1 };
 
         List<int> id_list = new List<int>();
@@ -22,9 +75,9 @@ public class PathManager
             id_list = CombinePath(data.path.id, new List<int>() { data.id });
         }
 
-        public Path Select()
+        public Path Source()
         {
-            return new Path(window, CombinePath(data.path.structure, select), id_list);
+            return new Path(window, CombinePath(data.path.structure, source), id_list);
         }
 
         public Path Edit()
@@ -32,157 +85,34 @@ public class PathManager
             return new Path(window, CombinePath(data.path.structure, edit), id_list);
         }
     }
-    #endregion
-
-    #region Chapter
-    public class Chapter
-    {
-        WindowManager window = EditorManager.editorManager.windows[0];
-
-        List<int> select = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
-
-        List<int> id_list = new List<int>();
-        ElementData data;
-
-        public Chapter(ElementData new_data)
-        {
-            data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
-        }
-
-        public Path Select()
-        {
-            return new Path(window, CombinePath(data.path.structure, select), id_list);
-        }
-
-        public Path Edit()
-        {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
-        }
-    }
-    #endregion
-
-    #region Phase
-    public class Phase
-    {
-        WindowManager window = EditorManager.editorManager.windows[0];
-
-        List<int> select = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
-
-        List<int> id_list = new List<int>();
-        ElementData data;
-
-        public Phase(ElementData new_data)
-        {
-            data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
-        }
-
-        public Path Select()
-        {
-            return new Path(window, CombinePath(data.path.structure, select), id_list);
-        }
-
-        public Path Edit()
-        {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
-        }
-    }
-    #endregion
-
-    #region Quest
-
-    public class Quest
-    {
-        WindowManager window = EditorManager.editorManager.windows[0];
-
-        List<int> select = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
-
-        List<int> id_list = new List<int>();
-        ElementData data;
-
-        public Quest(ElementData new_data)
-        {
-            data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
-        }
-
-        public Path Select()
-        {
-            return new Path(window, CombinePath(data.path.structure, select), id_list);
-        }
-
-        public Path Edit()
-        {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
-        }
-    }
-    #endregion
-
-    #region Objective
-    public class Objective
-    {
-        WindowManager window = EditorManager.editorManager.windows[0];
-
-        List<int> select = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
-
-        List<int> id_list = new List<int>();
-        ElementData data;
-
-        public Objective(ElementData new_data)
-        {
-            data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
-        }
-
-        public Path Select()
-        {
-            return new Path(window, CombinePath(data.path.structure, select), id_list);
-        }
-
-        public Path Edit()
-        {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
-        }
-    }
-    #endregion
-
-    #region Region
-    #endregion
-
-    #region Terrain
     #endregion
 
     #region Item
 
     public class Item
     {
-        WindowManager window = EditorManager.editorManager.windows[1];
-
         ElementData data;
 
-        List<int> select = new List<int>();
-        List<int> edit = new List<int>();
+        List<int> source;
+        List<int> edit;
 
         public Item(ElementData new_data)
         {
             data = new_data;
 
-            List<int> select    = new List<int>() { 0, 0, data.type };
-            List<int> edit      = new List<int>() { 0, 2, 0 };
+            source    = new List<int>() { 0, 0, data.type };
+            edit      = new List<int>() { 0, 2, 0 };
         }
 
-        public Path Select()
+        public Path Source()
         {
-            return CreatePath(window, select, data.id);
+            WindowManager window = EditorManager.editorManager.windows[1];
+            return CreatePath(window, source, data.id);
         }
 
         public Path Edit()
         {
+            WindowManager window = EditorManager.editorManager.windows[0];
             return CreatePath(window, edit, data.id);
         }
     }
@@ -190,8 +120,121 @@ public class PathManager
     #endregion
 
     #region Element
+
+    public class Element
+    {
+        ElementData data;
+
+        List<int> source;
+        List<int> edit;
+
+        public Element(ElementData new_data)
+        {
+            data = new_data;
+
+            source  = new List<int>() { 0, 1, data.type };
+            edit    = new List<int>() { 0, 2, 1 };
+        }
+
+        public Path Source()
+        {
+            WindowManager window = EditorManager.editorManager.windows[1];
+            return CreatePath(window, source, data.id);
+        }
+
+        public Path Edit()
+        {
+            WindowManager window = EditorManager.editorManager.windows[0];
+            return CreatePath(window, edit, data.id);
+        }
+    }
+
     #endregion
+
+    #region Sound
+
+    public class Sound
+    {
+        WindowManager window = EditorManager.editorManager.windows[1];
+
+        ElementData data;
+
+        List<int> source = new List<int>();
+
+        public Sound(ElementData new_data)
+        {
+            data = new_data;
+
+            List<int> source = new List<int>() { 0, 0, data.type };
+        }
+
+        public Path Source()
+        {
+            return CreatePath(window, source, data.id);
+        }
+    }
+
     #endregion
+
+    #region Region
+
+    public class Region
+    {
+        ElementData data;
+
+        List<int> source    = new List<int>() { 0, 2 };
+        List<int> edit      = new List<int>() { 0, 1 };
+
+        public Region(ElementData new_data)
+        {
+            data = new_data;
+        }
+
+        public Path Source()
+        {
+            WindowManager window = EditorManager.editorManager.windows[1];
+            return CreatePath(window, source, data.id);
+        }
+
+        public Path Edit()
+        {
+            WindowManager window = EditorManager.editorManager.windows[0];
+            return CreatePath(window, edit, data.id);
+        }
+    }
+
+    #endregion
+
+    #region Terrain
+
+    public class Terrain
+    {
+        WindowManager window = EditorManager.editorManager.windows[0];
+
+        List<int> edit = new List<int>() { 0 };
+
+        List<int> id_list = new List<int>();
+        ElementData data;
+
+        public Terrain(ElementData new_data)
+        {
+            data = new_data;
+            id_list = CombinePath(data.path.id, new List<int>() { data.id });
+        }
+
+        public Path Edit()
+        {
+            return new Path(window, CombinePath(data.path.structure, edit), id_list);
+        }
+    }
+
+    #endregion
+
+    #endregion
+    static public Path CreatePath(WindowManager window, List<int> new_editor)
+    {
+        return CreatePath(window, new_editor, 0);
+    }
 
     static public Path CreatePath(WindowManager window, List<int> new_editor, int new_id)
     {
@@ -200,13 +243,13 @@ public class PathManager
         for (int i = 0; i < new_editor.Count; i++)
         {
             new_path.structure.Add(new_editor[i]);
-
-            if (i < new_editor.Count - 1)
-                new_path.id.Add(0);
+            new_path.id.Add(0);
         }
 
         if (new_path.id.Count > 0)
             new_path.id[new_path.id.Count - 1] = new_id;
+
+        EditorManager.PathString(new_path);
 
         return new_path;
     }
@@ -232,9 +275,20 @@ public class PathManager
 
         return new_path;
     }
+
+    static public Path ReloadPath(Path path, int id)
+    {
+        Path new_path = new Path(path.window, new List<int>(), new List<int>());
+
+        for(int i = 0; i < path.structure.Count; i++)
+        {
+            new_path.structure.Add(path.structure[i]);
+            new_path.id.Add(path.id[i]);
+        }
+
+        if (new_path.id.Count > 0)
+            new_path.id[new_path.id.Count - 1] = id;
+
+        return new_path;
+    }
 }
-
-
-
-
-

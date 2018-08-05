@@ -17,8 +17,6 @@ public class LayoutManager : MonoBehaviour
 
     public RectTransform header, content, footer;
 
-    private bool set;
-
     private void Awake()
     {
         content_offset_min = content.offsetMin;
@@ -75,8 +73,6 @@ public class LayoutManager : MonoBehaviour
         if (footer != null && footer.gameObject.activeInHierarchy)
             content.offsetMin = new Vector2(content.offsetMin.x, footer.offsetMax.y);
 
-        set = true;
-
         if (sibling_rect != null)
             sibling_rect.SetLayout();
     }
@@ -89,8 +85,6 @@ public class LayoutManager : MonoBehaviour
 
     public void CloseLayout()
     {
-        set = false;
-
         content.offsetMin = content_offset_min;
         content.offsetMax = content_offset_max;
     }

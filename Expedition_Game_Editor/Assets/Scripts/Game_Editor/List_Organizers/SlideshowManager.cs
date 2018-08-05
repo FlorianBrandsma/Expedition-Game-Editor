@@ -12,26 +12,20 @@ public class SlideshowManager : MonoBehaviour, IOverlay
     private Color active_color      = Color.white;
     private Color inactive_color    = Color.gray;
 
-    private RectTransform   main_list,
-                            list_parent;
+    private int     element_total;
+    private int     page_limit;
+    private int     page_count;
+    private float   button_size;
 
-    private int             element_total;
-    private int             page_limit;
-    private int             page_count;
-    private float           button_size;
+    int             selected_page;
 
-    int                     selected_page;
-
-    OverlayManager          overlayManager;
-    IOrganizer              organizer;
+    OverlayManager  overlayManager;
+    IOrganizer      organizer;
 
 
-    public void InitializeOverlay(RectTransform new_main_list, RectTransform new_list_parent)
+    public void InitializeOverlay(ListManager listManager)
     {
-        overlayManager = GetComponent<OverlayManager>();
-
-        main_list = new_main_list;
-        list_parent = new_list_parent;      
+        overlayManager = GetComponent<OverlayManager>();    
     }
 
     public void ActivateOverlay(IOrganizer new_organizer)
