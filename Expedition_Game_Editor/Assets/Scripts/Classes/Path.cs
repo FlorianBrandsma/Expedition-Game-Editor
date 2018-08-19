@@ -5,29 +5,29 @@ public class Path
 {
     public WindowManager window { get; set; }
     public List<int> structure  { get; set; }
-    public List<int> id         { get; set; }
+    public List<ElementData> data { get; set; }
 
-    public Path(WindowManager new_window, List<int> new_structure, List<int> new_id)
+    public Path(WindowManager new_window, List<int> new_structure, List<ElementData> new_data)
     {
         window = new_window;
         structure = new_structure;
-        id = new_id; 
+        data = new_data; 
     }
 
     public void Clear()
     {
         structure.Clear();
-        id.Clear();
+        data.Clear();
     }
 
     public bool Equals(Path path)
     {
         if (!structure.SequenceEqual(path.structure))
             return false;
-
+        /*
         if (!id.SequenceEqual(path.id))
             return false;
-
+        */
         return true;
     }
 
@@ -45,12 +45,12 @@ public class Path
     //Create a new path based on editor and id lists
     public Path CreateEdit(List<int> base_editor, List<int> base_id)
     {
-        Path path = new Path(null, new List<int>(), new List<int>());
+        Path path = new Path(null, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < base_editor.Count; i++)
         {
             path.structure.Add(base_editor[i]);
-            path.id.Add(0);
+            path.data.Add(new ElementData()); //New controller
         }
 
         return path;
@@ -66,6 +66,19 @@ public class Path
 
         for (int i = 0; i < new_index.Count; i++)
             new_path.Add(new_index[i]);
+
+        return new_path;
+    }
+
+    public Path Trim(int index)
+    {
+        Path new_path = new Path(window, new List<int>(), new List<ElementData>());
+
+        for (int i = 0; i < index; i++)
+        {
+            new_path.structure.Add(structure[i]);
+            new_path.data.Add(data[i]);
+        }
 
         return new_path;
     }

@@ -7,43 +7,56 @@ using System.IO;
 
 public class TabManager : MonoBehaviour
 {
-    private EditorController editorController;
+    private EditorController controller;
 
     public List<Button> tab_list = new List<Button>();
 
     public bool tab_parent;
 
-    private GameObject[] editor;
+    private EditorController[] tabs;
 
-    public void SetEditorTabs(EditorController new_controller, Path path, GameObject[] new_editor, int editor_depth)
+    public void SetEditorTabs(EditorController new_controller, Path main_path)
     {
-        editorController = new_controller;
+        controller = new_controller;
 
-        editor = new_editor;
+        tabs = controller.controllers;
 
-        if (editor.Length > 0)
+        if (tabs.Length > 0)
             gameObject.SetActive(true);
 
-        for (int tab = 0; tab < editor.Length; tab++)
+        for (int i = 0; i < tabs.Length; i++)
         {
             Button new_tab = SpawnTab();
 
+            //Messes with paths -> Use this later 
+            //>Take path from data (maybe) and into controller
+            //>>
+            //controllers[tab].data = controller.data;
+
+            //Path is required in data so that it can add onto it for structure
+            //Think about it. Rather remove path from data.
+
+            /*
+            controllers[tab].data.table = controller.data.table;
+            controllers[tab].data.id = controller.data.id;
+            controllers[tab].data.type = controller.data.type;
+            */
             //FIX TAB PNG; THEN REMOVE THIS
-            SetAnchors(tab, editor.Length);
+            SetAnchors(i, tabs.Length);
 
-            new_tab.GetComponentInChildren<Text>().text = editor[tab].name;
+            new_tab.GetComponentInChildren<Text>().text = tabs[i].name;
 
-            int temp_int = tab;
+            int index = i;
 
             new_tab.onClick.AddListener(delegate
             {
-                OpenPath(path, temp_int, editor_depth);
+                OpenPath(index);
             });
 
             new_tab.gameObject.SetActive(true);
         }
-        
-        SelectTab(path.structure[editor_depth]);
+
+        SelectTab(main_path.Trim(controller.depth + 1).structure[controller.depth]);
     }
     
     void SetAnchors(int index, int tabs)
@@ -57,12 +70,15 @@ public class TabManager : MonoBehaviour
         new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);      
     }
 
-    void OpenPath(Path path, int selected_tab, int editor_depth)
+    void OpenPath(int selected_tab)
     {
-        editorController.editorField.windowManager.OpenPath(NewPath(TrimPath(path, editor_depth + 1), selected_tab, editor_depth));
+        controller.data.path.structure.Add(selected_tab);
+        controller.data.path.data.Add(new ElementData());
+
+        EditorManager.editorManager.OpenPath(controller.data.path);
     }
 
-    void SelectTab(int selected_tab)
+    public void SelectTab(int selected_tab)
     {
         for (int tab = 0; tab < tab_list.Count; tab++) 
         {
@@ -71,41 +87,6 @@ public class TabManager : MonoBehaviour
             else
                 tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
         }
-    }
-
-    Path TrimPath(Path path, int editor_depth)
-    {
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
-
-        for (int i = 0; i < editor_depth; i++)
-        {
-            new_path.structure.Add(path.structure[i]);
-            new_path.id.Add(path.id[i]);
-        }
-
-        return new_path;
-    }
-
-    Path NewPath(Path path, int index, int editor_depth)
-    {
-        //Copy the old editor. Any changes made to "path" are visible throughout the entire code
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
-
-        for (int i = 0; i < path.structure.Count; i++)
-        {
-            new_path.structure.Add(path.structure[i]);
-            new_path.id.Add(path.id[i]);
-        }
-
-        //Set the editor option based on the tab index
-        new_path.structure[editor_depth] = index;
-
-        //In case there are more options than the current editor depth
-        //Make it 0 so it always opens the first tab
-        if (new_path.structure.Count > (editor_depth + 1))
-            new_path.structure[new_path.structure.Count - 1] = 0;
-
-        return new_path;
     }
 
     public Button SpawnTab()
@@ -125,14 +106,11 @@ public class TabManager : MonoBehaviour
 
     public void CloseTabs()
     {
-        //In case of problems: use tab_list[i].Count
-        //and put an if statement before closing editor
-
-        for (int i = 0; i < editor.Length; i++)
+        for (int i = 0; i < tabs.Length; i++)
         {
             tab_list[i].onClick.RemoveAllListeners();
             tab_list[i].gameObject.SetActive(false);
-            editor[i].gameObject.SetActive(false);
+            tabs[i].gameObject.SetActive(false);
         }
 
         gameObject.SetActive(false);

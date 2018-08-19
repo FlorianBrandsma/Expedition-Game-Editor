@@ -32,10 +32,10 @@ public class SlideshowManager : MonoBehaviour, IOverlay
     {
         organizer = new_organizer;
 
-        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.id_list, false);
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listData.list, false);
 
         page_limit =  (int)list_size.x;
-        element_total = overlayManager.listManager.id_list.Count;
+        element_total = overlayManager.listManager.listData.list.Count;
 
         page_count = Mathf.CeilToInt((float)element_total / page_limit);
 
@@ -103,7 +103,7 @@ public class SlideshowManager : MonoBehaviour, IOverlay
         if (count > remainder)
             count = remainder;
 
-        organizer.ResetRows(overlayManager.listManager.id_list.GetRange(start, count));
+        organizer.ResetRows(overlayManager.listManager.listData.list.GetRange(start, count));
     }
      
     public void UpdateOverlay()

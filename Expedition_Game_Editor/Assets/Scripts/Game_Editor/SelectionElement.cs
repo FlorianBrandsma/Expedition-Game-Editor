@@ -23,21 +23,18 @@ public class SelectionElement : MonoBehaviour
 
     public GameObject glow;
 
-    void SetData(int index)
+    void SetData(ElementData new_data)
     {
-        data.table = listManager.listData.data.table;
-        data.id = listManager.id_list[index];
-        data.type = listManager.listData.data.type;
-        data.path = listManager.listData.controller.data.path;
+        data = new_data;
 
         editorPath = new EditorPath(data);
     }
 
-    public void InitializeSelection(ListManager new_listManager, int index)
+    public void InitializeSelection(ListManager new_listManager, ElementData data)
     {
         listManager = new_listManager;
 
-        SetData(index);
+        SetData(data);
 
         selectionType = listManager.selectionType;
         selectionProperty = listManager.selectionProperty;

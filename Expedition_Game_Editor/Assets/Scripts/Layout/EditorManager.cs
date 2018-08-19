@@ -40,6 +40,11 @@ public class EditorManager : MonoBehaviour
                 PreviousEditor();
             }
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            ResetPath();
+        }
     }
 
     public void InitializePath(Path path)
@@ -50,6 +55,11 @@ public class EditorManager : MonoBehaviour
     public void OpenPath(Path path)
     {
         path.window.OpenPath(path);
+    }
+
+    public void ResetPath()
+    {
+
     }
 
     public void PreviousEditor()
@@ -94,8 +104,8 @@ public class EditorManager : MonoBehaviour
 
         str += "id: ";
 
-        for (int i = 0; i < path.id.Count; i++)
-            str += path.id[i] + ",";
+        for (int i = 0; i < path.data.Count; i++)
+            str += path.data[i].id + ",";
 
         return str;
     }

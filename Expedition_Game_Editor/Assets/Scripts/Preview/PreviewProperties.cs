@@ -9,7 +9,7 @@ public class PreviewProperties : MonoBehaviour
 
     public void SetPreview()
     {
-        field_width = GetComponent<EditorController>().editorField.field_rect.rect.width;
+        field_width = GetComponent<EditorController>().editorField.GetComponent<RectTransform>().rect.width;
 
         previewManager.SetPreview(this);
     }

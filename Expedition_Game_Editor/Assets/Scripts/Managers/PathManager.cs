@@ -58,31 +58,33 @@ public class PathManager
 
     #endregion
 
+    #region Editor
+
     #region Structure
     public class Structure
     {
         WindowManager window = EditorManager.editorManager.windows[0];
 
-        List<int> source = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
+        List<int> source    = new List<int>() { 0 };
+        List<int> edit      = new List<int>() { 1 };
 
-        List<int> id_list = new List<int>();
+        List<ElementData> data_list = new List<ElementData>();
         ElementData data;
 
         public Structure(ElementData new_data)
         {
             data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
+            data_list = CombineData(data.path.data, new List<ElementData>() { data });
         }
 
         public Path Source()
         {
-            return new Path(window, CombinePath(data.path.structure, source), id_list);
+            return new Path(window, CombinePath(data.path.structure, source), data_list);
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
+            return new Path(window, CombinePath(data.path.structure, edit), data_list);
         }
     }
     #endregion
@@ -101,19 +103,19 @@ public class PathManager
             data = new_data;
 
             source    = new List<int>() { 0, 0, data.type };
-            edit      = new List<int>() { 0, 2, 0 };
+            edit      = new List<int>() { 0, 2, 0, data.type };
         }
 
         public Path Source()
         {
             WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data.id);
+            return CreatePath(window, source, data);
         }
 
         public Path Edit()
         {
             WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data.id);
+            return CreatePath(window, edit, data);
         }
     }
 
@@ -133,44 +135,19 @@ public class PathManager
             data = new_data;
 
             source  = new List<int>() { 0, 1, data.type };
-            edit    = new List<int>() { 0, 2, 1 };
+            edit    = new List<int>() { 0, 2, 1, data.type };
         }
 
         public Path Source()
         {
             WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data.id);
+            return CreatePath(window, source, data);
         }
 
         public Path Edit()
         {
             WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data.id);
-        }
-    }
-
-    #endregion
-
-    #region Sound
-
-    public class Sound
-    {
-        WindowManager window = EditorManager.editorManager.windows[1];
-
-        ElementData data;
-
-        List<int> source = new List<int>();
-
-        public Sound(ElementData new_data)
-        {
-            data = new_data;
-
-            List<int> source = new List<int>() { 0, 0, data.type };
-        }
-
-        public Path Source()
-        {
-            return CreatePath(window, source, data.id);
+            return CreatePath(window, edit, data);
         }
     }
 
@@ -193,13 +170,13 @@ public class PathManager
         public Path Source()
         {
             WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data.id);
+            return CreatePath(window, source, data);
         }
 
         public Path Edit()
         {
             WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data.id);
+            return CreatePath(window, edit, data);
         }
     }
 
@@ -213,41 +190,118 @@ public class PathManager
 
         List<int> edit = new List<int>() { 0 };
 
-        List<int> id_list = new List<int>();
+        List<ElementData> data_list = new List<ElementData>();
         ElementData data;
 
         public Terrain(ElementData new_data)
         {
             data = new_data;
-            id_list = CombinePath(data.path.id, new List<int>() { data.id });
+            data_list = CombineData(data.path.data, new List<ElementData>() { data });
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(data.path.structure, edit), id_list);
+            return new Path(window, CombinePath(data.path.structure, edit), data_list);
         }
     }
+
+    #endregion
+
+    #endregion
+
+    #region Source
+
+    #region Object
+
+    public class Object
+    {
+        WindowManager window = EditorManager.editorManager.windows[1];
+
+        ElementData data;
+
+        List<int> source = new List<int>() { 1, 0 };
+
+        public Object(ElementData new_data)
+        {
+            data = new_data;
+        }
+
+        public Path Source()
+        {
+            return CreatePath(window, source, data);
+        }
+    }
+
+    #endregion
+
+    #region Tile
+
+    public class Tile
+    {
+        WindowManager window = EditorManager.editorManager.windows[1];
+
+        ElementData data;
+
+        List<int> source = new List<int>() { 1, 1 };
+
+        public Tile(ElementData new_data)
+        {
+            data = new_data;
+        }
+
+        public Path Source()
+        {
+            return CreatePath(window, source, data);
+        }
+    }
+
+    #endregion
+
+    #region Sound
+
+    public class Sound
+    {
+        WindowManager window = EditorManager.editorManager.windows[1];
+
+        ElementData data;
+
+        List<int> source;
+
+        public Sound(ElementData new_data)
+        {
+            data = new_data;
+
+            source = new List<int>() { 1, 2, data.type };
+        }
+
+        public Path Source()
+        {
+            return CreatePath(window, source, data);
+        }
+    }
+
+    #endregion
 
     #endregion
 
     #endregion
     static public Path CreatePath(WindowManager window, List<int> new_editor)
     {
-        return CreatePath(window, new_editor, 0);
+        return CreatePath(window, new_editor, new ElementData());
     }
 
-    static public Path CreatePath(WindowManager window, List<int> new_editor, int new_id)
+    static public Path CreatePath(WindowManager window, List<int> new_editor, ElementData new_data)
     {
-        Path new_path = new Path(window, new List<int>(), new List<int>());
+        Path new_path = new Path(window, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < new_editor.Count; i++)
         {
             new_path.structure.Add(new_editor[i]);
-            new_path.id.Add(0);
+            new_path.data.Add(new ElementData());
         }
 
-        if (new_path.id.Count > 0)
-            new_path.id[new_path.id.Count - 1] = new_id;
+        if (new_path.data.Count > 0)
+            new_path.data[new_path.data.Count - 1] = new_data;
 
         EditorManager.PathString(new_path);
 
@@ -276,18 +330,40 @@ public class PathManager
         return new_path;
     }
 
-    static public Path ReloadPath(Path path, int id)
+    static public List<ElementData> CombineData(List<ElementData> data, List<ElementData> new_data)
     {
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
+        List<ElementData> result = new List<ElementData>();
+
+        for (int i = 0; i < data.Count; i++)
+            result.Add(data[i]);
+
+        for (int i = 0; i < new_data.Count; i++)
+        {
+            //Add
+            //if (relative_index)
+            result.Add(new_data[i]);
+            /*
+            else
+                new_path[new_path.Count - (i + 1)] = new_index[i];
+            */
+            //Merge
+        }
+
+        return result;
+    }
+
+    static public Path ReloadPath(Path path, ElementData data)
+    {
+        Path new_path = new Path(path.window, new List<int>(), new List<ElementData>());
 
         for(int i = 0; i < path.structure.Count; i++)
         {
             new_path.structure.Add(path.structure[i]);
-            new_path.id.Add(path.id[i]);
+            new_path.data.Add(path.data[i]);
         }
 
-        if (new_path.id.Count > 0)
-            new_path.id[new_path.id.Count - 1] = id;
+        if (new_path.data.Count > 0)
+            new_path.data[new_path.data.Count - 1] = data;
 
         return new_path;
     }

@@ -15,7 +15,7 @@ public class ListData : MonoBehaviour
 
     public Enums.SortType sort_type;
 
-    public List<int> id_list { get; set; }
+    public List<ElementData> list { get; set; }
     //Placeholder
     public int id_count;
 
@@ -24,12 +24,17 @@ public class ListData : MonoBehaviour
 
     public void InitializeRows()
     {
+        InitializeRows("sql");
+    }
+
+    public void InitializeRows(string sql)
+    {
         controller = GetComponent<IController>();
 
-        id_list = new List<int>();
+        list = new List<ElementData>();
 
         for (int i = 0; i < id_count; i++)
-            id_list.Add(i + 1);
+            list.Add(new ElementData(data.table, (i + 1), data.type, controller.data.path));
     }
 
     public void SetRows()

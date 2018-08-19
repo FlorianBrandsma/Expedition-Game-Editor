@@ -7,9 +7,9 @@ public interface IOrganizer
     void InitializeOrganizer();
     void SetProperties(ListProperties listProperties);
     void SetListSize(float new_size);
-    void SetRows(List<int> id_list);
-    void ResetRows(List<int> filter);
+    void SetRows(List<ElementData> data_list);
+    void ResetRows(List<ElementData> filter);
     SelectionElement GetElement(int index);
-    Vector2 GetListSize(List<int> id_list, bool exact);
+    Vector2 GetListSize(List<ElementData> data_list, bool exact);
     void CloseList();
 }

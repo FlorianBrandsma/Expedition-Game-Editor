@@ -20,12 +20,12 @@ public class EditorSegment : MonoBehaviour, IController
         OpenSegment();
     }
 
-    public void FilterRows(List<int> list)
+    public void FilterRows(List<ElementData> list)
     {
         if (GetComponent<ListData>() != null)
         {
             GetComponent<ListData>().CloseRows();
-            GetComponent<ListData>().id_list = new List<int>(list);
+            GetComponent<ListData>().list = new List<ElementData>(list);
         }
 
         OpenSegment();

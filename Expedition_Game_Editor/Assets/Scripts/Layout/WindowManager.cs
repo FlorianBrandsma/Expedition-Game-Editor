@@ -7,15 +7,12 @@ using System.IO;
 
 public class WindowManager : MonoBehaviour
 {
-    public Path active_path = new Path(null, new List<int>(), new List<int>());
+    public Path active_path = new Path(null, new List<int>(), new List<ElementData>());
 
     public EditorController baseController;
 
-    public EditorField[] editor_fields;
-
-    public EditorController main_target_editor { get; set; }
-
-    public WindowManager sibling_window;
+    public WindowManager    sibling_window;
+    public EditorField[]    editor_fields;
 
     public void InitializeWindow()
     {
@@ -25,27 +22,33 @@ public class WindowManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        //Remove selection
-        //Don't remove selection on _every_ path change
-        //SelectionManager.selectionManager.DeactivateSelection();
-
         //Close the initialization of previous path
+
         foreach (EditorField field in editor_fields)
-            field.ClosePath(active_path, path);
+        {
+            if(field.target_controller != null)
+                field.ClosePath(active_path, path);
+        }
 
         //Determine the target editor
-        baseController.InitializePath(path, 0);
-
+        baseController.InitializeController(path, 0);
+        
         //Initialize the path
         foreach (EditorField field in editor_fields)
-            field.InitializePath(path);
-
+        {
+            if(field.target_controller != null)
+                field.InitializePath(path);
+        }
+        
         //Follow the same path to activate anything along its way
         baseController.SetPath(path);
 
         //Set everything along the path
         foreach (EditorField field in editor_fields)
-            field.SetPath(path);
+        {
+            if(field.target_controller != null)
+                field.SetPath(path);
+        }
 
         active_path = path;
     }

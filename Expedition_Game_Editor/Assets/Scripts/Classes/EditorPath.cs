@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class EditorPath
 {
-    public Path source  = new Path(null, new List<int>(), new List<int>());
-    public Path edit    = new Path(null, new List<int>(), new List<int>());
+    public Path source  = new Path(null, new List<int>(), new List<ElementData>());
+    public Path edit    = new Path(null, new List<int>(), new List<ElementData>());
 
     public EditorPath(ElementData data)
     {
@@ -79,6 +79,30 @@ public class EditorPath
 
                 source = element.Source();
                 edit = element.Edit();
+
+                break;
+
+            case "Object":
+
+                PathManager.Object obj = new PathManager.Object(data);
+
+                source = obj.Source();
+
+                break;
+
+            case "Tile":
+
+                PathManager.Tile tile = new PathManager.Tile(data);
+
+                source = tile.Source();
+
+                break;
+
+            case "Sound":
+
+                PathManager.Sound sound = new PathManager.Sound(data);
+
+                source = sound.Source();
 
                 break;
 

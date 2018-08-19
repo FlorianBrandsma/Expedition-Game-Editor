@@ -29,4 +29,13 @@ public class Enums
         Get,
         Set,
     }
+
+    public enum ItemType
+    {
+        Supply,
+        Arm,
+        Spoil,
+    }
+
+    //Some new ones
 }

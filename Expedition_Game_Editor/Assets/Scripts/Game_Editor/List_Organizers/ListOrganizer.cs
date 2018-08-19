@@ -38,18 +38,18 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         base_size = new_size;
     }
 
-    public Vector2 GetListSize(List<int> id_list, bool exact)
+    public Vector2 GetListSize(List<ElementData> data_list, bool exact)
     {
-        return new Vector2(0, base_size * id_list.Count);
+        return new Vector2(0, base_size * data_list.Count);
     }
 
-    public void SetRows(List<int> id_list)
+    public void SetRows(List<ElementData> data_list)
     {
         SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/List/List_Prefab");
 
-        for (int i = 0; i < id_list.Count; i++)
+        for (int i = 0; i < data_list.Count; i++)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, i);
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, data_list[i]);
             element_list_local.Add(element);
 
             string header = listManager.listData.data.table + " " + i;
@@ -65,7 +65,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    public void ResetRows(List<int> filter)
+    public void ResetRows(List<ElementData> filter)
     {
         CloseList();
         SetRows(filter);
@@ -75,7 +75,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = listManager.id_list.IndexOf(element.data.id);
+        int index = listManager.listData.list.IndexOf(element.data);
 
         rect.anchorMax = new Vector2(1, 1);
 

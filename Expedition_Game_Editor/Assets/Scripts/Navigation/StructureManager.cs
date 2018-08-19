@@ -7,28 +7,32 @@ using System.IO;
 
 public class StructureManager : MonoBehaviour
 {
-    public void SetStructure(ListData listData)
+    public ListData listData;
+
+    public void SetStructure()
     {
-        Dropdown structure_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
+        EditorController controller = GetComponent<EditorController>();
+        Dropdown dropdown = controller.actionManager.AddDropdown();
 
-        structure_dropdown.options.Clear();
-        structure_dropdown.onValueChanged.RemoveAllListeners();
 
-        for (int i = 0; i < listData.id_list.Count; i++)
+        dropdown.options.Clear();
+        dropdown.onValueChanged.RemoveAllListeners();
+
+        for (int i = 0; i < listData.list.Count; i++)
         {
-            structure_dropdown.options.Add(new Dropdown.OptionData(listData.controller.data.table + " " + i));
+            dropdown.options.Add(new Dropdown.OptionData(listData.data.table + " " + i));
         }
+        
+        int selected_index = listData.list.FindIndex(x => x.id == controller.data.id);
 
-        int selected_index = listData.id_list.IndexOf(listData.controller.data.id);
+        dropdown.captionText.text = listData.list[selected_index].table + " " + selected_index;
+        dropdown.value = selected_index;
 
-        structure_dropdown.captionText.text = listData.controller.data.table + " " + selected_index;
-        structure_dropdown.value = selected_index;
-
-        structure_dropdown.onValueChanged.AddListener(delegate { OpenPath(listData.controller.data.path, listData.id_list[structure_dropdown.value]); });
+        dropdown.onValueChanged.AddListener(delegate { OpenPath(controller.data.path, listData.list[dropdown.value]); });
     }
 
-    public void OpenPath(Path path, int id)
+    public void OpenPath(Path path, ElementData data)
     {
-        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, id));
+        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
     }
 }

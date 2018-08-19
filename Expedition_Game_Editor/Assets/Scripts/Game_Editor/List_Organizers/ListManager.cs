@@ -13,7 +13,6 @@ public class ListManager : MonoBehaviour
     public Enums.SelectionProperty  selectionProperty   { get; set; }
     public Enums.SelectionType      selectionType       { get; set; }
 
-    public List<int>        id_list = new List<int>();
     public int              selected_id;
 
     public ListData         listData        { get; set; }
@@ -35,8 +34,6 @@ public class ListManager : MonoBehaviour
     public void InitializeList(ListData new_listData)
     {
         listData = new_listData;
-
-        id_list = new List<int>(listData.id_list);
 
         switch(listData.sort_type)
         {
@@ -82,9 +79,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        list_parent.sizeDelta = organizer.GetListSize(id_list, true);
+        list_parent.sizeDelta = organizer.GetListSize(listData.list, true);
 
-        list_size = organizer.GetListSize(id_list, false);
+        list_size = organizer.GetListSize(listData.list, false);
 
         main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
         main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
@@ -96,23 +93,17 @@ public class ListManager : MonoBehaviour
 
     public void SetRows()
     {
-        organizer.SetRows(id_list);
+        organizer.SetRows(listData.list);
 
         if (selectionType == Enums.SelectionType.Automatic)
         {
             AutoSelectElement();
-        }
-
-        //Automatically selects and highlights an element on startup by id
-        if (controller.field.target_editor != controller.field.windowManager.main_target_editor)
-        {
-            
-        }    
+        }   
     }
 
     public void ResetRows()
     {
-        organizer.ResetRows(id_list);
+        organizer.ResetRows(listData.list);
     }
 
     public void UpdateRows()
@@ -137,29 +128,29 @@ public class ListManager : MonoBehaviour
         organizer.CloseList();
     }
 
-    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, int index)
+    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, ElementData data)
     {
         foreach(SelectionElement element in list)
         {
             if (!element.gameObject.activeInHierarchy)
             {
-                InitializeElement(element, index);
+                InitializeElement(element, data);
                 return element;
             }     
         }
 
         SelectionElement new_element = Instantiate(element_prefab);
 
-        InitializeElement(new_element, index);
+        InitializeElement(new_element, data);
 
         list.Add(new_element);
 
         return new_element;
     }
 
-    public void InitializeElement(SelectionElement element, int index)
+    public void InitializeElement(SelectionElement element, ElementData data)
     {
-        element.InitializeSelection(this, index);
+        element.InitializeSelection(this, data);
 
         element.selectionGroup = selectionGroup;
 

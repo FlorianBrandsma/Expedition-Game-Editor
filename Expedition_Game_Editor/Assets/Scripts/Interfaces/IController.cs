@@ -8,5 +8,5 @@ public interface IController
 
     EditorField field { get; set; }
 
-    void FilterRows(List<int> list);
+    void FilterRows(List<ElementData> list);
 }

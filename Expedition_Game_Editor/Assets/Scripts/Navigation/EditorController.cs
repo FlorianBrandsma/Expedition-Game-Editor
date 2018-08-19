@@ -7,45 +7,51 @@ using System.IO;
 
 public class EditorController : MonoBehaviour, IController
 {
-    public ElementData data;
+    public bool active      { get; set; }
 
-    public HistoryManager historyManager;
+    public ElementData      data;
 
-    public EditorLayout editorLayout;
+    public EditorField      editorField;
 
-    public EditorField editorField;
+    public HistoryManager   historyManager;
 
-    private int depth;
+    public EditorLayout     editorLayout;
 
-    //Header
-    public TabManager tabManager;
-    //Footer
-    public ButtonActionManager buttonActionManager;
+    public TabManager       tabManager;
+    public EditorController[] controllers;
 
-    public GameObject[] editor;
- 
-    public ActionManager actionManager;
+    public ActionManager    actionManager;
 
-    public void InitializePath(Path new_path, int editor_depth)
+    public int depth        { get; set; }
+
+    //Necessary steps to set up the correct path for the controller
+    public void InitializeController(Path path, int new_depth)
     {
-        editorField.target_editor = this;
-        editorField.windowManager.main_target_editor = this;
+        editorField.target_controller = this;
+ 
+        depth = new_depth;
 
-        depth = editor_depth;
+        if (depth > 0 && path.data.Count > 0)
+            data = path.data[depth - 1];
 
-        data.path = TrimPath(new_path);
+        data.path = path.Trim(depth);
 
-        if (depth > 0 && new_path.id.Count > 0)
-            data.id = new_path.id[depth - 1];
+        if (tabManager != null)
+            InitializeTabs(path);
 
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().InitializeRows();
 
-        if (tabManager != null)
-            InitializeTabs(new_path);
+        if (depth < path.structure.Count)
+            controllers[path.structure[depth]].InitializeController(path, depth + 1);
+    }
 
-        if (depth < new_path.structure.Count)
-            editor[new_path.structure[depth]].GetComponent<EditorController>().InitializePath(new_path, depth + 1); 
+    //Create separate function for obtaining path and initializing rows
+    //Only initialize rows if the controller is inactive
+    public void InitializeController(Path path)
+    {
+        if (depth < path.structure.Count)
+            controllers[path.structure[depth]].InitializeController(path);
     }
 
     public void InitializeLayout()
@@ -54,7 +60,7 @@ public class EditorController : MonoBehaviour, IController
             editorLayout.InitializeLayout();
     }
 
-    public void SetPath(Path new_path)
+    public void SetPath(Path path)
     {
         if (GetComponent<MiniButtonManager>() != null)
             GetComponent<MiniButtonManager>().SetButtons();
@@ -67,18 +73,15 @@ public class EditorController : MonoBehaviour, IController
 
         if (GetComponent<TimeManager>() != null)
             GetComponent<TimeManager>().SetTimes();
-
+        
         if (GetComponent<StructureManager>() != null)
-            GetComponent<StructureManager>().SetStructure(GetComponent<ListData>());
-
-        if (buttonActionManager != null)
-            buttonActionManager.SetButtons(this);
-
+            GetComponent<StructureManager>().SetStructure();
+            
         if (tabManager != null)
-            SetTabs(new_path);
+            tabManager.SetEditorTabs(this, path);
 
-        if (depth < new_path.structure.Count)
-            editor[new_path.structure[depth]].GetComponent<EditorController>().SetPath(new_path);
+        if (depth < path.structure.Count)
+            controllers[path.structure[depth]].SetPath(path);
     }
 
     public void SetLayout()
@@ -113,21 +116,16 @@ public class EditorController : MonoBehaviour, IController
             historyManager.AddHistory(data.path);
     }
 
-    void InitializeTabs(Path new_path)
+    void InitializeTabs(Path path)
     {
-        if (depth == new_path.structure.Count)
+        if (depth == path.structure.Count)
         {
-            new_path.structure.Add(0);
-            new_path.id.Add(0);
+            path.structure.Add(0);
+            path.data.Add(new ElementData());
         }
     }
 
-    void SetTabs(Path new_path)
-    {
-        tabManager.SetEditorTabs(this, new_path, editor, depth);
-    }
-
-    public void FilterRows(List<int> list)
+    public void FilterRows(List<ElementData> list)
     {
 
     }
@@ -159,11 +157,8 @@ public class EditorController : MonoBehaviour, IController
         if (tabManager != null)
             tabManager.CloseTabs();
 
-        if (buttonActionManager != null)
-            buttonActionManager.CloseButtons();
-
         if (depth < path.structure.Count)
-            editor[path.structure[depth]].GetComponent<EditorController>().ClosePath(path);
+            controllers[path.structure[depth]].ClosePath(path);
     }
 
     public void CloseEditor()
@@ -176,32 +171,6 @@ public class EditorController : MonoBehaviour, IController
 
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().CloseEditor();
-    }
-
-    Path TrimPath(Path path)
-    {
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
-
-        for (int i = 0; i < depth; i++)
-        {
-            new_path.structure.Add(path.structure[i]);
-            new_path.id.Add(path.id[i]);
-        }
-
-        return new_path;
-    }
-
-    public Path CopyPath(Path path, int depth)
-    {
-        Path new_path = new Path(path.window, new List<int>(), new List<int>());
-
-        for (int i = 0; i < depth; i++)
-            new_path.structure.Add(path.structure[i]);
-
-        for (int i = 0; i < depth; i++)
-            new_path.id.Add(path.id[i]);
-
-        return new_path;
     }
 
     #region IController

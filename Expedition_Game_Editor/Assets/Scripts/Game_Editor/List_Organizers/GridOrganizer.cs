@@ -53,7 +53,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         base_size = new_size;
     }
 
-    public Vector2 GetListSize(List<int> id_list, bool exact)
+    public Vector2 GetListSize(List<ElementData> data_list, bool exact)
     {
         Vector2 new_size;
 
@@ -62,14 +62,14 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             int list_width  = GetListWidth();
             int list_height = GetListHeight();
 
-            if (list_width > id_list.Count)
-                list_width = id_list.Count;
+            if (list_width > data_list.Count)
+                list_width = data_list.Count;
 
-            if (list_height > id_list.Count)
-                list_height = id_list.Count;
+            if (list_height > data_list.Count)
+                list_height = data_list.Count;
 
-            new_size = new Vector2( horizontal  ? ((id_list.Count + (id_list.Count % list_height)) * base_size) / list_height : list_width * base_size, 
-                                    vertical    ? ((id_list.Count + (id_list.Count % list_width))  * base_size) / list_width : list_height * base_size);
+            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height)) * base_size) / list_height : list_width * base_size, 
+                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))  * base_size) / list_width  : list_height * base_size);
         } else {
 
             new_size = new Vector2( horizontal  ? grid_size.x * base_size : base_size,
@@ -102,19 +102,19 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         return y - 1;
     }
 
-    public void SetRows(List<int> id_list)
+    public void SetRows(List<ElementData> data_list)
     {
         SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Grid/Grid_Prefab");
 
         int i = 0;
 
-        list_size = GetListSize(id_list, false);
+        list_size = GetListSize(data_list, false);
 
         for (int y = 0; y < list_size.y; y++)
         {
             for (int x = 0; x < list_size.x; x++)
             {
-                SelectionElement element = listManager.SpawnElement(element_list, element_prefab, i);
+                SelectionElement element = listManager.SpawnElement(element_list, element_prefab, data_list[i]);
                 element_list_local.Add(element);
 
                 //Debugging
@@ -124,13 +124,13 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
                 i++;
 
-                if (i == listManager.id_list.Count)
+                if (i == listManager.listData.list.Count)
                     break;
             }
         }
     }
 
-    public void ResetRows(List<int> filter)
+    public void ResetRows(List<ElementData> filter)
     {
         CloseList();
         SetRows(filter);
@@ -140,7 +140,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = listManager.id_list.IndexOf(element.data.id);
+        int index = listManager.listData.list.IndexOf(element.data);
 
         rect.sizeDelta = new Vector2(base_size, base_size);
 
