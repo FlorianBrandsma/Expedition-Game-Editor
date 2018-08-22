@@ -115,7 +115,7 @@ public class ListManager : MonoBehaviour
     {
         SelectionElement element = organizer.GetElement(0);
 
-        element.OpenPath(element.data.path);
+        element.OpenPath(element.listManager.listData.controller.path);
     }
 
     public void CloseList()

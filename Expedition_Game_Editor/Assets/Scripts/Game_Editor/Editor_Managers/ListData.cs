@@ -34,7 +34,7 @@ public class ListData : MonoBehaviour
         list = new List<ElementData>();
 
         for (int i = 0; i < id_count; i++)
-            list.Add(new ElementData(data.table, (i + 1), data.type, controller.data.path));
+            list.Add(new ElementData(data.table, (i + 1), data.type));
     }
 
     public void SetRows()

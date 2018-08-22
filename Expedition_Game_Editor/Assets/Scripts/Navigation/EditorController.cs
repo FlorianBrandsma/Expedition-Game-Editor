@@ -7,6 +7,8 @@ using System.IO;
 
 public class EditorController : MonoBehaviour, IController
 {
+    public Path path        { get; set; }
+
     public bool active      { get; set; }
 
     public ElementData      data;
@@ -22,36 +24,36 @@ public class EditorController : MonoBehaviour, IController
 
     public ActionManager    actionManager;
 
-    public int depth        { get; set; }
+    public int step        { get; set; }
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializeController(Path path, int new_depth)
+    public void InitializeController(Path new_path, int new_step)
     {
         editorField.target_controller = this;
  
-        depth = new_depth;
+        step = new_step;
 
-        if (depth > 0 && path.data.Count > 0)
-            data = path.data[depth - 1];
+        if (step > 0 && new_path.data.Count > 0)
+            data = new_path.data[step - 1];
 
-        data.path = path.Trim(depth);
+        path = new_path.Trim(step);
 
         if (tabManager != null)
-            InitializeTabs(path);
+            InitializeTabs(new_path);
 
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().InitializeRows();
 
-        if (depth < path.structure.Count)
-            controllers[path.structure[depth]].InitializeController(path, depth + 1);
+        if (step < new_path.structure.Count)
+            controllers[new_path.structure[step]].InitializeController(new_path, step + 1);       
     }
 
     //Create separate function for obtaining path and initializing rows
     //Only initialize rows if the controller is inactive
-    public void InitializeController(Path path)
+    public void InitializeController(Path new_path)
     {
-        if (depth < path.structure.Count)
-            controllers[path.structure[depth]].InitializeController(path);
+        if (step < new_path.structure.Count)
+            controllers[new_path.structure[step]].InitializeController(new_path);
     }
 
     public void InitializeLayout()
@@ -60,7 +62,7 @@ public class EditorController : MonoBehaviour, IController
             editorLayout.InitializeLayout();
     }
 
-    public void SetPath(Path path)
+    public void SetPath(Path new_path)
     {
         if (GetComponent<MiniButtonManager>() != null)
             GetComponent<MiniButtonManager>().SetButtons();
@@ -76,12 +78,12 @@ public class EditorController : MonoBehaviour, IController
         
         if (GetComponent<StructureManager>() != null)
             GetComponent<StructureManager>().SetStructure();
-            
-        if (tabManager != null)
-            tabManager.SetEditorTabs(this, path);
 
-        if (depth < path.structure.Count)
-            controllers[path.structure[depth]].SetPath(path);
+        if (tabManager != null)
+            tabManager.SetEditorTabs(this, new_path);
+
+        if (step < new_path.structure.Count)
+            controllers[new_path.structure[step]].SetPath(new_path);
     }
 
     public void SetLayout()
@@ -113,15 +115,15 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<IEditor>().OpenEditor();
 
         if (historyManager != null)
-            historyManager.AddHistory(data.path);
+            historyManager.AddHistory(path);
     }
 
-    void InitializeTabs(Path path)
+    void InitializeTabs(Path new_path)
     {
-        if (depth == path.structure.Count)
+        //function
+        if (step == new_path.structure.Count)
         {
-            path.structure.Add(0);
-            path.data.Add(new ElementData());
+            new_path.Add();
         }
     }
 
@@ -149,7 +151,7 @@ public class EditorController : MonoBehaviour, IController
         EditorManager.editorManager.PreviousEditor();
     }
 
-    public void ClosePath(Path path)
+    public void ClosePath(Path new_path)
     {
         if (actionManager != null)
             actionManager.CloseActions();
@@ -157,8 +159,8 @@ public class EditorController : MonoBehaviour, IController
         if (tabManager != null)
             tabManager.CloseTabs();
 
-        if (depth < path.structure.Count)
-            controllers[path.structure[depth]].ClosePath(path);
+        if (step < new_path.structure.Count)
+            controllers[new_path.structure[step]].ClosePath(new_path);
     }
 
     public void CloseEditor()

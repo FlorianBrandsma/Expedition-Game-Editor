@@ -22,8 +22,6 @@ public class EditorField : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        Debug.Log(EditorManager.PathString(target_controller.data.path));
-
         //Activate necessary components to visualize the target editor
         if(target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().Activate();
@@ -44,7 +42,7 @@ public class EditorField : MonoBehaviour
             target_controller.GetComponent<EditorDependency>().SetDependency();
 
         //Open the editor
-        if (target_controller.data.path.Equals(path))
+        if (target_controller.path.Equals(path))
             target_controller.OpenEditor();
     }
 

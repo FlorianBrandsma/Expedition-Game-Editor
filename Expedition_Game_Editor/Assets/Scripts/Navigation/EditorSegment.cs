@@ -8,6 +8,8 @@ public class EditorSegment : MonoBehaviour, IController
 
     public ElementData data;
 
+    public Path path { get; set; }
+
     private ListData listData;
 
     public void InitializeSegment(SubController new_subController)

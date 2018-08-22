@@ -27,7 +27,7 @@ public class SelectionElement : MonoBehaviour
     {
         data = new_data;
 
-        editorPath = new EditorPath(data);
+        editorPath = new EditorPath(data, listManager.listData.controller.path);
     }
 
     public void InitializeSelection(ListManager new_listManager, ElementData data)

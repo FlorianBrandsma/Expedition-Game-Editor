@@ -14,7 +14,6 @@ public class StructureManager : MonoBehaviour
         EditorController controller = GetComponent<EditorController>();
         Dropdown dropdown = controller.actionManager.AddDropdown();
 
-
         dropdown.options.Clear();
         dropdown.onValueChanged.RemoveAllListeners();
 
@@ -28,7 +27,7 @@ public class StructureManager : MonoBehaviour
         dropdown.captionText.text = listData.list[selected_index].table + " " + selected_index;
         dropdown.value = selected_index;
 
-        dropdown.onValueChanged.AddListener(delegate { OpenPath(controller.data.path, listData.list[dropdown.value]); });
+        dropdown.onValueChanged.AddListener(delegate { OpenPath(controller.path, listData.list[dropdown.value]); });
     }
 
     public void OpenPath(Path path, ElementData data)

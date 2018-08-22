@@ -68,23 +68,27 @@ public class PathManager
         List<int> source    = new List<int>() { 0 };
         List<int> edit      = new List<int>() { 1 };
 
+        Path path = new Path();
+
         List<ElementData> data_list = new List<ElementData>();
         ElementData data;
 
-        public Structure(ElementData new_data)
+        public Structure(ElementData new_data, Path new_path)
         {
+            path = new_path;
+
             data = new_data;
-            data_list = CombineData(data.path.data, new List<ElementData>() { data });
+            data_list = CombineData(path.data, new List<ElementData>() { data });
         }
 
         public Path Source()
         {
-            return new Path(window, CombinePath(data.path.structure, source), data_list);
+            return new Path(window, CombinePath(path.structure, source), data_list);
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(data.path.structure, edit), data_list);
+            return new Path(window, CombinePath(path.structure, edit), data_list);
         }
     }
     #endregion
@@ -190,18 +194,21 @@ public class PathManager
 
         List<int> edit = new List<int>() { 0 };
 
+        Path path = new Path();
+
         List<ElementData> data_list = new List<ElementData>();
         ElementData data;
 
-        public Terrain(ElementData new_data)
+        public Terrain(ElementData new_data, Path new_path)
         {
+            path = new_path;
             data = new_data;
-            data_list = CombineData(data.path.data, new List<ElementData>() { data });
+            data_list = CombineData(path.data, new List<ElementData>() { data });
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(data.path.structure, edit), data_list);
+            return new Path(window, CombinePath(path.structure, edit), data_list);
         }
     }
 
@@ -296,8 +303,7 @@ public class PathManager
 
         for (int i = 0; i < new_editor.Count; i++)
         {
-            new_path.structure.Add(new_editor[i]);
-            new_path.data.Add(new ElementData());
+            new_path.Add(new_editor[i]);
         }
 
         if (new_path.data.Count > 0)

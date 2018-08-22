@@ -7,6 +7,13 @@ public class Path
     public List<int> structure  { get; set; }
     public List<ElementData> data { get; set; }
 
+    public Path()
+    {
+        window = null;
+        structure = new List<int>();
+        data = new List<ElementData>();
+    }
+
     public Path(WindowManager new_window, List<int> new_structure, List<ElementData> new_data)
     {
         window = new_window;
@@ -31,6 +38,22 @@ public class Path
         return true;
     }
 
+    public void Add()
+    {
+        Add(0, new ElementData());
+    }
+
+    public void Add(int index)
+    {
+        Add(index, new ElementData());
+    }
+
+    public void Add(int index, ElementData new_data)
+    {
+        structure.Add(index);
+        data.Add(new_data);
+    }
+
     //Create a new path based on an editor list. ID list is generated
     public Path CreateEdit(List<int> base_editor)
     {
@@ -45,14 +68,13 @@ public class Path
     //Create a new path based on editor and id lists
     public Path CreateEdit(List<int> base_editor, List<int> base_id)
     {
-        Path path = new Path(null, new List<int>(), new List<ElementData>());
+        Path path = new Path();
+
+        path.window = window;
 
         for (int i = 0; i < base_editor.Count; i++)
-        {
-            path.structure.Add(base_editor[i]);
-            path.data.Add(new ElementData()); //New controller
-        }
-
+            path.Add(base_editor[i]);
+        
         return path;
     }
 
@@ -75,10 +97,7 @@ public class Path
         Path new_path = new Path(window, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < index; i++)
-        {
-            new_path.structure.Add(structure[i]);
-            new_path.data.Add(data[i]);
-        }
+            new_path.Add(structure[i], data[i]);
 
         return new_path;
     }

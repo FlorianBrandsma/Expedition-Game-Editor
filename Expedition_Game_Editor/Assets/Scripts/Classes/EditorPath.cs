@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 public class EditorPath
 {
-    public Path source  = new Path(null, new List<int>(), new List<ElementData>());
-    public Path edit    = new Path(null, new List<int>(), new List<ElementData>());
+    public Path source  = new Path();
+    public Path edit    = new Path();
 
-    public EditorPath(ElementData data)
+    public EditorPath(ElementData data, Path path)
     {
         switch (data.table)
         {
             case "Chapter":
 
-                PathManager.Structure chapter = new PathManager.Structure(data);
+                PathManager.Structure chapter = new PathManager.Structure(data, path);
 
                 source  = chapter.Source();
                 edit    = chapter.Edit();
@@ -22,7 +22,7 @@ public class EditorPath
 
             case "Phase":
 
-                PathManager.Structure phase = new PathManager.Structure(data);
+                PathManager.Structure phase = new PathManager.Structure(data, path);
 
                 source  = phase.Source();
                 edit    = phase.Edit();
@@ -31,7 +31,7 @@ public class EditorPath
 
             case "Quest":
 
-                PathManager.Structure quest = new PathManager.Structure(data);
+                PathManager.Structure quest = new PathManager.Structure(data, path);
 
                 source  = quest.Source();
                 edit    = quest.Edit();
@@ -40,7 +40,7 @@ public class EditorPath
 
             case "Objective":
 
-                PathManager.Structure objective = new PathManager.Structure(data);
+                PathManager.Structure objective = new PathManager.Structure(data, path);
 
                 source  = objective.Source();
                 edit    = objective.Edit();
@@ -58,7 +58,7 @@ public class EditorPath
 
             case "Terrain":
 
-                PathManager.Terrain terrain = new PathManager.Terrain(data);
+                PathManager.Terrain terrain = new PathManager.Terrain(data, path);
 
                 edit = terrain.Edit();
 

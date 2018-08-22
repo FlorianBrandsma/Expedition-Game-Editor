@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 public interface IController
 {
-    ElementData data { get; set; }
+    Path path           { get; set; }
 
-    EditorField field { get; set; }
+    ElementData data    { get; set; }
+
+    EditorField field   { get; set; }
 
     void FilterRows(List<ElementData> list);
 }

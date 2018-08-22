@@ -28,19 +28,8 @@ public class TabManager : MonoBehaviour
         {
             Button new_tab = SpawnTab();
 
-            //Messes with paths -> Use this later 
-            //>Take path from data (maybe) and into controller
-            //>>
-            //controllers[tab].data = controller.data;
+            tabs[i].data = controller.data;
 
-            //Path is required in data so that it can add onto it for structure
-            //Think about it. Rather remove path from data.
-
-            /*
-            controllers[tab].data.table = controller.data.table;
-            controllers[tab].data.id = controller.data.id;
-            controllers[tab].data.type = controller.data.type;
-            */
             //FIX TAB PNG; THEN REMOVE THIS
             SetAnchors(i, tabs.Length);
 
@@ -56,7 +45,7 @@ public class TabManager : MonoBehaviour
             new_tab.gameObject.SetActive(true);
         }
 
-        SelectTab(main_path.Trim(controller.depth + 1).structure[controller.depth]);
+        SelectTab(main_path.Trim(controller.step + 1).structure[controller.step]);
     }
     
     void SetAnchors(int index, int tabs)
@@ -72,10 +61,9 @@ public class TabManager : MonoBehaviour
 
     void OpenPath(int selected_tab)
     {
-        controller.data.path.structure.Add(selected_tab);
-        controller.data.path.data.Add(new ElementData());
+        controller.path.Add(selected_tab);
 
-        EditorManager.editorManager.OpenPath(controller.data.path);
+        EditorManager.editorManager.OpenPath(controller.path);
     }
 
     public void SelectTab(int selected_tab)
