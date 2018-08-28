@@ -17,7 +17,7 @@ public class EditorSegment : MonoBehaviour, IController
         subController = new_subController;
 
         if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().InitializeRows();
+            GetComponent<ListData>().GetData();
 
         OpenSegment();
     }

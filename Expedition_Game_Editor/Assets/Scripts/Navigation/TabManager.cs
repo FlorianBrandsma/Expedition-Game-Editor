@@ -45,7 +45,7 @@ public class TabManager : MonoBehaviour
             new_tab.gameObject.SetActive(true);
         }
 
-        SelectTab(main_path.Trim(controller.step + 1).structure[controller.step]);
+        SelectTab(main_path.Trim(controller.step + 1).route[controller.step]);
     }
     
     void SetAnchors(int index, int tabs)

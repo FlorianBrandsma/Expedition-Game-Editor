@@ -4,37 +4,34 @@ using System.Linq;
 public class Path
 {
     public WindowManager window { get; set; }
-    public List<int> structure  { get; set; }
+    public List<int> route      { get; set; }
     public List<ElementData> data { get; set; }
 
     public Path()
     {
-        window = null;
-        structure = new List<int>();
-        data = new List<ElementData>();
+        window  = null;
+        route   = new List<int>();
+        data    = new List<ElementData>();
     }
 
     public Path(WindowManager new_window, List<int> new_structure, List<ElementData> new_data)
     {
-        window = new_window;
-        structure = new_structure;
-        data = new_data; 
+        window  = new_window;
+        route   = new_structure;
+        data    = new_data; 
     }
 
     public void Clear()
     {
-        structure.Clear();
+        route.Clear();
         data.Clear();
     }
 
     public bool Equals(Path path)
     {
-        if (!structure.SequenceEqual(path.structure))
+        if (!route.SequenceEqual(path.route))
             return false;
-        /*
-        if (!id.SequenceEqual(path.id))
-            return false;
-        */
+
         return true;
     }
 
@@ -50,7 +47,7 @@ public class Path
 
     public void Add(int index, ElementData new_data)
     {
-        structure.Add(index);
+        route.Add(index);
         data.Add(new_data);
     }
 
@@ -97,7 +94,7 @@ public class Path
         Path new_path = new Path(window, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < index; i++)
-            new_path.Add(structure[i], data[i]);
+            new_path.Add(route[i], data[i]);
 
         return new_path;
     }

@@ -83,12 +83,12 @@ public class PathManager
 
         public Path Source()
         {
-            return new Path(window, CombinePath(path.structure, source), data_list);
+            return new Path(window, CombinePath(path.route, source), data_list);
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(path.structure, edit), data_list);
+            return new Path(window, CombinePath(path.route, edit), data_list);
         }
     }
     #endregion
@@ -208,7 +208,7 @@ public class PathManager
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(path.structure, edit), data_list);
+            return new Path(window, CombinePath(path.route, edit), data_list);
         }
     }
 
@@ -362,9 +362,9 @@ public class PathManager
     {
         Path new_path = new Path(path.window, new List<int>(), new List<ElementData>());
 
-        for(int i = 0; i < path.structure.Count; i++)
+        for(int i = 0; i < path.route.Count; i++)
         {
-            new_path.structure.Add(path.structure[i]);
+            new_path.route.Add(path.route[i]);
             new_path.data.Add(path.data[i]);
         }
 

@@ -27,7 +27,7 @@ public class EditorController : MonoBehaviour, IController
     public int step        { get; set; }
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializeController(Path new_path, int new_step)
+    public void InitializePath(Path new_path, int new_step)
     {
         editorField.target_controller = this;
  
@@ -41,19 +41,19 @@ public class EditorController : MonoBehaviour, IController
         if (tabManager != null)
             InitializeTabs(new_path);
 
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().InitializeRows();
-
-        if (step < new_path.structure.Count)
-            controllers[new_path.structure[step]].InitializeController(new_path, step + 1);       
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step]].InitializePath(new_path, step + 1);       
     }
 
     //Create separate function for obtaining path and initializing rows
     //Only initialize rows if the controller is inactive
-    public void InitializeController(Path new_path)
+    public void GetData(Path new_path)
     {
-        if (step < new_path.structure.Count)
-            controllers[new_path.structure[step]].InitializeController(new_path);
+        if (GetComponent<ListData>() != null)
+            GetComponent<ListData>().GetData();
+
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step]].GetData(new_path);
     }
 
     public void InitializeLayout()
@@ -62,7 +62,7 @@ public class EditorController : MonoBehaviour, IController
             editorLayout.InitializeLayout();
     }
 
-    public void SetPath(Path new_path)
+    public void SetComponents(Path new_path)
     {
         if (GetComponent<MiniButtonManager>() != null)
             GetComponent<MiniButtonManager>().SetButtons();
@@ -82,8 +82,8 @@ public class EditorController : MonoBehaviour, IController
         if (tabManager != null)
             tabManager.SetEditorTabs(this, new_path);
 
-        if (step < new_path.structure.Count)
-            controllers[new_path.structure[step]].SetPath(new_path);
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step]].SetComponents(new_path);
     }
 
     public void SetLayout()
@@ -97,7 +97,7 @@ public class EditorController : MonoBehaviour, IController
             editorLayout.CloseLayout();
     }
 
-    public void SetEditor()
+    public void InitializeController()
     {
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().SetRows();
@@ -109,7 +109,7 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<PreviewProperties>().SetPreview();
     }
 
-    public void OpenEditor()
+    public void OpenController()
     {
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().OpenEditor();
@@ -120,11 +120,8 @@ public class EditorController : MonoBehaviour, IController
 
     void InitializeTabs(Path new_path)
     {
-        //function
-        if (step == new_path.structure.Count)
-        {
-            new_path.Add();
-        }
+        if (step == new_path.route.Count)
+            new_path.Add();   
     }
 
     public void FilterRows(List<ElementData> list)
@@ -159,8 +156,8 @@ public class EditorController : MonoBehaviour, IController
         if (tabManager != null)
             tabManager.CloseTabs();
 
-        if (step < new_path.structure.Count)
-            controllers[new_path.structure[step]].ClosePath(new_path);
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step]].ClosePath(new_path);
     }
 
     public void CloseEditor()

@@ -22,15 +22,15 @@ public class ListData : MonoBehaviour
     public Path select_path { get; set; }
     public Path edit_path   { get; set; }
 
-    public void InitializeRows()
+    public void GetData()
     {
-        InitializeRows("sql");
+        GetData("sql");
     }
 
-    public void InitializeRows(string sql)
+    public void GetData(string sql)
     {
         controller = GetComponent<IController>();
-
+        Debug.Log("Load data");
         list = new List<ElementData>();
 
         for (int i = 0; i < id_count; i++)

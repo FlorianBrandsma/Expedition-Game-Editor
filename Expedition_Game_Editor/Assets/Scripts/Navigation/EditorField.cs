@@ -20,30 +20,35 @@ public class EditorField : MonoBehaviour
         windowManager = new_windowManager;
     }
 
-    public void InitializePath(Path path)
+    public void ActivateDependencies()
     {
         //Activate necessary components to visualize the target editor
-        if(target_controller.GetComponent<EditorDependency>() != null)
-            target_controller.GetComponent<EditorDependency>().Activate();
+        if (target_controller.GetComponent<EditorDependency>() != null)
+            target_controller.GetComponent<EditorDependency>().Activate();       
+    }
 
+    public void InitializeLayout(Path path)
+    {
         //First wave layout: Adjust size of fields and windows
         target_controller.InitializeLayout();  
     }
 
-    public void SetPath(Path path)
+    public void SetDependencies(Path path)
     {
-        //Activate target specific elements before second layout wave
-        //target_controller.GetComponent<EditorDependency>().Activate();
-
-        target_controller.SetEditor();
-
         //Adjust size of dependency content based on active headers and footers
         if (target_controller.GetComponent<EditorDependency>() != null)
-            target_controller.GetComponent<EditorDependency>().SetDependency();
+            target_controller.GetComponent<EditorDependency>().SetDependency(); 
+    }
 
-        //Open the editor
+    public void InitializeController()
+    {
+        target_controller.InitializeController();
+    }
+
+    public void OpenController(Path path)
+    {
         if (target_controller.path.Equals(path))
-            target_controller.OpenEditor();
+            target_controller.OpenController();
     }
 
     public void ClosePath(Path active_path, Path new_path)

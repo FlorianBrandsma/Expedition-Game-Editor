@@ -22,4 +22,18 @@ public class ElementData
         id      = new_id;
         type    = new_type;
     }
+
+    public bool Equals(ElementData data)
+    {
+        if (table != data.table)
+            return false;
+
+        if (id != data.id)
+            return false;
+
+        if (type != data.type)
+            return false;
+
+        return true;
+    }
 }

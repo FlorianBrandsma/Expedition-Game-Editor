@@ -23,9 +23,9 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        InitializePath(new PathManager.Primary().Initialize());
-        InitializePath(new PathManager.Secondary().Initialize());
         InitializePath(new PathManager.Tertiary().Initialize());
+        InitializePath(new PathManager.Secondary().Initialize());
+        InitializePath(new PathManager.Primary().Initialize());
     }
 
     private void Update()
@@ -43,7 +43,8 @@ public class EditorManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            ResetPath();
+            InitializePath(new PathManager.Primary().Initialize());
+            //ResetPath();
         }
     }
 
@@ -97,10 +98,10 @@ public class EditorManager : MonoBehaviour
 
     static public string PathString(Path path)
     {
-        string str = "structure: ";
+        string str = "route: ";
 
-        for (int i = 0; i < path.structure.Count; i++)
-            str += path.structure[i] + ",";
+        for (int i = 0; i < path.route.Count; i++)
+            str += path.route[i] + ",";
 
         str += "id: ";
 

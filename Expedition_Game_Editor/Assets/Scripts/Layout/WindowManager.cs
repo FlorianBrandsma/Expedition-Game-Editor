@@ -23,32 +23,31 @@ public class WindowManager : MonoBehaviour
     public void InitializePath(Path path)
     {
         //Close the initialization of previous path
-
-        foreach (EditorField field in editor_fields)
-        {
-            if(field.target_controller != null)
-                field.ClosePath(active_path, path);
-        }
-
-        //Determine the target editor
-        baseController.InitializeController(path, 0);
+        ClosePath(path);
         
-        //Initialize the path
-        foreach (EditorField field in editor_fields)
-        {
-            if(field.target_controller != null)
-                field.InitializePath(path);
-        }
-        
+        //Determine the target controller
+        baseController.InitializePath(path, 0);
+
+        //Load controller data
+        baseController.GetData(path); //special rules
+
+        //Activate target dependencies
+        ActivateDependencies();
+
+        //Set layout of target controllers
+        InitializeLayout(path);
+
         //Follow the same path to activate anything along its way
-        baseController.SetPath(path);
+        baseController.SetComponents(path);
 
-        //Set everything along the path
-        foreach (EditorField field in editor_fields)
-        {
-            if(field.target_controller != null)
-                field.SetPath(path);
-        }
+        //Set layout of dependencies
+        SetDependencies(path);
+
+        //Set visual components of editor (list/preview)
+        InitializeController();
+
+        //Load specific editor (and add to history)
+        OpenController(path); //Special rules
 
         active_path = path;
     }
@@ -64,5 +63,57 @@ public class WindowManager : MonoBehaviour
     public void ResetPath()
     {
         InitializePath(active_path);
+    }
+
+
+    private void ClosePath(Path path)
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.ClosePath(active_path, path);
+        }
+    }
+
+    private void ActivateDependencies()
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.ActivateDependencies();
+        }
+    }
+    private void InitializeLayout(Path path)
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.InitializeLayout(path);
+        }
+    }
+
+    private void SetDependencies(Path path)
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.SetDependencies(path);
+        }
+    }
+    private void InitializeController()
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.InitializeController();
+        }
+    }
+    private void OpenController(Path path)
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.OpenController(path);        
+        }
     }
 }
