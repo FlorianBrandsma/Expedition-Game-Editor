@@ -1,44 +1,50 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
 public class LanguageManager : MonoBehaviour
 {
-    static public int active_language;
+    public enum Language
+    {
+        English,
+        Dutch,
+    }
 
-    private string[] languages = new string[] {"English", "Dutch" };
+    static public Language default_language = Language.English;
+    static public Language active_language;
 
     static public void GetLanguage()
     {
-        active_language = 0;
+        active_language = default_language;
     }
 
     public void SetLanguages()
     {
-        Dropdown language_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
+        Dropdown dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
-        language_dropdown.onValueChanged.RemoveAllListeners();
+        dropdown.onValueChanged.RemoveAllListeners();
 
-        language_dropdown.options.Clear();
+        dropdown.options.Clear();
 
-        language_dropdown.captionText.text = languages[active_language];
+        dropdown.captionText.text = Enum.GetName(typeof(Language), active_language);
 
-        for (int i = 0; i < languages.Length; i++)
+        foreach (var language in Enum.GetValues(typeof(Language)))
         {
-            language_dropdown.options.Add(new Dropdown.OptionData(languages[i]));
+            dropdown.options.Add(new Dropdown.OptionData(language.ToString()));
         }
 
-        language_dropdown.value = active_language;
+        dropdown.value = (int)active_language;
 
-        language_dropdown.onValueChanged.AddListener(delegate { SetLanguage(language_dropdown.value); });
+        dropdown.onValueChanged.AddListener(delegate { SetLanguage(dropdown.value); });
     }
 
     static public void SetLanguage(int new_language)
     {
-        active_language = new_language;
+        active_language = (Language)new_language;
 
         ResetEditor();
     }

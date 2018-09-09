@@ -63,7 +63,7 @@ public class SelectionGroup : MonoBehaviour
     {
         Deactivate();
 
-        new_selection.ActivateElement();
+        //new_selection.ActivateElement();
 
         selection = new_selection;
     }
@@ -85,12 +85,12 @@ public class SelectionGroup : MonoBehaviour
     {
         if (parentGroup.selection == selection)
             parentGroup.Deactivate();
-        else
-            selection.DeactivateElement();
+        //else
+            //selection.DeactivateElement();
     }
 
     public void DeactivateSelection()
     {
-        selection.DeactivateElement();
+        //selection.DeactivateElement();
     }
 }

@@ -10,7 +10,7 @@ public class MiniButtonManager : MonoBehaviour
     public List<int>    select_path;
     public string       type;
 
-    public WindowManager windowManager;
+    public SectionManager sectionManager;
 
     public void SetButtons()
     {
@@ -22,8 +22,8 @@ public class MiniButtonManager : MonoBehaviour
 
     void OpenPath()
     {
-        Path path = new Path(windowManager, new List<int>(), new List<ElementData>());
+        Path path = new Path(sectionManager, new List<int>(), new List<ElementData>());
 
-        windowManager.OpenPath(path.CreateEdit(select_path));
+        sectionManager.OpenPath(path.CreateEdit(select_path));
     }
 }

@@ -1,22 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 public class Path
 {
-    public WindowManager window { get; set; }
+    public SectionManager section { get; set; }
+    //public List<Step> route     { get; set; }
     public List<int> route      { get; set; }
     public List<ElementData> data { get; set; }
 
     public Path()
     {
-        window  = null;
+        section = null;
         route   = new List<int>();
         data    = new List<ElementData>();
     }
 
-    public Path(WindowManager new_window, List<int> new_structure, List<ElementData> new_data)
+    public Path(SectionManager new_section, List<int> new_structure, List<ElementData> new_data)
     {
-        window  = new_window;
+        section  = new_section;
         route   = new_structure;
         data    = new_data; 
     }
@@ -33,6 +35,14 @@ public class Path
             return false;
 
         return true;
+    }
+
+    public bool Equals(Path path, int step)
+    {
+        if (route[step] != path.route[step])
+            return false;
+
+        return data[step].Equals(path.data[step]);
     }
 
     public void Add()
@@ -67,7 +77,7 @@ public class Path
     {
         Path path = new Path();
 
-        path.window = window;
+        path.section = section;
 
         for (int i = 0; i < base_editor.Count; i++)
             path.Add(base_editor[i]);
@@ -91,7 +101,7 @@ public class Path
 
     public Path Trim(int index)
     {
-        Path new_path = new Path(window, new List<int>(), new List<ElementData>());
+        Path new_path = new Path(section, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < index; i++)
             new_path.Add(route[i], data[i]);

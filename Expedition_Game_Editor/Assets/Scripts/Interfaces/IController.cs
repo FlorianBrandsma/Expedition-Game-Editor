@@ -6,6 +6,8 @@ public interface IController
 {
     Path path           { get; set; }
 
+    bool loaded         { get; set; }
+
     ElementData data    { get; set; }
 
     EditorField field   { get; set; }

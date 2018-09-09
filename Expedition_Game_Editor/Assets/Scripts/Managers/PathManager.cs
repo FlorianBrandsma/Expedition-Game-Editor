@@ -12,13 +12,13 @@ public class PathManager
 
     public class Primary
     {
-        WindowManager window = EditorManager.editorManager.windows[0];
+        SectionManager section = EditorManager.editorManager.sections[0];
 
         List<int> source = new List<int>() { 0, 0 };
 
         public Path Initialize()
         {
-            return CreatePath(window, source);
+            return CreatePath(section, source);
         }
     }
 
@@ -28,13 +28,13 @@ public class PathManager
 
     public class Secondary
     {
-        WindowManager window = EditorManager.editorManager.windows[1];
+        SectionManager section = EditorManager.editorManager.sections[1];
 
         List<int> source = new List<int>() { 0 };
 
         public Path Initialize()
         {
-            return CreatePath(window, source);
+            return CreatePath(section, source);
         }
     }
 
@@ -44,13 +44,13 @@ public class PathManager
 
     public class Tertiary
     {
-        WindowManager window = EditorManager.editorManager.windows[2];
+        SectionManager section = EditorManager.editorManager.sections[2];
 
-        List<int> source = new List<int>() { };
+        List<int> open = new List<int>() { };
 
         public Path Initialize()
         {
-            return CreatePath(window, source);
+            return CreatePath(section, open);
         }
     }
 
@@ -63,10 +63,10 @@ public class PathManager
     #region Structure
     public class Structure
     {
-        WindowManager window = EditorManager.editorManager.windows[0];
+        SectionManager section = EditorManager.editorManager.sections[0];
 
-        List<int> source    = new List<int>() { 0 };
-        List<int> edit      = new List<int>() { 1 };
+        List<int> open = new List<int>() { 0 };
+        List<int> edit = new List<int>() { 1 };
 
         Path path = new Path();
 
@@ -81,14 +81,14 @@ public class PathManager
             data_list = CombineData(path.data, new List<ElementData>() { data });
         }
 
-        public Path Source()
+        public Path Open()
         {
-            return new Path(window, CombinePath(path.route, source), data_list);
+            return new Path(section, CombinePath(path.route, open), data_list);
         }
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(path.route, edit), data_list);
+            return new Path(section, CombinePath(path.route, edit), data_list);
         }
     }
     #endregion
@@ -99,27 +99,27 @@ public class PathManager
     {
         ElementData data;
 
-        List<int> source;
+        List<int> open;
         List<int> edit;
 
         public Item(ElementData new_data)
         {
             data = new_data;
 
-            source    = new List<int>() { 0, 0, data.type };
-            edit      = new List<int>() { 0, 2, 0, data.type };
+            open    = new List<int>() { 0, 0, data.type };
+            edit    = new List<int>() { 0, 3, 0, data.type };
         }
 
-        public Path Source()
+        public Path Open()
         {
-            WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data);
+            SectionManager section = EditorManager.editorManager.sections[1];
+            return CreatePath(section, open, data);
         }
 
         public Path Edit()
         {
-            WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data);
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(section, edit, data);
         }
     }
 
@@ -131,27 +131,27 @@ public class PathManager
     {
         ElementData data;
 
-        List<int> source;
+        List<int> open;
         List<int> edit;
 
         public Element(ElementData new_data)
         {
             data = new_data;
 
-            source  = new List<int>() { 0, 1, data.type };
-            edit    = new List<int>() { 0, 2, 1, data.type };
+            open    = new List<int>() { 0, 1, data.type };
+            edit    = new List<int>() { 0, 3, 1, data.type };
         }
 
-        public Path Source()
+        public Path Open()
         {
-            WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data);
+            SectionManager section = EditorManager.editorManager.sections[1];
+            return CreatePath(section, open, data);
         }
 
         public Path Edit()
         {
-            WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data);
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(section, edit, data);
         }
     }
 
@@ -163,24 +163,24 @@ public class PathManager
     {
         ElementData data;
 
-        List<int> source    = new List<int>() { 0, 2 };
-        List<int> edit      = new List<int>() { 0, 1 };
+        List<int> open  = new List<int>() { 0, 2 };
+        List<int> edit  = new List<int>() { 0, 1, 0 };
 
         public Region(ElementData new_data)
         {
             data = new_data;
         }
 
-        public Path Source()
+        public Path Open()
         {
-            WindowManager window = EditorManager.editorManager.windows[1];
-            return CreatePath(window, source, data);
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(section, open, data);
         }
 
         public Path Edit()
         {
-            WindowManager window = EditorManager.editorManager.windows[0];
-            return CreatePath(window, edit, data);
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(section, edit, data);
         }
     }
 
@@ -190,7 +190,7 @@ public class PathManager
 
     public class Terrain
     {
-        WindowManager window = EditorManager.editorManager.windows[0];
+        SectionManager section = EditorManager.editorManager.sections[0];
 
         List<int> edit = new List<int>() { 0 };
 
@@ -208,7 +208,7 @@ public class PathManager
 
         public Path Edit()
         {
-            return new Path(window, CombinePath(path.route, edit), data_list);
+            return new Path(section, CombinePath(path.route, edit), data_list);
         }
     }
 
@@ -216,13 +216,13 @@ public class PathManager
 
     #endregion
 
-    #region Source
+    #region Assets
 
     #region Object
 
     public class Object
     {
-        WindowManager window = EditorManager.editorManager.windows[1];
+        SectionManager section = EditorManager.editorManager.sections[1];
 
         ElementData data;
 
@@ -235,7 +235,7 @@ public class PathManager
 
         public Path Source()
         {
-            return CreatePath(window, source, data);
+            return CreatePath(section, source, data);
         }
     }
 
@@ -245,7 +245,7 @@ public class PathManager
 
     public class Tile
     {
-        WindowManager window = EditorManager.editorManager.windows[1];
+        SectionManager section = EditorManager.editorManager.sections[1];
 
         ElementData data;
 
@@ -258,7 +258,7 @@ public class PathManager
 
         public Path Source()
         {
-            return CreatePath(window, source, data);
+            return CreatePath(section, source, data);
         }
     }
 
@@ -268,7 +268,7 @@ public class PathManager
 
     public class Sound
     {
-        WindowManager window = EditorManager.editorManager.windows[1];
+        SectionManager section = EditorManager.editorManager.sections[1];
 
         ElementData data;
 
@@ -283,7 +283,7 @@ public class PathManager
 
         public Path Source()
         {
-            return CreatePath(window, source, data);
+            return CreatePath(section, source, data);
         }
     }
 
@@ -292,14 +292,14 @@ public class PathManager
     #endregion
 
     #endregion
-    static public Path CreatePath(WindowManager window, List<int> new_editor)
+    static public Path CreatePath(SectionManager section, List<int> new_editor)
     {
-        return CreatePath(window, new_editor, new ElementData());
+        return CreatePath(section, new_editor, new ElementData());
     }
 
-    static public Path CreatePath(WindowManager window, List<int> new_editor, ElementData new_data)
+    static public Path CreatePath(SectionManager section, List<int> new_editor, ElementData new_data)
     {
-        Path new_path = new Path(window, new List<int>(), new List<ElementData>());
+        Path new_path = new Path(section, new List<int>(), new List<ElementData>());
 
         for (int i = 0; i < new_editor.Count; i++)
         {
@@ -360,7 +360,7 @@ public class PathManager
 
     static public Path ReloadPath(Path path, ElementData data)
     {
-        Path new_path = new Path(path.window, new List<int>(), new List<ElementData>());
+        Path new_path = new Path(path.section, new List<int>(), new List<ElementData>());
 
         for(int i = 0; i < path.route.Count; i++)
         {

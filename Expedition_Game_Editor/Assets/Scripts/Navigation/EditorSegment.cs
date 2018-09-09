@@ -6,6 +6,8 @@ public class EditorSegment : MonoBehaviour, IController
 {
     private SubController subController { get; set; }
 
+    public bool loaded { get; set; }
+
     public ElementData data;
 
     public Path path { get; set; }

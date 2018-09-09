@@ -3,12 +3,6 @@ using System.Collections;
 
 public class Enums
 {
-    public enum DisplayMode
-    {
-        List,
-        Diagram,
-    }
-
     public enum SortType
     {
         Panel,
@@ -21,13 +15,15 @@ public class Enums
         None,
         Select,
         Automatic,
-    };
+    }
 
     public enum SelectionProperty
     {
         None,
         Get,
         Set,
+        Edit,
+        Open,
     }
 
     public enum ItemType
@@ -36,6 +32,4 @@ public class Enums
         Arm,
         Spoil,
     }
-
-    //Some new ones
 }

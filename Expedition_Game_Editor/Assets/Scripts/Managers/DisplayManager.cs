@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
 public class DisplayManager : MonoBehaviour
 {
-    static public int active_display;
+    public enum Display
+    {
+        List,
+        Diagram,
+    }
 
-    private string[] displays = System.Enum.GetNames(typeof(Enums.DisplayMode));
+    static public Display default_display = Display.List;
+    static public Display active_display;
 
     static public void GetDisplay()
     {
@@ -24,21 +30,21 @@ public class DisplayManager : MonoBehaviour
 
         display_dropdown.options.Clear();
 
-        display_dropdown.captionText.text = displays[active_display];
+        display_dropdown.captionText.text = Enum.GetName(typeof(Display), active_display);
 
-        foreach(string display in displays)
+        foreach (var display in Enum.GetValues(typeof(Display)))
         {
-            display_dropdown.options.Add(new Dropdown.OptionData(display));
+            display_dropdown.options.Add(new Dropdown.OptionData(display.ToString()));
         }
 
-        display_dropdown.value = active_display;
+        display_dropdown.value = (int)active_display;
 
         display_dropdown.onValueChanged.AddListener(delegate { SetDisplay(display_dropdown.value); });
     }
 
     static public void SetDisplay(int new_display)
     {
-        active_display = new_display;
+        active_display = (Display)new_display;
         Debug.Log("Activate " + new_display);
 
         //ResetEditor();

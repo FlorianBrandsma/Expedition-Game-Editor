@@ -7,7 +7,10 @@ public class EditorManager : MonoBehaviour
 
     static public RectTransform UI;
 
-    public WindowManager[] windows;
+    public SectionManager[] sections;
+
+#warning Test "Sections" might be reduntant. Initializing sections only exist for that purpose
+
 
     private void Awake()
     {
@@ -15,8 +18,8 @@ public class EditorManager : MonoBehaviour
 
         UI = GetComponent<RectTransform>();
 
-        foreach (WindowManager window in windows)
-            window.InitializeWindow();
+        foreach (SectionManager section in sections)
+            section.InitializeSection();
     }
 
     private void Start()
@@ -50,12 +53,12 @@ public class EditorManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        path.window.InitializePath(path);
+        path.section.InitializePath(path);
     }
 
     public void OpenPath(Path path)
     {
-        path.window.OpenPath(path);
+        path.section.OpenPath(path);
     }
 
     public void ResetPath()
@@ -65,9 +68,9 @@ public class EditorManager : MonoBehaviour
 
     public void PreviousEditor()
     {
-        for (int i = windows.Length; i > 0; i--)
+        for (int i = sections.Length; i > 0; i--)
         {
-            HistoryManager historyManager = windows[i - 1].GetComponent<HistoryManager>();
+            HistoryManager historyManager = sections[i - 1].GetComponent<HistoryManager>();
 
             if (historyManager.history.Count > historyManager.history_min)
             {
@@ -79,10 +82,10 @@ public class EditorManager : MonoBehaviour
 
     public void ResetEditor()
     {
-        windows[0].ResetPath();
+        sections[0].ResetPath();
 
-        foreach (WindowManager window in windows)
-            window.ResetPath();
+        foreach (SectionManager section in sections)
+            section.ResetPath();
     }
 
     static public void SelectElement(int id)

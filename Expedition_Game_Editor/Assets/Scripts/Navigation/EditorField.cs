@@ -8,16 +8,22 @@ using System.Linq;
 
 public class EditorField : MonoBehaviour
 {
-    public WindowManager    windowManager       { get; set; }
+    public SectionManager   sectionManager      { get; set; }
     public EditorController target_controller   { get; set; }
+    public EditorController previous_controller { get; set; }
     public SelectionGroup   selectionGroup      { get; set; }
 
-    public void InitializeField(WindowManager new_windowManager)
+    public void InitializeField(SectionManager new_section)
     {
         selectionGroup = GetComponent<SelectionGroup>();
 
         //Remove this later
-        windowManager = new_windowManager;
+        sectionManager = new_section;
+    }
+
+    public void SetPreviousTarget()
+    {
+        previous_controller = target_controller;
     }
 
     public void ActivateDependencies()
@@ -45,10 +51,9 @@ public class EditorField : MonoBehaviour
         target_controller.InitializeController();
     }
 
-    public void OpenController(Path path)
+    public void OpenEditor()
     {
-        if (target_controller.path.Equals(path))
-            target_controller.OpenController();
+        target_controller.OpenEditor();  
     }
 
     public void ClosePath(Path active_path, Path new_path)
@@ -59,7 +64,7 @@ public class EditorField : MonoBehaviour
         if (target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().CloseDependency();
 
-        windowManager.baseController.ClosePath(active_path);
+        sectionManager.baseController.ClosePath(active_path);
 
         target_controller.CloseLayout();
 

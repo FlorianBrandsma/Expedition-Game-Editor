@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -18,10 +19,10 @@ public class SelectionElement : MonoBehaviour
 
     //PanelElement exclusive
     public Button edit_button;
+    public RawImage icon;
+
 
     public ListManager listManager { get; set; }
-
-    public GameObject glow;
 
     void SetData(ElementData new_data)
     {
@@ -43,18 +44,24 @@ public class SelectionElement : MonoBehaviour
 
         if(selectionType != Enums.SelectionType.None)
         {
-            if (listManager.listData.sort_type == Enums.SortType.Panel)
-            {
-                GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.source); });
-                edit_button.onClick.AddListener(delegate { OpenPath(editorPath.edit); });
-            }
-            else
-            {
-                if (selectionProperty == Enums.SelectionProperty.Get)
-                    GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.source); });
+            if (listManager.listData.sort_type == Enums.SortType.List)
+                icon.texture = Resources.Load<Texture2D>("Textures/Icons/" + selectionProperty.ToString());
 
-                if (selectionProperty == Enums.SelectionProperty.Set)
+            switch(selectionProperty)
+            {
+                case Enums.SelectionProperty.Open:
+                    GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.open); });
+
+                    if(edit_button != null)
+                        edit_button.onClick.AddListener(delegate { OpenPath(editorPath.edit); });
+                    break;
+
+                case Enums.SelectionProperty.Edit:
                     GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.edit); });
+                    break;
+
+                default:
+                    break;
             }
         } 
     }
@@ -69,16 +76,6 @@ public class SelectionElement : MonoBehaviour
         if(selectionType != Enums.SelectionType.None)
             selectionGroup.SelectElement(this);
     }
-
-    public void ActivateElement()
-    {
-        glow.SetActive(true);
-    }
-
-    public void DeactivateElement()
-    {
-        glow.SetActive(false);
-    } 
 
     public void SetElement(SelectionElement new_element)
     {

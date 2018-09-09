@@ -29,6 +29,8 @@ public class ListManager : MonoBehaviour
     public Vector2          list_size       { get; set; }
     public float            base_size       { get; set; }
 
+    public bool auto_selected;
+
     //private bool always_on;
 
     public void InitializeList(ListData new_listData)
@@ -95,10 +97,16 @@ public class ListManager : MonoBehaviour
     {
         organizer.SetRows(listData.list);
 
-        if (selectionType == Enums.SelectionType.Automatic)
+        //Make auto-select only trigger once each time it's called
+        if (!auto_selected && selectionType == Enums.SelectionType.Automatic)
         {
+            auto_selected = true;
+
             AutoSelectElement();
-        }   
+        }
+
+        if (auto_selected)
+            auto_selected = false;
     }
 
     public void ResetRows()
@@ -115,7 +123,7 @@ public class ListManager : MonoBehaviour
     {
         SelectionElement element = organizer.GetElement(0);
 
-        element.OpenPath(element.listManager.listData.controller.path);
+        element.GetComponent<Button>().onClick.Invoke();
     }
 
     public void CloseList()
@@ -159,13 +167,13 @@ public class ListManager : MonoBehaviour
 
     public void ResetElement(List<SelectionElement> list)
     {
-        for (int i = 0; i < list.Count; i++)
+        foreach(SelectionElement element in list)
         {
-            list[i].gameObject.SetActive(false);
-            list[i].GetComponent<Button>().onClick.RemoveAllListeners();
- 
-            if (list[i].edit_button != null)
-                list[i].edit_button.onClick.RemoveAllListeners(); 
+            element.gameObject.SetActive(false);
+            element.GetComponent<Button>().onClick.RemoveAllListeners();
+
+            if (element.edit_button != null)
+                element.edit_button.onClick.RemoveAllListeners();
         }
     }
 }

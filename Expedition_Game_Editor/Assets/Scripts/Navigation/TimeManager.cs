@@ -1,40 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
 public class TimeManager : MonoBehaviour
 {
-    static public int active_time;
-    static public int base_time;
+    public enum Time
+    {
+        Day,
+        Night,
+    }
 
-    static public string[] times = { "Day", "Night" };
+    static public Time default_time = Time.Day;
+    static public Time active_time;
 
     static public void GetTimes()
     {
-        active_time = 0;
+        active_time = default_time;
     }
 
     public void SetTimes()
     {
-        Dropdown time_dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
+        Dropdown dropdown = GetComponent<EditorController>().actionManager.AddDropdown();
 
-        time_dropdown.onValueChanged.RemoveAllListeners();
+        dropdown.onValueChanged.RemoveAllListeners();
 
-        time_dropdown.options.Clear();
+        dropdown.options.Clear();
 
-        time_dropdown.captionText.text = times[active_time];
+        dropdown.captionText.text = Enum.GetName(typeof(Time), active_time);
 
-        for (int i = 0; i < times.Length; i++)
+        foreach (var time in Enum.GetValues(typeof(Time)))
         {
-            time_dropdown.options.Add(new Dropdown.OptionData(times[i]));
+            dropdown.options.Add(new Dropdown.OptionData(time.ToString()));
         }
 
-        time_dropdown.value = active_time;
+        dropdown.value = (int)active_time;
 
-        time_dropdown.onValueChanged.AddListener(delegate { SetTime(time_dropdown.value); });
+        dropdown.onValueChanged.AddListener(delegate { SetTime(dropdown.value); });
 
         SetBase();
     }
@@ -43,14 +48,14 @@ public class TimeManager : MonoBehaviour
     {
         Button base_button = GetComponent<EditorController>().actionManager.AddButton();
 
-        base_button.GetComponentInChildren<Text>().text = "Import " + times[base_time];
+        base_button.GetComponentInChildren<Text>().text = "Import " + Enum.GetName(typeof(Time), default_time);
 
         base_button.onClick.RemoveAllListeners();
     }
 
     static public void SetTime(int new_time)
     {
-        active_time = new_time;
+        active_time = (Time)new_time;
 
         ResetEditor();
     }

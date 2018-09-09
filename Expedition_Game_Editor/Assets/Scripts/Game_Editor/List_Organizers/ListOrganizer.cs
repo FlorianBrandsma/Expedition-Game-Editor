@@ -58,9 +58,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             //Debugging
             element.name = header;
 
-            //Review
-            //element.GetComponent<Button>().onClick.AddListener(delegate { SelectElement(element); });
-
             SetElement(element);
         }
     }

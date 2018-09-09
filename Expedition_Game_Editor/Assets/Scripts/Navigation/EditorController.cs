@@ -9,51 +9,81 @@ public class EditorController : MonoBehaviour, IController
 {
     public Path path        { get; set; }
 
-    public bool active      { get; set; }
+    public bool loaded      { get; set; }
 
     public ElementData      data;
 
     public EditorField      editorField;
-
-    public HistoryManager   historyManager;
 
     public EditorLayout     editorLayout;
 
     public TabManager       tabManager;
     public EditorController[] controllers;
 
+    public ButtonActionManager buttonActionManager;
+
     public ActionManager    actionManager;
 
     public int step        { get; set; }
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path new_path, int new_step)
+    public void InitializePath(Path new_path, int new_step, bool force_load)
     {
         editorField.target_controller = this;
  
         step = new_step;
 
-        if (step > 0 && new_path.data.Count > 0)
-            data = new_path.data[step - 1];
-
         path = new_path.Trim(step);
+
+        if(path.data.Count > 0)
+            data = path.data[path.data.Count - 1];
+
+        if (step > 0)
+        {
+            //Don't check this if force is true. Must load!
+            if(!force_load)
+                loaded = IsLoaded();
+
+            //If this hasn't loaded, force load the next one
+            if (!loaded || force_load)
+            {
+                if (GetComponent<ListData>() != null)
+                    GetComponent<ListData>().GetData();
+
+                force_load = true;
+            } 
+        }
 
         if (tabManager != null)
             InitializeTabs(new_path);
 
         if (step < new_path.route.Count)
-            controllers[new_path.route[step]].InitializePath(new_path, step + 1);       
+        {
+            controllers[new_path.route[step]].InitializePath(new_path, new_step + 1, force_load);
+
+        } else if (GetComponent<HistoryElement>() != null) {
+
+            //Not if going back
+            if(!loaded)
+                GetComponent<HistoryElement>().AddHistory();
+        } 
     }
 
     //Create separate function for obtaining path and initializing rows
     //Only initialize rows if the controller is inactive
-    public void GetData(Path new_path)
-    {
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().GetData();
 
-        if (step < new_path.route.Count)
-            controllers[new_path.route[step]].GetData(new_path);
+    public bool IsLoaded()
+    {
+        //If there is no previous controller then it definitely hasn't loaded yet
+        if (editorField.previous_controller == null)
+            return false;
+
+        //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
+        if (step > editorField.previous_controller.path.route.Count)
+            return false;
+
+        //If false then everything afterwards must be false as well
+        return path.Equals(editorField.previous_controller.path, step - 1);
     }
 
     public void InitializeLayout()
@@ -99,6 +129,9 @@ public class EditorController : MonoBehaviour, IController
 
     public void InitializeController()
     {
+        if (buttonActionManager != null)
+            buttonActionManager.SetButtons(this);
+
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().SetRows();
 
@@ -109,13 +142,10 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<PreviewProperties>().SetPreview();
     }
 
-    public void OpenController()
+    public void OpenEditor()
     {
         if (GetComponent<IEditor>() != null)
-            GetComponent<IEditor>().OpenEditor();
-
-        if (historyManager != null)
-            historyManager.AddHistory(path);
+            GetComponent<IEditor>().OpenEditor(); 
     }
 
     void InitializeTabs(Path new_path)
@@ -141,7 +171,7 @@ public class EditorController : MonoBehaviour, IController
         GetComponent<IEditor>().ApplyEdit();
     }
 
-    public void CancelEdit()
+    public void CloseEdit()
     {
         GetComponent<IEditor>().CancelEdit();
 
@@ -161,7 +191,10 @@ public class EditorController : MonoBehaviour, IController
     }
 
     public void CloseEditor()
-    {  
+    {
+        if (buttonActionManager != null)
+            buttonActionManager.CloseButtons();
+
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().CloseRows();
 

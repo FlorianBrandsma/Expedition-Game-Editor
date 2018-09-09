@@ -30,7 +30,7 @@ public class ElementData
 
         if (id != data.id)
             return false;
-
+        
         if (type != data.type)
             return false;
 

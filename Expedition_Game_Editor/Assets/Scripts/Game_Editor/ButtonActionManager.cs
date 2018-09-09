@@ -19,7 +19,7 @@ public class ButtonActionManager : MonoBehaviour
             apply_button.onClick.AddListener(delegate { controller.ApplyEdit(); });
         
         if(close_button != null)
-            close_button.onClick.AddListener(delegate { controller.CancelEdit(); });
+            close_button.onClick.AddListener(delegate { controller.CloseEdit(); });
     }
 
     public void CloseButtons()
