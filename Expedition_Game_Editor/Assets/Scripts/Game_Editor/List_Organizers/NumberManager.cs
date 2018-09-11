@@ -55,6 +55,8 @@ public class NumberManager : MonoBehaviour, IOverlay
             for (int y = 0; y < list_size.y; y++)
                 SetNumbers(overlayManager.vertical_min, y, -(base_size.y * 0.5f) + (list_parent.sizeDelta.y / 2f) - (y * base_size.y));
         }
+
+        UpdateOverlay();
     }
 
     public void UpdateOverlay()

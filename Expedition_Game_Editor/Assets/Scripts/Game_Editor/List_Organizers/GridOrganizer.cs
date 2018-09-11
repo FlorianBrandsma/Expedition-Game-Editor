@@ -8,6 +8,8 @@ using System.Linq;
 
 public class GridOrganizer : MonoBehaviour, IOrganizer
 {
+    private List<ElementData> local_data_list;
+
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
@@ -104,17 +106,19 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
     public void SetRows(List<ElementData> data_list)
     {
+        local_data_list = data_list;
+
         SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Grid/Grid_Prefab");
 
         int i = 0;
 
-        list_size = GetListSize(data_list, false);
+        list_size = GetListSize(local_data_list, false);
 
         for (int y = 0; y < list_size.y; y++)
         {
             for (int x = 0; x < list_size.x; x++)
             {
-                SelectionElement element = listManager.SpawnElement(element_list, element_prefab, data_list[i]);
+                SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
                 element_list_local.Add(element);
 
                 //Debugging
@@ -140,10 +144,10 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = listManager.listData.list.IndexOf(element.data);
+        int index = local_data_list.IndexOf(element.data);
 
         rect.sizeDelta = new Vector2(base_size, base_size);
-
+        
         rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
                                                      -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
 

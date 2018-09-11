@@ -7,6 +7,8 @@ using System.IO;
 
 public class SectionManager : MonoBehaviour
 {
+    public bool active { get; set; }
+
     public Path active_path = new Path();
 
     public EditorController baseController;
@@ -23,15 +25,13 @@ public class SectionManager : MonoBehaviour
     public void InitializePath(Path path)
     {
         //Close the initialization of previous path
-        ClosePath(path);
+        CloseSection();
         
         //Determine the target controller
         baseController.InitializePath(path, 0, false);
 
+        //Save previous target to compare data with
         SetPreviousTarget();
-
-        //Load controller data
-        //baseController.GetData(path);
 
         //Activate target dependencies
         ActivateDependencies();
@@ -49,33 +49,40 @@ public class SectionManager : MonoBehaviour
         InitializeController();
 
         //Load specific editor (and add to history)
-        OpenEditor(); //Special rules
+        OpenEditor();
 
         active_path = path;
+        active = true;
+
+        FinalizeController();
     }
 
     public void OpenPath(Path path)
     {
-        //Debug.Log(EditorManager.PathString(path));
-
         InitializePath(path);
 
         if (sibling_section != null)
-            sibling_section.ResetPath();
+            sibling_section.ResetPath();  
     }
 
     public void ResetPath()
     {
-        InitializePath(active_path);
+        if(active)
+            InitializePath(active_path);
     }
 
-    private void ClosePath(Path path)
+    public void CloseSection()
     {
-        foreach (EditorField field in editor_fields)
+        if(active)
         {
-            if (field.target_controller != null)
-                field.ClosePath(active_path, path);
-        }
+            foreach (EditorField field in editor_fields)
+            {
+                if (field.target_controller != null)
+                    field.ClosePath(active_path);
+            }
+
+            active = false;
+        } 
     }
 
     private void SetPreviousTarget()
@@ -127,6 +134,15 @@ public class SectionManager : MonoBehaviour
         {
             if (field.target_controller != null)
                 field.OpenEditor();        
+        }
+    }
+
+    private void FinalizeController()
+    {
+        foreach (EditorField field in editor_fields)
+        {
+            if (field.target_controller != null)
+                field.FinalizeController();
         }
     }
 }

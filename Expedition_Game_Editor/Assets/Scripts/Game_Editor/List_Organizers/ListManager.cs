@@ -95,18 +95,7 @@ public class ListManager : MonoBehaviour
 
     public void SetRows()
     {
-        organizer.SetRows(listData.list);
-
-        //Make auto-select only trigger once each time it's called
-        if (!auto_selected && selectionType == Enums.SelectionType.Automatic)
-        {
-            auto_selected = true;
-
-            AutoSelectElement();
-        }
-
-        if (auto_selected)
-            auto_selected = false;
+        organizer.SetRows(listData.list);  
     }
 
     public void ResetRows()
@@ -121,9 +110,21 @@ public class ListManager : MonoBehaviour
 
     public void AutoSelectElement()
     {
-        SelectionElement element = organizer.GetElement(0);
+        //Make auto-select only trigger once each time it's called
+        if (!auto_selected && selectionType == Enums.SelectionType.Automatic)
+        {
+            auto_selected = true;
 
-        element.GetComponent<Button>().onClick.Invoke();
+            if (!controller.loaded)
+            {
+                SelectionElement element = organizer.GetElement(0);
+
+                element.GetComponent<Button>().onClick.Invoke();
+            }
+        }
+
+        if (auto_selected)
+            auto_selected = false;
     }
 
     public void CloseList()

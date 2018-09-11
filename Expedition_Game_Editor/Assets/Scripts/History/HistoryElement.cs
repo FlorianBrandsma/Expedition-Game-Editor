@@ -9,12 +9,10 @@ public class HistoryElement : MonoBehaviour
         set { }
     }
 
-    public HistoryManager historyManager;
-
     public HistoryManager.Group group;
 
     public void AddHistory()
     {
-        historyManager.AddHistory(this);
+        HistoryManager.historyManager.AddHistory(this);
     }
 }

@@ -21,50 +21,48 @@ public class HistoryManager : MonoBehaviour
         Popup,
     }
 
+    static public HistoryManager historyManager;
+
     public List<HistoryElement> history = new List<HistoryElement>();
 
-    public HistoryManager sibling_historyManager;
-
-    public int history_min;
-
     bool previous;
+
+    private void Awake()
+    {
+        historyManager = this;
+    }
 
     public void AddHistory(HistoryElement element)
     {
         if (history.Count > 0 && element.group == history[history.Count - 1].group)
         {
-            //Debug.Log("Replace history");
             history[history.Count - 1] = element;
         } else {
-            //Debug.Log("Add history");
             history.Add(element);
         }
-
-        if (!previous)
-        {
-            //Debug.Log("Add this to history");
-            
-
-            previous = false;
-        } 
     }
 
     public void PreviousEditor()
     {
-        if(history.Count > history_min || sibling_historyManager != null)
+        if(history.Count > 1)
         {
-            previous = true;
+            //previous = true;
+
+            CloseSection(history[history.Count - 1].path.section);
 
             history.RemoveAt(history.Count - 1);
 
-            if (history.Count > 0)
-                InitializePath();
-            else if (sibling_historyManager != null)
-                sibling_historyManager.InitializePath();
+            InitializePath();
         }
     }
+
+    public void CloseSection(SectionManager section)
+    {
+        section.CloseSection();
+    }
+
     public void InitializePath()
     {
-        GetComponent<SectionManager>().OpenPath(history[history.Count - 1].path);
+        EditorManager.editorManager.OpenPath(history[history.Count - 1].path);
     }
 }

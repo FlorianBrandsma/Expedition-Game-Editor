@@ -11,5 +11,6 @@ public interface IOrganizer
     void ResetRows(List<ElementData> filter);
     SelectionElement GetElement(int index);
     Vector2 GetListSize(List<ElementData> data_list, bool exact);
+
     void CloseList();
 }

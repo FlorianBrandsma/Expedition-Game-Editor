@@ -9,9 +9,6 @@ public class EditorManager : MonoBehaviour
 
     public SectionManager[] sections;
 
-#warning Test "Sections" might be reduntant. Initializing sections only exist for that purpose
-
-
     private void Awake()
     {
         editorManager = this;
@@ -26,7 +23,6 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        InitializePath(new PathManager.Tertiary().Initialize());
         InitializePath(new PathManager.Secondary().Initialize());
         InitializePath(new PathManager.Primary().Initialize());
     }
@@ -42,12 +38,6 @@ public class EditorManager : MonoBehaviour
             {
                 PreviousEditor();
             }
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            InitializePath(new PathManager.Primary().Initialize());
-            //ResetPath();
         }
     }
 
@@ -68,22 +58,11 @@ public class EditorManager : MonoBehaviour
 
     public void PreviousEditor()
     {
-        for (int i = sections.Length; i > 0; i--)
-        {
-            HistoryManager historyManager = sections[i - 1].GetComponent<HistoryManager>();
-
-            if (historyManager.history.Count > historyManager.history_min)
-            {
-                historyManager.PreviousEditor();
-                break;
-            }
-        }
+        HistoryManager.historyManager.PreviousEditor();  
     }
 
     public void ResetEditor()
     {
-        sections[0].ResetPath();
-
         foreach (SectionManager section in sections)
             section.ResetPath();
     }

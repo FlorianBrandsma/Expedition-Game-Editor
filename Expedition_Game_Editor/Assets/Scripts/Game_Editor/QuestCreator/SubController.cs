@@ -28,11 +28,9 @@ public class SubController : MonoBehaviour, IEditor
     }
 
     void InitializeSegments()
-    {
-        /*
+    { 
         foreach (GameObject segment in content)
-            segment.GetComponent<EditorSegment>().InitializeSegment(this);
-        */
+            segment.GetComponent<EditorSegment>().InitializeSegment(this);       
     }
 
     public void SaveEdit()
@@ -56,10 +54,8 @@ public class SubController : MonoBehaviour, IEditor
     }
 
     public void CloseSegments()
-    {   
-        /*
+    {        
         foreach (GameObject segment in content)
             segment.GetComponent<EditorSegment>().CloseSegment(); 
-        */
     }
 }

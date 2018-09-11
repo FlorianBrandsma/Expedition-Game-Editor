@@ -10,7 +10,7 @@ public class EditorField : MonoBehaviour
 {
     public SectionManager   sectionManager      { get; set; }
     public EditorController target_controller   { get; set; }
-    public EditorController previous_controller { get; set; }
+    public Path previous_controller_path { get; set; }
     public SelectionGroup   selectionGroup      { get; set; }
 
     public void InitializeField(SectionManager new_section)
@@ -23,7 +23,7 @@ public class EditorField : MonoBehaviour
 
     public void SetPreviousTarget()
     {
-        previous_controller = target_controller;
+        previous_controller_path = target_controller.path.Copy();
     }
 
     public void ActivateDependencies()
@@ -56,7 +56,12 @@ public class EditorField : MonoBehaviour
         target_controller.OpenEditor();  
     }
 
-    public void ClosePath(Path active_path, Path new_path)
+    public void FinalizeController()
+    {
+        target_controller.FinalizeController();
+    }
+
+    public void ClosePath(Path active_path)
     {
         if (GetComponent<SelectionGroup>() != null)
             GetComponent<SelectionGroup>().Deactivate();

@@ -61,26 +61,39 @@ public class Path
         data.Add(new_data);
     }
 
+    public Path Copy()
+    {
+        Path copy = new Path();
+
+        for(int i = 0; i < route.Count; i++)
+        {
+            copy.route.Add(route[i]);
+            copy.data.Add(data[i]);
+        }
+
+        return copy;
+    }
+
     //Create a new path based on an editor list. ID list is generated
-    public Path CreateEdit(List<int> base_editor)
+    public Path CreateEdit(List<int> base_route)
     {
         List<int> base_id = new List<int>();
 
-        for (int i = 0; i < base_editor.Count; i++)
+        for (int i = 0; i < base_route.Count; i++)
             base_id.Add(0);
 
-        return CreateEdit(base_editor, base_id);
+        return CreateEdit(base_route, base_id);
     }
 
     //Create a new path based on editor and id lists
-    public Path CreateEdit(List<int> base_editor, List<int> base_id)
+    public Path CreateEdit(List<int> base_route, List<int> base_id)
     {
         Path path = new Path();
 
         path.section = section;
 
-        for (int i = 0; i < base_editor.Count; i++)
-            path.Add(base_editor[i]);
+        for (int i = 0; i < base_route.Count; i++)
+            path.Add(base_route[i]);
         
         return path;
     }

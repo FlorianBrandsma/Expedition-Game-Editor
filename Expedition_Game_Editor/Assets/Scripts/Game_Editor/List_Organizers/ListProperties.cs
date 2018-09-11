@@ -44,6 +44,11 @@ public class ListProperties : MonoBehaviour
         main_list.GetComponent<ListManager>().SetListSize(base_size);  
     }
        
+    public void AutoSelectElement()
+    {
+        main_list.GetComponent<ListManager>().AutoSelectElement();
+    }
+
     public void ResetList()
     {
         main_list.GetComponent<ListManager>().ResetRows();

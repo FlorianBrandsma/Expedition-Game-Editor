@@ -35,7 +35,7 @@ public class EditorController : MonoBehaviour, IController
 
         path = new_path.Trim(step);
 
-        if(path.data.Count > 0)
+        if (path.data.Count > 0)
             data = path.data[path.data.Count - 1];
 
         if (step > 0)
@@ -63,9 +63,7 @@ public class EditorController : MonoBehaviour, IController
 
         } else if (GetComponent<HistoryElement>() != null) {
 
-            //Not if going back
-            if(!loaded)
-                GetComponent<HistoryElement>().AddHistory();
+            GetComponent<HistoryElement>().AddHistory();
         } 
     }
 
@@ -75,15 +73,15 @@ public class EditorController : MonoBehaviour, IController
     public bool IsLoaded()
     {
         //If there is no previous controller then it definitely hasn't loaded yet
-        if (editorField.previous_controller == null)
+        if (editorField.previous_controller_path == null)
             return false;
 
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
-        if (step > editorField.previous_controller.path.route.Count)
+        if (step > editorField.previous_controller_path.route.Count)
             return false;
 
         //If false then everything afterwards must be false as well
-        return path.Equals(editorField.previous_controller.path, step - 1);
+        return path.Equals(editorField.previous_controller_path, step - 1);
     }
 
     public void InitializeLayout()
@@ -146,6 +144,15 @@ public class EditorController : MonoBehaviour, IController
     {
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().OpenEditor(); 
+    }
+
+    public void FinalizeController()
+    {
+        if (GetComponent<ListProperties>() != null)
+        {
+            if (GetComponent<ListProperties>().selectionType == Enums.SelectionType.Automatic)
+                GetComponent<ListProperties>().AutoSelectElement();
+        }
     }
 
     void InitializeTabs(Path new_path)

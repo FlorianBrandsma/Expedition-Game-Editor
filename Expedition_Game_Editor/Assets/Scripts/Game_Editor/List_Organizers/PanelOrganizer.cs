@@ -8,6 +8,8 @@ using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer
 {
+    private List<ElementData> local_data_list;
+
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
@@ -120,11 +122,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public void SetRows(List<ElementData> data_list)
     {
+        local_data_list = data_list;
+
         SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Panel/Panel_Prefab");
 
-        for (int i = 0; i < data_list.Count; i++)
+        for (int i = 0; i < local_data_list.Count; i++)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, data_list[i]);
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
             element_list_local.Add(element);
 
             string new_header = element.data.table + " " + i;
