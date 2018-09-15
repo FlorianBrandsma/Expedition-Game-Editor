@@ -26,6 +26,8 @@ public class EditorController : MonoBehaviour, IController
 
     public int step        { get; set; }
 
+    public IController test;
+
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool force_load)
     {
@@ -108,7 +110,7 @@ public class EditorController : MonoBehaviour, IController
             GetComponent<StructureManager>().SetStructure();
 
         if (tabManager != null)
-            tabManager.SetEditorTabs(this, new_path);
+            tabManager.SetTabs(this, new_path);
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step]].SetComponents(new_path);

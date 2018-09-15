@@ -9,48 +9,62 @@ public class TabManager : MonoBehaviour
 {
     private EditorController controller;
 
-    public List<Button> tab_list = new List<Button>();
+    private List<Button> tab_list = new List<Button>();
+    private List<Button> local_tab_list = new List<Button>();
 
-    public bool tab_parent;
+    private EditorController[] controllers;
 
-    private EditorController[] tabs;
+    private RectTransform header;
 
-    public void SetEditorTabs(EditorController new_controller, Path main_path)
+    public void SetTabs(EditorController new_controller, Path main_path)
     {
         controller = new_controller;
 
-        tabs = controller.controllers;
+        controllers = controller.controllers;
 
-        if (tabs.Length > 0)
+        if (controllers.Length > 0)
             gameObject.SetActive(true);
 
-        for (int i = 0; i < tabs.Length; i++)
+        //Spawn tabs if more than 1 controller is to be displayed
+        //Otherwise only show a basic header
+
+        if(controllers.Length > 1)
         {
-            Button new_tab = SpawnTab();
-
-            tabs[i].data = controller.data;
-
-            //FIX TAB PNG; THEN REMOVE THIS
-            SetAnchors(i, tabs.Length);
-
-            new_tab.GetComponentInChildren<Text>().text = tabs[i].name;
-
-            int index = i;
-
-            new_tab.onClick.AddListener(delegate
+            for (int i = 0; i < controllers.Length; i++)
             {
-                OpenPath(index);
-            });
+                Button new_tab = SpawnTab();
+                local_tab_list.Add(new_tab);
 
-            new_tab.gameObject.SetActive(true);
-        }
+                SetAnchors(i, controllers.Length);
 
-        SelectTab(main_path.Trim(controller.step + 1).route[controller.step]);
+                controllers[i].data = controller.data;
+                new_tab.GetComponentInChildren<Text>().text = controllers[i].name;
+
+                int index = i;
+
+                new_tab.onClick.AddListener(delegate { OpenPath(index); });
+
+                new_tab.gameObject.SetActive(true);
+            }
+
+            SelectTab(main_path.Trim(controller.step + 1).route[controller.step]);
+
+        } else if(controllers.Length == 1) { 
+
+            if (header == null)
+                header = SpawnHeader();
+
+            header.GetComponentInChildren<Text>().text = controllers[0].name;
+
+            header.localPosition = Vector2.zero;
+
+            header.gameObject.SetActive(true);   
+        } 
     }
     
-    void SetAnchors(int index, int tabs)
+    private void SetAnchors(int index, int tabs)
     {
-        RectTransform new_tab = tab_list[index].GetComponent<RectTransform>();
+        RectTransform new_tab = local_tab_list[index].GetComponent<RectTransform>();
 
         new_tab.anchorMin = new Vector2(index * (1f / tabs), 0);
         new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
@@ -59,30 +73,30 @@ public class TabManager : MonoBehaviour
         new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);      
     }
 
-    void OpenPath(int selected_tab)
+    private void OpenPath(int selected_tab)
     {
         controller.path.Add(selected_tab);
 
         EditorManager.editorManager.OpenPath(controller.path);
     }
 
-    public void SelectTab(int selected_tab)
+    private void SelectTab(int selected_tab)
     {
-        for (int tab = 0; tab < tab_list.Count; tab++) 
+        for (int tab = 0; tab < local_tab_list.Count; tab++) 
         {
             if (tab == selected_tab)
-                tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_A");
+                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_A");
             else
-                tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
+                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
         }
     }
 
-    public Button SpawnTab()
+    private Button SpawnTab()
     {
-        for (int i = 0; i < tab_list.Count; i++)
+        foreach(Button tab in tab_list)
         {
-            if (!tab_list[i].gameObject.activeInHierarchy)
-                return tab_list[i];
+            if (!tab.gameObject.activeInHierarchy)
+                return tab;
         }
 
         Button new_tab = Instantiate(Resources.Load<Button>("Editor/Tab"));
@@ -92,14 +106,28 @@ public class TabManager : MonoBehaviour
         return new_tab;
     }
 
+    private RectTransform SpawnHeader()
+    {
+        RectTransform new_header = Instantiate(Resources.Load<RectTransform>("Editor/Header"));
+        new_header.transform.SetParent(transform, false);
+
+        return new_header;
+    }
+
     public void CloseTabs()
     {
-        for (int i = 0; i < tabs.Length; i++)
+        for (int i = 0; i < local_tab_list.Count; i++)
         {
-            tab_list[i].onClick.RemoveAllListeners();
-            tab_list[i].gameObject.SetActive(false);
-            tabs[i].gameObject.SetActive(false);
+            local_tab_list[i].onClick.RemoveAllListeners();
+            local_tab_list[i].gameObject.SetActive(false);
+
+            controllers[i].gameObject.SetActive(false);
         }
+
+        local_tab_list.Clear();
+
+        if(header != null && header.gameObject.activeInHierarchy)
+            header.gameObject.SetActive(false);
 
         gameObject.SetActive(false);
     }
