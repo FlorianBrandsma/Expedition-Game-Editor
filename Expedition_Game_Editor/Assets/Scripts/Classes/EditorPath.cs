@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 public class EditorPath
 {
-    public Path open = new Path();
+    public Path open    = new Path();
     public Path edit    = new Path();
 
-    public EditorPath(ElementData data, Path path)
+    public EditorPath(ElementData data, Path path, Selection origin)
     {
         switch (data.table)
         {
             case "Chapter":
 
-                PathManager.Structure chapter = new PathManager.Structure(data, path);
+                PathManager.Structure chapter = new PathManager.Structure(data, path, origin);
 
                 open = chapter.Open();
                 edit = chapter.Edit();
@@ -22,7 +22,7 @@ public class EditorPath
 
             case "Phase":
 
-                PathManager.Structure phase = new PathManager.Structure(data, path);
+                PathManager.Structure phase = new PathManager.Structure(data, path, origin);
 
                 open = phase.Open();
                 edit = phase.Edit();
@@ -31,7 +31,7 @@ public class EditorPath
 
             case "Quest":
 
-                PathManager.Structure quest = new PathManager.Structure(data, path);
+                PathManager.Structure quest = new PathManager.Structure(data, path, origin);
 
                 open = quest.Open();
                 edit = quest.Edit();
@@ -40,7 +40,7 @@ public class EditorPath
 
             case "Objective":
 
-                PathManager.Structure objective = new PathManager.Structure(data, path);
+                PathManager.Structure objective = new PathManager.Structure(data, path, origin);
 
                 open = objective.Open();
                 edit = objective.Edit();
@@ -49,7 +49,7 @@ public class EditorPath
 
             case "Region":
 
-                PathManager.Region region = new PathManager.Region(data);
+                PathManager.Region region = new PathManager.Region(data, origin);
 
                 open = region.Open();
                 edit = region.Edit();
@@ -58,7 +58,7 @@ public class EditorPath
 
             case "Terrain":
 
-                PathManager.Terrain terrain = new PathManager.Terrain(data, path);
+                PathManager.Terrain terrain = new PathManager.Terrain(data, path, origin);
 
                 edit = terrain.Edit();
 
@@ -66,7 +66,7 @@ public class EditorPath
 
             case "Item":
 
-                PathManager.Item item = new PathManager.Item(data);
+                PathManager.Item item = new PathManager.Item(data, origin);
 
                 open = item.Open();
                 edit = item.Edit();
@@ -75,37 +75,13 @@ public class EditorPath
 
             case "Element":
 
-                PathManager.Element element = new PathManager.Element(data);
+                PathManager.Element element = new PathManager.Element(data, origin);
 
                 open = element.Open();
                 edit = element.Edit();
 
                 break;
-/*
-            case "Object":
 
-                PathManager.Object obj = new PathManager.Object(data);
-
-                //open = obj.Source();
-
-                break;
-
-            case "Tile":
-
-                PathManager.Tile tile = new PathManager.Tile(data);
-
-                //open = tile.Source();
-
-                break;
-
-            case "Sound":
-
-                PathManager.Sound sound = new PathManager.Sound(data);
-
-                //open = sound.Source();
-
-                break;
-*/
             default: break;
         }
     }

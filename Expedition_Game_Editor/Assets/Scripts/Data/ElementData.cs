@@ -36,4 +36,9 @@ public class ElementData
 
         return true;
     }
+
+    public ElementData Copy()
+    {
+        return new ElementData(table, id, type);
+    }
 }

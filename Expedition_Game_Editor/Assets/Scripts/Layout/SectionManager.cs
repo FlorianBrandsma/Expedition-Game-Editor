@@ -62,7 +62,7 @@ public class SectionManager : MonoBehaviour
         InitializePath(path);
 
         if (sibling_section != null)
-            sibling_section.ResetPath();  
+            sibling_section.ResetPath();   
     }
 
     public void ResetPath()

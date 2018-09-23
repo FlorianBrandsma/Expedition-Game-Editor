@@ -10,71 +10,78 @@ public class SelectionElement : MonoBehaviour
     public ElementData data;
     EditorPath editorPath;
 
-    public Enums.SelectionType selectionType;
-    public Enums.SelectionProperty selectionProperty;
-
-    public SelectionGroup selectionGroup;
+    public SelectionManager.Type selectionType;
+    public SelectionManager.Property selectionProperty;
 
     public Text id_text, header, content;
 
     //PanelElement exclusive
-    public Button edit_button;
+    public SelectionElement parent;
+    public SelectionElement child;
     public RawImage icon;
 
+    public GameObject glow;
 
     public ListManager listManager { get; set; }
 
-    void SetData(ElementData new_data)
-    {
-        data = new_data;
+    //Active Property
+    public bool selected;
 
-        editorPath = new EditorPath(data, listManager.listData.controller.path);
-    }
-
-    public void InitializeSelection(ListManager new_listManager, ElementData data)
+    public void InitializeSelection(ListManager new_listManager, ElementData new_data, SelectionManager.Property new_property)
     {
         listManager = new_listManager;
 
-        SetData(data);
+        data = new_data;
 
         selectionType = listManager.selectionType;
-        selectionProperty = listManager.selectionProperty;
+        selectionProperty = new_property;
 
-        //To do: "Select" element before opening
+        if(selected)
+            CancelSelection();
 
-        if(selectionType != Enums.SelectionType.None)
+        if(selectionType != SelectionManager.Type.None)
         {
-            if (listManager.listData.sort_type == Enums.SortType.List)
+            if (icon != null)
                 icon.texture = Resources.Load<Texture2D>("Textures/Icons/" + selectionProperty.ToString());
 
-            switch(selectionProperty)
-            {
-                case Enums.SelectionProperty.Open:
-                    GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.open); });
+            GetComponent<Button>().onClick.AddListener(delegate { OpenPath(); });
+        }
+    }
 
-                    if(edit_button != null)
-                        edit_button.onClick.AddListener(delegate { OpenPath(editorPath.edit); });
+    public void SelectElement()
+    {
+        selected = true;
+
+        glow.SetActive(true);
+    }
+
+    public void CancelSelection()
+    {
+        selected = false;
+
+        glow.SetActive(false);
+    }
+
+    public void OpenPath()
+    {
+        editorPath = new EditorPath(data, listManager.listData.controller.path, new Selection(this));
+        
+        if (!selected)
+        {
+            switch (selectionProperty)
+            {
+                case SelectionManager.Property.Open:
+                    EditorManager.editorManager.OpenPath(editorPath.open);
                     break;
 
-                case Enums.SelectionProperty.Edit:
-                    GetComponent<Button>().onClick.AddListener(delegate { OpenPath(editorPath.edit); });
+                case SelectionManager.Property.Edit:
+                    EditorManager.editorManager.OpenPath(editorPath.edit);
                     break;
 
                 default:
                     break;
             }
-        } 
-    }
-
-    public void OpenPath(Path new_path)
-    {
-        EditorManager.editorManager.OpenPath(new_path);
-    }
-
-    public void SelectElement()
-    {
-        if(selectionType != Enums.SelectionType.None)
-            selectionGroup.SelectElement(this);
+        }          
     }
 
     public void SetElement(SelectionElement new_element)

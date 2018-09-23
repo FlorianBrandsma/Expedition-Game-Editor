@@ -4,23 +4,25 @@ using System.Linq;
 
 public class Path
 {
-    public SectionManager section { get; set; }
-    //public List<Step> route     { get; set; }
-    public List<int> route      { get; set; }
-    public List<ElementData> data { get; set; }
+    public List<int> route          { get; set; }
+    public List<ElementData> data   { get; set; }
+    public SectionManager section   { get; set; }
+    public Selection origin         { get; set; }
 
     public Path()
     {
-        section = null;
         route   = new List<int>();
         data    = new List<ElementData>();
+        section = null;
+        origin  = null;
     }
 
-    public Path(SectionManager new_section, List<int> new_structure, List<ElementData> new_data)
+    public Path(List<int> new_route, List<ElementData> new_data, SectionManager new_section, Selection new_origin)
     {
-        section  = new_section;
-        route   = new_structure;
-        data    = new_data; 
+        route   = new_route;
+        data    = new_data;
+        section = new_section;
+        origin  = new_origin;
     }
 
     public void Clear()
@@ -28,6 +30,8 @@ public class Path
         route.Clear();
         data.Clear();
     }
+
+    #region Equals
 
     public bool Equals(Path path)
     {
@@ -45,6 +49,10 @@ public class Path
         return data[step].Equals(path.data[step]);
     }
 
+    #endregion
+
+    #region Add
+
     public void Add()
     {
         Add(0, new ElementData());
@@ -60,6 +68,8 @@ public class Path
         route.Add(index);
         data.Add(new_data);
     }
+
+    #endregion
 
     public Path Copy()
     {
@@ -114,7 +124,7 @@ public class Path
 
     public Path Trim(int index)
     {
-        Path new_path = new Path(section, new List<int>(), new List<ElementData>());
+        Path new_path = new Path(new List<int>(), new List<ElementData>(), section, origin);
 
         for (int i = 0; i < index; i++)
             new_path.Add(route[i], data[i]);

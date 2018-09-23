@@ -131,6 +131,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
             element_list_local.Add(element);
 
+            listManager.element_list.Add(element);
+
             string new_header = element.data.table + " " + i;
             string content = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 

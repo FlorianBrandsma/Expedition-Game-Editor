@@ -14,7 +14,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
     //private Enums.SelectionProperty selectionProperty;
-    private Enums.SelectionType selectionType;
+    private SelectionManager.Type selectionType;
 
     private float base_size;
 
@@ -56,6 +56,8 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
             element_list_local.Add(element);
 
+            listManager.element_list.Add(element);
+
             string header = listManager.listData.data.table + " " + i;
             element.header.text = header;
 
@@ -95,12 +97,6 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     float ListPosition(int i)
     {
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (base_size * i))).y;
-    }
-
-    public void SelectElement(SelectionElement selection)
-    {
-        if(selectionType != Enums.SelectionType.None)
-            selection.SelectElement();
     }
 
     public void CloseList()

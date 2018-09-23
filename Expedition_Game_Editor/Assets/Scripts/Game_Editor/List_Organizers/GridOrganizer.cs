@@ -14,7 +14,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
     //private Enums.SelectionProperty selectionProperty;
-    private Enums.SelectionType selectionType;
+    private SelectionManager.Type selectionType;
 
     private float base_size;
 
@@ -121,6 +121,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                 SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
                 element_list_local.Add(element);
 
+                listManager.element_list.Add(element);
+
                 //Debugging
                 element.name = listManager.listData.data.table + " " + i;
 
@@ -157,12 +159,6 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     public SelectionElement GetElement(int index)
     {
         return element_list_local[index];
-    }
-
-    public void SelectElement(SelectionElement selection)
-    {
-        if (selectionType != Enums.SelectionType.None)
-            selection.SelectElement();
     }
 
     public void CloseList()

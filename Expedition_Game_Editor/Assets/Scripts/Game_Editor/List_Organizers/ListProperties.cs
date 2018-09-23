@@ -9,14 +9,9 @@ public class ListProperties : MonoBehaviour
 
     public RectTransform list_area;
     public RectTransform main_list;
-    /*
-    //Main editors create the select/edit delegates
-    public bool main_editor;
-    //Was false in SecondaryWindow
-    */
 
-    public Enums.SelectionType selectionType;
-    public Enums.SelectionProperty selectionProperty;
+    public SelectionManager.Type selectionType;
+    public SelectionManager.Property selectionProperty;
     public bool always_on;
 
     //Only spawn visible elements

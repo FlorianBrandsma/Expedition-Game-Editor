@@ -10,22 +10,6 @@ public class Enums
         Grid,
     }
 
-    public enum SelectionType
-    {
-        None,
-        Select,
-        Automatic,
-    }
-
-    public enum SelectionProperty
-    {
-        None,
-        Get,
-        Set,
-        Edit,
-        Open,
-    }
-
     public enum ItemType
     {
         Supply,

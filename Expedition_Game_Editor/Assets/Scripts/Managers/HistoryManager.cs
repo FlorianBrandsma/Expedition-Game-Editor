@@ -25,8 +25,6 @@ public class HistoryManager : MonoBehaviour
 
     public List<HistoryElement> history = new List<HistoryElement>();
 
-    bool previous;
-
     private void Awake()
     {
         historyManager = this;
@@ -46,13 +44,11 @@ public class HistoryManager : MonoBehaviour
     {
         if(history.Count > 1)
         {
-            //previous = true;
-
             CloseSection(history[history.Count - 1].path.section);
 
             history.RemoveAt(history.Count - 1);
 
-            InitializePath();
+            OpenPath();
         }
     }
 
@@ -61,8 +57,9 @@ public class HistoryManager : MonoBehaviour
         section.CloseSection();
     }
 
-    public void InitializePath()
+    public void OpenPath()
     {
+        Debug.Log(history[history.Count - 1].path.origin.data.table);
         EditorManager.editorManager.OpenPath(history[history.Count - 1].path);
     }
 }

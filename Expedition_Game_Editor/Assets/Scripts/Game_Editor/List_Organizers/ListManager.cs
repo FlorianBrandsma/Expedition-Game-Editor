@@ -10,14 +10,13 @@ public class ListManager : MonoBehaviour
     private IController controller;
     private IOrganizer organizer;
 
-    public Enums.SelectionProperty  selectionProperty   { get; set; }
-    public Enums.SelectionType      selectionType       { get; set; }
+    public SelectionManager.Property  selectionProperty   { get; set; }
+    public SelectionManager.Type      selectionType       { get; set; }
 
     public int              selected_id;
 
     public ListData         listData        { get; set; }
     public PathManager      pathManager     { get; set; }
-    public SelectionGroup   selectionGroup  { get; set; }
 
     public OverlayManager   overlayManager;
     public ActionManager    actionManager;
@@ -28,6 +27,8 @@ public class ListManager : MonoBehaviour
 
     public Vector2          list_size       { get; set; }
     public float            base_size       { get; set; }
+
+    public List<SelectionElement> element_list = new List<SelectionElement>();
 
     public bool auto_selected;
 
@@ -53,8 +54,6 @@ public class ListManager : MonoBehaviour
     public void SetProperties(ListProperties listProperties)
     {
         controller = listProperties.controller;
-
-        selectionGroup = controller.field.selectionGroup;
 
         list_area = listProperties.list_area;
 
@@ -95,7 +94,7 @@ public class ListManager : MonoBehaviour
 
     public void SetRows()
     {
-        organizer.SetRows(listData.list);  
+        organizer.SetRows(listData.list);
     }
 
     public void ResetRows()
@@ -108,10 +107,34 @@ public class ListManager : MonoBehaviour
         overlayManager.UpdateOverlay();
     }
 
+    public void SelectElement(Selection selection)
+    {
+        foreach(SelectionElement element in element_list)
+        {
+            if (element.data.Equals(selection.data))
+            {
+                element.SelectElement();
+                break;
+            }                    
+        }
+    }
+
+    public void CancelSelection(Selection selection)
+    {
+        foreach (SelectionElement element in element_list)
+        {
+            if (element.data.Equals(selection.data))
+            {
+                element.CancelSelection();
+                break;
+            }
+        }
+    }
+
     public void AutoSelectElement()
     {
         //Make auto-select only trigger once each time it's called
-        if (!auto_selected && selectionType == Enums.SelectionType.Automatic)
+        if (!auto_selected && selectionType == SelectionManager.Type.Automatic)
         {
             auto_selected = true;
 
@@ -135,6 +158,8 @@ public class ListManager : MonoBehaviour
         overlayManager.CloseOverlay();
 
         organizer.CloseList();
+
+        element_list.Clear();
     }
 
     public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, ElementData data)
@@ -159,9 +184,10 @@ public class ListManager : MonoBehaviour
 
     public void InitializeElement(SelectionElement element, ElementData data)
     {
-        element.InitializeSelection(this, data);
+        element.InitializeSelection(this, data, selectionProperty);
 
-        element.selectionGroup = selectionGroup;
+        if (element.child != null)
+            element.child.InitializeSelection(this, data, SelectionManager.Property.Edit);
 
         element.transform.SetParent(list_parent, false);
     }
@@ -173,8 +199,8 @@ public class ListManager : MonoBehaviour
             element.gameObject.SetActive(false);
             element.GetComponent<Button>().onClick.RemoveAllListeners();
 
-            if (element.edit_button != null)
-                element.edit_button.onClick.RemoveAllListeners();
+            if (element.child != null)
+                element.child.GetComponent<Button>().onClick.RemoveAllListeners();
         }
     }
 }

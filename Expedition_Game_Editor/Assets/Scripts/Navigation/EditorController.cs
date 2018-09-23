@@ -17,16 +17,20 @@ public class EditorController : MonoBehaviour, IController
 
     public EditorLayout     editorLayout;
 
-    public TabManager       tabManager;
+    public SubControllerManager subControllerManager;
     public EditorController[] controllers;
 
     public ButtonActionManager buttonActionManager;
 
     public ActionManager    actionManager;
 
-    public int step        { get; set; }
+    //Determine which element is selected based on controller data
+    //Also check property, so that if "edit" is selected, you can still "open"
+    //List through which the controller is opened
 
-    public IController test;
+    public Selection        origin;
+
+    public int step        { get; set; }
 
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool force_load)
@@ -34,7 +38,7 @@ public class EditorController : MonoBehaviour, IController
         editorField.target_controller = this;
  
         step = new_step;
-
+        
         path = new_path.Trim(step);
 
         if (path.data.Count > 0)
@@ -56,21 +60,37 @@ public class EditorController : MonoBehaviour, IController
             } 
         }
 
-        if (tabManager != null)
+        if (subControllerManager != null)
             InitializeTabs(new_path);
 
         if (step < new_path.route.Count)
         {
             controllers[new_path.route[step]].InitializePath(new_path, new_step + 1, force_load);
 
-        } else if (GetComponent<HistoryElement>() != null) {
+        } else {
 
-            GetComponent<HistoryElement>().AddHistory();
-        } 
+            FinalizePath();
+        }
     }
 
-    //Create separate function for obtaining path and initializing rows
-    //Only initialize rows if the controller is inactive
+    private void FinalizePath()
+    {
+        origin = path.origin;
+
+        if (path.origin != null)
+        {
+            //Debug.Log(origin.data.table);
+
+            //path.origin.data.table = "Test1";
+
+            //Debug.Log(path.origin.data.table);
+            //Debug.Log(origin.data.table);
+        }
+            
+
+        if (GetComponent<HistoryElement>() != null)
+            GetComponent<HistoryElement>().AddHistory();
+    }
 
     public bool IsLoaded()
     {
@@ -109,8 +129,8 @@ public class EditorController : MonoBehaviour, IController
         if (GetComponent<StructureManager>() != null)
             GetComponent<StructureManager>().SetStructure();
 
-        if (tabManager != null)
-            tabManager.SetTabs(this, new_path);
+        if (subControllerManager != null)
+            subControllerManager.SetTabs(this, new_path);
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step]].SetComponents(new_path);
@@ -131,7 +151,10 @@ public class EditorController : MonoBehaviour, IController
     {
         if (buttonActionManager != null)
             buttonActionManager.SetButtons(this);
-
+        //Works only because it's called before rows (temporary)
+        if (origin != null)
+            SelectionManager.SelectEdit(origin);
+        
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().SetRows();
 
@@ -150,11 +173,20 @@ public class EditorController : MonoBehaviour, IController
 
     public void FinalizeController()
     {
+        //PROBLEM:  When assigning origin to path, ALL PATH ORIGINS GET OVERWRITTEN
+        //WHY:      Origin gets passed from path to path. Probably always the same instance?
+        //          Or a REALLY dumb copying mistake?
+
+        //Must work here
+        /*
+        if (origin != null)
+            SelectionManager.SelectEdit(origin);
+        */
         if (GetComponent<ListProperties>() != null)
         {
-            if (GetComponent<ListProperties>().selectionType == Enums.SelectionType.Automatic)
+            if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
                 GetComponent<ListProperties>().AutoSelectElement();
-        }
+        }  
     }
 
     void InitializeTabs(Path new_path)
@@ -189,11 +221,14 @@ public class EditorController : MonoBehaviour, IController
 
     public void ClosePath(Path new_path)
     {
+        if (origin != null)
+            SelectionManager.CancelSelection(origin);
+
         if (actionManager != null)
             actionManager.CloseActions();
 
-        if (tabManager != null)
-            tabManager.CloseTabs();
+        if (subControllerManager != null)
+            subControllerManager.CloseTabs();
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step]].ClosePath(new_path);
