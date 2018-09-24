@@ -65,7 +65,7 @@ public class SelectionElement : MonoBehaviour
     public void OpenPath()
     {
         editorPath = new EditorPath(data, listManager.listData.controller.path, new Selection(this));
-        
+
         if (!selected)
         {
             switch (selectionProperty)

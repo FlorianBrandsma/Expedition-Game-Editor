@@ -59,7 +59,6 @@ public class HistoryManager : MonoBehaviour
 
     public void OpenPath()
     {
-        Debug.Log(history[history.Count - 1].path.origin.data.table);
         EditorManager.editorManager.OpenPath(history[history.Count - 1].path);
     }
 }

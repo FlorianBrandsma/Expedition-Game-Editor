@@ -15,7 +15,7 @@ public class EditorPath
 
                 PathManager.Structure chapter = new PathManager.Structure(data, path, origin);
 
-                open = chapter.Open();
+                open = chapter.Open();     
                 edit = chapter.Edit();
 
                 break;

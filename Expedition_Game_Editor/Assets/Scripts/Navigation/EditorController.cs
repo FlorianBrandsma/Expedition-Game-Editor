@@ -24,13 +24,10 @@ public class EditorController : MonoBehaviour, IController
 
     public ActionManager    actionManager;
 
-    //Determine which element is selected based on controller data
-    //Also check property, so that if "edit" is selected, you can still "open"
-    //List through which the controller is opened
+    //Might be reduntant when fixed?
+    public Selection origin { get; set; }
 
-    public Selection        origin;
-
-    public int step        { get; set; }
+    public int step         { get; set; }
 
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool force_load)
@@ -75,18 +72,8 @@ public class EditorController : MonoBehaviour, IController
 
     private void FinalizePath()
     {
-        origin = path.origin;
-
-        if (path.origin != null)
-        {
-            //Debug.Log(origin.data.table);
-
-            //path.origin.data.table = "Test1";
-
-            //Debug.Log(path.origin.data.table);
-            //Debug.Log(origin.data.table);
-        }
-            
+        if(!loaded)
+            origin = path.origin;
 
         if (GetComponent<HistoryElement>() != null)
             GetComponent<HistoryElement>().AddHistory();
@@ -151,10 +138,7 @@ public class EditorController : MonoBehaviour, IController
     {
         if (buttonActionManager != null)
             buttonActionManager.SetButtons(this);
-        //Works only because it's called before rows (temporary)
-        if (origin != null)
-            SelectionManager.SelectEdit(origin);
-        
+
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().SetRows();
 
@@ -173,15 +157,9 @@ public class EditorController : MonoBehaviour, IController
 
     public void FinalizeController()
     {
-        //PROBLEM:  When assigning origin to path, ALL PATH ORIGINS GET OVERWRITTEN
-        //WHY:      Origin gets passed from path to path. Probably always the same instance?
-        //          Or a REALLY dumb copying mistake?
-
-        //Must work here
-        /*
         if (origin != null)
             SelectionManager.SelectEdit(origin);
-        */
+        
         if (GetComponent<ListProperties>() != null)
         {
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)

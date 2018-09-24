@@ -1,26 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Test
-{
-    public int value;
-
-    public Test(int new_value)
-    {
-        value = new_value;
-    }
-
-    public Test(Test test)
-    {
-        value = test.value;
-    }
-
-    public Test Copy()
-    {
-        return new Test(this);
-    }
-}
-
 public class EditorManager : MonoBehaviour
 {
     static public EditorManager editorManager;
@@ -28,8 +8,6 @@ public class EditorManager : MonoBehaviour
     static public RectTransform UI;
 
     public SectionManager[] sections;
-
-
 
     private void Awake()
     {
@@ -65,47 +43,12 @@ public class EditorManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        //TestTwo();
-        
         path.section.InitializePath(path);
-    }
-
-    public void TestTwo()
-    {
-        Selection test1 = new Selection();
-        Selection test2 = test1.Copy();
-
-        test1.data.table = "Test1";
-        test2.data.table = "Test2";
-
-        Debug.Log(test2.data.table);
-        Debug.Log(test1.data.table);
-    }
-
-    public void Test()
-    {
-        Test test1 = new Test(0);
-
-        Test test2 = test1.Copy();
-
-        //Test test2 = new Test(test1);
-
-        test2.value = 5;
-
-        Debug.Log(test2.value);
-        Debug.Log(test1.value);
     }
 
     public void OpenPath(Path path)
     {
         path.section.OpenPath(path);
-        /*
-        foreach (HistoryElement element in HistoryManager.historyManager.history)
-        {
-            if (element.path.origin != null)
-                Debug.Log(element.path.origin.data.table);          
-        }  
-        */
     }
 
     public void ResetPath()

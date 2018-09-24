@@ -69,31 +69,20 @@ public class PathManager
         Path path = new Path();
         List<ElementData> data_list = new List<ElementData>();
 
-        SectionManager section = EditorManager.editorManager.sections[0];
+        SectionManager section  = EditorManager.editorManager.sections[0];
         Selection origin;
 
         public Structure(ElementData new_data, Path new_path, Selection new_origin)
         {
             path = new_path;
 
-            data_list = CombineData(path.data, new List<ElementData>() { new_data });
+            data_list = CombineData(new_path.data, new List<ElementData>() { new_data });
 
             origin = new_origin.Copy();
-
-            new_origin.data.table = "TEST";
         }
 
         public Path Open()
         {
-            //Debug.Log(new_origin.data.table);
-            //Debug.Log(origin.data.table);
-            
-            foreach (HistoryElement element in HistoryManager.historyManager.history)
-            {
-                if (element.GetComponent<EditorController>().origin != null)
-                    Debug.Log(element.GetComponent<EditorController>().origin.data.table);
-            }
-            
             return new Path(CombinePath(path.route, open), data_list, section, origin);
         }
 
@@ -301,17 +290,12 @@ public class PathManager
     #endregion
     static public Path CreatePath(List<int> new_editor, SectionManager new_section)
     {
-        return CreatePath(new_editor, new ElementData(), new_section, null);
+        return CreatePath(new_editor, new ElementData(), new_section, new Selection());
     }
 
     static public Path CreatePath(List<int> new_editor, ElementData new_data, SectionManager new_section, Selection new_origin)
     {
-        Selection test_origin = null;
-
-        if (new_origin != null)
-            test_origin = new_origin.Copy();
-
-        Path new_path = new Path(new List<int>(), new List<ElementData>(), new_section, test_origin);
+        Path new_path = new Path(new List<int>(), new List<ElementData>(), new_section, new_origin);
 
         for (int i = 0; i < new_editor.Count; i++)
         {
