@@ -10,7 +10,7 @@ public class EditorField : MonoBehaviour
 {
     public SectionManager   sectionManager      { get; set; }
     public EditorController target_controller   { get; set; }
-    public Path previous_controller_path { get; set; }
+    public Path previous_controller_path        { get; set; }
     public SelectionGroup   selectionGroup      { get; set; }
 
     public void InitializeField(SectionManager new_section)

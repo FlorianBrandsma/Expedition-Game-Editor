@@ -30,8 +30,6 @@ public class ListManager : MonoBehaviour
 
     public List<SelectionElement> element_list = new List<SelectionElement>();
 
-    public bool auto_selected;
-
     //private bool always_on;
 
     public void InitializeList(ListData new_listData)
@@ -133,11 +131,8 @@ public class ListManager : MonoBehaviour
 
     public void AutoSelectElement()
     {
-        //Make auto-select only trigger once each time it's called
-        if (!auto_selected && selectionType == SelectionManager.Type.Automatic)
+        if (selectionType == SelectionManager.Type.Automatic)
         {
-            auto_selected = true;
-
             if (!controller.loaded)
             {
                 SelectionElement element = organizer.GetElement(0);
@@ -145,9 +140,6 @@ public class ListManager : MonoBehaviour
                 element.GetComponent<Button>().onClick.Invoke();
             }
         }
-
-        if (auto_selected)
-            auto_selected = false;
     }
 
     public void CloseList()
@@ -158,7 +150,10 @@ public class ListManager : MonoBehaviour
         overlayManager.CloseOverlay();
 
         organizer.CloseList();
-
+        /*
+        foreach (SelectionElement element in element_list)
+            element.CancelSelection();
+            */
         element_list.Clear();
     }
 

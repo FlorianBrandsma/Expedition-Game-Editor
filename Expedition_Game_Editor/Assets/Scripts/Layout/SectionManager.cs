@@ -53,7 +53,7 @@ public class SectionManager : MonoBehaviour
 
         active_path = path;
         active = true;
-        
+
         FinalizeController();
     }
 

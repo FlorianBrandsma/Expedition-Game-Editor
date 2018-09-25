@@ -27,7 +27,12 @@ public class StructureManager : MonoBehaviour
         dropdown.captionText.text = listData.list[selected_index].table + " " + selected_index;
         dropdown.value = selected_index;
 
-        dropdown.onValueChanged.AddListener(delegate { OpenPath(controller.path, listData.list[dropdown.value]); });
+        //Origin gets set only when controller hasn't loaded
+        //Relevant origin is stored in controller
+        Path path = controller.path.Copy();
+        path.origin = controller.origin;
+
+        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, listData.list[dropdown.value]); });
     }
 
     public void OpenPath(Path path, ElementData data)

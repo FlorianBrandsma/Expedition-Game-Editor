@@ -41,4 +41,11 @@ public class ElementData
     {
         return new ElementData(table, id, type);
     }
+
+    public void Clear()
+    {
+        table = "";
+        id = 0;
+        type = 0;
+    }
 }

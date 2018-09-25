@@ -14,7 +14,7 @@ public class Path
         route   = new List<int>();
         data    = new List<ElementData>();
         section = null;
-        origin  = new Selection();
+        origin  = null;
     }
 
     public Path(List<int> new_route, List<ElementData> new_data, SectionManager new_section, Selection new_origin)

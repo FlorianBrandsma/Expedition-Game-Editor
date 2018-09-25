@@ -11,7 +11,7 @@ public class EditorController : MonoBehaviour, IController
 
     public bool loaded      { get; set; }
 
-    public ElementData      data;
+    public ElementData data;
 
     public EditorField      editorField;
 
@@ -24,7 +24,6 @@ public class EditorController : MonoBehaviour, IController
 
     public ActionManager    actionManager;
 
-    //Might be reduntant when fixed?
     public Selection origin { get; set; }
 
     public int step         { get; set; }
@@ -39,7 +38,7 @@ public class EditorController : MonoBehaviour, IController
         path = new_path.Trim(step);
 
         if (path.data.Count > 0)
-            data = path.data[path.data.Count - 1];
+            data = path.data[path.data.Count - 1].Copy();
 
         if (step > 0)
         {
@@ -52,6 +51,23 @@ public class EditorController : MonoBehaviour, IController
             {
                 if (GetComponent<ListData>() != null)
                     GetComponent<ListData>().GetData();
+
+                //Selection bug:
+                //Select (ex.) chapter editor
+                //Close chapter editor
+                //Open (ex.) item editor
+                //Close item editor
+                //Chapter which previously opened editor is activated
+
+                //Minor bug:
+                //Controller doesn't always reload when the final result is the same
+                //Example:
+                //Open region 1, terrain 1
+                //Open region 1, terrain 1 (again)
+                //Force load doesn't trigger
+                //Data in last controller is the same
+
+                //Debug.Log("load " + this);
 
                 force_load = true;
             } 
@@ -72,7 +88,7 @@ public class EditorController : MonoBehaviour, IController
 
     private void FinalizePath()
     {
-        if(!loaded)
+        if (!loaded)
             origin = path.origin;
 
         if (GetComponent<HistoryElement>() != null)
@@ -112,7 +128,7 @@ public class EditorController : MonoBehaviour, IController
 
         if (GetComponent<TimeManager>() != null)
             GetComponent<TimeManager>().SetTimes();
-        
+
         if (GetComponent<StructureManager>() != null)
             GetComponent<StructureManager>().SetStructure();
 
@@ -199,9 +215,6 @@ public class EditorController : MonoBehaviour, IController
 
     public void ClosePath(Path new_path)
     {
-        if (origin != null)
-            SelectionManager.CancelSelection(origin);
-
         if (actionManager != null)
             actionManager.CloseActions();
 
@@ -217,6 +230,9 @@ public class EditorController : MonoBehaviour, IController
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
+        if (origin != null)
+            SelectionManager.CancelSelection(origin);
+
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().CloseRows();
 
@@ -225,6 +241,8 @@ public class EditorController : MonoBehaviour, IController
 
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().CloseEditor();
+
+        loaded = false;
     }
 
     #region IController

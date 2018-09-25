@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//[System.Serializable]
 public class Selection
 {
     public ElementData data = new ElementData();

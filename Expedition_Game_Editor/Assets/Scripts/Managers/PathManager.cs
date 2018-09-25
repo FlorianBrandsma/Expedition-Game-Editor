@@ -76,9 +76,9 @@ public class PathManager
         {
             path = new_path;
 
-            data_list = CombineData(new_path.data, new List<ElementData>() { new_data });
+            data_list = CombineData(path.data, new List<ElementData>() { new_data });
 
-            origin = new_origin.Copy();
+            origin = new_origin;
         }
 
         public Path Open()
@@ -290,7 +290,7 @@ public class PathManager
     #endregion
     static public Path CreatePath(List<int> new_editor, SectionManager new_section)
     {
-        return CreatePath(new_editor, new ElementData(), new_section, new Selection());
+        return CreatePath(new_editor, new ElementData(), new_section, null);
     }
 
     static public Path CreatePath(List<int> new_editor, ElementData new_data, SectionManager new_section, Selection new_origin)
