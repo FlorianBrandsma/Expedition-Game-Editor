@@ -29,8 +29,11 @@ public class Path
 
     public bool Equals(Path path)
     {
-        if (!route.SequenceEqual(path.route))
-            return false;
+        for (int i = 0; i < route.Count; i++)
+        {
+            if (!Equals(path, i))
+                return false;
+        }
 
         return true;
     }

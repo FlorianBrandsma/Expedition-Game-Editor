@@ -24,12 +24,12 @@ public class EditorController : MonoBehaviour, IController
 
     public ActionManager    actionManager;
 
-    public Selection origin { get; set; }
+    public Selection origin /*{ get; set; }*/;
 
     public int step         { get; set; }
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path new_path, int new_step, bool force_load)
+    public void InitializePath(Path new_path, int new_step, bool reload)
     {
         editorField.target_controller = this;
  
@@ -43,11 +43,11 @@ public class EditorController : MonoBehaviour, IController
         if (step > 0)
         {
             //Don't check this if force is true. Must load!
-            if(!force_load)
+            if(!reload)
                 loaded = IsLoaded();
 
             //If this hasn't loaded, force load the next one
-            if (!loaded || force_load)
+            if (!loaded || reload)
             {
                 if (GetComponent<ListData>() != null)
                     GetComponent<ListData>().GetData();
@@ -59,17 +59,7 @@ public class EditorController : MonoBehaviour, IController
                 //Close item editor
                 //Chapter which previously opened editor is activated
 
-                //Minor bug:
-                //Controller doesn't always reload when the final result is the same
-                //Example:
-                //Open region 1, terrain 1
-                //Open region 1, terrain 1 (again)
-                //Force load doesn't trigger
-                //Data in last controller is the same
-
-                //Debug.Log("load " + this);
-
-                force_load = true;
+                reload = true;
             } 
         }
 
@@ -78,7 +68,7 @@ public class EditorController : MonoBehaviour, IController
 
         if (step < new_path.route.Count)
         {
-            controllers[new_path.route[step]].InitializePath(new_path, new_step + 1, force_load);
+            controllers[new_path.route[step]].InitializePath(new_path, new_step + 1, reload);
 
         } else {
 
@@ -106,7 +96,7 @@ public class EditorController : MonoBehaviour, IController
             return false;
 
         //If false then everything afterwards must be false as well
-        return path.Equals(editorField.previous_controller_path, step - 1);
+        return path.Equals(editorField.previous_controller_path);
     }
 
     public void InitializeLayout()
