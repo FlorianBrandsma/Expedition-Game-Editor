@@ -2,51 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class Selection
-{
-    public ElementData data = new ElementData();
-    public SelectionManager.Property property;
-    public ListManager listManager;
-
-    public Selection()
-    {
-        data        = new ElementData();
-        property    = SelectionManager.Property.None;
-        listManager = null;
-    }
-
-    public Selection(SelectionElement element)
-    {
-        data = element.data.Copy();
-        property = element.selectionProperty;
-        listManager = element.listManager;
-    }
-
-    public Selection(Selection selection)
-    {
-        data = selection.data.Copy();
-        property = selection.property;
-        listManager = selection.listManager;
-    }
-
-    public bool Equals(SelectionElement element)
-    {
-        if (!element.data.Equals(data))
-            return false;
-
-        if (element.selectionProperty != property)
-            return false;
-
-        return true;
-    }
-
-    public Selection Copy()
-    {
-        return new Selection(this);
-    }
-}
-
 static public class SelectionManager
 {
     public enum Type
@@ -65,12 +20,12 @@ static public class SelectionManager
         Open,
     }
 
-    static public List<Selection> edit_data = new List<Selection>();
+    static public List<Origin> edit_data = new List<Origin>();
 
-    static public void SelectEdit(Selection selection)
+    static public void SelectEdit(Route route)
     {
-        if(selection.listManager != null)
-            selection.listManager.SelectElement(selection);
+        if(route.origin.listManager != null)
+            route.origin.listManager.SelectElement(route.data);
     }
 
     static public void SelectGet()
@@ -83,9 +38,9 @@ static public class SelectionManager
 
     }
 
-    static public void CancelSelection(Selection selection)
+    static public void CancelSelection(Route route)
     {
-        if (selection.listManager != null)
-            selection.listManager.CancelSelection(selection);
+        if (route.origin.listManager != null)
+            route.origin.listManager.CancelSelection(route.data);
     }
 }

@@ -22,7 +22,6 @@ GameObject:
   - 222: {fileID: 222000013942978248}
   - 114: {fileID: 114000011199487034}
   - 114: {fileID: 114000012006551738}
-  - 114: {fileID: 114000011547065566}
   m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
@@ -240,7 +239,6 @@ GameObject:
   - 222: {fileID: 222000010818896984}
   - 114: {fileID: 114000010133043252}
   - 114: {fileID: 114000013233211446}
-  - 114: {fileID: 114000011576363794}
   m_Layer: 5
   m_Name: Template
   m_TagString: Untagged
@@ -386,28 +384,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -146154839, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114000011547065566
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010310556664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0130492351ff05459370c3e9bd22ea4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114000011576363794
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013692598888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0130492351ff05459370c3e9bd22ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000011651084510
@@ -613,8 +589,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000011576363794}
-        m_MethodName: UpdateSlider
+      - m_Target: {fileID: 0}
+        m_MethodName: 
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 114000011175615336}
@@ -755,7 +731,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!222 &222000010818896984

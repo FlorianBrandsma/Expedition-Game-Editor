@@ -11,6 +11,7 @@ public class HistoryManager : MonoBehaviour
     {
         None,
         Assets,
+        Chapter,
         ChapterSelection,
         PhaseSelection,
         QuestSelection,

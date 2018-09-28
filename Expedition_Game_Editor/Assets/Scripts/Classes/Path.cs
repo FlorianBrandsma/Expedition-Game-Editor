@@ -4,46 +4,35 @@ using System.Linq;
 
 public class Path
 {
-    public List<int> route          { get; set; }
-    public List<ElementData> data   { get; set; }
+    public List<Route> route        { get; set; }
+    //public List<int> route          { get; set; }
+    //public List<ElementData> data   { get; set; }
     public SectionManager section   { get; set; }
-    public Selection origin         { get; set; }
+    //public List<Selection> origin   { get; set; }
 
     public Path()
     {
-        route   = new List<int>();
-        data    = new List<ElementData>();
+        route   = new List<Route>();
         section = null;
-        origin  = null;
     }
 
-    public Path(List<int> new_route, List<ElementData> new_data, SectionManager new_section, Selection new_origin)
+    public Path(List<Route> new_route, SectionManager new_section)
     {
         route   = new_route;
-        data    = new_data;
         section = new_section;
-        origin  = new_origin;
     }
 
     #region Equals
 
     public bool Equals(Path path)
     {
-        for (int i = 0; i < route.Count; i++)
+        for(int i = 0; i < route.Count; i++)
         {
-            if (!Equals(path, i))
+            if (!route[i].Equals(path.route[i]))
                 return false;
         }
 
         return true;
-    }
-
-    public bool Equals(Path path, int step)
-    {
-        if (route[step] != path.route[step])
-            return false;
-
-        return data[step].Equals(path.data[step]);
     }
 
     #endregion
@@ -52,18 +41,29 @@ public class Path
 
     public void Add()
     {
-        Add(0, new ElementData());
+        //Use last used step as base
+        if (route.Count > 0)
+            Add(0, route[route.Count - 1].data, route[route.Count - 1].origin);
+        else
+            Add(0, new ElementData(), new Origin());
     }
 
     public void Add(int index)
     {
-        Add(index, new ElementData());
+        if (route.Count > 0)
+            Add(index, route[route.Count - 1].data, route[route.Count - 1].origin);
+        else
+            Add(index, new ElementData(), new Origin());
     }
 
-    public void Add(int index, ElementData new_data)
+    public void Add(int new_controller, ElementData new_data, Origin new_origin)
     {
-        route.Add(index);
-        data.Add(new_data);
+        route.Add(new Route(new_controller, new_data, new_origin));
+    }
+
+    public void Add(Route new_route)
+    {
+        route.Add(new_route.Copy());
     }
 
     #endregion
@@ -72,20 +72,18 @@ public class Path
     {
         Path copy = new Path();
 
-        for(int i = 0; i < route.Count; i++)
-        {
-            copy.route.Add(route[i]);
-            copy.data.Add(data[i]);
-        }
+        //Might need new route
+        foreach (Route x in route)
+            copy.route.Add(x);
 
         copy.section = section;
-        copy.origin = origin;
 
         return copy;
     }
 
-    //SOON OBSELETE : ONLY USED BY MINI BUTTONS!
+    //--SOON OBSELETE : ONLY USED BY MINI BUTTONS!
     //Create a new path based on an editor list. ID list is generated
+    //Totally useless
     public Path CreateEdit(List<int> base_route)
     {
         List<int> base_id = new List<int>();
@@ -105,18 +103,31 @@ public class Path
             path.Add(base_route[i]);
 
         path.section = section;
-        path.origin = origin;
 
         return path;
     }
+    //--
 
-    public Path Trim(int index)
+    public Path Trim(int step)
     {
-        Path new_path = new Path(new List<int>(), new List<ElementData>(), section, origin);
+        Path new_path = new Path(new List<Route>(), section);
 
-        for (int i = 0; i < index; i++)
-            new_path.Add(route[i], data[i]);
+        for (int i = 0; i < step; i++)
+            new_path.Add(route[i]);
 
         return new_path;
+    }
+
+    public List<Route> CombineRoute(List<Route> new_route)
+    {
+        List<Route> route_list = new List<Route>();
+
+        foreach (Route x in route)
+            route_list.Add(x);
+
+        foreach (Route x in new_route)
+            route_list.Add(x);
+
+        return route_list;
     }
 }

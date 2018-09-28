@@ -83,12 +83,12 @@ public class EditorManager : MonoBehaviour
         string str = "route: ";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i] + ",";
+            str += path.route[i].controller + ",";
 
         str += "id: ";
 
-        for (int i = 0; i < path.data.Count; i++)
-            str += path.data[i].id + ",";
+        for (int i = 0; i < path.route.Count; i++)
+            str += path.route[i].data.id + ",";
 
         return str;
     }

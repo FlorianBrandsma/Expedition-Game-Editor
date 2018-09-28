@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PathManager
 {
@@ -63,32 +64,30 @@ public class PathManager
     #region Structure
     public class Structure
     {
-        List<int> open = new List<int>() { 0 };
-        List<int> edit = new List<int>() { 1 };
-
+        Route route = new Route();
         Path path = new Path();
-        List<ElementData> data_list = new List<ElementData>();
+
+        int open = 0;
+        int edit = 1;
 
         SectionManager section  = EditorManager.editorManager.sections[0];
-        Selection origin;
 
-        public Structure(ElementData new_data, Path new_path, Selection new_origin)
+        public Structure(Route new_route, Path new_path) //Combine existing path with new route
         {
+            route = new_route;
             path = new_path;
-
-            data_list = CombineData(path.data, new List<ElementData>() { new_data });
-
-            origin = new_origin;
         }
 
         public Path Open()
         {
-            return new Path(CombinePath(path.route, open), data_list, section, origin);
+            route.controller = open;
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
         }
 
         public Path Edit()
         {
-            return new Path(CombinePath(path.route, edit), data_list, section, origin);
+            route.controller = edit;
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
         }
     }
     #endregion
@@ -100,31 +99,26 @@ public class PathManager
         List<int> open;
         List<int> edit;
 
-        ElementData data;
+        Route route;
 
-        Selection origin;
-
-        public Item(ElementData new_data, Selection new_origin)
+        public Item(Route new_route)
         {
-            data = new_data;
+            route = new_route;
 
-            open    = new List<int>() { 0, 0, data.type };
-            edit    = new List<int>() { 0, 3, 0, data.type };
-
-            origin = new_origin;
+            open    = new List<int>() { 0, 0, route.data.type };
+            edit    = new List<int>() { 0, 3, 0, route.data.type };
         }
 
         public Path Open()
         {
             SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(open, data, section, origin);
+            return CreatePath(open, route, section);
         }
 
         public Path Edit()
         {
             SectionManager section = EditorManager.editorManager.sections[0];
-
-            return CreatePath(edit, data, section, origin);
+            return CreatePath(edit, route, section);
         }
     }
 
@@ -137,30 +131,26 @@ public class PathManager
         List<int> open;
         List<int> edit;
 
-        ElementData data;
+        Route route;
 
-        Selection origin;
-
-        public Element(ElementData new_data, Selection new_origin)
+        public Element(Route new_route)
         {
-            data = new_data;
+            route = new_route;
 
-            open    = new List<int>() { 0, 1, data.type };
-            edit    = new List<int>() { 0, 3, 1, data.type };
-
-            origin = new_origin;
+            open    = new List<int>() { 0, 1, new_route.data.type };
+            edit    = new List<int>() { 0, 3, 1, new_route.data.type };
         }
 
         public Path Open()
         {
             SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(open, data, section, origin);
+            return CreatePath(open, route, section);
         }
 
         public Path Edit()
         {
             SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(edit, data, section, origin);
+            return CreatePath(edit, route, section);
         }
     }
 
@@ -173,27 +163,23 @@ public class PathManager
         List<int> open  = new List<int>() { 0, 2 };
         List<int> edit  = new List<int>() { 0, 1, 0 };
 
-        ElementData data;
+        Route route;
 
-        Selection origin;
-
-        public Region(ElementData new_data, Selection new_origin)
+        public Region(Route new_route)
         {
-            data = new_data;
-
-            origin = new_origin;
+            route = new_route;
         }
 
         public Path Open()
         {
             SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(open, data, section, origin);
+            return CreatePath(open, route, section);
         }
 
         public Path Edit()
         {
             SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(edit, data, section, origin);
+            return CreatePath(edit, route, section);
         }
     }
 
@@ -202,84 +188,25 @@ public class PathManager
     #region Terrain
 
     public class Terrain
-    {  
-        List<int> edit = new List<int>() { 0 };
+    {
+        int edit = 0;
 
         Path path = new Path();
-        List<ElementData> data_list = new List<ElementData>();
+        Route route = new Route();
 
         SectionManager section = EditorManager.editorManager.sections[0];
-        Selection origin;
 
-        public Terrain(ElementData new_data, Path new_path, Selection new_origin)
+        public Terrain(Route new_route, Path new_path)
         {
+            route = new_route;
             path = new_path;
-
-            ElementData data = new_data;
-            data_list = CombineData(path.data, new List<ElementData>() { data });
-
-            origin = new_origin;
         }
 
         public Path Edit()
         {
-            return new Path(CombinePath(path.route, edit), data_list, section, origin);
-        }
-    }
+            route.controller = edit;
 
-    #endregion
-
-    #endregion
-
-    #region Assets
-
-    #region Object
-
-    public class Object
-    {
-        List<int> source = new List<int>() { 1, 0 };
-
-        ElementData data;
-
-        SectionManager section = EditorManager.editorManager.sections[1];
-        Selection origin;
-
-        public Object(ElementData new_data, Selection new_origin)
-        {
-            data = new_data;
-
-            origin = new_origin;
-        }
-
-        public Path Source()
-        {
-            return CreatePath(source, data, section, origin);
-        }
-    }
-
-    #endregion
-
-    #region Tile
-
-    public class Tile
-    {
-        List<int> source = new List<int>() { 1, 1 };
-
-        ElementData data;
-
-        SectionManager section = EditorManager.editorManager.sections[1];
-        Selection origin;
-
-        public Tile(ElementData new_data, Selection new_origin)
-        {
-            data = new_data;
-
-            origin = new_origin;
-        }
-
-        public Path Source()
-        {
-            return CreatePath(source, data, section, origin);
+            return new Path(path.CombineRoute(new List<Route>() { route }), section);
         }
     }
 
@@ -288,85 +215,34 @@ public class PathManager
     #endregion
 
     #endregion
-    static public Path CreatePath(List<int> new_editor, SectionManager new_section)
+    static public Path CreatePath(List<int> new_controllers, SectionManager new_section)
     {
-        return CreatePath(new_editor, new ElementData(), new_section, null);
+        return CreatePath(new_controllers, new Route(), new_section);
     }
 
-    static public Path CreatePath(List<int> new_editor, ElementData new_data, SectionManager new_section, Selection new_origin)
+    static public Path CreatePath(List<int> new_controllers, Route new_route, SectionManager new_section)
     {
-        Path new_path = new Path(new List<int>(), new List<ElementData>(), new_section, new_origin);
+        Path path = new Path();
 
-        for (int i = 0; i < new_editor.Count; i++)
-        {
-            new_path.Add(new_editor[i]);
-        }
+        path.section = new_section;
 
-        if (new_path.data.Count > 0)
-            new_path.data[new_path.data.Count - 1] = new_data;
+        for (int i = 0; i < new_controllers.Count; i++)
+            path.route.Add(new Route(new_controllers[i], new_route.data, new_route.origin));
 
-        EditorManager.PathString(new_path);
-
-        return new_path;
+        return path;
     }
 
-    static public List<int> CombinePath(List<int> path, List<int> index)
+    static public Path ReloadPath(Path new_path, ElementData new_data)
     {
-        List<int> new_path = new List<int>();
+        Path path = new Path();
 
-        for (int i = 0; i < path.Count; i++)
-            new_path.Add(path[i]);
+        path.section = new_path.section;
 
-        for (int i = 0; i < index.Count; i++)
-        {
-            //Add
-            //if (relative_index)
-            new_path.Add(index[i]);
-            /*
-            else
-                new_path[new_path.Count - (i + 1)] = new_index[i];
-            */
-            //Merge
-        }
+        foreach (Route route in new_path.route)
+            path.Add(route);
 
-        return new_path;
-    }
+        path.route.Last().data = new_data;
 
-    static public List<ElementData> CombineData(List<ElementData> data, List<ElementData> new_data)
-    {
-        List<ElementData> result = new List<ElementData>();
-
-        for (int i = 0; i < data.Count; i++)
-            result.Add(data[i]);
-
-        for (int i = 0; i < new_data.Count; i++)
-        {
-            //Add
-            //if (relative_index)
-            result.Add(new_data[i]);
-            /*
-            else
-                new_path[new_path.Count - (i + 1)] = new_index[i];
-            */
-            //Merge
-        }
-
-        return result;
-    }
-
-    static public Path ReloadPath(Path path, ElementData data)
-    {
-        Path new_path = new Path(new List<int>(), new List<ElementData>(), path.section, path.origin.Copy());
-
-        for(int i = 0; i < path.route.Count; i++)
-        {
-            new_path.route.Add(path.route[i]);
-            new_path.data.Add(path.data[i]);
-        }
-
-        if (new_path.data.Count > 0)
-            new_path.data[new_path.data.Count - 1] = data;
-
-        return new_path;
+        return path;
     }
 }

@@ -7,13 +7,13 @@ public class EditorPath
     public Path open    = new Path();
     public Path edit    = new Path();
 
-    public EditorPath(ElementData data, Path path, Selection origin)
+    public EditorPath(Route route, Path path)
     {
-        switch (data.table)
+        switch (route.data.table)
         {
             case "Chapter":
 
-                PathManager.Structure chapter = new PathManager.Structure(data, path, origin);
+                PathManager.Structure chapter = new PathManager.Structure(route, path);
 
                 open = chapter.Open();
                 edit = chapter.Edit();
@@ -22,7 +22,7 @@ public class EditorPath
 
             case "Phase":
 
-                PathManager.Structure phase = new PathManager.Structure(data, path, origin);
+                PathManager.Structure phase = new PathManager.Structure(route, path);
 
                 open = phase.Open();
                 edit = phase.Edit();
@@ -31,7 +31,7 @@ public class EditorPath
 
             case "Quest":
 
-                PathManager.Structure quest = new PathManager.Structure(data, path, origin);
+                PathManager.Structure quest = new PathManager.Structure(route, path);
 
                 open = quest.Open();
                 edit = quest.Edit();
@@ -40,7 +40,7 @@ public class EditorPath
 
             case "Objective":
 
-                PathManager.Structure objective = new PathManager.Structure(data, path, origin);
+                PathManager.Structure objective = new PathManager.Structure(route, path);
 
                 open = objective.Open();
                 edit = objective.Edit();
@@ -49,7 +49,7 @@ public class EditorPath
 
             case "Region":
 
-                PathManager.Region region = new PathManager.Region(data, origin);
+                PathManager.Region region = new PathManager.Region(route);
 
                 open = region.Open();
                 edit = region.Edit();
@@ -58,7 +58,7 @@ public class EditorPath
 
             case "Terrain":
 
-                PathManager.Terrain terrain = new PathManager.Terrain(data, path, origin);
+                PathManager.Terrain terrain = new PathManager.Terrain(route, path);
 
                 edit = terrain.Edit();
 
@@ -66,7 +66,7 @@ public class EditorPath
 
             case "Item":
 
-                PathManager.Item item = new PathManager.Item(data, origin);
+                PathManager.Item item = new PathManager.Item(route);
 
                 open = item.Open();
                 edit = item.Edit();
@@ -75,7 +75,7 @@ public class EditorPath
 
             case "Element":
 
-                PathManager.Element element = new PathManager.Element(data, origin);
+                PathManager.Element element = new PathManager.Element(route);
 
                 open = element.Open();
                 edit = element.Edit();
