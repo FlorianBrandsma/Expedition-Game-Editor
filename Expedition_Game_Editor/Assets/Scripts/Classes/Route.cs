@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Route
+﻿public class Route
 {
     public int controller { get; set; }
     public ElementData data { get; set; }

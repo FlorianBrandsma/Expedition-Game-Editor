@@ -5,6 +5,17 @@ using System.Collections;
 
 public class ListProperties : MonoBehaviour
 {
+    public enum Type
+    {
+        None,
+        List,
+        Grid,
+        Panel,
+    }
+
+    public ListProperties.Type listType;
+    public bool flexible_type;
+
     public Vector2 grid_size;
 
     public RectTransform list_area;
@@ -30,6 +41,12 @@ public class ListProperties : MonoBehaviour
     public bool enable_slideshow;
 
     public IController controller { get; set; }
+
+    public void InitializeProperties(Route route)
+    {
+        if(flexible_type)
+            listType = route.origin.listType;
+    }
 
     public void SetList()
     {

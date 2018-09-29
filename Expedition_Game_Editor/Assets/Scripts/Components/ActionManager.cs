@@ -9,7 +9,7 @@ public class ActionManager : MonoBehaviour
 {
     static List<Dropdown> dropdown_pool = new List<Dropdown>();
     static List<Button> button_pool = new List<Button>();
-    static List<Button> mini_button_pool = new List<Button>();
+    static List<SelectionElement> mini_button_pool = new List<SelectionElement>();
 
     private List<RectTransform> actions = new List<RectTransform>();
 
@@ -58,9 +58,9 @@ public class ActionManager : MonoBehaviour
         return new_action;
     }
 
-    public Button AddMiniButton()
+    public SelectionElement AddMiniButton()
     {
-        Button new_action = SpawnMiniButton();
+        SelectionElement new_action = SpawnMiniButton();
 
         AddActions(new_action.GetComponent<RectTransform>());
 
@@ -147,23 +147,23 @@ public class ActionManager : MonoBehaviour
         return new_action;
     }
 
-    Button SpawnMiniButton()
+    SelectionElement SpawnMiniButton()
     {
-        foreach(Button button in mini_button_pool)
+        foreach(SelectionElement element in mini_button_pool)
         {
-            if (!button.gameObject.activeInHierarchy)
+            if (!element.gameObject.activeInHierarchy)
             {
-                button.onClick.RemoveAllListeners();
+                element.GetComponent<Button>().onClick.RemoveAllListeners();
 
-                button.transform.SetParent(transform, false);
+                element.transform.SetParent(transform, false);
 
-                button.gameObject.SetActive(true);
+                element.gameObject.SetActive(true);
 
-                return button;
+                return element;
             }
         }
 
-        Button new_action = Instantiate(Resources.Load<Button>("Editor/Actions/Mini_Button"));
+        SelectionElement new_action = Instantiate(Resources.Load<SelectionElement>("Editor/Actions/Mini_Button"));
 
         new_action.transform.SetParent(transform, false);
 

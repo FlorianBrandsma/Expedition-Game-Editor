@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 static public class SelectionManager
@@ -22,15 +21,17 @@ static public class SelectionManager
 
     static public List<Origin> edit_data = new List<Origin>();
 
+    static public SelectionElement get;
+
     static public void SelectEdit(Route route)
     {
         if(route.origin.listManager != null)
-            route.origin.listManager.SelectElement(route.data);
+            route.origin.listManager.SelectElement(route);
     }
 
-    static public void SelectGet()
+    static public void SelectGet(SelectionElement new_get)
     {
-
+        get = new_get;
     }
 
     static public void SelectSet()
@@ -41,6 +42,15 @@ static public class SelectionManager
     static public void CancelSelection(Route route)
     {
         if (route.origin.listManager != null)
-            route.origin.listManager.CancelSelection(route.data);
+            route.origin.listManager.CancelSelection(route);
+    }
+
+    static public void CancelGetSelection()
+    {
+        if(get != null)
+        {
+            get.CancelSelection();
+            get = null;
+        } 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class EditorManager : MonoBehaviour
 {
@@ -48,6 +47,8 @@ public class EditorManager : MonoBehaviour
 
     public void OpenPath(Path path)
     {
+        SelectionManager.CancelGetSelection();
+
         path.section.OpenPath(path);
     }
 

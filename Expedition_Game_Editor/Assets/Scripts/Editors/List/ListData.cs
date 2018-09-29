@@ -11,9 +11,8 @@ public class ListData : MonoBehaviour
 {
     public ElementData data;
 
+    public ListProperties listProperties { get; set; }
     public IController controller;
-
-    public Enums.SortType sort_type;
 
     public List<ElementData> list { get; set; }
     //Placeholder
@@ -22,8 +21,13 @@ public class ListData : MonoBehaviour
     public Path select_path { get; set; }
     public Path edit_path   { get; set; }
 
-    public void GetData()
+    public void GetData(Route route)
     {
+        if(listProperties == null)
+            listProperties = GetComponent<ListProperties>();
+
+        listProperties.InitializeProperties(route);
+
         GetData("sql");
     }
 

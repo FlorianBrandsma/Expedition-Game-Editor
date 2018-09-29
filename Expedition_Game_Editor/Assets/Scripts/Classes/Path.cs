@@ -1,14 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 public class Path
 {
     public List<Route> route        { get; set; }
-    //public List<int> route          { get; set; }
-    //public List<ElementData> data   { get; set; }
     public SectionManager section   { get; set; }
-    //public List<Selection> origin   { get; set; }
 
     public Path()
     {
@@ -80,33 +75,6 @@ public class Path
 
         return copy;
     }
-
-    //--SOON OBSELETE : ONLY USED BY MINI BUTTONS!
-    //Create a new path based on an editor list. ID list is generated
-    //Totally useless
-    public Path CreateEdit(List<int> base_route)
-    {
-        List<int> base_id = new List<int>();
-
-        for (int i = 0; i < base_route.Count; i++)
-            base_id.Add(0);
-
-        return CreateEdit(base_route, base_id);
-    }
-
-    //Create a new path based on editor and id lists
-    public Path CreateEdit(List<int> base_route, List<int> base_id)
-    {
-        Path path = new Path();
-
-        for (int i = 0; i < base_route.Count; i++)
-            path.Add(base_route[i]);
-
-        path.section = section;
-
-        return path;
-    }
-    //--
 
     public Path Trim(int step)
     {

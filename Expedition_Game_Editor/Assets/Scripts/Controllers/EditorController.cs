@@ -8,11 +8,13 @@ using System.Linq;
 
 public class EditorController : MonoBehaviour, IController
 {
-    public Path path        { get; set; }
+    public Path path    { get; set; }
 
-    public bool loaded      { get; set; }
+    public Route route  { get; set; }
 
-    public Route route;
+    public int step     { get; set; }
+
+    public bool loaded  { get; set; }
 
     public HistoryElement   history;
 
@@ -21,13 +23,11 @@ public class EditorController : MonoBehaviour, IController
     public EditorLayout     editorLayout;
 
     public SubControllerManager subControllerManager;
-    public EditorController[] controllers;
+    public EditorController[]   controllers;
 
-    public ButtonActionManager buttonActionManager;
+    public ButtonActionManager  buttonActionManager;
 
-    public ActionManager    actionManager;
-
-    public int step         { get; set; }
+    public ActionManager        actionManager;
 
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool reload)
@@ -51,7 +51,10 @@ public class EditorController : MonoBehaviour, IController
             if (!loaded || reload)
             {
                 if (GetComponent<ListData>() != null)
-                    GetComponent<ListData>().GetData();
+                {
+                    GetComponent<ListData>().GetData(route);
+                }
+                    
 
                 reload = true;
             } 

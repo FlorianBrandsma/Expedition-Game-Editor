@@ -1,32 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Origin
+﻿public class Origin
 {
-    public SelectionManager.Property property;
+    public SelectionManager.Property selectionProperty;
+    public ListProperties.Type listType;
     public ListManager listManager;
 
-    public Origin()
-    {
-        property = SelectionManager.Property.None;
-        listManager = null;
-    }
+    public Origin(){ }
 
     public Origin(SelectionElement element)
     {
-        property = element.selectionProperty;
+        selectionProperty = element.selectionProperty;
+        listType = element.listType;
         listManager = element.listManager;
     }
 
     public Origin(Origin selection)
     {
-        property = selection.property;
+        selectionProperty = selection.selectionProperty;
+        listType = selection.listType;
         listManager = selection.listManager;
     }
 
     public bool Equals(SelectionElement element)
     {
-        if (element.selectionProperty != property)
+        if (element.selectionProperty != selectionProperty)
             return false;
 
         return true;

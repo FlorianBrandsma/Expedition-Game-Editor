@@ -5,27 +5,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+[RequireComponent(typeof(SelectionElement))]
 public class MiniButtonManager : MonoBehaviour
 {
-    public List<int>    select_path;
-    public string       type;
-
-    public SectionManager sectionManager;
+    public Texture2D texture;
 
     public void SetButtons()
     {
-        Button button = GetComponent<EditorController>().actionManager.AddMiniButton();
-        button.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture2D>("Textures/Icons/" + type);
+        SelectionElement new_element = GetComponent<EditorController>().actionManager.AddMiniButton();
 
-        button.onClick.AddListener(delegate { OpenPath();});
-    }
+        SelectionElement element = GetComponent<SelectionElement>();
 
-    void OpenPath()
-    {
-        Path path = new Path();
+        new_element.data = element.data;
+        new_element.selectionType = element.selectionType;
 
-        path.section = sectionManager;
+        new_element.icon.texture = texture;
 
-        sectionManager.OpenPath(path.CreateEdit(select_path));
+        new_element.GetComponent<Button>().onClick.AddListener(delegate { new_element.OpenPath();});
     }
 }

@@ -12,6 +12,7 @@ public class SelectionElement : MonoBehaviour
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
+    public ListProperties.Type listType;
 
     public Text id_text, header, content;
 
@@ -35,7 +36,7 @@ public class SelectionElement : MonoBehaviour
 
         selectionType = listManager.selectionType;
         selectionProperty = new_property;
-
+        
         if(selected)
             CancelSelection();
 
@@ -50,6 +51,9 @@ public class SelectionElement : MonoBehaviour
 
     public void SelectElement()
     {
+        if (selectionProperty == SelectionManager.Property.Get)
+            SelectionManager.SelectGet(this);
+
         selected = true;
 
         glow.SetActive(true);
@@ -64,7 +68,7 @@ public class SelectionElement : MonoBehaviour
 
     public void OpenPath()
     {
-        editorPath = new EditorPath(new Route(this), listManager.listData.controller.path);
+        editorPath = new EditorPath(new Route(this));
 
         if (!selected)
         {
@@ -76,6 +80,11 @@ public class SelectionElement : MonoBehaviour
 
                 case SelectionManager.Property.Edit:
                     EditorManager.editorManager.OpenPath(editorPath.edit);
+                    break;
+
+                case SelectionManager.Property.Get:
+                    EditorManager.editorManager.OpenPath(editorPath.get);
+                    SelectElement();
                     break;
 
                 default:

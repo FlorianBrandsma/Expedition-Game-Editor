@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -72,10 +71,10 @@ public class PathManager
 
         SectionManager section  = EditorManager.editorManager.sections[0];
 
-        public Structure(Route new_route, Path new_path) //Combine existing path with new route
+        public Structure(Route new_route) //Combine existing path with new route
         {
             route = new_route;
-            path = new_path;
+            path = route.origin.listManager.listData.controller.path;
         }
 
         public Path Open()
@@ -98,6 +97,7 @@ public class PathManager
     { 
         List<int> open;
         List<int> edit;
+        List<int> get;
 
         Route route;
 
@@ -107,6 +107,7 @@ public class PathManager
 
             open    = new List<int>() { 0, 0, route.data.type };
             edit    = new List<int>() { 0, 3, 0, route.data.type };
+            get     = new List<int>() { 0, 1 };
         }
 
         public Path Open()
@@ -119,6 +120,12 @@ public class PathManager
         {
             SectionManager section = EditorManager.editorManager.sections[0];
             return CreatePath(edit, route, section);
+        }
+
+        public Path Get()
+        {
+            SectionManager section = EditorManager.editorManager.sections[1];
+            return CreatePath(get, route, section);
         }
     }
 
@@ -151,6 +158,11 @@ public class PathManager
         {
             SectionManager section = EditorManager.editorManager.sections[0];
             return CreatePath(edit, route, section);
+        }
+
+        public Path Get()
+        {
+            return null;
         }
     }
 
@@ -191,15 +203,15 @@ public class PathManager
     {
         int edit = 0;
 
-        Path path = new Path();
+        Path path   = new Path();
         Route route = new Route();
 
         SectionManager section = EditorManager.editorManager.sections[0];
 
-        public Terrain(Route new_route, Path new_path)
+        public Terrain(Route new_route)
         {
             route = new_route;
-            path = new_path;
+            path = route.origin.listManager.listData.controller.path;
         }
 
         public Path Edit()
@@ -209,6 +221,52 @@ public class PathManager
             return new Path(path.CombineRoute(new List<Route>() { route }), section);
         }
     }
+
+    #endregion
+
+    #region Options
+
+    public class Option
+    {
+        List<int> open = new List<int>() { 0 };
+
+        Route route;
+
+        public Option(Route new_route)
+        {
+            route = new_route;
+        }
+
+        public Path Open()
+        {
+            SectionManager section = EditorManager.editorManager.sections[2];
+            return CreatePath(open, route, section);
+        }
+    }
+
+    #region Assets (Temporary)
+
+    public class Asset
+    {
+        List<int> open;
+
+        Route route;
+
+        public Asset(Route new_route)
+        {
+            route   = new_route;
+
+            open    = new List<int>() { new_route.data.type };
+        }
+
+        public Path Open()
+        {
+            SectionManager section = EditorManager.editorManager.sections[1];
+            return CreatePath(open, route, section);
+        }
+    }
+
+    #endregion
 
     #endregion
 

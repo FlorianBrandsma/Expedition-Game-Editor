@@ -36,21 +36,26 @@ public class ListManager : MonoBehaviour
     {
         listData = new_listData;
 
-        switch(listData.sort_type)
+        switch(listData.listProperties.listType)
         {
-            case Enums.SortType.Panel: organizer = gameObject.AddComponent<PanelOrganizer>();   break;
-            case Enums.SortType.List:  organizer = gameObject.AddComponent<ListOrganizer>();    break;
-            case Enums.SortType.Grid:  organizer = gameObject.AddComponent<GridOrganizer>();    break;
-            default: break;
+            case ListProperties.Type.None:  organizer = null;                                       break;
+            case ListProperties.Type.List:  organizer = gameObject.AddComponent<ListOrganizer>();   break;
+            case ListProperties.Type.Grid:  organizer = gameObject.AddComponent<GridOrganizer>();   break;
+            case ListProperties.Type.Panel: organizer = gameObject.AddComponent<PanelOrganizer>();  break;
+            default:                                                                                break;
         }
+
+        if (organizer == null) return;
 
         organizer.InitializeOrganizer();
 
-        overlayManager.InitializeOverlay(this);
+        overlayManager.InitializeOverlay(this);  
     }
 
     public void SetProperties(ListProperties listProperties)
     {
+        if (organizer == null) return;
+
         controller = listProperties.controller;
 
         list_area = listProperties.list_area;
@@ -63,17 +68,19 @@ public class ListManager : MonoBehaviour
         selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
         //always_on = listProperties.always_on;
- 
+
         organizer.SetProperties(listProperties);
 
         overlayManager.SetOverlayProperties(listProperties);
+        
     }
 
     public void SetListSize(float base_size)
     {
+        if (organizer == null) return;
+
         organizer.SetListSize(base_size);
 
-        //Activate Borders here
         overlayManager.ActivateOverlay(organizer);
 
         overlayManager.SetOverlaySize();
@@ -92,38 +99,59 @@ public class ListManager : MonoBehaviour
 
     public void SetRows()
     {
+        if (organizer == null) return;
+
         organizer.SetRows(listData.list);
     }
 
     public void ResetRows()
     {
+        if (organizer == null) return;
+
         organizer.ResetRows(listData.list);
     }
 
     public void UpdateRows()
     {
+        if (organizer == null) return;
+
         overlayManager.UpdateOverlay();
     }
 
-    public void SelectElement(ElementData data)
+    public void GetIndex(SelectionElement element)
+    {
+        //Debug.Log(element_list.IndexOf(element));
+
+        //Set list position based on index + element size
+    }
+
+    public void SelectElement(Route route)
     {
         foreach(SelectionElement element in element_list)
         {
-            if (element.data.Equals(data))
+            if (element.data.Equals(route.data))
             {
-                element.SelectElement();
+                if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
+                    element.child.SelectElement();
+                else
+                    element.SelectElement();
+
                 break;
             }                    
         }
     }
 
-    public void CancelSelection(ElementData data)
+    public void CancelSelection(Route route)
     {
         foreach (SelectionElement element in element_list)
         {
-            if (element.data.Equals(data))
+            if (element.data.Equals(route.data))
             {
-                element.CancelSelection();
+                if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
+                    element.child.CancelSelection();
+                else
+                    element.CancelSelection();
+
                 break;
             }
         }
@@ -131,6 +159,8 @@ public class ListManager : MonoBehaviour
 
     public void AutoSelectElement()
     {
+        if (organizer == null) return;
+
         if (selectionType == SelectionManager.Type.Automatic)
         {
             if (!controller.loaded)
@@ -144,16 +174,15 @@ public class ListManager : MonoBehaviour
 
     public void CloseList()
     {
+        if (organizer == null) return;
+
         main_list.GetComponent<ScrollRect>().horizontal = false;
         main_list.GetComponent<ScrollRect>().vertical = false;
 
         overlayManager.CloseOverlay();
 
         organizer.CloseList();
-        /*
-        foreach (SelectionElement element in element_list)
-            element.CancelSelection();
-            */
+
         element_list.Clear();
     }
 

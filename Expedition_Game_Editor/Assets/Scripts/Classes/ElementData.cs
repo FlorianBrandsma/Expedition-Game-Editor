@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class ElementData 
 {
     public string table;
