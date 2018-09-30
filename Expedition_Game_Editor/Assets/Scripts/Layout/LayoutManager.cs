@@ -77,12 +77,6 @@ public class LayoutManager : MonoBehaviour
             sibling_rect.SetLayout();
     }
 
-    public void ResetLayout()
-    {
-        CloseLayout();
-        SetLayout();
-    }
-
     public void CloseLayout()
     {
         content.offsetMin = content_offset_min;

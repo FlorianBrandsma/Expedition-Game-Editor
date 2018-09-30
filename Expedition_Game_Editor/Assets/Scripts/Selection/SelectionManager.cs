@@ -25,8 +25,7 @@ static public class SelectionManager
 
     static public void SelectEdit(Route route)
     {
-        if(route.origin.listManager != null)
-            route.origin.listManager.SelectElement(route);
+        route.origin.listManager.SelectElement(route);
     }
 
     static public void SelectGet(SelectionElement new_get)
@@ -34,15 +33,11 @@ static public class SelectionManager
         get = new_get;
     }
 
-    static public void SelectSet()
-    {
-
-    }
+    static public void SelectSet() { }
 
     static public void CancelSelection(Route route)
     {
-        if (route.origin.listManager != null)
-            route.origin.listManager.CancelSelection(route);
+        route.origin.listManager.CancelSelection(route);
     }
 
     static public void CancelGetSelection()

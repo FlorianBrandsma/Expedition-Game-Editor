@@ -12,6 +12,7 @@ public class SectionManager : MonoBehaviour
     public Path active_path = new Path();
 
     public EditorController baseController;
+    public EditorController main_controller { get; set; }
 
     public SectionManager sibling_section;
     public EditorField[]    editor_fields;
@@ -144,5 +145,8 @@ public class SectionManager : MonoBehaviour
             if (field.target_controller != null)
                 field.FinalizeController();
         }
+
+        if (main_controller != null)
+            main_controller.FinalizeMainController();
     }
 }

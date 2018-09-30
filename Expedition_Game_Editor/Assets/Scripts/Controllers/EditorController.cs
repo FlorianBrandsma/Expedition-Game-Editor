@@ -33,7 +33,8 @@ public class EditorController : MonoBehaviour, IController
     public void InitializePath(Path new_path, int new_step, bool reload)
     {
         editorField.target_controller = this;
- 
+        editorField.sectionManager.main_controller = this;
+
         step = new_step;
 
         path = new_path.Trim(step);
@@ -51,10 +52,7 @@ public class EditorController : MonoBehaviour, IController
             if (!loaded || reload)
             {
                 if (GetComponent<ListData>() != null)
-                {
                     GetComponent<ListData>().GetData(route);
-                }
-                    
 
                 reload = true;
             } 
@@ -154,14 +152,23 @@ public class EditorController : MonoBehaviour, IController
 
     public void FinalizeController()
     {
-        if (route.origin != null)
+        if (route.origin.listManager != null)
             SelectionManager.SelectEdit(route);
-        
+
         if (GetComponent<ListProperties>() != null)
         {
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
                 GetComponent<ListProperties>().AutoSelectElement();
         }  
+    }
+
+    public void FinalizeMainController()
+    {
+        if(route.origin.listManager != null)
+        {
+            if (route.origin.listManager.selected_element == null)
+                route.origin.listManager.ResetListPosition();
+        }
     }
 
     void InitializeTabs(Path new_path)
@@ -170,10 +177,7 @@ public class EditorController : MonoBehaviour, IController
             new_path.Add();   
     }
 
-    public void FilterRows(List<ElementData> list)
-    {
-
-    }
+    public void FilterRows(List<ElementData> list) { }
 
     public void SaveEdit()
     {
@@ -211,7 +215,7 @@ public class EditorController : MonoBehaviour, IController
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
         
-        if (route.origin != null)
+        if (route.origin.listManager != null)
             SelectionManager.CancelSelection(route);
             
         if (GetComponent<ListData>() != null)

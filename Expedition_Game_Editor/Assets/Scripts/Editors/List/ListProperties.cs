@@ -45,7 +45,7 @@ public class ListProperties : MonoBehaviour
     public void InitializeProperties(Route route)
     {
         if(flexible_type)
-            listType = route.origin.listType;
+            listType = route.origin.listType;   
     }
 
     public void SetList()
@@ -53,7 +53,7 @@ public class ListProperties : MonoBehaviour
         controller = GetComponent<IController>();
         main_list.GetComponent<ListManager>().SetProperties(this);
 
-        main_list.GetComponent<ListManager>().SetListSize(base_size);  
+        main_list.GetComponent<ListManager>().SetListSize();  
     }
        
     public void AutoSelectElement()

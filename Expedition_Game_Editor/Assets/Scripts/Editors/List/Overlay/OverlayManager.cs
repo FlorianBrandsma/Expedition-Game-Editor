@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class OverlayManager : MonoBehaviour
 {
-    private RectTransform   main_list, 
-                            list_parent;
+    private RectTransform   main_list;
 
     public RectTransform    horizontal_min,
                             vertical_min,
@@ -21,7 +20,6 @@ public class OverlayManager : MonoBehaviour
         listManager = new_listManager;
 
         main_list = listManager.main_list;
-        list_parent = listManager.list_parent;
 
         horizontal_min.GetComponent<OverlayBorder>().Activate();
         horizontal_max.GetComponent<OverlayBorder>().Activate();
@@ -110,8 +108,6 @@ public class OverlayManager : MonoBehaviour
     {
         main_list.offsetMin = Vector2.zero;
         main_list.offsetMax = Vector2.zero;
-
-        list_parent.sizeDelta = Vector2.zero;
 
         horizontal_min.GetComponent<OverlayBorder>().Deactivate();
         horizontal_max.GetComponent<OverlayBorder>().Deactivate();

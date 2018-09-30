@@ -16,7 +16,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     //private Enums.SelectionProperty selectionProperty;
     //private SelectionManager.Type selectionType;
 
-    private float base_size;
+    public float element_size { get; set; }
 
     private Vector2 list_size;
 
@@ -50,9 +50,9 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         vertical = listProperties.vertical;
     }
 
-    public void SetListSize(float new_size)
+    public void SetListSize()
     {
-        base_size = new_size;
+        element_size = listManager.base_size;
     }
 
     public Vector2 GetListSize(List<ElementData> data_list, bool exact)
@@ -70,25 +70,25 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
             if (list_height > data_list.Count)
                 list_height = data_list.Count;
 
-            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height)) * base_size) / list_height : list_width * base_size, 
-                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))  * base_size) / list_width  : list_height * base_size);
+            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height)) * element_size) / list_height : list_width * element_size, 
+                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))  * element_size) / list_width  : list_height * element_size);
         } else {
 
-            new_size = new Vector2( horizontal  ? grid_size.x * base_size : base_size,
-                                    vertical    ? grid_size.y * base_size : base_size);
+            new_size = new Vector2( horizontal  ? grid_size.x * element_size : element_size,
+                                    vertical    ? grid_size.y * element_size : element_size);
         }
 
         if (exact)
             return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
         else
-            return new_size / base_size;
+            return new_size / element_size;
     }
 
     public int GetListWidth()
     {
         int x = 0;
 
-        while (-(x * base_size / 2f) + (x * base_size) < listManager.main_list.rect.max.x)
+        while (-(x * element_size / 2f) + (x * element_size) < listManager.main_list.rect.max.x)
             x++;
 
         return x - 1;
@@ -98,7 +98,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         int y = 0;
 
-        while (-(y * base_size / 2f) + (y * base_size) < listManager.main_list.rect.max.y)
+        while (-(y * element_size / 2f) + (y * element_size) < listManager.main_list.rect.max.y)
             y++;
 
         return y - 1;
@@ -148,10 +148,10 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
 
         int index = local_data_list.IndexOf(element.data);
 
-        rect.sizeDelta = new Vector2(base_size, base_size);
+        rect.sizeDelta = new Vector2(element_size, element_size);
         
-        rect.transform.localPosition = new Vector2( -((base_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * base_size),
-                                                     -(base_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * base_size));
+        rect.transform.localPosition = new Vector2( -((element_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * element_size),
+                                                     -(element_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * element_size));
 
         rect.gameObject.SetActive(true);
     }

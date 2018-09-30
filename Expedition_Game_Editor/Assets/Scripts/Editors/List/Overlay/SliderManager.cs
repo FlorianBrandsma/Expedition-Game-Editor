@@ -65,6 +65,8 @@ public class SliderManager : MonoBehaviour, IOverlay
 
             horizontal_slider.gameObject.SetActive(true);
         }
+
+        UpdateOverlay();
     }
 
     public void UpdateOverlay()

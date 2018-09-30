@@ -8,7 +8,7 @@ using System.IO;
 public class ListManager : MonoBehaviour
 {
     private IController controller;
-    private IOrganizer organizer;
+    private IOrganizer  organizer;
 
     public SelectionManager.Property  selectionProperty   { get; set; }
     public SelectionManager.Type      selectionType       { get; set; }
@@ -25,10 +25,14 @@ public class ListManager : MonoBehaviour
     public RectTransform    main_list,
                             list_parent;
 
+    private Vector3         list_min, 
+                            list_max;
+
     public Vector2          list_size       { get; set; }
     public float            base_size       { get; set; }
 
     public List<SelectionElement> element_list = new List<SelectionElement>();
+    public SelectionElement selected_element { get; set; }
 
     //private bool always_on;
 
@@ -63,7 +67,7 @@ public class ListManager : MonoBehaviour
         base_size = listProperties.base_size;
 
         main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
-        main_list.GetComponent<ScrollRect>().vertical = listProperties.vertical;
+        main_list.GetComponent<ScrollRect>().vertical   = listProperties.vertical;
 
         selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
@@ -71,15 +75,14 @@ public class ListManager : MonoBehaviour
 
         organizer.SetProperties(listProperties);
 
-        overlayManager.SetOverlayProperties(listProperties);
-        
+        overlayManager.SetOverlayProperties(listProperties);   
     }
 
-    public void SetListSize(float base_size)
+    public void SetListSize()
     {
         if (organizer == null) return;
 
-        organizer.SetListSize(base_size);
+        organizer.SetListSize();
 
         overlayManager.ActivateOverlay(organizer);
 
@@ -89,12 +92,23 @@ public class ListManager : MonoBehaviour
 
         list_size = organizer.GetListSize(listData.list, false);
 
-        main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
-        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
-
         SetRows();
 
-        overlayManager.SetOverlay();   
+        overlayManager.SetOverlay();
+
+        list_min = main_list.TransformPoint(new Vector2(main_list.rect.min.x, main_list.rect.min.y));
+        list_max = main_list.TransformPoint(new Vector2(main_list.rect.max.x, main_list.rect.max.y));
+
+        //Don't reset, if...
+        
+        if (!listData.controller.loaded)
+            ResetListPosition();   
+    }
+
+    public void ResetListPosition()
+    {
+        main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
     }
 
     public void SetRows()
@@ -118,13 +132,6 @@ public class ListManager : MonoBehaviour
         overlayManager.UpdateOverlay();
     }
 
-    public void GetIndex(SelectionElement element)
-    {
-        //Debug.Log(element_list.IndexOf(element));
-
-        //Set list position based on index + element size
-    }
-
     public void SelectElement(Route route)
     {
         foreach(SelectionElement element in element_list)
@@ -136,9 +143,23 @@ public class ListManager : MonoBehaviour
                 else
                     element.SelectElement();
 
-                break;
+                if (element.transform.position.x > list_max.x ||
+                    element.transform.position.x < list_min.x ||
+                    element.transform.position.z > list_max.z ||
+                    element.transform.position.z < list_min.z)
+                    CorrectPosition(element);
+
+                return;
             }                    
         }
+
+        //ResetListPosition();
+    }
+
+    public void CorrectPosition(SelectionElement element)
+    {
+        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
+        main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size));
     }
 
     public void CancelSelection(Route route)
@@ -152,7 +173,7 @@ public class ListManager : MonoBehaviour
                 else
                     element.CancelSelection();
 
-                break;
+                return;
             }
         }
     }

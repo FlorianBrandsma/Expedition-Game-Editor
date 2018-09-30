@@ -54,6 +54,9 @@ public class SelectionElement : MonoBehaviour
         if (selectionProperty == SelectionManager.Property.Get)
             SelectionManager.SelectGet(this);
 
+        if(listManager != null)
+            listManager.selected_element = this;
+
         selected = true;
 
         glow.SetActive(true);
@@ -62,6 +65,9 @@ public class SelectionElement : MonoBehaviour
     public void CancelSelection()
     {
         selected = false;
+
+        if(listManager != null)
+            listManager.selected_element = null;
 
         glow.SetActive(false);
     }

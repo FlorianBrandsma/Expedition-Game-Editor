@@ -19,7 +19,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
     private Path select_path;
     private Path edit_path;
 
-    private float base_size;
+    public float element_size { get; set; }
+
     private float bonus_height = 25;
 
     private List<float> row_height     = new List<float>(); //Individual heights
@@ -43,14 +44,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
         zigzag = listProperties.zigzag;
     }
 
-    public void SetListSize(float new_size)
-    {
-        base_size = new_size;
-
-        SetAnchors();
-    }
-
-    void SetAnchors()
+    public void SetListSize()
     {
         x_anchors.Clear();
 
@@ -104,11 +98,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
                     new_header = "";
             }
 
-            float new_height = (base_size / rect_width) + (new_header != "" ? bonus_height : 0);
-            row_height.Add(new_height);
+            element_size = (listManager.base_size / rect_width) + (new_header != "" ? bonus_height : 0);
+            row_height.Add(element_size);
 
-            position_sum += new_height;
-            row_offset_max.Add(position_sum - new_height);
+            position_sum += element_size;
+            row_offset_max.Add(position_sum - element_size);
         }
     }
 
