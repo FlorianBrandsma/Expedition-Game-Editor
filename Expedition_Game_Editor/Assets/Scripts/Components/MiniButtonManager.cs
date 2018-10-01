@@ -21,6 +21,6 @@ public class MiniButtonManager : MonoBehaviour
 
         new_element.icon.texture = texture;
 
-        new_element.GetComponent<Button>().onClick.AddListener(delegate { new_element.OpenPath();});
+        new_element.GetComponent<Button>().onClick.AddListener(delegate { new_element.SelectElement();});
     }
 }

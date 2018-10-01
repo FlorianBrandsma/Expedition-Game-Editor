@@ -139,9 +139,9 @@ public class ListManager : MonoBehaviour
             if (element.data.Equals(route.data))
             {
                 if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
-                    element.child.SelectElement();
+                    element.child.ActivateSelection();
                 else
-                    element.SelectElement();
+                    element.ActivateSelection();
 
                 if (element.transform.position.x > list_max.x ||
                     element.transform.position.x < list_min.x ||

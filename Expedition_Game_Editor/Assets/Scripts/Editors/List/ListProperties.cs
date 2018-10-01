@@ -45,7 +45,11 @@ public class ListProperties : MonoBehaviour
     public void InitializeProperties(Route route)
     {
         if(flexible_type)
-            listType = route.origin.listType;   
+        {
+            listType = route.origin.listType;
+            
+            GetComponent<ListData>().data = route.data;
+        }     
     }
 
     public void SetList()

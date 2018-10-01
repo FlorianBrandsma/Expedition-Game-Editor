@@ -45,11 +45,11 @@ public class SelectionElement : MonoBehaviour
             if (icon != null)
                 icon.texture = Resources.Load<Texture2D>("Textures/Icons/" + selectionProperty.ToString());
 
-            GetComponent<Button>().onClick.AddListener(delegate { OpenPath(); });
+            GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });
         }
     }
 
-    public void SelectElement()
+    public void ActivateSelection()
     {
         if (selectionProperty == SelectionManager.Property.Get)
             SelectionManager.SelectGet(this);
@@ -72,12 +72,12 @@ public class SelectionElement : MonoBehaviour
         glow.SetActive(false);
     }
 
-    public void OpenPath()
+    public void SelectElement()
     {
-        editorPath = new EditorPath(new Route(this));
-
         if (!selected)
         {
+            editorPath = new EditorPath(new Route(this));
+
             switch (selectionProperty)
             {
                 case SelectionManager.Property.Open:
@@ -90,17 +90,17 @@ public class SelectionElement : MonoBehaviour
 
                 case SelectionManager.Property.Get:
                     EditorManager.editorManager.OpenPath(editorPath.get);
-                    SelectElement();
+                    ActivateSelection();
+                    break;
+
+                case SelectionManager.Property.Set:
+                    SelectionManager.SelectSet(this);
+                    EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());
                     break;
 
                 default:
                     break;
             }
         }          
-    }
-
-    public void SetElement(SelectionElement new_element)
-    {
-        data.id = new_element.data.id;
     }
 }
