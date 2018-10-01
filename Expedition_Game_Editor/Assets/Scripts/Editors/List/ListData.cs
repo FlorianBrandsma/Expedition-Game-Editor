@@ -52,6 +52,6 @@ public class ListData : MonoBehaviour
 
     public void CloseRows()
     {
-        GetComponent<ListProperties>().main_list.GetComponent<ListManager>().CloseList();
+        GetComponent<ListProperties>().CloseList();
     }
 }

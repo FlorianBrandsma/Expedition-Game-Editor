@@ -13,6 +13,8 @@ public class ListProperties : MonoBehaviour
         Panel,
     }
 
+    private Route route;
+
     public ListProperties.Type listType;
     public bool flexible_type;
 
@@ -42,8 +44,10 @@ public class ListProperties : MonoBehaviour
 
     public IController controller { get; set; }
 
-    public void InitializeProperties(Route route)
+    public void InitializeProperties(Route new_route)
     {
+        route = new_route;
+
         if(flexible_type)
         {
             listType = route.origin.listType;
@@ -69,4 +73,13 @@ public class ListProperties : MonoBehaviour
     {
         main_list.GetComponent<ListManager>().ResetRows();
     } 
+
+    public void CloseList()
+    {
+        //Bandaid fix
+        if (flexible_type)
+            route.origin.listType = Type.None;
+
+        main_list.GetComponent<ListManager>().CloseList();
+    }
 }

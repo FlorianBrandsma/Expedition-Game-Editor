@@ -18,6 +18,7 @@ public class MiniButtonManager : MonoBehaviour
 
         new_element.data = element.data;
         new_element.selectionType = element.selectionType;
+        new_element.listType = element.listType;
 
         new_element.icon.texture = texture;
 

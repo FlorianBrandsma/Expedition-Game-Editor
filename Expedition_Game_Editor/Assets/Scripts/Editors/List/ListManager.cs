@@ -134,6 +134,8 @@ public class ListManager : MonoBehaviour
 
     public void SelectElement(Route route)
     {
+        if (selectionProperty == SelectionManager.Property.Set) return;
+
         foreach(SelectionElement element in element_list)
         {
             if (element.data.Equals(route.data))
@@ -152,8 +154,6 @@ public class ListManager : MonoBehaviour
                 return;
             }                    
         }
-
-        //ResetListPosition();
     }
 
     public void CorrectPosition(SelectionElement element)

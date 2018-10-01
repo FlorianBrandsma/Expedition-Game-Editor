@@ -37,7 +37,7 @@ static public class SelectionManager
     {
         get.data = new_set.data.Copy();
 
-        SelectionManager.CancelGetSelection();
+        CancelGetSelection();
     }
 
     static public void CancelSelection(Route route)
@@ -47,10 +47,11 @@ static public class SelectionManager
 
     static public void CancelGetSelection()
     {
-        if(get != null)
-        {
-            get.CancelSelection();
-            get = null;
-        } 
+        if (get == null) return;
+
+        get.CancelSelection();
+        get = null;
+
+        EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());  
     }
 }

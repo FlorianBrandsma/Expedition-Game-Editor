@@ -95,7 +95,7 @@ public class SelectionElement : MonoBehaviour
 
                 case SelectionManager.Property.Set:
                     SelectionManager.SelectSet(this);
-                    EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());
+                    
                     break;
 
                 default:
