@@ -30,12 +30,6 @@ public class EditorField : MonoBehaviour
             target_controller.GetComponent<EditorDependency>().Activate();       
     }
 
-    public void InitializeLayout(Path path)
-    {
-        //First wave layout: Adjust size of fields and windows
-        target_controller.InitializeLayout();  
-    }
-
     public void SetDependencies(Path path)
     {
         //Adjust size of dependency content based on active headers and footers
@@ -61,14 +55,12 @@ public class EditorField : MonoBehaviour
     public void ClosePath(Path active_path)
     {
         if (target_controller.GetComponent<EditorDependency>() != null)
+            target_controller.GetComponent<EditorDependency>().Deactivate();
+
+        if (target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().CloseDependency();
 
         sectionManager.baseController.ClosePath(active_path);
-
-        target_controller.CloseLayout();
-
-        if (target_controller.GetComponent<EditorDependency>() != null)
-            target_controller.GetComponent<EditorDependency>().Deactivate();
 
         target_controller.CloseEditor();
 

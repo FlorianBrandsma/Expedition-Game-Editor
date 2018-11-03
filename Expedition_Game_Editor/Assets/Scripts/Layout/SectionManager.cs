@@ -37,9 +37,6 @@ public class SectionManager : MonoBehaviour
         //Activate target dependencies
         ActivateDependencies();
 
-        //Set layout of target controllers
-        InitializeLayout(path);
-
         //Follow the same path to activate anything along its way
         baseController.SetComponents(path);
 
@@ -101,15 +98,6 @@ public class SectionManager : MonoBehaviour
         {
             if (field.target_controller != null)
                 field.ActivateDependencies();
-        }
-    }
-
-    private void InitializeLayout(Path path)
-    {
-        foreach (EditorField field in editor_fields)
-        {
-            if (field.target_controller != null)
-                field.InitializeLayout(path);
         }
     }
 

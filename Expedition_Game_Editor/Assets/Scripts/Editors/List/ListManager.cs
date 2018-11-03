@@ -80,6 +80,8 @@ public class ListManager : MonoBehaviour
 
     public void SetListSize()
     {
+        if (listData.list.Count == 0) return;
+
         if (organizer == null) return;
 
         organizer.SetListSize();
@@ -99,8 +101,6 @@ public class ListManager : MonoBehaviour
         list_min = main_list.TransformPoint(new Vector2(main_list.rect.min.x, main_list.rect.min.y));
         list_max = main_list.TransformPoint(new Vector2(main_list.rect.max.x, main_list.rect.max.y));
 
-        //Don't reset, if...
-        
         if (!listData.controller.loaded)
             ResetListPosition();   
     }

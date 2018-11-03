@@ -9,6 +9,9 @@ public class EditorDependency : MonoBehaviour
     {
         if(!gameObject.activeInHierarchy)
         {
+            if (GetComponent<EditorLayout>() != null)
+                GetComponent<EditorLayout>().InitializeLayout();
+
             gameObject.SetActive(true);
 
             if (editorDependency != null)
@@ -31,7 +34,6 @@ public class EditorDependency : MonoBehaviour
 
         if (editorDependency != null)
             editorDependency.Deactivate();
-        
     }
 
     public void CloseDependency()

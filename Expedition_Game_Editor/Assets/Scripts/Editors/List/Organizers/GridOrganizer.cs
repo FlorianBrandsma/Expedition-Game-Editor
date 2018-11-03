@@ -108,7 +108,7 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
     {
         local_data_list = data_list;
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Grid/Grid_Prefab");
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Tile");
 
         int i = 0;
 
@@ -118,6 +118,8 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
         {
             for (int x = 0; x < list_size.x; x++)
             {
+                if (i == local_data_list.Count) break;
+
                 SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
                 element_list_local.Add(element);
 
@@ -129,9 +131,6 @@ public class GridOrganizer : MonoBehaviour, IOrganizer
                 SetElement(element);
 
                 i++;
-
-                if (i == listManager.listData.list.Count)
-                    break;
             }
         }
     }

@@ -118,7 +118,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
     {
         local_data_list = data_list;
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/Panel/Panel_Prefab");
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Panel");
 
         for (int i = 0; i < local_data_list.Count; i++)
         {
@@ -127,15 +127,16 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
             listManager.element_list.Add(element);
 
+            //Temporary
             string new_header = element.data.table + " " + i;
             string content = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
-            element.id_text.text = element.data.id.ToString();
-            element.header.text = new_header;
-            element.content.text = content;
+            element.GetComponent<EditorPanel>().header.text = new_header;
+            element.GetComponent<EditorPanel>().content.text = content;
 
             //Debugging
             element.name = new_header;
+            //
 
             SetElement(element);
         }

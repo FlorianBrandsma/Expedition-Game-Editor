@@ -32,6 +32,8 @@ public class ActionManager : MonoBehaviour
                 new_option.anchorMax = new Vector2((i + 1) * (1f / actions.Count), 1);
             }
 
+            new_option.anchoredPosition = new Vector2(new_option.anchoredPosition.x, -(new_option.sizeDelta.y / 2));
+
             new_option.offsetMin = new Vector2(-2.5f, new_option.offsetMin.y);
             new_option.offsetMax = new Vector2( 2.5f, new_option.offsetMax.y);
         }
@@ -113,7 +115,7 @@ public class ActionManager : MonoBehaviour
             }
         }
 
-        Dropdown new_action = Instantiate(Resources.Load<Dropdown>("Editor/Actions/Dropdown"));
+        Dropdown new_action = Instantiate(Resources.Load<Dropdown>("UI/Dropdown"));
 
         new_action.transform.SetParent(transform, false);
 
@@ -138,7 +140,7 @@ public class ActionManager : MonoBehaviour
             }
         }
 
-        Button new_action = Instantiate(Resources.Load<Button>("Editor/Actions/Button"));
+        Button new_action = Instantiate(Resources.Load<Button>("UI/Button"));
 
         new_action.transform.SetParent(transform, false);
 

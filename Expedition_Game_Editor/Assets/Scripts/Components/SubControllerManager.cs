@@ -127,7 +127,7 @@ public class SubControllerManager : MonoBehaviour
 
         local_tab_list.Clear();
 
-        if(header != null && header.gameObject.activeInHierarchy)
+        if(header != null)
             header.gameObject.SetActive(false);
 
         gameObject.SetActive(false);

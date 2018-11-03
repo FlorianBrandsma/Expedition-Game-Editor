@@ -7,55 +7,53 @@ using System.IO;
 
 public class SubController : MonoBehaviour, IEditor
 {
-    public EditorController controller { get; set; }
+	public EditorController controller { get; set; }
 
-    public GameObject       header;
-	public GameObject[] 	content;
-    /*
-	public RectTransform 	background, 
-							mainList,
-							listParent;
+	public EditorHeader     header;
+	public EditorSegment[] 	segments;
 
-	public Slider 			slider;
-    */
-    bool changed;
+	bool changed;
 	
-    public void OpenEditor()
-    {
-        controller = GetComponent<EditorController>();
+	public void OpenEditor()
+	{
+		controller = GetComponent<EditorController>();
 
-        InitializeSegments();
-    }
+        header.Activate();
 
-    void InitializeSegments()
-    { 
-        foreach (GameObject segment in content)
-            segment.GetComponent<EditorSegment>().InitializeSegment(this);       
-    }
+		InitializeSegments();
+	}
 
-    public void SaveEdit()
-    {
+	void InitializeSegments()
+	{ 
+		foreach (EditorSegment segment in segments)
+			segment.InitializeSegment(this);       
+	}
 
-    }
+	public void SaveEdit()
+	{
 
-    public void ApplyEdit()
-    {
+	}
 
-    }
+	public void ApplyEdit()
+	{
 
-    public void CancelEdit()
-    {
+	}
 
-    }
+	public void CancelEdit()
+	{
 
-    public void CloseEditor()
-    {
-        CloseSegments();
-    }
+	}
 
-    public void CloseSegments()
-    {        
-        foreach (GameObject segment in content)
-            segment.GetComponent<EditorSegment>().CloseSegment(); 
-    }
+	public void CloseEditor()
+	{
+        header.Deactivate();
+
+		CloseSegments();
+	}
+
+	public void CloseSegments()
+	{        
+		foreach (EditorSegment segment in segments)
+			segment.CloseSegment(); 
+	}
 }

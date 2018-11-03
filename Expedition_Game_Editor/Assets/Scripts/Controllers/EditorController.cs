@@ -20,8 +20,6 @@ public class EditorController : MonoBehaviour, IController
 
     public EditorField      editorField;
 
-    public EditorLayout     editorLayout;
-
     public SubControllerManager subControllerManager;
     public EditorController[]   controllers;
 
@@ -91,12 +89,6 @@ public class EditorController : MonoBehaviour, IController
         return path.Equals(editorField.previous_controller_path);
     }
 
-    public void InitializeLayout()
-    {
-        if(editorLayout != null)
-            editorLayout.InitializeLayout();
-    }
-
     public void SetComponents(Path new_path)
     {
         if (GetComponent<MiniButtonManager>() != null)
@@ -119,17 +111,6 @@ public class EditorController : MonoBehaviour, IController
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step].controller].SetComponents(new_path);
-    }
-
-    public void SetLayout()
-    {
-        editorLayout.SetLayout();
-    }
-
-    public void CloseLayout()
-    {
-        if(editorLayout != null)
-            editorLayout.CloseLayout();
     }
 
     public void InitializeController()

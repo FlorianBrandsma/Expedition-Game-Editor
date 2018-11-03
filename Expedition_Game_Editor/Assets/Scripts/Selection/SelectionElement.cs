@@ -14,12 +14,8 @@ public class SelectionElement : MonoBehaviour
     public SelectionManager.Property selectionProperty;
     public ListProperties.Type listType;
 
-    public Text id_text, header, content;
-
-    //PanelElement exclusive
     public SelectionElement parent;
     public SelectionElement child;
-    public RawImage icon;
 
     public GameObject glow;
 
@@ -30,23 +26,20 @@ public class SelectionElement : MonoBehaviour
 
     public void InitializeSelection(ListManager new_listManager, ElementData new_data, SelectionManager.Property new_property)
     {
+        if (selected)
+            CancelSelection();
+
         listManager = new_listManager;
 
         data = new_data;
 
         selectionType = listManager.selectionType;
         selectionProperty = new_property;
-        
-        if(selected)
-            CancelSelection();
 
-        if(selectionType != SelectionManager.Type.None)
-        {
-            if (icon != null)
-                icon.texture = Resources.Load<Texture2D>("Textures/Icons/" + selectionProperty.ToString());
+        GetComponent<IElement>().SetElement();
 
-            GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });
-        }
+        if (selectionType != SelectionManager.Type.None)
+            GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
     public void ActivateSelection()

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-[RequireComponent(typeof(EditorController))]
+[RequireComponent(typeof(IController))]
 
 public class ListData : MonoBehaviour
 {

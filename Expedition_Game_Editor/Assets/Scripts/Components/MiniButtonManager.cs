@@ -20,7 +20,8 @@ public class MiniButtonManager : MonoBehaviour
         new_element.selectionType = element.selectionType;
         new_element.listType = element.listType;
 
-        new_element.icon.texture = texture;
+        //Temporary band-aid
+        new_element.GetComponent<EditorButton>().icon.texture = texture;
 
         new_element.GetComponent<Button>().onClick.AddListener(delegate { new_element.SelectElement();});
     }

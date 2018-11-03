@@ -49,7 +49,7 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
     {
         local_data_list = data_list;
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("Editor/Organizer/List/List_Prefab");
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
 
         for (int i = 0; i < local_data_list.Count; i++)
         {
@@ -58,11 +58,11 @@ public class ListOrganizer : MonoBehaviour, IOrganizer
 
             listManager.element_list.Add(element);
 
-            string header = listManager.listData.data.table + " " + i;
-            element.header.text = header;
+            string label = listManager.listData.data.table + " " + i;
+            element.GetComponent<EditorButton>().label.text = label;
 
             //Debugging
-            element.name = header;
+            element.name = label;
 
             SetElement(element);
         }
