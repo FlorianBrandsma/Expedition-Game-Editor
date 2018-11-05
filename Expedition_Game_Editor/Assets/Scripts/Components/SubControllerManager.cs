@@ -100,7 +100,7 @@ public class SubControllerManager : MonoBehaviour
                 return tab;
         }
 
-        Button new_tab = Instantiate(Resources.Load<Button>("Editor/Tab"));
+        Button new_tab = Instantiate(Resources.Load<Button>("UI/Tab"));
         new_tab.transform.SetParent(transform, false);
         tab_list.Add(new_tab);
 
@@ -109,7 +109,7 @@ public class SubControllerManager : MonoBehaviour
 
     private RectTransform SpawnHeader()
     {
-        RectTransform new_header = Instantiate(Resources.Load<RectTransform>("Editor/Header"));
+        RectTransform new_header = Instantiate(Resources.Load<RectTransform>("UI/Header"));
         new_header.transform.SetParent(transform, false);
 
         return new_header;
