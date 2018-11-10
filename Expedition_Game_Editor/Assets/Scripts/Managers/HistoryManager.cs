@@ -16,6 +16,7 @@ public class HistoryManager : MonoBehaviour
         PhaseSelection,
         QuestSelection,
         ObjectiveSelection,
+        Task,
         Region,
         Terrain,
         TerrainSelection,

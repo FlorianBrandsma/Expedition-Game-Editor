@@ -135,23 +135,27 @@ public class PathManager
 
     public class Element
     {
-        List<int> open;
+        int open;
         List<int> edit;
 
+        Path path = new Path();
         Route route;
 
         public Element(Route new_route)
         {
             route = new_route;
 
-            open    = new List<int>() { 0, 1, new_route.data.type };
+            path = route.origin.listManager.listData.controller.path;
+
+            open    = 0;
             edit    = new List<int>() { 0, 3, 1, new_route.data.type };
         }
 
         public Path Open()
         {
-            SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(open, route, section);
+            route.controller = open;
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
         }
 
         public Path Edit()

@@ -14,7 +14,6 @@ public class SelectionElement : MonoBehaviour
     public SelectionManager.Property selectionProperty;
     public ListProperties.Type listType;
 
-    public SelectionElement parent;
     public SelectionElement child;
 
     public GameObject glow;

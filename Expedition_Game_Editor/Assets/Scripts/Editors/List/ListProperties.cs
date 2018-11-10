@@ -8,17 +8,17 @@ public class ListProperties : MonoBehaviour
     public enum Type
     {
         None,
-        List,
-        Grid,
+        Button,
+        Tile,
         Panel,
     }
 
+    public Type listType;
+
     private Route route;
 
-    public ListProperties.Type listType;
+    //public ListProperties.Type listType;
     public bool flexible_type;
-
-    public Vector2 grid_size;
 
     public RectTransform list_area;
     public RectTransform main_list;
@@ -29,10 +29,6 @@ public class ListProperties : MonoBehaviour
 
     //Only spawn visible elements
     public bool visible_only;
-
-    public bool zigzag;
-    //Spawn tiles in rect without altering size
-    public bool fit_axis;
 
     public float base_size;
 
@@ -52,8 +48,26 @@ public class ListProperties : MonoBehaviour
         {
             listType = route.origin.listType;
             
+            switch (listType)
+            {
+                case Type.Button:
+                    gameObject.AddComponent<ButtonProperties>();
+                    break;
+                case Type.Tile:
+                    gameObject.AddComponent<TileProperties>();
+                    break;
+                case Type.Panel:
+                    gameObject.AddComponent<PanelProperties>();
+                    break;
+                default: break;
+            }
+            
             GetComponent<ListData>().data = route.data;
-        }     
+        } else {
+
+            if (GetComponent<IProperties>() != null)
+                listType = GetComponent<IProperties>().Type();
+        } 
     }
 
     public void SetList()
@@ -78,7 +92,10 @@ public class ListProperties : MonoBehaviour
     {
         //Bandaid fix
         if (flexible_type)
+        {
             route.origin.listType = Type.None;
+            DestroyImmediate(GetComponent<IProperties>() as Object);
+        }
 
         main_list.GetComponent<ListManager>().CloseList();
     }

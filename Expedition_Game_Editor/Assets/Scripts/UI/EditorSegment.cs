@@ -12,8 +12,6 @@ public class EditorSegment : MonoBehaviour, IController
 
     public Path path { get; set; }
 
-    private ListData listData;
-
     public void InitializeSegment(SubController new_subController)
     {
         subController = new_subController;

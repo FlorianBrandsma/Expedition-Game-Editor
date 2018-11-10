@@ -44,6 +44,15 @@
 
                 break;
 
+            case "Task":
+
+                PathManager.Structure task = new PathManager.Structure(route);
+
+                open    = task.Open();
+                edit    = task.Edit();
+
+                break;
+
             case "Region":
 
                 PathManager.Region region = new PathManager.Region(route);

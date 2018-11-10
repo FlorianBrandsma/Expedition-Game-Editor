@@ -9,4 +9,9 @@ public class EditorTile : MonoBehaviour, IElement
     {
 
     }
+
+    public void CloseElement()
+    {
+
+    }
 }

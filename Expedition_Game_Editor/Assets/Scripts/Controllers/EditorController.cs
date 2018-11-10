@@ -77,6 +77,9 @@ public class EditorController : MonoBehaviour, IController
 
     public bool IsLoaded()
     {
+        if (GetComponent<ListProperties>() != null && GetComponent<ListProperties>().flexible_type)
+            return false;
+
         //If there is no previous controller then it definitely hasn't loaded yet
         if (editorField.previous_controller_path == null)
             return false;

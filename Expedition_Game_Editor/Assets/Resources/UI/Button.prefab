@@ -115,7 +115,6 @@ MonoBehaviour:
   selectionType: 0
   selectionProperty: 0
   listType: 0
-  parent: {fileID: 0}
   child: {fileID: 0}
   glow: {fileID: 1000014149556330}
   selected: 0
@@ -257,13 +256,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6cfd51e820b84ce4aba7ae738751d5d5, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

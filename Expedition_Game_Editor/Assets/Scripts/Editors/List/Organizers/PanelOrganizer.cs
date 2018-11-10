@@ -8,16 +8,12 @@ using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer
 {
+    private PanelProperties properties;
+
     private List<ElementData> local_data_list;
 
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
-
-    //private bool visible_only;
-    private bool zigzag;
-
-    private Path select_path;
-    private Path edit_path;
 
     public float element_size { get; set; }
 
@@ -40,8 +36,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
     public void SetProperties(ListProperties listProperties)
     {
-        //visible_only = listProperties.visible_only;
-        zigzag = listProperties.zigzag;
+        properties = listProperties.GetComponent<PanelProperties>();
     }
 
     public void SetListSize()
@@ -50,7 +45,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
         float[] new_anchors = new float[] { 0, 1 };
 
-        if (zigzag)
+        if (properties.zigzag)
             new_anchors = right_anchor;
 
         for (int i = 0; i < listManager.listData.list.Count; i++)
@@ -62,7 +57,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
                 if (new_header == "id: " + listManager.listData.list[i - 1].id)
                     new_header = "";
 
-                if (zigzag)
+                if (properties.zigzag)
                     new_anchors = (new_header != "" ? SwapAnchors(x_anchors[i - 1]) : x_anchors[i - 1]);
             }
 
@@ -129,10 +124,17 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
             //Temporary
             string new_header = element.data.table + " " + i;
-            string content = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
-            element.GetComponent<EditorPanel>().header.text = new_header;
-            element.GetComponent<EditorPanel>().content.text = content;
+            EditorPanel panel = element.GetComponent<EditorPanel>();
+
+            panel.header.text = new_header;
+            panel.description.text = properties.temp_description;
+
+            if(properties.icon)  
+                panel.icon.texture = Resources.Load<Texture2D>("Textures/Characters/1");
+
+            if (properties.edit)
+                element.child.gameObject.SetActive(true);
 
             //Debugging
             element.name = new_header;

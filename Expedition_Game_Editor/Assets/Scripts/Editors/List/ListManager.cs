@@ -42,13 +42,13 @@ public class ListManager : MonoBehaviour
 
         switch(listData.listProperties.listType)
         {
-            case ListProperties.Type.None:  organizer = null;                                       break;
-            case ListProperties.Type.List:  organizer = gameObject.AddComponent<ListOrganizer>();   break;
-            case ListProperties.Type.Grid:  organizer = gameObject.AddComponent<GridOrganizer>();   break;
-            case ListProperties.Type.Panel: organizer = gameObject.AddComponent<PanelOrganizer>();  break;
-            default:                                                                                break;
+            case ListProperties.Type.None:      organizer = null;                                       break;
+            case ListProperties.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>(); break;
+            case ListProperties.Type.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();   break;
+            case ListProperties.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();  break;
+            default:                                                                                    break;
         }
-
+  
         if (organizer == null) return;
 
         organizer.InitializeOrganizer();
@@ -139,7 +139,7 @@ public class ListManager : MonoBehaviour
         foreach(SelectionElement element in element_list)
         {
             if (element.data.Equals(route.data))
-            {
+            {      
                 if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
                     element.child.ActivateSelection();
                 else
@@ -241,11 +241,16 @@ public class ListManager : MonoBehaviour
     {
         foreach(SelectionElement element in list)
         {
+            element.GetComponent<IElement>().CloseElement();
+
             element.gameObject.SetActive(false);
             element.GetComponent<Button>().onClick.RemoveAllListeners();
 
             if (element.child != null)
+            {
+                element.child.gameObject.SetActive(false);
                 element.child.GetComponent<Button>().onClick.RemoveAllListeners();
+            }      
         }
     }
 }

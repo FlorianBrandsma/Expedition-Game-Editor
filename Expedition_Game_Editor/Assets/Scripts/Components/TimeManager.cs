@@ -40,17 +40,6 @@ public class TimeManager : MonoBehaviour
         dropdown.value = (int)active_time;
 
         dropdown.onValueChanged.AddListener(delegate { SetTime(dropdown.value); });
-
-        SetBase();
-    }
-
-    void SetBase()
-    {
-        Button base_button = GetComponent<EditorController>().actionManager.AddButton();
-
-        base_button.GetComponentInChildren<Text>().text = "Import " + Enum.GetName(typeof(Time), default_time);
-
-        base_button.onClick.RemoveAllListeners();
     }
 
     static public void SetTime(int new_time)
