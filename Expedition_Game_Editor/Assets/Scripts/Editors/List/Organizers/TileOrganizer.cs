@@ -66,15 +66,16 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
             if (list_height > data_list.Count)
                 list_height = data_list.Count;
 
-            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height)) * element_size) / list_height : list_width  * element_size, 
-                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))  * element_size) / list_width  : list_height * element_size);
+            //This is messed up
+            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height))  * element_size) / list_height   : list_width    * element_size,
+                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))   * element_size) / list_width    : list_height   * element_size);
         } else {
 
             new_size = new Vector2( horizontal  ? properties.grid_size.x * element_size : element_size,
                                     vertical    ? properties.grid_size.y * element_size : element_size);
         }
 
-        if (exact)
+        if (exact) //And else this is
             return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
         else
             return new_size / element_size;

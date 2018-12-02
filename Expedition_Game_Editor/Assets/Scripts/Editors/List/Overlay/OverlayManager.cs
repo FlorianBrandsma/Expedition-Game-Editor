@@ -35,8 +35,8 @@ public class OverlayManager : MonoBehaviour
         if (listProperties.enable_sliders)
             gameObject.AddComponent<SliderManager>();
 
-        if (listProperties.enable_slideshow)
-            gameObject.AddComponent<SlideshowManager>();
+        if (listProperties.enable_paging)
+            gameObject.AddComponent<PagingManager>();
 
         foreach (IOverlay overlay in GetComponents<IOverlay>())
             overlay.InitializeOverlay(listManager);

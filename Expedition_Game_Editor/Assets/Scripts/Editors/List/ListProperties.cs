@@ -36,7 +36,7 @@ public class ListProperties : MonoBehaviour
 
     public bool enable_sliders;
     public bool enable_numbers;
-    public bool enable_slideshow;
+    public bool enable_paging;
 
     public IController controller { get; set; }
 

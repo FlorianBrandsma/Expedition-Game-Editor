@@ -14,7 +14,7 @@ public class PathManager
     {
         SectionManager section = EditorManager.editorManager.sections[0];
 
-        List<int> source = new List<int>() { 0, 0 };
+        List<int> source = new List<int>() { 0, 0, 0 };
 
         public Path Initialize()
         {
@@ -105,8 +105,8 @@ public class PathManager
         {
             route = new_route;
 
-            open    = new List<int>() { 0, 0, route.data.type };
-            edit    = new List<int>() { 0, 3, 0, route.data.type };
+            open    = new List<int>() { 0, 0, 0, route.data.type };
+            edit    = new List<int>() { 0, 0, 1, 0, route.data.type };
             get     = new List<int>() { 0, 1 };
         }
 
@@ -148,7 +148,7 @@ public class PathManager
             path = route.origin.listManager.listData.controller.path;
 
             open    = 0;
-            edit    = new List<int>() { 0, 3, 1, new_route.data.type };
+            edit    = new List<int>() { 0, 0, 1, 1, new_route.data.type };
         }
 
         public Path Open()
@@ -176,8 +176,8 @@ public class PathManager
 
     public class Region
     {
-        List<int> open  = new List<int>() { 0, 2 };
-        List<int> edit  = new List<int>() { 0, 1, 0 };
+        List<int> open  = new List<int>() { 0, 0, 2 };
+        List<int> edit  = new List<int>() { 0, 0, 3 };
 
         Route route;
 
@@ -207,6 +207,11 @@ public class PathManager
     {
         int edit = 0;
 
+        List<int> tiles         = new List<int>() { };
+        List<int> terrain_base  = new List<int>() { };
+        List<int> terrain_phase = new List<int>() { };
+        List<int> terrain_task  = new List<int>() { };
+
         Path path   = new Path();
         Route route = new Route();
 
@@ -223,6 +228,30 @@ public class PathManager
             route.controller = edit;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), section);
+        }
+
+        public Path Tiles()
+        {
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(tiles, route, section);
+        }
+
+        public Path TerrainBase()
+        {
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(terrain_base, route, section);
+        }
+
+        public Path TerrainPhase()
+        {
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(terrain_phase, route, section);
+        }
+
+        public Path TerrainTask()
+        {
+            SectionManager section = EditorManager.editorManager.sections[0];
+            return CreatePath(terrain_task, route, section);
         }
     }
 

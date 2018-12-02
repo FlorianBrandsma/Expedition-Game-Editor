@@ -20,12 +20,12 @@ public class EditorController : MonoBehaviour, IController
 
     public EditorField      editorField;
 
-    public SubControllerManager subControllerManager;
-    public EditorController[]   controllers;
-
     public ButtonActionManager  buttonActionManager;
 
     public ActionManager        actionManager;
+
+    public SubControllerManager subControllerManager;
+    public EditorController[] controllers;
 
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool reload)

@@ -35,12 +35,12 @@
 
                 break;
 
-            case "Objective":
+            case "Step":
 
-                PathManager.Structure objective = new PathManager.Structure(route);
+                PathManager.Structure step = new PathManager.Structure(route);
 
-                open    = objective.Open();
-                edit    = objective.Edit();
+                open    = step.Open();
+                edit    = step.Edit();
 
                 break;
 
