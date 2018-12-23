@@ -13,15 +13,14 @@ public class ListProperties : MonoBehaviour
         Panel,
     }
 
-    public Type listType;
+    public Type listType { get; set; }
 
     private Route route;
 
     //public ListProperties.Type listType;
     public bool flexible_type;
 
-    public RectTransform list_area;
-    public RectTransform main_list;
+    public ListManager listManager;
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
@@ -65,6 +64,13 @@ public class ListProperties : MonoBehaviour
             GetComponent<ListData>().data = route.data;
         } else {
 
+            if (GetComponent<ButtonProperties>() != null)
+                listType = Type.Button;
+            if (GetComponent<TileProperties>() != null)
+                listType = Type.Tile;
+            if (GetComponent<PanelProperties>() != null)
+                listType = Type.Panel;
+
             if (GetComponent<IProperties>() != null)
                 listType = GetComponent<IProperties>().Type();
         } 
@@ -73,19 +79,19 @@ public class ListProperties : MonoBehaviour
     public void SetList()
     {
         controller = GetComponent<IController>();
-        main_list.GetComponent<ListManager>().SetProperties(this);
+        listManager.SetProperties(this);
 
-        main_list.GetComponent<ListManager>().SetListSize();  
+        listManager.SetListSize();  
     }
        
     public void AutoSelectElement()
     {
-        main_list.GetComponent<ListManager>().AutoSelectElement();
+        listManager.AutoSelectElement();
     }
 
     public void ResetList()
     {
-        main_list.GetComponent<ListManager>().ResetRows();
+        listManager.ResetRows();
     } 
 
     public void CloseList()
@@ -97,6 +103,6 @@ public class ListProperties : MonoBehaviour
             DestroyImmediate(GetComponent<IProperties>() as Object);
         }
 
-        main_list.GetComponent<ListManager>().CloseList();
+        listManager.CloseList();
     }
 }

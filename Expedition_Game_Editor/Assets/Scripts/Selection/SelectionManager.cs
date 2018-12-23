@@ -52,6 +52,7 @@ static public class SelectionManager
         get.CancelSelection();
         get = null;
 
-        EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());  
+        //Reset this though
+        //EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());  
     }
 }

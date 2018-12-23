@@ -7,6 +7,12 @@ using System.IO;
 
 public class SubControllerManager : MonoBehaviour
 {
+    public enum Axis
+    {
+        horizontal,
+        vertical,
+    }
+
     private EditorController controller;
 
     private List<Button> tab_list = new List<Button>();
@@ -15,6 +21,8 @@ public class SubControllerManager : MonoBehaviour
     private EditorController[] controllers;
 
     private RectTransform header;
+
+    public Axis axis;
 
     public void SetTabs(EditorController new_controller, Path main_path)
     {
@@ -67,11 +75,14 @@ public class SubControllerManager : MonoBehaviour
     {
         RectTransform new_tab = local_tab_list[index].GetComponent<RectTransform>();
 
-        new_tab.anchorMin = new Vector2(index * (1f / tabs), 0);
-        new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
+        if(axis == Axis.horizontal)
+        {
+            new_tab.anchorMin = new Vector2(index * (1f / tabs), 0);
+            new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
 
-        new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
-        new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);      
+            new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
+            new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);
+        }     
     }
 
     private void OpenPath(int selected_tab)

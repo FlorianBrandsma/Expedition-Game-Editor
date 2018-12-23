@@ -6,7 +6,7 @@ public class EditorManager : MonoBehaviour
 
     static public RectTransform UI;
 
-    public SectionManager[] sections;
+    public EditorForm[] forms;
 
     private void Awake()
     {
@@ -14,16 +14,16 @@ public class EditorManager : MonoBehaviour
 
         UI = GetComponent<RectTransform>();
 
-        foreach (SectionManager section in sections)
-            section.InitializeSection();
+        foreach (EditorForm form in forms)
+            form.InitializeForm();
     }
 
     private void Start()
     {
         LanguageManager.GetLanguage();
 
-        InitializePath(new PathManager.Secondary().Initialize());
-        InitializePath(new PathManager.Primary().Initialize());
+        //InitializePath(new PathManager.Secondary().Initialize());
+        InitializePath(new PathManager.Main().Initialize());
     }
 
     private void Update()
@@ -42,14 +42,14 @@ public class EditorManager : MonoBehaviour
 
     public void InitializePath(Path path)
     {
-        path.section.InitializePath(path);
+        path.form.InitializePath(path);
     }
 
     public void OpenPath(Path path)
     {
         SelectionManager.CancelGetSelection();
 
-        path.section.OpenPath(path);
+        path.form.OpenPath(path);
     }
 
     public void ResetPath()
@@ -64,8 +64,8 @@ public class EditorManager : MonoBehaviour
 
     public void ResetEditor()
     {
-        foreach (SectionManager section in sections)
-            section.ResetPath();
+        foreach (EditorForm form in forms)
+            form.ResetPath();
     }
 
     static public void SelectElement(int id)

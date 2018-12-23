@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 public class PathManager
@@ -8,49 +7,17 @@ public class PathManager
 
     #region Initializers
 
-    #region Primary
+    #region Main
 
-    public class Primary
+    public class Main
     {
-        SectionManager section = EditorManager.editorManager.sections[0];
+        EditorForm form = EditorManager.editorManager.forms[0];
 
-        List<int> source = new List<int>() { 0, 0, 0 };
+        List<int> source = new List<int>() { 0, 0 };
 
         public Path Initialize()
         {
-            return CreatePath(source, section);
-        }
-    }
-
-    #endregion
-
-    #region Secondary
-
-    public class Secondary
-    {
-        SectionManager section = EditorManager.editorManager.sections[1];
-
-        List<int> source = new List<int>() { 0 };
-
-        public Path Initialize()
-        {
-            return CreatePath(source, section);
-        }
-    }
-
-    #endregion
-
-    #region Tertiary
-
-    public class Tertiary
-    {
-        SectionManager section = EditorManager.editorManager.sections[2];
-
-        List<int> open = new List<int>() { };
-
-        public Path Initialize()
-        {
-            return CreatePath(open, section);
+            return CreatePath(source, form);
         }
     }
 
@@ -63,30 +30,32 @@ public class PathManager
     #region Structure
     public class Structure
     {
-        Route route = new Route();
-        Path path = new Path();
+        Route route;
+
+        Path path;
 
         int open = 0;
         int edit = 1;
 
-        SectionManager section  = EditorManager.editorManager.sections[0];
+        EditorForm form  = EditorManager.editorManager.forms[0];
 
         public Structure(Route new_route) //Combine existing path with new route
         {
             route = new_route;
+
             path = route.origin.listManager.listData.controller.path;
         }
 
         public Path Open()
         {
             route.controller = open;
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
 
         public Path Edit()
         {
             route.controller = edit;
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
     }
     #endregion
@@ -106,26 +75,26 @@ public class PathManager
             route = new_route;
 
             open    = new List<int>() { 0, 0, 0, route.data.type };
-            edit    = new List<int>() { 0, 0, 1, 0, route.data.type };
+            edit    = new List<int>() { 0, 1, 0, route.data.type };
             get     = new List<int>() { 0, 1 };
         }
 
         public Path Open()
         {
-            SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(open, route, section);
+            EditorForm form = EditorManager.editorManager.forms[1];
+            return CreatePath(open, route, form);
         }
 
         public Path Edit()
         {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(edit, route, section);
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return CreatePath(edit, route, form);
         }
 
         public Path Get()
         {
-            SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(get, route, section);
+            EditorForm form = EditorManager.editorManager.forms[1];
+            return CreatePath(get, route, form);
         }
     }
 
@@ -138,30 +107,31 @@ public class PathManager
         int open;
         List<int> edit;
 
-        Path path = new Path();
         Route route;
+        Path path;
 
         public Element(Route new_route)
         {
             route = new_route;
 
-            path = route.origin.listManager.listData.controller.path;
-
             open    = 0;
-            edit    = new List<int>() { 0, 0, 1, 1, new_route.data.type };
+            edit    = new List<int>() { 0, 1, 1, new_route.data.type };
         }
 
         public Path Open()
         {
             route.controller = open;
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), section);
+
+            path = route.origin.listManager.listData.controller.path;
+
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
 
         public Path Edit()
         {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(edit, route, section);
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return CreatePath(edit, route, form);
         }
 
         public Path Get()
@@ -176,8 +146,8 @@ public class PathManager
 
     public class Region
     {
-        List<int> open  = new List<int>() { 0, 0, 2 };
-        List<int> edit  = new List<int>() { 0, 0, 3 };
+        List<int> open  = new List<int>() { 0, 2 };
+        List<int> edit  = new List<int>() { 0, 3 };
 
         Route route;
 
@@ -188,14 +158,14 @@ public class PathManager
 
         public Path Open()
         {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(open, route, section);
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return CreatePath(open, route, form);
         }
 
         public Path Edit()
         {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(edit, route, section);
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return CreatePath(edit, route, form);
         }
     }
 
@@ -206,52 +176,35 @@ public class PathManager
     public class Terrain
     {
         int edit = 0;
+        List<int> open;
 
-        List<int> tiles         = new List<int>() { };
-        List<int> terrain_base  = new List<int>() { };
-        List<int> terrain_phase = new List<int>() { };
-        List<int> terrain_task  = new List<int>() { };
+        Route route;
+        Path path;
 
-        Path path   = new Path();
-        Route route = new Route();
-
-        SectionManager section = EditorManager.editorManager.sections[0];
+        EditorForm form = EditorManager.editorManager.forms[0];
 
         public Terrain(Route new_route)
         {
             route = new_route;
-            path = route.origin.listManager.listData.controller.path;
+
+            open = new List<int>() { 1, route.data.type, 1 };
+        }
+
+        //First step: Default 
+
+        public Path Open()
+        {
+            EditorForm form = EditorManager.editorManager.forms[0];
+            return CreatePath(open, route, form);
         }
 
         public Path Edit()
         {
             route.controller = edit;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), section);
-        }
+            path = route.origin.listManager.listData.controller.path;
 
-        public Path Tiles()
-        {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(tiles, route, section);
-        }
-
-        public Path TerrainBase()
-        {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(terrain_base, route, section);
-        }
-
-        public Path TerrainPhase()
-        {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(terrain_phase, route, section);
-        }
-
-        public Path TerrainTask()
-        {
-            SectionManager section = EditorManager.editorManager.sections[0];
-            return CreatePath(terrain_task, route, section);
+            return new Path(path.CombineRoute(new List<Route>() { route }), form);
         }
     }
 
@@ -272,8 +225,8 @@ public class PathManager
 
         public Path Open()
         {
-            SectionManager section = EditorManager.editorManager.sections[2];
-            return CreatePath(open, route, section);
+            EditorForm form = EditorManager.editorManager.forms[2];
+            return CreatePath(open, route, form);
         }
     }
 
@@ -294,8 +247,8 @@ public class PathManager
 
         public Path Open()
         {
-            SectionManager section = EditorManager.editorManager.sections[1];
-            return CreatePath(open, route, section);
+            EditorForm form = EditorManager.editorManager.forms[1];
+            return CreatePath(open, route, form);
         }
     }
 
@@ -306,16 +259,19 @@ public class PathManager
     #endregion
 
     #endregion
-    static public Path CreatePath(List<int> new_controllers, SectionManager new_section)
+
+    #region Functions
+
+    static public Path CreatePath(List<int> new_controllers, EditorForm new_form)
     {
-        return CreatePath(new_controllers, new Route(), new_section);
+        return CreatePath(new_controllers, new Route(), new_form);
     }
 
-    static public Path CreatePath(List<int> new_controllers, Route new_route, SectionManager new_section)
+    static public Path CreatePath(List<int> new_controllers, Route new_route, EditorForm new_form)
     {
         Path path = new Path();
 
-        path.section = new_section;
+        path.form = new_form;
 
         for (int i = 0; i < new_controllers.Count; i++)
             path.route.Add(new Route(new_controllers[i], new_route.data, new_route.origin));
@@ -327,7 +283,7 @@ public class PathManager
     {
         Path path = new Path();
 
-        path.section = new_path.section;
+        path.form = new_path.form;
 
         foreach (Route route in new_path.route)
             path.Add(route);
@@ -336,4 +292,6 @@ public class PathManager
 
         return path;
     }
+
+    #endregion
 }

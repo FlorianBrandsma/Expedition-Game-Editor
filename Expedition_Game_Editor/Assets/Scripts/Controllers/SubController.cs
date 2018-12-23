@@ -9,16 +9,24 @@ public class SubController : MonoBehaviour, IEditor
 {
 	public EditorController controller { get; set; }
 
-	public EditorHeader     header;
+	public GameObject       header_field;
+	private IHeader         header;
 	public EditorSegment[] 	segments;
 
 	bool changed;
-	
+
+	public void Awake()
+	{
+		if (header_field != null)
+			header = header_field.GetComponent<IHeader>();
+	}
+
 	public void OpenEditor()
 	{
 		controller = GetComponent<EditorController>();
 
-        header.Activate();
+		if(header != null)
+			header.Activate(this);
 
 		InitializeSegments();
 	}
@@ -46,7 +54,7 @@ public class SubController : MonoBehaviour, IEditor
 
 	public void CloseEditor()
 	{
-        header.Deactivate();
+		header.Deactivate();
 
 		CloseSegments();
 	}

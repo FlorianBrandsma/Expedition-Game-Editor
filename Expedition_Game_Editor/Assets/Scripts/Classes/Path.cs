@@ -3,18 +3,18 @@
 public class Path
 {
     public List<Route> route        { get; set; }
-    public SectionManager section   { get; set; }
+    public EditorForm form   { get; set; }
 
     public Path()
     {
         route   = new List<Route>();
-        section = null;
+        form = null;
     }
 
-    public Path(List<Route> new_route, SectionManager new_section)
+    public Path(List<Route> new_route, EditorForm new_form)
     {
         route   = new_route;
-        section = new_section;
+        form = new_form;
     }
 
     #region Equals
@@ -71,14 +71,14 @@ public class Path
         foreach (Route x in route)
             copy.route.Add(x);
 
-        copy.section = section;
+        copy.form = form;
 
         return copy;
     }
 
     public Path Trim(int step)
     {
-        Path new_path = new Path(new List<Route>(), section);
+        Path new_path = new Path(new List<Route>(), form);
 
         for (int i = 0; i < step; i++)
             new_path.Add(route[i]);

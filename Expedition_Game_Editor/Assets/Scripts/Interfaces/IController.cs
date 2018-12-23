@@ -10,7 +10,7 @@ public interface IController
 
     ElementData data    { get; set; }
 
-    EditorField field   { get; set; }
+    EditorSection section   { get; set; }
 
     void FilterRows(List<ElementData> list);
 }

@@ -3,11 +3,28 @@ using System.Collections;
 
 public class LayoutManager : MonoBehaviour
 {
-    public RectTransform parent_rect;
-    public LayoutManager sibling_rect;
+    public enum Reset
+    {
+        None,
+        Soft,
+        Hard,
+    }
 
-    //Sibling relative position (choose one)
-    public bool left, top;
+    public enum Anchor
+    {
+        None,
+        Top,
+        Bottom,
+        Left,
+        Right,
+    }
+
+    public RectTransform parent_rect;
+
+    public LayoutManager sibling_layout;
+    //Position of the sibling relative to this layout
+    public Anchor sibling_anchor;
+    public Reset sibling_reset;
 
     private Vector2 content_offset_min;
     private Vector2 content_offset_max;
@@ -23,11 +40,11 @@ public class LayoutManager : MonoBehaviour
         content_offset_max = content.offsetMax;
     }
 
-    public void InitializeLayout(Vector2 new_anchor_min, Vector2 new_anchor_max, bool overwrite)
+    public void InitializeLayout(Vector2 new_anchor_min, Vector2 new_anchor_max, Anchor anchor)
     {
         RectTransform rect = GetComponent<RectTransform>();
 
-        if (overwrite)
+        if (anchor == Anchor.None)
         {
             Vector2 UI_size = EditorManager.UI.rect.size;
             Vector2 parent_size = parent_rect.rect.size;
@@ -41,17 +58,17 @@ public class LayoutManager : MonoBehaviour
         } else {
 
             rect.anchorMin = new Vector2(   rect.anchorMin.x,
-                                            top ? new_anchor_max.y : rect.anchorMin.y);
+                                            anchor == Anchor.Top ? new_anchor_max.y : rect.anchorMin.y);
 
-            rect.anchorMax = new Vector2(   left ? new_anchor_min.x : rect.anchorMax.x,
+            rect.anchorMax = new Vector2(   anchor == Anchor.Left ? new_anchor_min.x : rect.anchorMax.x,
                                             rect.anchorMax.y);
         }
 
         anchor_min = rect.anchorMin;
         anchor_max = rect.anchorMax;
 
-        if(sibling_rect != null)
-            sibling_rect.InitializeLayout(anchor_min, anchor_max, false);
+        if(sibling_layout != null)
+            sibling_layout.InitializeLayout(anchor_min, anchor_max, sibling_anchor);
     }
 
     float FixedAnchor(float anchor)
@@ -73,8 +90,8 @@ public class LayoutManager : MonoBehaviour
         if (footer != null && footer.gameObject.activeInHierarchy)
             content.offsetMin = new Vector2(content.offsetMin.x, footer.offsetMax.y);
 
-        if (sibling_rect != null)
-            sibling_rect.SetLayout();
+        if(sibling_reset == Reset.Soft)
+            sibling_layout.SetLayout();
     }
 
     public void CloseLayout()

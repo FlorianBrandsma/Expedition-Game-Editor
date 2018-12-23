@@ -25,7 +25,7 @@ public class HistoryManager : MonoBehaviour
 
     static public HistoryManager historyManager;
 
-    public List<HistoryElement> history = new List<HistoryElement>();
+    private List<HistoryElement> history = new List<HistoryElement>();
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class HistoryManager : MonoBehaviour
     {
         if(history.Count > 1)
         {
-            CloseSection(history[history.Count - 1].path.section);
+            CloseForm(history[history.Count - 1].path.form);
 
             history.RemoveAt(history.Count - 1);
 
@@ -54,9 +54,9 @@ public class HistoryManager : MonoBehaviour
         }
     }
 
-    public void CloseSection(SectionManager section)
+    public void CloseForm(EditorForm form)
     {
-        section.CloseSection();
+        form.CloseForm();
     }
 
     public void OpenPath()

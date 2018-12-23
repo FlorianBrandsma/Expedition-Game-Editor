@@ -64,7 +64,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
             x_anchors.Add(new_anchors);
         }
 
-        SetList(listManager.list_area.anchorMax.x);
+        SetList(properties.reference_area.anchorMax.x);
     }
 
     float[] SwapAnchors(float[] old_anchors)

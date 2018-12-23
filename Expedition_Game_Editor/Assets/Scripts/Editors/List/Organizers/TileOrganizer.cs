@@ -76,7 +76,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
         }
 
         if (exact) //And else this is
-            return new Vector2(new_size.x - listManager.main_list.rect.width, new_size.y);
+            return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
         else
             return new_size / element_size;
     }
@@ -85,7 +85,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
     {
         int x = 0;
 
-        while (-(x * element_size / 2f) + (x * element_size) < listManager.main_list.rect.max.x)
+        while (-(x * element_size / 2f) + (x * element_size) < listManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -95,7 +95,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
     {
         int y = 0;
 
-        while (-(y * element_size / 2f) + (y * element_size) < listManager.main_list.rect.max.y)
+        while (-(y * element_size / 2f) + (y * element_size) < listManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;

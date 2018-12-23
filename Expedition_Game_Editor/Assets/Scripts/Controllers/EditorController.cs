@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 public class EditorController : MonoBehaviour, IController
@@ -18,11 +14,11 @@ public class EditorController : MonoBehaviour, IController
 
     public HistoryElement   history;
 
-    public EditorField      editorField;
+    public EditorSection    editorSection;
 
     public ButtonActionManager  buttonActionManager;
 
-    public ActionManager        actionManager;
+    public ComponentManager componentManager;
 
     public SubControllerManager subControllerManager;
     public EditorController[] controllers;
@@ -30,13 +26,16 @@ public class EditorController : MonoBehaviour, IController
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path new_path, int new_step, bool reload)
     {
-        editorField.target_controller = this;
-        editorField.sectionManager.main_controller = this;
+        editorSection.target_controller = this;
+        editorSection.formManager.main_controller = this;
 
         step = new_step;
 
         path = new_path.Trim(step);
-
+        /*
+        if(route != null && route.origin.listManager != null)
+            Debug.Log("Test 1:" + route.origin.listManager.listData.data.type);
+        */
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
 
@@ -81,33 +80,36 @@ public class EditorController : MonoBehaviour, IController
             return false;
 
         //If there is no previous controller then it definitely hasn't loaded yet
-        if (editorField.previous_controller_path == null)
+        if (editorSection.previous_controller_path == null)
             return false;
 
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
-        if (step > editorField.previous_controller_path.route.Count)
+        if (step > editorSection.previous_controller_path.route.Count)
             return false;
 
         //If false then everything afterwards must be false as well
-        return path.Equals(editorField.previous_controller_path);
+        return path.Equals(editorSection.previous_controller_path);
     }
 
     public void SetComponents(Path new_path)
     {
-        if (GetComponent<MiniButtonManager>() != null)
-            GetComponent<MiniButtonManager>().SetButtons();
+        //if (GetComponent<MiniButtonComponent>() != null)
+        //    GetComponent<MiniButtonComponent>().SetButtons();
 
-        if (GetComponent<DisplayManager>() != null)
-            GetComponent<DisplayManager>().InitializeDisplay();
+        foreach (FormComponent form in GetComponents<FormComponent>())
+            form.SetComponent();
 
-        if (GetComponent<LanguageManager>() != null)
-            GetComponent<LanguageManager>().SetLanguages();
+        if (GetComponent<DisplayComponent>() != null)
+            GetComponent<DisplayComponent>().InitializeDisplay();
 
-        if (GetComponent<TimeManager>() != null)
-            GetComponent<TimeManager>().SetTimes();
+        if (GetComponent<LanguageComponent>() != null)
+            GetComponent<LanguageComponent>().SetLanguages();
 
-        if (GetComponent<StructureManager>() != null)
-            GetComponent<StructureManager>().SetStructure();
+        if (GetComponent<TimeComponent>() != null)
+            GetComponent<TimeComponent>().SetTimes();
+
+        if (GetComponent<StructureComponent>() != null)
+            GetComponent<StructureComponent>().SetStructure();
 
         if (subControllerManager != null)
             subControllerManager.SetTabs(this, new_path);
@@ -184,8 +186,11 @@ public class EditorController : MonoBehaviour, IController
 
     public void ClosePath(Path new_path)
     {
-        if (actionManager != null)
-            actionManager.CloseActions();
+        if (componentManager != null)
+            componentManager.CloseComponents();
+
+        foreach (FormComponent form in GetComponents<FormComponent>())
+            form.componentManager.CloseComponents();
 
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
@@ -222,9 +227,9 @@ public class EditorController : MonoBehaviour, IController
         set { }
     }
 
-    EditorField IController.field
+    EditorSection IController.section
     {
-        get { return editorField; }
+        get { return editorSection; }
         set { }
     }
     #endregion

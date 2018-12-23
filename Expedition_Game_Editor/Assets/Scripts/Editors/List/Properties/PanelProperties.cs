@@ -10,6 +10,8 @@ public class PanelProperties : MonoBehaviour, IProperties
 
     public string temp_description = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
+    public RectTransform reference_area;
+
     public void Copy(PanelProperties new_properties)
     {
         icon = new_properties.icon;

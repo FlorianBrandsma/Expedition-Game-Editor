@@ -8,7 +8,7 @@ using System.Linq;
 
 public class ButtonOrganizer : MonoBehaviour, IOrganizer
 {
-    private ButtonProperties properties;
+    //private ButtonProperties properties;
 
     private List<ElementData> local_data_list;
 
@@ -31,7 +31,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
     public void SetProperties(ListProperties listProperties)
     {
-        properties = listProperties.GetComponent<ButtonProperties>();
+        //properties = listProperties.GetComponent<ButtonProperties>();
         //selectionProperty = listProperties.selectionProperty;
         //selectionType = listProperties.selectionType;
 

@@ -21,7 +21,7 @@ public class SliderManager : MonoBehaviour, IOverlay
     {
         overlayManager = GetComponent<OverlayManager>();
 
-        main_list = listManager.main_list;
+        main_list = listManager.rectTransform;
 
     }
     

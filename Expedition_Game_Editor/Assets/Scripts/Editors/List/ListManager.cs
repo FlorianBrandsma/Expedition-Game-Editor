@@ -19,11 +19,12 @@ public class ListManager : MonoBehaviour
     public PathManager      pathManager     { get; set; }
 
     public OverlayManager   overlayManager;
-    public ActionManager    actionManager;
+    public ComponentManager    componentManager;
 
-    public RectTransform    list_area       { get; set; }
-    public RectTransform    main_list,
-                            list_parent;
+    private ScrollRect      scrollRect;
+    public RectTransform    rectTransform { get; set; }
+
+    public RectTransform    list_parent;
 
     private Vector3         list_min, 
                             list_max;
@@ -35,6 +36,12 @@ public class ListManager : MonoBehaviour
     public SelectionElement selected_element { get; set; }
 
     //private bool always_on;
+
+    private void Awake()
+    {
+        scrollRect      = GetComponent<ScrollRect>();
+        rectTransform   = GetComponent<RectTransform>();
+    }
 
     public void InitializeList(ListData new_listData)
     {
@@ -62,12 +69,10 @@ public class ListManager : MonoBehaviour
 
         controller = listProperties.controller;
 
-        list_area = listProperties.list_area;
-
         base_size = listProperties.base_size;
 
-        main_list.GetComponent<ScrollRect>().horizontal = listProperties.horizontal;
-        main_list.GetComponent<ScrollRect>().vertical   = listProperties.vertical;
+        scrollRect.horizontal = listProperties.horizontal;
+        scrollRect.vertical   = listProperties.vertical;
 
         selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
@@ -98,8 +103,8 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlay();
 
-        list_min = main_list.TransformPoint(new Vector2(main_list.rect.min.x, main_list.rect.min.y));
-        list_max = main_list.TransformPoint(new Vector2(main_list.rect.max.x, main_list.rect.max.y));
+        list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
+        list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
         if (!listData.controller.loaded)
             ResetListPosition();   
@@ -107,8 +112,8 @@ public class ListManager : MonoBehaviour
 
     public void ResetListPosition()
     {
-        main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
-        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = 0f;
+        scrollRect.verticalNormalizedPosition = 1f;
+        scrollRect.horizontalNormalizedPosition = 0f;
     }
 
     public void SetRows()
@@ -158,8 +163,8 @@ public class ListManager : MonoBehaviour
 
     public void CorrectPosition(SelectionElement element)
     {
-        main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
-        main_list.GetComponent<ScrollRect>().verticalNormalizedPosition = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size));
+        scrollRect.horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
+        scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size));
     }
 
     public void CancelSelection(Route route)
@@ -197,8 +202,8 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        main_list.GetComponent<ScrollRect>().horizontal = false;
-        main_list.GetComponent<ScrollRect>().vertical = false;
+        scrollRect.horizontal = false;
+        scrollRect.vertical = false;
 
         overlayManager.CloseOverlay();
 

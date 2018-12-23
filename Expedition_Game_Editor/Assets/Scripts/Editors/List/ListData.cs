@@ -43,7 +43,7 @@ public class ListData : MonoBehaviour
 
     public void SetRows()
     {
-        ListManager listManager = GetComponent<ListProperties>().main_list.GetComponent<ListManager>();
+        ListManager listManager = GetComponent<ListProperties>().listManager;
 
         listManager.InitializeList(this);
 

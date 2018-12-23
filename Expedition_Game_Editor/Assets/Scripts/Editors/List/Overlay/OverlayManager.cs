@@ -19,7 +19,7 @@ public class OverlayManager : MonoBehaviour
     {
         listManager = new_listManager;
 
-        main_list = listManager.main_list;
+        main_list = listManager.rectTransform;
 
         horizontal_min.GetComponent<OverlayBorder>().Activate();
         horizontal_max.GetComponent<OverlayBorder>().Activate();

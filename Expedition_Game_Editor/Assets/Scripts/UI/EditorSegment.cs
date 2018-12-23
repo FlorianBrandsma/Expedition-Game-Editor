@@ -24,6 +24,8 @@ public class EditorSegment : MonoBehaviour, IController
 
     private void Awake()
     {
+        if (header == null) return;
+
         header.text = segment_name;
 
         if(disable_toggle)
@@ -90,9 +92,9 @@ public class EditorSegment : MonoBehaviour, IController
         set { }
     }
 
-    EditorField IController.field
+    EditorSection IController.section
     {
-        get { return subController.controller.editorField; }
+        get { return subController.controller.editorSection; }
         set { }
     }
     #endregion

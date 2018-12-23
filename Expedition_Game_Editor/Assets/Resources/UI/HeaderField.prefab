@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 224000013605148760}
-  - 114: {fileID: 114000010127908782}
+  - 114: {fileID: 114000011466952280}
   m_Layer: 5
   m_Name: HeaderField
   m_TagString: Untagged
@@ -44,7 +44,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114000010127908782
+--- !u!114 &114000011466952280
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -52,13 +52,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012748057420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4feee1efc3ded6a4b9b8ae3680cdebbb, type: 3}
+  m_Script: {fileID: 11500000, guid: e0173058fd17f2543a9aca8edd7798f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index_switch: {fileID: 0}
   main_element: {fileID: 0}
   input_field: {fileID: 0}
-  id: {fileID: 114000014176227008}
-  index_switch: {fileID: 0}
+  id: {fileID: 0}
 --- !u!114 &114000014176227008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -80,7 +80,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -113,8 +113,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20, y: -10}
-  m_SizeDelta: {x: 40, y: 15}
+  m_AnchoredPosition: {x: -20, y: -5.5}
+  m_SizeDelta: {x: 40, y: 11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000013605148760
 RectTransform:

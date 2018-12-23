@@ -68,20 +68,20 @@ public class SelectionElement : MonoBehaviour
     {
         if (!selected)
         {
-            editorPath = new EditorPath(new Route(this));
+            editorPath = new EditorPath(new Route(this), selectionProperty);
 
             switch (selectionProperty)
             {
                 case SelectionManager.Property.Open:
-                    EditorManager.editorManager.OpenPath(editorPath.open);
+                    EditorManager.editorManager.OpenPath(editorPath.path);
                     break;
 
                 case SelectionManager.Property.Edit:
-                    EditorManager.editorManager.OpenPath(editorPath.edit);
+                    EditorManager.editorManager.OpenPath(editorPath.path);
                     break;
 
                 case SelectionManager.Property.Get:
-                    EditorManager.editorManager.OpenPath(editorPath.get);
+                    EditorManager.editorManager.OpenPath(editorPath.path);
                     ActivateSelection();
                     break;
 
