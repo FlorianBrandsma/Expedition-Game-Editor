@@ -13,8 +13,6 @@ public class ListManager : MonoBehaviour
     public SelectionManager.Property  selectionProperty   { get; set; }
     public SelectionManager.Type      selectionType       { get; set; }
 
-    public int              selected_id;
-
     public ListData         listData        { get; set; }
     public PathManager      pathManager     { get; set; }
 

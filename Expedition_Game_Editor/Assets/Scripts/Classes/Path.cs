@@ -40,7 +40,7 @@ public class Path
         if (route.Count > 0)
             Add(0, route[route.Count - 1].data, route[route.Count - 1].origin);
         else
-            Add(0, new ElementData(), new Origin());
+            Add(new Route());
     }
 
     public void Add(int index)

@@ -31,7 +31,7 @@ public class EditorDependency : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
-
+        
         if (editorDependency != null)
             editorDependency.Deactivate();
     }

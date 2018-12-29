@@ -29,6 +29,9 @@ public class LayoutManager : MonoBehaviour
     private Vector2 content_offset_min;
     private Vector2 content_offset_max;
 
+    private Vector2 start_anchor_min = new Vector2(0, 0);
+    private Vector2 start_anchor_max = new Vector2(1, 1);
+
     public Vector2 anchor_min { get; set; }
     public Vector2 anchor_max { get; set; }
 
@@ -36,6 +39,8 @@ public class LayoutManager : MonoBehaviour
 
     private void Awake()
     {
+        RectTransform rect = GetComponent<RectTransform>();
+
         content_offset_min = content.offsetMin;
         content_offset_max = content.offsetMax;
     }
@@ -67,7 +72,7 @@ public class LayoutManager : MonoBehaviour
         anchor_min = rect.anchorMin;
         anchor_max = rect.anchorMax;
 
-        if(sibling_layout != null)
+        if(sibling_reset != Reset.None)
             sibling_layout.InitializeLayout(anchor_min, anchor_max, sibling_anchor);
     }
 
@@ -90,8 +95,14 @@ public class LayoutManager : MonoBehaviour
         if (footer != null && footer.gameObject.activeInHierarchy)
             content.offsetMin = new Vector2(content.offsetMin.x, footer.offsetMax.y);
 
-        if(sibling_reset == Reset.Soft)
+        if(sibling_reset != Reset.None)
             sibling_layout.SetLayout();
+    }
+
+    public void ResetLayout()
+    {
+        if (sibling_reset != Reset.None)
+            sibling_layout.InitializeLayout(start_anchor_max, start_anchor_min, sibling_anchor);
     }
 
     public void CloseLayout()

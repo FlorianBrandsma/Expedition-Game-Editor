@@ -129,15 +129,6 @@
 
             break;
 
-            case "Asset":
-
-                PathManager.Asset asset = new PathManager.Asset(route);
-
-                if (property == SelectionManager.Property.Open)
-                    path = asset.Open();
-
-            break;
-
             default: break;
         }
     }

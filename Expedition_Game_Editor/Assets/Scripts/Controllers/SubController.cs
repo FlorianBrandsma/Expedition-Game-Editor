@@ -7,61 +7,62 @@ using System.IO;
 
 public class SubController : MonoBehaviour, IEditor
 {
-	public EditorController controller { get; set; }
+    public EditorController controller { get; set; }
 
-	public GameObject       header_field;
-	private IHeader         header;
-	public EditorSegment[] 	segments;
+    public GameObject       header_field;
+    private IHeader         header;
+    public EditorSegment[] 	segments;
 
-	bool changed;
+    bool changed;
 
-	public void Awake()
-	{
-		if (header_field != null)
-			header = header_field.GetComponent<IHeader>();
-	}
+    public void Awake()
+    {
+        if (header_field != null)
+            header = header_field.GetComponent<IHeader>();
+    }
 
-	public void OpenEditor()
-	{
-		controller = GetComponent<EditorController>();
+    public void OpenEditor()
+    {
+        controller = GetComponent<EditorController>();
 
-		if(header != null)
-			header.Activate(this);
+        if(header != null)
+            header.Activate(this);
 
-		InitializeSegments();
-	}
+        InitializeSegments();
+    }
 
-	void InitializeSegments()
-	{ 
-		foreach (EditorSegment segment in segments)
-			segment.InitializeSegment(this);       
-	}
+    void InitializeSegments()
+    { 
+        foreach (EditorSegment segment in segments)
+            segment.InitializeSegment(this);       
+    }
 
-	public void SaveEdit()
-	{
+    public void SaveEdit()
+    {
 
-	}
+    }
 
-	public void ApplyEdit()
-	{
+    public void ApplyEdit()
+    {
 
-	}
+    }
 
-	public void CancelEdit()
-	{
+    public void CancelEdit()
+    {
 
-	}
+    }
 
-	public void CloseEditor()
-	{
-		header.Deactivate();
+    public void CloseEditor()
+    {
+        if (header_field != null)
+            header.Deactivate();
 
-		CloseSegments();
-	}
+        CloseSegments();
+    }
 
-	public void CloseSegments()
-	{        
-		foreach (EditorSegment segment in segments)
-			segment.CloseSegment(); 
-	}
+    public void CloseSegments()
+    {        
+        foreach (EditorSegment segment in segments)
+            segment.CloseSegment(); 
+    }
 }

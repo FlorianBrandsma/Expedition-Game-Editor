@@ -16,6 +16,8 @@ public class EditorForm : MonoBehaviour
 
     public EditorSection[]    editor_sections;
 
+    public EditorForm sibling_form;
+
     public void InitializeForm()
     {
         foreach (EditorSection section in editor_sections)
@@ -26,10 +28,10 @@ public class EditorForm : MonoBehaviour
     {
         //Close the initialization of previous path
         CloseForm();
-        
+
         //Determine the target controller
         baseController.InitializePath(path, 0, false);
-
+        
         //Save previous target to compare data with
         SetPreviousTarget();
 
@@ -58,11 +60,8 @@ public class EditorForm : MonoBehaviour
     {
         InitializePath(path);
 
-        //Does something with the width
-        
-        //hard reset
-        //if (sibling_form != null)
-        //    sibling_form.ResetPath(); 
+        if (sibling_form != null)
+            sibling_form.ResetPath();
     }
 
     public void ResetPath()
@@ -71,9 +70,15 @@ public class EditorForm : MonoBehaviour
             InitializePath(active_path);
     }
 
+    public void ResetSibling()
+    {
+        if(sibling_form != null)
+            sibling_form.ResetPath();
+    }
+
     public void CloseForm()
     {
-        if(active)
+        if (active)
         {
             foreach (EditorSection section in editor_sections)
             {

@@ -23,6 +23,27 @@ public class PathManager
 
     #endregion
 
+     #region Form (Temporary)
+
+    public class Form
+    {
+        EditorForm form;
+
+        List<int> source = new List<int>() { 0 };
+
+        public Form(EditorForm new_form)
+        {
+            form = new_form;
+        }
+
+        public Path Initialize()
+        {
+            return CreatePath(source, form);
+        }
+    }
+
+    #endregion
+
     #endregion
 
     #region Editor
@@ -76,7 +97,7 @@ public class PathManager
 
             open    = new List<int>() { 0, 0, 0, route.data.type };
             edit    = new List<int>() { 0, 1, 0, route.data.type };
-            get     = new List<int>() { 0, 1 };
+            get     = new List<int>() { 1 };
         }
 
         public Path Open()
@@ -93,7 +114,7 @@ public class PathManager
 
         public Path Get()
         {
-            EditorForm form = EditorManager.editorManager.forms[1];
+            EditorForm form = EditorManager.editorManager.forms[2];
             return CreatePath(get, route, form);
         }
     }
@@ -187,7 +208,7 @@ public class PathManager
         {
             route = new_route;
 
-            open = new List<int>() { 1, route.data.type, 1 };
+            open = new List<int>() { 1, route.data.type, 0 };
         }
 
         //First step: Default 
@@ -229,30 +250,6 @@ public class PathManager
             return CreatePath(open, route, form);
         }
     }
-
-    #region Assets (Temporary)
-
-    public class Asset
-    {
-        List<int> open;
-
-        Route route;
-
-        public Asset(Route new_route)
-        {
-            route   = new_route;
-
-            open    = new List<int>() { new_route.data.type };
-        }
-
-        public Path Open()
-        {
-            EditorForm form = EditorManager.editorManager.forms[1];
-            return CreatePath(open, route, form);
-        }
-    }
-
-    #endregion
 
     #endregion
 

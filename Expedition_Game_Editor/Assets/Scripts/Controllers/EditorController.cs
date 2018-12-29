@@ -32,12 +32,16 @@ public class EditorController : MonoBehaviour, IController
         step = new_step;
 
         path = new_path.Trim(step);
+
         /*
         if(route != null && route.origin.listManager != null)
             Debug.Log("Test 1:" + route.origin.listManager.listData.data.type);
         */
+
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
+        else
+            route = new Route();
 
         if (step > 0)
         {
@@ -159,8 +163,10 @@ public class EditorController : MonoBehaviour, IController
 
     void InitializeTabs(Path new_path)
     {
+
         if (step == new_path.route.Count)
-            new_path.Add();   
+            new_path.Add();
+        
     }
 
     public void FilterRows(List<ElementData> list) { }
@@ -190,7 +196,11 @@ public class EditorController : MonoBehaviour, IController
             componentManager.CloseComponents();
 
         foreach (FormComponent form in GetComponents<FormComponent>())
+        {
+            form.CloseComponent();
             form.componentManager.CloseComponents();
+        }
+            
 
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
@@ -203,10 +213,10 @@ public class EditorController : MonoBehaviour, IController
     {
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
-        
+
         if (route.origin.listManager != null)
             SelectionManager.CancelSelection(route);
-            
+    
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().CloseRows();
 
