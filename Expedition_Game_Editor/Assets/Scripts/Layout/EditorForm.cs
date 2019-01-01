@@ -27,7 +27,7 @@ public class EditorForm : MonoBehaviour
     public void InitializePath(Path path)
     {
         //Close the initialization of previous path
-        CloseForm();
+        CloseForm(true);
 
         //Determine the target controller
         baseController.InitializePath(path, 0, false);
@@ -39,7 +39,9 @@ public class EditorForm : MonoBehaviour
         ActivateDependencies();
 
         //Follow the same path to activate anything along its way
-        baseController.SetComponents(path);
+        //If the path contains any component, sort them afterwards
+        if(baseController.SetComponents(path))
+            ComponentManager.componentManager.SortComponents();
 
         //Set layout of dependencies
         SetDependencies(path);
@@ -76,10 +78,13 @@ public class EditorForm : MonoBehaviour
             sibling_form.ResetPath();
     }
 
-    public void CloseForm()
+    public void CloseForm(bool close_components)
     {
         if (active)
         {
+            if (close_components)
+                ComponentManager.componentManager.CloseComponents();
+
             foreach (EditorSection section in editor_sections)
             {
                 if (section.target_controller != null)
@@ -142,6 +147,6 @@ public class EditorForm : MonoBehaviour
         }
 
         if (main_controller != null)
-            main_controller.FinalizeMainController();
+            main_controller.FinalizeMainController();  
     }
 }

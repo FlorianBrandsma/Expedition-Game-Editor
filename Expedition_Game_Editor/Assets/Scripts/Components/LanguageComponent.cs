@@ -6,13 +6,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class LanguageComponent : MonoBehaviour
+public class LanguageComponent : MonoBehaviour, IComponent
 {
+    public EditorComponent component;
+
     private LanguageManager.Language language;
 
-    public void SetLanguages()
+    public void SetComponent()
     {
-        Dropdown dropdown = GetComponent<EditorController>().componentManager.AddDropdown();
+        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.onValueChanged.RemoveAllListeners();
 
@@ -29,4 +31,6 @@ public class LanguageComponent : MonoBehaviour
 
         dropdown.onValueChanged.AddListener(delegate { LanguageManager.SetLanguage(dropdown.value); });
     }
+
+    public void CloseComponent() { }
 }

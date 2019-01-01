@@ -7,108 +7,241 @@ using System.IO;
 
 public class ComponentManager : MonoBehaviour
 {
-    static List<Dropdown> dropdown_pool = new List<Dropdown>();
-    static List<Button> button_pool = new List<Button>();
-    static List<Button> form_button_pool = new List<Button>();
+    static public ComponentManager componentManager;
 
-    private List<RectTransform> components = new List<RectTransform>();
+    private List<Dropdown> dropdown_pool = new List<Dropdown>();
+    private List<Button> button_pool = new List<Button>();
+    private List<Button> form_button_pool = new List<Button>();
 
-    public RectTransform footer;
+    private List<RectTransform> elements = new List<RectTransform>();
 
-    public int wrap_limit;
+    public RectTransform element_parent;
+    public RectTransform main_content;
+    public ScrollRect scrollRect;
+    public RectTransform main_parent;
+
+    public RawImage left_arrow, right_arrow;
+
+    private void Awake()
+    {
+        componentManager = this;
+
+        CloseSlider();
+    }
 
     public void SortComponents()
     {
-        for (int i = 0; i < components.Count; i++)
-        {
-            RectTransform new_option = components[i];
+        List<ComponentElement> left_elements = new List<ComponentElement>();
+        List<ComponentElement> right_elements = new List<ComponentElement>();
+        List<ComponentElement> main_elements = new List<ComponentElement>();
 
-            if (components.Count <= wrap_limit)
+        float left_offset = 0;
+        float right_offset = 0;
+        float main_size = 0;
+
+        //Sort element by anchor
+        foreach (RectTransform element in elements)
+        {
+            ComponentElement componentElement = element.GetComponent<ComponentElement>();
+
+            element.sizeDelta = new Vector2(componentElement.component.width + 5, element.sizeDelta.y);
+
+            switch (componentElement.component.anchor)
             {
-                new_option.anchorMin = new Vector2(      i * (1f / wrap_limit), 1);
-                new_option.anchorMax = new Vector2((i + 1) * (1f / wrap_limit), 1);
-            } else {
-                new_option.anchorMin = new Vector2(      i * (1f / components.Count), 1);
-                new_option.anchorMax = new Vector2((i + 1) * (1f / components.Count), 1);
+                case EditorComponent.Anchor.Left:
+
+                    element.transform.SetParent(element_parent, false);
+                    left_offset += componentElement.component.width;
+
+                    left_elements.Add(componentElement);
+                    
+                    break;
+
+                case EditorComponent.Anchor.Right:
+
+                    element.transform.SetParent(element_parent, false);
+                    right_offset += componentElement.component.width;
+
+                    right_elements.Add(componentElement);
+                    
+                    break;
+
+                case EditorComponent.Anchor.Main:
+
+                    element.transform.SetParent(main_parent, false);
+                    main_size += componentElement.component.width;
+
+                    main_elements.Add(componentElement);
+
+                    break;
             }
-
-            new_option.anchoredPosition = new Vector2(new_option.anchoredPosition.x, -(new_option.sizeDelta.y / 2));
-
-            new_option.offsetMin = new Vector2(-2.5f, new_option.offsetMin.y);
-            new_option.offsetMax = new Vector2( 2.5f, new_option.offsetMax.y);
         }
 
-        if(components.Count > 0 && footer != null)
-            footer.gameObject.SetActive(true);
-    }
-
-    public Dropdown AddDropdown()
-    {
-        Dropdown new_component = SpawnDropdown();
-
-        AddComponents(new_component.GetComponent<RectTransform>());
-
-        return new_component;
-    }
-
-    public Button AddButton()
-    {
-        Button new_component = SpawnButton();
-
-        AddComponents(new_component.GetComponent<RectTransform>());
-
-        return new_component;
-    }
-
-    public Button AddFormButton()
-    {
-        Button new_component = SpawnFormButton();
-
-        AddComponents(new_component.GetComponent<RectTransform>());
-
-        return new_component;
-    }
-
-    public void AddComponents(RectTransform component)
-    {
-        components.Add(component);
-
-        SortComponents();
-    }
-
-    public void RemoveComponent(RectTransform component, bool reset)
-    {
-        if(component.gameObject.activeInHierarchy)
-        {
-            components.RemoveAt(components.IndexOf(component));
-            component.gameObject.SetActive(false);
-        }
+        SetLeftElements(left_elements);
+        SetRightElements(right_elements);
         
-        if (reset)
-            SortComponents();
+        //Set main parent size according to the combined sizes of the left and right elements
+        SetMainSize(left_offset, right_offset, main_size);
+
+        SetMainElements(main_elements);
+    }
+
+    private void SetLeftElements(List<ComponentElement> elements)
+    {
+        float previous_position = -(element_parent.rect.width / 2);
+
+        foreach(ComponentElement element in elements)
+        {
+            float element_width = element.component.width;
+
+            element.transform.localPosition = new Vector2(previous_position + (element_width / 2), 0);
+
+            previous_position += element_width;
+        }
+    }
+
+    private void SetRightElements(List<ComponentElement> elements)
+    {
+        float previous_position = (element_parent.rect.width / 2);
+
+        foreach(ComponentElement element in elements)
+        {
+            float element_width = element.component.width;
+
+            element.transform.localPosition = new Vector2(previous_position - (element_width / 2), 0);
+
+            previous_position -= element_width;
+        }
+    }
+
+    private void SetMainElements(List<ComponentElement> elements)
+    {
+        float previous_position = -(main_parent.rect.width / 2);
+
+        foreach(ComponentElement element in elements)
+        {
+            float element_width = element.component.width;
+
+            element.transform.localPosition = new Vector2(previous_position + (element_width / 2), 0);
+
+            previous_position += element_width;
+        }
+    }
+
+    private void SetMainSize(float left_offset, float right_offset, float main_size)
+    {
+        main_content.offsetMin = new Vector2(element_parent.offsetMin.x + left_offset, main_content.offsetMin.y);
+        main_content.offsetMax = new Vector2(element_parent.offsetMax.x - right_offset, main_content.offsetMax.y);
+
+        float parent_width = main_parent.parent.GetComponent<RectTransform>().rect.width;
+
+        main_parent.offsetMax = new Vector2(-parent_width + main_size, 0);
+
+        if (main_size > parent_width)
+            ActivateSlider();
+    }
+
+    public void ActivateSlider()
+    {
+        scrollRect.enabled = true;
+
+        SetSlider();
+
+        scrollRect.horizontalNormalizedPosition = 1f;
+    }
+
+    public void SetSlider()
+    {
+        float slider_value = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
+
+        if(slider_value > 0)
+            SetArrow(left_arrow, 1f);
+         else
+            SetArrow(left_arrow, 0.5f);
+        
+        if (slider_value < 1)
+            SetArrow(right_arrow, 1f);
+        else
+            SetArrow(right_arrow, 0.5f);
+    }
+
+    public Dropdown AddDropdown(EditorComponent new_component)
+    {
+        Dropdown dropdown = SpawnDropdown();
+
+        AddComponents(dropdown.GetComponent<RectTransform>(), new_component);
+
+        return dropdown;
+    }
+
+    public Button AddButton(EditorComponent new_component)
+    {
+        Button button = SpawnButton();
+
+        AddComponents(button.GetComponent<RectTransform>(), new_component);
+
+        return button;
+    }
+
+    public Button AddFormButton(EditorComponent new_component)
+    {
+        Button button = SpawnFormButton();
+
+        AddComponents(button.GetComponent<RectTransform>(), new_component);
+
+        return button;
+    }
+
+    private void AddComponents(RectTransform new_element, EditorComponent new_component)
+    {
+        if (new_element.GetComponent<ComponentElement>() == null)
+            new_element.gameObject.AddComponent<ComponentElement>();
+
+        ComponentElement componentElement = new_element.GetComponent<ComponentElement>();
+        componentElement.SetElement(new_component);
+
+        elements.Add(new_element);
     }
 
     public void CloseComponents()
     {
-        foreach (RectTransform component in components)
-            component.gameObject.SetActive(false);
+        CloseSlider();
 
-        if(footer != null)
-            footer.gameObject.SetActive(false);
+        main_content.offsetMin = new Vector2(0, main_content.offsetMin.y);
+        main_content.offsetMax = new Vector2(0, main_content.offsetMax.y);
 
-        components.Clear();
+        main_parent.offsetMin = new Vector2(0, main_parent.offsetMin.y);
+        main_parent.offsetMax = new Vector2(0, main_parent.offsetMax.y);
+
+        foreach (RectTransform element in elements)
+            element.gameObject.SetActive(false);
+
+        elements.Clear();
+    }
+
+    private void CloseSlider()
+    {
+        //scrollRect.horizontalNormalizedPosition = 1f;
+
+        scrollRect.enabled = false;
+
+        SetArrow(left_arrow, 0.5f);
+        SetArrow(right_arrow, 0.5f);
+    }
+
+    private void SetArrow(RawImage arrow, float alpha)
+    {
+        arrow.color = new Color(arrow.color.r, arrow.color.g, arrow.color.b, alpha);
     }
 
     #region Spawners
 
-    Dropdown SpawnDropdown()
+    private Dropdown SpawnDropdown()
     {
         foreach(Dropdown dropdown in dropdown_pool)
         {
             if (!dropdown.gameObject.activeInHierarchy)
             {
-                dropdown.transform.SetParent(transform, false);
-
                 dropdown.gameObject.SetActive(true);
 
                 return dropdown;
@@ -117,22 +250,18 @@ public class ComponentManager : MonoBehaviour
 
         Dropdown new_component = Instantiate(Resources.Load<Dropdown>("UI/Dropdown"));
 
-        new_component.transform.SetParent(transform, false);
-
         dropdown_pool.Add(new_component);
 
         return new_component;
     }
 
-    Button SpawnButton()
+    private Button SpawnButton()
     {
         foreach(Button button in button_pool)
         {
             if (!button.gameObject.activeInHierarchy)
             {
                 button.onClick.RemoveAllListeners();
-
-                button.transform.SetParent(transform, false);
 
                 button.gameObject.SetActive(true);
 
@@ -142,22 +271,18 @@ public class ComponentManager : MonoBehaviour
 
         Button new_component = Instantiate(Resources.Load<Button>("UI/Button"));
 
-        new_component.transform.SetParent(transform, false);
-
         button_pool.Add(new_component);
 
         return new_component;
     }
 
-    Button SpawnFormButton()
+    private Button SpawnFormButton()
     {
         foreach(Button button in form_button_pool)
         {
             if (!button.gameObject.activeInHierarchy)
             {
                 button.GetComponent<Button>().onClick.RemoveAllListeners();
-
-                button.transform.SetParent(transform, false);
 
                 button.gameObject.SetActive(true);
 
@@ -166,8 +291,6 @@ public class ComponentManager : MonoBehaviour
         }
 
         Button new_component = Instantiate(Resources.Load<Button>("UI/FormButton"));
-
-        new_component.transform.SetParent(transform, false);
 
         form_button_pool.Add(new_component);
 

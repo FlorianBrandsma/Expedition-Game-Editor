@@ -39,8 +39,6 @@ public class LayoutManager : MonoBehaviour
 
     private void Awake()
     {
-        RectTransform rect = GetComponent<RectTransform>();
-
         content_offset_min = content.offsetMin;
         content_offset_max = content.offsetMax;
     }

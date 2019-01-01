@@ -95,31 +95,18 @@ public class EditorController : MonoBehaviour, IController
         return path.Equals(editorSection.previous_controller_path);
     }
 
-    public void SetComponents(Path new_path)
+    public bool SetComponents(Path new_path)
     {
-        //if (GetComponent<MiniButtonComponent>() != null)
-        //    GetComponent<MiniButtonComponent>().SetButtons();
-
-        foreach (FormComponent form in GetComponents<FormComponent>())
-            form.SetComponent();
-
-        if (GetComponent<DisplayComponent>() != null)
-            GetComponent<DisplayComponent>().InitializeDisplay();
-
-        if (GetComponent<LanguageComponent>() != null)
-            GetComponent<LanguageComponent>().SetLanguages();
-
-        if (GetComponent<TimeComponent>() != null)
-            GetComponent<TimeComponent>().SetTimes();
-
-        if (GetComponent<StructureComponent>() != null)
-            GetComponent<StructureComponent>().SetStructure();
+        foreach (IComponent component in GetComponents<IComponent>())
+            component.SetComponent();
 
         if (subControllerManager != null)
             subControllerManager.SetTabs(this, new_path);
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step].controller].SetComponents(new_path);
+
+        return GetComponents<IComponent>().Count() > 0;
     }
 
     public void InitializeController()
@@ -192,15 +179,8 @@ public class EditorController : MonoBehaviour, IController
 
     public void ClosePath(Path new_path)
     {
-        if (componentManager != null)
-            componentManager.CloseComponents();
-
-        foreach (FormComponent form in GetComponents<FormComponent>())
-        {
-            form.CloseComponent();
-            form.componentManager.CloseComponents();
-        }
-            
+        foreach (IComponent component in GetComponents<IComponent>())
+            component.CloseComponent();
 
         if (subControllerManager != null)
             subControllerManager.CloseTabs();

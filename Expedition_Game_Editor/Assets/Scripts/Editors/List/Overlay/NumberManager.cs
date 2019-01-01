@@ -103,7 +103,7 @@ public class NumberManager : MonoBehaviour, IOverlay
             }
         }
 
-        Text new_text = Instantiate(Resources.Load<Text>("Editor/Text"));
+        Text new_text = Instantiate(Resources.Load<Text>("UI/Number"));
         list.Add(new_text);
 
         return new_text;

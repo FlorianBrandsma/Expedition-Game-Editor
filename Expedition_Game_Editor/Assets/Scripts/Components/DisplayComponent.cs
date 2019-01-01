@@ -2,11 +2,13 @@
 using UnityEngine.UI;
 using System;
 
-public class DisplayComponent : MonoBehaviour
+public class DisplayComponent : MonoBehaviour, IComponent
 {
-    public void InitializeDisplay()
+    public EditorComponent component;
+
+    public void SetComponent()
     {
-        Dropdown display_dropdown = GetComponent<EditorController>().componentManager.AddDropdown();
+        Dropdown display_dropdown = GetComponent<EditorController>().componentManager.AddDropdown(component);
 
         display_dropdown.onValueChanged.RemoveAllListeners();
 
@@ -23,4 +25,6 @@ public class DisplayComponent : MonoBehaviour
 
         display_dropdown.onValueChanged.AddListener(delegate { DisplayManager.SetDisplay(display_dropdown.value); });
     }
+
+    public void CloseComponent() { }
 }

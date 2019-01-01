@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 public class SubControllerManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class SubControllerManager : MonoBehaviour
     private RectTransform header;
 
     public Axis axis;
+    private string axis_name;
 
     public void SetTabs(EditorController new_controller, Path main_path)
     {
@@ -38,6 +40,8 @@ public class SubControllerManager : MonoBehaviour
 
         if(controllers.Length > 1)
         {
+            axis_name = Enum.GetName(typeof(Axis), axis);
+
             for (int i = 0; i < controllers.Length; i++)
             {
                 Button new_tab = SpawnTab();
@@ -48,6 +52,7 @@ public class SubControllerManager : MonoBehaviour
                 controllers[i].route = controller.route;
 
                 new_tab.GetComponentInChildren<Text>().text = controllers[i].name;
+                //Set width and height
 
                 int index = i;
 
@@ -97,9 +102,9 @@ public class SubControllerManager : MonoBehaviour
         for (int tab = 0; tab < local_tab_list.Count; tab++) 
         {
             if (tab == selected_tab)
-                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_A");
+                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/UI/" + axis_name + "_Tab_A");
             else
-                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Buttons/Tab_O");
+                local_tab_list[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/UI/" + axis_name + "_Tab_O");
         }
     }
 
@@ -111,7 +116,7 @@ public class SubControllerManager : MonoBehaviour
                 return tab;
         }
 
-        Button new_tab = Instantiate(Resources.Load<Button>("UI/Tab"));
+        Button new_tab = Instantiate(Resources.Load<Button>("UI/Tab_" + axis_name));
         new_tab.transform.SetParent(transform, false);
         tab_list.Add(new_tab);
 

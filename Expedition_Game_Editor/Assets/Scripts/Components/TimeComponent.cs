@@ -6,11 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class TimeComponent : MonoBehaviour
+public class TimeComponent : MonoBehaviour, IComponent
 {
-    public void SetTimes()
+    public EditorComponent component;
+
+    public void SetComponent()
     {
-        Dropdown dropdown = GetComponent<EditorController>().componentManager.AddDropdown();
+        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.onValueChanged.RemoveAllListeners();
 
@@ -27,4 +29,6 @@ public class TimeComponent : MonoBehaviour
 
         dropdown.onValueChanged.AddListener(delegate { TimeManager.SetTime(dropdown.value); });
     }
+
+    public void CloseComponent() { }
 }

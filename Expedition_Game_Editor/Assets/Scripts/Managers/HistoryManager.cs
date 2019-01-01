@@ -56,7 +56,7 @@ public class HistoryManager : MonoBehaviour
 
     public void CloseForm(EditorForm form)
     {
-        form.CloseForm();
+        form.CloseForm(true);
     }
 
     public void OpenPath()

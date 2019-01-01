@@ -3,10 +3,11 @@ public class EditorComponent
 {
     public enum Anchor
     {
-        None,
+        Main,
         Left,
         Right,
     }
 
     public Anchor anchor;
+    public int width;
 }

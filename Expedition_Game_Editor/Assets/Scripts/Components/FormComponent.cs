@@ -2,50 +2,43 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class FormComponent : MonoBehaviour
+public class FormComponent : MonoBehaviour, IComponent
 {
-    public enum Action
-    {
-        Nothing,
-        Open,
-        OpenOnce,
-        Close,
-    }
-
-    private bool active;
-
     public EditorComponent component;
 
-    public Action on_start;
-    public Action on_close;
+    private bool locked;
+
+    public bool auto_open;
+    public bool auto_close;
+
+    public bool open_once;
 
     public EditorForm editorForm;
-    public ComponentManager componentManager;
 
     public Texture2D open_icon, close_icon;
 
-    public Button button;
+    private Button button;
 
     public void SetComponent()
     {
         SetButton();
 
-        if(on_start == Action.Open || on_start == Action.OpenOnce)
+        if(auto_open)
         {
-            if (active) return;
+            if (locked) return;
 
             EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());
 
             button.GetComponent<EditorButton>().icon.texture = open_icon;
 
-            if (on_start == Action.OpenOnce)
-                active = true;
+            if (open_once)
+                locked = true;
         }     
     }
 
     private void SetButton()
     {
-        button = componentManager.AddFormButton();
+        button = ComponentManager.componentManager.AddFormButton(component);
 
         //new_element.data = element.data;
         //new_element.selectionType = element.selectionType;
@@ -71,8 +64,9 @@ public class FormComponent : MonoBehaviour
 
     private void CloseForm()
     {
-        editorForm.CloseForm();
+        editorForm.CloseForm(false);
         editorForm.GetComponent<LayoutManager>().ResetLayout();
+        ComponentManager.componentManager.SortComponents();
 
         editorForm.ResetSibling();
 
@@ -81,7 +75,7 @@ public class FormComponent : MonoBehaviour
 
     public void CloseComponent()
     {
-        if(on_close == Action.Close)
+        if(auto_close)
             CloseForm();
     }
 }

@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StructureComponent : MonoBehaviour
+public class StructureComponent : MonoBehaviour, IComponent
 {
+    public EditorComponent component;
+
     public ListData listData;
 
-    public void SetStructure()
+    public void SetComponent()
     {
         EditorController controller = GetComponent<EditorController>();
-        Dropdown dropdown = controller.componentManager.AddDropdown();
+        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.options.Clear();
         dropdown.onValueChanged.RemoveAllListeners();
@@ -32,4 +34,6 @@ public class StructureComponent : MonoBehaviour
     {
         EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
     }
+
+    public void CloseComponent() { }
 }
