@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(ListData))]
 
@@ -11,6 +10,7 @@ public class ListProperties : MonoBehaviour
         Button,
         Tile,
         Panel,
+        PanelTile,
     }
 
     public Type listType { get; set; }
@@ -29,7 +29,7 @@ public class ListProperties : MonoBehaviour
     //Only spawn visible elements
     public bool visible_only;
 
-    public float base_size;
+    public Vector2 element_size;
 
     public bool horizontal, vertical;
 
@@ -58,18 +58,14 @@ public class ListProperties : MonoBehaviour
                 case Type.Panel:
                     gameObject.AddComponent<PanelProperties>();
                     break;
+                case Type.PanelTile:
+                    gameObject.AddComponent<PanelTileProperties>();
+                    break;
                 default: break;
             }
             
             GetComponent<ListData>().data = route.data;
         } else {
-
-            if (GetComponent<ButtonProperties>() != null)
-                listType = Type.Button;
-            if (GetComponent<TileProperties>() != null)
-                listType = Type.Tile;
-            if (GetComponent<PanelProperties>() != null)
-                listType = Type.Panel;
 
             if (GetComponent<IProperties>() != null)
                 listType = GetComponent<IProperties>().Type();

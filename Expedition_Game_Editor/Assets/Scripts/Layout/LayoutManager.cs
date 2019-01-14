@@ -3,13 +3,6 @@ using System.Collections;
 
 public class LayoutManager : MonoBehaviour
 {
-    public enum Reset
-    {
-        None,
-        Soft,
-        Hard,
-    }
-
     public enum Anchor
     {
         None,
@@ -21,10 +14,10 @@ public class LayoutManager : MonoBehaviour
 
     public RectTransform parent_rect;
 
+    //May need multiple siblings in order to reset the layout for Form B?
     public LayoutManager sibling_layout;
     //Position of the sibling relative to this layout
     public Anchor sibling_anchor;
-    public Reset sibling_reset;
 
     private Vector2 content_offset_min;
     private Vector2 content_offset_max;
@@ -70,7 +63,7 @@ public class LayoutManager : MonoBehaviour
         anchor_min = rect.anchorMin;
         anchor_max = rect.anchorMax;
 
-        if(sibling_reset != Reset.None)
+        if(sibling_layout != null)
             sibling_layout.InitializeLayout(anchor_min, anchor_max, sibling_anchor);
     }
 
@@ -93,13 +86,13 @@ public class LayoutManager : MonoBehaviour
         if (footer != null && footer.gameObject.activeInHierarchy)
             content.offsetMin = new Vector2(content.offsetMin.x, footer.offsetMax.y);
 
-        if(sibling_reset != Reset.None)
+        if(sibling_layout != null)
             sibling_layout.SetLayout();
     }
 
     public void ResetLayout()
     {
-        if (sibling_reset != Reset.None)
+        if (sibling_layout != null)
             sibling_layout.InitializeLayout(start_anchor_max, start_anchor_min, sibling_anchor);
     }
 

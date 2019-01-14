@@ -2,7 +2,7 @@
 
 public class Path
 {
-    public List<Route> route        { get; set; }
+    public List<Route> route { get; set; }
     public EditorForm form   { get; set; }
 
     public Path()
@@ -14,7 +14,7 @@ public class Path
     public Path(List<Route> new_route, EditorForm new_form)
     {
         route   = new_route;
-        form = new_form;
+        form    = new_form;
     }
 
     #region Equals

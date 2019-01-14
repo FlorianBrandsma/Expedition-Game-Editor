@@ -81,7 +81,6 @@ MonoBehaviour:
   selectionType: 0
   selectionProperty: 0
   listType: 0
-  parent: {fileID: 0}
   child: {fileID: 0}
   glow: {fileID: 1000014283423072}
   selected: 0
@@ -163,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e798868973dfd4d82462af35deceeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 114000011046033462}
+  icon: {fileID: 0}
 --- !u!114 &114000013802240080
 MonoBehaviour:
   m_ObjectHideFlags: 1

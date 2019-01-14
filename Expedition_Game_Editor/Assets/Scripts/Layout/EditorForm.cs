@@ -7,6 +7,8 @@ using System.IO;
 
 public class EditorForm : MonoBehaviour
 {
+    public bool main_form;
+
     public bool active { get; set; }
 
     public Path active_path = new Path();
@@ -27,7 +29,7 @@ public class EditorForm : MonoBehaviour
     public void InitializePath(Path path)
     {
         //Close the initialization of previous path
-        CloseForm(true);
+        CloseForm(main_form);
 
         //Determine the target controller
         baseController.InitializePath(path, 0, false);
@@ -38,10 +40,7 @@ public class EditorForm : MonoBehaviour
         //Activate target dependencies
         ActivateDependencies();
 
-        //Follow the same path to activate anything along its way
-        //If the path contains any component, sort them afterwards
-        if(baseController.SetComponents(path))
-            ComponentManager.componentManager.SortComponents();
+        baseController.SetTabs(path);
 
         //Set layout of dependencies
         SetDependencies(path);
@@ -51,6 +50,11 @@ public class EditorForm : MonoBehaviour
 
         //Load specific editor (and add to history)
         OpenEditor();
+
+        //Follow the same path to activate anything along its way
+        //If the path contains any component, sort them afterwards
+        if (baseController.SetComponents(path))
+            ComponentManager.componentManager.SortComponents();
 
         active_path = path;
         active = true;
@@ -62,8 +66,7 @@ public class EditorForm : MonoBehaviour
     {
         InitializePath(path);
 
-        if (sibling_form != null)
-            sibling_form.ResetPath();
+        ResetSibling();
     }
 
     public void ResetPath()

@@ -1,5 +1,5 @@
 ﻿public interface IComponent
 {
-    void SetComponent();
+    void SetComponent(Path path);
     void CloseComponent();
 }

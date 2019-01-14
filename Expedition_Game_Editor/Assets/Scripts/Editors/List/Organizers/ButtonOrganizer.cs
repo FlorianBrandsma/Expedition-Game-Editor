@@ -18,7 +18,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
     //private Enums.SelectionProperty selectionProperty;
     //private SelectionManager.Type selectionType;
 
-    public float element_size { get; set; }
+    public Vector2 element_size { get; set; }
 
     //private bool visible_only;
 
@@ -38,14 +38,14 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
         //visible_only = listProperties.visible_only;
     }
 
-    public void SetListSize()
+    public void SetElementSize()
     {
-        element_size = listManager.base_size;
+        element_size = listManager.listData.listProperties.element_size;
     }
 
     public Vector2 GetListSize(List<ElementData> data_list, bool exact)
     {
-        return new Vector2(0, element_size * data_list.Count);
+        return new Vector2(0, element_size.y * data_list.Count);
     }
 
     public void SetRows(List<ElementData> data_list)
@@ -85,9 +85,9 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
         rect.anchorMax = new Vector2(1, 1);
 
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, element_size);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, element_size.y);
 
-        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (element_size * index) - (element_size * 0.5f));
+        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (element_size.y * index) - (element_size.y * 0.5f));
 
         rect.gameObject.SetActive(true);
     }
@@ -99,7 +99,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
     float ListPosition(int i)
     {
-        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (element_size * i))).y;
+        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (element_size.y * i))).y;
     }
 
     public void CloseList()

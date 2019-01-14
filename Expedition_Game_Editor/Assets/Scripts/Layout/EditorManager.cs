@@ -22,8 +22,10 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        //InitializePath(new PathManager.Secondary().Initialize());
         InitializePath(new PathManager.Main().Initialize());
+
+        //Debugging
+        //InitializePath(new PathManager.Form(forms[1]).Initialize());
     }
 
     private void Update()
@@ -31,13 +33,10 @@ public class EditorManager : MonoBehaviour
         // Dirty fix: Unity dropdown closes with the same button as "previous" (hardcoded)
         // Closing a dropdown starts a "Fade" coroutine. 
         // Disabling the dropdown causes the fading list to get stuck.
-        if (GameObject.Find("Dropdown List") == null)
-        {
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                PreviousEditor();
-            }
-        }
+        if (GameObject.Find("Dropdown List") != null) return;
+        
+        if (Input.GetKeyUp(KeyCode.Escape))
+            PreviousEditor(); 
     }
 
     public void InitializePath(Path path)
@@ -50,6 +49,8 @@ public class EditorManager : MonoBehaviour
         SelectionManager.CancelGetSelection();
 
         path.form.OpenPath(path);
+
+        SelectionManager.SelectElements();
     }
 
     public void ResetPath()

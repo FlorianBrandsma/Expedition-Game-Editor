@@ -10,14 +10,14 @@ public class SubControllerManager : MonoBehaviour
 {
     public enum Axis
     {
-        horizontal,
-        vertical,
+        Horizontal,
+        Vertical,
     }
 
     private EditorController controller;
 
-    private List<Button> tab_list = new List<Button>();
-    private List<Button> local_tab_list = new List<Button>();
+    private List<EditorTab> tab_list = new List<EditorTab>();
+    private List<EditorTab> local_tab_list = new List<EditorTab>();
 
     private EditorController[] controllers;
 
@@ -44,19 +44,17 @@ public class SubControllerManager : MonoBehaviour
 
             for (int i = 0; i < controllers.Length; i++)
             {
-                Button new_tab = SpawnTab();
+                EditorTab new_tab = SpawnTab();
                 local_tab_list.Add(new_tab);
 
                 SetAnchors(i, controllers.Length);
 
                 controllers[i].route = controller.route;
 
-                new_tab.GetComponentInChildren<Text>().text = controllers[i].name;
-                //Set width and height
-
+                new_tab.label.text = controllers[i].name;
+                 
                 int index = i;
-
-                new_tab.onClick.AddListener(delegate { OpenPath(index); });
+                new_tab.GetComponent<Button>().onClick.AddListener(delegate { OpenPath(index); });
 
                 new_tab.gameObject.SetActive(true);
             }
@@ -64,6 +62,9 @@ public class SubControllerManager : MonoBehaviour
             SelectTab(main_path.Trim(controller.step + 1).route[controller.step].controller);
 
         } else if(controllers.Length == 1) { 
+
+            //Only optimized for horizontal
+            //No cases where it's required vertically as of 01/01/2019
 
             if (header == null)
                 header = SpawnHeader();
@@ -76,18 +77,35 @@ public class SubControllerManager : MonoBehaviour
         } 
     }
     
+    private void ScaleLabel(RectTransform tab_rect, RectTransform label_rect)
+    {
+        label_rect.sizeDelta = new Vector2(tab_rect.rect.height - 10, tab_rect.rect.width);
+    }
+
     private void SetAnchors(int index, int tabs)
     {
-        RectTransform new_tab = local_tab_list[index].GetComponent<RectTransform>();
+        EditorTab new_tab = local_tab_list[index].GetComponent<EditorTab>();
+        RectTransform rect = new_tab.GetComponent<RectTransform>();
 
-        if(axis == Axis.horizontal)
+        if(axis == Axis.Horizontal)
         {
-            new_tab.anchorMin = new Vector2(index * (1f / tabs), 0);
-            new_tab.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
+            rect.anchorMin = new Vector2(index * (1f / tabs), 0);
+            rect.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
 
-            new_tab.offsetMin = new Vector2(-1, new_tab.offsetMin.y);
-            new_tab.offsetMax = new Vector2(1, new_tab.offsetMax.y);
+            rect.offsetMin = new Vector2(-1, rect.offsetMin.y);
+            rect.offsetMax = new Vector2(1, rect.offsetMax.y);
         }     
+
+        if(axis == Axis.Vertical)
+        {
+            rect.anchorMin = new Vector2(0, (tabs - (index + 1)) * (1f / tabs));
+            rect.anchorMax = new Vector2(1, (tabs - (index)) * (1f / tabs));
+
+            rect.offsetMin = new Vector2(rect.offsetMin.x, -1);
+            rect.offsetMax = new Vector2(rect.offsetMax.x, 1);
+
+            ScaleLabel(rect, new_tab.label_rect);
+        }
     }
 
     private void OpenPath(int selected_tab)
@@ -108,15 +126,15 @@ public class SubControllerManager : MonoBehaviour
         }
     }
 
-    private Button SpawnTab()
+    private EditorTab SpawnTab()
     {
-        foreach(Button tab in tab_list)
+        foreach(EditorTab tab in tab_list)
         {
             if (!tab.gameObject.activeInHierarchy)
                 return tab;
         }
 
-        Button new_tab = Instantiate(Resources.Load<Button>("UI/Tab_" + axis_name));
+        EditorTab new_tab = Instantiate(Resources.Load<EditorTab>("UI/Tab_" + axis_name));
         new_tab.transform.SetParent(transform, false);
         tab_list.Add(new_tab);
 
@@ -135,7 +153,7 @@ public class SubControllerManager : MonoBehaviour
     {
         for (int i = 0; i < local_tab_list.Count; i++)
         {
-            local_tab_list[i].onClick.RemoveAllListeners();
+            local_tab_list[i].GetComponent<Button>().onClick.RemoveAllListeners();
             local_tab_list[i].gameObject.SetActive(false);
 
             controllers[i].gameObject.SetActive(false);

@@ -231,10 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b67d6e157920124ca488fba78ea9177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selected_id: 0
   overlayManager: {fileID: 114000013709503810}
-  actionManager: {fileID: 0}
-  main_list: {fileID: 224000013961967750}
   list_parent: {fileID: 224000012549903682}
   element_list: []
 --- !u!114 &114000013135600624
@@ -412,8 +409,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 224000013961967750}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

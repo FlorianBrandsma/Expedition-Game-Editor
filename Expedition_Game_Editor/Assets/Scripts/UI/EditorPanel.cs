@@ -10,7 +10,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public Text description;
     public RawImage icon;
 
-    public RectTransform edit_button;
+    public SelectionElement edit_button;
 
     public RectTransform content;
 
@@ -26,7 +26,10 @@ public class EditorPanel : MonoBehaviour, IElement
         }
 
         if (properties.edit)
-            content.offsetMax = new Vector2(-edit_button.rect.width, content.offsetMax.y);
+        {
+            edit_button.gameObject.SetActive(true);
+            content.offsetMax = new Vector2(-edit_button.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
+        }
 
         id.text = element.data.id.ToString();
     }
@@ -38,5 +41,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
         if (properties.icon)
             icon.gameObject.SetActive(false);
+
+        if (properties.edit)
+            edit_button.gameObject.SetActive(false);
     }
 }

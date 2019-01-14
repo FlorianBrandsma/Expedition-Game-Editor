@@ -90,6 +90,15 @@
 
                 break;
 
+            case "TerrainItem":
+
+                PathManager.TerrainItem terrainItem = new PathManager.TerrainItem(route);
+
+                if (property == SelectionManager.Property.Open)
+                    path = terrainItem.Open();
+
+                break;
+
             case "Item":
 
                 PathManager.Item item = new PathManager.Item(route);

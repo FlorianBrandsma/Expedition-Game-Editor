@@ -229,6 +229,27 @@ public class PathManager
         }
     }
 
+    public class TerrainItem
+    {
+        List<int> open;
+
+        Route route;
+
+        EditorForm form = EditorManager.editorManager.forms[0];
+
+        public TerrainItem(Route new_route)
+        {
+            route = new_route;
+            //route[1] is hardcoded. Could be dangerous?
+            open = new List<int>() { 1, form.active_path.route[1].controller, 0, route.data.type };
+        }
+
+        public Path Open()
+        {
+            return CreatePath(open, route, form);
+        }
+    }
+
     #endregion
 
     #region Options

@@ -18,7 +18,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
     //private Enums.SelectionProperty selectionProperty;
     //private SelectionManager.Type selectionType;
 
-    public float element_size { get; set; }
+    public Vector2 element_size { get; set; }
 
     private Vector2 list_size;
 
@@ -46,56 +46,50 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
         vertical = listProperties.vertical;
     }
 
-    public void SetListSize()
+    public void SetElementSize()
     {
-        element_size = listManager.base_size;
+        element_size = listManager.listData.listProperties.element_size;
     }
 
     public Vector2 GetListSize(List<ElementData> data_list, bool exact)
     {
         Vector2 new_size;
 
-        if (properties.fit_axis)
+        if(horizontal && vertical)
         {
-            int list_width  = GetListWidth();
-            int list_height = GetListHeight();
+            new_size = new Vector2( horizontal  ? properties.grid_size.x * element_size.x : element_size.x,
+                                    vertical    ? properties.grid_size.y * element_size.y : element_size.y);
+        } else
+        {
+            int list_width  = GetListWidth(data_list.Count);
+            int list_height = GetListHeight(data_list.Count);
 
-            if (list_width > data_list.Count)
-                list_width = data_list.Count;
-
-            if (list_height > data_list.Count)
-                list_height = data_list.Count;
-
-            //This is messed up
-            new_size = new Vector2( horizontal  ? ((data_list.Count + (data_list.Count % list_height))  * element_size) / list_height   : list_width    * element_size,
-                                    vertical    ? ((data_list.Count + (data_list.Count % list_width))   * element_size) / list_width    : list_height   * element_size);
-        } else {
-
-            new_size = new Vector2( horizontal  ? properties.grid_size.x * element_size : element_size,
-                                    vertical    ? properties.grid_size.y * element_size : element_size);
+            //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
+            new_size = new Vector2( horizontal  ? 0                                                                     : list_width  * element_size.x,
+                                    vertical    ? (Mathf.Ceil(data_list.Count / (float)list_width) * element_size.y)    : list_height * element_size.y);
         }
 
-        if (exact) //And else this is
+        if (exact)
             return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
         else
-            return new_size / element_size;
+            return new Vector2(new_size.x / element_size.x, new_size.y / element_size.y);
     }
 
-    public int GetListWidth()
+    public int GetListWidth(int elements)
     {
         int x = 0;
 
-        while (-(x * element_size / 2f) + (x * element_size) < listManager.rectTransform.rect.max.x)
+        while (x <= elements && -(x * element_size.x / 2f) + (x * element_size.x) < listManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
     }
 
-    public int GetListHeight()
+    public int GetListHeight(int elements)
     {
         int y = 0;
 
-        while (-(y * element_size / 2f) + (y * element_size) < listManager.rectTransform.rect.max.y)
+        while (y <= elements && -(y * element_size.y / 2f) + (y * element_size.y) < listManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -144,10 +138,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
 
         int index = local_data_list.IndexOf(element.data);
 
-        rect.sizeDelta = new Vector2(element_size, element_size);
+        rect.sizeDelta = new Vector2(element_size.x, element_size.y);
         
-        rect.transform.localPosition = new Vector2( -((element_size * 0.5f) * (list_size.x - 1)) + (index % list_size.x * element_size),
-                                                     -(element_size * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * element_size));
+        rect.transform.localPosition = new Vector2( -((element_size.x * 0.5f) * (list_size.x - 1)) + (index % list_size.x * element_size.x),
+                                                     -(element_size.y * 0.5f) + (listManager.list_parent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * element_size.y));
 
         rect.gameObject.SetActive(true);
     }

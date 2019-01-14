@@ -19,13 +19,31 @@ static public class SelectionManager
         Open,
     }
 
+    static public List<ListManager> lists = new List<ListManager>();
+
     static public List<Origin> edit_data = new List<Origin>();
 
     static public SelectionElement get;
 
+    static public void SelectElements()
+    {
+        foreach(EditorForm form in EditorManager.editorManager.forms)
+        {
+            if (!form.active) continue;
+
+            foreach (EditorSection section in form.editor_sections)
+            {
+                if (!section.active) continue;
+
+                SelectEdit(section.target_controller.route);
+            }       
+        }
+    }
+
     static public void SelectEdit(Route route)
     {
-        route.origin.listManager.SelectElement(route);
+        foreach(ListManager list in lists)
+            list.SelectElement(route);      
     }
 
     static public void SelectGet(SelectionElement new_get)
@@ -42,7 +60,8 @@ static public class SelectionManager
 
     static public void CancelSelection(Route route)
     {
-        route.origin.listManager.CancelSelection(route);
+        foreach (ListManager list in lists)
+            list.CancelSelection(route);
     }
 
     static public void CancelGetSelection()
@@ -52,7 +71,7 @@ static public class SelectionManager
         get.CancelSelection();
         get = null;
 
-        //Reset this though
-        //EditorManager.editorManager.OpenPath(new PathManager.Secondary().Initialize());  
+        //Reset
+        EditorManager.editorManager.OpenPath(new PathManager.Form(EditorManager.editorManager.forms[2]).Initialize());  
     }
 }

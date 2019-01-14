@@ -194,7 +194,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties)
+      value: Elements (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -680,10 +680,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 529589782}
@@ -1172,7 +1171,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 0}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1001 &22592202
@@ -1580,7 +1578,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &33534896
@@ -2538,10 +2535,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 6
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 509619982}
@@ -3240,10 +3236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!224 &73954044
@@ -3335,7 +3330,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1229205255}
@@ -3402,7 +3396,6 @@ MonoBehaviour:
   parent_rect: {fileID: 0}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 2120790633}
   content: {fileID: 294505872}
   footer: {fileID: 0}
@@ -3692,7 +3685,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 0}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1001 &88485845
@@ -3933,7 +3925,6 @@ MonoBehaviour:
   parent_rect: {fileID: 1069878631}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 0}
   content: {fileID: 2132140415}
   footer: {fileID: 0}
@@ -4451,7 +4442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!114 &116367558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4469,7 +4459,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 75
+  element_size: {x: 70, y: 70}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -4506,7 +4496,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &116367561
@@ -4724,7 +4713,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Terrain (segment-listProperties)
+      value: Terrain (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -4774,7 +4763,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 50, y: 50}
   horizontal: 0
   vertical: 0
   enable_sliders: 0
@@ -4814,7 +4803,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!114 &126430685 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
@@ -5015,7 +5003,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &133627476
@@ -5250,10 +5237,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &136835295
@@ -5552,7 +5538,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -6172,10 +6158,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1 &178003376
@@ -6427,8 +6412,7 @@ Prefab:
       propertyPath: m_Name
       value: Instant (toggle)
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011198509044, guid: fa7de6b5babac9f4aa25ee327b5c350d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 499396390}
@@ -6819,6 +6803,16 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013358529708, guid: e459c8c821901e5479d8bd2715d2a2d4,
+        type: 2}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+    - target: {fileID: 114000012904829640, guid: e459c8c821901e5479d8bd2715d2a2d4,
+        type: 2}
+      propertyPath: m_Text
+      value: Task Editor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
   m_IsPrefabParent: 0
@@ -7191,10 +7185,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &220771932
@@ -7479,6 +7472,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 0
+  edit_data:
+    table: 
+    id: 0
+    type: 0
   temp_description: 
   reference_area: {fileID: 1671440038}
 --- !u!114 &226968969
@@ -7498,7 +7495,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 35
+  element_size: {x: 0, y: 15}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -7639,10 +7636,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 8
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 893013072}
@@ -7940,7 +7936,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties)
+      value: Elements (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -8011,7 +8007,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 728068917}
@@ -8075,6 +8070,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Region
+    id: 0
+    type: 0
   temp_description: 
   reference_area: {fileID: 1079844675}
 --- !u!114 &252917517
@@ -8094,7 +8093,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 35
+  element_size: {x: 0, y: 30}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -8131,7 +8130,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &252917520
@@ -8282,10 +8280,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 3
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &254419665
@@ -8365,10 +8362,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 1
+    group: 15
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &254792725
@@ -8646,7 +8642,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 254792724}
@@ -9346,9 +9341,11 @@ MonoBehaviour:
   component:
     anchor: 2
     width: 30
+  manually_closed: 0
   auto_open: 1
   auto_close: 0
   open_once: 1
+  constant: 1
   editorForm: {fileID: 1374861249}
   open_icon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
   close_icon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
@@ -9367,7 +9364,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1658460849}
@@ -9386,9 +9382,11 @@ MonoBehaviour:
   component:
     anchor: 1
     width: 30
+  manually_closed: 0
   auto_open: 0
   auto_close: 1
   open_once: 0
+  constant: 0
   editorForm: {fileID: 778174905}
   open_icon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
   close_icon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
@@ -10470,7 +10468,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1110288611}
@@ -10804,7 +10801,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -11104,7 +11101,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1699825211}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &336884790
@@ -11360,7 +11356,7 @@ GameObject:
   - 114: {fileID: 337895391}
   - 114: {fileID: 337895392}
   m_Layer: 5
-  m_Name: Quest
+  m_Name: Quest (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11407,10 +11403,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 4
+    group: 6
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 936426584}
@@ -11432,7 +11427,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -11452,6 +11447,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Quest
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -11577,10 +11576,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &341172406
@@ -12367,10 +12365,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 3
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &357577328
@@ -12491,8 +12488,7 @@ Prefab:
       propertyPath: m_Text
       value: West
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011198509044, guid: fa7de6b5babac9f4aa25ee327b5c350d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_IsOn
       value: 0
       objectReference: {fileID: 0}
@@ -12541,10 +12537,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 993477358}
@@ -13076,7 +13071,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 0}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1 &381385055
@@ -13797,7 +13791,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1001 &397675481
@@ -13975,10 +13968,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 4
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 357577327}
@@ -14453,10 +14445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 6
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &410812616
@@ -14837,6 +14828,11 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 419588701}
+--- !u!224 &420586814 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224000010183565684, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1238536386}
 --- !u!1 &420794006
 GameObject:
   m_ObjectHideFlags: 0
@@ -16959,7 +16955,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &478473416
@@ -18014,10 +18009,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 4
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &509619983
@@ -18446,10 +18440,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &529589783
@@ -18984,7 +18977,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1229205255}
@@ -19042,7 +19034,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 1003282502}
@@ -19376,7 +19367,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 794742818}
   buttonActionManager: {fileID: 674952438}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 825215172}
@@ -19460,7 +19450,7 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -19470,7 +19460,7 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -19510,6 +19500,21 @@ Prefab:
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
       value: Elements (list)
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -19677,10 +19682,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &575169049
@@ -20992,7 +20996,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties)
+      value: Elements (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -21281,7 +21285,7 @@ GameObject:
   - 224: {fileID: 645976604}
   - 114: {fileID: 645976605}
   m_Layer: 5
-  m_Name: Terrain_Selection (headerField)
+  m_Name: Terrain_Item (headerField)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21319,6 +21323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311533a86ceeb604888136e907e42276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: {fileID: 1428911545}
 --- !u!1001 &651028458
 Prefab:
   m_ObjectHideFlags: 0
@@ -21724,8 +21729,7 @@ Prefab:
       propertyPath: m_Name
       value: Backtrace (toggle)
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011198509044, guid: fa7de6b5babac9f4aa25ee327b5c350d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 499396390}
@@ -22002,7 +22006,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 1341855576}
@@ -22176,7 +22179,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Items (segment-listProperties)
+      value: Items (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -22856,10 +22859,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &683479566
@@ -22976,6 +22978,11 @@ Prefab:
       propertyPath: m_Texture
       value: 
       objectReference: {fileID: 2800000, guid: 7e15f9c6c945809488a6092a2e1800c9, type: 3}
+    - target: {fileID: 114000010374910786, guid: ab60fdb3efb66d0499b08f4864881786,
+        type: 2}
+      propertyPath: m_Text
+      value: Selection Name
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab60fdb3efb66d0499b08f4864881786, type: 2}
   m_IsPrefabParent: 0
@@ -23074,7 +23081,7 @@ MonoBehaviour:
   selectionProperty: 1
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -23114,7 +23121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!1001 &688668654
 Prefab:
   m_ObjectHideFlags: 0
@@ -23675,7 +23681,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -23771,10 +23777,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &707256329
@@ -24409,7 +24414,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &728068918
@@ -24617,7 +24621,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -24654,7 +24658,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &730677907
@@ -25389,7 +25392,7 @@ GameObject:
   - 114: {fileID: 754277967}
   - 114: {fileID: 754277962}
   m_Layer: 5
-  m_Name: Element
+  m_Name: Element (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25440,7 +25443,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -25474,10 +25477,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 6
+    group: 10
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 2083398434}
@@ -25507,6 +25509,10 @@ MonoBehaviour:
   icon: 1
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Element
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -26031,7 +26037,6 @@ MonoBehaviour:
   parent_rect: {fileID: 1322216628}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 0}
   content: {fileID: 794742813}
   footer: {fileID: 0}
@@ -26065,6 +26070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main_form: 0
   baseController: {fileID: 1545383490}
   editor_sections:
   - {fileID: 794742818}
@@ -26577,7 +26583,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -26611,7 +26617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!224 &798495433 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000012151473904, guid: 1280af98e3595384ba80db985c15c225,
@@ -26676,7 +26681,7 @@ MonoBehaviour:
   selectionProperty: 2
   always_on: 0
   visible_only: 0
-  base_size: 75
+  element_size: {x: 70, y: 70}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -26713,7 +26718,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &802936706
@@ -27211,7 +27215,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Groups (segment-listProperties)
+      value: Groups (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -27522,8 +27526,7 @@ Prefab:
       propertyPath: m_Name
       value: Random (toggle)
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011198509044, guid: fa7de6b5babac9f4aa25ee327b5c350d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 499396390}
@@ -27580,7 +27583,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1699825211}
   buttonActionManager: {fileID: 674952438}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1274049846}
   controllers:
   - {fileID: 336884789}
@@ -27736,10 +27738,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &828225810
@@ -28301,7 +28302,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 2005408093}
@@ -28758,7 +28758,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1699825211}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &871905861
@@ -28986,7 +28985,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Effect (segment-listProperties)
+      value: Effect (segment-listProperties-placeholder)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -29286,7 +29285,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 81672997}
   controllers:
   - {fileID: 1585400774}
@@ -29471,7 +29469,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1590588649}
   controllers:
   - {fileID: 878935702}
@@ -29716,10 +29713,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 5
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &893013073
@@ -29772,7 +29768,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -30363,7 +30359,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -30400,7 +30396,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &923384927
@@ -30548,7 +30543,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Groups (segment-listProperties)
+      value: Groups (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -30662,11 +30657,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 931398624}
---- !u!224 &933112329 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
-    type: 2}
-  m_PrefabInternal: {fileID: 1202244981}
 --- !u!1 &936426581
 GameObject:
   m_ObjectHideFlags: 0
@@ -30682,7 +30672,7 @@ GameObject:
   - 114: {fileID: 936426586}
   - 114: {fileID: 936426587}
   m_Layer: 5
-  m_Name: Step
+  m_Name: Step (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30729,10 +30719,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 5
+    group: 8
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 754277965}
@@ -30754,7 +30743,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -30774,6 +30763,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Step
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -30831,7 +30824,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 0
+  element_size: {x: 0, y: 0}
   horizontal: 0
   vertical: 0
   enable_sliders: 0
@@ -31136,7 +31129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a95eccc7a7d3e4bb939548b30fa5b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  header_field: {fileID: 0}
+  header_field: {fileID: 645976603}
   segments:
   - {fileID: 1589413838}
 --- !u!114 &950533440
@@ -31151,10 +31144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 17
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &950533441
@@ -32211,7 +32203,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 0}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1001 &977299569
@@ -32610,10 +32601,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &980461621
@@ -32866,7 +32856,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Items (segment-listProperties)
+      value: Items (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -32943,9 +32933,11 @@ MonoBehaviour:
   component:
     anchor: 1
     width: 30
+  manually_closed: 0
   auto_open: 1
   auto_close: 1
   open_once: 0
+  constant: 1
   editorForm: {fileID: 1250721019}
   open_icon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
   close_icon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
@@ -32961,12 +32953,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
-  controllers: []
+  controllers:
+  - {fileID: 1680088284}
+  - {fileID: 321659161}
 --- !u!114 &993477359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33362,7 +33355,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!224 &1003282503
@@ -34855,7 +34847,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1048380855
@@ -34951,9 +34942,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1250721022}
-  anchor_min: {x: 0, y: 0}
-  anchor_max: {x: 1, y: 0.25}
+  layoutManager: {fileID: 1685155424}
+  anchor_min: {x: 0.75, y: 0}
+  anchor_max: {x: 1, y: 1}
 --- !u!114 &1050468120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34965,7 +34956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d7cd6bba86b7847ad8ecea467b7586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorDependency: {fileID: 0}
+  editorDependency: {fileID: 1322450495}
 --- !u!1 &1050976773
 GameObject:
   m_ObjectHideFlags: 0
@@ -35834,7 +35825,6 @@ MonoBehaviour:
   parent_rect: {fileID: 995570909}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 0}
   content: {fileID: 97059932}
   footer: {fileID: 0}
@@ -36374,6 +36364,11 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1078553820}
+--- !u!224 &1078697770 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224000012941562954, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1238536386}
 --- !u!1 &1079792065 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225,
@@ -36401,7 +36396,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -36445,121 +36440,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
     type: 2}
   m_PrefabInternal: {fileID: 1238536386}
---- !u!1001 &1085441346
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 933112329}
-    m_Modifications:
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 87.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 175
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.99999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011042142126, guid: c69b0f756c8b33442a098fe8339897e8,
-        type: 2}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: c69b0f756c8b33442a098fe8339897e8, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1089084920
 GameObject:
   m_ObjectHideFlags: 0
@@ -36604,7 +36484,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1557340230}
@@ -37042,7 +36921,7 @@ GameObject:
   - 114: {fileID: 1110288611}
   - 114: {fileID: 1110288610}
   m_Layer: 5
-  m_Name: Transform
+  m_Name: General
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37078,7 +36957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a95eccc7a7d3e4bb939548b30fa5b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  header_field: {fileID: 0}
+  header_field: {fileID: 645976603}
   segments:
   - {fileID: 2019324627}
 --- !u!114 &1110288611
@@ -37093,10 +36972,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 17
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1110288612
@@ -37622,7 +37500,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -38534,7 +38412,6 @@ MonoBehaviour:
   parent_rect: {fileID: 0}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 1590588648}
   content: {fileID: 1561864135}
   footer: {fileID: 972290269}
@@ -39002,7 +38879,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!114 &1158307201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39020,7 +38896,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -39047,7 +38923,7 @@ MonoBehaviour:
     table: Element
     id: 0
     type: 0
-  id_count: 15
+  id_count: 17
 --- !u!1001 &1158767445
 Prefab:
   m_ObjectHideFlags: 0
@@ -39585,7 +39461,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1165710161
@@ -40513,12 +40388,12 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -40528,7 +40403,7 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -40569,10 +40444,20 @@ Prefab:
       propertyPath: m_Name
       value: Elements (list)
       objectReference: {fileID: 0}
-    - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.99999994
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -40893,7 +40778,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 556929366}
@@ -41077,10 +40961,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 993477358}
@@ -41338,7 +41221,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1229205256
@@ -41811,6 +41693,26 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013709503810, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: horizontal_min
+      value: 
+      objectReference: {fileID: 420586814}
+    - target: {fileID: 114000013709503810, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: vertical_min
+      value: 
+      objectReference: {fileID: 1078697770}
+    - target: {fileID: 114000013709503810, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: horizontal_max
+      value: 
+      objectReference: {fileID: 1312329808}
+    - target: {fileID: 114000013709503810, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: vertical_max
+      value: 
+      objectReference: {fileID: 1986959732}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
   m_IsPrefabParent: 0
@@ -41875,7 +41777,6 @@ MonoBehaviour:
     group: 7
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1520396508}
@@ -42179,6 +42080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main_form: 0
   baseController: {fileID: 565238295}
   editor_sections:
   - {fileID: 1699825211}
@@ -42209,7 +42111,6 @@ MonoBehaviour:
   parent_rect: {fileID: 1069878631}
   sibling_layout: {fileID: 97059936}
   sibling_anchor: 1
-  sibling_reset: 1
   header: {fileID: 0}
   content: {fileID: 1250721018}
   footer: {fileID: 0}
@@ -43023,7 +42924,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15, y: 0}
-  m_SizeDelta: {x: 30, y: 0}
+  m_SizeDelta: {x: 30, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1274049846
 MonoBehaviour:
@@ -43098,7 +42999,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -43135,7 +43036,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1276900519
@@ -43317,7 +43217,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Items (segment-listProperties)
+      value: Items (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
@@ -43576,70 +43476,9 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_LocalRotation.x
+    - target: {fileID: 1000013703903382, guid: dc5f23dd64993444fabd46f69e30d0de, type: 2}
+      propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000013981841148, guid: dc5f23dd64993444fabd46f69e30d0de,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dc5f23dd64993444fabd46f69e30d0de, type: 2}
@@ -43924,7 +43763,7 @@ Prefab:
     - target: {fileID: 224000013171308716, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 224000013171308716, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
@@ -44508,6 +44347,11 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000013605148760, guid: 0ed8f8093b5844d42af4e82e56180847,
     type: 2}
   m_PrefabInternal: {fileID: 1306243302}
+--- !u!224 &1312329808 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224000011237924272, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1238536386}
 --- !u!114 &1313395481 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000012628092190, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -45441,10 +45285,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 1
+    group: 15
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1332377422
@@ -45792,7 +45635,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1341855577
@@ -45865,7 +45707,7 @@ GameObject:
   - 114: {fileID: 1352689287}
   - 114: {fileID: 1352689286}
   m_Layer: 5
-  m_Name: Elements (segment-listProperties)
+  m_Name: Elements (segment-listProperties-panelTile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45899,15 +45741,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1352689284}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e4e163e19c429540822e09a49d32652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: 0
-  zigzag: 0
-  edit: 0
-  temp_description: This is a pretty regular sentence. The structure is something
-    you'd expect. Nothing too long though!
-  reference_area: {fileID: 0}
+  icon: 1
+  edit: 1
+  edit_data:
+    table: Element
+    id: 0
+    type: 0
 --- !u!114 &1352689287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45921,11 +45763,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flexible_type: 0
   listManager: {fileID: 102348012}
-  selectionType: 0
-  selectionProperty: 0
+  selectionType: 1
+  selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 10
+  element_size: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
   enable_sliders: 1
@@ -45943,10 +45785,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    table: 
+    table: TerrainItem
     id: 0
     type: 0
-  id_count: 0
+  id_count: 7
 --- !u!114 &1352689289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46219,7 +46061,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1229205255}
@@ -46494,7 +46335,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1363487326
@@ -46562,7 +46402,6 @@ MonoBehaviour:
   parent_rect: {fileID: 1374861248}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 0}
   content: {fileID: 1144933476}
   footer: {fileID: 0}
@@ -47130,6 +46969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main_form: 0
   baseController: {fileID: 886924297}
   editor_sections:
   - {fileID: 1367463360}
@@ -47148,7 +46988,6 @@ MonoBehaviour:
   parent_rect: {fileID: 223280777}
   sibling_layout: {fileID: 2082631210}
   sibling_anchor: 3
-  sibling_reset: 2
   header: {fileID: 0}
   content: {fileID: 1367463358}
   footer: {fileID: 0}
@@ -47705,7 +47544,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Regions (segment-listProperties)
+      value: Regions (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
@@ -48428,6 +48267,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1428911545 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000010374910786, guid: ab60fdb3efb66d0499b08f4864881786,
+    type: 2}
+  m_PrefabInternal: {fileID: 684732665}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &1429962532
 Prefab:
   m_ObjectHideFlags: 0
@@ -49885,10 +49730,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 4
+    group: 2
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1479072288
@@ -49963,10 +49807,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 980461620}
@@ -50254,10 +50097,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 1
+    group: 15
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1498029667
@@ -50518,10 +50360,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1510286065
@@ -50664,10 +50505,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 177509258}
@@ -50951,7 +50791,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 1048380854}
@@ -51045,10 +50884,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1 &1536907459
@@ -51327,7 +51165,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 0}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!1 &1545383488
@@ -51373,10 +51210,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 18
   editorSection: {fileID: 794742818}
   buttonActionManager: {fileID: 674952438}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1682946510}
@@ -51536,7 +51372,7 @@ MonoBehaviour:
   selectionProperty: 1
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -51576,7 +51412,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 0, y: 0}
-  fit_axis: 1
 --- !u!1 &1557003476
 GameObject:
   m_ObjectHideFlags: 0
@@ -51723,7 +51558,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1557340231
@@ -51893,7 +51727,6 @@ MonoBehaviour:
   parent_rect: {fileID: 0}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 81672998}
   content: {fileID: 80706162}
   footer: {fileID: 0}
@@ -52230,7 +52063,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -52421,7 +52254,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 40
+  element_size: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -52947,7 +52780,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 2120790634}
   controllers:
   - {fileID: 730677906}
@@ -54453,7 +54285,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1628976942
@@ -55369,7 +55200,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Items (segment-listProperties)
+      value: Items (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -55449,7 +55280,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1751448740}
@@ -55649,7 +55479,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Items (segment-listProperties)
+      value: Items (segment-listProperties-button)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -56176,6 +56006,16 @@ Prefab:
       propertyPath: m_Name
       value: Tiles (list)
       objectReference: {fileID: 0}
+    - target: {fileID: 224000011237924272, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010232570266, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+        type: 2}
+      propertyPath: offset_max.y
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
   m_IsPrefabParent: 0
@@ -56377,7 +56217,7 @@ GameObject:
   - 114: {fileID: 1674366345}
   - 114: {fileID: 1674366344}
   m_Layer: 5
-  m_Name: Tiles
+  m_Name: Tiles (listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56408,7 +56248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 5, y: 5}
-  fit_axis: 0
 --- !u!114 &1674366345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56426,7 +56265,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 50
+  element_size: {x: 50, y: 50}
   horizontal: 1
   vertical: 1
   enable_sliders: 1
@@ -56460,10 +56299,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1674366348
@@ -56625,7 +56463,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 1110288611}
@@ -56796,10 +56633,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 10
+    group: 18
   editorSection: {fileID: 794742818}
   buttonActionManager: {fileID: 674952438}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1682946511
@@ -56892,7 +56728,6 @@ MonoBehaviour:
   parent_rect: {fileID: 995570909}
   sibling_layout: {fileID: 1069878632}
   sibling_anchor: 3
-  sibling_reset: 1
   header: {fileID: 0}
   content: {fileID: 1982244823}
   footer: {fileID: 0}
@@ -57421,10 +57256,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 1370224109}
   controllers:
   - {fileID: 1536758783}
@@ -57861,7 +57695,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Regions (segment-listProperties)
+      value: Regions (segment-listProperties-panel)
       objectReference: {fileID: 0}
     - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
@@ -58211,10 +58045,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 2108299156}
@@ -58514,7 +58347,7 @@ GameObject:
   - 114: {fileID: 1751448741}
   - 114: {fileID: 1751448742}
   m_Layer: 5
-  m_Name: Chapter
+  m_Name: Chapter (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58561,10 +58394,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 2
+    group: 3
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 2020116198}
@@ -58586,7 +58418,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -58606,6 +58438,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Chapter
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -58927,7 +58763,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties)
+      value: Elements (segment-listProperties-missing)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -59460,7 +59296,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties)
+      value: Elements (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -60319,7 +60155,7 @@ GameObject:
   - 4: {fileID: 1800320916}
   - 114: {fileID: 1800320917}
   m_Layer: 5
-  m_Name: Objective (controller)
+  m_Name: Step (controller)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60350,10 +60186,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 10
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 214916381}
   controllers:
   - {fileID: 410812615}
@@ -61338,7 +61173,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1215727545}
@@ -61848,7 +61682,7 @@ GameObject:
   - 114: {fileID: 1851839775}
   - 114: {fileID: 1851839779}
   m_Layer: 5
-  m_Name: Region
+  m_Name: Region (listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61891,7 +61725,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_size: {x: 10, y: 10}
-  fit_axis: 0
 --- !u!114 &1851839776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61925,7 +61758,7 @@ MonoBehaviour:
   selectionProperty: 3
   always_on: 0
   visible_only: 0
-  base_size: 50
+  element_size: {x: 50, y: 50}
   horizontal: 1
   vertical: 1
   enable_sliders: 1
@@ -61946,7 +61779,6 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 263797638}
@@ -62967,10 +62799,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 1
+    group: 15
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1886576686
@@ -63843,7 +63674,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1907505374
@@ -65483,7 +65313,7 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 17.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -65493,7 +65323,7 @@ Prefab:
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -65829,7 +65659,7 @@ GameObject:
   - 114: {fileID: 1965840201}
   - 114: {fileID: 1965840200}
   m_Layer: 5
-  m_Name: Objects (segment-listProperties)
+  m_Name: Objects (segment-listProperties-panelTile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65863,15 +65693,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1965840198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e4e163e19c429540822e09a49d32652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   icon: 0
-  zigzag: 0
   edit: 0
-  temp_description: This is a pretty regular sentence. The structure is something
-    you'd expect. Nothing too long though!
-  reference_area: {fileID: 0}
+  edit_data:
+    table: 
+    id: 0
+    type: 0
 --- !u!114 &1965840201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65885,11 +65715,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flexible_type: 0
   listManager: {fileID: 567593180}
-  selectionType: 0
-  selectionProperty: 0
+  selectionType: 1
+  selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 0
+  element_size: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
   enable_sliders: 1
@@ -65907,10 +65737,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    table: 
+    table: TerrainItem
     id: 0
-    type: 0
-  id_count: 0
+    type: 1
+  id_count: 3
 --- !u!114 &1965840203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66287,7 +66117,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Tasks (segment-listProperties)
+      value: Tasks (segment-listProperties-missing)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -66365,7 +66195,7 @@ MonoBehaviour:
   selectionProperty: 1
   always_on: 0
   visible_only: 0
-  base_size: 50
+  element_size: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -66482,6 +66312,11 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 0
+--- !u!224 &1986959732 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224000012771355508, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1238536386}
 --- !u!1 &1988507602
 GameObject:
   m_ObjectHideFlags: 0
@@ -66881,7 +66716,6 @@ MonoBehaviour:
     group: 1
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &1996778229
@@ -67388,10 +67222,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 1
+    group: 15
   editorSection: {fileID: 1685155425}
   buttonActionManager: {fileID: 674646147}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers: []
 --- !u!114 &2005408094
@@ -67987,7 +67820,7 @@ GameObject:
   - 114: {fileID: 2020116200}
   - 114: {fileID: 2020116201}
   m_Layer: 5
-  m_Name: Phase
+  m_Name: Phase (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68034,10 +67867,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 3
+    group: 4
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 337895389}
@@ -68059,7 +67891,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -68079,6 +67911,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 1
+  edit_data:
+    table: Phase
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -68967,8 +68803,7 @@ Prefab:
       propertyPath: m_Name
       value: None (toggle)
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011198509044, guid: fa7de6b5babac9f4aa25ee327b5c350d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 499396390}
@@ -69750,7 +69585,7 @@ MonoBehaviour:
   selectionProperty: 0
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -69821,6 +69656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main_form: 1
   baseController: {fileID: 281672007}
   editor_sections:
   - {fileID: 97059935}
@@ -69840,7 +69676,6 @@ MonoBehaviour:
   parent_rect: {fileID: 223280777}
   sibling_layout: {fileID: 0}
   sibling_anchor: 0
-  sibling_reset: 0
   header: {fileID: 0}
   content: {fileID: 995570909}
   footer: {fileID: 1559060554}
@@ -69871,7 +69706,7 @@ GameObject:
   - 114: {fileID: 2083398436}
   - 114: {fileID: 2083398431}
   m_Layer: 5
-  m_Name: Task
+  m_Name: Task (listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69922,7 +69757,7 @@ MonoBehaviour:
   selectionProperty: 4
   always_on: 0
   visible_only: 0
-  base_size: 45
+  element_size: {x: 0, y: 45}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -69956,10 +69791,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 7
+    group: 13
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1243632472}
@@ -69989,6 +69823,10 @@ MonoBehaviour:
   icon: 0
   zigzag: 0
   edit: 0
+  edit_data:
+    table: Task
+    id: 0
+    type: 0
   temp_description: This is a pretty regular sentence. The structure is something
     you'd expect. Nothing too long though!
   reference_area: {fileID: 1069878631}
@@ -70333,7 +70171,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Quests (segment-listProperties)
+      value: Quests (segment-listProperties-missing)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -70395,7 +70233,7 @@ MonoBehaviour:
   selectionProperty: 1
   always_on: 0
   visible_only: 0
-  base_size: 50
+  element_size: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
   enable_sliders: 1
@@ -71060,10 +70898,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 0
+    group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
-  componentManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 1674366347}

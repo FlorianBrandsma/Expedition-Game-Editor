@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer
@@ -15,7 +11,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
     static public List<SelectionElement> element_list = new List<SelectionElement>();
     private List<SelectionElement> element_list_local = new List<SelectionElement>();
 
-    public float element_size { get; set; }
+    public Vector2 element_size { get; set; }
 
     private float bonus_height = 25;
 
@@ -39,8 +35,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
         properties = listProperties.GetComponent<PanelProperties>();
     }
 
-    public void SetListSize()
+    public void SetElementSize()
     {
+        element_size = listManager.listData.listProperties.element_size;
+
         x_anchors.Clear();
 
         float[] new_anchors = new float[] { 0, 1 };
@@ -93,11 +91,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
                     new_header = "";
             }
 
-            element_size = (listManager.base_size / rect_width) + (new_header != "" ? bonus_height : 0);
-            row_height.Add(element_size);
+            float new_size = (element_size.y / rect_width) + (new_header != "" ? bonus_height : 0);
+            row_height.Add(new_size);
 
-            position_sum += element_size;
-            row_offset_max.Add(position_sum - element_size);
+            position_sum += new_size;
+            row_offset_max.Add(position_sum - new_size);
         }
     }
 
@@ -117,7 +115,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
         for (int i = 0; i < local_data_list.Count; i++)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
+            ElementData element_data = local_data_list[i];
+
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, element_data);
+
             element_list_local.Add(element);
 
             listManager.element_list.Add(element);
@@ -134,7 +135,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
                 panel.icon.texture = Resources.Load<Texture2D>("Textures/Characters/1");
 
             if (properties.edit)
-                element.child.gameObject.SetActive(true);
+            {
+                ElementData edit_data = new ElementData(properties.edit_data.table, element_data.id, properties.edit_data.type);
+                panel.edit_button.InitializeSelection(listManager, edit_data, SelectionManager.Property.Edit);
+            }
 
             //Debugging
             element.name = new_header;

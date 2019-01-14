@@ -22,22 +22,24 @@ public class SliderManager : MonoBehaviour, IOverlay
         overlayManager = GetComponent<OverlayManager>();
 
         main_list = listManager.rectTransform;
-
     }
     
     public void ActivateOverlay(IOrganizer organizer)
     {
         Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listData.list, true);
 
-        if(main_list.GetComponent<ScrollRect>().vertical)
+        bool horizontal = main_list.GetComponent<ScrollRect>().horizontal;
+        bool vertical = main_list.GetComponent<ScrollRect>().vertical;
+
+        if(vertical)
         {
-            if (list_size.y > (main_list.rect.max.y * 2) - overlayManager.horizontal_max.rect.height)
+            if (list_size.y > (main_list.rect.height) - (horizontal ? overlayManager.horizontal_max.rect.height : 0))
                 overlayManager.vertical_max.gameObject.SetActive(true);
         }
 
-        if(main_list.GetComponent<ScrollRect>().horizontal)
+        if(horizontal)
         {
-            if ((list_size.x + main_list.rect.width) > (main_list.rect.max.x * 2) - overlayManager.vertical_max.rect.width)
+            if ((list_size.x + main_list.rect.width) > (main_list.rect.width) - (vertical ? overlayManager.vertical_max.rect.width : 0))
                 overlayManager.horizontal_max.gameObject.SetActive(true);
         } 
     }

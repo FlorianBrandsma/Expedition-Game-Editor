@@ -18,8 +18,6 @@ public class EditorController : MonoBehaviour, IController
 
     public ButtonActionManager  buttonActionManager;
 
-    public ComponentManager componentManager;
-
     public SubControllerManager subControllerManager;
     public EditorController[] controllers;
 
@@ -33,11 +31,6 @@ public class EditorController : MonoBehaviour, IController
 
         path = new_path.Trim(step);
 
-        /*
-        if(route != null && route.origin.listManager != null)
-            Debug.Log("Test 1:" + route.origin.listManager.listData.data.type);
-        */
-
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
         else
@@ -48,7 +41,7 @@ public class EditorController : MonoBehaviour, IController
             //Don't check this if force is true. Must load!
             if(!reload)
                 loaded = IsLoaded();
-
+            
             //If this hasn't loaded, force load the next one
             if (!loaded || reload)
             {
@@ -90,18 +83,32 @@ public class EditorController : MonoBehaviour, IController
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
         if (step > editorSection.previous_controller_path.route.Count)
             return false;
-
+        
         //If false then everything afterwards must be false as well
         return path.Equals(editorSection.previous_controller_path);
+    }
+
+    public bool GetComponents(Path new_path)
+    {
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step].controller].GetComponents(new_path);
+
+        return GetComponents<IComponent>().Count() > 0;
+    }
+
+    public void SetTabs(Path new_path)
+    {
+        if (subControllerManager != null)
+            subControllerManager.SetTabs(this, new_path);
+
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step].controller].SetTabs(new_path);
     }
 
     public bool SetComponents(Path new_path)
     {
         foreach (IComponent component in GetComponents<IComponent>())
-            component.SetComponent();
-
-        if (subControllerManager != null)
-            subControllerManager.SetTabs(this, new_path);
+            component.SetComponent(new_path);
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step].controller].SetComponents(new_path);
@@ -129,9 +136,6 @@ public class EditorController : MonoBehaviour, IController
 
     public void FinalizeController()
     {
-        if (route.origin.listManager != null)
-            SelectionManager.SelectEdit(route);
-
         if (GetComponent<ListProperties>() != null)
         {
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
@@ -141,7 +145,7 @@ public class EditorController : MonoBehaviour, IController
 
     public void FinalizeMainController()
     {
-        if(route.origin.listManager != null)
+        if (route.origin.listManager != null)
         {
             if (route.origin.listManager.selected_element == null)
                 route.origin.listManager.ResetListPosition();
@@ -150,10 +154,8 @@ public class EditorController : MonoBehaviour, IController
 
     void InitializeTabs(Path new_path)
     {
-
         if (step == new_path.route.Count)
-            new_path.Add();
-        
+            new_path.Add();      
     }
 
     public void FilterRows(List<ElementData> list) { }
@@ -194,8 +196,7 @@ public class EditorController : MonoBehaviour, IController
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
-        if (route.origin.listManager != null)
-            SelectionManager.CancelSelection(route);
+        SelectionManager.CancelSelection(route);
     
         if (GetComponent<ListData>() != null)
             GetComponent<ListData>().CloseRows();

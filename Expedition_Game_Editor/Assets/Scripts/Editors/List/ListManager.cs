@@ -17,7 +17,6 @@ public class ListManager : MonoBehaviour
     public PathManager      pathManager     { get; set; }
 
     public OverlayManager   overlayManager;
-    public ComponentManager    componentManager;
 
     private ScrollRect      scrollRect;
     public RectTransform    rectTransform { get; set; }
@@ -28,7 +27,6 @@ public class ListManager : MonoBehaviour
                             list_max;
 
     public Vector2          list_size       { get; set; }
-    public float            base_size       { get; set; }
 
     public List<SelectionElement> element_list = new List<SelectionElement>();
     public SelectionElement selected_element { get; set; }
@@ -47,18 +45,21 @@ public class ListManager : MonoBehaviour
 
         switch(listData.listProperties.listType)
         {
-            case ListProperties.Type.None:      organizer = null;                                       break;
-            case ListProperties.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>(); break;
-            case ListProperties.Type.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();   break;
-            case ListProperties.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();  break;
-            default:                                                                                    break;
+            case ListProperties.Type.None:      organizer = null;                                           break;
+            case ListProperties.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
+            case ListProperties.Type.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();       break;
+            case ListProperties.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
+            case ListProperties.Type.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
+            default:                                                                                        break;
         }
-  
+
         if (organizer == null) return;
 
         organizer.InitializeOrganizer();
 
-        overlayManager.InitializeOverlay(this);  
+        overlayManager.InitializeOverlay(this);
+
+        SelectionManager.lists.Add(this);
     }
 
     public void SetProperties(ListProperties listProperties)
@@ -66,8 +67,6 @@ public class ListManager : MonoBehaviour
         if (organizer == null) return;
 
         controller = listProperties.controller;
-
-        base_size = listProperties.base_size;
 
         scrollRect.horizontal = listProperties.horizontal;
         scrollRect.vertical   = listProperties.vertical;
@@ -87,7 +86,7 @@ public class ListManager : MonoBehaviour
 
         if (organizer == null) return;
 
-        organizer.SetListSize();
+        organizer.SetElementSize();
 
         overlayManager.ActivateOverlay(organizer);
 
@@ -138,31 +137,46 @@ public class ListManager : MonoBehaviour
     public void SelectElement(Route route)
     {
         if (selectionProperty == SelectionManager.Property.Set) return;
-
+        
         foreach(SelectionElement element in element_list)
         {
-            if (element.data.Equals(route.data))
-            {      
-                if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
+            //Check if element has child first
+            //If child data matches route data, check if property matches in case parent and child have same data
+            if (element.child != null && element.child.data.Equals(route.data))
+            {
+                if (element.child.selectionProperty == route.origin.selectionProperty)
+                {
                     element.child.ActivateSelection();
-                else
-                    element.ActivateSelection();
 
-                if (element.transform.position.x > list_max.x ||
-                    element.transform.position.x < list_min.x ||
-                    element.transform.position.z > list_max.z ||
-                    element.transform.position.z < list_min.z)
                     CorrectPosition(element);
 
+                    return;
+                }  
+            }
+
+            //Either child didn't exist or have matching property
+            //All that's left is for main element data to match the route data
+            if (element.data.Equals(route.data))
+            {
+                element.ActivateSelection();
+
+                CorrectPosition(element);
+
                 return;
-            }                    
+            }
         }
     }
 
     public void CorrectPosition(SelectionElement element)
     {
-        scrollRect.horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
-        scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size));
+        if (element.transform.position.x > list_max.x ||
+            element.transform.position.x < list_min.x ||
+            element.transform.position.z > list_max.z ||
+            element.transform.position.z < list_min.z)
+        {
+            scrollRect.horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
+            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size.y) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size.y));
+        }
     }
 
     public void CancelSelection(Route route)
@@ -208,6 +222,8 @@ public class ListManager : MonoBehaviour
         organizer.CloseList();
 
         element_list.Clear();
+
+        SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
     }
 
     public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, ElementData data)
@@ -233,9 +249,6 @@ public class ListManager : MonoBehaviour
     public void InitializeElement(SelectionElement element, ElementData data)
     {
         element.InitializeSelection(this, data, selectionProperty);
-
-        if (element.child != null)
-            element.child.InitializeSelection(this, data, SelectionManager.Property.Edit);
 
         element.transform.SetParent(list_parent, false);
     }

@@ -8,6 +8,8 @@ using System.Linq;
 
 public class EditorSection : MonoBehaviour
 {
+    public bool active { get; set; }
+
     public EditorForm formManager      { get; set; }
     public EditorController target_controller   { get; set; }
     public Path previous_controller_path        { get; set; }
@@ -44,7 +46,9 @@ public class EditorSection : MonoBehaviour
 
     public void OpenEditor()
     {
-        target_controller.OpenEditor();  
+        target_controller.OpenEditor();
+
+        active = true;
     }
 
     public void FinalizeController()
@@ -64,6 +68,8 @@ public class EditorSection : MonoBehaviour
 
         target_controller.CloseEditor();
 
-        target_controller = null;   
+        target_controller = null;
+
+        active = false;
     }
 }

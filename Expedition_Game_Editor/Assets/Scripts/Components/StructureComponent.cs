@@ -7,7 +7,7 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     public ListData listData;
 
-    public void SetComponent()
+    public void SetComponent(Path new_path)
     {
         EditorController controller = GetComponent<EditorController>();
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);

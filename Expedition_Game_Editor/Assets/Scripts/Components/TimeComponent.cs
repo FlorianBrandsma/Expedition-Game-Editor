@@ -10,7 +10,7 @@ public class TimeComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    public void SetComponent()
+    public void SetComponent(Path new_path)
     {
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 

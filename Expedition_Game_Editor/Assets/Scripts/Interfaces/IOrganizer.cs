@@ -8,10 +8,10 @@ public interface IOrganizer
 
     void SetProperties(ListProperties listProperties);
 
-    void SetListSize();
+    void SetElementSize();
     Vector2 GetListSize(List<ElementData> data_list, bool exact);
 
-    float element_size { get; set; }
+    Vector2 element_size { get; set; }
 
     void SetRows(List<ElementData> data_list);
     void ResetRows(List<ElementData> filter);

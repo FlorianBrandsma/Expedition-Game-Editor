@@ -53,8 +53,11 @@ public class EditorSegment : MonoBehaviour, IController
     {
         subController = new_subController;
 
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().GetData(subController.controller.route);
+        if(!subController.controller.loaded)
+        {
+            if (GetComponent<ListData>() != null)
+                GetComponent<ListData>().GetData(subController.controller.route);
+        }
 
         OpenSegment();
     }

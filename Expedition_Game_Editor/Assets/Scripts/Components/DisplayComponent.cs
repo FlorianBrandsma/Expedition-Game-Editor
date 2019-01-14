@@ -6,9 +6,9 @@ public class DisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    public void SetComponent()
+    public void SetComponent(Path new_path)
     {
-        Dropdown display_dropdown = GetComponent<EditorController>().componentManager.AddDropdown(component);
+        Dropdown display_dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         display_dropdown.onValueChanged.RemoveAllListeners();
 

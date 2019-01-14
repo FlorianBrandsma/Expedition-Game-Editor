@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 public class EditorTab : MonoBehaviour
 {
-    public EditorController controller;
-    public string tab_name;
+    public RectTransform label_rect;
+    public Text label;
 }

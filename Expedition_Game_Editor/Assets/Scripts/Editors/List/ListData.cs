@@ -34,7 +34,7 @@ public class ListData : MonoBehaviour
     public void GetData(string sql)
     {
         controller = GetComponent<IController>();
-        //Debug.Log("Load data");
+
         list = new List<ElementData>();
 
         for (int i = 0; i < id_count; i++)
