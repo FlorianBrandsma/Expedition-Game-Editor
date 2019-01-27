@@ -269,7 +269,7 @@ public class ComponentManager : MonoBehaviour
             }
         }
 
-        Button new_component = Instantiate(Resources.Load<Button>("UI/Button"));
+        Button new_component = Instantiate(Resources.Load<Button>("UI/ButtonComponent"));
 
         button_pool.Add(new_component);
 

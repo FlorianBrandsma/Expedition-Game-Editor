@@ -2,7 +2,7 @@
 {
     public SelectionManager.Property selectionProperty;
     public ListProperties.Type listType;
-    public ListManager listManager;
+    public SelectionElement selectionElement;
 
     public Origin(){ }
 
@@ -10,14 +10,14 @@
     {
         selectionProperty = element.selectionProperty;
         listType = element.listType;
-        listManager = element.listManager;
+        selectionElement = element;
     }
 
     public Origin(Origin selection)
     {
         selectionProperty = selection.selectionProperty;
         listType = selection.listType;
-        listManager = selection.listManager;
+        selectionElement = selection.selectionElement;
     }
 
     public bool Equals(SelectionElement element)

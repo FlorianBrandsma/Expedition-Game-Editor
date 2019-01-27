@@ -17,7 +17,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public void SetElement()
     {
         SelectionElement element = GetComponent<SelectionElement>();
-        properties = element.listManager.listData.listProperties.GetComponent<PanelProperties>();
+        properties = element.listManager.listProperties.GetComponent<PanelProperties>();
 
         if(properties.icon)
         {

@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(ListData))]
-
 public class ListProperties : MonoBehaviour
 {
     public enum Type
@@ -12,6 +10,8 @@ public class ListProperties : MonoBehaviour
         Panel,
         PanelTile,
     }
+
+    public ListData listData;
 
     public Type listType { get; set; }
 
@@ -36,7 +36,7 @@ public class ListProperties : MonoBehaviour
     public bool enable_sliders;
     public bool enable_numbers;
     public bool enable_paging;
-
+    
     public IController controller { get; set; }
 
     public void InitializeProperties(Route new_route)
@@ -63,19 +63,22 @@ public class ListProperties : MonoBehaviour
                     break;
                 default: break;
             }
-            
-            GetComponent<ListData>().data = route.data;
+
+            listData.data = route.data;
         } else {
 
             if (GetComponent<IProperties>() != null)
                 listType = GetComponent<IProperties>().Type();
-        } 
+        }
+
+        listData.GetData(route);
     }
 
     public void SetList()
     {
         controller = GetComponent<IController>();
-        listManager.SetProperties(this);
+
+        listManager.InitializeList(this);
 
         listManager.SetListSize();  
     }

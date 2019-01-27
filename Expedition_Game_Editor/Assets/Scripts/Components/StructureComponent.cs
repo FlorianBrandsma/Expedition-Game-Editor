@@ -5,7 +5,12 @@ public class StructureComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    public ListData listData;
+    public ListProperties listProperties;
+
+    public void InitializeComponent(Path new_path)
+    {
+
+    }
 
     public void SetComponent(Path new_path)
     {
@@ -15,19 +20,19 @@ public class StructureComponent : MonoBehaviour, IComponent
         dropdown.options.Clear();
         dropdown.onValueChanged.RemoveAllListeners();
 
-        for (int i = 0; i < listData.list.Count; i++)
+        for (int i = 0; i < listProperties.listData.list.Count; i++)
         {
-            dropdown.options.Add(new Dropdown.OptionData(listData.data.table + " " + i));
+            dropdown.options.Add(new Dropdown.OptionData(listProperties.listData.data.table + " " + i));
         }
         
-        int selected_index = listData.list.FindIndex(x => x.id == controller.route.data.id);
+        int selected_index = listProperties.listData.list.FindIndex(x => x.id == controller.route.data.id);
 
-        dropdown.captionText.text = listData.list[selected_index].table + " " + selected_index;
+        dropdown.captionText.text = listProperties.listData.list[selected_index].table + " " + selected_index;
         dropdown.value = selected_index;
 
         Path path = controller.path;
 
-        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, listData.list[dropdown.value]); });
+        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, listProperties.listData.list[dropdown.value]); });
     }
 
     public void OpenPath(Path path, ElementData data)

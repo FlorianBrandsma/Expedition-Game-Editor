@@ -1,20 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Path
 {
-    public List<Route> route { get; set; }
-    public EditorForm form   { get; set; }
+    public List<Route> route    { get; set; }
+    public EditorForm form      { get; set; }
+    public bool loaded          { get; set; }
+
+    //Where the controller should start walking through the path
+    //after it has been extended
+    public int start            { get; set; }
+
+    //Potential improvements:
+    //Remember the entire path
+    //Set starting point
 
     public Path()
     {
         route   = new List<Route>();
         form = null;
+        loaded = false;
     }
 
     public Path(List<Route> new_route, EditorForm new_form)
     {
         route   = new_route;
         form    = new_form;
+    }
+
+    public Path(List<Route> new_route, EditorForm new_form, int new_start)
+    {
+        route = new_route;
+        form = new_form;
+        start = new_start;
+    }
+
+    public Path(bool new_loaded)
+    {
+        route = new List<Route>();
+        form = null;
+        loaded = new_loaded;
     }
 
     #region Equals
@@ -40,7 +65,7 @@ public class Path
         if (route.Count > 0)
             Add(0, route[route.Count - 1].data, route[route.Count - 1].origin);
         else
-            Add(new Route());
+            Add(new Route(this));
     }
 
     public void Add(int index)
@@ -72,6 +97,9 @@ public class Path
             copy.route.Add(x);
 
         copy.form = form;
+        copy.loaded = loaded;
+
+        copy.start = start;
 
         return copy;
     }
@@ -83,7 +111,24 @@ public class Path
         for (int i = 0; i < step; i++)
             new_path.Add(route[i]);
 
+        new_path.start = start;
+
         return new_path;
+    }
+
+    public Route FindLastRoute(string table)
+    {
+        for(int i = route.Count-1; i > 0; i--)
+        {
+            if (route[i].data.table == table)
+                return route[i];   
+        }
+        return null;
+    }
+
+    public Route GetLastRoute()
+    {
+        return route[route.Count - 1];
     }
 
     public List<Route> CombineRoute(List<Route> new_route)

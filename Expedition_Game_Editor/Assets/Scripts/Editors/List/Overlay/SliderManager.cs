@@ -26,7 +26,7 @@ public class SliderManager : MonoBehaviour, IOverlay
     
     public void ActivateOverlay(IOrganizer organizer)
     {
-        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listData.list, true);
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listProperties.listData.list, true);
 
         bool horizontal = main_list.GetComponent<ScrollRect>().horizontal;
         bool vertical = main_list.GetComponent<ScrollRect>().vertical;

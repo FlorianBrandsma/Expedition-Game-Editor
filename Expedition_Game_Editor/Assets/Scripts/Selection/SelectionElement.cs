@@ -19,6 +19,7 @@ public class SelectionElement : MonoBehaviour
     public GameObject glow;
 
     public ListManager listManager { get; set; }
+    public IController controller { get; set; }
 
     //Active Property
     public bool selected;
@@ -29,6 +30,8 @@ public class SelectionElement : MonoBehaviour
             CancelSelection();
 
         listManager = new_listManager;
+
+        controller = listManager.listProperties.controller;
 
         data = new_data;
 
@@ -72,7 +75,16 @@ public class SelectionElement : MonoBehaviour
 
             switch (selectionProperty)
             {
-                case SelectionManager.Property.Open:
+                case SelectionManager.Property.Get:
+                    EditorManager.editorManager.OpenPath(editorPath.path);
+                    ActivateSelection();
+                    break;
+
+                case SelectionManager.Property.Set:
+                    SelectionManager.SelectSet(this);       
+                    break;
+
+                case SelectionManager.Property.Enter:
                     EditorManager.editorManager.OpenPath(editorPath.path);
                     break;
 
@@ -80,14 +92,8 @@ public class SelectionElement : MonoBehaviour
                     EditorManager.editorManager.OpenPath(editorPath.path);
                     break;
 
-                case SelectionManager.Property.Get:
+                case SelectionManager.Property.Open:
                     EditorManager.editorManager.OpenPath(editorPath.path);
-                    ActivateSelection();
-                    break;
-
-                case SelectionManager.Property.Set:
-                    SelectionManager.SelectSet(this);
-                    
                     break;
 
                 default:

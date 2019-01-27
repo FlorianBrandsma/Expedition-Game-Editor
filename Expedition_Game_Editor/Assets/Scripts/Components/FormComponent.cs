@@ -7,23 +7,26 @@ public class FormComponent : MonoBehaviour, IComponent
     public EditorComponent component;
 
     private bool initialized;
-
     private bool locked;
-    public bool manually_closed;
-
-    public bool auto_open;
-    public bool auto_close;
-
-    public bool open_once;
+    private bool manually_closed;
 
     //Don't reset form when opening
     public bool constant;
+    public bool auto_open;
+    public bool auto_close;
+    public bool open_once;
+    public bool reset_components;
 
     public EditorForm editorForm;
 
     public Texture2D open_icon, close_icon;
 
     private Button button;
+
+    public void InitializeComponent(Path new_path)
+    {
+
+    }
 
     public void SetComponent(Path new_path)
     {
@@ -58,10 +61,6 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         button = ComponentManager.componentManager.AddFormButton(component);
 
-        //new_element.data = element.data;
-        //new_element.selectionType = element.selectionType;
-        //new_element.listType = element.listType;
-
         button.onClick.AddListener(delegate { Interact(); });
     }
 
@@ -90,7 +89,9 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         editorForm.CloseForm(false);
         editorForm.GetComponent<LayoutManager>().ResetLayout();
-        ComponentManager.componentManager.SortComponents();
+
+        if(reset_components)
+            ComponentManager.componentManager.SortComponents();
 
         editorForm.ResetSibling();
 

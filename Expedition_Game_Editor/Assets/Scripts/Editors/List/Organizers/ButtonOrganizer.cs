@@ -40,7 +40,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
     public void SetElementSize()
     {
-        element_size = listManager.listData.listProperties.element_size;
+        element_size = listManager.listProperties.element_size;
     }
 
     public Vector2 GetListSize(List<ElementData> data_list, bool exact)
@@ -61,7 +61,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
             listManager.element_list.Add(element);
 
-            string label = listManager.listData.data.table + " " + i;
+            string label = listManager.listProperties.listData.data.table + " " + i;
             element.GetComponent<EditorButton>().label.text = label;
 
             //Debugging

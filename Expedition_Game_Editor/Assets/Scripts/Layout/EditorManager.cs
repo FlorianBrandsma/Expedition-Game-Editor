@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 public class EditorManager : MonoBehaviour
 {
     static public EditorManager editorManager;
@@ -36,7 +36,9 @@ public class EditorManager : MonoBehaviour
         if (GameObject.Find("Dropdown List") != null) return;
         
         if (Input.GetKeyUp(KeyCode.Escape))
-            PreviousEditor(); 
+            PreviousEditor();
+        if (Input.GetKeyUp(KeyCode.Space))
+            ResetEditor();
     }
 
     public void InitializePath(Path path)
@@ -67,6 +69,8 @@ public class EditorManager : MonoBehaviour
     {
         foreach (EditorForm form in forms)
             form.ResetPath();
+
+        SelectionManager.SelectElements();
     }
 
     static public void SelectElement(int id)
@@ -85,12 +89,12 @@ public class EditorManager : MonoBehaviour
         string str = "route: ";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].controller + ",";
+            str += path.route[i].controller + "/";
 
-        str += "id: ";
+        str += ", id: ";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].data.id + ",";
+            str += path.route[i].data.table + "-" + path.route[i].data.id + "/";
 
         return str;
     }

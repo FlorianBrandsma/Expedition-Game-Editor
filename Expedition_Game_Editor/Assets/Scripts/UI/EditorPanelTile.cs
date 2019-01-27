@@ -16,7 +16,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     public void SetElement()
     {
         SelectionElement element = GetComponent<SelectionElement>();
-        properties = element.listManager.listData.listProperties.GetComponent<PanelTileProperties>();
+        properties = element.listManager.listProperties.GetComponent<PanelTileProperties>();
 
         if (properties.icon)
         {

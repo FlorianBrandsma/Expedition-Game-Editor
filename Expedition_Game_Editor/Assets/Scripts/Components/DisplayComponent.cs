@@ -6,6 +6,11 @@ public class DisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
+    public void InitializeComponent(Path new_path)
+    {
+
+    }
+
     public void SetComponent(Path new_path)
     {
         Dropdown display_dropdown = ComponentManager.componentManager.AddDropdown(component);

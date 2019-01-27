@@ -4,11 +4,14 @@
     public ElementData data { get; set; }
     public Origin origin { get; set; }
 
-    public Route()
+    public Path path { get; set; }
+
+    public Route(Path new_path)
     {
         controller = 0;
         data = new ElementData();
         origin = new Origin();
+        path = new_path;
     }
 
     public Route(Route route)
@@ -16,6 +19,7 @@
         controller = route.controller;
         data = route.data;
         origin = route.origin;
+        path = route.path;
     }
 
     public Route(int new_controller, ElementData new_data, Origin new_origin)
@@ -30,6 +34,7 @@
         controller = 0;
         data = selection.data.Copy();
         origin = new Origin(selection);
+        path = selection.controller.path;
     }
 
     public bool Equals(Route new_route)

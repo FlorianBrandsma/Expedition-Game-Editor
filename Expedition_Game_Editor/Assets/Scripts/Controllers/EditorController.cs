@@ -11,7 +11,7 @@ public class EditorController : MonoBehaviour, IController
     public int step     { get; set; }
 
     public bool loaded  { get; set; }
-
+    public bool isLoaded;
     public HistoryElement   history;
 
     public EditorSection    editorSection;
@@ -25,7 +25,7 @@ public class EditorController : MonoBehaviour, IController
     public void InitializePath(Path new_path, int new_step, bool reload)
     {
         editorSection.target_controller = this;
-        editorSection.formManager.main_controller = this;
+        editorSection.editorForm.main_controller = this;
 
         step = new_step;
 
@@ -34,10 +34,12 @@ public class EditorController : MonoBehaviour, IController
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
         else
-            route = new Route();
+            route = new Route(path);
 
         if (step > 0)
         {
+            //Can probably be simplified with path.loaded
+
             //Don't check this if force is true. Must load!
             if(!reload)
                 loaded = IsLoaded();
@@ -45,15 +47,17 @@ public class EditorController : MonoBehaviour, IController
             //If this hasn't loaded, force load the next one
             if (!loaded || reload)
             {
-                if (GetComponent<ListData>() != null)
-                    GetComponent<ListData>().GetData(route);
-
+                if (GetComponent<ListProperties>() != null)
+                    GetComponent<ListProperties>().InitializeProperties(route);
+                
                 reload = true;
             } 
         }
 
         if (subControllerManager != null)
             InitializeTabs(new_path);
+
+        InitializeComponents(new_path);
 
         if (step < new_path.route.Count)
         {
@@ -67,6 +71,8 @@ public class EditorController : MonoBehaviour, IController
 
     private void FinalizePath()
     {
+        path.loaded = true;
+
         if (history.group != HistoryManager.Group.None)
             history.AddHistory(path);
     }
@@ -83,7 +89,9 @@ public class EditorController : MonoBehaviour, IController
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
         if (step > editorSection.previous_controller_path.route.Count)
             return false;
-        
+
+        //Debug.Log(EditorManager.PathString(path) + ":" + EditorManager.PathString(editorSection.previous_controller_path));
+
         //If false then everything afterwards must be false as well
         return path.Equals(editorSection.previous_controller_path);
     }
@@ -105,6 +113,12 @@ public class EditorController : MonoBehaviour, IController
             controllers[new_path.route[step].controller].SetTabs(new_path);
     }
 
+    private void InitializeComponents(Path new_path)
+    {
+        foreach (IComponent component in GetComponents<IComponent>())
+            component.InitializeComponent(new_path);
+    }
+
     public bool SetComponents(Path new_path)
     {
         foreach (IComponent component in GetComponents<IComponent>())
@@ -121,8 +135,8 @@ public class EditorController : MonoBehaviour, IController
         if (buttonActionManager != null)
             buttonActionManager.SetButtons(this);
 
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().SetRows();
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().SetList();
 
         if (GetComponent<PreviewProperties>() != null)
             GetComponent<PreviewProperties>().SetPreview();
@@ -141,15 +155,6 @@ public class EditorController : MonoBehaviour, IController
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
                 GetComponent<ListProperties>().AutoSelectElement();
         }  
-    }
-
-    public void FinalizeMainController()
-    {
-        if (route.origin.listManager != null)
-        {
-            if (route.origin.listManager.selected_element == null)
-                route.origin.listManager.ResetListPosition();
-        }
     }
 
     void InitializeTabs(Path new_path)
@@ -198,8 +203,8 @@ public class EditorController : MonoBehaviour, IController
 
         SelectionManager.CancelSelection(route);
     
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().CloseRows();
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().CloseList();
 
         if (GetComponent<PreviewProperties>() != null)
             GetComponent<PreviewProperties>().ClosePreview();

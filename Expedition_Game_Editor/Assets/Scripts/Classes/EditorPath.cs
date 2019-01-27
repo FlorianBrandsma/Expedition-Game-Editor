@@ -1,6 +1,8 @@
-﻿public class EditorPath
+﻿using UnityEngine;
+
+public class EditorPath
 {
-    public Path path    = new Path();
+    public Path path = new Path();
 
     public EditorPath(Route route, SelectionManager.Property property)
     {
@@ -10,8 +12,8 @@
 
                 PathManager.Structure chapter = new PathManager.Structure(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = chapter.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = chapter.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = chapter.Edit();
@@ -22,8 +24,8 @@
 
                 PathManager.Structure phase = new PathManager.Structure(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = phase.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = phase.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = phase.Edit();
@@ -34,8 +36,8 @@
 
                 PathManager.Structure quest = new PathManager.Structure(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = quest.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = quest.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = quest.Edit();
@@ -46,8 +48,8 @@
 
                 PathManager.Structure step = new PathManager.Structure(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = step.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = step.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = step.Edit();
@@ -58,8 +60,8 @@
 
                 PathManager.Structure task = new PathManager.Structure(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = task.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = task.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = task.Edit();
@@ -70,20 +72,20 @@
 
                 PathManager.Region region = new PathManager.Region(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = region.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = region.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = region.Edit();
+
+                if (property == SelectionManager.Property.Open)
+                    path = region.Open();
 
                 break;
 
             case "Terrain":
 
                 PathManager.Terrain terrain = new PathManager.Terrain(route);
-
-                if (property == SelectionManager.Property.Open)
-                    path = terrain.Open();
 
                 if (property == SelectionManager.Property.Edit)
                     path = terrain.Edit();
@@ -94,8 +96,8 @@
 
                 PathManager.TerrainItem terrainItem = new PathManager.TerrainItem(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = terrainItem.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = terrainItem.Enter();
 
                 break;
 
@@ -103,8 +105,8 @@
 
                 PathManager.Item item = new PathManager.Item(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = item.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = item.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = item.Edit();
@@ -118,8 +120,8 @@
 
                 PathManager.Element element = new PathManager.Element(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = element.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = element.Enter();
 
                 if (property == SelectionManager.Property.Edit)
                     path = element.Edit();
@@ -133,8 +135,8 @@
 
                 PathManager.Option option = new PathManager.Option(route);
 
-                if (property == SelectionManager.Property.Open)
-                    path = option.Open();
+                if (property == SelectionManager.Property.Enter)
+                    path = option.Enter();
 
             break;
 

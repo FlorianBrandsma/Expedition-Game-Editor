@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 static public class SelectionManager
@@ -16,7 +17,8 @@ static public class SelectionManager
         Get,
         Set,
         Edit,
-        Open,
+        Enter,
+        Open
     }
 
     static public List<ListManager> lists = new List<ListManager>();
@@ -43,7 +45,12 @@ static public class SelectionManager
     static public void SelectEdit(Route route)
     {
         foreach(ListManager list in lists)
-            list.SelectElement(route);      
+        {
+            Property property = list.listProperties.selectionProperty;
+
+            if(property == Property.Edit || property == Property.Enter)
+                list.SelectElement(route);
+        }           
     }
 
     static public void SelectGet(SelectionElement new_get)

@@ -12,6 +12,11 @@ public class LanguageComponent : MonoBehaviour, IComponent
 
     private LanguageManager.Language language;
 
+    public void InitializeComponent(Path new_path)
+    {
+
+    }
+
     public void SetComponent(Path new_path)
     {
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);

@@ -28,11 +28,13 @@ public class EditorForm : MonoBehaviour
 
     public void InitializePath(Path path)
     {
+        //Debug.Log(EditorManager.PathString(path));
+
         //Close the initialization of previous path
         CloseForm(main_form);
 
         //Determine the target controller
-        baseController.InitializePath(path, 0, false);
+        baseController.InitializePath(path, path.start, false);
         
         //Save previous target to compare data with
         SetPreviousTarget();
@@ -50,7 +52,7 @@ public class EditorForm : MonoBehaviour
 
         //Load specific editor (and add to history)
         OpenEditor();
-
+ 
         //Follow the same path to activate anything along its way
         //If the path contains any component, sort them afterwards
         if (baseController.SetComponents(path))
@@ -67,35 +69,6 @@ public class EditorForm : MonoBehaviour
         InitializePath(path);
 
         ResetSibling();
-    }
-
-    public void ResetPath()
-    {
-        if(active)
-            InitializePath(active_path);
-    }
-
-    public void ResetSibling()
-    {
-        if(sibling_form != null)
-            sibling_form.ResetPath();
-    }
-
-    public void CloseForm(bool close_components)
-    {
-        if (active)
-        {
-            if (close_components)
-                ComponentManager.componentManager.CloseComponents();
-
-            foreach (EditorSection section in editor_sections)
-            {
-                if (section.target_controller != null)
-                    section.ClosePath(active_path);
-            }
-
-            active = false;
-        } 
     }
 
     private void SetPreviousTarget()
@@ -147,9 +120,45 @@ public class EditorForm : MonoBehaviour
         {
             if (section.target_controller != null)
                 section.FinalizeController();
-        }
+        }       
+    }
 
-        if (main_controller != null)
-            main_controller.FinalizeMainController();  
+    public void ResetPath()
+    {
+        if (active)
+            InitializePath(active_path);
+    }
+
+    public void ResetSibling()
+    {
+        if (sibling_form != null)
+            sibling_form.ResetPath();
+    }
+
+    public void CloseForm(bool close_components)
+    {
+        if (active)
+        {
+            if (close_components)
+                CloseComponents();
+
+            ClosePath();
+
+            active = false;
+        }
+    }
+
+    private void CloseComponents()
+    {
+        ComponentManager.componentManager.CloseComponents();
+    }
+
+    private void ClosePath()
+    {
+        foreach (EditorSection section in editor_sections)
+        {
+            if (section.target_controller != null)
+                section.ClosePath(active_path);
+        }
     }
 }

@@ -13,13 +13,13 @@ public class ListManager : MonoBehaviour
     public SelectionManager.Property  selectionProperty   { get; set; }
     public SelectionManager.Type      selectionType       { get; set; }
 
-    public ListData         listData        { get; set; }
+    public ListProperties   listProperties  { get; set; }
     public PathManager      pathManager     { get; set; }
 
     public OverlayManager   overlayManager;
 
-    private ScrollRect      scrollRect;
-    public RectTransform    rectTransform { get; set; }
+    public ScrollRect       scrollRect      { get; set; }
+    public RectTransform    rectTransform   { get; set; }
 
     public RectTransform    list_parent;
 
@@ -31,19 +31,17 @@ public class ListManager : MonoBehaviour
     public List<SelectionElement> element_list = new List<SelectionElement>();
     public SelectionElement selected_element { get; set; }
 
-    //private bool always_on;
-
     private void Awake()
     {
         scrollRect      = GetComponent<ScrollRect>();
         rectTransform   = GetComponent<RectTransform>();
     }
 
-    public void InitializeList(ListData new_listData)
+    public void InitializeList(ListProperties new_listProperties)
     {
-        listData = new_listData;
+        listProperties = new_listProperties;
 
-        switch(listData.listProperties.listType)
+        switch(listProperties.listType)
         {
             case ListProperties.Type.None:      organizer = null;                                           break;
             case ListProperties.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
@@ -60,9 +58,11 @@ public class ListManager : MonoBehaviour
         overlayManager.InitializeOverlay(this);
 
         SelectionManager.lists.Add(this);
+
+        SetProperties();
     }
 
-    public void SetProperties(ListProperties listProperties)
+    public void SetProperties()
     {
         if (organizer == null) return;
 
@@ -73,7 +73,6 @@ public class ListManager : MonoBehaviour
 
         selectionProperty = listProperties.selectionProperty;
         selectionType = listProperties.selectionType;
-        //always_on = listProperties.always_on;
 
         organizer.SetProperties(listProperties);
 
@@ -82,7 +81,7 @@ public class ListManager : MonoBehaviour
 
     public void SetListSize()
     {
-        if (listData.list.Count == 0) return;
+        if (listProperties.listData.list.Count == 0) return;
 
         if (organizer == null) return;
 
@@ -92,9 +91,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        list_parent.sizeDelta = organizer.GetListSize(listData.list, true);
+        list_parent.sizeDelta = organizer.GetListSize(listProperties.listData.list, true);
 
-        list_size = organizer.GetListSize(listData.list, false);
+        list_size = organizer.GetListSize(listProperties.listData.list, false);
 
         SetRows();
 
@@ -103,8 +102,8 @@ public class ListManager : MonoBehaviour
         list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
-        if (!listData.controller.loaded)
-            ResetListPosition();   
+        //if (!listProperties.controller.loaded)
+        ResetListPosition();   
     }
 
     public void ResetListPosition()
@@ -117,14 +116,14 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.SetRows(listData.list);
+        organizer.SetRows(listProperties.listData.list);
     }
 
     public void ResetRows()
     {
         if (organizer == null) return;
 
-        organizer.ResetRows(listData.list);
+        organizer.ResetRows(listProperties.listData.list);
     }
 
     public void UpdateRows()
@@ -175,7 +174,7 @@ public class ListManager : MonoBehaviour
             element.transform.position.z < list_min.z)
         {
             scrollRect.horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
-            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size.y) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size.y));
+            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - organizer.element_size.y) / 2)) / (list_parent.sizeDelta.y - (organizer.element_size.y));
         }
     }
 

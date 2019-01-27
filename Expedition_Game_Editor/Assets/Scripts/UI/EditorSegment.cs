@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class EditorSegment : MonoBehaviour, IController
 {
-    private SubController subController { get; set; }
+    public SubController subController { get; set; }
 
     public bool loaded { get; set; }
 
@@ -53,10 +53,12 @@ public class EditorSegment : MonoBehaviour, IController
     {
         subController = new_subController;
 
+        path = subController.controller.path;
+
         if(!subController.controller.loaded)
         {
-            if (GetComponent<ListData>() != null)
-                GetComponent<ListData>().GetData(subController.controller.route);
+            if (GetComponent<ListProperties>() != null)
+                GetComponent<ListProperties>().InitializeProperties(subController.controller.route);
         }
 
         OpenSegment();
@@ -64,10 +66,10 @@ public class EditorSegment : MonoBehaviour, IController
 
     public void FilterRows(List<ElementData> list)
     {
-        if (GetComponent<ListData>() != null)
+        if (GetComponent<ListProperties>() != null)
         {
-            GetComponent<ListData>().CloseRows();
-            GetComponent<ListData>().list = new List<ElementData>(list);
+            GetComponent<ListProperties>().CloseList();
+            GetComponent<ListProperties>().listData.list = new List<ElementData>(list);
         }
 
         OpenSegment();
@@ -77,14 +79,14 @@ public class EditorSegment : MonoBehaviour, IController
     {
         GetComponent<IEditor>().OpenEditor();
 
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().SetRows();
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().SetList();
     }
 
     public void CloseSegment()
     {
-        if (GetComponent<ListData>() != null)
-            GetComponent<ListData>().CloseRows();
+        if (GetComponent<ListProperties>() != null)
+            GetComponent<ListProperties>().CloseList();
     }
 
     #region IController

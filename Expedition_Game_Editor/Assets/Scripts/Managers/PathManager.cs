@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 public class PathManager
@@ -17,7 +18,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(source, form);
+            return CreatePath(CreateRoutes(source, form), form);
         }
     }
 
@@ -38,7 +39,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(source, form);
+            return CreatePath(CreateRoutes(source, form), form);
         }
     }
 
@@ -55,8 +56,8 @@ public class PathManager
 
         Path path;
 
-        int open = 0;
-        int edit = 1;
+        int enter   = 0;
+        int edit    = 1;
 
         EditorForm form  = EditorManager.editorManager.forms[0];
 
@@ -64,12 +65,12 @@ public class PathManager
         {
             route = new_route;
 
-            path = route.origin.listManager.listData.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.controller.path;
         }
 
-        public Path Open()
+        public Path Enter()
         {
-            route.controller = open;
+            route.controller = enter;
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
 
@@ -85,7 +86,7 @@ public class PathManager
 
     public class Item
     { 
-        List<int> open;
+        List<int> enter;
         List<int> edit;
         List<int> get;
 
@@ -95,27 +96,27 @@ public class PathManager
         {
             route = new_route;
 
-            open    = new List<int>() { 0, 0, 0, route.data.type };
+            enter   = new List<int>() { 0, 0, 0, route.data.type };
             edit    = new List<int>() { 0, 1, 0, route.data.type };
             get     = new List<int>() { 1 };
         }
 
-        public Path Open()
+        public Path Enter()
         {
             EditorForm form = EditorManager.editorManager.forms[1];
-            return CreatePath(open, route, form);
+            return CreatePath(CreateRoutes(enter, route), form);
         }
 
         public Path Edit()
         {
             EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(edit, route, form);
+            return CreatePath(CreateRoutes(edit, route), form);
         }
 
         public Path Get()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(get, route, form);
+            return CreatePath(CreateRoutes(get, route), form);
         }
     }
 
@@ -125,7 +126,7 @@ public class PathManager
 
     public class Element
     {
-        int open;
+        int enter;
         List<int> edit;
 
         Route route;
@@ -133,17 +134,17 @@ public class PathManager
 
         public Element(Route new_route)
         {
-            route = new_route;
+            route   = new_route;
 
-            open    = 0;
+            enter   = 0;
             edit    = new List<int>() { 0, 1, 1, new_route.data.type };
         }
 
-        public Path Open()
+        public Path Enter()
         {
-            route.controller = open;
+            route.controller = enter;
 
-            path = route.origin.listManager.listData.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.controller.path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
@@ -152,7 +153,7 @@ public class PathManager
         public Path Edit()
         {
             EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(edit, route, form);
+            return CreatePath(CreateRoutes(edit, route), form);
         }
 
         public Path Get()
@@ -167,26 +168,54 @@ public class PathManager
 
     public class Region
     {
-        List<int> open  = new List<int>() { 0, 2 };
+        List<int> enter = new List<int>() { 0, 2 };
         List<int> edit  = new List<int>() { 0, 3 };
 
+        EditorForm form = EditorManager.editorManager.forms[0];
         Route route;
+        Path path;
 
         public Region(Route new_route)
         {
             route = new_route;
         }
 
-        public Path Open()
+        public Path Enter()
         {
-            EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(open, route, form);
+            //CreatePath OR ExtendPath based on route.data.type
+            //Phase and Task extends current path
+            //Base stands alone
+            List<Route> routes;
+
+            switch (route.data.type)
+            {
+                case (int)RegionManager.Type.Base:
+                    return CreatePath(CreateRoutes(enter, route), form);
+
+                case (int)RegionManager.Type.Phase:
+                    routes = CreateRoutes(enter, route);
+                    return ExtendPath(route.path, routes);
+
+                case (int)RegionManager.Type.Task:
+                    routes = CreateRoutes(enter, route);
+                    return ExtendPath(route.path, routes);
+            }
+
+            return null;
         }
 
         public Path Edit()
         {
-            EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(edit, route, form);
+            return CreatePath(CreateRoutes(edit, route), form);
+        }
+
+        public Path Open()
+        {
+            List<int> open = new List<int>() { 1, route.data.type };
+
+            Route custom_route = new Route(1, route.data, route.origin);
+
+            return ExtendPath(route.path, CreateRoutes(open, custom_route));
         }
     }
 
@@ -197,7 +226,7 @@ public class PathManager
     public class Terrain
     {
         int edit = 0;
-        List<int> open;
+        List<int> enter;
 
         Route route;
         Path path;
@@ -206,47 +235,37 @@ public class PathManager
 
         public Terrain(Route new_route)
         {
-            route = new_route;
-
-            open = new List<int>() { 1, route.data.type, 0 };
-        }
-
-        //First step: Default 
-
-        public Path Open()
-        {
-            EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(open, route, form);
+            route = new_route;          
         }
 
         public Path Edit()
         {
             route.controller = edit;
 
-            path = route.origin.listManager.listData.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.controller.path;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form);
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
     }
 
     public class TerrainItem
     {
-        List<int> open;
-
+        Path path;
         Route route;
-
         EditorForm form = EditorManager.editorManager.forms[0];
 
         public TerrainItem(Route new_route)
         {
-            route = new_route;
-            //route[1] is hardcoded. Could be dangerous?
-            open = new List<int>() { 1, form.active_path.route[1].controller, 0, route.data.type };
+            route = new Route(new_route.data.type, new_route.data, new_route.origin);
+
+            path = form.active_path.Trim(form.active_path.start + 3);
+            
+            path.Add(route);
         }
 
-        public Path Open()
+        public Path Enter()
         {
-            return CreatePath(open, route, form);
+            return path;
         }
     }
 
@@ -256,7 +275,7 @@ public class PathManager
 
     public class Option
     {
-        List<int> open = new List<int>() { 0 };
+        List<int> enter = new List<int>() { 0 };
 
         Route route;
 
@@ -265,10 +284,10 @@ public class PathManager
             route = new_route;
         }
 
-        public Path Open()
+        public Path Enter()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(open, route, form);
+            return CreatePath(CreateRoutes(enter, route), form);
         }
     }
 
@@ -280,26 +299,61 @@ public class PathManager
 
     #region Functions
 
-    static public Path CreatePath(List<int> new_controllers, EditorForm new_form)
+    //RouteManager?
+    static public List<Route> CreateRoutes(List<int> new_controllers, EditorForm new_form)
     {
-        return CreatePath(new_controllers, new Route(), new_form);
+        return CreateRoutes(new_controllers, new Route(new_form.active_path));
     }
 
-    static public Path CreatePath(List<int> new_controllers, Route new_route, EditorForm new_form)
+    static public List<Route> CreateRoutes(List<int> new_controllers, Route new_route)
     {
-        Path path = new Path();
-
-        path.form = new_form;
+        List<Route> routes = new List<Route>();
 
         for (int i = 0; i < new_controllers.Count; i++)
-            path.route.Add(new Route(new_controllers[i], new_route.data, new_route.origin));
+            routes.Add(new Route(new_controllers[i], new_route.data, new_route.origin));
+
+        return routes;
+    }
+
+    static public Path CreatePath(List<Route> new_routes, EditorForm new_form)
+    {
+        Path path = new Path();
+        path.form = new_form;
+
+        foreach (Route route in new_routes)
+            path.Add(route);
+
+        return path;
+    }
+
+    static public Path ExtendPath(Path head, List<Route> tail)
+    {
+        //ExtendPath will be used to create full Paths
+
+        //In certain cases, new paths get created while they're still very much connected to their origin,
+        //whereas other created paths are completely separate
+
+        //In the case of opening a region through a phase, a new path is created and it no longer needs
+        //its origin to render. The information is still important.
+
+        //Opening an asset creates a path, but is not a part of anything else and can therefor stand alone.
+
+        //The manager is fed the full path WHILE ALSO noting where it should start.
+        //If a path has been extended, this will not start at 0 as it currently does,
+        //but at the start of the newly added path piece
+
+        //The step can be stored in the form
+
+        //Closing can be done the same way, as a clear screen is a good screen!
+
+        Path path = new Path(head.CombineRoute(tail), head.form, head.route.Count);
 
         return path;
     }
 
     static public Path ReloadPath(Path new_path, ElementData new_data)
     {
-        Path path = new Path();
+        Path path = new Path(true);
 
         path.form = new_path.form;
 
@@ -307,6 +361,24 @@ public class PathManager
             path.Add(route);
 
         path.route.Last().data = new_data;
+
+        path.start = new_path.start;
+
+        return path;
+    }
+
+    static public Path ReloadPath(Path new_path, ElementData new_data, int step)
+    {
+        Path path = new Path(true);
+
+        path.form = new_path.form;
+
+        foreach (Route route in new_path.route)
+            path.Add(route);
+
+        path.route[step].data = new_data;
+
+        path.start = new_path.start;
 
         return path;
     }

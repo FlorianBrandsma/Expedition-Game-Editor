@@ -48,7 +48,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
 
     public void SetElementSize()
     {
-        element_size = listManager.listData.listProperties.element_size;
+        element_size = listManager.listProperties.element_size;
     }
 
     public Vector2 GetListSize(List<ElementData> data_list, bool exact)
@@ -117,7 +117,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
                 listManager.element_list.Add(element);
 
                 //Debugging
-                element.name = listManager.listData.data.table + " " + i;
+                element.name = listManager.listProperties.listData.data.table + " " + i;
 
                 SetElement(element);
 

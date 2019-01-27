@@ -10,14 +10,14 @@ public class EditorSection : MonoBehaviour
 {
     public bool active { get; set; }
 
-    public EditorForm formManager      { get; set; }
+    public EditorForm editorForm                { get; set; }
     public EditorController target_controller   { get; set; }
     public Path previous_controller_path        { get; set; }
 
     public void InitializeSection(EditorForm new_form)
     {
         //Remove this later
-        formManager = new_form;
+        editorForm = new_form;
     }
 
     public void SetPreviousTarget()
@@ -64,7 +64,7 @@ public class EditorSection : MonoBehaviour
         if (target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().CloseDependency();
 
-        formManager.baseController.ClosePath(active_path);
+        editorForm.baseController.ClosePath(active_path);
 
         target_controller.CloseEditor();
 
