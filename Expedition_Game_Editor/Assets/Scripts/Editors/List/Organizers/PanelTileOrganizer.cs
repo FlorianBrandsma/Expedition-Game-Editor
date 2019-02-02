@@ -116,7 +116,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer
                 }
 
                 //Debugging
-                element.name = listManager.listProperties.listData.data.table + " " + i;
+                element.name = listManager.listProperties.dataList.data.table + " " + i;
 
                 SetElement(element);
 

@@ -25,7 +25,7 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer)
     {
-        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listProperties.listData.list, false);
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listProperties.dataList.list, false);
 
         if (list_size.x > 0)
             overlayManager.horizontal_min.gameObject.SetActive(true);

@@ -26,7 +26,7 @@ public class EditorForm : MonoBehaviour
             section.InitializeSection(this);
     }
 
-    public void InitializePath(Path path)
+    public void InitializePath(Path path, bool reload = false)
     {
         //Debug.Log(EditorManager.PathString(path));
 
@@ -34,7 +34,7 @@ public class EditorForm : MonoBehaviour
         CloseForm(main_form);
 
         //Determine the target controller
-        baseController.InitializePath(path, path.start, false);
+        baseController.InitializePath(path, path.start, reload);
         
         //Save previous target to compare data with
         SetPreviousTarget();
@@ -62,6 +62,10 @@ public class EditorForm : MonoBehaviour
         active = true;
 
         FinalizeController();
+
+        baseController.FinalizePath(path);
+
+        path.type = Path.Type.Loaded;
     }
 
     public void OpenPath(Path path)
@@ -126,7 +130,7 @@ public class EditorForm : MonoBehaviour
     public void ResetPath()
     {
         if (active)
-            InitializePath(active_path);
+            InitializePath(active_path, true);
     }
 
     public void ResetSibling()

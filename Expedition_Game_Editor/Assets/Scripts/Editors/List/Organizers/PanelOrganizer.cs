@@ -46,13 +46,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
         if (properties.zigzag)
             new_anchors = right_anchor;
 
-        for (int i = 0; i < listManager.listProperties.listData.list.Count; i++)
+        for (int i = 0; i < listManager.listProperties.dataList.list.Count; i++)
         {
-            string new_header = listManager.listProperties.listData.list[i].ToString();
+            string new_header = listManager.listProperties.dataList.list[i].ToString();
 
             if (i > 0)
             {
-                if (new_header == "id: " + listManager.listProperties.listData.list[i - 1].id)
+                if (new_header == "id: " + listManager.listProperties.dataList.list[i - 1].id)
                     new_header = "";
 
                 if (properties.zigzag)
@@ -81,13 +81,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
 
         float position_sum = 0;
 
-        for (int i = 0; i < listManager.listProperties.listData.list.Count; i++)
+        for (int i = 0; i < listManager.listProperties.dataList.list.Count; i++)
         {
-            string new_header = listManager.listProperties.listData.data.table + " " + i;
+            string new_header = listManager.listProperties.dataList.data.table + " " + i;
 
             if (i > 0)
             {   //If header is the same as the previous one
-                if (new_header == listManager.listProperties.listData.data.table + " " + (i - 1))
+                if (new_header == listManager.listProperties.dataList.data.table + " " + (i - 1))
                     new_header = "";
             }
 
@@ -158,7 +158,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = listManager.listProperties.listData.list.IndexOf(element.data);
+        int index = listManager.listProperties.dataList.list.IndexOf(element.data);
 
         rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.list_parent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
         rect.offsetMax = new Vector2(rect.offsetMax.x, -row_offset_max[index]);

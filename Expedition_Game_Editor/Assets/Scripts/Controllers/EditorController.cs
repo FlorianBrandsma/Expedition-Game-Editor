@@ -11,7 +11,7 @@ public class EditorController : MonoBehaviour, IController
     public int step     { get; set; }
 
     public bool loaded  { get; set; }
-    public bool isLoaded;
+
     public HistoryElement   history;
 
     public EditorSection    editorSection;
@@ -38,18 +38,16 @@ public class EditorController : MonoBehaviour, IController
 
         if (step > 0)
         {
-            //Can probably be simplified with path.loaded
-
             //Don't check this if force is true. Must load!
             if(!reload)
                 loaded = IsLoaded();
-            
+
             //If this hasn't loaded, force load the next one
             if (!loaded || reload)
             {
                 if (GetComponent<ListProperties>() != null)
                     GetComponent<ListProperties>().InitializeProperties(route);
-                
+
                 reload = true;
             } 
         }
@@ -62,19 +60,23 @@ public class EditorController : MonoBehaviour, IController
         if (step < new_path.route.Count)
         {
             controllers[new_path.route[step].controller].InitializePath(new_path, new_step + 1, reload);
-
-        } else {
-
-            FinalizePath();
         }
     }
 
-    private void FinalizePath()
+    private void SetHistory()
     {
-        path.loaded = true;
-
         if (history.group != HistoryManager.Group.None)
             history.AddHistory(path);
+    }
+
+    public void FinalizePath(Path new_path)
+    {
+        path.type = Path.Type.Loaded;
+
+        if (step < new_path.route.Count)
+            controllers[new_path.route[step].controller].FinalizePath(new_path);
+        else
+            SetHistory();
     }
 
     public bool IsLoaded()
@@ -89,8 +91,6 @@ public class EditorController : MonoBehaviour, IController
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
         if (step > editorSection.previous_controller_path.route.Count)
             return false;
-
-        //Debug.Log(EditorManager.PathString(path) + ":" + EditorManager.PathString(editorSection.previous_controller_path));
 
         //If false then everything afterwards must be false as well
         return path.Equals(editorSection.previous_controller_path);
@@ -127,6 +127,8 @@ public class EditorController : MonoBehaviour, IController
         if (step < new_path.route.Count)
             controllers[new_path.route[step].controller].SetComponents(new_path);
 
+        //path.type = Path.Type.Loaded;
+
         return GetComponents<IComponent>().Count() > 0;
     }
 
@@ -154,7 +156,9 @@ public class EditorController : MonoBehaviour, IController
         {
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
                 GetComponent<ListProperties>().AutoSelectElement();
-        }  
+        }
+
+        //path.type = Path.Type.Loaded;
     }
 
     void InitializeTabs(Path new_path)

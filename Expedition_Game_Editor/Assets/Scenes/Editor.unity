@@ -679,7 +679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -1172,7 +1171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 0}
@@ -1580,7 +1578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -2541,7 +2538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 6
   editorSection: {fileID: 1685155425}
@@ -3243,7 +3239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -3335,7 +3330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -3691,7 +3685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 0}
@@ -4463,7 +4456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -4492,7 +4485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -4758,12 +4750,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: 
       id: 0
       type: 0
-    id_count: 56
+    id_count: 42
   flexible_type: 0
   listManager: {fileID: 1876393015}
   selectionType: 0
@@ -4990,7 +4982,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -5228,7 +5219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -5525,7 +5515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Group
       id: 0
@@ -6140,7 +6130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -7168,7 +7157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -7461,7 +7449,7 @@ MonoBehaviour:
     table: 
     id: 0
     type: 0
-  temp_description: 
+  temp_description: Nothing?
   reference_area: {fileID: 1671440038}
 --- !u!114 &226968969
 MonoBehaviour:
@@ -7474,12 +7462,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
-      table: Region
+      table: 
       id: 0
-      type: 1
-    id_count: 15
+      type: 0
+    id_count: 0
   flexible_type: 0
   listManager: {fileID: 1313395481}
   selectionType: 1
@@ -7610,7 +7598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 8
   editorSection: {fileID: 1685155425}
@@ -7979,7 +7966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -8063,7 +8049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Region
       id: 0
@@ -8092,7 +8078,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -8246,7 +8231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -8329,7 +8313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 1685155425}
@@ -8607,7 +8590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -9330,7 +9312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -10435,7 +10416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -10751,7 +10731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -11059,7 +11039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -11348,7 +11327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 6
   editorSection: {fileID: 97059935}
@@ -11368,7 +11346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Quest
       id: 0
@@ -11528,7 +11506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -12318,7 +12295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -12460,6 +12436,7 @@ GameObject:
   - 4: {fileID: 364541296}
   - 114: {fileID: 364541298}
   - 114: {fileID: 364541297}
+  - 114: {fileID: 364541299}
   - 114: {fileID: 364541300}
   m_Layer: 5
   m_Name: Phase
@@ -12492,7 +12469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -12500,6 +12476,7 @@ MonoBehaviour:
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 993477358}
+  - {fileID: 1674366347}
 --- !u!114 &364541298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12512,6 +12489,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorDependency: {fileID: 97059933}
+--- !u!114 &364541299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 364541295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe7be38bcfb5694a8983236d3f9576e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  component:
+    anchor: 0
+    width: 75
 --- !u!114 &364541300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12523,10 +12514,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  default_display: {fileID: 0}
   component:
     anchor: 0
     width: 100
-  structure_data:
+  structure_list:
   - table: Chapter
     id: 0
     type: 0
@@ -13045,7 +13037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 0}
@@ -13766,7 +13757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -13947,7 +13937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 4
   editorSection: {fileID: 1685155425}
@@ -14425,7 +14414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -16933,7 +16921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -17991,7 +17978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -18423,7 +18409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -18958,7 +18943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -19016,7 +19000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -19350,7 +19333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 794742818}
@@ -19686,7 +19668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -22008,7 +21989,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -22865,7 +22845,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -23083,7 +23062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -23673,7 +23652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: TaskGroup
       id: 0
@@ -23764,7 +23743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -24399,7 +24377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -24604,7 +24581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -24633,7 +24610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -25416,7 +25392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -25445,7 +25421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 10
   editorSection: {fileID: 97059935}
@@ -26547,7 +26522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -26634,7 +26609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: 
       id: 0
@@ -26663,7 +26638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -27529,7 +27503,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -27688,7 +27661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -28250,7 +28222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -28707,7 +28678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -29235,7 +29205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -29420,7 +29389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -29668,7 +29636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -29719,7 +29686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -30299,7 +30266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -30328,7 +30295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -30638,7 +30604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 8
   editorSection: {fileID: 97059935}
@@ -30658,7 +30623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Step
       id: 0
@@ -30745,7 +30710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: 
       id: 0
@@ -31060,7 +31025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -32117,7 +32081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 0}
@@ -32519,7 +32482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -32890,7 +32852,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -33290,7 +33251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -34783,7 +34743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -35057,6 +35016,14 @@ Prefab:
         type: 2}
       propertyPath: offset_max.y
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011372219498, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -36331,7 +36298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -36411,7 +36378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -36903,7 +36869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -37427,7 +37392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Region
       id: 0
@@ -38813,7 +38778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -39370,7 +39335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -40688,7 +40652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -40876,7 +40839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -40907,10 +40869,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  default_display: {fileID: 0}
   component:
     anchor: 0
     width: 100
-  structure_data:
+  structure_list:
   - table: Chapter
     id: 0
     type: 0
@@ -41167,7 +41130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -41724,7 +41686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 7
   editorSection: {fileID: 1685155425}
@@ -42947,7 +42908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -42976,7 +42937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -45229,7 +45189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 1685155425}
@@ -45577,7 +45536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -45707,7 +45665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: TerrainItem
       id: 0
@@ -45993,7 +45951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -46268,7 +46225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -49672,7 +49628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 2
   editorSection: {fileID: 1685155425}
@@ -49750,7 +49705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -50041,7 +49995,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 1685155425}
@@ -50305,7 +50258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -50451,7 +50403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -50735,7 +50686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -50832,7 +50782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -51111,7 +51060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 0}
@@ -51160,7 +51108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 18
   editorSection: {fileID: 794742818}
@@ -51319,7 +51266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -51497,7 +51444,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -51985,7 +51931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -52166,7 +52112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Item
       id: 0
@@ -52700,7 +52646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -54206,7 +54151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -55202,7 +55146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -56203,7 +56146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Terrain
       id: 0
@@ -56232,7 +56175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -56394,7 +56336,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -56568,7 +56509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 18
   editorSection: {fileID: 794742818}
@@ -57192,7 +57132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 1685155425}
@@ -57982,7 +57921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -58315,7 +58253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 3
   editorSection: {fileID: 97059935}
@@ -58335,7 +58272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Chapter
       id: 0
@@ -60114,7 +60051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 10
   editorSection: {fileID: 1685155425}
@@ -61099,7 +61035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -61666,7 +61601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Terrain
       id: 0
@@ -61695,7 +61630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -62722,7 +62656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 1685155425}
@@ -63595,7 +63528,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -65638,7 +65570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: TerrainItem
       id: 0
@@ -66088,7 +66020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Quest
       id: 0
@@ -66620,7 +66552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -67130,7 +67061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 1685155425}
@@ -67759,7 +67689,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 4
   editorSection: {fileID: 97059935}
@@ -67779,7 +67708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Phase
       id: 0
@@ -69479,7 +69408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Element
       id: 0
@@ -69640,7 +69569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Task
       id: 0
@@ -69669,7 +69598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 13
   editorSection: {fileID: 97059935}
@@ -70107,7 +70035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69c5bfe2b39bf4c8f797173c95ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listData:
+  dataList:
     data:
       table: Quest
       id: 0
@@ -70769,15 +70697,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoaded: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
   buttonActionManager: {fileID: 0}
   subControllerManager: {fileID: 0}
   controllers:
-  - {fileID: 1674366347}
   - {fileID: 993477358}
+  - {fileID: 1674366347}
 --- !u!114 &2108299157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70801,10 +70728,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  default_display: {fileID: 0}
   component:
     anchor: 0
     width: 100
-  structure_data: []
+  structure_list: []
 --- !u!114 &2108299160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70819,12 +70747,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 75
-  listData:
-    data:
-      table: 
-      id: 0
-      type: 0
-    id_count: 0
 --- !u!1 &2109619903
 GameObject:
   m_ObjectHideFlags: 0

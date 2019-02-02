@@ -71,6 +71,7 @@ public class PathManager
         public Path Enter()
         {
             route.controller = enter;
+
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
 
@@ -187,21 +188,27 @@ public class PathManager
             //Base stands alone
             List<Route> routes;
 
+            //Reset display to tiles, only when editor is manually opened
+            RegionDisplayManager.ResetDisplay();
+
             switch (route.data.type)
             {
                 case (int)RegionManager.Type.Base:
-                    return CreatePath(CreateRoutes(enter, route), form);
-
+                    path = CreatePath(CreateRoutes(enter, route), form);
+                    break;
                 case (int)RegionManager.Type.Phase:
                     routes = CreateRoutes(enter, route);
-                    return ExtendPath(route.path, routes);
-
+                    path = ExtendPath(route.path, routes);
+                    break;
                 case (int)RegionManager.Type.Task:
                     routes = CreateRoutes(enter, route);
-                    return ExtendPath(route.path, routes);
+                    path = ExtendPath(route.path, routes);
+                    break;
             }
 
-            return null;
+            path.type = Path.Type.New;
+
+            return path;
         }
 
         public Path Edit()
@@ -215,7 +222,10 @@ public class PathManager
 
             Route custom_route = new Route(1, route.data, route.origin);
 
-            return ExtendPath(route.path, CreateRoutes(open, custom_route));
+            path = ExtendPath(route.path, CreateRoutes(open, custom_route));
+            path.type = Path.Type.New;
+
+            return path;
         }
     }
 
@@ -299,7 +309,6 @@ public class PathManager
 
     #region Functions
 
-    //RouteManager?
     static public List<Route> CreateRoutes(List<int> new_controllers, EditorForm new_form)
     {
         return CreateRoutes(new_controllers, new Route(new_form.active_path));
@@ -328,25 +337,27 @@ public class PathManager
 
     static public Path ExtendPath(Path head, List<Route> tail)
     {
-        //ExtendPath will be used to create full Paths
-
-        //In certain cases, new paths get created while they're still very much connected to their origin,
-        //whereas other created paths are completely separate
-
-        //In the case of opening a region through a phase, a new path is created and it no longer needs
-        //its origin to render. The information is still important.
-
-        //Opening an asset creates a path, but is not a part of anything else and can therefor stand alone.
-
-        //The manager is fed the full path WHILE ALSO noting where it should start.
-        //If a path has been extended, this will not start at 0 as it currently does,
-        //but at the start of the newly added path piece
-
-        //The step can be stored in the form
-
-        //Closing can be done the same way, as a clear screen is a good screen!
-
         Path path = new Path(head.CombineRoute(tail), head.form, head.route.Count);
+
+        path.type = head.type;
+
+        return path;
+    }
+
+    static public Path ReloadPath(Path new_path, Route new_route)
+    {
+        Path path = new Path(true);
+
+        path.form = new_path.form;
+
+        foreach (Route route in new_path.route)
+            path.Add(route);
+
+        path.route[path.route.Count - 1] = new_route;
+
+        path.start = new_path.start;
+
+        path.type = Path.Type.Reload;
 
         return path;
     }
@@ -364,6 +375,8 @@ public class PathManager
 
         path.start = new_path.start;
 
+        path.type = Path.Type.Reload;
+
         return path;
     }
 
@@ -379,6 +392,8 @@ public class PathManager
         path.route[step].data = new_data;
 
         path.start = new_path.start;
+
+        path.type = Path.Type.Reload;
 
         return path;
     }

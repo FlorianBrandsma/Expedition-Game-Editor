@@ -69,7 +69,7 @@ public class EditorSegment : MonoBehaviour, IController
         if (GetComponent<ListProperties>() != null)
         {
             GetComponent<ListProperties>().CloseList();
-            GetComponent<ListProperties>().listData.list = new List<ElementData>(list);
+            GetComponent<ListProperties>().dataList.list = new List<ElementData>(list);
         }
 
         OpenSegment();

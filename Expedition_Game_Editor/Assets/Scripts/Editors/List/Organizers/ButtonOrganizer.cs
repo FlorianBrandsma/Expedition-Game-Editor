@@ -61,7 +61,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer
 
             listManager.element_list.Add(element);
 
-            string label = listManager.listProperties.listData.data.table + " " + i;
+            string label = listManager.listProperties.dataList.data.table + " " + i;
             element.GetComponent<EditorButton>().label.text = label;
 
             //Debugging

@@ -3,43 +3,49 @@ using System.Collections.Generic;
 
 public class Path
 {
+    public enum Type
+    {
+        New,
+        Previous,
+        Loaded,
+        Reload
+    }
+
     public List<Route> route    { get; set; }
     public EditorForm form      { get; set; }
-    public bool loaded          { get; set; }
+    public Type type { get; set; }
 
-    //Where the controller should start walking through the path
-    //after it has been extended
     public int start            { get; set; }
-
-    //Potential improvements:
-    //Remember the entire path
-    //Set starting point
 
     public Path()
     {
         route   = new List<Route>();
-        form = null;
-        loaded = false;
+        form    = null;
+        type    = Type.New;
     }
 
     public Path(List<Route> new_route, EditorForm new_form)
     {
         route   = new_route;
         form    = new_form;
+
+        type    = Type.New;
     }
 
     public Path(List<Route> new_route, EditorForm new_form, int new_start)
     {
-        route = new_route;
-        form = new_form;
-        start = new_start;
+        route   = new_route;
+        form    = new_form;
+        start   = new_start;
+
+        type    = Type.New;
     }
 
     public Path(bool new_loaded)
     {
-        route = new List<Route>();
-        form = null;
-        loaded = new_loaded;
+        route   = new List<Route>();
+        form    = null;
+        type    = Type.New;
     }
 
     #region Equals
@@ -97,9 +103,10 @@ public class Path
             copy.route.Add(x);
 
         copy.form = form;
-        copy.loaded = loaded;
 
         copy.start = start;
+
+        copy.type = type;
 
         return copy;
     }
@@ -113,7 +120,19 @@ public class Path
 
         new_path.start = start;
 
+        new_path.type = type;
+
         return new_path;
+    }
+
+    public Route FindFirstRoute(string table)
+    {
+        foreach(Route r in route)
+        {
+            if (r.data.table == table)
+                return r;
+        }
+        return null;
     }
 
     public Route FindLastRoute(string table)
@@ -135,12 +154,21 @@ public class Path
     {
         List<Route> route_list = new List<Route>();
 
-        foreach (Route x in route)
-            route_list.Add(x);
+        foreach (Route r in route)
+            route_list.Add(r);
 
-        foreach (Route x in new_route)
-            route_list.Add(x);
+        foreach (Route r in new_route)
+            route_list.Add(r);
 
         return route_list;
+    }
+
+    public void ReplaceAllRoutes(ElementData data)
+    {
+        foreach(Route r in route)
+        {
+            if (r.data.table == data.table)
+                r.data = data;
+        }
     }
 }

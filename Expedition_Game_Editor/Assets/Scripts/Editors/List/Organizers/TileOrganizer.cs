@@ -117,7 +117,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer
                 listManager.element_list.Add(element);
 
                 //Debugging
-                element.name = listManager.listProperties.listData.data.table + " " + i;
+                element.name = listManager.listProperties.dataList.data.table + " " + i;
 
                 SetElement(element);
 

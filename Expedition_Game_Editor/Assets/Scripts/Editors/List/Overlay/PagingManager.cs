@@ -32,10 +32,10 @@ public class PagingManager : MonoBehaviour, IOverlay
     {
         organizer = new_organizer;
 
-        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listProperties.listData.list, false);
+        Vector2 list_size = organizer.GetListSize(overlayManager.listManager.listProperties.dataList.list, false);
 
         page_limit =  (int)(list_size.x * list_size.y);
-        element_total = overlayManager.listManager.listProperties.listData.list.Count;
+        element_total = overlayManager.listManager.listProperties.dataList.list.Count;
 
         page_count = Mathf.CeilToInt((float)element_total / page_limit);
 
@@ -103,7 +103,7 @@ public class PagingManager : MonoBehaviour, IOverlay
         if (count > remainder)
             count = remainder;
 
-        organizer.ResetRows(overlayManager.listManager.listProperties.listData.list.GetRange(start, count));
+        organizer.ResetRows(overlayManager.listManager.listProperties.dataList.list.GetRange(start, count));
     }
      
     public void UpdateOverlay()

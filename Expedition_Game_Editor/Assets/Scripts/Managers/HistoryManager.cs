@@ -34,6 +34,8 @@ public class HistoryManager : MonoBehaviour
 
     private List<HistoryElement> history = new List<HistoryElement>();
 
+    static public bool returned { get; set; }
+
     private void Awake()
     {
         historyManager = this;
@@ -68,6 +70,6 @@ public class HistoryManager : MonoBehaviour
 
     public void OpenPath()
     {
-        EditorManager.editorManager.OpenPath(history[history.Count - 1].path);
+        EditorManager.editorManager.OpenPath(history[history.Count - 1].path, true);
     }
 }

@@ -5,11 +5,12 @@ using System;
 public class RegionDisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
-    public ListData listData;
+
+    private EditorController controller;
 
     public void InitializeComponent(Path new_path)
     {
-
+        controller = GetComponent<EditorController>();
     }
 
     public void SetComponent(Path new_path)
@@ -29,12 +30,12 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
 
         display_dropdown.value = (int)RegionDisplayManager.active_display;
 
-        display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value); });
+        display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value, controller.path); });
     }
 
     public void OpenPath(Path path, ElementData data)
     {
-        //EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
+        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
     }
 
     public void CloseComponent() { }

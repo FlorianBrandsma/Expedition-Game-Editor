@@ -4,8 +4,8 @@ public class RegionDisplayManager : MonoBehaviour
 {
     public enum Display
     {
-        Tiles,
         Terrain,
+        Tiles,
     }
 
     static public Display default_display = Display.Tiles;
@@ -16,10 +16,15 @@ public class RegionDisplayManager : MonoBehaviour
         active_display = 0;
     }
 
-    static public void SetDisplay(int new_display)
+    static public void SetDisplay(int new_display, Path new_path)
     {
         active_display = (Display)new_display;
 
-        EditorManager.editorManager.ResetEditor();
+        EditorManager.editorManager.OpenPath(new_path);
+    }
+
+    static public void ResetDisplay()
+    {
+        active_display = default_display;
     }
 }

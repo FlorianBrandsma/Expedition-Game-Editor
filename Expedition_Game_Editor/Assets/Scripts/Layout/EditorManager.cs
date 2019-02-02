@@ -46,8 +46,10 @@ public class EditorManager : MonoBehaviour
         path.form.InitializePath(path);
     }
 
-    public void OpenPath(Path path)
+    public void OpenPath(Path path, bool returning = false)
     {
+        HistoryManager.returned = returning;
+
         SelectionManager.CancelGetSelection();
 
         path.form.OpenPath(path);

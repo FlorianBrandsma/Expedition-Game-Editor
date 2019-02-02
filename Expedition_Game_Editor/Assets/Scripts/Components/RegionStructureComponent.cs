@@ -1,25 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class RegionStructureComponent : MonoBehaviour, IComponent
 {
     private RegionManager.Type type;
 
+    public RegionDisplayManager default_display;
+
     private EditorController controller;
 
     public EditorComponent component;
-    private List<ListData> structure_dataList = new List<ListData>();
+    private List<DataList> structure_dataList = new List<DataList>();
 
-    //Structure components
-    public List<ElementData> structure_data;
+    public List<ElementData> structure_list;
 
     private Route region;
     private Route structure;
 
     private Path active_path;
-
-    private int max_route_length;
 
     public void InitializeComponent(Path new_path)
     {
@@ -27,87 +27,98 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
         active_path = new_path;
 
-        max_route_length = controller.path.route.Count + 1;
+        region = active_path.FindLastRoute("Region").Copy();
+        type = (RegionManager.Type)region.data.type;
 
-        if (new_path.route.Count < max_route_length)
+        InitializeData();
+
+        if (new_path.route.Count < (controller.path.route.Count + 1))
         {
             //The region route gets added at the end when the component is initialized.
             //It tries to add another route every time it gets opened, causing the selection to appear.
             //This attempt gets blocked by using the max_length variable
 
-            Route new_region = new Route(0, new_path.GetLastRoute().data, new_path.GetLastRoute().origin);
-            region = new_region;
+            int index = (int)RegionDisplayManager.active_display;
 
-            type = (RegionManager.Type)region.data.type;
+            if (index > (controller.controllers.Length - 1))
+                index = (controller.controllers.Length - 1);
+
+            region.controller = index;
 
             new_path.Add(region);
-
-            if (!new_path.loaded)
-            {
-                //Path gets checked as loaded when it is reset
-                //Initialization should only happen once when the sub editor is opened manually
-                
-                InitializeStructure();
-            }
-        }
-
-        if (new_path.route.Count == max_route_length || controller.loaded)
-            region = new_path.FindLastRoute("Region");
-
-        controller.loaded = true;
+        }     
     }
 
-    private void InitializeStructure()
+    private void InitializeData()
     {
+        if (active_path.type != Path.Type.New) return;
+
+        if(type == RegionManager.Type.Task)
+            RegionDisplayManager.active_display = 0;
+
         structure_dataList.Clear();
 
-        if(structure_data.Count > 0)
-        {
-            switch (type)
-            {
-                case RegionManager.Type.Phase:
-                    structure = active_path.FindLastRoute("Phase");
-                    break;
-                case RegionManager.Type.Task:
-                    structure = active_path.FindLastRoute("Task");
-                    break;
-            }
+        InitializeStructureData();
+        InitializeRegionData();
 
-            //Debug.Log(structure.data.table + ":" + structure.data.id);
+        if (region.data.id == 0)
+            region.data.id = 1;
+    }
+
+    private void InitializeStructureData()
+    {
+        Route previous_route = null;
+        int target_id = 0;
+
+        for (int i = 0; i < structure_list.Count; i++)
+        {
+            Route structure_route = active_path.FindLastRoute(structure_list[i].table);
+            target_id = structure_route.data.id;
+
+            string sql = "";
+
+            sql += "SELECT * FROM " + structure_route.data.table;
+
+            if (previous_route != null)
+                sql += " WHERE " + previous_route.data.table + "Id = " + target_id;
+
+            DataList dataList = GetData(sql, structure_route.data);
+
+            structure_dataList.Add(dataList);
+
+            previous_route = structure_route;
         }
-        
-        InitializeStructureComponent();
-        InitializeRegionComponent();
+    }
+
+    private void InitializeRegionData()
+    {
+        Route structure_route = active_path.FindLastRoute("Region");
+        int target_id = structure_route.data.id;
+
+        string sql = "";
+
+        sql += "SELECT * FROM Region ";
+
+        if(type != RegionManager.Type.Base)
+            sql += "WHERE Phase" + "Id = " + target_id;
+
+        DataList dataList = GetData(sql, structure_route.data);
+
+        structure_dataList.Add(dataList);        
     }
 
     public void SetComponent(Path new_path)
     {
-        SetStructure();
-        SetRegionComponent();
+        for (int i = 0; i < structure_dataList.Count; i++)
+        {
+            SetStructureComponent(i);
+        }
     }
 
-    private void SetStructure()
+    private void SetStructureComponent(int index)
     {
-        foreach (ElementData data in structure_data)
-            SetStructureComponent(data);
-    }
-
-    private void InitializeStructureComponent()
-    {
-
-    }
-
-    private void InitializeRegionComponent()
-    {
-
-    }
-
-    private void SetStructureComponent(ElementData data)
-    {
-        //GetData
-        ListData dataList = GetData(data);
-        structure_dataList.Add(dataList);
-
+        DataList dataList = structure_dataList[index];
+        
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.options.Clear();
@@ -118,55 +129,62 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             dropdown.options.Add(new Dropdown.OptionData(dataList.data.table + " " + i));
         }
 
-        int selected_index = 0;
+        List<ElementData> new_list = structure_list.ToList();
+        new_list.Add(region.data);
 
-        dropdown.captionText.text = dataList.list[selected_index].table + " " + selected_index;
-        dropdown.value = selected_index;
+        Route structure_route = active_path.FindLastRoute(new_list[index].table);
 
-        //Path path = controller.path;
-        //dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value]); });
-    }
-
-    private void SetRegionComponent()
-    {
-        ListData dataList = GetData(region.data);
-
-        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
-
-        dropdown.options.Clear();
-        dropdown.onValueChanged.RemoveAllListeners();
-        
-        for (int i = 0; i < dataList.list.Count; i++)
-        {
-            dropdown.options.Add(new Dropdown.OptionData(dataList.data.table + " " + i));
-        }
-
-        int selected_index = dataList.list.FindIndex(x => x.id == region.data.id);
+        int selected_index = dataList.list.FindIndex(x => x.id == structure_route.data.id);
 
         dropdown.captionText.text = dataList.list[selected_index].table + " " + selected_index;
         dropdown.value = selected_index;
 
         Path path = controller.path;
-        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value]); });
+        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value], (index + 1)); });
     }
 
-    private ListData GetData(ElementData data)
+    private DataList GetData(string sql, ElementData data)
     {
-        ListData dataList = new ListData();
+        DataList dataList = new DataList();
 
-        if (region.data.id == 0)
-            region.data.id = 1;
-
-        dataList.data = data;
+        dataList.data = data; //placeholder. Will be made using sql (FROM)
         dataList.id_count = 15; //Placeholder
-        dataList.GetData("sql");
+        dataList.GetData(sql);
 
         return dataList;
     }
 
-    private void OpenPath(Path path, ElementData data)
+    private void OpenPath(Path path, ElementData data, int index)
     {
-        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
+        path.ReplaceAllRoutes(data);
+
+        SetStructureData(path, data, index);
+
+        EditorManager.editorManager.OpenPath(path);
+    }
+
+    private void SetStructureData(Path path, ElementData data, int index)
+    {
+        for (int i = index; i < structure_dataList.Count; i++)
+        {
+            ElementData structure_data = structure_dataList[i].data;
+
+            string sql = "";
+
+            if(structure_data.table == "Region")
+            {
+                sql += "SELECT * FROM Region WHERE Phase" + "Id = " + data.id;
+            } else {
+                sql += "SELECT * FROM " + structure_data.table + " WHERE " + data.table + "Id = " + data.id;
+            }
+
+            structure_dataList[i] = GetData(sql, structure_data);
+
+            //If type = task and table = region, data comes from the element, which could be placed on a region
+            data = structure_dataList[i].list[0];
+
+            path.ReplaceAllRoutes(data);
+        }
     }
 
     public void CloseComponent() { }

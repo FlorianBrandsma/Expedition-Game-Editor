@@ -34,7 +34,9 @@
         controller = 0;
         data = selection.data.Copy();
         origin = new Origin(selection);
-        path = selection.controller.path;
+        //TEMPORARY
+        if(selection.controller != null)
+            path = selection.controller.path;
     }
 
     public bool Equals(Route new_route)

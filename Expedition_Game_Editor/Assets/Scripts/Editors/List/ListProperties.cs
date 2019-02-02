@@ -11,7 +11,7 @@ public class ListProperties : MonoBehaviour
         PanelTile,
     }
 
-    public ListData listData;
+    public DataList dataList;
 
     public Type listType { get; set; }
 
@@ -64,14 +64,14 @@ public class ListProperties : MonoBehaviour
                 default: break;
             }
 
-            listData.data = route.data;
+            dataList.data = route.data;
         } else {
 
             if (GetComponent<IProperties>() != null)
                 listType = GetComponent<IProperties>().Type();
         }
 
-        listData.GetData(route);
+        dataList.GetData(route);
     }
 
     public void SetList()

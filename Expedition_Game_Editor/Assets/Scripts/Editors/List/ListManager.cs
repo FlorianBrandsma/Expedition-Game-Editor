@@ -39,6 +39,8 @@ public class ListManager : MonoBehaviour
 
     public void InitializeList(ListProperties new_listProperties)
     {
+        transform.parent.gameObject.SetActive(true);
+
         listProperties = new_listProperties;
 
         switch(listProperties.listType)
@@ -81,7 +83,7 @@ public class ListManager : MonoBehaviour
 
     public void SetListSize()
     {
-        if (listProperties.listData.list.Count == 0) return;
+        if (listProperties.dataList.list.Count == 0) return;
 
         if (organizer == null) return;
 
@@ -91,9 +93,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        list_parent.sizeDelta = organizer.GetListSize(listProperties.listData.list, true);
+        list_parent.sizeDelta = organizer.GetListSize(listProperties.dataList.list, true);
 
-        list_size = organizer.GetListSize(listProperties.listData.list, false);
+        list_size = organizer.GetListSize(listProperties.dataList.list, false);
 
         SetRows();
 
@@ -102,8 +104,8 @@ public class ListManager : MonoBehaviour
         list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
-        //if (!listProperties.controller.loaded)
-        ResetListPosition();   
+        if (HistoryManager.returned || !listProperties.controller.loaded)
+            ResetListPosition();
     }
 
     public void ResetListPosition()
@@ -116,14 +118,14 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.SetRows(listProperties.listData.list);
+        organizer.SetRows(listProperties.dataList.list);
     }
 
     public void ResetRows()
     {
         if (organizer == null) return;
 
-        organizer.ResetRows(listProperties.listData.list);
+        organizer.ResetRows(listProperties.dataList.list);
     }
 
     public void UpdateRows()
@@ -223,6 +225,8 @@ public class ListManager : MonoBehaviour
         element_list.Clear();
 
         SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
+
+        transform.parent.gameObject.SetActive(false);
     }
 
     public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab, ElementData data)
