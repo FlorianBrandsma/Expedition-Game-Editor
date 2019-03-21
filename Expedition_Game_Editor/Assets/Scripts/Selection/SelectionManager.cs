@@ -37,9 +37,14 @@ static public class SelectionManager
             {
                 if (!section.active) continue;
 
-                SelectEdit(section.target_controller.route);
+                SelectEdit(section.target_controller.pathController.route);
             }       
         }
+    }
+
+    static public void ResetSelection(ListManager listManager)
+    {
+        listManager.ResetSelection();
     }
 
     static public void SelectEdit(Route route)
@@ -60,7 +65,7 @@ static public class SelectionManager
 
     static public void SelectSet(SelectionElement new_set)
     {
-        get.data = new_set.data.Copy();
+        get.data = new_set.data;//.Copy();
 
         CancelGetSelection();
     }

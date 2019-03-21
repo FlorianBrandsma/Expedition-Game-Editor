@@ -14,19 +14,19 @@ public class SubControllerManager : MonoBehaviour
         Vertical,
     }
 
-    private EditorController controller;
+    private PathController controller;
 
     private List<EditorTab> tab_list = new List<EditorTab>();
     private List<EditorTab> local_tab_list = new List<EditorTab>();
 
-    private EditorController[] controllers;
+    private PathController[] controllers;
 
     private RectTransform header;
 
     public Axis axis;
     private string axis_name;
 
-    public void SetTabs(EditorController new_controller, Path main_path)
+    public void SetTabs(PathController new_controller, Path main_path)
     {
         controller = new_controller;
 

@@ -22,7 +22,7 @@ public class EditorSection : MonoBehaviour
 
     public void SetPreviousTarget()
     {
-        previous_controller_path = target_controller.path.Copy();
+        previous_controller_path = target_controller.pathController.path.Copy();
     }
 
     public void ActivateDependencies()
@@ -56,15 +56,13 @@ public class EditorSection : MonoBehaviour
         target_controller.FinalizeController();
     }
 
-    public void ClosePath(Path active_path)
+    public void CloseSection()
     {
         if (target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().Deactivate();
 
         if (target_controller.GetComponent<EditorDependency>() != null)
             target_controller.GetComponent<EditorDependency>().CloseDependency();
-
-        editorForm.baseController.ClosePath(active_path);
 
         target_controller.CloseEditor();
 

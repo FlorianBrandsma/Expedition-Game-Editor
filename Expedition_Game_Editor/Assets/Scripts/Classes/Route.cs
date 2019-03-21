@@ -1,15 +1,20 @@
-﻿public class Route
-{
-    public int controller { get; set; }
-    public ElementData data { get; set; }
-    public Origin origin { get; set; }
+﻿using System.Collections;
+using System.Linq;
 
-    public Path path { get; set; }
+public class Route
+{
+    public int controller               { get; set; }
+    public IEnumerable data             { get; set; }
+    public DataManager.Type data_type   { get; set; }
+    public Origin origin                { get; set; }
+
+    public Path path                    { get; set; }
 
     public Route(Path new_path)
     {
         controller = 0;
-        data = new ElementData();
+        data = new[] { new GeneralData() };
+        data_type = DataManager.Type.None;
         origin = new Origin();
         path = new_path;
     }
@@ -18,25 +23,29 @@
     {
         controller = route.controller;
         data = route.data;
+        data_type = route.data_type;
         origin = route.origin;
         path = route.path;
     }
 
-    public Route(int new_controller, ElementData new_data, Origin new_origin)
+    public Route(int new_controller, IEnumerable new_data, DataManager.Type new_data_type, Origin new_origin)
     {
         controller = new_controller;
         data = new_data;
+        data_type = new_data_type;
         origin = new_origin;
     }
 
     public Route(SelectionElement selection)
     {
         controller = 0;
-        data = selection.data.Copy();
+        data = selection.data; //Copy?
+        data_type = selection.data_type;
         origin = new Origin(selection);
+
         //TEMPORARY
-        if(selection.controller != null)
-            path = selection.controller.path;
+        if(selection.segmentController != null)
+            path = selection.segmentController.path;
     }
 
     public bool Equals(Route new_route)
@@ -44,7 +53,7 @@
         if (controller != new_route.controller)
             return false;
 
-        if (!data.Equals(new_route.data))
+        if (!GeneralData().Equals(new_route.GeneralData()))
             return false;
 
         return true;
@@ -53,5 +62,10 @@
     public Route Copy()
     {
         return new Route(this);
+    }
+
+    public GeneralData GeneralData()
+    {
+        return data.Cast<GeneralData>().FirstOrDefault();
     }
 }

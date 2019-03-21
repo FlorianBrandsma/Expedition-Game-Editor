@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+
 public class EditorManager : MonoBehaviour
 {
     static public EditorManager editorManager;
@@ -7,6 +8,9 @@ public class EditorManager : MonoBehaviour
     static public RectTransform UI;
 
     public EditorForm[] forms;
+
+    static public HistoryManager historyManager = new HistoryManager();
+    static public PoolManager poolManager = new PoolManager();
 
     private void Awake()
     {
@@ -24,21 +28,21 @@ public class EditorManager : MonoBehaviour
 
         InitializePath(new PathManager.Main().Initialize());
 
+        //poolManager.Test();
+
         //Debugging
         //InitializePath(new PathManager.Form(forms[1]).Initialize());
     }
 
     private void Update()
     {
-        // Dirty fix: Unity dropdown closes with the same button as "previous" (hardcoded)
-        // Closing a dropdown starts a "Fade" coroutine. 
-        // Disabling the dropdown causes the fading list to get stuck.
+        //Escape button shares a built in function of the dropdown that closes it
         if (GameObject.Find("Dropdown List") != null) return;
         
         if (Input.GetKeyUp(KeyCode.Escape))
             PreviousEditor();
-        if (Input.GetKeyUp(KeyCode.Space))
-            ResetEditor();
+        //if (Input.GetKeyUp(KeyCode.Space))
+        //    ResetEditor();
     }
 
     public void InitializePath(Path path)
@@ -48,7 +52,7 @@ public class EditorManager : MonoBehaviour
 
     public void OpenPath(Path path, bool returning = false)
     {
-        HistoryManager.returned = returning;
+        historyManager.returned = returning;
 
         SelectionManager.CancelGetSelection();
 
@@ -64,7 +68,7 @@ public class EditorManager : MonoBehaviour
 
     public void PreviousEditor()
     {
-        HistoryManager.historyManager.PreviousEditor();  
+        historyManager.PreviousEditor();  
     }
 
     public void ResetEditor()
@@ -96,7 +100,7 @@ public class EditorManager : MonoBehaviour
         str += ", id: ";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].data.table + "-" + path.route[i].data.id + "/";
+            str += path.route[i].GeneralData().table + "-" + path.route[i].GeneralData().id + "/";
 
         return str;
     }

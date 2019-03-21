@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class EditorPath
 {
@@ -6,7 +7,7 @@ public class EditorPath
 
     public EditorPath(Route route, SelectionManager.Property property)
     {
-        switch (route.data.table)
+        switch (route.GeneralData().table)
         {
             case "Chapter":
 
@@ -128,6 +129,15 @@ public class EditorPath
 
                 if (property == SelectionManager.Property.Get)
                     path = element.Get();
+
+                break;
+
+            case "ObjectGraphic":
+
+                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(route);
+
+                if (property == SelectionManager.Property.Get)
+                    path = objectGraphic.Get();
 
                 break;
 

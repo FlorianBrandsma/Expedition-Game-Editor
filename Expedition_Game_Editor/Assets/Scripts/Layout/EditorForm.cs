@@ -13,8 +13,8 @@ public class EditorForm : MonoBehaviour
 
     public Path active_path = new Path();
 
-    public EditorController baseController;
-    public EditorController main_controller { get; set; }
+    public PathController baseController;
+    //public PathController main_controller { get; set; }
 
     public EditorSection[]    editor_sections;
 
@@ -34,7 +34,7 @@ public class EditorForm : MonoBehaviour
         CloseForm(main_form);
 
         //Determine the target controller
-        baseController.InitializePath(path, path.start, reload);
+        baseController.InitializePath(path, path.start, reload, null);
         
         //Save previous target to compare data with
         SetPreviousTarget();
@@ -55,8 +55,8 @@ public class EditorForm : MonoBehaviour
  
         //Follow the same path to activate anything along its way
         //If the path contains any component, sort them afterwards
-        if (baseController.SetComponents(path))
-            ComponentManager.componentManager.SortComponents();
+        //if (baseController.SetComponents(path))
+        //    ComponentManager.componentManager.SortComponents();
 
         active_path = path;
         active = true;
@@ -81,6 +81,8 @@ public class EditorForm : MonoBehaviour
         {
             if (section.target_controller != null)
                 section.SetPreviousTarget();
+            else
+                section.previous_controller_path = null;
         }
     }
 
@@ -146,7 +148,9 @@ public class EditorForm : MonoBehaviour
             if (close_components)
                 CloseComponents();
 
-            ClosePath();
+            CloseSections();
+
+            baseController.ClosePath(active_path);
 
             active = false;
         }
@@ -157,12 +161,12 @@ public class EditorForm : MonoBehaviour
         ComponentManager.componentManager.CloseComponents();
     }
 
-    private void ClosePath()
+    private void CloseSections()
     {
         foreach (EditorSection section in editor_sections)
         {
             if (section.target_controller != null)
-                section.ClosePath(active_path);
+                section.CloseSection();
         }
     }
 }

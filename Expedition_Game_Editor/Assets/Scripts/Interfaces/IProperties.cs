@@ -3,5 +3,5 @@ using System.Collections;
 
 public interface IProperties
 {
-    ListProperties.Type Type();
+    DisplayManager.Type Type();
 }

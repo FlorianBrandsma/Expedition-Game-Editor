@@ -1,5 +1,5 @@
 ﻿public interface IHeader 
 {
-    void Activate(SubController subController);
+    void Activate(EditorController subController);
     void Deactivate();
 }

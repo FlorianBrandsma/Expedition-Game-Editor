@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,7 +66,7 @@ public class PathManager
         {
             route = new_route;
 
-            path = route.origin.selectionElement.listManager.listProperties.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.dataController.segmentController.path;
         }
 
         public Path Enter()
@@ -78,6 +79,7 @@ public class PathManager
         public Path Edit()
         {
             route.controller = edit;
+
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
     }
@@ -97,8 +99,8 @@ public class PathManager
         {
             route = new_route;
 
-            enter   = new List<int>() { 0, 0, 0, route.data.type };
-            edit    = new List<int>() { 0, 1, 0, route.data.type };
+            enter   = new List<int>() { 0, 0, 0, route.GeneralData().type };
+            edit    = new List<int>() { 0, 1, 0, route.GeneralData().type };
             get     = new List<int>() { 1 };
         }
 
@@ -138,14 +140,14 @@ public class PathManager
             route   = new_route;
 
             enter   = 0;
-            edit    = new List<int>() { 0, 1, 1, new_route.data.type };
+            edit    = new List<int>() { 0, 2, 0, new_route.GeneralData().type };
         }
 
         public Path Enter()
         {
             route.controller = enter;
 
-            path = route.origin.selectionElement.listManager.listProperties.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.dataController.segmentController.path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
@@ -165,12 +167,36 @@ public class PathManager
 
     #endregion
 
+    #region ObjectGraphic
+
+    public class ObjectGraphic
+    {
+        List<int> get;
+
+        Route route;
+
+        public ObjectGraphic(Route new_route)
+        {
+            route = new_route;
+
+            get = new List<int>() { 1 };
+        }
+
+        public Path Get()
+        {
+            EditorForm form = EditorManager.editorManager.forms[2];
+            return CreatePath(CreateRoutes(get, route), form);
+        }
+    }
+
+    #endregion
+
     #region Region
 
     public class Region
     {
-        List<int> enter = new List<int>() { 0, 2 };
-        List<int> edit  = new List<int>() { 0, 3 };
+        List<int> enter = new List<int>() { 0, 3 };
+        List<int> edit  = new List<int>() { 0, 4 };
 
         EditorForm form = EditorManager.editorManager.forms[0];
         Route route;
@@ -191,7 +217,7 @@ public class PathManager
             //Reset display to tiles, only when editor is manually opened
             RegionDisplayManager.ResetDisplay();
 
-            switch (route.data.type)
+            switch (route.GeneralData().type)
             {
                 case (int)RegionManager.Type.Base:
                     path = CreatePath(CreateRoutes(enter, route), form);
@@ -218,9 +244,9 @@ public class PathManager
 
         public Path Open()
         {
-            List<int> open = new List<int>() { 1, route.data.type };
+            List<int> open = new List<int>() { 1, route.GeneralData().type };
 
-            Route custom_route = new Route(1, route.data, route.origin);
+            Route custom_route = new Route(1, route.data, route.data_type, route.origin);
 
             path = ExtendPath(route.path, CreateRoutes(open, custom_route));
             path.type = Path.Type.New;
@@ -252,7 +278,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            path = route.origin.selectionElement.listManager.listProperties.controller.path;
+            path = route.origin.selectionElement.listManager.listProperties.dataController.segmentController.path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -266,7 +292,7 @@ public class PathManager
 
         public TerrainItem(Route new_route)
         {
-            route = new Route(new_route.data.type, new_route.data, new_route.origin);
+            route = new Route(new_route.GeneralData().type, new_route.data, new_route.data_type, new_route.origin);
 
             path = form.active_path.Trim(form.active_path.start + 3);
             
@@ -307,7 +333,7 @@ public class PathManager
 
     #endregion
 
-    #region Functions
+    #region Methods
 
     static public List<Route> CreateRoutes(List<int> new_controllers, EditorForm new_form)
     {
@@ -319,7 +345,7 @@ public class PathManager
         List<Route> routes = new List<Route>();
 
         for (int i = 0; i < new_controllers.Count; i++)
-            routes.Add(new Route(new_controllers[i], new_route.data, new_route.origin));
+            routes.Add(new Route(new_controllers[i], new_route.data, new_route.data_type, new_route.origin));
 
         return routes;
     }
@@ -362,7 +388,7 @@ public class PathManager
         return path;
     }
 
-    static public Path ReloadPath(Path new_path, ElementData new_data)
+    static public Path ReloadPath(Path new_path, IEnumerable new_data)
     {
         Path path = new Path(true);
 
@@ -380,7 +406,7 @@ public class PathManager
         return path;
     }
 
-    static public Path ReloadPath(Path new_path, ElementData new_data, int step)
+    static public Path ReloadPath(Path new_path, IEnumerable new_data, int step)
     {
         Path path = new Path(true);
 

@@ -6,14 +6,19 @@ public class TerrainItemHeader : MonoBehaviour, IHeader
 {
     public Text label;
 
-    public void Activate(SubController new_subController)
+    public void Activate(EditorController new_controller)
     {
-        ElementData data = new_subController.controller.route.data;
+        GeneralData data = new_controller.pathController.route.GeneralData();
 
         //Definitely a placeholder
         label.text = data.table + " " + (data.id - 1);
 
         gameObject.SetActive(true);
+    }
+
+    public void UpdateHeader()
+    {
+
     }
 
     public void Deactivate()

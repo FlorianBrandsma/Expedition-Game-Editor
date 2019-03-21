@@ -14,6 +14,6 @@ public class HistoryElement
     public void AddHistory(Path new_path)
     {
         path = new_path.Copy();
-        HistoryManager.historyManager.AddHistory(new HistoryElement(this));
+        EditorManager.historyManager.AddHistory(new HistoryElement(this));
     }
 }

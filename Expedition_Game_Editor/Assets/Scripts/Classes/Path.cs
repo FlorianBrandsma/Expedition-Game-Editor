@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Path
 {
@@ -13,7 +15,7 @@ public class Path
 
     public List<Route> route    { get; set; }
     public EditorForm form      { get; set; }
-    public Type type { get; set; }
+    public Type type            { get; set; }
 
     public int start            { get; set; }
 
@@ -69,7 +71,7 @@ public class Path
     {
         //Use last used step as base
         if (route.Count > 0)
-            Add(0, route[route.Count - 1].data, route[route.Count - 1].origin);
+            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().origin);
         else
             Add(new Route(this));
     }
@@ -77,14 +79,14 @@ public class Path
     public void Add(int index)
     {
         if (route.Count > 0)
-            Add(index, route[route.Count - 1].data, route[route.Count - 1].origin);
+            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().origin);
         else
-            Add(index, new ElementData(), new Origin());
+            Add(index, new[] {new GeneralData() }, DataManager.Type.None, new Origin());
     }
 
-    public void Add(int new_controller, ElementData new_data, Origin new_origin)
+    public void Add(int new_controller, IEnumerable new_data, DataManager.Type new_data_type, Origin new_origin)
     {
-        route.Add(new Route(new_controller, new_data, new_origin));
+        route.Add(new Route(new_controller, new_data, new_data_type, new_origin));
     }
 
     public void Add(Route new_route)
@@ -99,8 +101,8 @@ public class Path
         Path copy = new Path();
 
         //Might need new route
-        foreach (Route x in route)
-            copy.route.Add(x);
+        foreach (Route r in route)
+            copy.route.Add(r);
 
         copy.form = form;
 
@@ -116,8 +118,13 @@ public class Path
         Path new_path = new Path(new List<Route>(), form);
 
         for (int i = 0; i < step; i++)
+        {
             new_path.Add(route[i]);
 
+            if(route[i].origin.selectionElement != null)
+                Debug.Log(route[i].origin.selectionElement.data_type);
+        }
+            
         new_path.start = start;
 
         new_path.type = type;
@@ -129,7 +136,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.data.table == table)
+            if (r.GeneralData().table == table)
                 return r;
         }
         return null;
@@ -139,7 +146,7 @@ public class Path
     {
         for(int i = route.Count-1; i > 0; i--)
         {
-            if (route[i].data.table == table)
+            if (route[i].GeneralData().table == table)
                 return route[i];   
         }
         return null;
@@ -153,7 +160,7 @@ public class Path
     public List<Route> CombineRoute(List<Route> new_route)
     {
         List<Route> route_list = new List<Route>();
-
+        
         foreach (Route r in route)
             route_list.Add(r);
 
@@ -163,11 +170,11 @@ public class Path
         return route_list;
     }
 
-    public void ReplaceAllRoutes(ElementData data)
+    public void ReplaceAllRoutes(IEnumerable data)
     {
         foreach(Route r in route)
         {
-            if (r.data.table == data.table)
+            if (r.GeneralData().table == data.Cast<GeneralData>().FirstOrDefault().table)
                 r.data = data;
         }
     }

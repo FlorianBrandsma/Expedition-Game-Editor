@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class HistoryManager : MonoBehaviour
+public class HistoryManager
 {
     public enum Group
     {
@@ -30,16 +30,9 @@ public class HistoryManager : MonoBehaviour
         Popup,
     }
 
-    static public HistoryManager historyManager;
-
     private List<HistoryElement> history = new List<HistoryElement>();
 
-    static public bool returned { get; set; }
-
-    private void Awake()
-    {
-        historyManager = this;
-    }
+    public bool returned { get; set; }
 
     public void AddHistory(HistoryElement element)
     {

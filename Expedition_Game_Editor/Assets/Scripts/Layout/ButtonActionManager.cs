@@ -4,29 +4,28 @@ using System.Collections;
 
 public class ButtonActionManager : MonoBehaviour
 {
-    public Button   save_button,
-                    apply_button,
+    public Button   apply_button,
                     close_button;
 
     public Toggle   trash_toggle;
 
-    public void SetButtons(EditorController controller)
+    public void InitializeButtons(IEditor dataEditor)
     {
-        if (save_button != null)
-            save_button.onClick.AddListener(delegate { controller.SaveEdit(); });
-
         if (apply_button != null)
-            apply_button.onClick.AddListener(delegate { controller.ApplyEdit(); });
+            apply_button.onClick.AddListener(delegate { dataEditor.ApplyChanges(); });
         
         if(close_button != null)
-            close_button.onClick.AddListener(delegate { controller.CloseEdit(); });
+            close_button.onClick.AddListener(delegate { dataEditor.CancelEdit(); });
+    }
+
+    public void SetButtons(bool changed)
+    {
+        if (apply_button != null)
+            apply_button.interactable = changed;
     }
 
     public void CloseButtons()
     {
-        if (save_button != null)
-            save_button.onClick.RemoveAllListeners();
-
         if(apply_button != null)
             apply_button.onClick.RemoveAllListeners();
 

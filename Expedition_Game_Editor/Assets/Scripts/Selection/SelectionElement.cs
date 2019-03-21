@@ -4,44 +4,67 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class SelectionElement : MonoBehaviour
 {
-    public ElementData data;
+    public IEnumerable data;
+    public DataManager.Type data_type;
+
     EditorPath editorPath;
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
-    public ListProperties.Type listType;
+    public DisplayManager.Type displayType;
 
+    public SelectionElement parent_element { get; set; }
     public SelectionElement child;
 
     public GameObject glow;
 
     public ListManager listManager { get; set; }
-    public IController controller { get; set; }
+    public SegmentController segmentController { get; set; }
+
+    public IElement element { get; set; }
 
     //Active Property
     public bool selected;
 
-    public void InitializeSelection(ListManager new_listManager, ElementData new_data, SelectionManager.Property new_property)
+    public void InitializeElement(ListManager new_listManager, SelectionManager.Property new_property)
     {
         if (selected)
             CancelSelection();
 
         listManager = new_listManager;
 
-        controller = listManager.listProperties.controller;
-
-        data = new_data;
+        segmentController = listManager.listProperties.dataController.segmentController;
 
         selectionType = listManager.selectionType;
         selectionProperty = new_property;
 
-        GetComponent<IElement>().SetElement();
+        GetComponent<IElement>().InitializeElement();
 
         if (selectionType != SelectionManager.Type.None)
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
+    }
+
+    public void SetElementData(IEnumerable new_data, DataManager.Type new_data_type)
+    {
+        data = new_data;
+        data_type = new_data_type;
+    }
+
+    public void UpdateElement()
+    {
+        if (parent_element != null)
+            parent_element.SetElement();
+        else
+            SetElement();
+    }
+
+    public void SetElement()
+    {
+        GetComponent<IElement>().SetElement();
     }
 
     public void ActivateSelection()
@@ -81,7 +104,7 @@ public class SelectionElement : MonoBehaviour
                     break;
 
                 case SelectionManager.Property.Set:
-                    SelectionManager.SelectSet(this);       
+                    SelectionManager.SelectSet(this);
                     break;
 
                 case SelectionManager.Property.Enter:
@@ -100,5 +123,10 @@ public class SelectionElement : MonoBehaviour
                     break;
             }
         }          
+    }
+
+    public GeneralData GeneralData()
+    {
+        return data.Cast<GeneralData>().FirstOrDefault();
     }
 }

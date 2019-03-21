@@ -21,6 +21,7 @@ public class ComponentManager : MonoBehaviour
     public RectTransform main_parent;
 
     public RawImage left_arrow, right_arrow;
+    public Texture arrow_active, arrow_inactive;
 
     private void Awake()
     {
@@ -155,14 +156,14 @@ public class ComponentManager : MonoBehaviour
         float slider_value = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
 
         if(slider_value > 0)
-            SetArrow(left_arrow, 1f);
+            SetArrow(left_arrow, true);
          else
-            SetArrow(left_arrow, 0.5f);
+            SetArrow(left_arrow, false);
         
         if (slider_value < 1)
-            SetArrow(right_arrow, 1f);
+            SetArrow(right_arrow, true);
         else
-            SetArrow(right_arrow, 0.5f);
+            SetArrow(right_arrow, false);
     }
 
     public Dropdown AddDropdown(EditorComponent new_component)
@@ -225,13 +226,13 @@ public class ComponentManager : MonoBehaviour
 
         scrollRect.enabled = false;
 
-        SetArrow(left_arrow, 0.5f);
-        SetArrow(right_arrow, 0.5f);
+        SetArrow(left_arrow, false);
+        SetArrow(right_arrow, false);
     }
 
-    private void SetArrow(RawImage arrow, float alpha)
+    private void SetArrow(RawImage arrow, bool active)
     {
-        arrow.color = new Color(arrow.color.r, arrow.color.g, arrow.color.b, alpha);
+        arrow.texture = active ? arrow_active : arrow_inactive;
     }
 
     #region Spawners

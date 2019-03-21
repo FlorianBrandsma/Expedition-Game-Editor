@@ -6,17 +6,10 @@ public interface IOrganizer
 {
     void InitializeOrganizer();
 
-    void SetProperties(ListProperties listProperties);
+    void SetProperties();
+    void UpdateData();
+    void SetData();
+    void ResetData(ICollection filter);
 
-    void SetElementSize();
-    Vector2 GetListSize(List<ElementData> data_list, bool exact);
-
-    Vector2 element_size { get; set; }
-
-    void SetRows(List<ElementData> data_list);
-    void ResetRows(List<ElementData> filter);
-
-    SelectionElement GetElement(int index);
-
-    void CloseList();
+    void CloseOrganizer();
 }

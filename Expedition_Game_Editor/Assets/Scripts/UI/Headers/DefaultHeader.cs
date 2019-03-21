@@ -1,31 +1,103 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
-public class DefaultHeader : MonoBehaviour, IHeader
+public class DefaultHeader : MonoBehaviour, ISegment
 {
-    //private SubController subController;
+    private SegmentController segmentController;
+    public IEditor dataEditor { get; set; }
 
+    #region UI
     public IndexSwitch index_switch;
 
     public SelectionElement main_element;
     public InputField input_field;
     public Text id;
+    #endregion
 
-    public void Activate(SubController new_subController)
+    #region Data Variables
+    private int _id;
+    private int _index;
+    private string _name;
+    private string _icon;
+    #endregion
+
+    #region Data Properties
+    public string Name
     {
-        //subController = new_subController;
+        get { return _name; }
+        set
+        {
+            _name = value;
+
+            switch (dataEditor.data_type)
+            {
+                case DataManager.Type.Chapter:
+
+                    ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
+                    chapterData.name = value;
+
+                    break;
+            }
+        }
+    }
+    #endregion
+
+    #region Data Methods
+    public void UpdateName()
+    {
+        Name = input_field.text;
+        dataEditor.UpdateEditor();
+    }
+    #endregion
+
+    #region Segment
+    public void InitializeSegment()
+    {
+        segmentController = GetComponent<SegmentController>();
+        dataEditor = segmentController.editorController.pathController.dataEditor;
+
+        switch (dataEditor.data_type)
+        {
+            case DataManager.Type.Chapter:
+
+                ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
+
+                _id     = chapterData.id;
+                _index  = chapterData.index;
+                _name   = chapterData.name;
+                _icon   = chapterData.icon;
+
+                break;
+        }
 
         if (index_switch != null)
-            index_switch.Activate();
+            index_switch.InitializeSwitch(this);
+    }
+
+    public void OpenSegment()
+    {
+        if (index_switch != null)
+            index_switch.Activate(_index, dataEditor.data_list.Count - 1);
+
+        id.text = _id.ToString();
+
+        input_field.text = _name;
 
         gameObject.SetActive(true);
     }
 
-    public void Deactivate()
+    public void ApplySegment()
+    {
+
+    }
+
+    public void CloseSegment()
     {
         if (index_switch != null)
             index_switch.Deactivate();
 
         gameObject.SetActive(false);
     }
+    #endregion
 }

@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 public class RegionDisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    private EditorController controller;
+    private PathController controller;
 
     public void InitializeComponent(Path new_path)
     {
-        controller = GetComponent<EditorController>();
+        controller = GetComponent<PathController>();
     }
 
     public void SetComponent(Path new_path)
@@ -33,7 +34,7 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
         display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value, controller.path); });
     }
 
-    public void OpenPath(Path path, ElementData data)
+    public void OpenPath(Path path, IEnumerable data)
     {
         EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
     }

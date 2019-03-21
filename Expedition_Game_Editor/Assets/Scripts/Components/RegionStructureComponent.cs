@@ -5,187 +5,189 @@ using System.Linq;
 
 public class RegionStructureComponent : MonoBehaviour, IComponent
 {
-    private RegionManager.Type type;
+	private RegionManager.Type type;
 
-    public RegionDisplayManager default_display;
+	public RegionDisplayManager default_display;
 
-    private EditorController controller;
+	private PathController controller;
 
-    public EditorComponent component;
-    private List<DataList> structure_dataList = new List<DataList>();
+	public EditorComponent component;
+	private List<DataList> structure_dataList = new List<DataList>();
 
-    public List<ElementData> structure_list;
+	public List<GeneralData> structure_list;
 
-    private Route region;
-    private Route structure;
+	private Route region;
+	private Route structure;
 
-    private Path active_path;
+	private Path active_path;
 
-    public void InitializeComponent(Path new_path)
-    {
-        controller = GetComponent<EditorController>();
+	public void InitializeComponent(Path new_path)
+	{
+		controller = GetComponent<PathController>();
 
-        active_path = new_path;
+		active_path = new_path;
 
-        region = active_path.FindLastRoute("Region").Copy();
-        type = (RegionManager.Type)region.data.type;
+		region = active_path.FindLastRoute("Region").Copy();
+		type = (RegionManager.Type)region.GeneralData().type;
 
-        InitializeData();
+		InitializeData();
 
-        if (new_path.route.Count < (controller.path.route.Count + 1))
-        {
-            //The region route gets added at the end when the component is initialized.
-            //It tries to add another route every time it gets opened, causing the selection to appear.
-            //This attempt gets blocked by using the max_length variable
+		if (new_path.route.Count < (controller.path.route.Count + 1))
+		{
+			//The region route gets added at the end when the component is initialized.
+			//It tries to add another route every time it gets opened, causing the selection to appear.
+			//This attempt gets blocked by using the max_length variable
 
-            int index = (int)RegionDisplayManager.active_display;
+			int index = (int)RegionDisplayManager.active_display;
 
-            if (index > (controller.controllers.Length - 1))
-                index = (controller.controllers.Length - 1);
+			if (index > (controller.controllers.Length - 1))
+				index = (controller.controllers.Length - 1);
 
-            region.controller = index;
+			region.controller = index;
 
-            new_path.Add(region);
-        }     
-    }
+			new_path.Add(region);
+		}     
+	}
 
-    private void InitializeData()
-    {
-        if (active_path.type != Path.Type.New) return;
+	private void InitializeData()
+	{
+		if (active_path.type != Path.Type.New) return;
 
-        if(type == RegionManager.Type.Task)
-            RegionDisplayManager.active_display = 0;
+		if(type == RegionManager.Type.Task)
+			RegionDisplayManager.active_display = 0;
 
-        structure_dataList.Clear();
+		structure_dataList.Clear();
 
-        InitializeStructureData();
-        InitializeRegionData();
+		InitializeStructureData();
+		InitializeRegionData();
 
-        if (region.data.id == 0)
-            region.data.id = 1;
-    }
+		if (region.GeneralData().id == 0)
+			region.GeneralData().id = 1;
+	}
 
-    private void InitializeStructureData()
-    {
-        Route previous_route = null;
-        int target_id = 0;
+	private void InitializeStructureData()
+	{
+		Route previous_route = null;
+		int target_id = 0;
 
-        for (int i = 0; i < structure_list.Count; i++)
-        {
-            Route structure_route = active_path.FindLastRoute(structure_list[i].table);
-            target_id = structure_route.data.id;
+		for (int i = 0; i < structure_list.Count; i++)
+		{
+			Route structure_route = active_path.FindLastRoute(structure_list[i].table);
+			target_id = structure_route.GeneralData().id;
 
-            string sql = "";
+			string sql = "";
 
-            sql += "SELECT * FROM " + structure_route.data.table;
+			sql += "SELECT * FROM " + structure_route.GeneralData().table;
 
-            if (previous_route != null)
-                sql += " WHERE " + previous_route.data.table + "Id = " + target_id;
+			if (previous_route != null)
+				sql += " WHERE " + previous_route.GeneralData().table + "Id = " + target_id;
 
-            DataList dataList = GetData(sql, structure_route.data);
+			DataList dataList = GetData(sql, structure_route.GeneralData());
 
-            structure_dataList.Add(dataList);
+			structure_dataList.Add(dataList);
 
-            previous_route = structure_route;
-        }
-    }
+			previous_route = structure_route;
+		}
+	}
 
-    private void InitializeRegionData()
-    {
-        Route structure_route = active_path.FindLastRoute("Region");
-        int target_id = structure_route.data.id;
+	private void InitializeRegionData()
+	{
+		Route structure_route = active_path.FindLastRoute("Region");
+		int target_id = structure_route.GeneralData().id;
 
-        string sql = "";
+		string sql = "";
 
-        sql += "SELECT * FROM Region ";
+		sql += "SELECT * FROM Region ";
 
-        if(type != RegionManager.Type.Base)
-            sql += "WHERE Phase" + "Id = " + target_id;
+		if(type != RegionManager.Type.Base)
+			sql += "WHERE Phase" + "Id = " + target_id;
 
-        DataList dataList = GetData(sql, structure_route.data);
+		DataList dataList = GetData(sql, structure_route.GeneralData());
 
-        structure_dataList.Add(dataList);        
-    }
+		structure_dataList.Add(dataList);        
+	}
 
-    public void SetComponent(Path new_path)
-    {
-        for (int i = 0; i < structure_dataList.Count; i++)
-        {
-            SetStructureComponent(i);
-        }
-    }
+	public void SetComponent(Path new_path)
+	{
+		for (int i = 0; i < structure_dataList.Count; i++)
+		{
+			SetStructureComponent(i);
+		}
+	}
 
-    private void SetStructureComponent(int index)
-    {
-        DataList dataList = structure_dataList[index];
-        
-        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
+	private void SetStructureComponent(int index)
+	{
+		DataList dataList = structure_dataList[index];
+		
+		Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        dropdown.options.Clear();
-        dropdown.onValueChanged.RemoveAllListeners();
-        
-        for (int i = 0; i < dataList.list.Count; i++)
-        {
-            dropdown.options.Add(new Dropdown.OptionData(dataList.data.table + " " + i));
-        }
+		dropdown.options.Clear();
+		dropdown.onValueChanged.RemoveAllListeners();
+		
+		for (int i = 0; i < dataList.list.Count; i++)
+		{
+			dropdown.options.Add(new Dropdown.OptionData(dataList.data.table + " " + i));
+		}
 
-        List<ElementData> new_list = structure_list.ToList();
-        new_list.Add(region.data);
+		List<GeneralData> new_list = structure_list.ToList();
+		new_list.Add(region.GeneralData());
 
-        Route structure_route = active_path.FindLastRoute(new_list[index].table);
+		Route structure_route = active_path.FindLastRoute(new_list[index].table);
 
-        int selected_index = dataList.list.FindIndex(x => x.id == structure_route.data.id);
+		int selected_index = dataList.list.FindIndex(x => x.id == structure_route.GeneralData().id);
 
-        dropdown.captionText.text = dataList.list[selected_index].table + " " + selected_index;
-        dropdown.value = selected_index;
+		dropdown.captionText.text = dataList.list[selected_index].table + " " + selected_index;
+		dropdown.value = selected_index;
 
-        Path path = controller.path;
-        dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value], (index + 1)); });
-    }
+		Path path = controller.path;
+		dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value], (index + 1)); });
+	}
 
-    private DataList GetData(string sql, ElementData data)
-    {
-        DataList dataList = new DataList();
+	private DataList GetData(string sql, GeneralData generalData)
+	{
+		DataList dataList = new DataList();
 
-        dataList.data = data; //placeholder. Will be made using sql (FROM)
-        dataList.id_count = 15; //Placeholder
-        dataList.GetData(sql);
+		dataList.data = generalData; //placeholder. Will be made using sql (FROM)
+		dataList.id_count = 15; //Placeholder
 
-        return dataList;
-    }
+		dataList.GetData(sql);
 
-    private void OpenPath(Path path, ElementData data, int index)
-    {
-        path.ReplaceAllRoutes(data);
+		return dataList;
+	}
 
-        SetStructureData(path, data, index);
+	private void OpenPath(Path path, GeneralData generalData, int index)
+	{
+		//path.ReplaceAllRoutes(generalData);
 
-        EditorManager.editorManager.OpenPath(path);
-    }
+		SetStructureData(path, generalData, index);
 
-    private void SetStructureData(Path path, ElementData data, int index)
-    {
-        for (int i = index; i < structure_dataList.Count; i++)
-        {
-            ElementData structure_data = structure_dataList[i].data;
+		EditorManager.editorManager.OpenPath(path);
+	}
 
-            string sql = "";
+	private void SetStructureData(Path path, GeneralData data, int index)
+	{
+		for (int i = index; i < structure_dataList.Count; i++)
+		{
+			GeneralData structure_data = structure_dataList[i].data;
 
-            if(structure_data.table == "Region")
-            {
-                sql += "SELECT * FROM Region WHERE Phase" + "Id = " + data.id;
-            } else {
-                sql += "SELECT * FROM " + structure_data.table + " WHERE " + data.table + "Id = " + data.id;
-            }
+			string sql = "";
 
-            structure_dataList[i] = GetData(sql, structure_data);
+			if(structure_data.table == "Region")
+			{
+				sql += "SELECT * FROM Region WHERE Phase" + "Id = " + data.id;
+			} else {
+				sql += "SELECT * FROM " + structure_data.table + " WHERE " + data.table + "Id = " + data.id;
+			}
 
-            //If type = task and table = region, data comes from the element, which could be placed on a region
-            data = structure_dataList[i].list[0];
+			structure_dataList[i] = GetData(sql, structure_data);
 
-            path.ReplaceAllRoutes(data);
-        }
-    }
+			//(TASK belongs to an ELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
+			//TASK: load ELEMENT > TERRAIN > REGION
+			data = structure_dataList[i].list[0];
 
-    public void CloseComponent() { }
+			//path.ReplaceAllRoutes(data);
+		}
+	}
+
+	public void CloseComponent() { }
 }

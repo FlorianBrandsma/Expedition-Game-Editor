@@ -74,13 +74,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    table: 
-    id: 0
-    type: 0
+  data_type: 0
   selectionType: 0
   selectionProperty: 0
-  listType: 0
+  displayType: 0
   child: {fileID: 0}
   glow: {fileID: 1000014283423072}
   selected: 0
@@ -103,7 +100,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 18e841c37208bb4479051045787fc0b0, type: 3}
+  m_Texture: {fileID: 2800000, guid: 3c38e3d1809ac8746a0e9eb96d43cc0d, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -162,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e798868973dfd4d82462af35deceeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 114000011046033462}
 --- !u!114 &114000013802240080
 MonoBehaviour:
   m_ObjectHideFlags: 1

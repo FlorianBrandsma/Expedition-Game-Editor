@@ -1,7 +1,7 @@
 ﻿public class Origin
 {
     public SelectionManager.Property selectionProperty;
-    public ListProperties.Type listType;
+    public DisplayManager.Type displayType;
     public SelectionElement selectionElement;
 
     public Origin(){ }
@@ -9,14 +9,14 @@
     public Origin(SelectionElement element)
     {
         selectionProperty = element.selectionProperty;
-        listType = element.listType;
+        displayType = element.displayType;
         selectionElement = element;
     }
 
     public Origin(Origin selection)
     {
         selectionProperty = selection.selectionProperty;
-        listType = selection.listType;
+        displayType = selection.displayType;
         selectionElement = selection.selectionElement;
     }
 
