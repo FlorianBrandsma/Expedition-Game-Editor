@@ -7,14 +7,11 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    private PathController controller;
+    private PathController pathController { get { return GetComponent<PathController>(); } }
 
-    public void InitializeComponent(Path new_path)
-    {
-        controller = GetComponent<PathController>();
-    }
+    public void InitializeComponent(Path path) { }
 
-    public void SetComponent(Path new_path)
+    public void SetComponent(Path path)
     {
         Dropdown display_dropdown = ComponentManager.componentManager.AddDropdown(component);
 
@@ -31,7 +28,7 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
 
         display_dropdown.value = (int)RegionDisplayManager.active_display;
 
-        display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value, controller.path); });
+        display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value, pathController.route.path); });
     }
 
     public void OpenPath(Path path, IEnumerable data)

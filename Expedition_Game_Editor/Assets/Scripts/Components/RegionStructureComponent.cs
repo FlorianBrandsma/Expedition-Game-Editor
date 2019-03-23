@@ -9,7 +9,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 	public RegionDisplayManager default_display;
 
-	private PathController controller;
+	private PathController pathController { get { return GetComponent<PathController>(); } }
 
 	public EditorComponent component;
 	private List<DataList> structure_dataList = new List<DataList>();
@@ -21,18 +21,16 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 	private Path active_path;
 
-	public void InitializeComponent(Path new_path)
+	public void InitializeComponent(Path path)
 	{
-		controller = GetComponent<PathController>();
-
-		active_path = new_path;
+		active_path = path;
 
 		region = active_path.FindLastRoute("Region").Copy();
 		type = (RegionManager.Type)region.GeneralData().type;
 
 		InitializeData();
 
-		if (new_path.route.Count < (controller.path.route.Count + 1))
+		if (path.route.Count < (pathController.route.path.route.Count + 1))
 		{
 			//The region route gets added at the end when the component is initialized.
 			//It tries to add another route every time it gets opened, causing the selection to appear.
@@ -40,12 +38,12 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 			int index = (int)RegionDisplayManager.active_display;
 
-			if (index > (controller.controllers.Length - 1))
-				index = (controller.controllers.Length - 1);
+			if (index > (pathController.controllers.Length - 1))
+				index = (pathController.controllers.Length - 1);
 
 			region.controller = index;
 
-			new_path.Add(region);
+			path.Add(region);
 		}     
 	}
 
@@ -139,7 +137,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 		dropdown.captionText.text = dataList.list[selected_index].table + " " + selected_index;
 		dropdown.value = selected_index;
 
-		Path path = controller.path;
+		Path path = pathController.route.path;
 		dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value], (index + 1)); });
 	}
 

@@ -18,7 +18,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void InitializeEditor()
     {
-        selectionElement = pathController.route.origin.selectionElement;
+        selectionElement = pathController.route.path.origin;
         SetList();
 
         data = pathController.route.data;
@@ -37,10 +37,10 @@ public class PhaseEditor : MonoBehaviour, IEditor
         SetEditor();
     }
 
-    public void UpdateElement()
-    {
-        selectionElement.UpdateElement();
-    }
+    //public void UpdateElement()
+    //{
+    //    selectionElement.UpdateElement();
+    //}
 
     public void UpdateIndex(int index)
     {

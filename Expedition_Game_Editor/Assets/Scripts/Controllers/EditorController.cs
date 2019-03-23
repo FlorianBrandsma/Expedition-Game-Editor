@@ -12,10 +12,17 @@ public class EditorController : MonoBehaviour
 
     public void InitializeController()
     {
+        InitializeEditor();
         InitializeSegments();
     }
 
-    void InitializeSegments()
+    private void InitializeEditor()
+    {
+        if (pathController.dataEditor != null)
+            pathController.dataEditor.InitializeEditor();
+    }
+
+    private void InitializeSegments()
     {
         foreach (SegmentController segment in segments)
             segment.InitializeSegment(this);

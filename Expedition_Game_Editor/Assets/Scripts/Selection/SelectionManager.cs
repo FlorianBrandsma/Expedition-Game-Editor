@@ -23,8 +23,6 @@ static public class SelectionManager
 
     static public List<ListManager> lists = new List<ListManager>();
 
-    static public List<Origin> edit_data = new List<Origin>();
-
     static public SelectionElement get;
 
     static public void SelectElements()

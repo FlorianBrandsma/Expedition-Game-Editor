@@ -19,26 +19,31 @@ public class Path
 
     public int start            { get; set; }
 
+    public SelectionElement origin { get; set; }
+
     public Path()
     {
         route   = new List<Route>();
         form    = null;
         type    = Type.New;
+        origin  = null;
     }
 
-    public Path(List<Route> new_route, EditorForm new_form)
+    public Path(List<Route> route, EditorForm form, SelectionElement origin)
     {
-        route   = new_route;
-        form    = new_form;
+        this.route  = route;
+        this.form   = form;
+        this.origin = origin;
 
         type    = Type.New;
     }
 
-    public Path(List<Route> new_route, EditorForm new_form, int new_start)
+    public Path(List<Route> route, EditorForm form, SelectionElement origin, int start)
     {
-        route   = new_route;
-        form    = new_form;
-        start   = new_start;
+        this.route  = route;
+        this.form   = form;
+        this.origin = origin;
+        this.start  = start;
 
         type    = Type.New;
     }
@@ -47,6 +52,7 @@ public class Path
     {
         route   = new List<Route>();
         form    = null;
+
         type    = Type.New;
     }
 
@@ -71,7 +77,7 @@ public class Path
     {
         //Use last used step as base
         if (route.Count > 0)
-            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().origin);
+            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type);
         else
             Add(new Route(this));
     }
@@ -79,14 +85,14 @@ public class Path
     public void Add(int index)
     {
         if (route.Count > 0)
-            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().origin);
+            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type);
         else
-            Add(index, new[] {new GeneralData() }, DataManager.Type.None, new Origin());
+            Add(index, new[] {new GeneralData() }, DataManager.Type.None);
     }
 
-    public void Add(int new_controller, IEnumerable new_data, DataManager.Type new_data_type, Origin new_origin)
+    public void Add(int new_controller, IEnumerable new_data, DataManager.Type new_data_type)
     {
-        route.Add(new Route(new_controller, new_data, new_data_type, new_origin));
+        route.Add(new Route(new_controller, new_data, new_data_type));
     }
 
     public void Add(Route new_route)
@@ -105,6 +111,7 @@ public class Path
             copy.route.Add(r);
 
         copy.form = form;
+        copy.origin = origin;
 
         copy.start = start;
 
@@ -115,18 +122,11 @@ public class Path
 
     public Path Trim(int step)
     {
-        Path new_path = new Path(new List<Route>(), form);
+        Path new_path = new Path(new List<Route>(), form, origin, start);
 
         for (int i = 0; i < step; i++)
-        {
             new_path.Add(route[i]);
-
-            if(route[i].origin.selectionElement != null)
-                Debug.Log(route[i].origin.selectionElement.data_type);
-        }
-            
-        new_path.start = start;
-
+      
         new_path.type = type;
 
         return new_path;

@@ -6,7 +6,6 @@ public interface IEditor
     DataManager.Type data_type { get; }
     IEnumerable data { get; set; }
     ICollection data_list { get; set; }
-    SelectionElement selectionElement { get; set; }
     void InitializeEditor();
     void UpdateEditor();
     void UpdateIndex(int index);

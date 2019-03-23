@@ -5,8 +5,6 @@ using System.Linq;
 
 public class PathController : MonoBehaviour
 {
-    public Path path    { get; set; }
-
     public Route route  { get; set; }
 
     public int step     { get; set; }
@@ -35,22 +33,14 @@ public class PathController : MonoBehaviour
 
         step = new_step;
 
-        path = new_path.Trim(step);
+        Path path = new_path.Trim(step);
 
         if (path.route.Count > 0)
-        {
             route = path.route.Last().Copy();
-
-            if(route.origin.selectionElement != null)
-            {
-                Debug.Log("A " + route.origin.selectionElement.data_type + ":" + path.route.Count);
-            }
-                
-        }   
-        else {          
+        else        
             route = new Route(path);
-        }
-            
+
+        route.path = path;
 
         if (step > 0)
         {
@@ -95,10 +85,7 @@ public class PathController : MonoBehaviour
         if (GetComponent<IEditor>() != null)
         {
             dataEditor = GetComponent<IEditor>();
-            dataEditor.InitializeEditor();
-        }
-        else
-        {
+        } else {
             if (parent_controller != null && parent_controller.dataEditor != null)
                 dataEditor = parent_controller.dataEditor;
         }
@@ -107,12 +94,12 @@ public class PathController : MonoBehaviour
     private void SetHistory()
     {
         if (history.group != HistoryManager.Group.None)
-            history.AddHistory(path);
+            history.AddHistory(route.path);
     }
 
     public void FinalizePath(Path new_path)
     {
-        path.type = Path.Type.Loaded;
+        route.path.type = Path.Type.Loaded;
 
         if (step < new_path.route.Count)
             controllers[new_path.route[step].controller].FinalizePath(new_path);
@@ -134,7 +121,7 @@ public class PathController : MonoBehaviour
             return false;
 
         //If false then everything afterwards must be false as well
-        return path.Equals(editorSection.previous_controller_path);
+        return route.path.Equals(editorSection.previous_controller_path);
     }
 
     public bool GetComponents(Path new_path)

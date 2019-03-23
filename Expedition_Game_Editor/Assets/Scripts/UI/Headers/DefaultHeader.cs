@@ -38,6 +38,13 @@ public class DefaultHeader : MonoBehaviour, ISegment
                     chapterData.name = value;
 
                     break;
+
+                case DataManager.Type.Phase:
+
+                    PhaseDataElement phaseData = dataEditor.data.Cast<PhaseDataElement>().FirstOrDefault();
+                    phaseData.name = value;
+
+                    break; 
             }
         }
     }
@@ -59,20 +66,32 @@ public class DefaultHeader : MonoBehaviour, ISegment
 
         switch (dataEditor.data_type)
         {
-            case DataManager.Type.Chapter:
-
-                ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
-
-                _id     = chapterData.id;
-                _index  = chapterData.index;
-                _name   = chapterData.name;
-                _icon   = chapterData.icon;
-
-                break;
+            case DataManager.Type.Chapter: InitializeChapterData(); break;
+            case DataManager.Type.Phase: InitializePhaseData(); break;
         }
 
         if (index_switch != null)
             index_switch.InitializeSwitch(this);
+    }
+
+    private void InitializeChapterData()
+    {
+        ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
+
+        _id = chapterData.id;
+        _index = chapterData.index;
+        _name = chapterData.name;
+        _icon = chapterData.icon;
+    }
+
+    private void InitializePhaseData()
+    {
+        PhaseDataElement phaseData = dataEditor.data.Cast<PhaseDataElement>().FirstOrDefault();
+
+        _id = phaseData.id;
+        _index = phaseData.index;
+        _name = phaseData.name;
+        _icon = phaseData.icon;
     }
 
     public void OpenSegment()

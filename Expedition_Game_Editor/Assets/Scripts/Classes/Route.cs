@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Linq;
 
 public class Route
@@ -6,7 +7,6 @@ public class Route
     public int controller               { get; set; }
     public IEnumerable data             { get; set; }
     public DataManager.Type data_type   { get; set; }
-    public Origin origin                { get; set; }
 
     public Path path                    { get; set; }
 
@@ -15,7 +15,6 @@ public class Route
         controller = 0;
         data = new[] { new GeneralData() };
         data_type = DataManager.Type.None;
-        origin = new Origin();
         path = new_path;
     }
 
@@ -24,16 +23,14 @@ public class Route
         controller = route.controller;
         data = route.data;
         data_type = route.data_type;
-        origin = route.origin;
         path = route.path;
     }
 
-    public Route(int new_controller, IEnumerable new_data, DataManager.Type new_data_type, Origin new_origin)
+    public Route(int new_controller, IEnumerable new_data, DataManager.Type new_data_type)
     {
         controller = new_controller;
         data = new_data;
         data_type = new_data_type;
-        origin = new_origin;
     }
 
     public Route(SelectionElement selection)
@@ -41,7 +38,6 @@ public class Route
         controller = 0;
         data = selection.data; //Copy?
         data_type = selection.data_type;
-        origin = new Origin(selection);
 
         //TEMPORARY
         if(selection.segmentController != null)

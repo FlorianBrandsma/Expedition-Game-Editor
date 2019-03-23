@@ -35,7 +35,7 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public void InitializeProperties()
     {
-        if(flexible_type)
+        if (flexible_type)
         {
             //displayType = route.origin.displayType;
             
@@ -63,12 +63,13 @@ public class ListProperties : MonoBehaviour, IDisplay
             if (GetComponent<IProperties>() != null)
                 displayType = GetComponent<IProperties>().Type();
         }
+
+        listManager.InitializeList(this);
     }
 
     public void SetDisplay()
     {
-        listManager.InitializeList(this);
-
+        listManager.SetProperties();
         listManager.SetListSize();  
     }
        

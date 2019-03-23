@@ -48,10 +48,11 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElementData(IEnumerable new_data, DataManager.Type new_data_type)
+    public void SetElementData(IEnumerable new_data, DataManager.Type data_type)
     {
+        //Debug.Log("Set element data from " + this.data_type + " to " + data_type);
         data = new_data;
-        data_type = new_data_type;
+        this.data_type = data_type;
     }
 
     public void UpdateElement()
@@ -94,7 +95,7 @@ public class SelectionElement : MonoBehaviour
     {
         if (!selected)
         {
-            editorPath = new EditorPath(new Route(this), selectionProperty);
+            editorPath = new EditorPath(this);
 
             switch (selectionProperty)
             {

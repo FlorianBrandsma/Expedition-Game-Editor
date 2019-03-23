@@ -14,7 +14,7 @@ public class SubControllerManager : MonoBehaviour
         Vertical,
     }
 
-    private PathController controller;
+    private PathController pathController;
 
     private List<EditorTab> tab_list = new List<EditorTab>();
     private List<EditorTab> local_tab_list = new List<EditorTab>();
@@ -26,11 +26,11 @@ public class SubControllerManager : MonoBehaviour
     public Axis axis;
     private string axis_name;
 
-    public void SetTabs(PathController new_controller, Path main_path)
+    public void SetTabs(PathController pathController, Path main_path)
     {
-        controller = new_controller;
+        this.pathController = pathController;
 
-        controllers = controller.controllers;
+        controllers = pathController.controllers;
 
         if (controllers.Length > 0)
             gameObject.SetActive(true);
@@ -49,7 +49,7 @@ public class SubControllerManager : MonoBehaviour
 
                 SetAnchors(i, controllers.Length);
 
-                controllers[i].route = controller.route;
+                controllers[i].route = pathController.route;
 
                 new_tab.label.text = controllers[i].name;
                  
@@ -59,7 +59,7 @@ public class SubControllerManager : MonoBehaviour
                 new_tab.gameObject.SetActive(true);
             }
 
-            SelectTab(main_path.Trim(controller.step + 1).route[controller.step].controller);
+            SelectTab(main_path.Trim(pathController.step + 1).route[pathController.step].controller);
 
         } else if(controllers.Length == 1) { 
 
@@ -110,9 +110,9 @@ public class SubControllerManager : MonoBehaviour
 
     private void OpenPath(int selected_tab)
     {
-        controller.path.Add(selected_tab);
+        pathController.route.path.Add(selected_tab);
 
-        EditorManager.editorManager.OpenPath(controller.path);
+        EditorManager.editorManager.OpenPath(pathController.route.path);
     }
 
     private void SelectTab(int selected_tab)

@@ -26,7 +26,7 @@ public class TerrainHeader : MonoBehaviour, IHeader
         //Set selection type to match the list type from which the terrain controller was opened,
         //so that the editor opens a different path
         
-        editor_button.data = controller.pathController.path.route[controller.pathController.step - 3].data;
+        editor_button.data = controller.pathController.route.path.route[controller.pathController.step - 3].data;
         //editor_button.controller = controller.pathController;
     }
 

@@ -2680,7 +2680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce6baff9f7899643b55869314229725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonActionManager: {fileID: 0}
+  buttonActionManager: {fileID: 674646147}
 --- !u!1 &60411238
 GameObject:
   m_ObjectHideFlags: 0

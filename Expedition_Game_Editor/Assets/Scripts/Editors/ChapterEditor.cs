@@ -6,6 +6,7 @@ using System.Linq;
 public class ChapterEditor : MonoBehaviour, IEditor
 {
     public DataManager.Type data_type { get { return DataManager.Type.Chapter; } }
+
     public IEnumerable data { get; set; }
     public ICollection data_list { get; set; }
 
@@ -19,8 +20,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void InitializeEditor()
     {
-        selectionElement = pathController.route.origin.selectionElement;
-        //Debug.Log(selectionElement.data_type);
+        selectionElement = pathController.route.path.origin;
+
         SetList();
 
         data = pathController.route.data;
@@ -46,7 +47,6 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        Debug.Log(data_list);
         var list = data_list.Cast<ChapterDataElement>().ToList();
 
         list.RemoveAt(chapterData.index);

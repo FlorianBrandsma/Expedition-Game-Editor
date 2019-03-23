@@ -22,7 +22,7 @@ public class EditorSection : MonoBehaviour
 
     public void SetPreviousTarget()
     {
-        previous_controller_path = target_controller.pathController.path.Copy();
+        previous_controller_path = target_controller.pathController.route.path;
     }
 
     public void ActivateDependencies()

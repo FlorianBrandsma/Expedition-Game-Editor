@@ -55,7 +55,7 @@ public class SegmentController : MonoBehaviour
     {
         this.editorController = editorController;
 
-        path = editorController.pathController.path;
+        path = editorController.pathController.route.path;
         generalData = editorController.pathController.route.GeneralData();
 
         if (GetComponent<ISegment>() != null)
@@ -64,11 +64,11 @@ public class SegmentController : MonoBehaviour
         if (!editorController.pathController.loaded)
         {
             if (GetComponent<IDataController>() != null)
-            {
-                GetComponent<IDataController>().InitializeController();
-                GetComponent<IDataController>().display.InitializeProperties();
-            }
+                GetComponent<IDataController>().InitializeController();    
         }
+
+        if (GetComponent<IDataController>() != null)
+            GetComponent<IDataController>().display.InitializeProperties();        
     }
 
     public void FilterRows(List<GeneralData> list)
@@ -89,7 +89,6 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().OpenSegment();
         
-        //Debug.Log(controller.pathController.route.data_type);
         if (GetComponent<IDataController>() != null)
             GetComponent<IDataController>().display.SetDisplay();
     }

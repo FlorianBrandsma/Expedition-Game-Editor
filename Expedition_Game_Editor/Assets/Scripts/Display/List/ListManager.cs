@@ -55,8 +55,6 @@ public class ListManager : MonoBehaviour
         overlayManager.InitializeOverlay(this);
 
         SelectionManager.lists.Add(this);
-
-        SetProperties();
     }
 
     public void SetProperties()
@@ -81,7 +79,7 @@ public class ListManager : MonoBehaviour
         if (organizer == null) return;
 
         if (listProperties.dataController.data_list.Count == 0) return;
-        
+
         list.SetElementSize();
 
         overlayManager.ActivateOverlay(organizer, list);
@@ -150,7 +148,7 @@ public class ListManager : MonoBehaviour
             //If child data matches route data, check if property matches in case parent and child have same data
             if (element.child != null && element.child.GeneralData().Equals(route.GeneralData()))
             {
-                if (element.child.selectionProperty == route.origin.selectionProperty)
+                if (element.child.selectionProperty == route.path.origin.selectionProperty)
                 {
                     element.child.ActivateSelection();
 
@@ -191,7 +189,7 @@ public class ListManager : MonoBehaviour
         {
             if (element.data.Equals(route.data))
             {
-                if (element.child != null && element.child.selectionProperty == route.origin.selectionProperty)
+                if (element.child != null && element.child.selectionProperty == route.path.origin.selectionProperty)
                     element.child.CancelSelection();
                 else
                     element.CancelSelection();
