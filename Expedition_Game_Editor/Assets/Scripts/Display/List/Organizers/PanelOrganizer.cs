@@ -26,8 +26,9 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        element_size = new Vector2( listManager.listProperties.element_size.x, 
-                                    listManager.listProperties.element_size.y / properties.reference_area.anchorMax.x);
+        element_size = new Vector2( listManager.listProperties.element_size.x,
+                                    properties.constant_height ?    listManager.listProperties.element_size.y : 
+                                                                    listManager.listProperties.element_size.y / properties.reference_area.anchorMax.x);
 
         SetList();
     }
@@ -55,9 +56,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        listManager.ResetElement(listManager.element_list);
-
-        SetData();
+        ResetData(null);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -68,7 +67,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Panel");
-
+        
         foreach (var data in dataController.data_list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
@@ -87,8 +86,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ResetData(ICollection filter)
     {
-        CloseOrganizer();
+        CloseList();
         SetData();
+    }
+
+    public void CloseData()
+    {
+        listManager.element_list.Clear();
     }
 
     void SetElement(SelectionElement element)
@@ -115,9 +119,16 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
     }
 
-    public void CloseOrganizer()
+    public void CloseList()
     {
         listManager.ResetElement(listManager.element_list);
+
+        listManager.element_list.Clear();
+    }
+
+    public void CloseOrganizer()
+    {
+        CloseList();
 
         DestroyImmediate(this);
     }

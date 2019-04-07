@@ -35,7 +35,7 @@ public class ElementHeader : MonoBehaviour, IHeader
         if (index_switch != null)
         {
             //int index_limit = controller.pathController.route.origin.selectionElement.listManager.listProperties.dataController.data_list.Cast<IList>().ToList().Count;
-            index_switch.Activate(0, 0);
+            index_switch.Activate();
         }
     }
 

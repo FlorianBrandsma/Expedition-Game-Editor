@@ -54,6 +54,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
+        ResetData(null);
         SetData();
     }
 
@@ -94,7 +95,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ResetData(ICollection filter)
     {
-        CloseOrganizer();
+        CloseList();
         SetData();
     }
 
@@ -123,9 +124,16 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (element_size.y * i))).y;
     }
 
-    public void CloseOrganizer()
+    public void CloseList()
     {
         listManager.ResetElement(listManager.element_list);
+
+        listManager.element_list.Clear();
+    }
+
+    public void CloseOrganizer()
+    {
+        CloseList();
 
         DestroyImmediate(this);
     }

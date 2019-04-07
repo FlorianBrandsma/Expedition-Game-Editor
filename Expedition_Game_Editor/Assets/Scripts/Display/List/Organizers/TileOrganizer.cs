@@ -78,6 +78,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
+        ResetData(null);
         SetData();
     }
 
@@ -108,7 +109,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ResetData(ICollection filter)
     {
-        CloseOrganizer();
+        CloseList();
         SetData();
     }
 
@@ -133,10 +134,17 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         return listManager.element_list[index];
     }
 
-    public void CloseOrganizer()
+    public void CloseList()
     {
         listManager.ResetElement(listManager.element_list);
 
+        listManager.element_list.Clear();
+    }
+
+    public void CloseOrganizer()
+    {
+        CloseList();
+
         DestroyImmediate(this);
-    } 
+    }
 }

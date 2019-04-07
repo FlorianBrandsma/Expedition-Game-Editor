@@ -49,12 +49,12 @@ public class SubControllerManager : MonoBehaviour
 
                 SetAnchors(i, controllers.Length);
 
-                controllers[i].route = pathController.route;
+                //controllers[i].route = pathController.route;
 
                 new_tab.label.text = controllers[i].name;
                  
                 int index = i;
-                new_tab.GetComponent<Button>().onClick.AddListener(delegate { OpenPath(index); });
+                new_tab.GetComponent<Button>().onClick.AddListener(delegate { InitializePath(index); });
 
                 new_tab.gameObject.SetActive(true);
             }
@@ -108,11 +108,11 @@ public class SubControllerManager : MonoBehaviour
         }
     }
 
-    private void OpenPath(int selected_tab)
+    private void InitializePath(int selected_tab)
     {
         pathController.route.path.Add(selected_tab);
-
-        EditorManager.editorManager.OpenPath(pathController.route.path);
+        
+        EditorManager.editorManager.InitializePath(pathController.route.path);
     }
 
     private void SelectTab(int selected_tab)

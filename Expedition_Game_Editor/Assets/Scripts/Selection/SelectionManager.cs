@@ -47,11 +47,11 @@ static public class SelectionManager
 
     static public void SelectEdit(Route route)
     {
-        foreach(ListManager list in lists)
+        foreach (ListManager list in lists)
         {
             Property property = list.listProperties.selectionProperty;
 
-            if(property == Property.Edit || property == Property.Enter)
+            if (property == Property.Edit || property == Property.Enter)
                 list.SelectElement(route);
         }           
     }
@@ -82,6 +82,6 @@ static public class SelectionManager
         get = null;
 
         //Reset
-        EditorManager.editorManager.OpenPath(new PathManager.Form(EditorManager.editorManager.forms[2]).Initialize());  
+        EditorManager.editorManager.InitializePath(new PathManager.Form(EditorManager.editorManager.forms[2]).Initialize());  
     }
 }

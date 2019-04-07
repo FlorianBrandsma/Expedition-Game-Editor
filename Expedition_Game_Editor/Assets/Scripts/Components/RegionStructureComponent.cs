@@ -138,7 +138,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 		dropdown.value = selected_index;
 
 		Path path = pathController.route.path;
-		dropdown.onValueChanged.AddListener(delegate { OpenPath(path, dataList.list[dropdown.value], (index + 1)); });
+		dropdown.onValueChanged.AddListener(delegate { InitializePath(path, dataList.list[dropdown.value], (index + 1)); });
 	}
 
 	private DataList GetData(string sql, GeneralData generalData)
@@ -153,13 +153,13 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 		return dataList;
 	}
 
-	private void OpenPath(Path path, GeneralData generalData, int index)
+	private void InitializePath(Path path, GeneralData generalData, int index)
 	{
 		//path.ReplaceAllRoutes(generalData);
 
 		SetStructureData(path, generalData, index);
 
-		EditorManager.editorManager.OpenPath(path);
+		EditorManager.editorManager.InitializePath(path);
 	}
 
 	private void SetStructureData(Path path, GeneralData data, int index)

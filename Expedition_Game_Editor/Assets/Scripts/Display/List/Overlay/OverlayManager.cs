@@ -116,6 +116,5 @@ public class OverlayManager : MonoBehaviour
   
         foreach (IOverlay overlay in GetComponents<IOverlay>())
             overlay.CloseOverlay();    
-        
     }  
 }

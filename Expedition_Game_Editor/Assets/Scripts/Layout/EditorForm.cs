@@ -29,104 +29,107 @@ public class EditorForm : MonoBehaviour
     public void InitializePath(Path path, bool reload = false)
     {
         //Debug.Log(EditorManager.PathString(path));
-
-        //Close the initialization of previous path
-        CloseForm(main_form);
-
-        //Determine the target controller
-        baseController.InitializePath(path, path.start, reload, null);
         
+        OpenPath(path, reload);
+        OpenLayout(path);
+
+        //ResetSiblingLayout();
+
+        active = true;
+    }
+
+    public void OpenPath(Path path, bool reload)
+    {
+        //Close the initialization of previous path
+        ClosePath();
+
+        //Flesh out the path and determine the target controller
+        baseController.InitializePath(path, path.start, reload, null);
+
         //Save previous target to compare data with
-        SetPreviousTarget();
-
-        //Activate target dependencies
-        ActivateDependencies();
-
-        baseController.SetTabs(path);
-
-        //Set layout of dependencies
-        SetDependencies(path);
+        SetPreviousPath();
 
         //Set visual components of editor (list/preview)
         InitializeController();
-
-        //Load specific editor (and add to history)
-        OpenEditor();
- 
-        //Follow the same path to activate anything along its way
-        //If the path contains any component, sort them afterwards
-        //if (baseController.SetComponents(path))
-        //    ComponentManager.componentManager.SortComponents();
-
-        active_path = path;
-        active = true;
 
         FinalizeController();
 
         baseController.FinalizePath(path);
 
         path.type = Path.Type.Loaded;
+        active_path = path;
     }
 
-    public void OpenPath(Path path)
+    public void ClosePath()
     {
-        InitializePath(path);
-
-        ResetSibling();
-    }
-
-    private void SetPreviousTarget()
-    {
-        foreach (EditorSection section in editor_sections)
+        if (active)
         {
-            if (section.target_controller != null)
-                section.SetPreviousTarget();
-            else
-                section.previous_controller_path = null;
+            baseController.ClosePath(active_path);
+
+            foreach (EditorSection section in editor_sections)
+                section.ClosePath();
+
+            active = false;
         }
     }
 
-    private void ActivateDependencies()
+    public void OpenLayout(Path path)
     {
-        foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.ActivateDependencies();
-        }
+        //Close Layout
+        CloseLayout(main_form);
+
+        baseController.GetTargetLayout(path);
+
+        //Activate target dependencies
+        InitializeLayout();
+
+        baseController.SetTabs(path);
+
+        //Set layout of dependencies (tabs must be activated to serve as header)
+        SetLayout();
+
+        //Follow the same path to activate anything along its way
+        //If the path contains any component, sort them afterwards
+
+        if (baseController.SetComponents(path))
+            ComponentManager.componentManager.SortComponents();
+
+        //Set up the organizers
+        InitializeDisplay();
+
+        //Set the organizers
+        SetDisplay();
+
+        SelectionManager.SelectElements();
     }
 
-    private void SetDependencies(Path path)
+    private void CloseLayout(bool close_components)
     {
-        foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.SetDependencies(path);
-        }
-    }
-    private void InitializeController()
-    {
-        foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.InitializeController();
-        }
-    }
-    private void OpenEditor()
-    {
-        foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.OpenEditor();        
-        }
+        CloseLayout();
+
+        //Also closes tabs
+        baseController.CloseLayout(active_path);
+
+        if (close_components)
+            ComponentManager.componentManager.CloseComponents();
+
+        //Affects sibling form
+        GetComponent<LayoutManager>().ResetLayout();
+
+        CloseDisplay();
     }
 
-    private void FinalizeController()
+    //public void OpenPath(Path path)
+    //{
+    //    InitializePath(path);
+
+    //    
+    //}
+
+    private void SetPreviousPath()
     {
         foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.FinalizeController();
-        }       
+            section.SetPreviousPath();      
     }
 
     public void ResetPath()
@@ -135,38 +138,75 @@ public class EditorForm : MonoBehaviour
             InitializePath(active_path, true);
     }
 
-    public void ResetSibling()
+    #region Controller
+    private void InitializeController()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.InitializeController();
+    }
+
+    private void FinalizeController()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.FinalizeController();
+    }
+    #endregion
+
+    #region Layout
+    private void InitializeLayout()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.InitializeLayout();
+    }
+
+    private void SetLayout()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.SetLayout();
+    }
+
+    private void CloseLayout()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.CloseLayout();
+    }
+
+    public void ResetLayout()
+    {
+        OpenLayout(active_path);  
+    }
+
+    public void ResetSiblingLayout()
     {
         if (sibling_form != null)
-            sibling_form.ResetPath();
+            sibling_form.ResetLayout();
     }
+    #endregion
+
+    #region Display
+    private void InitializeDisplay()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.InitializeDisplay();
+    }
+
+    private void SetDisplay()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.SetDisplay();
+    }
+
+    private void CloseDisplay()
+    {
+        foreach (EditorSection section in editor_sections)
+            section.CloseDisplay();
+    }
+    #endregion
 
     public void CloseForm(bool close_components)
     {
-        if (active)
-        {
-            if (close_components)
-                CloseComponents();
-
-            CloseSections();
-
-            baseController.ClosePath(active_path);
-
-            active = false;
-        }
-    }
-
-    private void CloseComponents()
-    {
-        ComponentManager.componentManager.CloseComponents();
-    }
-
-    private void CloseSections()
-    {
-        foreach (EditorSection section in editor_sections)
-        {
-            if (section.target_controller != null)
-                section.CloseSection();
-        }
+        ClosePath();
+        CloseLayout(close_components);
+        CloseDisplay();
     }
 }

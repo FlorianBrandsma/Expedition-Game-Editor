@@ -42,7 +42,7 @@ public class ItemHeader : MonoBehaviour, IHeader
         {
             //int index_limit = subController.controller.route.origin.selectionElement.manager.properties.dataList.list.Count;
             //int index_limit = 15;
-            index_switch.Activate(0, 0);
+            index_switch.Activate();
         }          
     }
 

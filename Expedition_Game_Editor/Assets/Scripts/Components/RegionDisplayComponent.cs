@@ -31,9 +31,9 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
         display_dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(display_dropdown.value, pathController.route.path); });
     }
 
-    public void OpenPath(Path path, IEnumerable data)
+    public void InitializePath(Path path, IEnumerable data)
     {
-        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
+        EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }
 
     public void CloseComponent() { }

@@ -100,7 +100,7 @@ public class SelectionElement : MonoBehaviour
             switch (selectionProperty)
             {
                 case SelectionManager.Property.Get:
-                    EditorManager.editorManager.OpenPath(editorPath.path);
+                    EditorManager.editorManager.InitializePath(editorPath.path);
                     ActivateSelection();
                     break;
 
@@ -109,15 +109,15 @@ public class SelectionElement : MonoBehaviour
                     break;
 
                 case SelectionManager.Property.Enter:
-                    EditorManager.editorManager.OpenPath(editorPath.path);
+                    EditorManager.editorManager.InitializePath(editorPath.path);
                     break;
 
                 case SelectionManager.Property.Edit:
-                    EditorManager.editorManager.OpenPath(editorPath.path);
+                    EditorManager.editorManager.InitializePath(editorPath.path);
                     break;
 
                 case SelectionManager.Property.Open:
-                    EditorManager.editorManager.OpenPath(editorPath.path);
+                    EditorManager.editorManager.InitializePath(editorPath.path);
                     break;
 
                 default:

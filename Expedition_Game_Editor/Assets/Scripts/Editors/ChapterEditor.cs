@@ -6,17 +6,14 @@ using System.Linq;
 public class ChapterEditor : MonoBehaviour, IEditor
 {
     public DataManager.Type data_type { get { return DataManager.Type.Chapter; } }
-
+    
     public IEnumerable data { get; set; }
     public ICollection data_list { get; set; }
-
     private ChapterDataElement chapterData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
 
     public SelectionElement selectionElement { get; set; }
-
-    public ButtonActionManager buttonActionManager;
 
     public void InitializeEditor()
     {
@@ -30,9 +27,6 @@ public class ChapterEditor : MonoBehaviour, IEditor
         
         if (!pathController.loaded)
             chapterData.ClearChanges();
-
-        if (buttonActionManager != null)
-            buttonActionManager.InitializeButtons(this);
     }
 
     public void UpdateEditor()
@@ -81,8 +75,12 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void SetEditor()
     {
-        if (buttonActionManager != null)
-            buttonActionManager.SetButtons(chapterData.changed);
+        pathController.editorSection.SetActionButtons();
+    }
+
+    public bool Changed()
+    {
+        return chapterData.changed;
     }
 
     public void ApplyChanges()
@@ -96,12 +94,11 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        EditorManager.editorManager.PreviousEditor();
+        
     }
 
     public void CloseEditor()
     {
-        if (buttonActionManager != null)
-            buttonActionManager.CloseButtons();
-    }  
+        
+    }    
 }

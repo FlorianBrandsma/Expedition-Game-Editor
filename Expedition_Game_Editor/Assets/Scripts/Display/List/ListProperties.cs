@@ -72,16 +72,6 @@ public class ListProperties : MonoBehaviour, IDisplay
         listManager.SetProperties();
         listManager.SetListSize();  
     }
-       
-    public void AutoSelectElement()
-    {
-        listManager.AutoSelectElement();
-    }
-
-    public void ResetList()
-    {
-        listManager.ResetData();
-    } 
 
     public void CloseDisplay()
     {
@@ -94,4 +84,14 @@ public class ListProperties : MonoBehaviour, IDisplay
 
         listManager.CloseList();
     }
+
+    public void AutoSelectElement()
+    {
+        listManager.AutoSelectElement();
+    }
+
+    public void ResetList()
+    {
+        listManager.ResetData();
+    }   
 }

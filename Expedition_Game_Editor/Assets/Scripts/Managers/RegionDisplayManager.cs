@@ -20,7 +20,7 @@ public class RegionDisplayManager : MonoBehaviour
     {
         active_display = (Display)new_display;
 
-        EditorManager.editorManager.OpenPath(new_path);
+        EditorManager.editorManager.InitializePath(new_path);
     }
 
     static public void ResetDisplay()

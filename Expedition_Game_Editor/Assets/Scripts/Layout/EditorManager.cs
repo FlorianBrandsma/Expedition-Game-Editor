@@ -45,18 +45,13 @@ public class EditorManager : MonoBehaviour
         //    ResetEditor();
     }
 
-    public void InitializePath(Path path)
-    {
-        path.form.InitializePath(path);
-    }
-
-    public void OpenPath(Path path, bool returning = false)
+    public void InitializePath(Path path, bool returning = false)
     {
         historyManager.returned = returning;
 
         SelectionManager.CancelGetSelection();
 
-        path.form.OpenPath(path);
+        path.form.InitializePath(path);
 
         SelectionManager.SelectElements();
     }

@@ -52,7 +52,7 @@ public class HistoryManager
 
             history.RemoveAt(history.Count - 1);
 
-            OpenPath();
+            InitializePath();
         }
     }
 
@@ -61,8 +61,8 @@ public class HistoryManager
         form.CloseForm(true);
     }
 
-    public void OpenPath()
+    public void InitializePath()
     {
-        EditorManager.editorManager.OpenPath(history[history.Count - 1].path, true);
+        EditorManager.editorManager.InitializePath(history[history.Count - 1].path, true);
     }
 }

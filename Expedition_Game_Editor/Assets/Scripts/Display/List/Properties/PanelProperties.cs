@@ -5,6 +5,7 @@
 public class PanelProperties : MonoBehaviour, IProperties
 {
     public bool icon;
+    public bool constant_height;
     public bool zigzag;
     public bool edit;
 
@@ -12,12 +13,12 @@ public class PanelProperties : MonoBehaviour, IProperties
 
     public RectTransform reference_area;
 
-    public void Copy(PanelProperties new_properties)
+    public void Copy(PanelProperties panelProperties)
     {
-        icon = new_properties.icon;
-        zigzag = new_properties.zigzag;
-        edit = new_properties.edit;
-        //edit_data = new_properties.edit_data;
+        icon = panelProperties.icon;
+        constant_height = panelProperties.constant_height;
+        zigzag = panelProperties.zigzag;
+        edit = panelProperties.edit;
     }
 
     #region IProperties

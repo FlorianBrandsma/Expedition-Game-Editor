@@ -9,13 +9,13 @@ public class ButtonActionManager : MonoBehaviour
 
     public Toggle   trash_toggle;
 
-    public void InitializeButtons(IEditor dataEditor)
+    public void InitializeButtons(EditorSection section)
     {
         if (apply_button != null)
-            apply_button.onClick.AddListener(delegate { dataEditor.ApplyChanges(); });
+            apply_button.onClick.AddListener(delegate { section.ApplyChanges(); });
         
         if(close_button != null)
-            close_button.onClick.AddListener(delegate { dataEditor.CancelEdit(); });
+            close_button.onClick.AddListener(delegate { section.CancelEdit(); });
     }
 
     public void SetButtons(bool changed)

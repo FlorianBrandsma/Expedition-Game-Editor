@@ -28,18 +28,39 @@ public class EditorController : MonoBehaviour
             segment.InitializeSegment(this);
     }
 
-    public void OpenEditor()
+    public void InitializeDisplay()
     {
-        if (pathController.dataEditor != null)
-            pathController.dataEditor.OpenEditor();
-
-        OpenSegments();
+        InitializeSegmentDisplay();
     }
 
-    void OpenSegments()
+    public void SetDisplay()
+    {
+        SetSegmentDisplay();
+    }
+
+    public void CloseDisplay()
+    {
+        SelectionManager.CancelSelection(pathController.route);
+
+        CloseSegmentDisplay();
+    }
+
+    private void InitializeSegmentDisplay()
     {
         foreach (SegmentController segment in segments)
-            segment.OpenSegment();
+            segment.InitializeSegmentDisplay();
+    }
+
+    private void SetSegmentDisplay()
+    {
+        foreach (SegmentController segment in segments)
+            segment.SetSegmentDisplay();
+    }
+
+    private void CloseSegmentDisplay()
+    {
+        foreach (SegmentController segment in segments)
+            segment.CloseSegmentDisplay();
     }
 
     public void FinalizeController()
@@ -51,19 +72,5 @@ public class EditorController : MonoBehaviour
         }
 
         //path.type = Path.Type.Loaded;
-    }
-
-    public void CloseEditor()
-    {
-        //Maybe belongs in segments now?
-        SelectionManager.CancelSelection(pathController.route);
-
-        CloseSegments();
-    }
-
-    public void CloseSegments()
-    {        
-        foreach (SegmentController segment in segments)
-            segment.CloseSegment(); 
     }
 }

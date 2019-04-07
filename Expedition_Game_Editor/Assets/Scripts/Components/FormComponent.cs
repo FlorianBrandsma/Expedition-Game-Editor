@@ -80,7 +80,9 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         Path path = (constant ? editorForm.active_path : new PathManager.Form(editorForm).Initialize());
 
-        EditorManager.editorManager.OpenPath(path);
+        EditorManager.editorManager.InitializePath(path);
+
+        editorForm.ResetSiblingLayout();
 
         button.GetComponent<EditorButton>().icon.texture = open_icon;
     }
@@ -88,16 +90,16 @@ public class FormComponent : MonoBehaviour, IComponent
     private void CloseForm()
     {
         editorForm.CloseForm(false);
-        editorForm.GetComponent<LayoutManager>().ResetLayout();
 
-        if(reset_components)
-            ComponentManager.componentManager.SortComponents();
+        //if (reset_components)
+        //    ComponentManager.componentManager.SortComponents();
 
-        editorForm.ResetSibling();
+        editorForm.ResetSiblingLayout();
 
-        SelectionManager.SelectElements();
+        //SelectionManager.SelectElements();
 
-        button.GetComponent<EditorButton>().icon.texture = close_icon;
+        if(button != null)
+            button.GetComponent<EditorButton>().icon.texture = close_icon;
     }
 
     public void CloseComponent()

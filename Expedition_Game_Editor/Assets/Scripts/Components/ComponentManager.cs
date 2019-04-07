@@ -32,6 +32,8 @@ public class ComponentManager : MonoBehaviour
 
     public void SortComponents()
     {
+        if (elements.Count == 0) return;
+
         List<ComponentElement> left_elements = new List<ComponentElement>();
         List<ComponentElement> right_elements = new List<ComponentElement>();
         List<ComponentElement> main_elements = new List<ComponentElement>();

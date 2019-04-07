@@ -65,10 +65,7 @@ public class SegmentController : MonoBehaviour
         {
             if (GetComponent<IDataController>() != null)
                 GetComponent<IDataController>().InitializeController();    
-        }
-
-        if (GetComponent<IDataController>() != null)
-            GetComponent<IDataController>().display.InitializeProperties();        
+        }     
     }
 
     public void FilterRows(List<GeneralData> list)
@@ -79,13 +76,21 @@ public class SegmentController : MonoBehaviour
             GetComponent<ListProperties>().dataController.data_list = new List<GeneralData>(list);
         }
 
-        OpenSegment();
+        SetSegmentDisplay();
     }
 
-    public void OpenSegment()
+    public void InitializeSegmentDisplay()
+    {
+        if (GetComponent<IDataController>() != null)
+            GetComponent<IDataController>().display.InitializeProperties();
+    }
+
+    public void SetSegmentDisplay()
     {
         //Don't reset when switching between tabs
         //"loaded" is reserved for different paths. New tab = new path
+
+        //This block might belong in a non-display method
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().OpenSegment();
         
@@ -93,7 +98,7 @@ public class SegmentController : MonoBehaviour
             GetComponent<IDataController>().display.SetDisplay();
     }
 
-    public void CloseSegment()
+    public void CloseSegmentDisplay()
     {
         if (GetComponent<IDataController>() != null)
             GetComponent<IDataController>().display.CloseDisplay();      

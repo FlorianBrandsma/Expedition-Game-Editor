@@ -86,6 +86,8 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
+        ResetData(null);
+
         SetData();
     }
 
@@ -124,7 +126,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ResetData(ICollection filter)
     {
-        CloseOrganizer();
+        CloseList();
         SetData();
     }
 
@@ -152,9 +154,16 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         return 0;
     }
 
-    public void CloseOrganizer()
+    public void CloseList()
     {
         listManager.ResetElement(listManager.element_list);
+
+        listManager.element_list.Clear();
+    }
+
+    public void CloseOrganizer()
+    {
+        CloseList();
 
         DestroyImmediate(this);
     }

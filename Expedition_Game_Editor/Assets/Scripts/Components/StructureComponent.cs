@@ -36,9 +36,9 @@ public class StructureComponent : MonoBehaviour, IComponent
         //dropdown.onValueChanged.AddListener(delegate { OpenPath(path, listProperties.dataList.list[dropdown.value]); });
     }
 
-    public void OpenPath(Path path, IEnumerable data)
+    public void InitializePath(Path path, IEnumerable data)
     {
-        EditorManager.editorManager.OpenPath(PathManager.ReloadPath(path, data));
+        EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }
 
     public void CloseComponent() { }

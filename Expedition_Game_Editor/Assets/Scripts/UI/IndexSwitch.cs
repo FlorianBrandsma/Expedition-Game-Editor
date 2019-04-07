@@ -14,18 +14,18 @@ public class IndexSwitch : MonoBehaviour
     private int index;
     private int index_limit;
 
-    public void InitializeSwitch(ISegment segment)
+    public void InitializeSwitch(ISegment segment, int index, int index_limit)
     {
         this.segment = segment;
-    }
 
-    public void Activate(int index, int index_limit)
-    {
         this.index = index;
         this.index_limit = index_limit;
 
         SetSwitch();
+    }
 
+    public void Activate()
+    {
         gameObject.SetActive(true);
     }
 

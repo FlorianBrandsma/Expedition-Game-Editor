@@ -140,9 +140,7 @@ public class ListManager : MonoBehaviour
     {
         if (selectionProperty == SelectionManager.Property.Set) return;
 
-        selected_route = route.Copy();
-
-        foreach(SelectionElement element in element_list)
+        foreach (SelectionElement element in element_list)
         {
             //Check if element has child first
             //If child data matches route data, check if property matches in case parent and child have same data
@@ -151,6 +149,8 @@ public class ListManager : MonoBehaviour
                 if (element.child.selectionProperty == route.path.origin.selectionProperty)
                 {
                     element.child.ActivateSelection();
+
+                    selected_route = route.Copy();
 
                     CorrectPosition(element);
 
@@ -222,7 +222,6 @@ public class ListManager : MonoBehaviour
         scrollRect.vertical = false;
 
         overlayManager.CloseOverlay();
-
         organizer.CloseOrganizer();
 
         element_list.Clear();
@@ -230,6 +229,11 @@ public class ListManager : MonoBehaviour
         SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
 
         transform.parent.gameObject.SetActive(false);
+    }
+
+    public void CloseOrganizer()
+    {
+        
     }
 
     public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab)

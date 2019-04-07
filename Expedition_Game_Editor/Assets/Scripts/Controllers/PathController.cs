@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PathController : MonoBehaviour
 {
-    public Route route  { get; set; }
+    public Route route { get; set; }
 
     public int step     { get; set; }
 
@@ -24,16 +24,16 @@ public class PathController : MonoBehaviour
     private PathController parent_controller;
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path new_path, int new_step, bool reload, PathController new_parent_controller)
+    public void InitializePath(Path main_path, int step, bool reload, PathController parent_controller)
     {
-        parent_controller = new_parent_controller;
+        this.parent_controller = parent_controller;
 
         if (GetComponent<EditorController>() != null)
             editorSection.target_controller = GetComponent<EditorController>();
 
-        step = new_step;
+        this.step = step;
 
-        Path path = new_path.Trim(step);
+        Path path = main_path.Trim(step);
 
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
@@ -41,7 +41,7 @@ public class PathController : MonoBehaviour
             route = new Route(path);
 
         route.path = path;
-
+        
         if (step > 0)
         {
             //Don't check this if force is true. Must load!
@@ -59,13 +59,15 @@ public class PathController : MonoBehaviour
         GetDataEditor();
 
         if (subControllerManager != null)
-            InitializeTabs(new_path);
-
-        InitializeComponents(new_path);
-
-        if (step < new_path.route.Count)
         {
-            controllers[new_path.route[step].controller].InitializePath(new_path, new_step + 1, reload, this);
+            InitializeTabs(main_path);
+        }
+            
+        InitializeComponents(main_path);
+
+        if (step < main_path.route.Count)
+        {
+            controllers[main_path.route[step].controller].InitializePath(main_path, step + 1, reload, this);
         }
     }
 
@@ -166,20 +168,35 @@ public class PathController : MonoBehaviour
 
     public void FilterRows(List<GeneralData> list) { }
 
-    public void ClosePath(Path new_path)
+    public void GetTargetLayout(Path path)
     {
-        //foreach (IComponent component in GetComponents<IComponent>())
-        //    component.CloseComponent();
+        if (GetComponent<LayoutDependency>() != null)
+            editorSection.target_layout = GetComponent<LayoutDependency>();
+
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].GetTargetLayout(path);
+    }
+
+    public void ClosePath(Path path)
+    {
+        foreach (IComponent component in GetComponents<IComponent>())
+            component.CloseComponent();
 
         if (GetComponent<IEditor>() != null)
             GetComponent<IEditor>().CloseEditor();
 
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].ClosePath(path);
+
+        loaded = false;
+    }
+
+    public void CloseLayout(Path path)
+    {
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
 
-        if (step < new_path.route.Count)
-            controllers[new_path.route[step].controller].ClosePath(new_path);
-
-        loaded = false;
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].CloseLayout(path);
     }
 }

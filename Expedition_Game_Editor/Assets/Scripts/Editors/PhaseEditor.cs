@@ -14,8 +14,6 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public SelectionElement selectionElement { get; set; }
 
-    public ButtonActionManager buttonActionManager;
-
     public void InitializeEditor()
     {
         selectionElement = pathController.route.path.origin;
@@ -27,9 +25,6 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
         if (!pathController.loaded)
             phaseData.ClearChanges();
-
-        if (buttonActionManager != null)
-            buttonActionManager.InitializeButtons(this);
     }
 
     public void UpdateEditor()
@@ -78,8 +73,12 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void SetEditor()
     {
-        if (buttonActionManager != null)
-            buttonActionManager.SetButtons(phaseData.changed);
+
+    }
+
+    public bool Changed()
+    {
+        return phaseData.changed;
     }
 
     public void ApplyChanges()
@@ -98,7 +97,6 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void CloseEditor()
     {
-        if (buttonActionManager != null)
-            buttonActionManager.CloseButtons();
+
     }
 }
