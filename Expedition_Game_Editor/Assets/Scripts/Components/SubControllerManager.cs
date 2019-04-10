@@ -111,7 +111,7 @@ public class SubControllerManager : MonoBehaviour
     private void InitializePath(int selected_tab)
     {
         pathController.route.path.Add(selected_tab);
-        
+
         EditorManager.editorManager.InitializePath(pathController.route.path);
     }
 

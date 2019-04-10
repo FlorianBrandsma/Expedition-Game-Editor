@@ -37,26 +37,28 @@ public class ListProperties : MonoBehaviour, IDisplay
     {
         if (flexible_type)
         {
-            //displayType = route.origin.displayType;
-            
-            //switch (displayType)
-            //{
-            //    case DisplayManager.Type.Button:
-            //        gameObject.AddComponent<ButtonProperties>();
-            //        break;
-            //    case DisplayManager.Type.Tile:
-            //        gameObject.AddComponent<TileProperties>();
-            //        break;
-            //    case DisplayManager.Type.Panel:
-            //        gameObject.AddComponent<PanelProperties>();
-            //        break;
-            //    case DisplayManager.Type.PanelTile:
-            //        gameObject.AddComponent<PanelTileProperties>();
-            //        break;
-            //    default: break;
-            //}
+            /*
+            displayType = route.origin.displayType;
 
-            //dataList.data = route.data;
+            switch (displayType)
+            {
+                case DisplayManager.Type.Button:
+                    gameObject.AddComponent<ButtonProperties>();
+                    break;
+                case DisplayManager.Type.Tile:
+                    gameObject.AddComponent<TileProperties>();
+                    break;
+                case DisplayManager.Type.Panel:
+                    gameObject.AddComponent<PanelProperties>();
+                    break;
+                case DisplayManager.Type.PanelTile:
+                    gameObject.AddComponent<PanelTileProperties>();
+                    break;
+                default: break;
+            }
+
+            dataList.data = route.data;
+            */
 
         } else {
 

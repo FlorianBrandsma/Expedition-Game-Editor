@@ -56,11 +56,6 @@ public class EditorManager : MonoBehaviour
         SelectionManager.SelectElements();
     }
 
-    public void ResetPath()
-    {
-
-    }
-
     public void PreviousEditor()
     {
         historyManager.PreviousEditor();  

@@ -96,7 +96,7 @@ public class PathController : MonoBehaviour
     private void SetHistory()
     {
         if (history.group != HistoryManager.Group.None)
-            history.AddHistory(route.path);
+            history.AddHistory(route.path);   
     }
 
     public void FinalizePath(Path new_path)
@@ -104,9 +104,11 @@ public class PathController : MonoBehaviour
         route.path.type = Path.Type.Loaded;
 
         if (step < new_path.route.Count)
+        {
             controllers[new_path.route[step].controller].FinalizePath(new_path);
-        else
-            SetHistory();        
+        } else {
+            SetHistory();
+        }
     }
 
     public bool IsLoaded()
@@ -191,12 +193,12 @@ public class PathController : MonoBehaviour
         loaded = false;
     }
 
-    public void CloseLayout(Path path)
+    public void CloseTabs(Path path)
     {
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
 
         if (step < path.route.Count)
-            controllers[path.route[step].controller].CloseLayout(path);
+            controllers[path.route[step].controller].CloseTabs(path);
     }
 }

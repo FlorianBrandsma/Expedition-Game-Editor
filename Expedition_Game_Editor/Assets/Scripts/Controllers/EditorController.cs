@@ -16,53 +16,6 @@ public class EditorController : MonoBehaviour
         InitializeSegments();
     }
 
-    private void InitializeEditor()
-    {
-        if (pathController.dataEditor != null)
-            pathController.dataEditor.InitializeEditor();
-    }
-
-    private void InitializeSegments()
-    {
-        foreach (SegmentController segment in segments)
-            segment.InitializeSegment(this);
-    }
-
-    public void InitializeDisplay()
-    {
-        InitializeSegmentDisplay();
-    }
-
-    public void SetDisplay()
-    {
-        SetSegmentDisplay();
-    }
-
-    public void CloseDisplay()
-    {
-        SelectionManager.CancelSelection(pathController.route);
-
-        CloseSegmentDisplay();
-    }
-
-    private void InitializeSegmentDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.InitializeSegmentDisplay();
-    }
-
-    private void SetSegmentDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.SetSegmentDisplay();
-    }
-
-    private void CloseSegmentDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.CloseSegmentDisplay();
-    }
-
     public void FinalizeController()
     {
         if (GetComponent<ListProperties>() != null)
@@ -70,7 +23,41 @@ public class EditorController : MonoBehaviour
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
                 GetComponent<ListProperties>().AutoSelectElement();
         }
-
-        //path.type = Path.Type.Loaded;
     }
+
+    private void InitializeEditor()
+    {
+        if (pathController.dataEditor != null)
+            pathController.dataEditor.InitializeEditor();
+    }
+
+    //Close Editor?
+
+    private void InitializeSegments()
+    {
+        foreach (SegmentController segment in segments)
+            segment.InitializeSegment(this);
+    }
+
+    //Close Segments?
+
+    #region Display
+    public void InitializeDisplay()
+    {
+        foreach (SegmentController segment in segments)
+            segment.InitializeSegmentDisplay();
+    }
+
+    public void SetDisplay()
+    {
+        foreach (SegmentController segment in segments)
+            segment.SetSegmentDisplay();
+    }
+
+    public void CloseDisplay()
+    {
+        foreach (SegmentController segment in segments)
+            segment.CloseSegmentDisplay();
+    }
+    #endregion
 }

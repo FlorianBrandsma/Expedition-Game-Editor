@@ -90,7 +90,7 @@ public class LayoutManager : MonoBehaviour
             sibling_layout.SetLayout();
     }
 
-    public void ResetLayout()
+    public void ResetSiblingLayout()
     {
         if (sibling_layout != null)
             sibling_layout.InitializeLayout(start_anchor_max, start_anchor_min, sibling_anchor);

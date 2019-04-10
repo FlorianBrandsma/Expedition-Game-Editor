@@ -26,6 +26,7 @@ public class EditorForm : MonoBehaviour
             section.InitializeSection(this);
     }
 
+    #region Path
     public void InitializePath(Path path, bool reload = false)
     {
         //Debug.Log(EditorManager.PathString(path));
@@ -33,8 +34,7 @@ public class EditorForm : MonoBehaviour
         OpenPath(path, reload);
         OpenLayout(path);
 
-        //ResetSiblingLayout();
-
+        active_path = path;
         active = true;
     }
 
@@ -52,79 +52,70 @@ public class EditorForm : MonoBehaviour
         //Set visual components of editor (list/preview)
         InitializeController();
 
+        //Auto select element (NOTE! Cannot be tested yet. Most likely not in the correct place)
         FinalizeController();
 
+        //Follows path and adds last route to history
         baseController.FinalizePath(path);
 
         path.type = Path.Type.Loaded;
-        active_path = path;
     }
 
     public void ClosePath()
     {
-        if (active)
-        {
-            baseController.ClosePath(active_path);
+        if (!active) return;
 
-            foreach (EditorSection section in editor_sections)
-                section.ClosePath();
+        baseController.ClosePath(active_path);
 
-            active = false;
-        }
+        foreach (EditorSection section in editor_sections)
+            section.ClosePath();
+
+        active = false;
     }
+    #endregion
 
     public void OpenLayout(Path path)
     {
-        //Close Layout
+        //Close previous active layout
         CloseLayout(main_form);
 
+        //Get the controller that must be visualized
         baseController.GetTargetLayout(path);
 
-        //Activate target dependencies
+        //Activate necessary components to visualize the target editor
         InitializeLayout();
 
+        //Follows path and activates tabs where indicated
         baseController.SetTabs(path);
 
-        //Set layout of dependencies (tabs must be activated to serve as header)
+        //Activate dependencies and set content layout based on header and footer
         SetLayout();
-
-        //Follow the same path to activate anything along its way
-        //If the path contains any component, sort them afterwards
-
-        if (baseController.SetComponents(path))
-            ComponentManager.componentManager.SortComponents();
 
         //Set up the organizers
         InitializeDisplay();
 
-        //Set the organizers
+        //Set the visual component (list/camera)
         SetDisplay();
 
-        SelectionManager.SelectElements();
+        //Activate all components along the path and sort them
+        if (baseController.SetComponents(path))
+            ComponentManager.componentManager.SortComponents();  
     }
 
     private void CloseLayout(bool close_components)
     {
+        //Tries to close with new target controller. Should be old target
         CloseLayout();
 
-        //Also closes tabs
-        baseController.CloseLayout(active_path);
+        baseController.CloseTabs(active_path);
+
+        CloseDisplay();
 
         if (close_components)
             ComponentManager.componentManager.CloseComponents();
 
-        //Affects sibling form
-        GetComponent<LayoutManager>().ResetLayout();
-
-        CloseDisplay();
+        GetComponent<LayoutManager>().ResetSiblingLayout();
     }
-
-    //public void OpenPath(Path path)
-    //{
-    //    InitializePath(path);
-
-    //    
-    //}
 
     private void SetPreviousPath()
     {
@@ -173,10 +164,11 @@ public class EditorForm : MonoBehaviour
 
     public void ResetLayout()
     {
-        OpenLayout(active_path);  
+        OpenLayout(active_path);
+        SelectionManager.SelectElements();
     }
 
-    public void ResetSiblingLayout()
+    public void ResetSiblingForm()
     {
         if (sibling_form != null)
             sibling_form.ResetLayout();
@@ -205,8 +197,12 @@ public class EditorForm : MonoBehaviour
 
     public void CloseForm(bool close_components)
     {
+        if (!active) return;
+
         ClosePath();
         CloseLayout(close_components);
         CloseDisplay();
+
+        ResetSiblingForm();
     }
 }

@@ -67,7 +67,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Panel");
-        
+
         foreach (var data in dataController.data_list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);

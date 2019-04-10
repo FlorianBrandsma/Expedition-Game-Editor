@@ -14,6 +14,7 @@ public class EditorSection : MonoBehaviour
     public EditorController target_controller   { get; set; }
     public LayoutDependency target_layout       { get; set; }
     public Path previous_controller_path        { get; set; }
+    public EditorController previous_target_controller     { get; set; }
 
     public IEditor dataEditor;
 
@@ -49,7 +50,6 @@ public class EditorSection : MonoBehaviour
     {
         if (target_layout == null) return;
 
-        //Activate necessary components to visualize the target editor
         target_layout.InitializeLayout();       
     }
 
@@ -72,18 +72,22 @@ public class EditorSection : MonoBehaviour
     {
         if (target_controller == null) return;
 
+        target_controller.SetDisplay();
+
         SetActionButtons();
 
-        target_controller.SetDisplay();
+        previous_target_controller = target_controller;
 
         active = true;
     }
 
     public void CloseDisplay()
     {
-        if (target_controller == null) return;
+        if (previous_target_controller == null) return;
 
-        target_controller.CloseDisplay();
+        previous_target_controller.CloseDisplay();
+
+        previous_target_controller = null;
     }
 
     public void SetActionButtons()
@@ -102,6 +106,9 @@ public class EditorSection : MonoBehaviour
     public void ClosePath()
     {
         if (target_controller == null) return;
+
+        if (buttonActionManager != null)
+            buttonActionManager.CloseButtons();
 
         target_controller = null;
 

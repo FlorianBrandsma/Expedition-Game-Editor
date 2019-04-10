@@ -82,7 +82,8 @@ public class FormComponent : MonoBehaviour, IComponent
 
         EditorManager.editorManager.InitializePath(path);
 
-        editorForm.ResetSiblingLayout();
+        //Preferred in the form itself (where it causes crashes)
+        editorForm.ResetSiblingForm();
 
         button.GetComponent<EditorButton>().icon.texture = open_icon;
     }
@@ -91,15 +92,7 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         editorForm.CloseForm(false);
 
-        //if (reset_components)
-        //    ComponentManager.componentManager.SortComponents();
-
-        editorForm.ResetSiblingLayout();
-
-        //SelectionManager.SelectElements();
-
-        if(button != null)
-            button.GetComponent<EditorButton>().icon.texture = close_icon;
+        button.GetComponent<EditorButton>().icon.texture = close_icon;
     }
 
     public void CloseComponent()
