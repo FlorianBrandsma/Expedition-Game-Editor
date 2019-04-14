@@ -77,7 +77,7 @@ public class Path
     {
         //Use last used step as base
         if (route.Count > 0)
-            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type);
+            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().property);
         else
             Add(new Route(this));
     }
@@ -85,19 +85,19 @@ public class Path
     public void Add(int index)
     {
         if (route.Count > 0)
-            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type);
+            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().property);
         else
-            Add(index, new[] {new GeneralData() }, DataManager.Type.None);
+            Add(index, new[] {new GeneralData() }, Enums.DataType.None, SelectionManager.Property.None);
     }
 
-    public void Add(int new_controller, IEnumerable new_data, DataManager.Type new_data_type)
+    public void Add(int controller, IEnumerable data, Enums.DataType data_type, SelectionManager.Property property)
     {
-        route.Add(new Route(new_controller, new_data, new_data_type));
+        route.Add(new Route(controller, data, data_type, property));
     }
 
-    public void Add(Route new_route)
+    public void Add(Route route)
     {
-        route.Add(new_route.Copy());
+        this.route.Add(route.Copy());
     }
 
     #endregion

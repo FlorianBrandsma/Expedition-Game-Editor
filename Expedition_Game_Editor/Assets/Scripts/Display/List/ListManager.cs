@@ -138,6 +138,8 @@ public class ListManager : MonoBehaviour
 
     public void SelectElement(Route route)
     {
+        if (selected_element != null) return;
+
         if (selectionProperty == SelectionManager.Property.Set) return;
 
         foreach (SelectionElement element in element_list)
@@ -146,8 +148,10 @@ public class ListManager : MonoBehaviour
             //If child data matches route data, check if property matches in case parent and child have same data
             if (element.child != null && element.child.GeneralData().Equals(route.GeneralData()))
             {
-                if (element.child.selectionProperty == route.path.origin.selectionProperty)
+                if (element.child.selectionProperty == route.property)
                 {
+                    selected_element = element.child;
+
                     element.child.ActivateSelection();
 
                     selected_route = route.Copy();
@@ -160,8 +164,10 @@ public class ListManager : MonoBehaviour
 
             //Either child didn't exist or have matching property
             //All that's left is for main element data to match the route data
-            if (element.data.Equals(route.data))
+            if (element.GeneralData().Equals(route.GeneralData()))
             {
+                selected_element = element;
+
                 element.ActivateSelection();
 
                 CorrectPosition(element);
@@ -187,12 +193,14 @@ public class ListManager : MonoBehaviour
     {
         foreach (SelectionElement element in element_list)
         {
-            if (element.data.Equals(route.data))
+            if (element.GeneralData().Equals(route.GeneralData()))
             {
-                if (element.child != null && element.child.selectionProperty == route.path.origin.selectionProperty)
+                if (element.child != null && element.child.selectionProperty == route.property)
                     element.child.CancelSelection();
                 else
                     element.CancelSelection();
+
+                selected_element = null;
 
                 return;
             }
@@ -205,12 +213,9 @@ public class ListManager : MonoBehaviour
 
         if (selectionType == SelectionManager.Type.Automatic)
         {
-            if (!listProperties.dataController.segmentController.editorController.pathController.loaded)
-            {
-                SelectionElement element = list.GetElement(0);
+            SelectionElement element = list.GetElement(0);
 
-                element.GetComponent<Button>().onClick.Invoke();
-            }
+            element.GetComponent<Button>().onClick.Invoke();
         }
     }
 
@@ -223,6 +228,8 @@ public class ListManager : MonoBehaviour
 
         overlayManager.CloseOverlay();
         organizer.CloseOrganizer();
+
+        selected_element = null;
 
         element_list.Clear();
 

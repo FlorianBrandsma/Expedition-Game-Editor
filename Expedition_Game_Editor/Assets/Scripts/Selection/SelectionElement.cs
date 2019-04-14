@@ -9,7 +9,7 @@ using System.Linq;
 public class SelectionElement : MonoBehaviour
 {
     public IEnumerable data;
-    public DataManager.Type data_type;
+    public Enums.DataType data_type;
 
     EditorPath editorPath;
 
@@ -48,7 +48,7 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElementData(IEnumerable new_data, DataManager.Type data_type)
+    public void SetElementData(IEnumerable new_data, Enums.DataType data_type)
     {
         //Debug.Log("Set element data from " + this.data_type + " to " + data_type);
         data = new_data;

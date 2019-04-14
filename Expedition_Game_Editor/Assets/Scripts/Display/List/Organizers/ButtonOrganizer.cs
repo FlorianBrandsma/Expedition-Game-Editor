@@ -9,31 +9,21 @@ using System.Linq;
 
 public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private List<GeneralData> local_data_list;
+    private ListManager listManager { get { return GetComponent<ListManager>(); } }
 
     static public List<SelectionElement> element_list = new List<SelectionElement>();
 
-    //private Enums.SelectionProperty selectionProperty;
-    //private SelectionManager.Type selectionType;
-
     public Vector2 element_size { get; set; }
 
-    //private bool visible_only;
+    private ButtonProperties properties;
 
-    private ListManager listManager;
+    List<GeneralData> generalData_list;
 
-    public void InitializeOrganizer()
-    {
-        listManager = GetComponent<ListManager>();
-    }
+    public void InitializeOrganizer() { }
 
     public void SetProperties()
     {
-        //properties = listProperties.GetComponent<ButtonProperties>();
-        //selectionProperty = listProperties.selectionProperty;
-        //selectionType = listProperties.selectionType;
-
-        //visible_only = listProperties.visible_only;
+        properties = listManager.listProperties.GetComponent<ButtonProperties>();
     }
 
     public void SetElementSize()
@@ -46,51 +36,34 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         return new Vector2(0, element_size.y * element_count);
     }
 
-    public void GetData()
+    public void SetData()
     {
-        //Need to know base dataclass for query (attached to listproperties)
-        //listManager.listProperties.dataList.GetData(listManager.listProperties.route);
+        var dataController = listManager.listProperties.dataController;
+        generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
+
+        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
+
+        foreach (var data in dataController.data_list)
+        {
+            SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
+            listManager.element_list.Add(element);
+
+            element.SetElementData(new[] { data }, dataController.data_type);
+
+            //Debugging
+            GeneralData generalData = (GeneralData)data;
+            element.name = generalData.table + generalData.id;
+            //
+
+            SetElement(element);
+        }
     }
 
     public void UpdateData()
     {
         ResetData(null);
-        SetData();
-    }
 
-    public void SetData()
-    {
-        //var new_data = data_list.Cast<GeneralData>().ToList();
-
-        //local_data_list = (from data in new_data
-        //                   select new UIElementData()
-        //                   {
-        //                       id = data.id,
-        //                       table = data.table,
-        //                       type = data.type,
-        //                       index = data.index,
-        //                       name = (data.table + " " + data.index)
-        //                   }).ToList();
-
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
-
-        foreach(GeneralData data in local_data_list)
-        {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
-            listManager.element_list.Add(element);
-
-            //This should come from data. Button likely uses ItemData or ElementData which
-            //both have "name" stored inside. No matter what type of list the data_list is
-
-            //element.SetElement(data, new[] { data });
-
-            //string label = data.name;
-
-            //Debugging
-            //element.name = label;
-
-            SetElement(element);
-        }
+        SelectionManager.ResetSelection(listManager);
     }
 
     public void ResetData(ICollection filter)
@@ -99,11 +72,18 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         SetData();
     }
 
+    public void CloseData()
+    {
+        listManager.element_list.Clear();
+    }
+
     void SetElement(SelectionElement element)
     {
+        element.SetElement();
+
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = local_data_list.FindIndex(x => x.id == element.data.Cast<GeneralData>().ToList().FirstOrDefault().id);
+        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
 
         rect.anchorMax = new Vector2(1, 1);
 

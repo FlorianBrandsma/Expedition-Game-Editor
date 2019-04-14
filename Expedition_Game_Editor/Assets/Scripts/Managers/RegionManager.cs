@@ -34,7 +34,7 @@ public class Tile
     private DataList[] object_data;
 }
 
-public class RegionManager
+public class OldRegionManager
 {
     public enum Type
     {

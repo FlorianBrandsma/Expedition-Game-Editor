@@ -59,6 +59,15 @@ public class EditorPath
 
                 break;
 
+            case "StepElement":
+
+                PathManager.Structure stepElement = new PathManager.Structure(route, origin);
+
+                if (origin.selectionProperty == SelectionManager.Property.Enter)
+                    path = stepElement.Enter();
+
+                break;
+
             case "Task":
 
                 PathManager.Structure task = new PathManager.Structure(route, origin);

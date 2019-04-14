@@ -7,7 +7,7 @@ public interface IDataController
     SegmentController segmentController { get; }
 
     ICollection data_list { get; set; }
-    DataManager.Type data_type { get; }
+    Enums.DataType data_type { get; }
 
     IDisplay display { get; }
 

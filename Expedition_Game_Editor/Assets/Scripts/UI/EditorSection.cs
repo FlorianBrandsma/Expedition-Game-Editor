@@ -11,11 +11,11 @@ public class EditorSection : MonoBehaviour
     public bool active { get; set; }
 
     public EditorForm editorForm                { get; set; }
+    public EditorController display_target_controller { get; set; }
     public EditorController target_controller   { get; set; }
     public LayoutDependency target_layout       { get; set; }
     public Path previous_controller_path        { get; set; }
-    public EditorController previous_target_controller     { get; set; }
-
+    
     public IEditor dataEditor;
 
     public ButtonActionManager buttonActionManager;
@@ -72,35 +72,28 @@ public class EditorSection : MonoBehaviour
     {
         if (target_controller == null) return;
 
-        target_controller.SetDisplay();
+        display_target_controller = target_controller;
+
+        display_target_controller.SetDisplay();
 
         SetActionButtons();
-
-        previous_target_controller = target_controller;
 
         active = true;
     }
 
     public void CloseDisplay()
     {
-        if (previous_target_controller == null) return;
+        if (display_target_controller == null) return;
 
-        previous_target_controller.CloseDisplay();
+        display_target_controller.CloseDisplay();
 
-        previous_target_controller = null;
+        display_target_controller = null;
     }
 
     public void SetActionButtons()
     {
         if (buttonActionManager != null && dataEditor != null)
             buttonActionManager.SetButtons(dataEditor.Changed());
-    }
-
-    public void FinalizeController()
-    {
-        if (target_controller == null) return;
-
-        target_controller.FinalizeController();
     }
 
     public void ClosePath()

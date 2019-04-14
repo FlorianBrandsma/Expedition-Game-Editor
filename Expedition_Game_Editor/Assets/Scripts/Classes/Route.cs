@@ -6,15 +6,17 @@ public class Route
 {
     public int controller               { get; set; }
     public IEnumerable data             { get; set; }
-    public DataManager.Type data_type   { get; set; }
+    public Enums.DataType data_type     { get; set; }
 
     public Path path                    { get; set; }
+
+    public SelectionManager.Property property  { get; set; }
 
     public Route(Path new_path)
     {
         controller = 0;
         data = new[] { new GeneralData() };
-        data_type = DataManager.Type.None;
+        data_type = Enums.DataType.None;
         path = new_path;
     }
 
@@ -23,23 +25,29 @@ public class Route
         controller = route.controller;
         data = route.data;
         data_type = route.data_type;
+
+        property = route.property;
+
         path = route.path;
     }
 
-    public Route(int new_controller, IEnumerable new_data, DataManager.Type new_data_type)
+    public Route(int controller, IEnumerable data, Enums.DataType data_type, SelectionManager.Property property)
     {
-        controller = new_controller;
-        data = new_data;
-        data_type = new_data_type;
+        this.controller = controller;
+        this.data = data;
+        this.data_type = data_type;
+
+        this.property = property;
     }
 
     public Route(SelectionElement selection)
     {
         controller = 0;
-        data = selection.data; //Copy?
+        data = selection.data;
         data_type = selection.data_type;
+        property = selection.selectionProperty;
 
-        //TEMPORARY
+        //TEMPORARY?
         if(selection.segmentController != null)
             path = selection.segmentController.path;
     }

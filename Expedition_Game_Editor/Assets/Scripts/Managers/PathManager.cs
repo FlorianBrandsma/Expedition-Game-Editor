@@ -229,14 +229,14 @@ public class PathManager
 
             switch (route.GeneralData().type)
             {
-                case (int)RegionManager.Type.Base:
+                case (int)OldRegionManager.Type.Base:
                     path = CreatePath(CreateRoutes(enter, route), form, origin);
                     break;
-                case (int)RegionManager.Type.Phase:
+                case (int)OldRegionManager.Type.Phase:
                     routes = CreateRoutes(enter, route);
                     path = ExtendPath(route.path, routes, origin);
                     break;
-                case (int)RegionManager.Type.Task:
+                case (int)OldRegionManager.Type.Task:
                     routes = CreateRoutes(enter, route);
                     path = ExtendPath(route.path, routes, origin);
                     break;
@@ -256,7 +256,7 @@ public class PathManager
         {
             List<int> open = new List<int>() { 1, route.GeneralData().type };
 
-            Route custom_route = new Route(1, route.data, route.data_type);
+            Route custom_route = new Route(1, route.data, route.data_type, route.property);
 
             path = ExtendPath(route.path, CreateRoutes(open, custom_route), origin);
             path.type = Path.Type.New;
@@ -302,9 +302,9 @@ public class PathManager
         Route route;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public TerrainItem(Route new_route, SelectionElement origin)
+        public TerrainItem(Route route, SelectionElement origin)
         {
-            route = new Route(new_route.GeneralData().type, new_route.data, new_route.data_type);
+            route = new Route(route.GeneralData().type, route.data, route.data_type, route.property);
 
             path = form.active_path.Trim(form.active_path.start + 3);
             
@@ -349,17 +349,17 @@ public class PathManager
 
     #region Methods
 
-    static public List<Route> CreateRoutes(List<int> new_controllers, EditorForm new_form)
+    static public List<Route> CreateRoutes(List<int> controllers, EditorForm form)
     {
-        return CreateRoutes(new_controllers, new Route(new_form.active_path));
+        return CreateRoutes(controllers, new Route(form.active_path));
     }
 
-    static public List<Route> CreateRoutes(List<int> new_controllers, Route new_route)
+    static public List<Route> CreateRoutes(List<int> controllers, Route route)
     {
         List<Route> routes = new List<Route>();
 
-        for (int i = 0; i < new_controllers.Count; i++)
-            routes.Add(new Route(new_controllers[i], new_route.data, new_route.data_type));
+        foreach(int controller in controllers)
+            routes.Add(new Route(controller, route.data, route.data_type, route.property));
 
         return routes;
     }

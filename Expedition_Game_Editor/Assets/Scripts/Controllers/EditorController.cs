@@ -18,10 +18,9 @@ public class EditorController : MonoBehaviour
 
     public void FinalizeController()
     {
-        if (GetComponent<ListProperties>() != null)
+        foreach(SegmentController segment in segments)
         {
-            if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
-                GetComponent<ListProperties>().AutoSelectElement();
+            if (segment.AutoSelectElement()) break;
         }
     }
 

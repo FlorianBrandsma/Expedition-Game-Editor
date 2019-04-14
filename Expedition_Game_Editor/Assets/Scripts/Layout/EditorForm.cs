@@ -14,7 +14,7 @@ public class EditorForm : MonoBehaviour
     public Path active_path = new Path();
 
     public PathController baseController;
-    //public PathController main_controller { get; set; }
+    public EditorController main_controller { get; set; }
 
     public EditorSection[]    editor_sections;
 
@@ -36,6 +36,9 @@ public class EditorForm : MonoBehaviour
 
         active_path = path;
         active = true;
+
+        //Auto select element
+        main_controller.FinalizeController();
     }
 
     public void OpenPath(Path path, bool reload)
@@ -51,9 +54,6 @@ public class EditorForm : MonoBehaviour
 
         //Set visual components of editor (list/preview)
         InitializeController();
-
-        //Auto select element (NOTE! Cannot be tested yet. Most likely not in the correct place)
-        FinalizeController();
 
         //Follows path and adds last route to history
         baseController.FinalizePath(path);
@@ -86,7 +86,7 @@ public class EditorForm : MonoBehaviour
         InitializeLayout();
 
         //Follows path and activates tabs where indicated
-        baseController.SetTabs(path);
+        baseController.SetSubControllers(path);
 
         //Activate dependencies and set content layout based on header and footer
         SetLayout();
@@ -134,12 +134,6 @@ public class EditorForm : MonoBehaviour
     {
         foreach (EditorSection section in editor_sections)
             section.InitializeController();
-    }
-
-    private void FinalizeController()
-    {
-        foreach (EditorSection section in editor_sections)
-            section.FinalizeController();
     }
     #endregion
 

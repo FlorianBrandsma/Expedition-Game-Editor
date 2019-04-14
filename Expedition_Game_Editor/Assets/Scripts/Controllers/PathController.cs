@@ -15,6 +15,8 @@ public class PathController : MonoBehaviour
 
     public EditorSection    editorSection;
 
+    private EditorController editorController { get { return GetComponent<EditorController>(); } }
+
     public IDataController  dataController  { get; set; }
     public IEditor          dataEditor      { get; set; }
 
@@ -28,9 +30,12 @@ public class PathController : MonoBehaviour
     {
         this.parent_controller = parent_controller;
 
-        if (GetComponent<EditorController>() != null)
-            editorSection.target_controller = GetComponent<EditorController>();
-
+        if (editorController != null)
+        {
+            editorSection.target_controller = editorController;
+            editorSection.editorForm.main_controller = editorController;
+        }
+            
         this.step = step;
 
         Path path = main_path.Trim(step);
@@ -61,6 +66,9 @@ public class PathController : MonoBehaviour
         if (subControllerManager != null)
         {
             InitializeTabs(main_path);
+
+            foreach (PathController controller in controllers)
+                controller.history.group = history.group;
         }
             
         InitializeComponents(main_path);
@@ -136,13 +144,13 @@ public class PathController : MonoBehaviour
         return GetComponents<IComponent>().Count() > 0;
     }
 
-    public void SetTabs(Path new_path)
+    public void SetSubControllers(Path new_path)
     {
         if (subControllerManager != null)
             subControllerManager.SetTabs(this, new_path);
 
         if (step < new_path.route.Count)
-            controllers[new_path.route[step].controller].SetTabs(new_path);
+            controllers[new_path.route[step].controller].SetSubControllers(new_path);
     }
 
     private void InitializeComponents(Path new_path)
@@ -181,6 +189,8 @@ public class PathController : MonoBehaviour
 
     public void ClosePath(Path path)
     {
+        SelectionManager.CancelSelection(route);
+
         foreach (IComponent component in GetComponents<IComponent>())
             component.CloseComponent();
 

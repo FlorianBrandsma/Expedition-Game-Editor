@@ -317,8 +317,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: This is a pretty regular sentence. The structure is something you'd expect.
-    Nothing too long though!
+  m_Text: 
 --- !u!114 &114000010954322312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -486,7 +485,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 999
+  m_Text: 
 --- !u!114 &114000012849546894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -586,7 +585,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Header
+  m_Text: 
 --- !u!114 &114000013981185266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -598,13 +597,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    table: 
-    id: 0
-    type: 0
+  data_type: 0
   selectionType: 0
   selectionProperty: 0
-  listType: 0
+  displayType: 0
   child: {fileID: 0}
   glow: {fileID: 1000013419032810}
   selected: 0
@@ -619,13 +615,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    table: 
-    id: 0
-    type: 0
+  data_type: 0
   selectionType: 0
   selectionProperty: 0
-  listType: 0
+  displayType: 0
   child: {fileID: 114000013981185266}
   glow: {fileID: 1000011839947422}
   selected: 0

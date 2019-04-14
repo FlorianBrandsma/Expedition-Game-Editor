@@ -32,14 +32,14 @@ public class DefaultHeader : MonoBehaviour, ISegment
 
             switch (dataEditor.data_type)
             {
-                case DataManager.Type.Chapter:
+                case Enums.DataType.Chapter:
 
                     ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
                     chapterData.name = value;
 
                     break;
 
-                case DataManager.Type.Phase:
+                case Enums.DataType.Phase:
 
                     PhaseDataElement phaseData = dataEditor.data.Cast<PhaseDataElement>().FirstOrDefault();
                     phaseData.name = value;
@@ -66,8 +66,8 @@ public class DefaultHeader : MonoBehaviour, ISegment
 
         switch (dataEditor.data_type)
         {
-            case DataManager.Type.Chapter: InitializeChapterData(); break;
-            case DataManager.Type.Phase: InitializePhaseData(); break;
+            case Enums.DataType.Chapter: InitializeChapterData(); break;
+            case Enums.DataType.Phase: InitializePhaseData(); break;
         }
 
         if (index_switch != null)

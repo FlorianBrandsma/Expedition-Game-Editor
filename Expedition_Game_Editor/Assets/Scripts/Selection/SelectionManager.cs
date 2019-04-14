@@ -30,11 +30,11 @@ static public class SelectionManager
         foreach(EditorForm form in EditorManager.editorManager.forms)
         {
             if (!form.active) continue;
-
+            
             foreach (EditorSection section in form.editor_sections)
             {
                 if (!section.active) continue;
-
+                
                 SelectEdit(section.target_controller.pathController.route);
             }       
         }
@@ -71,7 +71,7 @@ static public class SelectionManager
     static public void CancelSelection(Route route)
     {
         foreach (ListManager list in lists)
-            list.CancelSelection(route);
+            list.CancelSelection(route);                 
     }
 
     static public void CancelGetSelection()

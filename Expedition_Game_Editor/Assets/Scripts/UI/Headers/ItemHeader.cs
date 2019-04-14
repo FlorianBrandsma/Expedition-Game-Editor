@@ -32,7 +32,7 @@ public class ItemHeader : MonoBehaviour, IHeader
 
     private void SetHeader()
     {
-        input_field.text = itemController.itemData.name;
+        //input_field.text = itemController.itemData.name;
 
         //main_element.data = itemController.objectGraphicData;
 

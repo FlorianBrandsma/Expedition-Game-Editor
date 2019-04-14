@@ -87,9 +87,6 @@ public class SegmentController : MonoBehaviour
 
     public void SetSegmentDisplay()
     {
-        //Don't reset when switching between tabs
-        //"loaded" is reserved for different paths. New tab = new path
-
         //This block might belong in a non-display method
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().OpenSegment();
@@ -102,5 +99,20 @@ public class SegmentController : MonoBehaviour
     {
         if (GetComponent<IDataController>() != null)
             GetComponent<IDataController>().display.CloseDisplay();      
+    }
+
+    public bool AutoSelectElement()
+    {
+        if (GetComponent<ListProperties>() != null)
+        {
+            if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
+            {
+                GetComponent<ListProperties>().AutoSelectElement();
+
+                return true;
+            }            
+        }
+
+        return false;
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class RegionStructureComponent : MonoBehaviour, IComponent
 {
-	private RegionManager.Type type;
+	private OldRegionManager.Type type;
 
 	public RegionDisplayManager default_display;
 
@@ -26,7 +26,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 		active_path = path;
 
 		region = active_path.FindLastRoute("Region").Copy();
-		type = (RegionManager.Type)region.GeneralData().type;
+		type = (OldRegionManager.Type)region.GeneralData().type;
 
 		InitializeData();
 
@@ -51,7 +51,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 	{
 		if (active_path.type != Path.Type.New) return;
 
-		if(type == RegionManager.Type.Task)
+		if(type == OldRegionManager.Type.Task)
 			RegionDisplayManager.active_display = 0;
 
 		structure_dataList.Clear();
@@ -97,7 +97,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 		sql += "SELECT * FROM Region ";
 
-		if(type != RegionManager.Type.Base)
+		if(type != OldRegionManager.Type.Base)
 			sql += "WHERE Phase" + "Id = " + target_id;
 
 		DataList dataList = GetData(sql, structure_route.GeneralData());

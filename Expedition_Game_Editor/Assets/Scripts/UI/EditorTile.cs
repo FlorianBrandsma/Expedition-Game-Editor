@@ -18,7 +18,7 @@ public class EditorTile : MonoBehaviour, IElement
     {
         switch (element.data_type)
         {
-            case DataManager.Type.Element:
+            case Enums.DataType.Element:
                 SetElementElement();
                 break;
         }

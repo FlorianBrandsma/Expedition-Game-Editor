@@ -33,6 +33,14 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         SetList();
     }
 
+    public Vector2 GetListSize(int element_count, bool exact)
+    {
+        if (exact)
+            return new Vector2(0, row_height.Sum());
+        else
+            return new Vector2(0, element_count);
+    }
+
     public void SetList()
     {
         float position_sum = 0;
@@ -46,19 +54,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public Vector2 GetListSize(int element_count, bool exact)
+    public void CloseList()
     {
-        if (exact)
-            return new Vector2(0, row_height.Sum());
-        else
-            return new Vector2(0, element_count);
-    }
+        listManager.ResetElement(listManager.element_list);
 
-    public void UpdateData()
-    {
-        ResetData(null);
-
-        SelectionManager.ResetSelection(listManager);
+        listManager.element_list.Clear();
     }
 
     public void SetData()
@@ -82,6 +82,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             SetElement(element);
         }
+    }
+
+    public void UpdateData()
+    {
+        ResetData(null);
+
+        SelectionManager.ResetSelection(listManager);
     }
 
     public void ResetData(ICollection filter)
@@ -117,13 +124,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     float ListPosition(int i)
     {
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
-    }
-
-    public void CloseList()
-    {
-        listManager.ResetElement(listManager.element_list);
-
-        listManager.element_list.Clear();
     }
 
     public void CloseOrganizer()

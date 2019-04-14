@@ -19,7 +19,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public void InitializeElement()
     {
         properties = element.listManager.listProperties.GetComponent<PanelProperties>();
-
+        
         if (properties.icon)
         {
             content.offsetMin = new Vector2(icon.rectTransform.rect.width, content.offsetMin.y);
@@ -42,11 +42,29 @@ public class EditorPanel : MonoBehaviour, IElement
     {
         switch (element.data_type)
         {
-            case DataManager.Type.Chapter:
+            case Enums.DataType.Chapter:
                 SetChapterElement();
                 break;
-            case DataManager.Type.Phase:
+            case Enums.DataType.Phase:
                 SetPhaseElement();
+                break;
+            case Enums.DataType.Quest:
+                SetQuestElement();
+                break;
+            case Enums.DataType.Step:
+                SetStepElement();
+                break;
+            case Enums.DataType.StepElement:
+                SetStepElementElement();
+                break;
+            case Enums.DataType.Task:
+                SetTaskElement();
+                break;
+            case Enums.DataType.Region:
+                SetRegionElement();
+                break;
+            default:
+                Debug.Log("YOU ARE MISSING THE DATATYPE");
                 break;
         }
     }
@@ -81,10 +99,62 @@ public class EditorPanel : MonoBehaviour, IElement
             edit_button.SetElementData(new[] { data }, element.data_type);
     }
 
+    private void SetQuestElement()
+    {
+        QuestDataElement data = element.data.Cast<QuestDataElement>().FirstOrDefault();
+
+        id.text = data.id.ToString();
+        header.text = data.original_name;
+
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.data_type);
+    }
+
+    private void SetStepElement()
+    {
+        StepDataElement data = element.data.Cast<StepDataElement>().FirstOrDefault();
+
+        id.text = data.id.ToString();
+        header.text = data.original_name;
+
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.data_type);
+    }
+
+    private void SetStepElementElement()
+    {
+        StepElementDataElement data = element.data.Cast<StepElementDataElement>().FirstOrDefault();
+        header.text = data.table;
+        id.text = data.id.ToString();
+    }
+
+    private void SetTaskElement()
+    {
+        TaskDataElement data = element.data.Cast<TaskDataElement>().FirstOrDefault();
+        header.text = data.table;
+        id.text = data.id.ToString();
+        description.text = data.original_description;
+    }
+
+    private void SetRegionElement()
+    {
+        RegionDataElement data = element.data.Cast<RegionDataElement>().FirstOrDefault();
+
+        id.text = data.id.ToString();
+        header.text = data.original_name;
+
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.data_type);
+    }
+
     public void CloseElement()
     {
         content.offsetMin = new Vector2(5, content.offsetMin.y);
         content.offsetMax = new Vector2(-5, content.offsetMax.y);
+
+        header.text = string.Empty;
+        id.text = string.Empty;
+        description.text = string.Empty;
 
         if (properties.icon)
             icon.gameObject.SetActive(false);
