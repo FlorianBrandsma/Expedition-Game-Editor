@@ -5,6 +5,23 @@ using System.Collections.Generic;
 
 public class SegmentController : MonoBehaviour
 {
+    private ISegment segment { get { return GetComponent<ISegment>(); } }
+
+    public GameObject dataController_parent;
+
+    public IDataController dataController
+    {
+        get
+        {
+            if (dataController_parent != null)
+                return dataController_parent.GetComponent<IDataController>();
+            else
+                return GetComponent<IDataController>();
+        }
+    }
+
+    public IDisplay display { get { return GetComponent<IDisplay>(); } }
+
     public EditorController editorController { get; set; }
     public GeneralData generalData { get; set; }
 
@@ -18,8 +35,6 @@ public class SegmentController : MonoBehaviour
     public GameObject content;
 
     public SegmentController[] sibling_segments;
-
-    public IEnumerable data { get; set; }
 
     public Path path { get; set; }
 
@@ -51,6 +66,12 @@ public class SegmentController : MonoBehaviour
         content.SetActive(toggle.isOn);
     }
 
+    public void CloseSegment()
+    {
+        if(segment != null)
+            segment.CloseSegment();
+    }
+
     public void InitializeSegment(EditorController editorController)
     {
         this.editorController = editorController;
@@ -63,8 +84,8 @@ public class SegmentController : MonoBehaviour
 
         if (!editorController.pathController.loaded)
         {
-            if (GetComponent<IDataController>() != null)
-                GetComponent<IDataController>().InitializeController();    
+            if (dataController != null)
+                dataController.InitializeController();    
         }     
     }
 
@@ -73,7 +94,7 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ListProperties>() != null)
         {
             GetComponent<ListProperties>().CloseDisplay();
-            GetComponent<ListProperties>().dataController.data_list = new List<GeneralData>(list);
+            GetComponent<ListProperties>().segmentController.dataController.data_list = new List<GeneralData>(list);
         }
 
         SetSegmentDisplay();
@@ -81,8 +102,8 @@ public class SegmentController : MonoBehaviour
 
     public void InitializeSegmentDisplay()
     {
-        if (GetComponent<IDataController>() != null)
-            GetComponent<IDataController>().display.InitializeProperties();
+        if (display != null)
+            display.InitializeProperties();
     }
 
     public void SetSegmentDisplay()
@@ -91,14 +112,14 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().OpenSegment();
         
-        if (GetComponent<IDataController>() != null)
-            GetComponent<IDataController>().display.SetDisplay();
+        if (display != null)
+            display.SetDisplay();
     }
 
     public void CloseSegmentDisplay()
     {
-        if (GetComponent<IDataController>() != null)
-            GetComponent<IDataController>().display.CloseDisplay();      
+        if (display != null)
+            display.CloseDisplay();      
     }
 
     public bool AutoSelectElement()

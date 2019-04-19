@@ -71,11 +71,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
         }
 
         if (index_switch != null)
-            index_switch.InitializeSwitch(this, _index, dataEditor.data_list.Count - 1);
-
-        id.text = _id.ToString();
-
-        input_field.text = _name;
+            index_switch.InitializeSwitch(this, _index, dataEditor.data_list.Count - 1); 
     }
 
     private void InitializeChapterData()
@@ -103,7 +99,9 @@ public class DefaultHeader : MonoBehaviour, ISegment
         if (index_switch != null)
             index_switch.Activate();
 
-        
+        id.text = _id.ToString();
+
+        input_field.text = _name;
 
         gameObject.SetActive(true);
     }

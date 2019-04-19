@@ -16,19 +16,30 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.data_type)
+        switch (element.route.data_type)
         {
-            case Enums.DataType.Element:
-                SetElementElement();
-                break;
+            case Enums.DataType.Element:    SetElementElement();    break;
+            case Enums.DataType.Terrain:    SetTerrainElement();    break;
+            case Enums.DataType.Tile:       SetTileElement();       break;
+            default: Debug.Log("CASE MISSING");                     break;
         }
     }
 
     private void SetElementElement()
     {
-        ElementDataElement data = element.data.Cast<ElementDataElement>().FirstOrDefault();
+        ElementDataElement data = element.route.data.Cast<ElementDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
+    }
+
+    private void SetTerrainElement()
+    {
+
+    }
+
+    private void SetTileElement()
+    {
+
     }
 
     public void CloseElement()

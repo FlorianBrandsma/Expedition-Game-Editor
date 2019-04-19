@@ -8,7 +8,7 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
     private Route route;
     private RegionProperties properties;
 
-    private Region region;
+    //private Region region;
 
     private RegionData region_data;
     //private DataList terrain_data;
@@ -50,9 +50,9 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
 
     private void GetRegionData()
     {
-        region = new Region(route.GeneralData());
+        //region = new Region(route.GeneralData());
 
-        var test = new RegionData();
+        //var test = new RegionData();
 
         //region_data.GetData("sql");
 

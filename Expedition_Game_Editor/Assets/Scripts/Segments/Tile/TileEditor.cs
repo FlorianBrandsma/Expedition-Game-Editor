@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileEditor : MonoBehaviour
+public class OldTileEditor : MonoBehaviour
 {
     public void OpenEditor()
     {

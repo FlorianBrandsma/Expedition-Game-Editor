@@ -11,6 +11,8 @@ public class TimeComponent : MonoBehaviour, IComponent
     public EditorComponent component;
     public EditorComponent import_component;
 
+    Dropdown dropdown;
+
     public void InitializeComponent(Path new_path)
     {
 
@@ -18,11 +20,7 @@ public class TimeComponent : MonoBehaviour, IComponent
 
     public void SetComponent(Path new_path)
     {
-        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
-
-        dropdown.onValueChanged.RemoveAllListeners();
-
-        dropdown.options.Clear();
+        dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.captionText.text = Enum.GetName(typeof(TimeManager.Time), TimeManager.active_time);
 

@@ -46,7 +46,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     private void SetList()
     {
-        data_list = selectionElement.listManager.listProperties.dataController.data_list;
+        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
     }
 
     private void UpdateList()

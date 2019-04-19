@@ -257,7 +257,6 @@ MonoBehaviour:
   header: {fileID: 114000013556578850}
   description: {fileID: 114000010759999252}
   icon: {fileID: 114000012283882648}
-  edit_button: {fileID: 114000013981185266}
   content: {fileID: 224000012225053934}
 --- !u!114 &114000010580135616
 MonoBehaviour:
@@ -597,9 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data_type: 0
   selectionType: 0
-  selectionProperty: 0
   displayType: 0
   child: {fileID: 0}
   glow: {fileID: 1000013419032810}
@@ -615,9 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data_type: 0
   selectionType: 0
-  selectionProperty: 0
   displayType: 0
   child: {fileID: 114000013981185266}
   glow: {fileID: 1000011839947422}

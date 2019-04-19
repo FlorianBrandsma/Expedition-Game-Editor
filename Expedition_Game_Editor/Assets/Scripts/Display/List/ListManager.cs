@@ -78,7 +78,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.dataController.data_list.Count == 0) return;
+        if (listProperties.segmentController.dataController.data_list.Count == 0) return;
 
         list.SetElementSize();
 
@@ -86,9 +86,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        list_parent.sizeDelta = list.GetListSize(listProperties.dataController.data_list.Count, true);
+        list_parent.sizeDelta = list.GetListSize(listProperties.segmentController.dataController.data_list.Count, true);
 
-        list_size = list.GetListSize(listProperties.dataController.data_list.Count, false);
+        list_size = list.GetListSize(listProperties.segmentController.dataController.data_list.Count, false);
 
         SetData();
 
@@ -97,7 +97,7 @@ public class ListManager : MonoBehaviour
         list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
-        if (EditorManager.historyManager.returned || !listProperties.dataController.segmentController.editorController.pathController.loaded)
+        if (EditorManager.historyManager.returned || !listProperties.segmentController.editorController.pathController.loaded)
             ResetListPosition();
     }
 
@@ -121,7 +121,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.ResetData(listProperties.dataController.data_list);
+        organizer.ResetData(listProperties.segmentController.dataController.data_list);
     }
 
     public void UpdateOverlay()
@@ -144,11 +144,12 @@ public class ListManager : MonoBehaviour
 
         foreach (SelectionElement element in element_list)
         {
-            //Check if element has child first
+            //Check if element has child first (and that child is active)
             //If child data matches route data, check if property matches in case parent and child have same data
-            if (element.child != null && element.child.GeneralData().Equals(route.GeneralData()))
+            if (element.child != null && element.child.gameObject.activeInHierarchy && 
+                element.child.GeneralData().Equals(route.GeneralData()))
             {
-                if (element.child.selectionProperty == route.property)
+                if (element.child.route.property == route.property)
                 {
                     selected_element = element.child;
 
@@ -195,7 +196,7 @@ public class ListManager : MonoBehaviour
         {
             if (element.GeneralData().Equals(route.GeneralData()))
             {
-                if (element.child != null && element.child.selectionProperty == route.property)
+                if (element.child != null && element.child.route.property == route.property)
                     element.child.CancelSelection();
                 else
                     element.CancelSelection();

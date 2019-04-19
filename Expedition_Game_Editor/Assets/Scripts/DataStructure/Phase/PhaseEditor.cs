@@ -44,7 +44,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
         list.RemoveAt(phaseData.index);
         list.Insert(index, phaseData);
 
-        selectionElement.listManager.listProperties.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -57,7 +57,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     private void SetList()
     {
-        data_list = selectionElement.listManager.listProperties.dataController.data_list;
+        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
     }
 
     private void UpdateList()

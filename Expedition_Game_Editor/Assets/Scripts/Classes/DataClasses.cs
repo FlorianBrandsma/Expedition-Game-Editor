@@ -18,11 +18,11 @@ public class GeneralData
         type = 0;
     }
 
-    public GeneralData(string new_table, int new_id, int new_type)
+    public GeneralData(string table, int id, int type)
     {
-        table = new_table;
-        id = new_id;
-        type = new_type;
+        this.table = table;
+        this.id = id;
+        this.type = type;
     }
 
     public bool Equals(GeneralData data)

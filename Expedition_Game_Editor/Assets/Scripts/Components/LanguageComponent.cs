@@ -12,6 +12,8 @@ public class LanguageComponent : MonoBehaviour, IComponent
 
     private LanguageManager.Language language;
 
+    Dropdown dropdown;
+
     public void InitializeComponent(Path new_path)
     {
 
@@ -19,11 +21,7 @@ public class LanguageComponent : MonoBehaviour, IComponent
 
     public void SetComponent(Path new_path)
     {
-        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
-
-        dropdown.onValueChanged.RemoveAllListeners();
-
-        dropdown.options.Clear();
+        dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         dropdown.captionText.text = Enum.GetName(typeof(LanguageManager.Language), LanguageManager.active_language);
 

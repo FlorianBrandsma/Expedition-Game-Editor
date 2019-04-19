@@ -42,7 +42,7 @@ public class CameraManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        cam.rect = new Rect(new Vector2(cam.rect.x, cam.rect.y), 
+        cam.rect = new Rect(new Vector2((30 / EditorManager.UI.rect.width), cam.rect.y), 
                             new Vector2((properties.section_rect.rect.width / EditorManager.UI.rect.width) - cam.rect.x, cam.rect.height));
 
         SetData();
@@ -52,9 +52,9 @@ public class CameraManager : MonoBehaviour
 
     private void SetData()
     {
-        ItemController test = (ItemController)properties.dataController;
+        //ItemController test = (ItemController)properties.segmentController.dataController;
 
-        organizer.SetData(/*new List<ItemController>() { test }*/);
+        //organizer.SetData(/*new List<ItemController>() { test }*/);
 
         //organizer.SetData(properties.dataList.list);
     }

@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Linq;
 
 public class EditorPanelTile : MonoBehaviour, IElement
 {
-    private SelectionElement element;
+    private SelectionElement element { get { return GetComponent<SelectionElement>(); } }
     private PanelTileProperties properties;
 
     public Text id;
     public Text header;
     public RawImage icon;
 
-    public SelectionElement edit_button;
+    private SelectionElement edit_button { get { return element.child; } }
 
     public RectTransform content;
 
     public void InitializeElement()
     {
-        element = GetComponent<SelectionElement>();
         properties = element.listManager.listProperties.GetComponent<PanelTileProperties>();
 
         if (properties.icon)
@@ -25,40 +24,64 @@ public class EditorPanelTile : MonoBehaviour, IElement
             content.offsetMin = new Vector2(icon.rectTransform.rect.width, content.offsetMin.y);
             icon.gameObject.SetActive(true);
         }
+
         if (properties.edit)
         {
+            edit_button.parent_element = element;
+
+            edit_button.InitializeElement(element.listManager, SelectionManager.Property.Edit);
+
             edit_button.gameObject.SetActive(true);
+
             content.offsetMax = new Vector2(-edit_button.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
         }
     }
 
     public void SetElement()
     {
-        
+        switch (element.route.data_type)
+        {
+            case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
+            case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
+            default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
+        }
     }
 
-    //public void SetElement(IEnumerable data)
-    //{
-    //    id.text = elementData.id.ToString();
-    //    header.text = elementData.name;
+    private void SetTerrainElementElement()
+    {
+        TerrainElementDataElement data = element.route.data.Cast<TerrainElementDataElement>().FirstOrDefault();
 
-    //    if(properties.icon)
-    //        icon.texture = Resources.Load<Texture2D>(elementData.icon);
+        id.text = data.id.ToString();
+        header.text = data.original_name;
 
-    //    if (properties.edit)
-    //    {
-    //        GeneralData edit_data = properties.edit_data.Copy();
-    //        edit_data.id = elementData.id;
-    //        edit_button.InitializeElement(element.listManager, SelectionManager.Property.Edit);
+        if (properties.icon)
+            icon.texture = Resources.Load<Texture2D>(data.icon);
 
-    //        //edit_button.SetElement(elementData, data);
-    //    }
-    //}
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
+    }
+
+    private void SetTerrainObjectElement()
+    {
+        TerrainObjectDataElement data = element.route.data.Cast<TerrainObjectDataElement>().FirstOrDefault();
+
+        id.text = data.id.ToString();
+        header.text = data.original_name;
+
+        if (properties.icon)
+            icon.texture = Resources.Load<Texture2D>(data.icon);
+
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
+    }
 
     public void CloseElement()
     {
         content.offsetMin = new Vector2(5, content.offsetMin.y);
         content.offsetMax = new Vector2(-5, content.offsetMax.y);
+
+        header.text = string.Empty;
+        id.text = string.Empty;
 
         if (properties.icon)
             icon.gameObject.SetActive(false);

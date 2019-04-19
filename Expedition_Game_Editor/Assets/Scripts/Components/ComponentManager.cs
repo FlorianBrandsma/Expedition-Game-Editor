@@ -172,6 +172,9 @@ public class ComponentManager : MonoBehaviour
     {
         Dropdown dropdown = SpawnDropdown();
 
+        dropdown.options.Clear();
+        dropdown.onValueChanged.RemoveAllListeners();
+
         AddComponents(dropdown.GetComponent<RectTransform>(), new_component);
 
         return dropdown;
@@ -181,6 +184,8 @@ public class ComponentManager : MonoBehaviour
     {
         Button button = SpawnButton();
 
+        button.onClick.RemoveAllListeners();
+
         AddComponents(button.GetComponent<RectTransform>(), new_component);
 
         return button;
@@ -189,6 +194,8 @@ public class ComponentManager : MonoBehaviour
     public Button AddFormButton(EditorComponent new_component)
     {
         Button button = SpawnFormButton();
+
+        button.onClick.RemoveAllListeners();
 
         AddComponents(button.GetComponent<RectTransform>(), new_component);
 

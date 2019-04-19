@@ -5,7 +5,7 @@ using System.Linq;
 
 public class RegionStructureComponent : MonoBehaviour, IComponent
 {
-	private OldRegionManager.Type type;
+	private Enums.RegionType type;
 
 	public RegionDisplayManager default_display;
 
@@ -21,12 +21,14 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 	private Path active_path;
 
+	Dropdown dropdown;
+
 	public void InitializeComponent(Path path)
 	{
 		active_path = path;
 
 		region = active_path.FindLastRoute("Region").Copy();
-		type = (OldRegionManager.Type)region.GeneralData().type;
+		type = (Enums.RegionType)region.GeneralData().type;
 
 		InitializeData();
 
@@ -51,7 +53,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 	{
 		if (active_path.type != Path.Type.New) return;
 
-		if(type == OldRegionManager.Type.Task)
+		if(type == Enums.RegionType.Task)
 			RegionDisplayManager.active_display = 0;
 
 		structure_dataList.Clear();
@@ -97,7 +99,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
 		sql += "SELECT * FROM Region ";
 
-		if(type != OldRegionManager.Type.Base)
+		if(type != Enums.RegionType.Base)
 			sql += "WHERE Phase" + "Id = " + target_id;
 
 		DataList dataList = GetData(sql, structure_route.GeneralData());
@@ -119,9 +121,6 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 		
 		Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-		dropdown.options.Clear();
-		dropdown.onValueChanged.RemoveAllListeners();
-		
 		for (int i = 0; i < dataList.list.Count; i++)
 		{
 			dropdown.options.Add(new Dropdown.OptionData(dataList.data.table + " " + i));

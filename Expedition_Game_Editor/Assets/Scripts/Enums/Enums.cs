@@ -12,10 +12,14 @@ public class Enums
         Step,
         StepElement,
         Task,
+        Object,
         Item,
         Element,
         Region,
-        Terrain
+        Terrain,
+        Tile,
+        TerrainElement,
+        TerrainObject
     }
 
     public enum ItemType
@@ -23,5 +27,12 @@ public class Enums
         Supplies,
         Gear,
         Spoils,
+    }
+
+    public enum RegionType
+    {
+        Base,
+        Phase,
+        Task
     }
 }

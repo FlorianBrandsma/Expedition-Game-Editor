@@ -23,7 +23,7 @@ public class ElementManager
                         index = oCore.index,
                         name = oCore.name,
 
-                        icon = "Textures/Objects/Icons/1"
+                        icon = "Textures/Icons/Objects/0"
 
                     }).OrderBy(x => x.index).ToList();
 

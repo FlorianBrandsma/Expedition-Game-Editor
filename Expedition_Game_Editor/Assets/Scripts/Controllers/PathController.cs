@@ -8,6 +8,7 @@ public class PathController : MonoBehaviour
     public Route route { get; set; }
 
     public int step     { get; set; }
+    public int layout_step { get; set; }
 
     public bool loaded  { get; set; }
 
@@ -178,13 +179,15 @@ public class PathController : MonoBehaviour
 
     public void FilterRows(List<GeneralData> list) { }
 
-    public void GetTargetLayout(Path path)
+    public void GetTargetLayout(Path path, int layout_step)
     {
+        this.layout_step = step;
+
         if (GetComponent<LayoutDependency>() != null)
             editorSection.target_layout = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
-            controllers[path.route[step].controller].GetTargetLayout(path);
+            controllers[path.route[step].controller].GetTargetLayout(path, layout_step);
     }
 
     public void ClosePath(Path path)
@@ -208,7 +211,7 @@ public class PathController : MonoBehaviour
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
 
-        if (step < path.route.Count)
-            controllers[path.route[step].controller].CloseTabs(path);
+        if (layout_step < path.route.Count)
+            controllers[path.route[layout_step].controller].CloseTabs(path);
     }
 }

@@ -46,7 +46,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         list.RemoveAt(chapterData.index);
         list.Insert(index, chapterData);
 
-        selectionElement.listManager.listProperties.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -59,7 +59,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private void SetList()
     {
-        data_list = selectionElement.listManager.listProperties.dataController.data_list;
+        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
     }
 
     private void UpdateList()

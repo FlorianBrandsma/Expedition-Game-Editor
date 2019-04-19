@@ -14,25 +14,22 @@ public class EditorButton : MonoBehaviour, IElement
     {
         properties = element.listManager.listProperties.GetComponent<ButtonProperties>();
 
-        icon.texture = Resources.Load<Texture2D>("Textures/Icons/" + element.selectionProperty.ToString());
+        icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + element.route.property.ToString());
     }
 
     public void SetElement()
     {
-        switch (element.data_type)
+        switch (element.route.data_type)
         {
-            case Enums.DataType.Item:
-                SetItemElement();
-                break;
-            case Enums.DataType.Element:
-                //SetPhaseElement();
-                break;
+            case Enums.DataType.Item:       SetItemElement();   break;
+            case Enums.DataType.Element: //SetPhaseElement();   break;
+            default: Debug.Log("CASE MISSING");                 break;
         }
     }
 
     private void SetItemElement()
     {
-        ItemDataElement data = element.data.Cast<ItemDataElement>().FirstOrDefault();
+        ItemDataElement data = element.route.data.Cast<ItemDataElement>().FirstOrDefault();
 
         label.text = data.original_name;
     }

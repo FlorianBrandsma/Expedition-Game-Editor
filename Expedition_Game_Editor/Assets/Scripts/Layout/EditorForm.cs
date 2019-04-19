@@ -10,6 +10,7 @@ public class EditorForm : MonoBehaviour
     public bool main_form;
 
     public bool active { get; set; }
+    private bool closed;
 
     public Path active_path = new Path();
 
@@ -36,7 +37,7 @@ public class EditorForm : MonoBehaviour
 
         active_path = path;
         active = true;
-
+        closed = false;
         //Auto select element
         main_controller.FinalizeController();
     }
@@ -80,7 +81,7 @@ public class EditorForm : MonoBehaviour
         CloseLayout(main_form);
 
         //Get the controller that must be visualized
-        baseController.GetTargetLayout(path);
+        baseController.GetTargetLayout(path, path.start);
 
         //Activate necessary components to visualize the target editor
         InitializeLayout();
@@ -104,6 +105,8 @@ public class EditorForm : MonoBehaviour
 
     private void CloseLayout(bool close_components)
     {
+        if (closed) return;
+
         //Tries to close with new target controller. Should be old target
         CloseLayout();
 
@@ -196,6 +199,8 @@ public class EditorForm : MonoBehaviour
         ClosePath();
         CloseLayout(close_components);
         CloseDisplay();
+
+        closed = true;
 
         ResetSiblingForm();
     }

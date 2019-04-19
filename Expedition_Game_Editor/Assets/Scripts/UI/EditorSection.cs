@@ -103,6 +103,8 @@ public class EditorSection : MonoBehaviour
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
+        target_controller.CloseController();
+
         target_controller = null;
 
         active = false;

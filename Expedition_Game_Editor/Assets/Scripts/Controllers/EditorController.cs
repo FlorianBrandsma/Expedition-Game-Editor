@@ -24,13 +24,19 @@ public class EditorController : MonoBehaviour
         }
     }
 
+    public void CloseController()
+    {
+        CloseEditor();
+        CloseSegments();
+    }
+
     private void InitializeEditor()
     {
         if (pathController.dataEditor != null)
             pathController.dataEditor.InitializeEditor();
     }
 
-    //Close Editor?
+    public void CloseEditor() { }
 
     private void InitializeSegments()
     {
@@ -38,7 +44,11 @@ public class EditorController : MonoBehaviour
             segment.InitializeSegment(this);
     }
 
-    //Close Segments?
+    private void CloseSegments()
+    {
+        foreach (SegmentController segment in segments)
+            segment.CloseSegment();
+    }
 
     #region Display
     public void InitializeDisplay()

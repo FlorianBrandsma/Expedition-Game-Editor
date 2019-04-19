@@ -46,7 +46,7 @@ public class RegionEditor : MonoBehaviour, IEditor
         list.RemoveAt(regionData.index);
         list.Insert(index, regionData);
 
-        selectionElement.listManager.listProperties.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -59,7 +59,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     private void SetList()
     {
-        data_list = selectionElement.listManager.listProperties.dataController.data_list;
+        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
     }
 
     private void UpdateList()

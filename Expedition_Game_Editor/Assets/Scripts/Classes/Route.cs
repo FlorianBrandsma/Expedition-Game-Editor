@@ -12,6 +12,8 @@ public class Route
 
     public SelectionManager.Property property  { get; set; }
 
+    public Route() { }
+
     public Route(Path new_path)
     {
         controller = 0;
@@ -38,18 +40,6 @@ public class Route
         this.data_type = data_type;
 
         this.property = property;
-    }
-
-    public Route(SelectionElement selection)
-    {
-        controller = 0;
-        data = selection.data;
-        data_type = selection.data_type;
-        property = selection.selectionProperty;
-
-        //TEMPORARY?
-        if(selection.segmentController != null)
-            path = selection.segmentController.path;
     }
 
     public bool Equals(Route new_route)

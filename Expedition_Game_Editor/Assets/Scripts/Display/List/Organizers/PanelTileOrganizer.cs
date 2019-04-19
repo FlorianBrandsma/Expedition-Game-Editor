@@ -5,23 +5,19 @@ using System.Collections;
 
 public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private PanelTileProperties properties;
-
-    private List<GeneralData> local_data_list;
+    private ListManager listManager { get { return GetComponent<ListManager>(); } }
 
     static public List<SelectionElement> element_list = new List<SelectionElement>();
 
     public Vector2 element_size { get; set; }
     private Vector2 list_size;
 
+    private PanelTileProperties properties;
     private bool horizontal, vertical;
 
-    private ListManager listManager;
-    
-    public void InitializeOrganizer()
-    {
-        listManager = GetComponent<ListManager>(); 
-    }
+    private List<GeneralData> generalData_list;
+
+    public void InitializeOrganizer() { }
 
     public void SetProperties()
     {
@@ -79,46 +75,32 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         return y - 1;
     }
 
-    public void GetData()
-    {
-        //listManager.properties.dataList.GetData(listManager.properties.route);
-    }
-
     public void UpdateData()
     {
         ResetData(null);
-
         SetData();
     }
 
     public void SetData()
     {
-        //var new_list = data_list.Cast<GeneralData>().ToList();
-
-        //local_data_list = (from data in new_list
-        //                   select new UIElementData()
-        //                   {
-        //                       id = data.id,
-        //                       table = data.table,
-        //                       type = data.type,
-        //                       index = data.index,
-        //                       name = (data.table + " " + data.index),
-        //                       icon = "Textures/Characters/1"
-        //                   }).ToList();
+        var dataController = listManager.listProperties.segmentController.dataController;
+        generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/PanelTile");
 
-        list_size = GetListSize(local_data_list.Count, false);
+        list_size = GetListSize(dataController.data_list.Count, false);
 
-        foreach (GeneralData data in local_data_list)
+        foreach (var data in dataController.data_list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
             listManager.element_list.Add(element);
 
-            //element.SetElement(data, new[] { data });
+            element.SetElementData(new[] { data }, dataController.data_type);
 
             //Debugging
-            //element.name = data.name;
+            GeneralData generalData = (GeneralData)data;
+            element.name = generalData.table + generalData.id;
+            //
 
             SetElement(element);
         }
@@ -132,9 +114,11 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     void SetElement(SelectionElement element)
     {
+        element.SetElement();
+
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = local_data_list.FindIndex(x => x.id == element.data.Cast<GeneralData>().ToList().FirstOrDefault().id);
+        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
 
         rect.sizeDelta = new Vector2(element_size.x, element_size.y);
 

@@ -1,44 +1,108 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
+//Attached dataController parent is required to have a DataController component
 public class StructureComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    public ListProperties listProperties;
+    public GameObject dataController_parent;
+    private IDataController dataController;
 
-    public void InitializeComponent(Path new_path)
+    private Dropdown dropdown;
+
+    public void InitializeComponent(Path path)
     {
+        if (dataController_parent == null) return;
 
+        dataController = dataController_parent.GetComponent<IDataController>();
     }
 
-    public void SetComponent(Path new_path)
+    public void SetComponent(Path path)
     {
+        if (dataController == null) return;
+
         PathController controller = GetComponent<PathController>();
-        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
+        dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        dropdown.options.Clear();
-        dropdown.onValueChanged.RemoveAllListeners();
+        switch (dataController.data_type)
+        {
+            case Enums.DataType.Chapter:        SetChapterOptions();        break;
+            case Enums.DataType.Phase:          SetPhaseOptions();          break;
+            case Enums.DataType.Quest:          SetQuestOptions();          break;
+            case Enums.DataType.Step:           SetStepOptions();           break;
+            case Enums.DataType.StepElement:    SetStepElementOptions();    break;
+        }
 
-        //for (int i = 0; i < listProperties.dataList.list.Count; i++)
-        //{
-        //    dropdown.options.Add(new Dropdown.OptionData(listProperties.dataList.data.table + " " + i));
-        //}
-        
-        //int selected_index = listProperties.dataList.list.FindIndex(x => x.id == controller.route.data.id);
+        int selected_index = dataController.data_list.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
 
-        //dropdown.captionText.text = listProperties.dataList.list[selected_index].table + " " + selected_index;
-        //dropdown.value = selected_index;
+        dropdown.value = selected_index;
+        dropdown.captionText.text = dropdown.options[selected_index].text;
 
-        //Path path = controller.path;
+        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, GetEnumerable(dataController.data_list)); });
+    }
 
-        //dropdown.onValueChanged.AddListener(delegate { OpenPath(path, listProperties.dataList.list[dropdown.value]); });
+    private void SetChapterOptions()
+    {
+        List<ChapterDataElement> dataElements = dataController.data_list.Cast<ChapterDataElement>().ToList();
+
+        foreach(ChapterDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.name)); 
+    }
+
+    private void SetPhaseOptions()
+    {
+        List<PhaseDataElement> dataElements = dataController.data_list.Cast<PhaseDataElement>().ToList();
+
+        foreach (PhaseDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+    }
+
+    private void SetQuestOptions()
+    {
+        List<QuestDataElement> dataElements = dataController.data_list.Cast<QuestDataElement>().ToList();
+
+        foreach (QuestDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+    }
+
+    private void SetStepOptions()
+    {
+        List<StepDataElement> dataElements = dataController.data_list.Cast<StepDataElement>().ToList();
+
+        foreach (StepDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+    }
+
+    private void SetStepElementOptions()
+    {
+        List<StepElementDataElement> dataElements = dataController.data_list.Cast<StepElementDataElement>().ToList();
+
+        foreach (StepElementDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(/*dataElement.name*/));
     }
 
     public void InitializePath(Path path, IEnumerable data)
     {
         EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
+    }
+
+    public IEnumerable GetEnumerable(ICollection list)
+    {
+        int index = 0;
+
+        foreach(var data in list)
+        {
+            if (index == dropdown.value)
+                return new[] { data };
+
+            index++;
+        }
+
+        return null;
     }
 
     public void CloseComponent() { }

@@ -4,6 +4,13 @@ using System.Linq;
 
 public class RegionController : MonoBehaviour, IDataController
 {
+    public enum Type
+    {
+        Base,
+        Phase,
+        Task
+    }
+
     public IDisplay display { get { return GetComponent<IDisplay>(); } }
 
     public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
@@ -11,6 +18,7 @@ public class RegionController : MonoBehaviour, IDataController
 
     public ICollection data_list { get; set; }
 
+    public Type type;
     public bool search_by_id;
     public int temp_id_count;
 

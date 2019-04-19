@@ -1,37 +1,66 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
-public class TerrainHeader : MonoBehaviour, IHeader
+public class TerrainHeader : MonoBehaviour, ISegment
 {
-    private EditorController controller;
+    private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
+    
+    public IEditor dataEditor { get; set; }
 
-    public SelectionElement editor_button;
+    private TerrainDataElement terrain_data;
+    private RegionDataElement region_data;
 
-    public void Activate(EditorController new_controller)
+    #region UI
+    public Button editor_button;
+    public Text id;
+    #endregion
+
+    #region Data Variables
+    private int _id;
+    #endregion
+
+    #region Data Methods
+    private void InitializeData()
     {
-        controller = new_controller;
+        terrain_data = dataEditor.data.Cast<TerrainDataElement>().FirstOrDefault();
+        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.Cast<RegionDataElement>().FirstOrDefault();
 
-        SetEditorButton();
+        _id = terrain_data.id;
+    }
+    #endregion
 
+    #region Segment
+    public void InitializeSegment()
+    {
+        dataEditor = segmentController.editorController.pathController.dataEditor;
+
+        InitializeData();
+
+        SelectionElement element = editor_button.GetComponent<SelectionElement>();
+
+        element.route = segmentController.editorController.pathController.route.Copy();
+        element.route.property = SelectionManager.Property.Open;
+
+        element.SetElementData(new[] { region_data }, Enums.DataType.Region);
+    }
+
+    public void OpenSegment()
+    {
+        id.text = _id.ToString();
+        editor_button.GetComponentInChildren<Text>().text = "Open " + region_data.name;
         gameObject.SetActive(true);
     }
 
-    public void UpdateHeader()
+    public void ApplySegment()
     {
 
     }
 
-    private void SetEditorButton()
-    {
-        //Set selection type to match the list type from which the terrain controller was opened,
-        //so that the editor opens a different path
-        
-        editor_button.data = controller.pathController.route.path.route[controller.pathController.step - 3].data;
-        //editor_button.controller = controller.pathController;
-    }
-
-    public void Deactivate()
+    public void CloseSegment()
     {
         gameObject.SetActive(false);
     }
+    #endregion
 }

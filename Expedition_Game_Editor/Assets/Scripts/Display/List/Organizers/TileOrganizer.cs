@@ -15,9 +15,9 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     private TileProperties properties;
     private bool horizontal, vertical;
 
-    List<GeneralData> generalData_list;
+    private List<GeneralData> generalData_list;
 
-    public void InitializeOrganizer(){ }
+    public void InitializeOrganizer() { }
 
     public void SetProperties()
     {
@@ -84,7 +84,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        var dataController = listManager.listProperties.dataController;
+        var dataController = listManager.listProperties.segmentController.dataController;
         generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Tile");

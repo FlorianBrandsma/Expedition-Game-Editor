@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CameraProperties : MonoBehaviour, IDisplay
 {
+    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
+
     public DisplayManager.Type displayType { get; set; }
 
     public Route route { get; set; }
@@ -11,19 +13,19 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public RectTransform section_rect { get; set; }
 
-    public IDataController dataController { get {return GetComponent<IDataController>(); } }
-
     public void InitializeProperties()
     {
-        section_rect = GetComponent<PathController>().editorSection.GetComponent<RectTransform>();
+        if (segmentController.dataController == null) return;
 
-        //route = new_route;
+        section_rect = segmentController.editorController.pathController.editorSection.GetComponent<RectTransform>();
 
         displayType = GetComponent<IProperties>().Type();
     }
 
     public void SetDisplay()
     {
+        if (segmentController.dataController == null) return;
+
         cameraManager.InitializeCamera(this);
 
         cameraManager.SetCamera();
@@ -31,6 +33,8 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void CloseDisplay()
     {
+        if (segmentController.dataController == null) return;
+
         cameraManager.CloseCamera();
     }
 }

@@ -48,7 +48,7 @@ public class ItemHeader : MonoBehaviour, IHeader
 
     private void SetIcon()
     {
-        icon.texture = Resources.Load<Texture2D>("Textures/Objects/Icons/" + main_element.data.Cast<GeneralData>().ToList().FirstOrDefault().id);
+        icon.texture = Resources.Load<Texture2D>("Textures/Objects/Icons/" + main_element.GeneralData().id);
     }
 
     public void Deactivate()

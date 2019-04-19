@@ -12,7 +12,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public Text description;
     public RawImage icon;
 
-    public SelectionElement edit_button;
+    private SelectionElement edit_button { get { return element.child; } }
 
     public RectTransform content;
 
@@ -40,38 +40,22 @@ public class EditorPanel : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.data_type)
+        switch (element.route.data_type)
         {
-            case Enums.DataType.Chapter:
-                SetChapterElement();
-                break;
-            case Enums.DataType.Phase:
-                SetPhaseElement();
-                break;
-            case Enums.DataType.Quest:
-                SetQuestElement();
-                break;
-            case Enums.DataType.Step:
-                SetStepElement();
-                break;
-            case Enums.DataType.StepElement:
-                SetStepElementElement();
-                break;
-            case Enums.DataType.Task:
-                SetTaskElement();
-                break;
-            case Enums.DataType.Region:
-                SetRegionElement();
-                break;
-            default:
-                Debug.Log("YOU ARE MISSING THE DATATYPE");
-                break;
+            case Enums.DataType.Chapter:        SetChapterElement();        break;
+            case Enums.DataType.Phase:          SetPhaseElement();          break;
+            case Enums.DataType.Quest:          SetQuestElement();          break;
+            case Enums.DataType.Step:           SetStepElement();           break;
+            case Enums.DataType.StepElement:    SetStepElementElement();    break;
+            case Enums.DataType.Task:           SetTaskElement();           break;
+            case Enums.DataType.Region:         SetRegionElement();         break;
+            default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
         }
     }
 
     private void SetChapterElement()
     {
-        ChapterDataElement data = element.data.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement data = element.route.data.Cast<ChapterDataElement>().FirstOrDefault();
         
         id.text             = data.id.ToString();
         header.text         = data.original_name;
@@ -81,12 +65,12 @@ public class EditorPanel : MonoBehaviour, IElement
             icon.texture = Resources.Load<Texture2D>(data.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.data_type);     
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     private void SetPhaseElement()
     {
-        PhaseDataElement data = element.data.Cast<PhaseDataElement>().FirstOrDefault();
+        PhaseDataElement data = element.route.data.Cast<PhaseDataElement>().FirstOrDefault();
 
         id.text             = data.id.ToString();
         header.text         = data.original_name;
@@ -96,41 +80,52 @@ public class EditorPanel : MonoBehaviour, IElement
             icon.texture = Resources.Load<Texture2D>(data.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.data_type);
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     private void SetQuestElement()
     {
-        QuestDataElement data = element.data.Cast<QuestDataElement>().FirstOrDefault();
+        QuestDataElement data = element.route.data.Cast<QuestDataElement>().FirstOrDefault();
 
         id.text = data.id.ToString();
         header.text = data.original_name;
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.data_type);
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     private void SetStepElement()
     {
-        StepDataElement data = element.data.Cast<StepDataElement>().FirstOrDefault();
+        StepDataElement data = element.route.data.Cast<StepDataElement>().FirstOrDefault();
 
         id.text = data.id.ToString();
         header.text = data.original_name;
 
+        if (properties.icon)
+            icon.texture = Resources.Load<Texture2D>(data.icon);
+
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.data_type);
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     private void SetStepElementElement()
     {
-        StepElementDataElement data = element.data.Cast<StepElementDataElement>().FirstOrDefault();
+        StepElementDataElement data = element.route.data.Cast<StepElementDataElement>().FirstOrDefault();
+
         header.text = data.table;
         id.text = data.id.ToString();
+
+        if (properties.icon)
+            icon.texture = Resources.Load<Texture2D>(data.icon);
+
+        if (properties.edit)
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     private void SetTaskElement()
     {
-        TaskDataElement data = element.data.Cast<TaskDataElement>().FirstOrDefault();
+        TaskDataElement data = element.route.data.Cast<TaskDataElement>().FirstOrDefault();
+
         header.text = data.table;
         id.text = data.id.ToString();
         description.text = data.original_description;
@@ -138,13 +133,13 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetRegionElement()
     {
-        RegionDataElement data = element.data.Cast<RegionDataElement>().FirstOrDefault();
+        RegionDataElement data = element.route.data.Cast<RegionDataElement>().FirstOrDefault();
 
         id.text = data.id.ToString();
         header.text = data.original_name;
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.data_type);
+            edit_button.SetElementData(new[] { data }, element.route.data_type);
     }
 
     public void CloseElement()

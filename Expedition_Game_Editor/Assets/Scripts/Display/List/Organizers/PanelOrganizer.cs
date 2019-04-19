@@ -15,7 +15,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     private PanelProperties properties;
 
-    List<GeneralData> generalData_list;
+    private List<GeneralData> generalData_list;
 
     public void InitializeOrganizer() { }
 
@@ -45,7 +45,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float position_sum = 0;
 
-        for (int i = 0; i < listManager.listProperties.dataController.data_list.Count; i++)
+        for (int i = 0; i < listManager.listProperties.segmentController.dataController.data_list.Count; i++)
         {
             row_height.Add(element_size.y);
 
@@ -54,16 +54,9 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public void CloseList()
-    {
-        listManager.ResetElement(listManager.element_list);
-
-        listManager.element_list.Clear();
-    }
-
     public void SetData()
     {
-        var dataController = listManager.listProperties.dataController;
+        var dataController = listManager.listProperties.segmentController.dataController;
         generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Panel");
@@ -124,6 +117,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     float ListPosition(int i)
     {
         return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
+    }
+
+    public void CloseList()
+    {
+        listManager.ResetElement(listManager.element_list);
+
+        listManager.element_list.Clear();
     }
 
     public void CloseOrganizer()

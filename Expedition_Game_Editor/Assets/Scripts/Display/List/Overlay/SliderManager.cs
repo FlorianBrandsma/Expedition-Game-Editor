@@ -27,7 +27,7 @@ public class SliderManager : MonoBehaviour, IOverlay
     
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int list_count = overlayManager.listManager.listProperties.dataController.data_list.Count;
+        int list_count = overlayManager.listManager.listProperties.segmentController.dataController.data_list.Count;
         
         Vector2 list_size = list.GetListSize(list_count, true);
 

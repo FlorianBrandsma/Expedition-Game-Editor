@@ -8,13 +8,11 @@ using System.Linq;
 
 public class SelectionElement : MonoBehaviour
 {
-    public IEnumerable data;
-    public Enums.DataType data_type;
+    public Route route = new Route();
 
     EditorPath editorPath;
 
     public SelectionManager.Type selectionType;
-    public SelectionManager.Property selectionProperty;
     public DisplayManager.Type displayType;
 
     public SelectionElement parent_element { get; set; }
@@ -23,24 +21,24 @@ public class SelectionElement : MonoBehaviour
     public GameObject glow;
 
     public ListManager listManager { get; set; }
-    public SegmentController segmentController { get; set; }
+    //public SegmentController segmentController { get; set; }
 
     public IElement element { get; set; }
 
     //Active Property
     public bool selected;
 
-    public void InitializeElement(ListManager new_listManager, SelectionManager.Property new_property)
+    public void InitializeElement(ListManager listManager, SelectionManager.Property property)
     {
         if (selected)
             CancelSelection();
 
-        listManager = new_listManager;
+        this.listManager = listManager;
 
-        segmentController = listManager.listProperties.dataController.segmentController;
+        //segmentController = listManager.listProperties.dataController.segmentController;
 
         selectionType = listManager.selectionType;
-        selectionProperty = new_property;
+        route.property = property;
 
         GetComponent<IElement>().InitializeElement();
 
@@ -48,11 +46,11 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElementData(IEnumerable new_data, Enums.DataType data_type)
+    public void SetElementData(IEnumerable data, Enums.DataType data_type)
     {
         //Debug.Log("Set element data from " + this.data_type + " to " + data_type);
-        data = new_data;
-        this.data_type = data_type;
+        route.data = data;
+        route.data_type = data_type;
     }
 
     public void UpdateElement()
@@ -70,7 +68,7 @@ public class SelectionElement : MonoBehaviour
 
     public void ActivateSelection()
     {
-        if (selectionProperty == SelectionManager.Property.Get)
+        if (route.property == SelectionManager.Property.Get)
             SelectionManager.SelectGet(this);
 
         if(listManager != null)
@@ -97,7 +95,7 @@ public class SelectionElement : MonoBehaviour
         {
             editorPath = new EditorPath(this);
 
-            switch (selectionProperty)
+            switch (route.property)
             {
                 case SelectionManager.Property.Get:
                     EditorManager.editorManager.InitializePath(editorPath.path);
@@ -128,6 +126,6 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return data.Cast<GeneralData>().FirstOrDefault();
+        return route.data.Cast<GeneralData>().FirstOrDefault();
     }
 }

@@ -38,7 +38,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        var dataController = listManager.listProperties.dataController;
+        var dataController = listManager.listProperties.segmentController.dataController;
         generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");

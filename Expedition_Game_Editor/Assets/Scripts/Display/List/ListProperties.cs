@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class ListProperties : MonoBehaviour, IDisplay
 {
+    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     //public GeneralData listData;
 
     //public List<GeneralData> dataList { get; set; }
@@ -30,11 +31,11 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool enable_sliders;
     public bool enable_numbers;
     public bool enable_paging;
-    
-    public IDataController dataController { get { return GetComponent<IDataController>(); } }
 
     public void InitializeProperties()
     {
+        if (segmentController.dataController == null) return;
+
         if (flexible_type)
         {
             /*
@@ -71,12 +72,16 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public void SetDisplay()
     {
+        if (segmentController.dataController == null) return;
+
         listManager.SetProperties();
         listManager.SetListSize();  
     }
 
     public void CloseDisplay()
     {
+        if (segmentController.dataController == null) return;
+
         //Bandaid fix
         if (flexible_type)
         {

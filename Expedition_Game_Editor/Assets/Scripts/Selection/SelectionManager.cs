@@ -63,7 +63,7 @@ static public class SelectionManager
 
     static public void SelectSet(SelectionElement new_set)
     {
-        get.data = new_set.data;//.Copy();
+        get.route.data = new_set.route.data;//.Copy();
 
         CancelGetSelection();
     }

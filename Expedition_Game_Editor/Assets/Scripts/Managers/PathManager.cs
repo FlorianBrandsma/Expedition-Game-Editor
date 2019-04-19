@@ -66,8 +66,7 @@ public class PathManager
         {
             this.route  = route;
             this.origin = origin;
-            //Looks convoluted
-            path        = origin.listManager.listProperties.dataController.segmentController.path;
+            path        = origin.listManager.listProperties.segmentController.path;
         }
 
         public Path Enter()
@@ -152,7 +151,7 @@ public class PathManager
         {
             route.controller = enter;
             //Looks convoluted
-            path = origin.listManager.listProperties.dataController.segmentController.path;
+            path = origin.listManager.listProperties.segmentController.path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
@@ -215,6 +214,9 @@ public class PathManager
         {
             this.route  = route;
             this.origin = origin;
+
+            if(origin.listManager != null)
+                path        = origin.listManager.listProperties.segmentController.path;
         }
 
         public Path Enter()
@@ -229,17 +231,17 @@ public class PathManager
 
             switch (route.GeneralData().type)
             {
-                case (int)OldRegionManager.Type.Base:
+                case (int)Enums.RegionType.Base:
                     path = CreatePath(CreateRoutes(enter, route), form, origin);
                     break;
-                case (int)OldRegionManager.Type.Phase:
+                case (int)Enums.RegionType.Phase:
                     routes = CreateRoutes(enter, route);
-                    path = ExtendPath(route.path, routes, origin);
+                    path = ExtendPath(path, routes, origin);
                     break;
-                case (int)OldRegionManager.Type.Task:
-                    routes = CreateRoutes(enter, route);
-                    path = ExtendPath(route.path, routes, origin);
-                    break;
+                //case (int)Enums.RegionType.Task:
+                //    routes = CreateRoutes(enter, route);
+                //    path = ExtendPath(path, routes, origin);
+                //    break;
             }
 
             path.type = Path.Type.New;
@@ -289,8 +291,8 @@ public class PathManager
         public Path Edit()
         {
             route.controller = edit;
-            //Looks convoluted
-            path = origin.listManager.listProperties.dataController.segmentController.path;
+
+            path = origin.listManager.listProperties.segmentController.path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, origin, path.start);
         }
