@@ -6,7 +6,7 @@ using System.Linq;
 public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 {
     private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-
+    private IDataController dataController { get { return GetComponent<IDataController>(); } }
     public IEditor dataEditor { get; set; }
 
     private TaskDataElement task_data;
@@ -26,7 +26,6 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
         region_data.id = 0;
         region_data.table = "Region";
         region_data.type = (int)Enums.RegionType.Task;
-        
     }
     #endregion
 
@@ -42,7 +41,9 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
         element.route = segmentController.editorController.pathController.route.Copy();
         element.route.property = SelectionManager.Property.Open;
 
-        element.SetElementData(new[] { region_data }, Enums.DataType.Region);
+        //Data could be initialized here
+
+        element.route.data = new Data(dataController, new[] { region_data });
     }
 
     public void OpenSegment()

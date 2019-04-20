@@ -45,7 +45,8 @@ public class FormComponent : MonoBehaviour, IComponent
 
                 initialized = true;
             } else {
-                EditorManager.editorManager.InitializePath(editorForm.active_path);
+                //Set to true so the list will reset when selection is closed
+                EditorManager.editorManager.InitializePath(editorForm.active_path, true);
             }
 
             button.GetComponent<EditorButton>().icon.texture = open_icon;

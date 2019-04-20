@@ -90,12 +90,15 @@ public class ListManager : MonoBehaviour
 
         list_size = list.GetListSize(listProperties.segmentController.dataController.data_list.Count, false);
 
-        SetData();
+        if (!listProperties.enable_paging)
+            SetData();
 
         overlayManager.SetOverlay();
 
         list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
+
+        //Debug.Log(EditorManager.historyManager.returned);
 
         if (EditorManager.historyManager.returned || !listProperties.segmentController.editorController.pathController.loaded)
             ResetListPosition();
@@ -185,8 +188,8 @@ public class ListManager : MonoBehaviour
             element.transform.position.z > list_max.z ||
             element.transform.position.z < list_min.z)
         {
-            scrollRect.horizontalNormalizedPosition = (element.transform.localPosition.x + list_parent.sizeDelta.x) / (list_parent.sizeDelta.x * 2);
-            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - list.element_size.y) / 2)) / (list_parent.sizeDelta.y - (list.element_size.y));
+            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.element_size.x / 2) + list_parent.rect.width / 2) / ((list_parent.rect.width - list.element_size.x) / 2) / 2;
+            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - list.element_size.y) / 2)) / (list_parent.sizeDelta.y - list.element_size.y);
         }
     }
 

@@ -15,9 +15,13 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     private TileProperties properties;
     private bool horizontal, vertical;
 
+    private IDataController dataController;
     private List<GeneralData> generalData_list;
 
-    public void InitializeOrganizer() { }
+    public void InitializeOrganizer()
+    {
+        dataController = listManager.listProperties.segmentController.dataController;
+    }
 
     public void SetProperties()
     {
@@ -84,19 +88,23 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        var dataController = listManager.listProperties.segmentController.dataController;
-        generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
+        SetData(dataController.data_list);
+    }
+
+    public void SetData(ICollection list)
+    {
+        generalData_list = list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Tile");
 
-        list_size = GetListSize(dataController.data_list.Count, false);
+        list_size = GetListSize(list.Count, false);
 
-        foreach (var data in dataController.data_list)
+        foreach (var data in list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
             listManager.element_list.Add(element);
 
-            element.SetElementData(new[] { data }, dataController.data_type);
+            element.route.data = new Data(dataController, new[] { data });
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -110,7 +118,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     public void ResetData(ICollection filter)
     {
         CloseList();
-        SetData();
+        SetData(filter);
     }
 
     void SetElement(SelectionElement element)

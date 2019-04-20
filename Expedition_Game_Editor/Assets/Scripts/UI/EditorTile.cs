@@ -16,7 +16,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data_type)
+        switch (element.route.data.controller.data_type)
         {
             case Enums.DataType.Element:    SetElementElement();    break;
             case Enums.DataType.Terrain:    SetTerrainElement();    break;
@@ -27,7 +27,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetElementElement()
     {
-        ElementDataElement data = element.route.data.Cast<ElementDataElement>().FirstOrDefault();
+        ElementDataElement data = element.route.data.element.Cast<ElementDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }

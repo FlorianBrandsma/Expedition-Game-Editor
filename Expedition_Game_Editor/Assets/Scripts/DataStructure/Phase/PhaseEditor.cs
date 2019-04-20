@@ -4,9 +4,7 @@ using System.Linq;
 
 public class PhaseEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Phase; } }
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
+    public Data data { get; set; }
 
     private PhaseDataElement phaseData;
 
@@ -17,11 +15,10 @@ public class PhaseEditor : MonoBehaviour, IEditor
     public void InitializeEditor()
     {
         selectionElement = pathController.route.path.origin;
-        SetList();
 
         data = pathController.route.data;
 
-        phaseData = data.Cast<PhaseDataElement>().FirstOrDefault();
+        phaseData = data.element.Cast<PhaseDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             phaseData.ClearChanges();
@@ -39,7 +36,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<PhaseDataElement>().ToList();
+        var list = data.controller.data_list.Cast<PhaseDataElement>().ToList();
 
         list.RemoveAt(phaseData.index);
         list.Insert(index, phaseData);
@@ -55,14 +52,8 @@ public class PhaseEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

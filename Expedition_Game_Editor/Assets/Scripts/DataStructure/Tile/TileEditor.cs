@@ -5,10 +5,8 @@ using System.Linq;
 //This is where the selected value is stored before it's split in segments
 public class TileEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Tile; } }
-    
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
+    public Data data { get; set; }
+
     private TileDataElement tileData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -19,11 +17,9 @@ public class TileEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        tileData = data.Cast<TileDataElement>().FirstOrDefault();
+        tileData = data.element.Cast<TileDataElement>().FirstOrDefault();
         
         if (!pathController.loaded)
             tileData.ClearChanges();
@@ -41,7 +37,7 @@ public class TileEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<TileDataElement>().ToList();
+        var list = data.controller.data_list.Cast<TileDataElement>().ToList();
 
         list.RemoveAt(tileData.index);
         list.Insert(index, tileData);
@@ -57,14 +53,8 @@ public class TileEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

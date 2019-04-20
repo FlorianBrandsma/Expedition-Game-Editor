@@ -19,7 +19,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data_type)
+        switch (element.route.data.controller.data_type)
         {
             case Enums.DataType.Item:       SetItemElement();   break;
             case Enums.DataType.Element: //SetPhaseElement();   break;
@@ -29,7 +29,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        ItemDataElement data = element.route.data.Cast<ItemDataElement>().FirstOrDefault();
+        ItemDataElement data = element.route.data.element.Cast<ItemDataElement>().FirstOrDefault();
 
         label.text = data.original_name;
     }

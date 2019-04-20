@@ -5,10 +5,7 @@ using System.Linq;
 //This is where the selected value is stored before it's split in segments
 public class ChapterEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Chapter; } }
-    
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
+    public Data data { get; set; }
     private ChapterDataElement chapterData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -19,11 +16,9 @@ public class ChapterEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        chapterData = data.Cast<ChapterDataElement>().FirstOrDefault();
+        chapterData = data.element.Cast<ChapterDataElement>().FirstOrDefault();
         
         if (!pathController.loaded)
             chapterData.ClearChanges();
@@ -41,7 +36,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<ChapterDataElement>().ToList();
+        var list = data.controller.data_list.Cast<ChapterDataElement>().ToList();
 
         list.RemoveAt(chapterData.index);
         list.Insert(index, chapterData);
@@ -57,14 +52,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

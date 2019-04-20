@@ -29,7 +29,7 @@ public class ItemController : MonoBehaviour, IDataController
         GetData(); 
     }
 
-    private void GetData()
+    public void GetData()
     {
         data_list = itemManager.GetItemDataElements(this);
 

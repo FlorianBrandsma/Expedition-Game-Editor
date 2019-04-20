@@ -5,10 +5,8 @@ using System.Linq;
 //This is where the selected value is stored before it's split in segments
 public class TaskEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Task; } }
+    public Data data { get; set; }
 
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
     private TaskDataElement taskData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -19,11 +17,9 @@ public class TaskEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        taskData = data.Cast<TaskDataElement>().FirstOrDefault();
+        taskData = data.element.Cast<TaskDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             taskData.ClearChanges();
@@ -41,7 +37,7 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<TaskDataElement>().ToList();
+        var list = data.controller.data_list.Cast<TaskDataElement>().ToList();
 
         list.RemoveAt(taskData.index);
         list.Insert(index, taskData);
@@ -57,14 +53,8 @@ public class TaskEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

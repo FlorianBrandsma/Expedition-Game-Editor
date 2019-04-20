@@ -43,7 +43,7 @@ public class TaskManager
             taskData.table = "Task";
             taskData.index = i;
 
-            taskData.description = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
+            taskData.description = "Perform a simple task";
 
             taskData_list.Add(taskData);
         }

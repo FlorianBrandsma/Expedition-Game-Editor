@@ -104,12 +104,21 @@ public class EditorPath
 
                 break;
 
-            case "TerrainItem":
+            case "TerrainElement":
 
-                PathManager.TerrainItem terrainItem = new PathManager.TerrainItem(route, origin);
+                PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(route, origin);
 
                 if (origin.route.property == SelectionManager.Property.Enter)
-                    path = terrainItem.Enter();
+                    path = terrainElement.Enter();
+
+                break;
+
+            case "TerrainObject":
+
+                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(route, origin);
+
+                if (origin.route.property == SelectionManager.Property.Enter)
+                    path = terrainObject.Enter();
 
                 break;
 

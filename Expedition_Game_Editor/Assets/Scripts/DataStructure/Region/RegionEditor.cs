@@ -5,10 +5,8 @@ using System.Linq;
 //This is where the selected value is stored before it's split in segments
 public class RegionEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Region; } }
+    public Data data { get; set; }
 
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
     private RegionDataElement regionData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -19,11 +17,9 @@ public class RegionEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        regionData = data.Cast<RegionDataElement>().FirstOrDefault();
+        regionData = data.element.Cast<RegionDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             regionData.ClearChanges();
@@ -41,7 +37,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<RegionDataElement>().ToList();
+        var list = data.controller.data_list.Cast<RegionDataElement>().ToList();
 
         list.RemoveAt(regionData.index);
         list.Insert(index, regionData);
@@ -57,14 +53,8 @@ public class RegionEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

@@ -6,7 +6,7 @@ using System.Linq;
 public class TerrainHeader : MonoBehaviour, ISegment
 {
     private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    
+    private IDataController dataController { get { return GetComponent<IDataController>(); } }
     public IEditor dataEditor { get; set; }
 
     private TerrainDataElement terrain_data;
@@ -24,8 +24,8 @@ public class TerrainHeader : MonoBehaviour, ISegment
     #region Data Methods
     private void InitializeData()
     {
-        terrain_data = dataEditor.data.Cast<TerrainDataElement>().FirstOrDefault();
-        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.Cast<RegionDataElement>().FirstOrDefault();
+        terrain_data = dataEditor.data.element.Cast<TerrainDataElement>().FirstOrDefault();
+        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.element.Cast<RegionDataElement>().FirstOrDefault();
 
         _id = terrain_data.id;
     }
@@ -43,7 +43,7 @@ public class TerrainHeader : MonoBehaviour, ISegment
         element.route = segmentController.editorController.pathController.route.Copy();
         element.route.property = SelectionManager.Property.Open;
 
-        element.SetElementData(new[] { region_data }, Enums.DataType.Region);
+        element.route.data = new Data(dataController, new[] { region_data });
     }
 
     public void OpenSegment()

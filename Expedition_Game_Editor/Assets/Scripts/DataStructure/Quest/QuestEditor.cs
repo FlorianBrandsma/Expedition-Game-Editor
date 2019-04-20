@@ -4,10 +4,8 @@ using System.Linq;
 
 public class QuestEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.Quest; } }
+    public Data data { get; set; }
 
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
     private QuestDataElement questData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -18,11 +16,9 @@ public class QuestEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        questData = data.Cast<QuestDataElement>().FirstOrDefault();
+        questData = data.element.Cast<QuestDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             questData.ClearChanges();
@@ -40,7 +36,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data_list.Cast<QuestDataElement>().ToList();
+        var list = data.controller.data_list.Cast<QuestDataElement>().ToList();
 
         list.RemoveAt(questData.index);
         list.Insert(index, questData);
@@ -56,14 +52,8 @@ public class QuestEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

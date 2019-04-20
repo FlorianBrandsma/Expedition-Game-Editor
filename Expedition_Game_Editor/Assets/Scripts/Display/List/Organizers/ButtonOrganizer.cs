@@ -17,9 +17,13 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     private ButtonProperties properties;
 
-    List<GeneralData> generalData_list;
+    private IDataController dataController;
+    private List<GeneralData> generalData_list;
 
-    public void InitializeOrganizer() { }
+    public void InitializeOrganizer()
+    {
+        dataController = listManager.listProperties.segmentController.dataController;
+    }
 
     public void SetProperties()
     {
@@ -38,17 +42,21 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        var dataController = listManager.listProperties.segmentController.dataController;
-        generalData_list = dataController.data_list.Cast<GeneralData>().ToList();
+        SetData(dataController.data_list);
+    }
+
+    public void SetData(ICollection list)
+    {
+        generalData_list = list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
 
-        foreach (var data in dataController.data_list)
+        foreach (var data in list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
             listManager.element_list.Add(element);
 
-            element.SetElementData(new[] { data }, dataController.data_type);
+            element.route.data = new Data(dataController, new[] { data });
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -61,7 +69,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(null);
+        ResetData(dataController.data_list);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -69,12 +77,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
     public void ResetData(ICollection filter)
     {
         CloseList();
-        SetData();
-    }
-
-    public void CloseData()
-    {
-        listManager.element_list.Clear();
+        SetData(filter);
     }
 
     void SetElement(SelectionElement element)

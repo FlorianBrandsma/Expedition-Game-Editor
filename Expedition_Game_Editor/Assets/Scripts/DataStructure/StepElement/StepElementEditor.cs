@@ -5,10 +5,8 @@ using System.Linq;
 //This is where the selected value is stored before it's split in segments
 public class StepElementEditor : MonoBehaviour, IEditor
 {
-    public Enums.DataType data_type { get { return Enums.DataType.StepElement; } }
+    public Data data { get; set; }
 
-    public IEnumerable data { get; set; }
-    public ICollection data_list { get; set; }
     private StepElementDataElement stepElementData;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
@@ -19,11 +17,9 @@ public class StepElementEditor : MonoBehaviour, IEditor
     {
         selectionElement = pathController.route.path.origin;
 
-        SetList();
-
         data = pathController.route.data;
 
-        stepElementData = data.Cast<StepElementDataElement>().FirstOrDefault();
+        stepElementData = data.element.Cast<StepElementDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             stepElementData.ClearChanges();
@@ -44,14 +40,8 @@ public class StepElementEditor : MonoBehaviour, IEditor
         UpdateList();
     }
 
-    private void SetList()
-    {
-        data_list = selectionElement.listManager.listProperties.segmentController.dataController.data_list;
-    }
-
     private void UpdateList()
     {
-        SetList();
         selectionElement.listManager.UpdateData();
     }
 

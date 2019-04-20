@@ -40,7 +40,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data_type)
+        switch (element.route.data.controller.data_type)
         {
             case Enums.DataType.Chapter:        SetChapterElement();        break;
             case Enums.DataType.Phase:          SetPhaseElement();          break;
@@ -55,91 +55,100 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetChapterElement()
     {
-        ChapterDataElement data = element.route.data.Cast<ChapterDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        ChapterDataElement data_element = data.element.Cast<ChapterDataElement>().FirstOrDefault();
         
-        id.text             = data.id.ToString();
-        header.text         = data.original_name;
-        description.text    = data.original_description;
+        id.text             = data_element.id.ToString();
+        header.text         = data_element.original_name;
+        description.text    = data_element.original_description;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetPhaseElement()
     {
-        PhaseDataElement data = element.route.data.Cast<PhaseDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        PhaseDataElement data_element = data.element.Cast<PhaseDataElement>().FirstOrDefault();
 
-        id.text             = data.id.ToString();
-        header.text         = data.original_name;
-        description.text    = data.original_description;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
+        description.text = data_element.original_description;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetQuestElement()
     {
-        QuestDataElement data = element.route.data.Cast<QuestDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        QuestDataElement data_element = data.element.Cast<QuestDataElement>().FirstOrDefault();
 
-        id.text = data.id.ToString();
-        header.text = data.original_name;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetStepElement()
     {
-        StepDataElement data = element.route.data.Cast<StepDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        StepDataElement data_element = data.element.Cast<StepDataElement>().FirstOrDefault();
 
-        id.text = data.id.ToString();
-        header.text = data.original_name;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetStepElementElement()
     {
-        StepElementDataElement data = element.route.data.Cast<StepElementDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        StepElementDataElement data_element = data.element.Cast<StepElementDataElement>().FirstOrDefault();
 
-        header.text = data.table;
-        id.text = data.id.ToString();
+        id.text = data_element.id.ToString();
+        header.text = data_element.name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetTaskElement()
     {
-        TaskDataElement data = element.route.data.Cast<TaskDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        TaskDataElement data_element = data.element.Cast<TaskDataElement>().FirstOrDefault();
 
-        header.text = data.table;
-        id.text = data.id.ToString();
-        description.text = data.original_description;
+        id.text = data_element.id.ToString();
+        description.text = data_element.original_description;
+
+        if (properties.edit)
+            edit_button.route.data = data;
     }
 
     private void SetRegionElement()
     {
-        RegionDataElement data = element.route.data.Cast<RegionDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        RegionDataElement data_element = data.element.Cast<RegionDataElement>().FirstOrDefault();
 
-        id.text = data.id.ToString();
-        header.text = data.original_name;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     public void CloseElement()

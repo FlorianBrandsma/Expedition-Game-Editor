@@ -77,7 +77,7 @@ public class Path
     {
         //Use last used step as base
         if (route.Count > 0)
-            Add(0, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().property);
+            Add(0, route.LastOrDefault().data, route.LastOrDefault().property);
         else
             Add(new Route(this));
     }
@@ -85,14 +85,14 @@ public class Path
     public void Add(int index)
     {
         if (route.Count > 0)
-            Add(index, route.LastOrDefault().data, route.LastOrDefault().data_type, route.LastOrDefault().property);
+            Add(index, route.LastOrDefault().data, route.LastOrDefault().property);
         else
-            Add(index, new[] {new GeneralData() }, Enums.DataType.None, SelectionManager.Property.None);
+            Add(index, new Data(), SelectionManager.Property.None);
     }
 
-    public void Add(int controller, IEnumerable data, Enums.DataType data_type, SelectionManager.Property property)
+    public void Add(int controller, Data data, SelectionManager.Property property)
     {
-        route.Add(new Route(controller, data, data_type, property));
+        route.Add(new Route(controller, data, property));
     }
 
     public void Add(Route route)
@@ -170,11 +170,11 @@ public class Path
         return route_list;
     }
 
-    public void ReplaceAllRoutes(IEnumerable data)
+    public void ReplaceAllRoutes(Data data)
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().table == data.Cast<GeneralData>().FirstOrDefault().table)
+            if (r.GeneralData().table == data.element.Cast<GeneralData>().FirstOrDefault().table)
                 r.data = data;
         }
     }

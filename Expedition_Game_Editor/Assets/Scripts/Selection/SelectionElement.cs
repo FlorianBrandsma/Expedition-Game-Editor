@@ -46,13 +46,6 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElementData(IEnumerable data, Enums.DataType data_type)
-    {
-        //Debug.Log("Set element data from " + this.data_type + " to " + data_type);
-        route.data = data;
-        route.data_type = data_type;
-    }
-
     public void UpdateElement()
     {
         if (parent_element != null)
@@ -126,6 +119,6 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return route.data.Cast<GeneralData>().FirstOrDefault();
+        return route.data.element.Cast<GeneralData>().FirstOrDefault();
     }
 }

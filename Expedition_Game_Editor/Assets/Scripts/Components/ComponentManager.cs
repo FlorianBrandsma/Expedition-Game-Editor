@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -171,6 +172,9 @@ public class ComponentManager : MonoBehaviour
     public Dropdown AddDropdown(EditorComponent new_component)
     {
         Dropdown dropdown = SpawnDropdown();
+
+        if (dropdown.GetComponent<IDataController>() != null)
+            DestroyImmediate((UnityEngine.Object)dropdown.GetComponent<IDataController>());
 
         dropdown.options.Clear();
         dropdown.onValueChanged.RemoveAllListeners();

@@ -44,8 +44,7 @@ public class PagingManager : MonoBehaviour, IOverlay
 
         page_count = Mathf.CeilToInt((float)element_total / page_limit);
 
-        if (page_count > 1)
-            overlayManager.horizontal_max.gameObject.SetActive(true);        
+        overlayManager.horizontal_max.gameObject.SetActive(true);        
     }
 
     public void SetOverlay()
@@ -78,9 +77,8 @@ public class PagingManager : MonoBehaviour, IOverlay
 
                 button.gameObject.SetActive(true);
             }
-
             SelectPage(0);
-        }
+        }      
     }
 
     void SelectPage(int page)
@@ -108,7 +106,9 @@ public class PagingManager : MonoBehaviour, IOverlay
         if (count > remainder)
             count = remainder;
 
-        organizer.ResetData(overlayManager.listManager.listProperties.segmentController.dataController.data_list.Cast<GeneralData>().ToList().GetRange(start, count));
+        var dataController = overlayManager.listManager.listProperties.segmentController.dataController;
+
+        organizer.ResetData(dataController.data_list.Cast<GeneralData>().ToList().GetRange(start, count));
     }
      
     public void UpdateOverlay()
@@ -118,7 +118,7 @@ public class PagingManager : MonoBehaviour, IOverlay
 
     public void CloseOverlay()
     {
-        ResetButtons();
+        CloseButtons();
 
         DestroyImmediate(this);
     }
@@ -138,7 +138,7 @@ public class PagingManager : MonoBehaviour, IOverlay
         return new_button;
     }
 
-    public void ResetButtons()
+    public void CloseButtons()
     {
         foreach (Button button in button_list_local)
         {

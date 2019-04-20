@@ -3,9 +3,7 @@ using System.Collections;
 
 public interface IEditor
 {
-    Enums.DataType data_type { get; }
-    IEnumerable data { get; set; }
-    ICollection data_list { get; set; }
+    Data data { get; set; }
     bool Changed();
     void InitializeEditor();
     void UpdateEditor();

@@ -30,18 +30,18 @@ public class DefaultHeader : MonoBehaviour, ISegment
         {
             _name = value;
 
-            switch (dataEditor.data_type)
+            switch (dataEditor.data.controller.data_type)
             {
                 case Enums.DataType.Chapter:
 
-                    ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
+                    ChapterDataElement chapterData = dataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
                     chapterData.name = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    PhaseDataElement phaseData = dataEditor.data.Cast<PhaseDataElement>().FirstOrDefault();
+                    PhaseDataElement phaseData = dataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
                     phaseData.name = value;
 
                     break; 
@@ -64,19 +64,19 @@ public class DefaultHeader : MonoBehaviour, ISegment
         segmentController = GetComponent<SegmentController>();
         dataEditor = segmentController.editorController.pathController.dataEditor;
 
-        switch (dataEditor.data_type)
+        switch (dataEditor.data.controller.data_type)
         {
             case Enums.DataType.Chapter: InitializeChapterData(); break;
             case Enums.DataType.Phase: InitializePhaseData(); break;
         }
 
         if (index_switch != null)
-            index_switch.InitializeSwitch(this, _index, dataEditor.data_list.Count - 1); 
+            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.data_list.Count - 1); 
     }
 
     private void InitializeChapterData()
     {
-        ChapterDataElement chapterData = dataEditor.data.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement chapterData = dataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
 
         _id = chapterData.id;
         _index = chapterData.index;
@@ -86,7 +86,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        PhaseDataElement phaseData = dataEditor.data.Cast<PhaseDataElement>().FirstOrDefault();
+        PhaseDataElement phaseData = dataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
 
         _id = phaseData.id;
         _index = phaseData.index;

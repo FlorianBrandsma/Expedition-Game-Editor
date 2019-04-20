@@ -258,7 +258,7 @@ public class PathManager
         {
             List<int> open = new List<int>() { 1, route.GeneralData().type };
 
-            Route custom_route = new Route(1, route.data, route.data_type, route.property);
+            Route custom_route = new Route(1, route.data, route.property);
 
             path = ExtendPath(route.path, CreateRoutes(open, custom_route), origin);
             path.type = Path.Type.New;
@@ -298,18 +298,39 @@ public class PathManager
         }
     }
 
-    public class TerrainItem
+    public class TerrainElement
     {
         Path path;
         Route route;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public TerrainItem(Route route, SelectionElement origin)
+        public TerrainElement(Route route, SelectionElement origin)
         {
-            route = new Route(route.GeneralData().type, route.data, route.data_type, route.property);
+            route = new Route(0, route.data, route.property);
 
             path = form.active_path.Trim(form.active_path.start + 3);
             
+            path.Add(route);
+        }
+
+        public Path Enter()
+        {
+            return path;
+        }
+    }
+
+    public class TerrainObject
+    {
+        Path path;
+        Route route;
+        EditorForm form = EditorManager.editorManager.forms[0];
+
+        public TerrainObject(Route route, SelectionElement origin)
+        {
+            route = new Route(1, route.data, route.property);
+
+            path = form.active_path.Trim(form.active_path.start + 3);
+
             path.Add(route);
         }
 
@@ -361,7 +382,7 @@ public class PathManager
         List<Route> routes = new List<Route>();
 
         foreach(int controller in controllers)
-            routes.Add(new Route(controller, route.data, route.data_type, route.property));
+            routes.Add(new Route(controller, route.data, route.property));
 
         return routes;
     }
@@ -405,40 +426,40 @@ public class PathManager
         return path;
     }
 
-    static public Path ReloadPath(Path new_path, IEnumerable new_data)
+    static public Path ReloadPath(Path path, Data data)
     {
-        Path path = new Path(true);
+        Path temppath = new Path(true);
 
-        path.form = new_path.form;
+        temppath.form = path.form;
 
-        foreach (Route route in new_path.route)
-            path.Add(route);
+        foreach (Route route in path.route)
+            temppath.Add(route);
 
-        path.route.Last().data = new_data;
+        temppath.route.Last().data = data;
 
-        path.start = new_path.start;
+        temppath.start = path.start;
 
-        path.type = Path.Type.Reload;
+        temppath.type = Path.Type.Reload;
 
-        return path;
+        return temppath;
     }
 
-    static public Path ReloadPath(Path new_path, IEnumerable new_data, int step)
+    static public Path ReloadPath(Path path, Data data, int step)
     {
-        Path path = new Path(true);
+        Path new_path = new Path(true);
 
-        path.form = new_path.form;
+        new_path.form = path.form;
 
-        foreach (Route route in new_path.route)
-            path.Add(route);
+        foreach (Route route in path.route)
+            new_path.Add(route);
 
-        path.route[step].data = new_data;
+        new_path.route[step].data = data;
 
-        path.start = new_path.start;
+        new_path.start = path.start;
 
-        path.type = Path.Type.Reload;
+        new_path.type = Path.Type.Reload;
 
-        return path;
+        return new_path;
     }
 
     #endregion

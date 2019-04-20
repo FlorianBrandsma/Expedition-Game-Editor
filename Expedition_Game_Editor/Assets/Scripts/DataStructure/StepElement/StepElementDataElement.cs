@@ -6,5 +6,6 @@ public class StepElementDataElement : StepElementCore
 {
     public StepElementDataElement() : base() { }
 
+    public string name;
     public string icon;
 }

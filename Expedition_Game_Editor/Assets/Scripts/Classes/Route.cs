@@ -4,21 +4,18 @@ using System.Linq;
 
 public class Route
 {
-    public int controller               { get; set; }
-    public IEnumerable data             { get; set; }
-    public Enums.DataType data_type     { get; set; }
+    public int controller   { get; set; }
+    public Data data        { get; set; }
+    public Path path        { get; set; }
 
-    public Path path                    { get; set; }
-
-    public SelectionManager.Property property  { get; set; }
+    public SelectionManager.Property property   { get; set; }
 
     public Route() { }
 
     public Route(Path new_path)
     {
         controller = 0;
-        data = new[] { new GeneralData() };
-        data_type = Enums.DataType.None;
+        data = new Data(null, new[] { new GeneralData() });
         path = new_path;
     }
 
@@ -26,18 +23,16 @@ public class Route
     {
         controller = route.controller;
         data = route.data;
-        data_type = route.data_type;
 
         property = route.property;
 
         path = route.path;
     }
 
-    public Route(int controller, IEnumerable data, Enums.DataType data_type, SelectionManager.Property property)
+    public Route(int controller, Data data,/* IEnumerable data, Enums.DataType data_type, */SelectionManager.Property property)
     {
         this.controller = controller;
         this.data = data;
-        this.data_type = data_type;
 
         this.property = property;
     }
@@ -60,6 +55,6 @@ public class Route
 
     public GeneralData GeneralData()
     {
-        return data.Cast<GeneralData>().FirstOrDefault();
+        return data.element.Cast<GeneralData>().FirstOrDefault();
     }
 }

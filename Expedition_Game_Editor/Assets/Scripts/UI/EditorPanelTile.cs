@@ -39,7 +39,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data_type)
+        switch (element.route.data.controller.data_type)
         {
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
@@ -49,30 +49,32 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private void SetTerrainElementElement()
     {
-        TerrainElementDataElement data = element.route.data.Cast<TerrainElementDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        TerrainElementDataElement data_element = data.element.Cast<TerrainElementDataElement>().FirstOrDefault();
 
-        id.text = data.id.ToString();
-        header.text = data.original_name;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     private void SetTerrainObjectElement()
     {
-        TerrainObjectDataElement data = element.route.data.Cast<TerrainObjectDataElement>().FirstOrDefault();
+        Data data = element.route.data;
+        TerrainObjectDataElement data_element = data.element.Cast<TerrainObjectDataElement>().FirstOrDefault();
 
-        id.text = data.id.ToString();
-        header.text = data.original_name;
+        id.text = data_element.id.ToString();
+        header.text = data_element.original_name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data.icon);
+            icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.SetElementData(new[] { data }, element.route.data_type);
+            edit_button.route.data = data;
     }
 
     public void CloseElement()
