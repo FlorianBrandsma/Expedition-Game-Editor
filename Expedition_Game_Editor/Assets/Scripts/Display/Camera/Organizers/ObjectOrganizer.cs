@@ -5,65 +5,64 @@ using System.Collections;
 
 public class ObjectOrganizer : MonoBehaviour, IOrganizer
 {
-    private CameraManager manager;
-    private Route route;
+    private CameraManager cameraManager { get { return GetComponent<CameraManager>(); } }
     private ObjectProperties properties;
 
-    //static public List<SelectionElement[]> object_list;
-    //private SelectionElement local_object;
+    static public List<ObjectGraphic> graphic_list = new List<ObjectGraphic>();
+
+    private IDataController dataController;
+    private List<GeneralData> generalData_list;
 
     public void InitializeOrganizer()
     {
-        manager = GetComponent<CameraManager>();
-        route = manager.properties.route;
+        dataController = cameraManager.cameraProperties.segmentController.dataController;
     }
 
     public void SetProperties()
     {
-        properties = manager.properties.GetComponent<ObjectProperties>();
+        properties = cameraManager.cameraProperties.GetComponent<ObjectProperties>();
     }
 
-    public void GetData()
+    public void SetData()
     {
-        //Debug.Log(route.data.table + ":" + route.data.id);
+        if(dataController != null)
+        {
+            SetData(dataController.data_list);
+        } else {
 
-        //Element/ItemData has an objectId
-        //Required: "AssetData" (create when opening Section B)
-        //(Change object when changing header icon)
+            SetData(cameraManager.cameraProperties.segmentController.editorController.pathController.route.data.element);
+        }
+    }
 
-        //manager.properties.dataList.GetData(route);
+    public void SetData(IEnumerable list)
+    {
+        generalData_list = list.Cast<GeneralData>().ToList();
+
+        foreach (var data in list)
+        {
+            IEnumerable new_data = new[] { data };
+
+            ObjectGraphic graphic_prefab = LoadGraphic(new_data);
+
+            if (graphic_prefab == null) continue;
+
+            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphic_list, graphic_prefab);
+            cameraManager.graphic_list.Add(graphic);
+
+            graphic.route.data = new Data(dataController, new_data);
+
+            //Debugging
+            GeneralData generalData = (GeneralData)data;
+            graphic.name = generalData.table + generalData.id;
+            //
+
+            SetGraphic(graphic);
+        }
     }
 
     public void UpdateData()
     {
         SetData();
-    }
-
-    public void SetData()
-    {
-        //ItemController itemController = data_list.Cast<ItemController>().ToList().FirstOrDefault();
-
-        //Debug.Log(itemController.itemData.id);
-
-        //local_data_list = data_list;
-
-        //SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
-
-        //for (int i = 0; i < local_data_list.Count; i++)
-        //{
-        //    SelectionElement element = listManager.SpawnElement(element_list, element_prefab, local_data_list[i]);
-        //    element_list_local.Add(element);
-
-        //    listManager.element_list.Add(element);
-
-        //    string label = listManager.listProperties.dataList.data.table + " " + i;
-        //    element.GetComponent<EditorButton>().label.text = label;
-
-        //    //Debugging
-        //    element.name = label;
-
-        //    SetElement(element);
-        //}
     }
 
     public void ResetData(ICollection filter)
@@ -72,10 +71,50 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
+    private ObjectGraphic LoadGraphic(IEnumerable data)
+    {
+        ObjectGraphic new_graphic = null;
+
+        var general_data = data.Cast<GeneralData>().FirstOrDefault();
+
+        switch (general_data.table)
+        {
+            case "Item":
+
+                ItemDataElement itemDataElement = data.Cast<ItemDataElement>().FirstOrDefault();
+                new_graphic = Resources.Load<ObjectGraphic>("Objects/" + itemDataElement.object_name);
+
+                break;
+
+            case "Element":
+
+                ElementDataElement elementDataElement = data.Cast<ElementDataElement>().FirstOrDefault();
+                new_graphic = Resources.Load<ObjectGraphic>("Objects/" + elementDataElement.object_name);
+
+                break;
+        }
+
+        return new_graphic;
+    }
+
+    void SetGraphic(ObjectGraphic graphic)
+    {
+        //graphic.SetGraphic();
+        
+        graphic.transform.localPosition = new Vector2(  graphic.transform.localPosition.x, 
+                                                        properties.pivot_position[(int)graphic.pivot]);
+
+        graphic.gameObject.SetActive(true);
+    }
+
+    private void CloseCamera()
+    {
+        cameraManager.ResetGraphics();
+    }
+
     public void CloseOrganizer()
     {
-        //listManager.ResetElement(element_list_local);
-        //local_element.gameObject.SetActive(false);
+        CloseCamera();
 
         DestroyImmediate(this);
     }

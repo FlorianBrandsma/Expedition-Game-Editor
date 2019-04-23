@@ -10,7 +10,7 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
 
     //private Region region;
 
-    private RegionData region_data;
+    //private RegionData region_data;
     //private DataList terrain_data;
     //private DataList tile_data;
     //private DataList[] object_data;
@@ -18,12 +18,12 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
     public void InitializeOrganizer()
     {
         manager = GetComponent<CameraManager>();
-        route = manager.properties.route;
+        route = manager.cameraProperties.route;
     }
 
     public void SetProperties()
     {
-        properties = manager.properties.GetComponent<RegionProperties>();
+        properties = manager.cameraProperties.GetComponent<RegionProperties>();
     }
 
     public void GetData()

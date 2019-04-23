@@ -24,7 +24,7 @@ public class TileManager
                         name = oCore.name,
                         description = oCore.description,
 
-                        icon = "Textures/Characters/1"
+                        icon = "Textures/Icons/Objects/Null"
 
                     }).OrderBy(x => x.index).ToList();
 

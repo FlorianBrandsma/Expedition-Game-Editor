@@ -51,6 +51,11 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.Region:         SetRegionElement();         break;
             default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
         }
+
+        if(header.text == string.Empty)
+            description.rectTransform.offsetMax = new Vector2(description.rectTransform.offsetMax.x, 0);
+         else
+            description.rectTransform.offsetMax = new Vector2(description.rectTransform.offsetMax.x, -header.rectTransform.rect.height);
     }
 
     private void SetChapterElement()
@@ -153,8 +158,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     public void CloseElement()
     {
-        content.offsetMin = new Vector2(5, content.offsetMin.y);
-        content.offsetMax = new Vector2(-5, content.offsetMax.y);
+        content.offsetMin = new Vector2(10, content.offsetMin.y);
+        content.offsetMax = new Vector2(-10, content.offsetMax.y);
 
         header.text = string.Empty;
         id.text = string.Empty;

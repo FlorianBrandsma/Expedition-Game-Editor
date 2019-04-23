@@ -4,20 +4,20 @@ using System.Collections;
 public class ElementCore : GeneralData
 {
     private int _index;
+    private int _object_id;
     private string _name;
-    private string _description;
-
+    
     public int original_index;
+    public int original_object_id;
     public string original_name;
-    public string original_description;
 
     public bool changed;
     private bool changed_id;
     private bool changed_table;
     private bool changed_type;
     private bool changed_index;
+    private bool changed_object_id;
     private bool changed_name;
-    private bool changed_description;
 
     #region Properties
 
@@ -48,17 +48,17 @@ public class ElementCore : GeneralData
         }
     }
 
-    public string description
+    public int object_id
     {
-        get { return _description; }
+        get { return _object_id; }
         set
         {
-            if (value == _description) return;
+            if (value == _object_id) return;
 
             changed = true;
-            changed_description = true;
+            changed_object_id = true;
 
-            _description = value;
+            _object_id = value;
         }
     }
 
@@ -99,7 +99,7 @@ public class ElementCore : GeneralData
     public void SetOriginalValues()
     {
         original_name = name;
-        original_description = description;
+        original_object_id = object_id;
 
         ClearChanges();
     }
@@ -107,7 +107,7 @@ public class ElementCore : GeneralData
     public void GetOriginalValues()
     {
         name = original_name;
-        description = original_description;
+        object_id = original_object_id;
     }
 
     public void ClearChanges()
@@ -119,8 +119,8 @@ public class ElementCore : GeneralData
         changed_table = false;
         changed_type = false;
         changed_index = false;
+        changed_object_id = false;
         changed_name = false;
-        changed_description = false;
     }
 
     public void Delete()

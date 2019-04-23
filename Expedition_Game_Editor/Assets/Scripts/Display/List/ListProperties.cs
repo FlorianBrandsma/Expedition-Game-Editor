@@ -75,7 +75,7 @@ public class ListProperties : MonoBehaviour, IDisplay
         if (segmentController.dataController == null) return;
 
         listManager.SetProperties();
-        listManager.SetListSize();  
+        listManager.SetList();  
     }
 
     public void CloseDisplay()

@@ -21,6 +21,7 @@ public class EditorTile : MonoBehaviour, IElement
             case Enums.DataType.Element:    SetElementElement();    break;
             case Enums.DataType.Terrain:    SetTerrainElement();    break;
             case Enums.DataType.Tile:       SetTileElement();       break;
+            case Enums.DataType.TerrainTile:SetTerrainTileElement();break;
             default: Debug.Log("CASE MISSING");                     break;
         }
     }
@@ -34,12 +35,23 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainElement()
     {
+        TerrainDataElement data = element.route.data.element.Cast<TerrainDataElement>().FirstOrDefault();
 
+        icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetTileElement()
     {
+        TileDataElement data = element.route.data.element.Cast<TileDataElement>().FirstOrDefault();
 
+        icon.texture = Resources.Load<Texture2D>(data.icon);
+    }
+
+    private void SetTerrainTileElement()
+    {
+        TerrainTileDataElement data = element.route.data.element.Cast<TerrainTileDataElement>().FirstOrDefault();
+
+        icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     public void CloseElement()

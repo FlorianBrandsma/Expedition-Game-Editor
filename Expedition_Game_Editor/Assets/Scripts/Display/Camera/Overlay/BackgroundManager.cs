@@ -4,4 +4,31 @@ using System.Collections;
 public class BackgroundManager : MonoBehaviour
 {
     public GameObject shadow;
+
+    private CameraManager cameraManager;
+
+    private ObjectProperties objectProperties;
+
+    public void InitializeBackground(CameraManager cameraManager)
+    {
+        this.cameraManager = cameraManager;
+
+        objectProperties = cameraManager.cameraProperties.GetComponent<ObjectProperties>();
+    }
+
+    public void SetBackground(ObjectGraphic graphic)
+    {
+        if (objectProperties == null) return;
+
+        if (objectProperties.cast_shadow && graphic.object_id > 0)
+            shadow.SetActive(true);
+    }
+
+    public void CloseBackground()
+    {
+        if (objectProperties == null) return;
+
+        if (objectProperties.cast_shadow)
+            shadow.SetActive(false);
+    }
 }

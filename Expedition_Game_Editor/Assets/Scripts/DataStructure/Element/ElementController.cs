@@ -27,6 +27,6 @@ public class ElementController : MonoBehaviour, IDataController
 
         var elementDataElements = data_list.Cast<ElementDataElement>();
 
-        elementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
+        //elementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
     }
 }

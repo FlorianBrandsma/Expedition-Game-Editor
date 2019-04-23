@@ -74,7 +74,7 @@ public class ListManager : MonoBehaviour
         transform.parent.gameObject.SetActive(true);
     }
 
-    public void SetListSize()
+    public void SetList()
     {
         if (organizer == null) return;
 
@@ -274,9 +274,9 @@ public class ListManager : MonoBehaviour
         element.transform.SetParent(list_parent, false);
     }
 
-    public void ResetElement(List<SelectionElement> list)
+    public void ResetElement()
     {
-        foreach(SelectionElement element in list)
+        foreach(SelectionElement element in element_list)
         {
             element.GetComponent<IElement>().CloseElement();
 
@@ -289,5 +289,7 @@ public class ListManager : MonoBehaviour
                 element.child.GetComponent<Button>().onClick.RemoveAllListeners();
             }      
         }
+
+        element_list.Clear();
     }
 }

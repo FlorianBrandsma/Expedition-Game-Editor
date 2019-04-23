@@ -7,21 +7,30 @@ public class ItemManager
     private ItemController dataController;
     private List<ItemData> itemData_list;
 
+    private List<DataManager.ObjectGraphicData> objectGraphicData_list;
+
+    private DataManager dataManager = new DataManager();
+
     public List<ItemDataElement> GetItemDataElements(ItemController dataController)
     {
         this.dataController = dataController;
 
         GetItemData();
-        //GetIconData()?
+        GetObjectGraphicData();
 
-        var list = (from oCore in itemData_list
+        var list = (from itemData in itemData_list
+                    join objectGraphicData in objectGraphicData_list on itemData.object_id equals objectGraphicData.id
                     select new ItemDataElement()
                     {
-                        id = oCore.id,
-                        table = oCore.table,
-                        type = oCore.type,
-                        index = oCore.index,
-                        name = oCore.name,
+                        id = itemData.id,
+                        table = itemData.table,
+                        type = itemData.type,
+                        index = itemData.index,
+
+                        name = itemData.name,
+
+                        object_name = objectGraphicData.name,
+                        icon = objectGraphicData.icon
 
                     }).OrderBy(x => x.index).ToList();
 
@@ -30,7 +39,7 @@ public class ItemManager
         return list;
     }
 
-    public void GetItemData()
+    internal void GetItemData()
     {
         itemData_list = new List<ItemData>();
 
@@ -44,15 +53,22 @@ public class ItemManager
             itemData.type = (int)dataController.type;
             itemData.index = i;
 
+            itemData.object_id = 2;
             itemData.name = "Item " + (i + 1);
 
             itemData_list.Add(itemData);
         }
     }
 
+    internal void GetObjectGraphicData()
+    {
+        objectGraphicData_list = dataManager.GetObjectGraphicData(itemData_list.Select(x => x.object_id).Distinct().ToList(), true);
+    }
+
     internal class ItemData : GeneralData
     {
         public int index;
         public string name;
+        public int object_id;
     }
 }

@@ -15,25 +15,26 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void InitializeProperties()
     {
-        if (segmentController.dataController == null) return;
+        //if (segmentController.dataController == null) return;
 
         section_rect = segmentController.editorController.pathController.editorSection.GetComponent<RectTransform>();
 
         displayType = GetComponent<IProperties>().Type();
+
+        cameraManager.InitializeCamera(this);
     }
 
     public void SetDisplay()
     {
-        if (segmentController.dataController == null) return;
+        //if (segmentController.dataController == null) return;
 
-        cameraManager.InitializeCamera(this);
-
+        cameraManager.SetProperties();
         cameraManager.SetCamera();
     }
 
     public void CloseDisplay()
     {
-        if (segmentController.dataController == null) return;
+        //if (segmentController.dataController == null) return;
 
         cameraManager.CloseCamera();
     }

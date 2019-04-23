@@ -7,37 +7,41 @@ public class ElementManager
     private ElementController dataController;
     private List<ElementData> elementData_list;
 
+    private List<DataManager.ObjectGraphicData> objectGraphicData_list;
+
+    private DataManager dataManager = new DataManager();
+
     public List<ElementDataElement> GetElementDataElements(ElementController dataController)
     {
         this.dataController = dataController;
 
         GetElementData();
-        //GetIconData()?
+        GetObjectGraphicData();
 
-        var list = (from oCore in elementData_list
+        var list = (from elementData in elementData_list
+                    join objectGraphicData in objectGraphicData_list on elementData.object_id equals objectGraphicData.id
                     select new ElementDataElement()
                     {
-                        id = oCore.id,
-                        table = oCore.table,
-                        type = oCore.type,
-                        index = oCore.index,
-                        name = oCore.name,
+                        id = elementData.id,
+                        table = elementData.table,
+                        type = elementData.type,
+                        index = elementData.index,
 
-                        icon = "Textures/Icons/Objects/0"
+                        name = elementData.name,
+
+                        object_name = objectGraphicData.name,
+                        icon = objectGraphicData.icon
 
                     }).OrderBy(x => x.index).ToList();
 
-        list.ForEach(x => x.ClearChanges());
+        list.ForEach(x => x.SetOriginalValues());
 
         return list;
     }
 
-    public void GetElementData()
+    internal void GetElementData()
     {
         elementData_list = new List<ElementData>();
-
-        //if(dataController.search_by_id)
-        //    Debug.Log(dataController.segmentController.generalData.table + ":" + dataController.search_by_id);
 
         //Temporary
         for (int i = 0; i < dataController.temp_id_count; i++)
@@ -48,15 +52,22 @@ public class ElementManager
             elementData.table = "Element";
             elementData.index = i;
 
+            elementData.object_id = (i % 2);
             elementData.name = "Element " + (i + 1);
 
             elementData_list.Add(elementData);
         }
     }
 
+    internal void GetObjectGraphicData()
+    {
+        objectGraphicData_list = dataManager.GetObjectGraphicData(elementData_list.Select(x => x.object_id).Distinct().ToList(), false);
+    }
+
     internal class ElementData : GeneralData
     {
         public int index;
+        public int object_id;
         public string name;
     }
 }

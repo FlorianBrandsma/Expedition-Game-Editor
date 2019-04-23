@@ -20,7 +20,7 @@ public class StepElementManager
                         id = oCore.id,
                         table = oCore.table,
                         type = oCore.type,
-                        icon = "Textures/Icons/Objects/0",
+                        icon = "Textures/Icons/Objects/Null",
                         name = "<Name>"
 
                     }).ToList();

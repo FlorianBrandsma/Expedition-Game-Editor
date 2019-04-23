@@ -45,55 +45,55 @@ public class GeneralData
     }
 }
 
-public class DefaultHeaderData : GeneralData
-{
-    public string name  { get; set; }
-    public int objectId { get; set; }
-}
+//public class DefaultHeaderData : GeneralData
+//{
+//    public string name  { get; set; }
+//    public int objectId { get; set; }
+//}
 
-[System.Serializable]
-public class ItemData : GeneralData
-{
-    public int index    { get; set; }
-    public string name  { get; set; }
-    public int objectId { get; set; }
-}
+//[System.Serializable]
+//public class ItemData : GeneralData
+//{
+//    public int index    { get; set; }
+//    public string name  { get; set; }
+//    public int objectId { get; set; }
+//}
 
-[System.Serializable]
-public class ElementData : GeneralData
-{
+//[System.Serializable]
+//public class ElementData : GeneralData
+//{
 
-}
+//}
 
-[System.Serializable]
-public class ObjectGraphicData : GeneralData
-{
-    public string objectPath;
-    public string iconPath;
+//[System.Serializable]
+//public class ObjectGraphicData : GeneralData
+//{
+//    public string objectPath;
+//    public string iconPath;
 
-    public ObjectGraphicData()
-    {
-        table       = "ObjectGraphic";
+//    public ObjectGraphicData()
+//    {
+//        table       = "ObjectGraphic";
 
-        objectPath  = "Objects/Item/";
-        iconPath    = "Textures/Objects/Icons/";
-    }  
-}
+//        objectPath  = "Objects/Item/";
+//        iconPath    = "Textures/Objects/Icons/";
+//    }  
+//}
 
-[System.Serializable]
-public class RegionData : GeneralData
-{
+//[System.Serializable]
+//public class RegionData : GeneralData
+//{
 
-}
+//}
 
-[System.Serializable]
-public class TerrainData : GeneralData
-{
+//[System.Serializable]
+//public class TerrainData : GeneralData
+//{
 
-}
+//}
 
-[System.Serializable]
-public class TileData : GeneralData
-{
+//[System.Serializable]
+//public class TileData : GeneralData
+//{
 
-}
+//}

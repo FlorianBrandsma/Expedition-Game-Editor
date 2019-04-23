@@ -24,7 +24,7 @@ public class TerrainObjectManager
                         name = oCore.name,
                         description = oCore.description,
 
-                        icon = "Textures/Icons/Objects/0"
+                        icon = "Textures/Icons/Objects/Null"
 
                     }).OrderBy(x => x.index).ToList();
 

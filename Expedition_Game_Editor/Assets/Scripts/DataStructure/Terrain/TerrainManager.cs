@@ -21,7 +21,7 @@ public class TerrainManager
                         table = oCore.table,
                         type = oCore.type,
 
-                        icon = "Textures/Characters/1"
+                        icon = "Textures/Icons/Objects/Null"
 
                     }).ToList();
 

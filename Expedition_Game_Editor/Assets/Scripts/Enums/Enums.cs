@@ -6,20 +6,21 @@ public class Enums
     public enum DataType
     {
         None,
-        Chapter,
-        Phase,
-        Quest,
-        Step,
-        StepElement,
-        Task,
         Object,
         Item,
         Element,
         Region,
         Terrain,
         Tile,
+        TerrainTile,
         TerrainElement,
-        TerrainObject
+        TerrainObject,
+        Chapter,
+        Phase,
+        Quest,
+        Step,
+        StepElement,
+        Task      
     }
 
     public enum ItemType

@@ -1,9 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class ObjectGraphic : MonoBehaviour
 {
-    public ObjectGraphicData data;
+    public Route route = new Route();
 
+    public int object_id;
+
+    //Don't know about that "data" variable, old
+    //public ObjectGraphicData data;
+    public GameObject graphical_object;
     public ObjectProperties.Pivot pivot;
+
+    public CameraManager cameraManager { get; set; }
+
+    public void InitializeGraphic(CameraManager cameraManager)
+    {
+        this.cameraManager = cameraManager;
+
+        cameraManager.backgroundManager.SetBackground(this);
+    }
+
+    public GeneralData GeneralData()
+    {
+        return route.data.element.Cast<GeneralData>().FirstOrDefault();
+    }
 }

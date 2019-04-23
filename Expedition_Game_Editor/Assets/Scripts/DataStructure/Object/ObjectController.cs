@@ -27,6 +27,7 @@ public class ObjectController : MonoBehaviour, IDataController
 
         var objectDataElements = data_list.Cast<ObjectDataElement>();
 
+        Debug.Log(segmentController.editorController.pathController.route.data.element.Cast<ElementDataElement>().FirstOrDefault().object_id);
         //objectDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //objectDataElements[0].Update();
     }

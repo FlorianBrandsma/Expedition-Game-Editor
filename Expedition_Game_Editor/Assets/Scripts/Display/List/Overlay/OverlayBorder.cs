@@ -29,8 +29,6 @@ public class OverlayBorder : MonoBehaviour
 
     public void Deactivate()
     {
-        
-
         if(scroll_parent != null)
             ResetScrollParent();
 

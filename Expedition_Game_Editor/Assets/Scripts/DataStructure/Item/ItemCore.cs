@@ -4,13 +4,19 @@ using System.Collections;
 public class ItemCore : GeneralData
 {
     private int _index;
+    private int _object_id;
     private string _name;
 
     public int original_index;
+    public int original_object_id;
     public string original_name;
 
     public bool changed;
+    private bool changed_id;
+    private bool changed_table;
+    private bool changed_type;
     private bool changed_index;
+    private bool changed_object_id;
     private bool changed_name;
 
     #region Properties
@@ -39,6 +45,20 @@ public class ItemCore : GeneralData
             changed_name = true;
 
             _name = value;
+        }
+    }
+
+    public int object_id
+    {
+        get { return _object_id; }
+        set
+        {
+            if (value == _object_id) return;
+
+            changed = true;
+            changed_object_id = true;
+
+            _object_id = value;
         }
     }
 
@@ -79,6 +99,7 @@ public class ItemCore : GeneralData
     public void SetOriginalValues()
     {
         original_name = name;
+        original_object_id = object_id;
 
         ClearChanges();
     }
@@ -86,6 +107,7 @@ public class ItemCore : GeneralData
     public void GetOriginalValues()
     {
         name = original_name;
+        object_id = original_object_id;
     }
 
     public void ClearChanges()
@@ -93,7 +115,11 @@ public class ItemCore : GeneralData
         GetOriginalValues();
 
         changed = false;
+        changed_id = false;
+        changed_table = false;
+        changed_type = false;
         changed_index = false;
+        changed_object_id = false;
         changed_name = false;
     }
 
