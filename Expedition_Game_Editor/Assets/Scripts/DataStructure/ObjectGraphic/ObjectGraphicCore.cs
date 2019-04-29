@@ -1,35 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectCore : GeneralData
+public class ObjectGraphicCore : GeneralData
 {
-    private int _index;
     private string _name;
-    private string _description;
+    private string _icon;
 
-    public int original_index;
     public string original_name;
-    public string original_description;
+    public string original_icon;
 
     public bool changed;
-    private bool changed_index;
     private bool changed_name;
-    private bool changed_description;
+    private bool changed_icon;
 
     #region Properties
-
-    public int index
-    {
-        get { return _index; }
-        set
-        {
-            if (value == _index) return;
-
-            changed_index = true;
-
-            _index = value;
-        }
-    }
 
     public string name
     {
@@ -45,17 +29,17 @@ public class ObjectCore : GeneralData
         }
     }
 
-    public string description
+    public string icon
     {
-        get { return _description; }
+        get { return _icon; }
         set
         {
-            if (value == _description) return;
+            if (value == _icon) return;
 
             changed = true;
-            changed_description = true;
+            changed_icon = true;
 
-            _description = value;
+            _icon = value;
         }
     }
 
@@ -84,19 +68,10 @@ public class ObjectCore : GeneralData
         SetOriginalValues();
     }
 
-    public void UpdateIndex()
-    {
-        if (changed_index)
-        {
-            //Debug.Log("Update index " + index);
-            changed_index = false;
-        }
-    }
-
     public void SetOriginalValues()
     {
         original_name = name;
-        original_description = description;
+        original_icon = icon;
 
         ClearChanges();
     }
@@ -104,7 +79,7 @@ public class ObjectCore : GeneralData
     public void GetOriginalValues()
     {
         name = original_name;
-        description = original_description;
+        icon = original_icon;
     }
 
     public void ClearChanges()
@@ -112,9 +87,8 @@ public class ObjectCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changed_index = false;
         changed_name = false;
-        changed_description = false;
+        changed_icon = false;
     }
 
     public void Delete()

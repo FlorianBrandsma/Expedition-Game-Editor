@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public interface IDataController
 {
-    ICollection data_list { get; set; }
+    ICollection dataList { get; set; }
     Enums.DataType data_type { get; }
 
-    void GetData();
+    void GetData(List<int> id_list);
     void InitializeController();
 }

@@ -36,12 +36,12 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.data_list.Cast<QuestDataElement>().ToList();
+        var list = data.controller.dataList.Cast<QuestDataElement>().ToList();
 
         list.RemoveAt(questData.index);
         list.Insert(index, questData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

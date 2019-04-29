@@ -7,14 +7,14 @@ public class SegmentController : MonoBehaviour
 {
     private ISegment segment { get { return GetComponent<ISegment>(); } }
 
-    public GameObject dataController_parent;
+    public GameObject dataControllerParent;
 
     public IDataController dataController
     {
         get
         {
-            if (dataController_parent != null)
-                return dataController_parent.GetComponent<IDataController>();
+            if (dataControllerParent != null)
+                return dataControllerParent.GetComponent<IDataController>();
             else
                 return GetComponent<IDataController>();
         }
@@ -23,18 +23,17 @@ public class SegmentController : MonoBehaviour
     public IDisplay display { get { return GetComponent<IDisplay>(); } }
 
     public EditorController editorController { get; set; }
-    public GeneralData generalData { get; set; }
 
+    public bool autoLoad = true;
     public bool loaded { get; set; }
 
-    public bool disable_toggle;
+    public bool disableToggle;
     public Toggle toggle;
-
-    public string segment_name;
+    public string segmentName;
     public Text header;
     public GameObject content;
 
-    public SegmentController[] sibling_segments;
+    public SegmentController[] siblingSegments;
 
     public Path path { get; set; }
 
@@ -42,9 +41,9 @@ public class SegmentController : MonoBehaviour
     {
         if (header == null) return;
 
-        header.text = segment_name;
+        header.text = segmentName;
 
-        if (disable_toggle)
+        if (disableToggle)
             DisableToggle();
     }
 
@@ -57,7 +56,7 @@ public class SegmentController : MonoBehaviour
 
     public void ActivateSegment()
     {
-        foreach(SegmentController segment in sibling_segments)
+        foreach(SegmentController segment in siblingSegments)
         {
             if (segment.toggle.isOn != toggle.isOn)
                 segment.toggle.isOn  = toggle.isOn;
@@ -77,12 +76,11 @@ public class SegmentController : MonoBehaviour
         this.editorController = editorController;
 
         path = editorController.pathController.route.path;
-        generalData = editorController.pathController.route.GeneralData();
 
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
 
-        if (!editorController.pathController.loaded)
+        if (!editorController.pathController.loaded && autoLoad)
         {
             if (dataController != null)
                 dataController.InitializeController();    
@@ -94,7 +92,7 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ListProperties>() != null)
         {
             GetComponent<ListProperties>().CloseDisplay();
-            GetComponent<ListProperties>().segmentController.dataController.data_list = new List<GeneralData>(list);
+            GetComponent<ListProperties>().segmentController.dataController.dataList = new List<GeneralData>(list);
         }
 
         SetSegmentDisplay();
@@ -108,12 +106,12 @@ public class SegmentController : MonoBehaviour
 
     public void SetSegmentDisplay()
     {
+        if (display != null && autoLoad)
+            display.SetDisplay();
+
         //This block might belong in a non-display method
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().OpenSegment();
-        
-        if (display != null)
-            display.SetDisplay();
     }
 
     public void CloseSegmentDisplay()

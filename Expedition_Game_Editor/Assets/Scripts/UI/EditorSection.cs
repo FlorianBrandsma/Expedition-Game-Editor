@@ -11,10 +11,10 @@ public class EditorSection : MonoBehaviour
     public bool active { get; set; }
 
     public EditorForm editorForm                { get; set; }
-    public EditorController display_target_controller { get; set; }
-    public EditorController target_controller   { get; set; }
-    public LayoutDependency target_layout       { get; set; }
-    public Path previous_controller_path        { get; set; }
+    public EditorController displayTargetController { get; set; }
+    public EditorController targetController    { get; set; }
+    public LayoutDependency targetLayout        { get; set; }
+    public Path previousControllerPath          { get; set; }
     
     public IEditor dataEditor;
 
@@ -28,53 +28,53 @@ public class EditorSection : MonoBehaviour
 
     public void InitializeController()
     {
-        if (target_controller == null) return;
+        if (targetController == null) return;
 
         if (buttonActionManager != null)
             buttonActionManager.InitializeButtons(this);
 
-        target_controller.InitializeController();
+        targetController.InitializeController();
 
-        dataEditor = target_controller.pathController.dataEditor;
+        dataEditor = targetController.pathController.dataEditor;
     }
 
     public void SetPreviousPath()
     {
-        if (target_controller != null)
-            previous_controller_path = target_controller.pathController.route.path;
+        if (targetController != null)
+            previousControllerPath = targetController.pathController.route.path;
         else
-            previous_controller_path = null;
+            previousControllerPath = null;
     }
 
     public void InitializeLayout()
     {
-        if (target_layout == null) return;
+        if (targetLayout == null) return;
 
-        target_layout.InitializeLayout();       
+        targetLayout.InitializeLayout();       
     }
 
     public void SetLayout()
     {
-        if (target_layout == null) return;
+        if (targetLayout == null) return;
 
         //Adjust size of dependency content based on active headers and footers
-        target_layout.SetLayout(); 
+        targetLayout.SetLayout(); 
     }
 
     public void InitializeDisplay()
     {
-        if (target_controller == null) return;
+        if (targetController == null) return;
 
-        target_controller.InitializeDisplay();
+        targetController.InitializeDisplay();
     }
 
     public void SetDisplay()
     {
-        if (target_controller == null) return;
+        if (targetController == null) return;
 
-        display_target_controller = target_controller;
+        displayTargetController = targetController;
 
-        display_target_controller.SetDisplay();
+        displayTargetController.SetDisplay();
 
         SetActionButtons();
 
@@ -83,40 +83,42 @@ public class EditorSection : MonoBehaviour
 
     public void CloseDisplay()
     {
-        if (display_target_controller == null) return;
+        if (displayTargetController == null) return;
 
-        display_target_controller.CloseDisplay();
+        displayTargetController.CloseDisplay();
 
-        display_target_controller = null;
+        displayTargetController = null;
     }
 
     public void SetActionButtons()
     {
+        if (dataEditor != null)
+
         if (buttonActionManager != null && dataEditor != null)
             buttonActionManager.SetButtons(dataEditor.Changed());
     }
 
     public void ClosePath()
     {
-        if (target_controller == null) return;
+        if (targetController == null) return;
 
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
-        target_controller.CloseController();
+        targetController.CloseController();
 
-        target_controller = null;
+        targetController = null;
 
         active = false;
     }
 
     public void CloseLayout()
     {
-        if (target_layout == null) return;
+        if (targetLayout == null) return;
 
-        target_layout.CloseLayout();
+        targetLayout.CloseLayout();
 
-        target_layout = null;
+        targetLayout = null;
     }
 
     public void ApplyChanges()

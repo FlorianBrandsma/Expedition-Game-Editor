@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class StepController : MonoBehaviour, IDataController
@@ -9,7 +10,7 @@ public class StepController : MonoBehaviour, IDataController
     public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     public Enums.DataType data_type { get { return Enums.DataType.Step; } }
 
-    public ICollection data_list { get; set; }
+    public ICollection dataList { get; set; }
 
     public bool search_by_id;
     public int temp_id_count;
@@ -18,14 +19,14 @@ public class StepController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData();
+        GetData(new List<int>());
     }
 
-    public void GetData()
+    public void GetData(List<int> id_list)
     {
-        data_list = stepManager.GetStepDataElements(this);
+        dataList = stepManager.GetStepDataElements(this);
 
-        var stepDataElements = data_list.Cast<StepDataElement>();
+        var stepDataElements = dataList.Cast<StepDataElement>();
 
         //stepDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //stepDataElements[0].Update();

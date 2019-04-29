@@ -7,6 +7,8 @@ using System.IO;
 
 public class EditorForm : MonoBehaviour
 {
+    public FormComponent formComponent { get; set; }
+
     public bool main_form;
 
     public bool active { get; set; }
@@ -31,7 +33,10 @@ public class EditorForm : MonoBehaviour
     public void InitializePath(Path path, bool reload = false)
     {
         //Debug.Log(EditorManager.PathString(path));
-        
+
+        //if (formComponent != null)
+        //    ResetSiblingForm();
+
         OpenPath(path, reload);
         OpenLayout(path);
 

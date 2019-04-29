@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overlayManager: {fileID: 114000013709503810}
-  list_parent: {fileID: 224000012549903682}
-  element_list: []
+  listParent: {fileID: 224000012549903682}
+  elementList: []
 --- !u!114 &114000013135600624
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -6,11 +6,10 @@ public class ObjectGraphic : MonoBehaviour
 {
     public Route route = new Route();
 
-    public int object_id;
+    public int id;
 
     //Don't know about that "data" variable, old
     //public ObjectGraphicData data;
-    public GameObject graphical_object;
     public ObjectProperties.Pivot pivot;
 
     public CameraManager cameraManager { get; set; }

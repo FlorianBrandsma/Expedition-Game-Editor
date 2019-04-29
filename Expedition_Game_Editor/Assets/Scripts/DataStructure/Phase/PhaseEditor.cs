@@ -36,12 +36,12 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.data_list.Cast<PhaseDataElement>().ToList();
+        var list = data.controller.dataList.Cast<PhaseDataElement>().ToList();
 
         list.RemoveAt(phaseData.index);
         list.Insert(index, phaseData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

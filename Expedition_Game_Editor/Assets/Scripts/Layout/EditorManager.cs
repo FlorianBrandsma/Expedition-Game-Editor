@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+//    [UnityEngine.Serialization.FormerlySerializedAs("previous_name")]
+
 public class EditorManager : MonoBehaviour
 {
     static public EditorManager editorManager;

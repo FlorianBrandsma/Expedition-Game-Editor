@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class TerrainTileController : MonoBehaviour, IDataController
@@ -9,7 +10,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
     public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     public Enums.DataType data_type { get { return Enums.DataType.TerrainTile; } }
 
-    public ICollection data_list { get; set; }
+    public ICollection dataList { get; set; }
 
     public bool search_by_id;
     public int temp_id_count;
@@ -18,14 +19,14 @@ public class TerrainTileController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData();
+        GetData(new List<int>());
     }
 
-    public void GetData()
+    public void GetData(List<int> id_list)
     {
-        data_list = terrainTileManager.GetTerrainTileDataElements(this);
+        dataList = terrainTileManager.GetTerrainTileDataElements(this);
 
-        var terrainTileDataElements = data_list.Cast<TerrainTileDataElement>();
+        var terrainTileDataElements = dataList.Cast<TerrainTileDataElement>();
 
         //terrainTileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //terrainTileDataElements[0].Update();

@@ -80,7 +80,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         Data data = active_path.FindFirstRoute("Region").data;
 
         if (type == Enums.RegionType.Task)
-            ((RegionController)data.controller).GetData();
+            ((RegionController)data.controller).GetData(new List<int>());
 
         data_list.Add(data);
     }
@@ -112,14 +112,14 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             default: Debug.Log("YOU ARE MISSING A CASE");                               break;
         }
 
-        int selected_index = data.controller.data_list.Cast<GeneralData>().ToList().FindIndex(x => x.id == data.element.Cast<GeneralData>().FirstOrDefault().id);
+        int selected_index = data.controller.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == data.element.Cast<GeneralData>().FirstOrDefault().id);
 
         dropdown.value = selected_index;
         dropdown.captionText.text = dropdown.options[selected_index].text;
 
         dropdown.onValueChanged.AddListener(delegate { InitializePath(pathController.route.path, 
             new Data(   data.controller, 
-                        GetEnumerable(dropdown, data.controller.data_list)),                     
+                        GetEnumerable(dropdown, data.controller.dataList)),                     
             index);
         });
     }
@@ -128,7 +128,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetChapterOptions(Dropdown dropdown, Data data)
     {
-        List<ChapterDataElement> dataElements = data.controller.data_list.Cast<ChapterDataElement>().ToList();
+        List<ChapterDataElement> dataElements = data.controller.dataList.Cast<ChapterDataElement>().ToList();
 
         foreach (ChapterDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -138,7 +138,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetPhaseOptions(Dropdown dropdown, Data data)
     {
-        List<PhaseDataElement> dataElements = data.controller.data_list.Cast<PhaseDataElement>().ToList();
+        List<PhaseDataElement> dataElements = data.controller.dataList.Cast<PhaseDataElement>().ToList();
 
         foreach (PhaseDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -148,7 +148,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetQuestOptions(Dropdown dropdown, Data data)
     {
-        List<QuestDataElement> dataElements = data.controller.data_list.Cast<QuestDataElement>().ToList();
+        List<QuestDataElement> dataElements = data.controller.dataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -158,7 +158,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetStepOptions(Dropdown dropdown, Data data)
     {
-        List<StepDataElement> dataElements = data.controller.data_list.Cast<StepDataElement>().ToList();
+        List<StepDataElement> dataElements = data.controller.dataList.Cast<StepDataElement>().ToList();
 
         foreach (StepDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -168,7 +168,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetStepElementOptions(Dropdown dropdown, Data data)
     {
-        List<StepElementDataElement> dataElements = data.controller.data_list.Cast<StepElementDataElement>().ToList();
+        List<StepElementDataElement> dataElements = data.controller.dataList.Cast<StepElementDataElement>().ToList();
 
         foreach (StepElementDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -178,7 +178,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetTaskOptions(Dropdown dropdown, Data data)
     {
-        List<TaskDataElement> dataElements = data.controller.data_list.Cast<TaskDataElement>().ToList();
+        List<TaskDataElement> dataElements = data.controller.dataList.Cast<TaskDataElement>().ToList();
 
         foreach (TaskDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.description));
@@ -188,7 +188,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetRegionOptions(Dropdown dropdown, Data data)
     {
-        List<RegionDataElement> dataElements = data.controller.data_list.Cast<RegionDataElement>().ToList();
+        List<RegionDataElement> dataElements = data.controller.dataList.Cast<RegionDataElement>().ToList();
 
         foreach (RegionDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -217,12 +217,12 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
             data_list[i] = structure_data;
 
-            structure_data.controller.GetData();
+            structure_data.controller.GetData(new List<int>());
 
             //(TASK belongs to an ELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
             //TASK: load ELEMENT > TERRAIN > REGION
 
-            structure_data.element = GetEnumerable(0, data_list[i].controller.data_list);
+            structure_data.element = GetEnumerable(0, data_list[i].controller.dataList);
 
             path.ReplaceAllRoutes(structure_data);
         }

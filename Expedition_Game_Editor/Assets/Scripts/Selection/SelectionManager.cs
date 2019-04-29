@@ -35,7 +35,7 @@ static public class SelectionManager
             {
                 if (!section.active) continue;
                 
-                SelectEdit(section.target_controller.pathController.route);
+                SelectEdit(section.targetController.pathController.route);
             }       
         }
     }

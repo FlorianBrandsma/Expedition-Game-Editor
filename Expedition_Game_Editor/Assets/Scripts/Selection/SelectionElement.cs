@@ -10,8 +10,6 @@ public class SelectionElement : MonoBehaviour
 {
     public Route route = new Route();
 
-    EditorPath editorPath;
-
     public SelectionManager.Type selectionType;
     public DisplayManager.Type displayType;
 
@@ -65,7 +63,7 @@ public class SelectionElement : MonoBehaviour
             SelectionManager.SelectGet(this);
 
         if(listManager != null)
-            listManager.selected_element = this;
+            listManager.selectedElement = this;
 
         selected = true;
 
@@ -77,7 +75,7 @@ public class SelectionElement : MonoBehaviour
         selected = false;
 
         if(listManager != null)
-            listManager.selected_element = null;
+            listManager.selectedElement = null;
 
         glow.SetActive(false);
     }
@@ -86,7 +84,7 @@ public class SelectionElement : MonoBehaviour
     {
         if (!selected)
         {
-            editorPath = new EditorPath(this);
+            EditorPath editorPath = new EditorPath(this);
 
             switch (route.property)
             {

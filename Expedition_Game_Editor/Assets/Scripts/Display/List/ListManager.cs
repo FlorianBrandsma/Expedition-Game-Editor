@@ -21,18 +21,17 @@ public class ListManager : MonoBehaviour
 
     public ScrollRect       scrollRect      { get { return GetComponent<ScrollRect>(); } }
     public RectTransform    rectTransform   { get { return GetComponent<RectTransform>(); } }
+    public RectTransform    listParent;
 
-    public RectTransform    list_parent;
+    private Vector3         listMin, 
+                            listMax;
 
-    private Vector3         list_min, 
-                            list_max;
+    public Vector2          listSize       { get; set; }
 
-    public Vector2          list_size       { get; set; }
+    public List<SelectionElement> elementList = new List<SelectionElement>();
+    public SelectionElement selectedElement { get; set; }
 
-    public List<SelectionElement> element_list = new List<SelectionElement>();
-    public SelectionElement selected_element { get; set; }
-
-    public Route selected_route { get; set; }
+    public Route selectedRoute { get; set; }
 
     public void InitializeList(ListProperties listProperties)
     {
@@ -78,7 +77,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.segmentController.dataController.data_list.Count == 0) return;
+        if (listProperties.segmentController.dataController.dataList.Count == 0) return;
 
         list.SetElementSize();
 
@@ -86,17 +85,17 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        list_parent.sizeDelta = list.GetListSize(listProperties.segmentController.dataController.data_list.Count, true);
+        listParent.sizeDelta = list.GetListSize(listProperties.segmentController.dataController.dataList.Count, true);
 
-        list_size = list.GetListSize(listProperties.segmentController.dataController.data_list.Count, false);
+        listSize = list.GetListSize(listProperties.segmentController.dataController.dataList.Count, false);
 
         if (!listProperties.enable_paging)
             SetData();
 
         overlayManager.SetOverlay();
 
-        list_min = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
-        list_max = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
+        listMin = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
+        listMax = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
         //Debug.Log(EditorManager.historyManager.returned);
 
@@ -124,7 +123,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.ResetData(listProperties.segmentController.dataController.data_list);
+        organizer.ResetData(listProperties.segmentController.dataController.dataList);
     }
 
     public void UpdateOverlay()
@@ -136,16 +135,16 @@ public class ListManager : MonoBehaviour
 
     public void ResetSelection()
     {
-        SelectElement(selected_route);
+        SelectElement(selectedRoute);
     }
 
     public void SelectElement(Route route)
     {
-        if (selected_element != null) return;
+        if (selectedElement != null) return;
 
         if (selectionProperty == SelectionManager.Property.Set) return;
 
-        foreach (SelectionElement element in element_list)
+        foreach (SelectionElement element in elementList)
         {
             //Check if element has child first (and that child is active)
             //If child data matches route data, check if property matches in case parent and child have same data
@@ -154,11 +153,11 @@ public class ListManager : MonoBehaviour
             {
                 if (element.child.route.property == route.property)
                 {
-                    selected_element = element.child;
+                    selectedElement = element.child;
 
                     element.child.ActivateSelection();
 
-                    selected_route = route.Copy();
+                    selectedRoute = route.Copy();
 
                     CorrectPosition(element);
 
@@ -170,9 +169,11 @@ public class ListManager : MonoBehaviour
             //All that's left is for main element data to match the route data
             if (element.GeneralData().Equals(route.GeneralData()))
             {
-                selected_element = element;
+                selectedElement = element;
 
                 element.ActivateSelection();
+
+                selectedRoute = route.Copy();
 
                 CorrectPosition(element);
 
@@ -183,19 +184,19 @@ public class ListManager : MonoBehaviour
 
     private void CorrectPosition(SelectionElement element)
     {
-        if (element.transform.position.x > list_max.x ||
-            element.transform.position.x < list_min.x ||
-            element.transform.position.z > list_max.z ||
-            element.transform.position.z < list_min.z)
+        if (element.transform.position.x > listMax.x ||
+            element.transform.position.x < listMin.x ||
+            element.transform.position.z > listMax.z ||
+            element.transform.position.z < listMin.z)
         {
-            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.element_size.x / 2) + list_parent.rect.width / 2) / ((list_parent.rect.width - list.element_size.x) / 2) / 2;
-            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((list_parent.sizeDelta.y - list.element_size.y) / 2)) / (list_parent.sizeDelta.y - list.element_size.y);
+            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.elementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - list.elementSize.x) / 2) / 2;
+            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.elementSize.y) / 2)) / (listParent.sizeDelta.y - list.elementSize.y);
         }
     }
 
     public void CancelSelection(Route route)
     {
-        foreach (SelectionElement element in element_list)
+        foreach (SelectionElement element in elementList)
         {
             if (element.GeneralData().Equals(route.GeneralData()))
             {
@@ -204,7 +205,7 @@ public class ListManager : MonoBehaviour
                 else
                     element.CancelSelection();
 
-                selected_element = null;
+                selectedElement = null;
 
                 return;
             }
@@ -233,9 +234,9 @@ public class ListManager : MonoBehaviour
         overlayManager.CloseOverlay();
         organizer.CloseOrganizer();
 
-        selected_element = null;
+        selectedElement = null;
 
-        element_list.Clear();
+        elementList.Clear();
 
         SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
 
@@ -247,7 +248,7 @@ public class ListManager : MonoBehaviour
         
     }
 
-    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement element_prefab)
+    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement elementPrefab)
     {
         foreach(SelectionElement element in list)
         {
@@ -258,7 +259,7 @@ public class ListManager : MonoBehaviour
             }     
         }
 
-        SelectionElement new_element = Instantiate(element_prefab);
+        SelectionElement new_element = Instantiate(elementPrefab);
 
         InitializeElement(new_element);
 
@@ -271,12 +272,12 @@ public class ListManager : MonoBehaviour
     {
         element.InitializeElement(this, selectionProperty);
 
-        element.transform.SetParent(list_parent, false);
+        element.transform.SetParent(listParent, false);
     }
 
     public void ResetElement()
     {
-        foreach(SelectionElement element in element_list)
+        foreach(SelectionElement element in elementList)
         {
             element.GetComponent<IElement>().CloseElement();
 
@@ -290,6 +291,6 @@ public class ListManager : MonoBehaviour
             }      
         }
 
-        element_list.Clear();
+        elementList.Clear();
     }
 }

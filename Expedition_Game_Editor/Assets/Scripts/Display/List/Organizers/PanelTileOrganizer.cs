@@ -9,7 +9,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     static public List<SelectionElement> element_list = new List<SelectionElement>();
 
-    public Vector2 element_size { get; set; }
+    public Vector2 elementSize { get; set; }
     private Vector2 list_size;
 
     private PanelTileProperties properties;
@@ -33,7 +33,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        element_size = listManager.listProperties.element_size;
+        elementSize = listManager.listProperties.element_size;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
@@ -50,20 +50,20 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             list_height = element_count;
 
         //No cases where a PanelTile only has a vertical slider. Calculation will be added if or when necessary
-        new_size = new Vector2( horizontal  ? ((element_count + (element_count % list_height)) * element_size.x) / list_height  : list_width  * element_size.y,
-                                vertical    ? 0                                                                                 : list_height * element_size.y);
+        new_size = new Vector2( horizontal  ? ((element_count + (element_count % list_height)) * elementSize.x) / list_height  : list_width  * elementSize.y,
+                                vertical    ? 0                                                                                 : list_height * elementSize.y);
 
         if (exact)
             return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
         else
-            return new Vector2(new_size.x / element_size.x, new_size.y / element_size.y);
+            return new Vector2(new_size.x / elementSize.x, new_size.y / elementSize.y);
     }
 
     public int GetListWidth()
     {
         int x = 0;
 
-        while (-(x * element_size.x / 2f) + (x * element_size.x) < listManager.rectTransform.rect.max.x)
+        while (-(x * elementSize.x / 2f) + (x * elementSize.x) < listManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -73,7 +73,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (-(y * element_size.y / 2f) + (y * element_size.y) < listManager.rectTransform.rect.max.y)
+        while (-(y * elementSize.y / 2f) + (y * elementSize.y) < listManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -81,7 +81,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        SetData(dataController.data_list);
+        SetData(dataController.dataList);
     }
 
     public void SetData(ICollection list)
@@ -95,7 +95,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         foreach (var data in list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
-            listManager.element_list.Add(element);
+            listManager.elementList.Add(element);
 
             element.route.data = new Data(dataController, new[] { data });
 
@@ -129,17 +129,17 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
         int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
 
-        rect.sizeDelta = new Vector2(element_size.x, element_size.y);
+        rect.sizeDelta = new Vector2(elementSize.x, elementSize.y);
 
-        rect.transform.localPosition = new Vector2(-((element_size.x * 0.5f) * (list_size.x - 1)) + Mathf.Floor(index / list_size.y) * element_size.x, 
-                                                     (element_size.y * 0.5f) - (index % list_size.y * element_size.y));
+        rect.transform.localPosition = new Vector2(-((elementSize.x * 0.5f) * (list_size.x - 1)) + Mathf.Floor(index / list_size.y) * elementSize.x, 
+                                                     (elementSize.y * 0.5f) - (index % list_size.y * elementSize.y));
 
         rect.gameObject.SetActive(true);
     }
 
     public SelectionElement GetElement(int index)
     {
-        return listManager.element_list[index];
+        return listManager.elementList[index];
     }
 
     float ListPosition(int i)

@@ -11,14 +11,14 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 {
     private ListManager listManager { get { return GetComponent<ListManager>(); } }
 
-    static public List<SelectionElement> element_list = new List<SelectionElement>();
+    static public List<SelectionElement> elementList = new List<SelectionElement>();
 
-    public Vector2 element_size { get; set; }
+    public Vector2 elementSize { get; set; }
 
     private ButtonProperties properties;
 
     private IDataController dataController;
-    private List<GeneralData> generalData_list;
+    private List<GeneralData> generalDataList;
 
     public void InitializeOrganizer()
     {
@@ -32,29 +32,29 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        element_size = listManager.listProperties.element_size;
+        elementSize = listManager.listProperties.element_size;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
     {
-        return new Vector2(0, element_size.y * element_count);
+        return new Vector2(0, elementSize.y * element_count);
     }
 
     public void SetData()
     {
-        SetData(dataController.data_list);
+        SetData(dataController.dataList);
     }
 
     public void SetData(ICollection list)
     {
-        generalData_list = list.Cast<GeneralData>().ToList();
+        generalDataList = list.Cast<GeneralData>().ToList();
 
         SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
 
         foreach (var data in list)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
-            listManager.element_list.Add(element);
+            SelectionElement element = listManager.SpawnElement(elementList, element_prefab);
+            listManager.elementList.Add(element);
 
             element.route.data = new Data(dataController, new[] { data });
 
@@ -69,7 +69,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(dataController.data_list);
+        ResetData(dataController.dataList);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -86,25 +86,25 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
 
         rect.anchorMax = new Vector2(1, 1);
 
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, element_size.y);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, elementSize.y);
 
-        rect.transform.localPosition = new Vector2(0, (listManager.list_parent.sizeDelta.y / 2) - (element_size.y * index) - (element_size.y * 0.5f));
+        rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (elementSize.y * index) - (elementSize.y * 0.5f));
 
         rect.gameObject.SetActive(true);
     }
 
     public SelectionElement GetElement(int index)
     {
-        return listManager.element_list[index];
+        return listManager.elementList[index];
     }
 
     float ListPosition(int i)
     {
-        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - (element_size.y * i))).y;
+        return listManager.listParent.TransformPoint(new Vector2(0, (listManager.listParent.sizeDelta.y / 2.222f) - (elementSize.y * i))).y;
     }
 
     public void CloseList()

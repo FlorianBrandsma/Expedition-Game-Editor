@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Linq;
 
 public class DefaultHeader : MonoBehaviour, ISegment
@@ -10,7 +11,6 @@ public class DefaultHeader : MonoBehaviour, ISegment
     #region UI
     public IndexSwitch index_switch;
 
-    public SelectionElement main_element;
     public InputField input_field;
     public Text id;
     #endregion
@@ -71,7 +71,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
         }
 
         if (index_switch != null)
-            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.data_list.Count - 1); 
+            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.dataList.Count - 1); 
     }
 
     private void InitializeChapterData()

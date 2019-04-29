@@ -20,7 +20,7 @@ public class BackgroundManager : MonoBehaviour
     {
         if (objectProperties == null) return;
 
-        if (objectProperties.cast_shadow && graphic.object_id > 0)
+        if (objectProperties.castShadow && graphic.id > 0)
             shadow.SetActive(true);
     }
 
@@ -28,7 +28,7 @@ public class BackgroundManager : MonoBehaviour
     {
         if (objectProperties == null) return;
 
-        if (objectProperties.cast_shadow)
-            shadow.SetActive(false);
+        //if (objectProperties.castShadow)
+        shadow.SetActive(false);
     }
 }

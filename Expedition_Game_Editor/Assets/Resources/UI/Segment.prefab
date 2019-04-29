@@ -208,16 +208,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b221e43e1408346449190ae95b53cb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  auto_load: 1
+  dataController_parent: {fileID: 0}
   disable_toggle: 1
   toggle: {fileID: 114000014088138430}
   segment_name: 
   header: {fileID: 114000011368750460}
   content: {fileID: 1000012956841928}
   sibling_segments: []
-  data:
-    table: 
-    id: 0
-    type: 0
 --- !u!114 &114000013440364948
 MonoBehaviour:
   m_ObjectHideFlags: 1

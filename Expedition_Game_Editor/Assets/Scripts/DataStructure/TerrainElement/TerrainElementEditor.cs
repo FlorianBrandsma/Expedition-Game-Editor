@@ -37,12 +37,12 @@ public class TerrainElementEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.data_list.Cast<TerrainElementDataElement>().ToList();
+        var list = data.controller.dataList.Cast<TerrainElementDataElement>().ToList();
 
         list.RemoveAt(terrainElementData.index);
         list.Insert(index, terrainElementData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

@@ -11,15 +11,16 @@ public class CameraManager : MonoBehaviour
     public BackgroundManager backgroundManager;
     public CameraProperties cameraProperties { get; set; }
 
-    public RectTransform graphic_parent;
+    public RectTransform graphicParent;
+    public RectTransform displayRect;
 
-    public List<ObjectGraphic> graphic_list = new List<ObjectGraphic>();
+    public List<ObjectGraphic> graphicList = new List<ObjectGraphic>();
 
-    public void InitializeCamera(CameraProperties new_properties)
+    public void InitializeCamera(CameraProperties cameraProperties)
     {
         transform.parent.gameObject.SetActive(true);
 
-        cameraProperties = new_properties;
+        this.cameraProperties = cameraProperties;
 
         switch (cameraProperties.displayType)
         {
@@ -59,7 +60,7 @@ public class CameraManager : MonoBehaviour
         if (organizer == null) return;
 
         cam.rect = new Rect(new Vector2((30 / EditorManager.UI.rect.width), cam.rect.y), 
-                            new Vector2((cameraProperties.section_rect.rect.width / EditorManager.UI.rect.width) - cam.rect.x, cam.rect.height));
+                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - cam.rect.x, cam.rect.height));
 
         SetData();
 
@@ -92,7 +93,7 @@ public class CameraManager : MonoBehaviour
     {
         foreach (ObjectGraphic graphic in list)
         {
-            if (graphic.object_id == graphic_prefab.object_id && !graphic.gameObject.activeInHierarchy)
+            if (graphic.id == graphic_prefab.id && !graphic.gameObject.activeInHierarchy)
             {
                 InitializeGraphic(graphic);
                 return graphic;
@@ -112,18 +113,18 @@ public class CameraManager : MonoBehaviour
     {
         graphic.InitializeGraphic(this);
 
-        graphic.transform.SetParent(graphic_parent, false);
+        graphic.transform.SetParent(graphicParent, false);
     }
 
     public void ResetGraphics()
     {
-        foreach (ObjectGraphic graphic in graphic_list)
+        foreach (ObjectGraphic graphic in graphicList)
         {
             //element.GetComponent<IElement>().CloseElement();
 
             graphic.gameObject.SetActive(false);
         }
 
-        graphic_list.Clear();
+        graphicList.Clear();
     }
 }

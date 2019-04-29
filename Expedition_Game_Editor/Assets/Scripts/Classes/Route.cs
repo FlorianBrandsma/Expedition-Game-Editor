@@ -12,11 +12,11 @@ public class Route
 
     public Route() { }
 
-    public Route(Path new_path)
+    public Route(Path path)
     {
         controller = 0;
         data = new Data(null, new[] { new GeneralData() });
-        path = new_path;
+        this.path = path;
     }
 
     public Route(Route route)
@@ -29,7 +29,7 @@ public class Route
         path = route.path;
     }
 
-    public Route(int controller, Data data,/* IEnumerable data, Enums.DataType data_type, */SelectionManager.Property property)
+    public Route(int controller, Data data, SelectionManager.Property property)
     {
         this.controller = controller;
         this.data = data;

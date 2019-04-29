@@ -230,7 +230,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Header
+  m_Text: This is a pretty long text indeed it is exceptional
 --- !u!114 &114000010579286302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,7 +306,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -355,13 +355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    table: 
-    id: 0
-    type: 0
   selectionType: 1
-  selectionProperty: 3
-  listType: 1
+  displayType: 0
   child: {fileID: 0}
   glow: {fileID: 1000012955252618}
   selected: 0
@@ -457,13 +452,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    table: 
-    id: 0
-    type: 0
   selectionType: 0
-  selectionProperty: 0
-  listType: 0
+  displayType: 0
   child: {fileID: 114000010806134910}
   glow: {fileID: 1000010226280764}
   selected: 0
@@ -481,7 +471,6 @@ MonoBehaviour:
   id: {fileID: 114000010707769768}
   header: {fileID: 114000010434911976}
   icon: {fileID: 114000013320867506}
-  edit_button: {fileID: 114000010806134910}
   content: {fileID: 224000013432897796}
 --- !u!114 &114000012930379786
 MonoBehaviour:
@@ -570,7 +559,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 18e841c37208bb4479051045787fc0b0, type: 3}
+  m_Texture: {fileID: 2800000, guid: 3c38e3d1809ac8746a0e9eb96d43cc0d, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -681,8 +670,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5, y: -10}
-  m_SizeDelta: {x: -5, y: 20}
+  m_AnchoredPosition: {x: 2.5, y: -14.25}
+  m_SizeDelta: {x: -5, y: 28.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000011599587348
 RectTransform:
@@ -699,7 +688,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.999992, y: -25}
+  m_AnchoredPosition: {x: 25, y: -25}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000011666855324
@@ -812,7 +801,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.0000019073486, y: 0}
   m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000013797342516
@@ -829,7 +818,7 @@ RectTransform:
   m_Father: {fileID: 224000013432897796}
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5, y: 0}
-  m_SizeDelta: {x: -5, y: -10}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 2.5, y: 10}
+  m_SizeDelta: {x: -5, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}

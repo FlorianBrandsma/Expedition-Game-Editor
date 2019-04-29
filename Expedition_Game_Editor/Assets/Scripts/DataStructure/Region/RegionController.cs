@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class RegionController : MonoBehaviour, IDataController
@@ -16,7 +17,7 @@ public class RegionController : MonoBehaviour, IDataController
     public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     public Enums.DataType data_type { get { return Enums.DataType.Region; } }
 
-    public ICollection data_list { get; set; }
+    public ICollection dataList { get; set; }
 
     public Type type;
     public bool search_by_id;
@@ -26,14 +27,14 @@ public class RegionController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData();
+        GetData(new List<int>());
     }
 
-    public void GetData()
+    public void GetData(List<int> id_list)
     {
-        data_list = regionManager.GetRegionDataElements(this);
+        dataList = regionManager.GetRegionDataElements(this);
 
-        var regionDataElements = data_list.Cast<RegionDataElement>();
+        var regionDataElements = dataList.Cast<RegionDataElement>();
 
         //regionDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //regionDataElements[0].Update();

@@ -25,7 +25,7 @@ public class FormComponent : MonoBehaviour, IComponent
 
     public void InitializeComponent(Path new_path)
     {
-
+        editorForm.formComponent = this;
     }
 
     public void SetComponent(Path new_path)
@@ -46,6 +46,7 @@ public class FormComponent : MonoBehaviour, IComponent
                 initialized = true;
             } else {
                 //Set to true so the list will reset when selection is closed
+                
                 EditorManager.editorManager.InitializePath(editorForm.active_path, true);
             }
 
@@ -84,6 +85,13 @@ public class FormComponent : MonoBehaviour, IComponent
         EditorManager.editorManager.InitializePath(path);
 
         //Preferred in the form itself (where it causes crashes)
+        editorForm.ResetSiblingForm();
+
+        button.GetComponent<EditorButton>().icon.texture = open_icon;
+    }
+
+    public void OpenFormExternally()
+    {
         editorForm.ResetSiblingForm();
 
         button.GetComponent<EditorButton>().icon.texture = open_icon;

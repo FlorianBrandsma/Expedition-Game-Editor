@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class TileController : MonoBehaviour, IDataController
 {
+    public IDisplay display { get { return GetComponent<IDisplay>(); } }
+
     public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     public Enums.DataType data_type { get { return Enums.DataType.Tile; } }
 
-    public ICollection data_list { get; set; }
+    public ICollection dataList { get; set; }
 
     public bool search_by_id;
     public int temp_id_count;
@@ -16,16 +19,16 @@ public class TileController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData();
+        GetData(new List<int>());
     }
 
-    public void GetData()
+    public void GetData(List<int> id_list)
     {
-        data_list = tileManager.GetTileDataElements(this);
+        dataList = tileManager.GetTileDataElements(this);
 
-        var tileDataElements = data_list.Cast<TileDataElement>();
+        var tileDataElements = dataList.Cast<TileDataElement>();
 
-        //TileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //TileDataElements[0].Update();
+        //tileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
+        //tileDataElements[0].Update();
     }
 }

@@ -5,41 +5,41 @@ using System.Linq;
 
 public class PathController : MonoBehaviour
 {
-    public Route route { get; set; }
+    public Route route      { get; set; }
 
-    public int step     { get; set; }
-    public int layout_step { get; set; }
+    public int step         { get; set; }
+    public int layoutStep   { get; set; }
 
-    public bool loaded  { get; set; }
+    public bool loaded      { get; set; }
 
     public HistoryElement   history;
 
     public EditorSection    editorSection;
 
-    private EditorController editorController { get { return GetComponent<EditorController>(); } }
+    private EditorController editorController   { get { return GetComponent<EditorController>(); } }
 
-    public IDataController  dataController  { get; set; }
-    public IEditor          dataEditor      { get; set; }
+    public IDataController  dataController      { get; set; }
+    public IEditor          dataEditor          { get; set; }
 
     public SubControllerManager subControllerManager;
     public PathController[] controllers;
 
-    private PathController parent_controller;
+    private PathController parentController;
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path main_path, int step, bool reload, PathController parent_controller)
+    public void InitializePath(Path mainPath, int step, bool reload, PathController parentController)
     {
-        this.parent_controller = parent_controller;
+        this.parentController = parentController;
 
         if (editorController != null)
         {
-            editorSection.target_controller = editorController;
+            editorSection.targetController = editorController;
             editorSection.editorForm.main_controller = editorController;
         }
             
         this.step = step;
 
-        Path path = main_path.Trim(step);
+        Path path = mainPath.Trim(step);
 
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
@@ -66,17 +66,17 @@ public class PathController : MonoBehaviour
 
         if (subControllerManager != null)
         {
-            InitializeTabs(main_path);
+            InitializeTabs(mainPath);
 
             foreach (PathController controller in controllers)
                 controller.history.group = history.group;
         }
             
-        InitializeComponents(main_path);
+        InitializeComponents(mainPath);
 
-        if (step < main_path.route.Count)
+        if (step < mainPath.route.Count)
         {
-            controllers[main_path.route[step].controller].InitializePath(main_path, step + 1, reload, this);
+            controllers[mainPath.route[step].controller].InitializePath(mainPath, step + 1, reload, this);
         }
     }
 
@@ -86,8 +86,8 @@ public class PathController : MonoBehaviour
         {
             dataController = GetComponent<IDataController>();
         } else {
-            if (parent_controller != null && parent_controller.dataController != null)
-                dataController = parent_controller.dataController;
+            if (parentController != null && parentController.dataController != null)
+                dataController = parentController.dataController;
         }
     }
 
@@ -97,8 +97,8 @@ public class PathController : MonoBehaviour
         {
             dataEditor = GetComponent<IEditor>();
         } else {
-            if (parent_controller != null && parent_controller.dataEditor != null)
-                dataEditor = parent_controller.dataEditor;
+            if (parentController != null && parentController.dataEditor != null)
+                dataEditor = parentController.dataEditor;
         }
     }
 
@@ -126,68 +126,68 @@ public class PathController : MonoBehaviour
         //    return false;
 
         //If there is no previous controller then it definitely hasn't loaded yet
-        if (editorSection.previous_controller_path == null)
+        if (editorSection.previousControllerPath == null)
             return false;
 
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
-        if (step > editorSection.previous_controller_path.route.Count)
+        if (step > editorSection.previousControllerPath.route.Count)
             return false;
 
         //If false then everything afterwards must be false as well
-        return route.path.Equals(editorSection.previous_controller_path);
+        return route.path.Equals(editorSection.previousControllerPath);
     }
 
-    public bool GetComponents(Path new_path)
+    public bool GetComponents(Path path)
     {
-        if (step < new_path.route.Count)
-            controllers[new_path.route[step].controller].GetComponents(new_path);
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].GetComponents(path);
 
         return GetComponents<IComponent>().Count() > 0;
     }
 
-    public void SetSubControllers(Path new_path)
+    public void SetSubControllers(Path path)
     {
         if (subControllerManager != null)
-            subControllerManager.SetTabs(this, new_path);
+            subControllerManager.SetTabs(this, path);
 
-        if (step < new_path.route.Count)
-            controllers[new_path.route[step].controller].SetSubControllers(new_path);
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].SetSubControllers(path);
     }
 
-    private void InitializeComponents(Path new_path)
+    private void InitializeComponents(Path path)
     {
         foreach (IComponent component in GetComponents<IComponent>())
-            component.InitializeComponent(new_path);
+            component.InitializeComponent(path);
     }
 
-    public bool SetComponents(Path new_path)
+    public bool SetComponents(Path path)
     {
         foreach (IComponent component in GetComponents<IComponent>())
-            component.SetComponent(new_path);
+            component.SetComponent(path);
 
-        if (step < new_path.route.Count)
-            controllers[new_path.route[step].controller].SetComponents(new_path);
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].SetComponents(path);
 
         return GetComponents<IComponent>().Count() > 0;
     }
 
-    void InitializeTabs(Path new_path)
+    void InitializeTabs(Path path)
     {
-        if (step == new_path.route.Count)
-            new_path.Add();      
+        if (step == path.route.Count)
+            path.Add();      
     }
 
     public void FilterRows(List<GeneralData> list) { }
 
-    public void GetTargetLayout(Path path, int layout_step)
+    public void GetTargetLayout(Path path, int layoutStep)
     {
-        this.layout_step = step;
+        this.layoutStep = step;
 
         if (GetComponent<LayoutDependency>() != null)
-            editorSection.target_layout = GetComponent<LayoutDependency>();
+            editorSection.targetLayout = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
-            controllers[path.route[step].controller].GetTargetLayout(path, layout_step);
+            controllers[path.route[step].controller].GetTargetLayout(path, layoutStep);
     }
 
     public void ClosePath(Path path)
@@ -211,7 +211,7 @@ public class PathController : MonoBehaviour
         if (subControllerManager != null)
             subControllerManager.CloseTabs();
 
-        if (layout_step < path.route.Count)
-            controllers[path.route[layout_step].controller].CloseTabs(path);
+        if (layoutStep < path.route.Count)
+            controllers[path.route[layoutStep].controller].CloseTabs(path);
     }
 }

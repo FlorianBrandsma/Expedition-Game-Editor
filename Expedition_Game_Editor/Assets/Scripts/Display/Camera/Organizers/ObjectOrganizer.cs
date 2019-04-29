@@ -8,10 +8,9 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     private CameraManager cameraManager { get { return GetComponent<CameraManager>(); } }
     private ObjectProperties properties;
 
-    static public List<ObjectGraphic> graphic_list = new List<ObjectGraphic>();
+    static public List<ObjectGraphic> graphicList = new List<ObjectGraphic>();
 
     private IDataController dataController;
-    private List<GeneralData> generalData_list;
 
     public void InitializeOrganizer()
     {
@@ -26,28 +25,21 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     public void SetData()
     {
         if(dataController != null)
-        {
-            SetData(dataController.data_list);
-        } else {
-
-            SetData(cameraManager.cameraProperties.segmentController.editorController.pathController.route.data.element);
-        }
+            SetData(dataController.dataList);
     }
 
     public void SetData(IEnumerable list)
     {
-        generalData_list = list.Cast<GeneralData>().ToList();
-
         foreach (var data in list)
         {
             IEnumerable new_data = new[] { data };
 
-            ObjectGraphic graphic_prefab = LoadGraphic(new_data);
+            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().name);
 
             if (graphic_prefab == null) continue;
 
-            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphic_list, graphic_prefab);
-            cameraManager.graphic_list.Add(graphic);
+            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphicList, graphic_prefab);
+            cameraManager.graphicList.Add(graphic);
 
             graphic.route.data = new Data(dataController, new_data);
 
@@ -71,38 +63,10 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
-    private ObjectGraphic LoadGraphic(IEnumerable data)
-    {
-        ObjectGraphic new_graphic = null;
-
-        var general_data = data.Cast<GeneralData>().FirstOrDefault();
-
-        switch (general_data.table)
-        {
-            case "Item":
-
-                ItemDataElement itemDataElement = data.Cast<ItemDataElement>().FirstOrDefault();
-                new_graphic = Resources.Load<ObjectGraphic>("Objects/" + itemDataElement.object_name);
-
-                break;
-
-            case "Element":
-
-                ElementDataElement elementDataElement = data.Cast<ElementDataElement>().FirstOrDefault();
-                new_graphic = Resources.Load<ObjectGraphic>("Objects/" + elementDataElement.object_name);
-
-                break;
-        }
-
-        return new_graphic;
-    }
-
     void SetGraphic(ObjectGraphic graphic)
     {
-        //graphic.SetGraphic();
-        
         graphic.transform.localPosition = new Vector2(  graphic.transform.localPosition.x, 
-                                                        properties.pivot_position[(int)graphic.pivot]);
+                                                        properties.pivotPosition[(int)graphic.pivot]);
 
         graphic.gameObject.SetActive(true);
     }

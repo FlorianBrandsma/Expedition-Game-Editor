@@ -14,9 +14,9 @@ public class ObjectProperties : MonoBehaviour, IProperties
     }
 
     //Each index must represent a pivot from the enum above
-    public int[] pivot_position;
+    public int[] pivotPosition;
 
-    public bool cast_shadow;
+    public bool castShadow;
 
     #region IProperties
     public DisplayManager.Type Type()

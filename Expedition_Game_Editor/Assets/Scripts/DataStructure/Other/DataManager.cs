@@ -21,10 +21,13 @@ public class DataManager
             data.name = object_names[id];
             data.icon = "Textures/Icons/Objects/" + object_names[id];
 
-            if (search_by_id && id_list[0] == (id))
+            if (search_by_id)
+            {
+                if (id_list[0] == (id))
+                    data_list.Add(data);
+            } else {
                 data_list.Add(data);
-            else
-                data_list.Add(data);
+            }
         }
         //
 

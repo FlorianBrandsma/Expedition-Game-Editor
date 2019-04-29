@@ -37,12 +37,12 @@ public class TileEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.data_list.Cast<TileDataElement>().ToList();
+        var list = data.controller.dataList.Cast<TileDataElement>().ToList();
 
         list.RemoveAt(tileData.index);
         list.Insert(index, tileData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.data_list = list;
+        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

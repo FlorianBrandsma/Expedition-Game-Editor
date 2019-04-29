@@ -37,17 +37,17 @@ public class StructureComponent : MonoBehaviour, IComponent
             case Enums.DataType.StepElement:    SetStepElementOptions();    break;
         }
 
-        int selected_index = dataController.data_list.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
+        int selected_index = dataController.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
 
         dropdown.value = selected_index;
         dropdown.captionText.text = dropdown.options[selected_index].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, GetEnumerable(dataController.data_list))); });
+        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, GetEnumerable(dataController.dataList))); });
     }
 
     private void SetChapterOptions()
     {
-        List<ChapterDataElement> dataElements = dataController.data_list.Cast<ChapterDataElement>().ToList();
+        List<ChapterDataElement> dataElements = dataController.dataList.Cast<ChapterDataElement>().ToList();
 
         foreach(ChapterDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name)); 
@@ -55,7 +55,7 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetPhaseOptions()
     {
-        List<PhaseDataElement> dataElements = dataController.data_list.Cast<PhaseDataElement>().ToList();
+        List<PhaseDataElement> dataElements = dataController.dataList.Cast<PhaseDataElement>().ToList();
 
         foreach (PhaseDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -63,7 +63,7 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetQuestOptions()
     {
-        List<QuestDataElement> dataElements = dataController.data_list.Cast<QuestDataElement>().ToList();
+        List<QuestDataElement> dataElements = dataController.dataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -71,7 +71,7 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetStepOptions()
     {
-        List<StepDataElement> dataElements = dataController.data_list.Cast<StepDataElement>().ToList();
+        List<StepDataElement> dataElements = dataController.dataList.Cast<StepDataElement>().ToList();
 
         foreach (StepDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
@@ -79,7 +79,7 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetStepElementOptions()
     {
-        List<StepElementDataElement> dataElements = dataController.data_list.Cast<StepElementDataElement>().ToList();
+        List<StepElementDataElement> dataElements = dataController.dataList.Cast<StepElementDataElement>().ToList();
 
         foreach (StepElementDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));

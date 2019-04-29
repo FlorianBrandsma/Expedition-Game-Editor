@@ -21,9 +21,8 @@ public class EditorButton : MonoBehaviour, IElement
     {
         switch (element.route.data.controller.data_type)
         {
-            case Enums.DataType.Item:       SetItemElement();   break;
-            case Enums.DataType.Element: //SetPhaseElement();   break;
-            default: Debug.Log("CASE MISSING");                 break;
+            case Enums.DataType.Item:       SetItemElement();       break;
+            default: Debug.Log("CASE MISSING");                     break;
         }
     }
 

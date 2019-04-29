@@ -7,6 +7,6 @@ public class ElementDataElement : ElementCore
 {
     public ElementDataElement() : base() { }
 
-    public string object_name;
+    public string objectName;
     public string icon;
 }

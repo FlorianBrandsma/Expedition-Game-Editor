@@ -21,12 +21,12 @@ public class NumberManager : MonoBehaviour, IOverlay
     {
         overlayManager = GetComponent<OverlayManager>();
 
-        list_parent = listManager.list_parent;
+        list_parent = listManager.listParent;
     }
 
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int list_count = overlayManager.listManager.listProperties.segmentController.dataController.data_list.Count;
+        int list_count = overlayManager.listManager.listProperties.segmentController.dataController.dataList.Count;
 
         Vector2 list_size = list.GetListSize(list_count, false);
 
@@ -39,7 +39,7 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void SetOverlay()
     {
-        Vector2 list_size = overlayManager.listManager.list_size;
+        Vector2 list_size = overlayManager.listManager.listSize;
 
         Vector2 base_size = new Vector2(list_parent.rect.width / list_size.x, list_parent.rect.height / list_size.y);
 

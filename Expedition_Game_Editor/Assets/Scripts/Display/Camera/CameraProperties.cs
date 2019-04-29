@@ -11,13 +11,9 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public CameraManager cameraManager;
 
-    public RectTransform section_rect { get; set; }
-
     public void InitializeProperties()
     {
-        //if (segmentController.dataController == null) return;
-
-        section_rect = segmentController.editorController.pathController.editorSection.GetComponent<RectTransform>();
+        if (segmentController.dataController == null) return;
 
         displayType = GetComponent<IProperties>().Type();
 
@@ -26,7 +22,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void SetDisplay()
     {
-        //if (segmentController.dataController == null) return;
+        if (segmentController.dataController == null) return;
 
         cameraManager.SetProperties();
         cameraManager.SetCamera();
@@ -34,7 +30,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void CloseDisplay()
     {
-        //if (segmentController.dataController == null) return;
+        if (segmentController.dataController == null) return;
 
         cameraManager.CloseCamera();
     }

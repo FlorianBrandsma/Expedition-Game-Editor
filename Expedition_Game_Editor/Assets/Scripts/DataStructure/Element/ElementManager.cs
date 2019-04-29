@@ -5,7 +5,7 @@ using System.Linq;
 public class ElementManager
 {
     private ElementController dataController;
-    private List<ElementData> elementData_list;
+    private List<ElementData> elementDataList;
 
     private List<DataManager.ObjectGraphicData> objectGraphicData_list;
 
@@ -18,19 +18,20 @@ public class ElementManager
         GetElementData();
         GetObjectGraphicData();
 
-        var list = (from elementData in elementData_list
-                    join objectGraphicData in objectGraphicData_list on elementData.object_id equals objectGraphicData.id
+        var list = (from elementData in elementDataList
+                    join objectGraphicData in objectGraphicData_list on elementData.objectGraphicId equals objectGraphicData.id
                     select new ElementDataElement()
                     {
-                        id = elementData.id,
-                        table = elementData.table,
-                        type = elementData.type,
-                        index = elementData.index,
+                        id      = elementData.id,
+                        table   = elementData.table,
+                        type    = elementData.type,
+                        index   = elementData.index,
 
-                        name = elementData.name,
+                        objectGraphicId = elementData.objectGraphicId,
+                        name    = elementData.name,
 
-                        object_name = objectGraphicData.name,
-                        icon = objectGraphicData.icon
+                        objectName = objectGraphicData.name,
+                        icon    = objectGraphicData.icon
 
                     }).OrderBy(x => x.index).ToList();
 
@@ -41,33 +42,33 @@ public class ElementManager
 
     internal void GetElementData()
     {
-        elementData_list = new List<ElementData>();
+        elementDataList = new List<ElementData>();
 
         //Temporary
         for (int i = 0; i < dataController.temp_id_count; i++)
         {
             var elementData = new ElementData();
 
-            elementData.id = (i + 1);
-            elementData.table = "Element";
-            elementData.index = i;
+            elementData.id      = (i + 1);
+            elementData.table   = "Element";
+            elementData.index   = i;
 
-            elementData.object_id = (i % 2);
-            elementData.name = "Element " + (i + 1);
+            elementData.objectGraphicId = (i % 2);
+            elementData.name    = "Element " + (i + 1);
 
-            elementData_list.Add(elementData);
+            elementDataList.Add(elementData);
         }
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicData_list = dataManager.GetObjectGraphicData(elementData_list.Select(x => x.object_id).Distinct().ToList(), false);
+        objectGraphicData_list = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), false);
     }
 
     internal class ElementData : GeneralData
     {
         public int index;
-        public int object_id;
+        public int objectGraphicId;
         public string name;
     }
 }

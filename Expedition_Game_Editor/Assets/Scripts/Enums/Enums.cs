@@ -6,7 +6,7 @@ public class Enums
     public enum DataType
     {
         None,
-        Object,
+        ObjectGraphic,
         Item,
         Element,
         Region,

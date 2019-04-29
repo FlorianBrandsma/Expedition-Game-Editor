@@ -9,7 +9,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     static public List<SelectionElement> element_list = new List<SelectionElement>();
 
-    public Vector2 element_size { get; set; }
+    public Vector2 elementSize { get; set; }
     private List<float> row_height      = new List<float>(); //Individual heights
     private List<float> row_offset_max  = new List<float>(); //Combined heights
 
@@ -30,7 +30,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        element_size = new Vector2( listManager.listProperties.element_size.x,
+        elementSize = new Vector2( listManager.listProperties.element_size.x,
                                     properties.constant_height ?    listManager.listProperties.element_size.y : 
                                                                     listManager.listProperties.element_size.y / properties.reference_area.anchorMax.x);
 
@@ -49,18 +49,18 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float position_sum = 0;
 
-        for (int i = 0; i < listManager.listProperties.segmentController.dataController.data_list.Count; i++)
+        for (int i = 0; i < listManager.listProperties.segmentController.dataController.dataList.Count; i++)
         {
-            row_height.Add(element_size.y);
+            row_height.Add(elementSize.y);
 
-            position_sum += element_size.y;
-            row_offset_max.Add(position_sum - element_size.y);
+            position_sum += elementSize.y;
+            row_offset_max.Add(position_sum - elementSize.y);
         }
     }
 
     public void SetData()
     {
-        SetData(dataController.data_list);
+        SetData(dataController.dataList);
     }
 
     public void SetData(ICollection list)
@@ -72,7 +72,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         foreach (var data in list)
         {
             SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
-            listManager.element_list.Add(element);
+            listManager.elementList.Add(element);
 
             element.route.data = new Data(dataController, new[] { data });
 
@@ -87,7 +87,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(dataController.data_list);
+        ResetData(dataController.dataList);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -106,7 +106,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
 
-        rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.list_parent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
+        rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.listParent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
         rect.offsetMax = new Vector2(rect.offsetMax.x, -row_offset_max[index]);
 
         rect.gameObject.SetActive(true);     
@@ -114,12 +114,12 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public SelectionElement GetElement(int index)
     {
-        return listManager.element_list[index];
+        return listManager.elementList[index];
     }
 
     float ListPosition(int i)
     {
-        return listManager.list_parent.TransformPoint(new Vector2(0, (listManager.list_parent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
+        return listManager.listParent.TransformPoint(new Vector2(0, (listManager.listParent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
     }
 
     public void CloseList()
