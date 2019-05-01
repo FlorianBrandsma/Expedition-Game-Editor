@@ -4,7 +4,8 @@ public interface IDisplay
 {
     void InitializeProperties();
     void SetDisplay();
+    void ClearDisplay();
     void CloseDisplay();
 
-    SegmentController segmentController { get; }
+    SegmentController SegmentController { get; }
 }

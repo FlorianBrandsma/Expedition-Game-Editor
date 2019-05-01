@@ -11,27 +11,23 @@ public class SelectionElement : MonoBehaviour
     public Route route = new Route();
 
     public SelectionManager.Type selectionType;
-    public DisplayManager.Type displayType;
+    public Enums.ElementType elementType;
 
-    public SelectionElement parent_element { get; set; }
     public SelectionElement child;
-
     public GameObject glow;
-
-    public ListManager listManager { get; set; }
-    //public SegmentController segmentController { get; set; }
-
-    public IElement element { get; set; }
-
     //Active Property
     public bool selected;
+
+    public SelectionElement ParentElement { get; set; }
+    public ListManager ListManager { get; set; }
+    public IElement Element { get; set; }
 
     public void InitializeElement(ListManager listManager, SelectionManager.Property property)
     {
         if (selected)
             CancelSelection();
 
-        this.listManager = listManager;
+        ListManager = listManager;
 
         //segmentController = listManager.listProperties.dataController.segmentController;
 
@@ -46,8 +42,8 @@ public class SelectionElement : MonoBehaviour
 
     public void UpdateElement()
     {
-        if (parent_element != null)
-            parent_element.SetElement();
+        if (ParentElement != null)
+            ParentElement.SetElement();
         else
             SetElement();
     }
@@ -59,11 +55,8 @@ public class SelectionElement : MonoBehaviour
 
     public void ActivateSelection()
     {
-        if (route.property == SelectionManager.Property.Get)
-            SelectionManager.SelectGet(this);
-
-        if(listManager != null)
-            listManager.selectedElement = this;
+        if (ListManager != null)
+            ListManager.selectedElement = this;
 
         selected = true;
 
@@ -74,14 +67,20 @@ public class SelectionElement : MonoBehaviour
     {
         selected = false;
 
-        if(listManager != null)
-            listManager.selectedElement = null;
+        if (ListManager != null)
+            ListManager.selectedElement = null;
 
         glow.SetActive(false);
     }
 
     public void SelectElement()
     {
+        if(SelectionManager.getElement != null)
+        {
+            SelectionManager.SelectSet(this);
+            return;
+        }
+
         if (!selected)
         {
             EditorPath editorPath = new EditorPath(this);

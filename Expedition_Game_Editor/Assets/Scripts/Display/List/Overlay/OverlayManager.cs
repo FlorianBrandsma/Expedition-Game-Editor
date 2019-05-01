@@ -29,13 +29,13 @@ public class OverlayManager : MonoBehaviour
 
     public void SetOverlayProperties(ListProperties listProperties)
     {
-        if (listProperties.enable_numbers)
+        if (listProperties.enableNumbers)
             gameObject.AddComponent<NumberManager>();
 
-        if (listProperties.enable_sliders)
+        if (listProperties.enableSliders)
             gameObject.AddComponent<SliderManager>();
 
-        if (listProperties.enable_paging)
+        if (listProperties.enablePaging)
             gameObject.AddComponent<PagingManager>();
 
         foreach (IOverlay overlay in GetComponents<IOverlay>())

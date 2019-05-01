@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraProperties : MonoBehaviour, IDisplay
 {
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public DisplayManager.Type displayType { get; set; }
 
@@ -13,7 +13,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void InitializeProperties()
     {
-        if (segmentController.dataController == null) return;
+        if (SegmentController.DataController == null) return;
 
         displayType = GetComponent<IProperties>().Type();
 
@@ -22,15 +22,22 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public void SetDisplay()
     {
-        if (segmentController.dataController == null) return;
+        if (SegmentController.DataController == null) return;
 
         cameraManager.SetProperties();
         cameraManager.SetCamera();
     }
 
+    public void ClearDisplay()
+    {
+        if (SegmentController.DataController == null) return;
+
+        cameraManager.ClearCamera();
+    }
+
     public void CloseDisplay()
     {
-        if (segmentController.dataController == null) return;
+        if (SegmentController.DataController == null) return;
 
         cameraManager.CloseCamera();
     }

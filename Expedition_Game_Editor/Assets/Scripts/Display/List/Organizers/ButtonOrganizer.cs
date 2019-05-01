@@ -13,7 +13,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     static public List<SelectionElement> elementList = new List<SelectionElement>();
 
-    public Vector2 elementSize { get; set; }
+    public Vector2 ElementSize { get; set; }
 
     private ButtonProperties properties;
 
@@ -22,7 +22,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.segmentController.dataController;
+        dataController = listManager.listProperties.SegmentController.DataController;
     }
 
     public void SetProperties()
@@ -32,17 +32,17 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        elementSize = listManager.listProperties.element_size;
+        ElementSize = listManager.listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
     {
-        return new Vector2(0, elementSize.y * element_count);
+        return new Vector2(0, ElementSize.y * element_count);
     }
 
     public void SetData()
     {
-        SetData(dataController.dataList);
+        SetData(dataController.DataList);
     }
 
     public void SetData(ICollection list)
@@ -53,7 +53,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (var data in list)
         {
-            SelectionElement element = listManager.SpawnElement(elementList, element_prefab);
+            SelectionElement element = listManager.SpawnElement(elementList, element_prefab, Enums.ElementType.Button);
             listManager.elementList.Add(element);
 
             element.route.data = new Data(dataController, new[] { data });
@@ -69,7 +69,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(dataController.dataList);
+        ResetData(dataController.DataList);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -90,9 +90,9 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         rect.anchorMax = new Vector2(1, 1);
 
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, elementSize.y);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
-        rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (elementSize.y * index) - (elementSize.y * 0.5f));
+        rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
 
         rect.gameObject.SetActive(true);
     }
@@ -104,13 +104,15 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     float ListPosition(int i)
     {
-        return listManager.listParent.TransformPoint(new Vector2(0, (listManager.listParent.sizeDelta.y / 2.222f) - (elementSize.y * i))).y;
+        return listManager.listParent.TransformPoint(new Vector2(0, (listManager.listParent.sizeDelta.y / 2.222f) - (ElementSize.y * i))).y;
     }
 
     public void CloseList()
     {
         listManager.ResetElement();
     }
+
+    public void ClearOrganizer() { }
 
     public void CloseOrganizer()
     {

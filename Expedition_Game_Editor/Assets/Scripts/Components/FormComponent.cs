@@ -47,7 +47,7 @@ public class FormComponent : MonoBehaviour, IComponent
             } else {
                 //Set to true so the list will reset when selection is closed
                 
-                EditorManager.editorManager.InitializePath(editorForm.active_path, true);
+                EditorManager.editorManager.InitializePath(editorForm.activePath, true);
             }
 
             button.GetComponent<EditorButton>().icon.texture = open_icon;
@@ -80,7 +80,7 @@ public class FormComponent : MonoBehaviour, IComponent
 
     public void OpenForm()
     {
-        Path path = (constant ? editorForm.active_path : new PathManager.Form(editorForm).Initialize());
+        Path path = (constant ? editorForm.activePath : new PathManager.Form(editorForm).Initialize());
 
         EditorManager.editorManager.InitializePath(path);
 
@@ -99,6 +99,8 @@ public class FormComponent : MonoBehaviour, IComponent
 
     private void CloseForm()
     {
+        SelectionManager.CancelGetSelection();
+
         editorForm.CloseForm(false);
 
         button.GetComponent<EditorButton>().icon.texture = close_icon;

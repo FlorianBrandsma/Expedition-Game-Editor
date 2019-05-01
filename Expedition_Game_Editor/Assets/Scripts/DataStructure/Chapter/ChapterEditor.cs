@@ -36,12 +36,12 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.dataList.Cast<ChapterDataElement>().ToList();
+        var list = data.controller.DataList.Cast<ChapterDataElement>().ToList();
 
         list.RemoveAt(chapterData.index);
         list.Insert(index, chapterData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
+        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -54,7 +54,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.listManager.UpdateData();
+        selectionElement.ListManager.UpdateData();
     }
 
     public void OpenEditor()

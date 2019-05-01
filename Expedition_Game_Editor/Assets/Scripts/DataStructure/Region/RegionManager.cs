@@ -41,7 +41,7 @@ public class RegionManager
 
             regionData.id = (i + 1);
             regionData.table = "Region";
-            regionData.type = (int)dataController.type;
+            regionData.type = (int)dataController.regionType;
             regionData.index = i;
 
             regionData.name = "Region " + (i + 1);

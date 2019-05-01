@@ -30,4 +30,9 @@ public class SegmentPlaceholder : MonoBehaviour, ISegment
     {
 
     }
+
+    public void SetSearchResult(SearchElement searchElement)
+    {
+
+    }
 }

@@ -19,7 +19,7 @@ public class EditorManager : MonoBehaviour
         editorManager = this;
 
         UI = GetComponent<RectTransform>();
-
+        
         foreach (EditorForm form in forms)
             form.InitializeForm();
     }

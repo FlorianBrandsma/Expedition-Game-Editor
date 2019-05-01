@@ -6,5 +6,5 @@ public interface IList
     SelectionElement GetElement(int index);
     void SetElementSize();
     Vector2 GetListSize(int elementCount, bool exact);
-    Vector2 elementSize { get; set; }
+    Vector2 ElementSize { get; set; }
 }

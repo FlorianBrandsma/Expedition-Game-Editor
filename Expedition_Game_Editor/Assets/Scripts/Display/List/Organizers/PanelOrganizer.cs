@@ -2,94 +2,98 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ListManager listManager { get { return GetComponent<ListManager>(); } }
+    static public List<SelectionElement> elementList = new List<SelectionElement>();
 
-    static public List<SelectionElement> element_list = new List<SelectionElement>();
+    private IDataController dataController;
+    private List<GeneralData> generalDataList;
 
-    public Vector2 elementSize { get; set; }
-    private List<float> row_height      = new List<float>(); //Individual heights
-    private List<float> row_offset_max  = new List<float>(); //Combined heights
+    private List<float> rowHeight       = new List<float>(); //Individual heights
+    private List<float> rowOffsetMax    = new List<float>(); //Combined heights
 
     private PanelProperties properties;
 
-    private IDataController dataController;
-    private List<GeneralData> generalData_list;
+    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
+
+    public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.segmentController.dataController;
+        dataController = ListManager.listProperties.SegmentController.DataController;
     }
 
     public void SetProperties()
     {
-        properties = listManager.listProperties.GetComponent<PanelProperties>();
+        properties = ListManager.listProperties.GetComponent<PanelProperties>();
     }
 
     public void SetElementSize()
     {
-        elementSize = new Vector2( listManager.listProperties.element_size.x,
-                                    properties.constant_height ?    listManager.listProperties.element_size.y : 
-                                                                    listManager.listProperties.element_size.y / properties.reference_area.anchorMax.x);
+        ElementSize = new Vector2(  ListManager.listProperties.elementSize.x,
+                                    properties.constantHeight ? ListManager.listProperties.elementSize.y : 
+                                                                ListManager.listProperties.elementSize.y / properties.referenceArea.anchorMax.x);
 
         SetList();
     }
 
-    public Vector2 GetListSize(int element_count, bool exact)
+    public Vector2 GetListSize(int elementCount, bool exact)
     {
         if (exact)
-            return new Vector2(0, row_height.Sum());
+            return new Vector2(0, rowHeight.Sum());
         else
-            return new Vector2(0, element_count);
+            return new Vector2(0, elementCount);
     }
 
     public void SetList()
     {
-        float position_sum = 0;
+        float positionSum = 0;
 
-        for (int i = 0; i < listManager.listProperties.segmentController.dataController.dataList.Count; i++)
+        for (int i = 0; i < ListManager.listProperties.SegmentController.DataController.DataList.Count; i++)
         {
-            row_height.Add(elementSize.y);
+            rowHeight.Add(ElementSize.y);
 
-            position_sum += elementSize.y;
-            row_offset_max.Add(position_sum - elementSize.y);
+            positionSum += ElementSize.y;
+            rowOffsetMax.Add(positionSum - ElementSize.y);
         }
     }
 
     public void SetData()
     {
-        SetData(dataController.dataList);
+        SetData(dataController.DataList);
     }
 
     public void SetData(ICollection list)
     {
-        generalData_list = list.Cast<GeneralData>().ToList();
+        generalDataList = list.Cast<GeneralData>().ToList();
+        
+        string element = Enum.GetName(typeof(Enums.ElementType), properties.elementType);
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Panel");
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + element);
 
         foreach (var data in list)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab);
-            listManager.elementList.Add(element);
+            SelectionElement selectionElement = ListManager.SpawnElement(elementList, elementPrefab, properties.elementType);
+            ListManager.elementList.Add(selectionElement);
 
-            element.route.data = new Data(dataController, new[] { data });
+            selectionElement.route.data = new Data(dataController, new[] { data });
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.table + generalData.id;
+            selectionElement.name = generalData.table + generalData.id;
             //
 
-            SetElement(element);
+            SetElement(selectionElement);
         }
     }
 
     public void UpdateData()
     {
-        ResetData(dataController.dataList);
+        ResetData(dataController.DataList);
 
-        SelectionManager.ResetSelection(listManager);
+        SelectionManager.ResetSelection(ListManager);
     }
 
     public void ResetData(ICollection filter)
@@ -104,28 +108,30 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
 
-        rect.offsetMin = new Vector2(rect.offsetMin.x, listManager.listParent.sizeDelta.y - (row_offset_max[index] + row_height[index]));
-        rect.offsetMax = new Vector2(rect.offsetMax.x, -row_offset_max[index]);
+        rect.offsetMin = new Vector2(rect.offsetMin.x, ListManager.listParent.sizeDelta.y - (rowOffsetMax[index] + rowHeight[index]));
+        rect.offsetMax = new Vector2(rect.offsetMax.x, -rowOffsetMax[index]);
 
         rect.gameObject.SetActive(true);     
     }
 
     public SelectionElement GetElement(int index)
     {
-        return listManager.elementList[index];
+        return ListManager.elementList[index];
     }
 
     float ListPosition(int i)
     {
-        return listManager.listParent.TransformPoint(new Vector2(0, (listManager.listParent.sizeDelta.y / 2.222f) - row_offset_max[i])).y;
+        return ListManager.listParent.TransformPoint(new Vector2(0, (ListManager.listParent.sizeDelta.y / 2.222f) - rowOffsetMax[i])).y;
     }
 
     public void CloseList()
     {
-        listManager.ResetElement();
+        ListManager.ResetElement();
     }
+
+    public void ClearOrganizer() { }
 
     public void CloseOrganizer()
     {

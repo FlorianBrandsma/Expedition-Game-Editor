@@ -5,17 +5,16 @@ using System.Linq;
 
 public class PhaseController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Phase; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    PhaseManager phaseManager = new PhaseManager();
+    private PhaseManager phaseManager           = new PhaseManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Phase; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class PhaseController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = phaseManager.GetPhaseDataElements(this);
+        DataList = phaseManager.GetPhaseDataElements(this);
 
-        var phaseDataElements = dataList.Cast<PhaseDataElement>();
+        var phaseDataElements = DataList.Cast<PhaseDataElement>();
 
         //phaseDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //phaseDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

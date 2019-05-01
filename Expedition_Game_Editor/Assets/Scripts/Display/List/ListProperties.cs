@@ -3,91 +3,47 @@ using System.Collections.Generic;
 
 public class ListProperties : MonoBehaviour, IDisplay
 {
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    //public GeneralData listData;
-
-    //public List<GeneralData> dataList { get; set; }
-
-    //public DataList dataList; //{ get; set; }
-
-    public DisplayManager.Type displayType { get; set; }
-
-    //public ListProperties.Type listType;
-    public bool flexible_type;
+    [HideInInspector]
+    public DisplayManager.Type displayType;
 
     public ListManager listManager;
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
-    public bool always_on;
 
-    //Only spawn visible elements
-    public bool visible_only;
-
-    public Vector2 element_size;
+    public Vector2 elementSize;
 
     public bool horizontal, vertical;
 
-    public bool enable_sliders;
-    public bool enable_numbers;
-    public bool enable_paging;
+    public bool enableSliders;
+    public bool enableNumbers;
+    public bool enablePaging;
+
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public void InitializeProperties()
     {
-        if (segmentController.dataController == null) return;
+        if (SegmentController.DataController == null) return;
 
-        if (flexible_type)
-        {
-            /*
-            displayType = route.origin.displayType;
-
-            switch (displayType)
-            {
-                case DisplayManager.Type.Button:
-                    gameObject.AddComponent<ButtonProperties>();
-                    break;
-                case DisplayManager.Type.Tile:
-                    gameObject.AddComponent<TileProperties>();
-                    break;
-                case DisplayManager.Type.Panel:
-                    gameObject.AddComponent<PanelProperties>();
-                    break;
-                case DisplayManager.Type.PanelTile:
-                    gameObject.AddComponent<PanelTileProperties>();
-                    break;
-                default: break;
-            }
-
-            dataList.data = route.data;
-            */
-
-        } else {
-
-            if (GetComponent<IProperties>() != null)
-                displayType = GetComponent<IProperties>().Type();
-        }
+        if (GetComponent<IProperties>() != null)
+            displayType = GetComponent<IProperties>().Type();
 
         listManager.InitializeList(this);
     }
 
     public void SetDisplay()
     {
-        if (segmentController.dataController == null) return;
+        if (SegmentController.DataController == null) return;
 
         listManager.SetProperties();
         listManager.SetList();  
     }
 
+    public void ClearDisplay() { }
+
     public void CloseDisplay()
     {
-        if (segmentController.dataController == null) return;
-
-        //Bandaid fix
-        if (flexible_type)
-        {
-            //route.origin.displayType = DisplayManager.Type.None;
-            //DestroyImmediate(GetComponent<IProperties>() as Object);
-        }
+        if (SegmentController.DataController == null) return;
 
         listManager.CloseList();
     }

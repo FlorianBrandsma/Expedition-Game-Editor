@@ -6,6 +6,7 @@ public class Enums
     public enum DataType
     {
         None,
+        Search,
         ObjectGraphic,
         Item,
         Element,
@@ -35,5 +36,14 @@ public class Enums
         Base,
         Phase,
         Task
+    }
+
+    public enum ElementType
+    {
+        Panel,
+        SearchPanel,
+        Tile,
+        PanelTile,
+        Button
     }
 }

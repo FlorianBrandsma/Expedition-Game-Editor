@@ -23,7 +23,7 @@ static public class SelectionManager
 
     static public List<ListManager> lists = new List<ListManager>();
 
-    static public SelectionElement get;
+    static public SearchElement getElement;
 
     static public void SelectElements()
     {
@@ -31,7 +31,7 @@ static public class SelectionManager
         {
             if (!form.active) continue;
             
-            foreach (EditorSection section in form.editor_sections)
+            foreach (EditorSection section in form.editorSections)
             {
                 if (!section.active) continue;
                 
@@ -56,14 +56,14 @@ static public class SelectionManager
         }           
     }
 
-    static public void SelectGet(SelectionElement new_get)
+    static public void SelectSearch(SearchElement searchElement)
     {
-        get = new_get;
+        getElement = searchElement;
     }
 
-    static public void SelectSet(SelectionElement new_set)
+    static public void SelectSet(SelectionElement setElement)
     {
-        get.route.data = new_set.route.data;//.Copy();
+        getElement.SetResult(setElement.route.data.element);
 
         CancelGetSelection();
     }
@@ -76,12 +76,12 @@ static public class SelectionManager
 
     static public void CancelGetSelection()
     {
-        if (get == null) return;
+        if (getElement == null) return;
 
-        get.CancelSelection();
-        get = null;
+        getElement.CancelSelection();
+        getElement = null;
 
-        //Reset
-        EditorManager.editorManager.InitializePath(new PathManager.Form(EditorManager.editorManager.forms[2]).Initialize());  
+        //Return to previous path in form
+        EditorManager.editorManager.InitializePath(EditorManager.editorManager.forms[2].previousPath);  
     }
 }

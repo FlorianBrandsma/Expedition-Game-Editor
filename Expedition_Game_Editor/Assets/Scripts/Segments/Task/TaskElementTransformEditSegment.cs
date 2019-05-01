@@ -61,5 +61,10 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
     {
         gameObject.SetActive(false);
     }
+
+    public void SetSearchResult(SearchElement searchElement)
+    {
+
+    }
     #endregion
 }

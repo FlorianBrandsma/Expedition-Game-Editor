@@ -10,6 +10,6 @@ public interface IOrganizer
     void UpdateData();
     void SetData();
     void ResetData(ICollection filter);
-
-    void CloseOrganizer();
+    void ClearOrganizer();
+    void CloseOrganizer();   
 }

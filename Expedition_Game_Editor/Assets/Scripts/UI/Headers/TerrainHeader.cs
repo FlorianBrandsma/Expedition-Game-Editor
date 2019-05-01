@@ -62,5 +62,10 @@ public class TerrainHeader : MonoBehaviour, ISegment
     {
         gameObject.SetActive(false);
     }
+
+    public void SetSearchResult(SearchElement searchElement)
+    {
+
+    }
     #endregion
 }

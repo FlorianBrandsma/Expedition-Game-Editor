@@ -66,7 +66,7 @@ public class PathManager
         {
             this.route  = route;
             this.origin = origin;
-            path        = origin.listManager.listProperties.segmentController.path;
+            path        = origin.ListManager.listProperties.SegmentController.path;
         }
 
         public Path Enter()
@@ -151,7 +151,7 @@ public class PathManager
         {
             route.controller = enter;
             //Looks convoluted
-            path = origin.listManager.listProperties.segmentController.path;
+            path = origin.ListManager.listProperties.SegmentController.path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
@@ -215,8 +215,8 @@ public class PathManager
             this.route  = route;
             this.origin = origin;
 
-            if(origin.listManager != null)
-                path        = origin.listManager.listProperties.segmentController.path;
+            if(origin.ListManager != null)
+                path        = origin.ListManager.listProperties.SegmentController.path;
         }
 
         public Path Enter()
@@ -292,7 +292,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            path = origin.listManager.listProperties.segmentController.path;
+            path = origin.ListManager.listProperties.SegmentController.path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, origin, path.start);
         }
@@ -308,7 +308,7 @@ public class PathManager
         {
             route = new Route(0, route.data, route.property);
 
-            path = form.active_path.Trim(form.active_path.start + 3);
+            path = form.activePath.Trim(form.activePath.start + 3);
             
             path.Add(route);
         }
@@ -329,7 +329,7 @@ public class PathManager
         {
             route = new Route(1, route.data, route.property);
 
-            path = form.active_path.Trim(form.active_path.start + 3);
+            path = form.activePath.Trim(form.activePath.start + 3);
 
             path.Add(route);
         }
@@ -374,7 +374,7 @@ public class PathManager
 
     static public List<Route> CreateRoutes(List<int> controllers, EditorForm form)
     {
-        return CreateRoutes(controllers, new Route(form.active_path));
+        return CreateRoutes(controllers, new Route(form.activePath));
     }
 
     static public List<Route> CreateRoutes(List<int> controllers, Route route)

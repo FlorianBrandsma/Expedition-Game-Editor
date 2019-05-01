@@ -11,12 +11,12 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        properties = element.listManager.listProperties.GetComponent<TileProperties>();
+        properties = element.ListManager.listProperties.GetComponent<TileProperties>();
     }
 
     public void SetElement()
     {
-        switch (element.route.data.controller.data_type)
+        switch (element.route.data.controller.DataType)
         {
             case Enums.DataType.Element:    SetElementElement();    break;
             case Enums.DataType.Terrain:    SetTerrainElement();    break;
@@ -30,7 +30,7 @@ public class EditorTile : MonoBehaviour, IElement
     {
         ElementDataElement data = element.route.data.element.Cast<ElementDataElement>().FirstOrDefault();
 
-        icon.texture = Resources.Load<Texture2D>(data.icon);
+        icon.texture = Resources.Load<Texture2D>(data.originalObjectGraphicIcon);
     }
 
     private void SetTerrainElement()

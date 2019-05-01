@@ -5,17 +5,16 @@ using System.Linq;
 
 public class TerrainController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Terrain; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    TerrainManager terrainManager = new TerrainManager();
+    private TerrainManager terrainManager       = new TerrainManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Terrain; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class TerrainController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = terrainManager.GetTerrainDataElements(this);
+        DataList = terrainManager.GetTerrainDataElements(this);
 
-        var terrainDataElements = dataList.Cast<TerrainDataElement>();
+        var terrainDataElements = DataList.Cast<TerrainDataElement>();
 
         //terrainDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //terrainDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

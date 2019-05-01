@@ -36,16 +36,16 @@ public class ElementEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.dataList.Cast<ElementDataElement>().ToList();
+        var list = data.controller.DataList.Cast<ElementDataElement>().ToList();
 
-        list.RemoveAt(elementData.index);
+        list.RemoveAt(elementData.Index);
         list.Insert(index, elementData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
+        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
-            list[i].index = i;
+            list[i].Index = i;
             list[i].UpdateIndex();
         }
 
@@ -54,7 +54,7 @@ public class ElementEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.listManager.UpdateData();
+        selectionElement.ListManager.UpdateData();
     }
 
     public void OpenEditor()

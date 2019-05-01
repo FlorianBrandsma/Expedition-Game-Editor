@@ -5,17 +5,16 @@ using System.Linq;
 
 public class QuestController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Quest; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    QuestManager questManager = new QuestManager();
+    private QuestManager questManager           = new QuestManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Quest; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class QuestController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = questManager.GetQuestDataElements(this);
+        DataList = questManager.GetQuestDataElements(this);
 
-        var questDataElements = dataList.Cast<QuestDataElement>();
+        var questDataElements = DataList.Cast<QuestDataElement>();
 
         //questDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //questDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

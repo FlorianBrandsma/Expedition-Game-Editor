@@ -5,17 +5,16 @@ using System.Linq;
 
 public class ElementController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Element; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    ElementManager elementManager = new ElementManager();
+    private ElementManager elementManager       = new ElementManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Element; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class ElementController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = elementManager.GetElementDataElements(this);
+        DataList = elementManager.GetElementDataElements(this);
 
-        var elementDataElements = dataList.Cast<ElementDataElement>();
+        var elementDataElements = DataList.Cast<ElementDataElement>();
 
         //elementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //elementDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

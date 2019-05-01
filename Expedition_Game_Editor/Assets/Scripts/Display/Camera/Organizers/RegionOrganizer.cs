@@ -111,6 +111,8 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
         CloseOrganizer();
         SetData();
     }
+    
+    public void ClearOrganizer() { }
 
     public void CloseOrganizer()
     {

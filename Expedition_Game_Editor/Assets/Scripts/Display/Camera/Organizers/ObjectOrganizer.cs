@@ -14,7 +14,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
     public void InitializeOrganizer()
     {
-        dataController = cameraManager.cameraProperties.segmentController.dataController;
+        dataController = cameraManager.cameraProperties.SegmentController.DataController;
     }
 
     public void SetProperties()
@@ -25,7 +25,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     public void SetData()
     {
         if(dataController != null)
-            SetData(dataController.dataList);
+            SetData(dataController.DataList);
     }
 
     public void SetData(IEnumerable list)
@@ -71,9 +71,19 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         graphic.gameObject.SetActive(true);
     }
 
+    private void ClearCamera()
+    {
+        cameraManager.ClearGraphics();
+    }
+
     private void CloseCamera()
     {
-        cameraManager.ResetGraphics();
+
+    }
+
+    public void ClearOrganizer()
+    {
+        ClearCamera();
     }
 
     public void CloseOrganizer()

@@ -173,7 +173,7 @@ GameObject:
   - 224: {fileID: 224000014043077508}
   - 114: {fileID: 114000010234602908}
   - 114: {fileID: 114000012218608376}
-  - 114: {fileID: 114000013893158958}
+  - 114: {fileID: 114000014009476442}
   m_Layer: 5
   m_Name: SearchPanel
   m_TagString: Untagged
@@ -437,7 +437,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: This is a pretty long text indeed it is exceptional
+  m_Text: Test
 --- !u!114 &114000013446646226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -551,7 +551,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 999
---- !u!114 &114000013893158958
+--- !u!114 &114000014009476442
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -559,11 +559,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000014226526798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1096b9e11330b3b4abc090de662af7f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 08b2c4885c105df4782bdf0ce79c849d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: {fileID: 114000013826848850}
   header: {fileID: 114000013248316850}
+  description: {fileID: 0}
   icon: {fileID: 114000013448822146}
   content: {fileID: 224000011588913382}
 --- !u!222 &222000010132172424

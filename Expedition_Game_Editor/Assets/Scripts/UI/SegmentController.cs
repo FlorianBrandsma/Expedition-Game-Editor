@@ -5,11 +5,31 @@ using System.Collections.Generic;
 
 public class SegmentController : MonoBehaviour
 {
-    private ISegment segment { get { return GetComponent<ISegment>(); } }
-
     public GameObject dataControllerParent;
+    
+    public bool autoLoad;
+    public bool loadOnce;
 
-    public IDataController dataController
+    public bool disableToggle;
+    public Toggle toggle;
+    public string segmentName;
+    public Text header;
+    public GameObject content;
+
+    public SegmentController[] siblingSegments;
+
+    [HideInInspector]
+    public EditorController editorController;
+
+    [HideInInspector]
+    public bool loaded;
+
+    [HideInInspector]
+    public Path path;
+
+    private ISegment Segment { get { return GetComponent<ISegment>(); } }
+
+    public IDataController DataController
     {
         get
         {
@@ -20,22 +40,7 @@ public class SegmentController : MonoBehaviour
         }
     }
 
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public EditorController editorController { get; set; }
-
-    public bool autoLoad = true;
-    public bool loaded { get; set; }
-
-    public bool disableToggle;
-    public Toggle toggle;
-    public string segmentName;
-    public Text header;
-    public GameObject content;
-
-    public SegmentController[] siblingSegments;
-
-    public Path path { get; set; }
+    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
 
     private void Awake()
     {
@@ -67,8 +72,8 @@ public class SegmentController : MonoBehaviour
 
     public void CloseSegment()
     {
-        if(segment != null)
-            segment.CloseSegment();
+        if(Segment != null)
+            Segment.CloseSegment();
     }
 
     public void InitializeSegment(EditorController editorController)
@@ -80,10 +85,16 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
 
-        if (!editorController.pathController.loaded && autoLoad)
+        if (!loaded && !editorController.pathController.loaded && autoLoad)
         {
-            if (dataController != null)
-                dataController.InitializeController();    
+            if (GetComponent<SearchController>() != null)
+                GetComponent<SearchController>().InitializeController();
+
+            if (DataController != null)
+            {
+                DataController.InitializeController();
+                loaded = true;
+            }
         }     
     }
 
@@ -92,7 +103,7 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ListProperties>() != null)
         {
             GetComponent<ListProperties>().CloseDisplay();
-            GetComponent<ListProperties>().segmentController.dataController.dataList = new List<GeneralData>(list);
+            GetComponent<ListProperties>().SegmentController.DataController.DataList = new List<GeneralData>(list);
         }
 
         SetSegmentDisplay();
@@ -100,14 +111,14 @@ public class SegmentController : MonoBehaviour
 
     public void InitializeSegmentDisplay()
     {
-        if (display != null)
-            display.InitializeProperties();
+        if (Display != null)
+            Display.InitializeProperties();
     }
 
     public void SetSegmentDisplay()
     {
-        if (display != null && autoLoad)
-            display.SetDisplay();
+        if (Display != null && autoLoad)
+            Display.SetDisplay();
 
         //This block might belong in a non-display method
         if (GetComponent<ISegment>() != null)
@@ -116,8 +127,14 @@ public class SegmentController : MonoBehaviour
 
     public void CloseSegmentDisplay()
     {
-        if (display != null)
-            display.CloseDisplay();      
+        if (Display != null)
+            Display.CloseDisplay();
+
+        if (GetComponent<SearchController>() != null)
+            GetComponent<SearchController>().CloseController();
+
+        if (!loadOnce)
+            loaded = false;
     }
 
     public bool AutoSelectElement()

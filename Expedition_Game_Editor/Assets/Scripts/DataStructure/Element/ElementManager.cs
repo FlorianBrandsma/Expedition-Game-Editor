@@ -25,15 +25,15 @@ public class ElementManager
                         id      = elementData.id,
                         table   = elementData.table,
                         type    = elementData.type,
-                        index   = elementData.index,
+                        Index   = elementData.index,
 
-                        objectGraphicId = elementData.objectGraphicId,
-                        name    = elementData.name,
+                        ObjectGraphicId = elementData.objectGraphicId,
+                        Name    = elementData.name,
 
-                        objectName = objectGraphicData.name,
-                        icon    = objectGraphicData.icon
+                        objectGraphicName = objectGraphicData.name,
+                        objectGraphicIcon    = objectGraphicData.icon
 
-                    }).OrderBy(x => x.index).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

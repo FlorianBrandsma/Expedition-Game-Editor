@@ -37,12 +37,12 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.dataList.Cast<TaskDataElement>().ToList();
+        var list = data.controller.DataList.Cast<TaskDataElement>().ToList();
 
         list.RemoveAt(taskData.index);
         list.Insert(index, taskData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
+        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -55,7 +55,7 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.listManager.UpdateData();
+        selectionElement.ListManager.UpdateData();
     }
 
     public void OpenEditor()

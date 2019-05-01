@@ -5,17 +5,16 @@ using System.Linq;
 
 public class ObjectGraphicController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.ObjectGraphic; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    ObjectGraphicManager objectGraphicManager = new ObjectGraphicManager();
+    private ObjectGraphicManager objectGraphicManager = new ObjectGraphicManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.ObjectGraphic; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -29,12 +28,17 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = objectGraphicManager.GetObjectGraphicDataElements(id_list);
+        DataList = objectGraphicManager.GetObjectGraphicDataElements(id_list);
 
-        var objectGraphicDataElements = dataList.Cast<ObjectGraphicDataElement>();
+        var objectGraphicDataElements = DataList.Cast<ObjectGraphicDataElement>();
 
         //Debug.Log(segmentController.editorController.pathController.route.data.element.Cast<ElementDataElement>().FirstOrDefault().object_graphic_id);
         //objectGraphicDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //objectGraphicDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

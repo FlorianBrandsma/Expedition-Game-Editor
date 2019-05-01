@@ -9,7 +9,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     static public List<SelectionElement> elementList = new List<SelectionElement>();
 
-    public Vector2 elementSize { get; set; }
+    public Vector2 ElementSize { get; set; }
     private Vector2 list_size;
 
     private TileProperties properties;
@@ -20,7 +20,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.segmentController.dataController;
+        dataController = listManager.listProperties.SegmentController.DataController;
     }
 
     public void SetProperties()
@@ -33,7 +33,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetElementSize()
     {
-        elementSize = listManager.listProperties.element_size;
+        ElementSize = listManager.listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int elementCount, bool exact)
@@ -42,29 +42,29 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         if(horizontal && vertical)
         {
-            new_size = new Vector2( horizontal  ? properties.grid_size.x * elementSize.x : elementSize.x,
-                                    vertical    ? properties.grid_size.y * elementSize.y : elementSize.y);
+            new_size = new Vector2( horizontal  ? properties.grid_size.x * ElementSize.x : ElementSize.x,
+                                    vertical    ? properties.grid_size.y * ElementSize.y : ElementSize.y);
         } else {
 
             int list_width  = GetListWidth(elementCount);
             int list_height = GetListHeight(elementCount);
 
             //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
-            new_size = new Vector2( horizontal  ? 0                                                                 : list_width  * elementSize.x,
-                                    vertical    ? (Mathf.Ceil(elementCount / (float)list_width) * elementSize.y)  : list_height * elementSize.y);
+            new_size = new Vector2( horizontal  ? 0                                                                 : list_width  * ElementSize.x,
+                                    vertical    ? (Mathf.Ceil(elementCount / (float)list_width) * ElementSize.y)  : list_height * ElementSize.y);
         }
 
         if (exact)
             return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
         else
-            return new Vector2(new_size.x / elementSize.x, new_size.y / elementSize.y);
+            return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
     }
 
     public int GetListWidth(int elementCount)
     {
         int x = 0;
 
-        while (x <= elementCount && -(x * elementSize.x / 2f) + (x * elementSize.x) < listManager.rectTransform.rect.max.x)
+        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -74,7 +74,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (y <= elementCount && -(y * elementSize.y / 2f) + (y * elementSize.y) < listManager.rectTransform.rect.max.y)
+        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -82,7 +82,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        SetData(dataController.dataList);
+        SetData(dataController.DataList);
     }
 
     public void SetData(ICollection list)
@@ -95,7 +95,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (var data in list)
         {
-            SelectionElement element = listManager.SpawnElement(elementList, element_prefab);
+            SelectionElement element = listManager.SpawnElement(elementList, element_prefab, Enums.ElementType.Tile);
             listManager.elementList.Add(element);
 
             element.route.data = new Data(dataController, new[] { data });
@@ -111,7 +111,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(dataController.dataList);
+        ResetData(dataController.DataList);
 
         SelectionManager.ResetSelection(listManager);
     }
@@ -130,10 +130,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
 
-        rect.sizeDelta = new Vector2(elementSize.x, elementSize.y);
+        rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
         
-        rect.transform.localPosition = new Vector2( -((elementSize.x * 0.5f) * (list_size.x - 1)) + (index % list_size.x * elementSize.x),
-                                                     -(elementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * elementSize.y));
+        rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (list_size.x - 1)) + (index % list_size.x * ElementSize.x),
+                                                     -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * ElementSize.y));
 
         rect.gameObject.SetActive(true);
     }
@@ -147,6 +147,8 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         listManager.ResetElement();
     }
+
+    public void ClearOrganizer() { }
 
     public void CloseOrganizer()
     {

@@ -3,62 +3,62 @@ using System.Collections;
 
 public class ElementCore : GeneralData
 {
-    private int _index;
-    private int _object_graphic_id;
-    private string _name;
+    private int index;
+    private int objectGraphicId;
+    private string name;
     
-    public int original_index;
-    public int original_object_graphic_id;
-    public string original_name;
+    public int originalIndex;
+    public int originalObjectGraphicId;
+    public string originalName;
 
     public bool changed;
-    private bool changed_id;
-    private bool changed_table;
-    private bool changed_type;
-    private bool changed_index;
-    private bool changed_object_graphic_id;
-    private bool changed_name;
+    private bool changedId;
+    private bool changedTable;
+    private bool changedType;
+    private bool changedIndex;
+    private bool changedObjectGraphicId;
+    private bool changedName;
 
     #region Properties
 
-    public int index
+    public int Index
     {
-        get { return _index; }
+        get { return index; }
         set
         {
-            if (value == _index) return;
+            if (value == index) return;
 
-            changed_index = true;
+            changedIndex = true;
 
-            _index = value;
+            index = value;
         }
     }
 
-    public string name
+    public string Name
     {
-        get { return _name; }
+        get { return name; }
         set
         {
-            if (value == _name) return;
+            if (value == name) return;
 
             changed = true;
-            changed_name = true;
+            changedName = true;
 
-            _name = value;
+            name = value;
         }
     }
 
-    public int objectGraphicId
+    public int ObjectGraphicId
     {
-        get { return _object_graphic_id; }
+        get { return objectGraphicId; }
         set
         {
-            if (value == _object_graphic_id) return;
+            if (value == objectGraphicId) return;
 
             changed = true;
-            changed_object_graphic_id = true;
+            changedObjectGraphicId = true;
 
-            _object_graphic_id = value;
+            objectGraphicId = value;
         }
     }
 
@@ -71,9 +71,9 @@ public class ElementCore : GeneralData
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!changed) return;
+        //if (!changed) return;
 
         //Debug.Log("Updated " + name);
 
@@ -84,43 +84,43 @@ public class ElementCore : GeneralData
         //if (changed_name)           return;
         //if (changed_description)    return;
 
-        SetOriginalValues();
+        //SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (changed_index)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
-            changed_index = false;
+            changedIndex = false;
         }
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
-        original_name = name;
-        original_object_graphic_id = objectGraphicId;
+        originalName = Name;
+        originalObjectGraphicId = ObjectGraphicId;
 
-        ClearChanges();
+        //ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = original_name;
-        objectGraphicId = original_object_graphic_id;
+        Name = originalName;
+        ObjectGraphicId = originalObjectGraphicId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
         changed = false;
-        changed_id = false;
-        changed_table = false;
-        changed_type = false;
-        changed_index = false;
-        changed_object_graphic_id = false;
-        changed_name = false;
+        changedId = false;
+        changedTable = false;
+        changedType = false;
+        changedIndex = false;
+        changedObjectGraphicId = false;
+        changedName = false;
     }
 
     public void Delete()

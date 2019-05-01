@@ -1,97 +1,93 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SearchElement : MonoBehaviour
 {
+    private IDataController dataController { get { return GetComponent<IDataController>(); } }
+
     public Route route = new Route();
 
     public SegmentController segmentController;
+    public IEditor dataEditor { get; set; }
 
     public GameObject glow;
 
+    public GameObject displayParent;
+
+    public EditorTile Tile { get { return GetComponent<EditorTile>(); } }
+
+    bool selected;
+
+    public void InitializeElement(IEditor dataEditor)
+    {
+        this.dataEditor = dataEditor;
+
+        route.data = new Data(dataController);
+    }
+
+    public void SetResult(IEnumerable dataElement)
+    {
+        if (displayParent != null)
+            displayParent.GetComponent<IDisplay>().ClearDisplay();
+
+        SetElement(dataElement);
+
+        segmentController.GetComponent<ISegment>().SetSearchResult(this);
+    }
+
+    public void SetElement(IEnumerable dataElement)
+    {
+        route.data.element = dataElement;
+
+        switch (dataController.DataType)
+        {
+            case Enums.DataType.ObjectGraphic: SetObjectGraphic(); break;
+            default: break;
+        }
+
+        if (displayParent != null)
+            displayParent.GetComponent<IDisplay>().SetDisplay();
+    }
+    
+    private void SetObjectGraphic()
+    {
+        route.data.controller.DataList = route.data.element.Cast<ObjectGraphicDataElement>().ToList();
+
+        var objectGraphicDataElement = route.data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+
+        Tile.icon.texture = Resources.Load<Texture2D>(objectGraphicDataElement.icon);   
+    }
+
     public void SelectElement()
     {
+        if(selected)
+        {
+            SelectionManager.CancelGetSelection();
+            return;
+        }
+
         List<int> controllers = new List<int>() { 1 };
 
         SearchData searchData = new SearchData();
-
-        Data data = new Data(new[] { searchData });
-
-        route.data = data;
+        //Overwriting IElement with searchData might cause problems?
+        route.data = new Data(dataController, new[] { searchData });
 
         Path path = PathManager.CreatePath(PathManager.CreateRoutes(controllers, route), EditorManager.editorManager.forms[2], null);
-
-        //Open path directly to the Search panel
-        //Form MUST open
 
         EditorManager.editorManager.InitializePath(path);
         EditorManager.editorManager.forms[2].formComponent.OpenFormExternally();
 
-        //EditorPath editorPath = new EditorPath(this);
+        SelectionManager.SelectSearch(this);
 
-        //switch (route.property)
-        //{
-        //    case SelectionManager.Property.Get:
-        //        EditorManager.editorManager.InitializePath(editorPath.path);
-        //        ActivateSelection();
-        //        break;
-        //    default:
-        //        break;
-        //}
-
+        selected = true;
+        glow.SetActive(true);    
     }
 
-
-    //Path path;
-    //Route route;
-    //SelectionElement origin;
-
-    //List<int> enter = new List<int>() { 0, 3 };
-    //List<int> edit = new List<int>() { 0, 4 };
-
-    //EditorForm form = EditorManager.editorManager.forms[0];
-
-    //public Region(Route route, SelectionElement origin)
-    //{
-    //    this.route = route;
-    //    this.origin = origin;
-
-    //    if (origin.listManager != null)
-    //        path = origin.listManager.listProperties.segmentController.path;
-    //}
-
-    //public Path Enter()
-    //{
-    //    //CreatePath OR ExtendPath based on route.data.type
-    //    //Phase and Task extends current path
-    //    //Base stands alone
-    //    List<Route> routes;
-
-    //    //Reset display to tiles, only when editor is manually opened
-    //    RegionDisplayManager.ResetDisplay();
-
-    //    switch (route.GeneralData().type)
-    //    {
-    //        case (int)Enums.RegionType.Base:
-    //            path = CreatePath(CreateRoutes(enter, route), form, origin);
-    //            break;
-    //        case (int)Enums.RegionType.Phase:
-    //            routes = CreateRoutes(enter, route);
-    //            path = ExtendPath(path, routes, origin);
-    //            break;
-    //            //case (int)Enums.RegionType.Task:
-    //            //    routes = CreateRoutes(enter, route);
-    //            //    path = ExtendPath(path, routes, origin);
-    //            //    break;
-    //    }
-
-    //    path.type = Path.Type.New;
-
-    //    return path;
-    //}
-
-    //public Path Edit()
-    //{
-    //    return CreatePath(CreateRoutes(edit, route), form, origin);
-    //}
+    public void CancelSelection()
+    {
+        selected = false;
+        glow.SetActive(false);
+    }
 }

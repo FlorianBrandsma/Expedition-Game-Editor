@@ -77,7 +77,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.segmentController.dataController.dataList.Count == 0) return;
+        if (listProperties.SegmentController.DataController.DataList.Count == 0) return;
 
         list.SetElementSize();
 
@@ -85,11 +85,11 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        listParent.sizeDelta = list.GetListSize(listProperties.segmentController.dataController.dataList.Count, true);
+        listParent.sizeDelta = list.GetListSize(listProperties.SegmentController.DataController.DataList.Count, true);
 
-        listSize = list.GetListSize(listProperties.segmentController.dataController.dataList.Count, false);
+        listSize = list.GetListSize(listProperties.SegmentController.DataController.DataList.Count, false);
 
-        if (!listProperties.enable_paging)
+        if (!listProperties.enablePaging)
             SetData();
 
         overlayManager.SetOverlay();
@@ -99,7 +99,7 @@ public class ListManager : MonoBehaviour
 
         //Debug.Log(EditorManager.historyManager.returned);
 
-        if (EditorManager.historyManager.returned || !listProperties.segmentController.editorController.pathController.loaded)
+        if (EditorManager.historyManager.returned || !listProperties.SegmentController.editorController.pathController.loaded)
             ResetListPosition();
     }
 
@@ -111,6 +111,8 @@ public class ListManager : MonoBehaviour
 
     public void UpdateData()
     {
+        if (!gameObject.activeInHierarchy) return;
+
         organizer.UpdateData();
     }
 
@@ -123,7 +125,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.ResetData(listProperties.segmentController.dataController.dataList);
+        organizer.ResetData(listProperties.SegmentController.DataController.DataList);
     }
 
     public void UpdateOverlay()
@@ -189,8 +191,8 @@ public class ListManager : MonoBehaviour
             element.transform.position.z > listMax.z ||
             element.transform.position.z < listMin.z)
         {
-            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.elementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - list.elementSize.x) / 2) / 2;
-            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.elementSize.y) / 2)) / (listParent.sizeDelta.y - list.elementSize.y);
+            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - list.ElementSize.x) / 2) / 2;
+            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.ElementSize.y) / 2)) / (listParent.sizeDelta.y - list.ElementSize.y);
         }
     }
 
@@ -248,24 +250,25 @@ public class ListManager : MonoBehaviour
         
     }
 
-    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement elementPrefab)
+    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement elementPrefab, Enums.ElementType elementType)
     {
         foreach(SelectionElement element in list)
         {
-            if (!element.gameObject.activeInHierarchy)
+            if (!element.gameObject.activeInHierarchy && element.elementType == elementType)
             {
                 InitializeElement(element);
                 return element;
             }     
         }
 
-        SelectionElement new_element = Instantiate(elementPrefab);
+        SelectionElement newElement = Instantiate(elementPrefab);
+        newElement.elementType = elementType;
 
-        InitializeElement(new_element);
+        InitializeElement(newElement);
 
-        list.Add(new_element);
+        list.Add(newElement);
 
-        return new_element;
+        return newElement;
     }
 
     public void InitializeElement(SelectionElement element)

@@ -5,4 +5,5 @@
     void OpenSegment();
     void ApplySegment();
     void CloseSegment();
+    void SetSearchResult(SearchElement searchElement);
 }

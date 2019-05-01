@@ -36,7 +36,7 @@ public class CameraManager : MonoBehaviour
 
         //organizer.GetData();
 
-        if(backgroundManager != null)
+        if (backgroundManager != null)
             backgroundManager.InitializeBackground(this);
 
         //overlayManager.InitializeOverlay(this);
@@ -59,8 +59,10 @@ public class CameraManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        cam.rect = new Rect(new Vector2((30 / EditorManager.UI.rect.width), cam.rect.y), 
-                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - cam.rect.x, cam.rect.height));
+        float leftBorder = (30 / EditorManager.UI.rect.width);
+
+        cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
+                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
 
         SetData();
 
@@ -76,13 +78,21 @@ public class CameraManager : MonoBehaviour
         organizer.SetData();
     }
 
+    public void ClearCamera()
+    {
+        if (organizer == null) return;
+
+        if (backgroundManager != null)
+            backgroundManager.CloseBackground();
+
+        organizer.ClearOrganizer();
+    }
+
     public void CloseCamera()
     {
         if (organizer == null) return;
 
-        //overlayManager.CloseOverlay();
-        if (backgroundManager != null)
-            backgroundManager.CloseBackground();
+        ClearCamera();
 
         organizer.CloseOrganizer();
 
@@ -116,7 +126,7 @@ public class CameraManager : MonoBehaviour
         graphic.transform.SetParent(graphicParent, false);
     }
 
-    public void ResetGraphics()
+    public void ClearGraphics()
     {
         foreach (ObjectGraphic graphic in graphicList)
         {

@@ -7,25 +7,29 @@ using System.IO;
 
 public class EditorForm : MonoBehaviour
 {
-    public FormComponent formComponent { get; set; }
+    [HideInInspector]
+    public bool active;
 
-    public bool main_form;
+    [HideInInspector]
+    public FormComponent formComponent;
 
-    public bool active { get; set; }
-    private bool closed;
-
-    public Path active_path = new Path();
+    [HideInInspector]
+    public EditorController mainController;
 
     public PathController baseController;
-    public EditorController main_controller { get; set; }
 
-    public EditorSection[]    editor_sections;
+    public bool mainForm;
+    public EditorForm siblingForm;
+    public EditorSection[] editorSections;
 
-    public EditorForm sibling_form;
+    public Path activePath = new Path();
+    public Path previousPath;
+
+    private bool closed;
 
     public void InitializeForm()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.InitializeSection(this);
     }
 
@@ -40,11 +44,12 @@ public class EditorForm : MonoBehaviour
         OpenPath(path, reload);
         OpenLayout(path);
 
-        active_path = path;
+        previousPath = activePath;
+        activePath = path;
         active = true;
         closed = false;
         //Auto select element
-        main_controller.FinalizeController();
+        mainController.FinalizeController();
     }
 
     public void OpenPath(Path path, bool reload)
@@ -71,9 +76,9 @@ public class EditorForm : MonoBehaviour
     {
         if (!active) return;
 
-        baseController.ClosePath(active_path);
+        baseController.ClosePath(activePath);
 
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.ClosePath();
 
         active = false;
@@ -83,7 +88,7 @@ public class EditorForm : MonoBehaviour
     public void OpenLayout(Path path)
     {
         //Close previous active layout
-        CloseLayout(main_form);
+        CloseLayout(mainForm);
 
         //Get the controller that must be visualized
         baseController.GetTargetLayout(path, path.start);
@@ -115,7 +120,7 @@ public class EditorForm : MonoBehaviour
         //Tries to close with new target controller. Should be old target
         CloseLayout();
 
-        baseController.CloseTabs(active_path);
+        baseController.CloseTabs(activePath);
 
         CloseDisplay();
 
@@ -127,20 +132,20 @@ public class EditorForm : MonoBehaviour
 
     private void SetPreviousPath()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.SetPreviousPath();      
     }
 
     public void ResetPath()
     {
         if (active)
-            InitializePath(active_path, true);
+            InitializePath(activePath, true);
     }
 
     #region Controller
     private void InitializeController()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.InitializeController();
     }
     #endregion
@@ -148,51 +153,51 @@ public class EditorForm : MonoBehaviour
     #region Layout
     private void InitializeLayout()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.InitializeLayout();
     }
 
     private void SetLayout()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.SetLayout();
     }
 
     private void CloseLayout()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.CloseLayout();
     }
 
     public void ResetLayout()
     {
-        OpenLayout(active_path);
+        OpenLayout(activePath);
         SelectionManager.SelectElements();
     }
 
     public void ResetSiblingForm()
     {
-        if (sibling_form != null)
-            sibling_form.ResetLayout();
+        if (siblingForm != null)
+            siblingForm.ResetLayout();
     }
     #endregion
 
     #region Display
     private void InitializeDisplay()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.InitializeDisplay();
     }
 
     private void SetDisplay()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.SetDisplay();
     }
 
     private void CloseDisplay()
     {
-        foreach (EditorSection section in editor_sections)
+        foreach (EditorSection section in editorSections)
             section.CloseDisplay();
     }
     #endregion

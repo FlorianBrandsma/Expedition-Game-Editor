@@ -8,14 +8,17 @@ public class Data
 
     public Data()
     {
-        controller = null;
         element = new[] { new GeneralData() };
     }
 
     public Data(IEnumerable element)
     {
-        controller = null;
         this.element = element;
+    }
+
+    public Data(IDataController controller)
+    {
+        this.controller = controller;
     }
 
     public Data(IDataController controller, IEnumerable element)
@@ -26,6 +29,6 @@ public class Data
 
     public Data Copy()
     {
-        return new Data(null, element);
+        return new Data(element);
     }
 }

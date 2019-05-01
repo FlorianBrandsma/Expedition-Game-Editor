@@ -5,17 +5,16 @@ using System.Linq;
 
 public class StepElementController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.StepElement; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    StepElementManager stepElementManager = new StepElementManager();
+    private StepElementManager stepElementManager = new StepElementManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.StepElement; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class StepElementController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = stepElementManager.GetStepElementDataElements(this);
+        DataList = stepElementManager.GetStepElementDataElements(this);
 
-        var stepElementDataElements = dataList.Cast<StepElementDataElement>();
+        var stepElementDataElements = DataList.Cast<StepElementDataElement>();
 
         //stepElementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //stepElementDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

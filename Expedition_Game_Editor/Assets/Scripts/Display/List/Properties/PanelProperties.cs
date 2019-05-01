@@ -4,19 +4,19 @@
 
 public class PanelProperties : MonoBehaviour, IProperties
 {
+    public Enums.ElementType elementType;
+    public RectTransform referenceArea;
     public bool icon;
-    public bool constant_height;
+    public bool constantHeight;
     public bool zigzag;
     public bool edit;
 
     //public GeneralData edit_data;
 
-    public RectTransform reference_area;
-
     public void Copy(PanelProperties panelProperties)
     {
         icon = panelProperties.icon;
-        constant_height = panelProperties.constant_height;
+        constantHeight = panelProperties.constantHeight;
         zigzag = panelProperties.zigzag;
         edit = panelProperties.edit;
     }

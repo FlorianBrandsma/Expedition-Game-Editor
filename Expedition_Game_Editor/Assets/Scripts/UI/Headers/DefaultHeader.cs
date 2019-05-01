@@ -30,7 +30,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
         {
             _name = value;
 
-            switch (dataEditor.data.controller.data_type)
+            switch (dataEditor.data.controller.DataType)
             {
                 case Enums.DataType.Chapter:
 
@@ -64,14 +64,14 @@ public class DefaultHeader : MonoBehaviour, ISegment
         segmentController = GetComponent<SegmentController>();
         dataEditor = segmentController.editorController.pathController.dataEditor;
 
-        switch (dataEditor.data.controller.data_type)
+        switch (dataEditor.data.controller.DataType)
         {
             case Enums.DataType.Chapter: InitializeChapterData(); break;
             case Enums.DataType.Phase: InitializePhaseData(); break;
         }
 
         if (index_switch != null)
-            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.dataList.Count - 1); 
+            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.DataList.Count - 1); 
     }
 
     private void InitializeChapterData()
@@ -117,6 +117,11 @@ public class DefaultHeader : MonoBehaviour, ISegment
             index_switch.Deactivate();
 
         gameObject.SetActive(false);
+    }
+
+    public void SetSearchResult(SearchElement searchElement)
+    {
+
     }
     #endregion
 }

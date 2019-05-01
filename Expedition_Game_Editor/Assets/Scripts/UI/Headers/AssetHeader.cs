@@ -5,14 +5,12 @@ using System.Collections.Generic;
 
 public class AssetHeader : MonoBehaviour, ISegment
 {
-    private IDataController dataController { get { return GetComponent<IDataController>(); } }
-
     private SegmentController segmentController;
     public IEditor dataEditor { get; set; }
 
     #region UI
     public IndexSwitch indexSwitch;
-    public EditorTile iconTile;
+    public SearchElement searchElement;
     public InputField inputField;
     public Text id;
     #endregion
@@ -22,7 +20,8 @@ public class AssetHeader : MonoBehaviour, ISegment
     private int _index;
     private int _objectGraphicId;
     private string _name;
-    private string _icon;
+    private string _objectGraphicName;
+    private string _objectGraphicIcon;
     #endregion
 
     #region Properties
@@ -33,81 +32,72 @@ public class AssetHeader : MonoBehaviour, ISegment
         {
             _name = value;
 
-            switch (dataEditor.data.controller.data_type)
+            switch (dataEditor.data.controller.DataType)
             {
                 case Enums.DataType.Item:
 
                     ItemDataElement itemData = dataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
-                    itemData.name = value;
+                    itemData.Name = value;
 
                     break;
 
                 case Enums.DataType.Element:
 
                     ElementDataElement elementData = dataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
-                    elementData.name = value;
+                    elementData.Name = value;
 
                     break;
             }
         }
     }
 
-    public int ObjectId
+    public ObjectGraphicDataElement ObjectGraphic
     {
-        get { return _objectGraphicId; }
         set
         {
-            _objectGraphicId = value;
+            _objectGraphicId    = value.id;
+            _objectGraphicName  = value.name;
+            _objectGraphicIcon  = value.icon;
 
-            ObjectGraphicDataElement objectGraphicDataElement;
-
-            switch (dataEditor.data.controller.data_type)
+            switch (dataEditor.data.controller.DataType)
             {
                 case Enums.DataType.Item:
 
-                    ItemDataElement itemData = dataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
-                    itemData.objectGraphicId = value;
-
-                    dataController.GetData(new List<int>() { itemData.objectGraphicId });
-
-                    objectGraphicDataElement = dataController.dataList.Cast<ObjectGraphicDataElement>().FirstOrDefault();
-
-                    itemData.objectName = objectGraphicDataElement.name;
-                    itemData.icon = objectGraphicDataElement.icon;
-
-                    _icon = itemData.icon;
-
-                    SetObject();
+                    ItemDataElement itemData    = dataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
+                    itemData.ObjectGraphicId    = value.id;
+                    itemData.objectGraphicName  = value.name;
+                    itemData.objectGraphicIcon  = value.icon;
 
                     break;
 
                 case Enums.DataType.Element:
 
-                    ElementDataElement elementData = dataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
-                    elementData.objectGraphicId = value;
-
-                    dataController.GetData(new List<int>() { elementData.objectGraphicId });
-
-                    objectGraphicDataElement = dataController.dataList.Cast<ObjectGraphicDataElement>().FirstOrDefault();
-
-                    elementData.objectName = objectGraphicDataElement.name;
-                    elementData.icon = objectGraphicDataElement.icon;
-
-                    _icon = elementData.icon;
-
-                    SetObject();
+                    ElementDataElement elementData  = dataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
+                    elementData.ObjectGraphicId     = value.id;
+                    elementData.objectGraphicName   = value.name;
+                    elementData.objectGraphicIcon   = value.icon;
 
                     break;
             }
         }
     }
 
+    public int ObjectGraphicId
+    {
+        get { return _objectGraphicId; }
+    }
     #endregion
 
     #region Methods
     public void UpdateName()
     {
         Name = inputField.text;
+        dataEditor.UpdateEditor();
+    }
+
+    public void UpdateObjectGraphic(ObjectGraphicDataElement objectGraphicDataElement)
+    {
+        ObjectGraphic = objectGraphicDataElement;
         dataEditor.UpdateEditor();
     }
     #endregion
@@ -118,14 +108,16 @@ public class AssetHeader : MonoBehaviour, ISegment
         segmentController = GetComponent<SegmentController>();
         dataEditor = segmentController.editorController.pathController.dataEditor;
 
-        switch (dataEditor.data.controller.data_type)
+        switch (dataEditor.data.controller.DataType)
         {
             case Enums.DataType.Item:       InitializeItemData();       break;
             case Enums.DataType.Element:    InitializeElementData();    break;
         }
 
+        searchElement.InitializeElement(dataEditor);
+
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, _index, dataEditor.data.controller.dataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, _index, dataEditor.data.controller.DataList.Count - 1);
     }
 
     private void InitializeItemData()
@@ -133,9 +125,12 @@ public class AssetHeader : MonoBehaviour, ISegment
         ItemDataElement itemData = dataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
 
         _id                 = itemData.id;
-        _index              = itemData.index;
-        _name               = itemData.name;
-        _objectGraphicId    = itemData.objectGraphicId;
+        _index              = itemData.Index;
+        _name               = itemData.Name;
+
+        _objectGraphicId    = itemData.ObjectGraphicId;
+        _objectGraphicName  = itemData.objectGraphicName;
+        _objectGraphicIcon  = itemData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = false;
     }
@@ -145,9 +140,12 @@ public class AssetHeader : MonoBehaviour, ISegment
         ElementDataElement elementData = dataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
 
         _id                 = elementData.id;
-        _index              = elementData.index;
-        _name               = elementData.name;
-        _objectGraphicId    = elementData.objectGraphicId;
+        _index              = elementData.Index;
+        _name               = elementData.Name;
+
+        _objectGraphicId    = elementData.ObjectGraphicId;
+        _objectGraphicName  = elementData.objectGraphicName;
+        _objectGraphicIcon  = elementData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = true;
     }
@@ -161,16 +159,15 @@ public class AssetHeader : MonoBehaviour, ISegment
 
         inputField.text = _name;
 
-        ObjectId = _objectGraphicId;
+        var objectGraphicDataElement    = new ObjectGraphicDataElement();
+
+        objectGraphicDataElement.id     = _objectGraphicId;
+        objectGraphicDataElement.name   = _objectGraphicName;
+        objectGraphicDataElement.icon   = _objectGraphicIcon;
+
+        searchElement.SetElement(new[] { objectGraphicDataElement });
 
         gameObject.SetActive(true);
-    }
-
-    private void SetObject()
-    {
-        iconTile.icon.texture = Resources.Load<Texture2D>(_icon);
-
-        GetComponent<IDisplay>().SetDisplay();
     }
 
     public void ApplySegment()
@@ -185,5 +182,22 @@ public class AssetHeader : MonoBehaviour, ISegment
 
         gameObject.SetActive(false);
     }
+
+    public void SetSearchResult(SearchElement searchElement)
+    {
+        switch(searchElement.route.data.controller.DataType)
+        {
+            case Enums.DataType.ObjectGraphic:
+
+                var objectGraphicDataElement = searchElement.route.data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+
+                UpdateObjectGraphic(objectGraphicDataElement);
+
+                break;
+
+            default: Debug.Log("CASE MISSING"); break;
+        }
+    }
+
     #endregion
 }

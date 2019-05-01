@@ -5,17 +5,16 @@ using System.Linq;
 
 public class TaskController : MonoBehaviour, IDataController
 {
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Task; } }
-
-    public ICollection dataList { get; set; }
-
-    public bool search_by_id;
+    public bool searchById;
     public int temp_id_count;
 
-    TaskManager taskManager = new TaskManager();
+    private TaskManager taskManager             = new TaskManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Task; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -24,11 +23,16 @@ public class TaskController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = taskManager.GetTaskDataElements(this);
+        DataList = taskManager.GetTaskDataElements(this);
 
-        var taskDataElements = dataList.Cast<TaskDataElement>();
+        var taskDataElements = DataList.Cast<TaskDataElement>();
 
         //taskDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //taskDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

@@ -17,7 +17,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        properties = element.listManager.listProperties.GetComponent<PanelTileProperties>();
+        properties = element.ListManager.listProperties.GetComponent<PanelTileProperties>();
 
         if (properties.icon)
         {
@@ -27,9 +27,9 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
         if (properties.edit)
         {
-            edit_button.parent_element = element;
+            edit_button.ParentElement = element;
 
-            edit_button.InitializeElement(element.listManager, SelectionManager.Property.Edit);
+            edit_button.InitializeElement(element.ListManager, SelectionManager.Property.Edit);
 
             edit_button.gameObject.SetActive(true);
 
@@ -39,7 +39,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data.controller.data_type)
+        switch (element.route.data.controller.DataType)
         {
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;

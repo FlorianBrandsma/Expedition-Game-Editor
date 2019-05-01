@@ -5,25 +5,17 @@ using System.Linq;
 
 public class ItemController : MonoBehaviour, IDataController
 {
-    public enum Type
-    {
-        Supplies,
-        Gear,
-        Spoils
-    }
-
-    public IDisplay display { get { return GetComponent<IDisplay>(); } }
-
-    public SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType data_type { get { return Enums.DataType.Item; } }
-
-    public ICollection dataList { get; set; }
-
-    public Type type;
-    public bool search_by_id;
+    public Enums.ItemType itemType;
+    public bool searchById;
     public int temp_id_count;
 
-    ItemManager itemManager = new ItemManager();
+    private ItemManager itemManager             = new ItemManager();
+
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Item; } }
+    public ICollection DataList                 { get; set; }
 
     public void InitializeController()
     {
@@ -32,11 +24,16 @@ public class ItemController : MonoBehaviour, IDataController
 
     public void GetData(List<int> id_list)
     {
-        dataList = itemManager.GetItemDataElements(this);
+        DataList = itemManager.GetItemDataElements(this);
 
-        var itemDataElements = dataList.Cast<ItemDataElement>();
+        var itemDataElements = DataList.Cast<ItemDataElement>();
 
         //itemDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //itemDataElements[0].Update();
+    }
+
+    public void GetData(SearchData searchData)
+    {
+
     }
 }

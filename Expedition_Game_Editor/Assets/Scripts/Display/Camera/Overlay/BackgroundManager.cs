@@ -12,7 +12,7 @@ public class BackgroundManager : MonoBehaviour
     public void InitializeBackground(CameraManager cameraManager)
     {
         this.cameraManager = cameraManager;
-
+        
         objectProperties = cameraManager.cameraProperties.GetComponent<ObjectProperties>();
     }
 

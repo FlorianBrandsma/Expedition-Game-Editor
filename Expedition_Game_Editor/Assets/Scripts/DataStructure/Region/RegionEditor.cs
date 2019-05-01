@@ -37,12 +37,12 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.dataList.Cast<RegionDataElement>().ToList();
+        var list = data.controller.DataList.Cast<RegionDataElement>().ToList();
 
         list.RemoveAt(regionData.index);
         list.Insert(index, regionData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
+        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -55,7 +55,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.listManager.UpdateData();
+        selectionElement.ListManager.UpdateData();
     }
 
     public void OpenEditor()

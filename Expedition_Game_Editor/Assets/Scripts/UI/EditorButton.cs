@@ -12,14 +12,14 @@ public class EditorButton : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        properties = element.listManager.listProperties.GetComponent<ButtonProperties>();
+        properties = element.ListManager.listProperties.GetComponent<ButtonProperties>();
 
         icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + element.route.property.ToString());
     }
 
     public void SetElement()
     {
-        switch (element.route.data.controller.data_type)
+        switch (element.route.data.controller.DataType)
         {
             case Enums.DataType.Item:       SetItemElement();       break;
             default: Debug.Log("CASE MISSING");                     break;
@@ -30,7 +30,7 @@ public class EditorButton : MonoBehaviour, IElement
     {
         ItemDataElement data = element.route.data.element.Cast<ItemDataElement>().FirstOrDefault();
 
-        label.text = data.original_name;
+        label.text = data.originalName;
     }
 
     public void CloseElement()

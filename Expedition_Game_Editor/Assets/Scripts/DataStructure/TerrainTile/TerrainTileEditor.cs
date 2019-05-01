@@ -36,12 +36,12 @@ public class TerrainTileEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.dataList.Cast<TerrainTileDataElement>().ToList();
+        var list = data.controller.DataList.Cast<TerrainTileDataElement>().ToList();
 
         list.RemoveAt(terrainTileData.index);
         list.Insert(index, terrainTileData);
 
-        selectionElement.listManager.listProperties.segmentController.dataController.dataList = list;
+        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -54,7 +54,7 @@ public class TerrainTileEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.listManager.UpdateData();
+        selectionElement.ListManager.UpdateData();
     }
 
     public void OpenEditor()

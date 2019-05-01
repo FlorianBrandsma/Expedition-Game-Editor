@@ -25,15 +25,15 @@ public class ItemManager
                         id      = itemData.id,
                         table   = itemData.table,
                         type    = itemData.type,
-                        index   = itemData.index,
+                        Index   = itemData.index,
 
-                        objectGraphicId = itemData.objectId,
-                        name    = itemData.name,
+                        ObjectGraphicId = itemData.objectId,
+                        Name    = itemData.name,
 
-                        objectName = objectGraphicData.name,
-                        icon    = objectGraphicData.icon
+                        objectGraphicName   = objectGraphicData.name,
+                        objectGraphicIcon   = objectGraphicData.icon
 
-                    }).OrderBy(x => x.index).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -51,7 +51,7 @@ public class ItemManager
 
             itemData.id = (i + 1);
             itemData.table = "Item";
-            itemData.type = (int)dataController.type;
+            itemData.type = (int)dataController.itemType;
             itemData.index = i;
 
             itemData.objectId = 2;
