@@ -131,7 +131,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         List<ChapterDataElement> dataElements = data.controller.DataList.Cast<ChapterDataElement>().ToList();
 
         foreach (ChapterDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
 
         dropdown.GetComponent<ChapterController>().temp_id_count = ((ChapterController)data.controller).temp_id_count;
     }

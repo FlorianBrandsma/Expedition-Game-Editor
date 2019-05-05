@@ -10,11 +10,13 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
-
+    
     public Vector2 elementSize;
 
     public bool horizontal, vertical;
 
+    public bool enableAdding;
+    public bool enableAutoSave;
     public bool enableSliders;
     public bool enableNumbers;
     public bool enablePaging;

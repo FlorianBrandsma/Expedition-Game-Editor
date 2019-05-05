@@ -5,16 +5,23 @@ using System.Linq;
 
 public class StepController : MonoBehaviour, IDataController
 {
-    public bool searchById;
     public int temp_id_count;
+
+    public SearchParameters searchParameters;
 
     private StepManager stepManager             = new StepManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+
     public Enums.DataType DataType              { get { return Enums.DataType.Step; } }
     public ICollection DataList                 { get; set; }
+
+    public SearchParameters SearchParameters
+    {
+        get { return searchParameters; }
+        set { searchParameters = value; }
+    }
 
     public void InitializeController()
     {
@@ -32,6 +39,11 @@ public class StepController : MonoBehaviour, IDataController
     }
 
     public void GetData(SearchData searchData)
+    {
+
+    }
+
+    public void ReplaceData(IEnumerable dataElement)
     {
 
     }

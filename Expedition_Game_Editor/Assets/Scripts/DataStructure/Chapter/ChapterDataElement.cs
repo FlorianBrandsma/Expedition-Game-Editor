@@ -6,5 +6,5 @@ public class ChapterDataElement : ChapterCore
 {
     public ChapterDataElement() : base() { }
 
-    public string icon;
+    public List<int> elementIds;
 }

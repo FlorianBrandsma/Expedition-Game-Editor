@@ -4,20 +4,19 @@ using System.Linq;
 
 public class EditorPanelTile : MonoBehaviour, IElement
 {
-    private SelectionElement element { get { return GetComponent<SelectionElement>(); } }
-    private PanelTileProperties properties;
-
     public Text id;
     public Text header;
     public RawImage icon;
-
-    private SelectionElement edit_button { get { return element.child; } }
-
     public RectTransform content;
+
+    private PanelTileProperties properties;
+
+    private SelectionElement Element    { get { return GetComponent<SelectionElement>(); } }
+    private SelectionElement EditButton { get { return Element.child; } }
 
     public void InitializeElement()
     {
-        properties = element.ListManager.listProperties.GetComponent<PanelTileProperties>();
+        properties = Element.ListManager.listProperties.GetComponent<PanelTileProperties>();
 
         if (properties.icon)
         {
@@ -27,19 +26,19 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
         if (properties.edit)
         {
-            edit_button.ParentElement = element;
+            EditButton.ParentElement = Element;
 
-            edit_button.InitializeElement(element.ListManager, SelectionManager.Property.Edit);
+            EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
 
-            edit_button.gameObject.SetActive(true);
+            EditButton.gameObject.SetActive(true);
 
-            content.offsetMax = new Vector2(-edit_button.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
+            content.offsetMax = new Vector2(-EditButton.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
         }
     }
 
     public void SetElement()
     {
-        switch (element.route.data.controller.DataType)
+        switch (Element.route.data.controller.DataType)
         {
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
@@ -49,7 +48,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private void SetTerrainElementElement()
     {
-        Data data = element.route.data;
+        Data data = Element.route.data;
         TerrainElementDataElement data_element = data.element.Cast<TerrainElementDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
@@ -59,12 +58,12 @@ public class EditorPanelTile : MonoBehaviour, IElement
             icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.route.data = data;
+            EditButton.route.data = data;
     }
 
     private void SetTerrainObjectElement()
     {
-        Data data = element.route.data;
+        Data data = Element.route.data;
         TerrainObjectDataElement data_element = data.element.Cast<TerrainObjectDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
@@ -74,7 +73,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
             icon.texture = Resources.Load<Texture2D>(data_element.icon);
 
         if (properties.edit)
-            edit_button.route.data = data;
+            EditButton.route.data = data;
     }
 
     public void CloseElement()
@@ -89,6 +88,6 @@ public class EditorPanelTile : MonoBehaviour, IElement
             icon.gameObject.SetActive(false);
 
         if (properties.edit)
-            edit_button.gameObject.SetActive(false);
+            EditButton.gameObject.SetActive(false);
     }
 }

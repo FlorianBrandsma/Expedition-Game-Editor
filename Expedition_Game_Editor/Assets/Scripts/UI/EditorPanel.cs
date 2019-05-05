@@ -53,7 +53,7 @@ public class EditorPanel : MonoBehaviour, IElement
     {
         EditButton.ParentElement = Element;
 
-        EditButton.InitializeElement(Element.ListManager, SelectionManager.Property.Edit);
+        EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
 
         EditButton.gameObject.SetActive(true);
 
@@ -71,7 +71,8 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.StepElement:    SetStepElementElement();    break;
             case Enums.DataType.Task:           SetTaskElement();           break;
             case Enums.DataType.Region:         SetRegionElement();         break;
-            case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;         
+            case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
+            case Enums.DataType.Element:        SetElementElement();        break;
             default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
         }
 
@@ -89,11 +90,8 @@ public class EditorPanel : MonoBehaviour, IElement
         ChapterDataElement dataElement = data.element.Cast<ChapterDataElement>().FirstOrDefault();
         
         id.text             = dataElement.id.ToString();
-        header.text         = dataElement.original_name;
-        description.text    = dataElement.original_description;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.icon);
+        header.text         = dataElement.originalName;
+        description.text    = dataElement.originalDescription;
 
         if (properties.edit)
             EditButtonData = data;
@@ -187,9 +185,20 @@ public class EditorPanel : MonoBehaviour, IElement
         ObjectGraphicDataElement dataElement = data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.original_name;
+        header.text = dataElement.originalName;
 
-        IconTexture = Resources.Load<Texture2D>(dataElement.icon);
+        IconTexture = Resources.Load<Texture2D>(dataElement.originalIcon);
+    }
+
+    private void SetElementElement()
+    {
+        Data data = Element.route.data;
+        ElementDataElement dataElement = data.element.Cast<ElementDataElement>().FirstOrDefault();
+
+        id.text = dataElement.id.ToString();
+        header.text = dataElement.originalName;
+
+        IconTexture = Resources.Load<Texture2D>(dataElement.originalObjectGraphicIcon);
     }
 
     public void CloseElement()

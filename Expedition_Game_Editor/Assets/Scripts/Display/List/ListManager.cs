@@ -97,8 +97,6 @@ public class ListManager : MonoBehaviour
         listMin = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         listMax = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
-        //Debug.Log(EditorManager.historyManager.returned);
-
         if (EditorManager.historyManager.returned || !listProperties.SegmentController.editorController.pathController.loaded)
             ResetListPosition();
     }

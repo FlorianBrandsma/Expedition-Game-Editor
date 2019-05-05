@@ -20,13 +20,13 @@ public class ChapterManager
                         id = oCore.id,
                         table = oCore.table,
                         type = oCore.type,
-                        index = oCore.index,
-                        name = oCore.name,
-                        description = oCore.description,
+                        Index = oCore.index,
+                        Name = oCore.name,
+                        Description = oCore.description,
 
-                        icon = "Textures/Characters/1"
+                        elementIds = new List<int>() { 1, 2 }
 
-                    }).OrderBy(x => x.index).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -36,7 +36,7 @@ public class ChapterManager
     public void GetChapterData()
     {
         chapterData_list = new List<ChapterData>();
-        
+
         //Temporary
         for (int i = 0; i < dataController.temp_id_count; i++)
         {

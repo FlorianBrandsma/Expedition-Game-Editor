@@ -7,7 +7,7 @@ public class TerrainHeader : MonoBehaviour, ISegment
 {
     private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     private IDataController dataController { get { return GetComponent<IDataController>(); } }
-    public IEditor dataEditor { get; set; }
+    public IEditor DataEditor { get; set; }
 
     private TerrainDataElement terrain_data;
     private RegionDataElement region_data;
@@ -24,7 +24,7 @@ public class TerrainHeader : MonoBehaviour, ISegment
     #region Data Methods
     private void InitializeData()
     {
-        terrain_data = dataEditor.data.element.Cast<TerrainDataElement>().FirstOrDefault();
+        terrain_data = DataEditor.data.element.Cast<TerrainDataElement>().FirstOrDefault();
         region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.element.Cast<RegionDataElement>().FirstOrDefault();
 
         _id = terrain_data.id;
@@ -34,7 +34,7 @@ public class TerrainHeader : MonoBehaviour, ISegment
     #region Segment
     public void InitializeSegment()
     {
-        dataEditor = segmentController.editorController.pathController.dataEditor;
+        DataEditor = segmentController.editorController.pathController.dataEditor;
 
         InitializeData();
 
@@ -63,7 +63,7 @@ public class TerrainHeader : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SearchElement searchElement)
+    public void SetSearchResult(SelectionElement selectionElement)
     {
 
     }

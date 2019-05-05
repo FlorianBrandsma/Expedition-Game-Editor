@@ -24,6 +24,6 @@ public class DataList
         list = new List<GeneralData>();
 
         for (int i = 0; i < id_count; i++)
-            list.Add(new GeneralData(data.table, (i + 1), data.type));
+            list.Add(new GeneralData(data.table, (i + 1), data.type, data.index));
     }
 }

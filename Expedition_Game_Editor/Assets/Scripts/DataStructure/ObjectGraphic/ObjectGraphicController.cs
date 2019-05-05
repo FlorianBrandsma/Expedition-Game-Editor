@@ -5,30 +5,37 @@ using System.Linq;
 
 public class ObjectGraphicController : MonoBehaviour, IDataController
 {
-    public bool searchById;
+    [HideInInspector]
+    public List<int> idList = new List<int>();
     public int temp_id_count;
+
+    public SearchParameters searchParameters;
 
     private ObjectGraphicManager objectGraphicManager = new ObjectGraphicManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+
     public Enums.DataType DataType              { get { return Enums.DataType.ObjectGraphic; } }
     public ICollection DataList                 { get; set; }
 
-    public void InitializeController()
+    public SearchParameters SearchParameters
     {
-        List<int> id_list = new List<int>();
-
-        for (int id = 1; id <= temp_id_count; id++)
-            id_list.Add(id);
-
-        GetData(id_list);
+        get { return searchParameters; }
+        set { searchParameters = value; }
     }
 
-    public void GetData(List<int> id_list)
+    public void InitializeController()
     {
-        DataList = objectGraphicManager.GetObjectGraphicDataElements(id_list);
+        for (int id = 0; id < temp_id_count; id++)
+            idList.Add(id);
+
+        GetData(idList);
+    }
+
+    public void GetData(List<int> idList)
+    {
+        DataList = objectGraphicManager.GetObjectGraphicDataElements(idList);
 
         var objectGraphicDataElements = DataList.Cast<ObjectGraphicDataElement>();
 
@@ -38,6 +45,11 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
     }
 
     public void GetData(SearchData searchData)
+    {
+
+    }
+
+    public void ReplaceData(IEnumerable dataElement)
     {
 
     }

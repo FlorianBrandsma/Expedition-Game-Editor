@@ -23,7 +23,7 @@ static public class SelectionManager
 
     static public List<ListManager> lists = new List<ListManager>();
 
-    static public SearchElement getElement;
+    static public SelectionElement getElement;
 
     static public void SelectElements()
     {
@@ -35,7 +35,7 @@ static public class SelectionManager
             {
                 if (!section.active) continue;
                 
-                SelectEdit(section.targetController.pathController.route);
+                SelectElement(section.targetController.pathController.route);
             }       
         }
     }
@@ -45,20 +45,19 @@ static public class SelectionManager
         listManager.ResetSelection();
     }
 
-    static public void SelectEdit(Route route)
+    static public void SelectElement(Route route)
     {
         foreach (ListManager list in lists)
         {
             Property property = list.listProperties.selectionProperty;
 
-            if (property == Property.Edit || property == Property.Enter)
-                list.SelectElement(route);
+            list.SelectElement(route);
         }           
     }
 
-    static public void SelectSearch(SearchElement searchElement)
+    static public void SelectSearch(SelectionElement selectionElement)
     {
-        getElement = searchElement;
+        getElement = selectionElement;
     }
 
     static public void SelectSet(SelectionElement setElement)

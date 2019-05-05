@@ -49,7 +49,7 @@ public class IndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-        segment.dataEditor.UpdateIndex(index);
+        segment.DataEditor.UpdateIndex(index);
         SetIndex();
     }
 

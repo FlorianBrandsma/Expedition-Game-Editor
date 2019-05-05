@@ -16,6 +16,8 @@ public class SearchController : MonoBehaviour
 
         if (data.element.GetType() != typeof(SearchData[])) return;
 
+        SearchData searchData = data.element.Cast<SearchData>().FirstOrDefault();
+
         DataType = data.controller.DataType;
 
         switch (DataType)
@@ -23,13 +25,19 @@ public class SearchController : MonoBehaviour
             case Enums.DataType.ObjectGraphic:
 
                 gameObject.AddComponent<ObjectGraphicController>();
+                GetComponent<ObjectGraphicController>().temp_id_count = 5;
 
-                GetComponent<ObjectGraphicController>().temp_id_count = 2;
+                break;
 
+            case Enums.DataType.Element:
+
+                gameObject.AddComponent<ElementController>();
+                GetComponent<ElementController>().temp_id_count = 4;
                 break;
         }
 
-        //GetData(data.element.Cast<SearchData>().FirstOrDefault());
+        GetComponent<IDataController>().SearchParameters = searchData.searchParameters.Copy();
+        GetComponent<IDataController>().SearchParameters.searching = true;
     }
 
     public void CloseController()

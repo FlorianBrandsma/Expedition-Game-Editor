@@ -38,14 +38,14 @@ public class ChapterEditor : MonoBehaviour, IEditor
     {
         var list = data.controller.DataList.Cast<ChapterDataElement>().ToList();
 
-        list.RemoveAt(chapterData.index);
+        list.RemoveAt(chapterData.Index);
         list.Insert(index, chapterData);
 
         selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
-            list[i].index = i;
+            list[i].Index = i;
             list[i].UpdateIndex();
         }
 

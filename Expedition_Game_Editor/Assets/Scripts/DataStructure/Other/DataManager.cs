@@ -4,26 +4,26 @@ using System.Collections.Generic;
 
 public class DataManager
 {
-    public List<ObjectGraphicData> GetObjectGraphicData(List<int> id_list, bool search_by_id = false)
+    public List<ObjectGraphicData> GetObjectGraphicData(List<int> idList, bool searchById = false)
     {
         List<ObjectGraphicData> data_list = new List<ObjectGraphicData>();
 
         //Temporary
-        string[] object_names = new string[] { "Null", "Warrior", "Polearm" };
+        string[] objectNames = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
 
-        for (int id = 0; id <= 2; id++)
+        for (int id = 0; id < objectNames.Length; id++)
         {
             var data = new ObjectGraphicData();
 
             data.id = id;
 
             data.table = "ObjectGraphic";
-            data.name = object_names[id];
-            data.icon = "Textures/Icons/Objects/" + object_names[id];
+            data.name = objectNames[id];
+            data.icon = "Textures/Icons/Objects/" + objectNames[id];
 
-            if (search_by_id)
+            if (searchById)
             {
-                if (id_list[0] == (id))
+                if (idList[0] == (id))
                     data_list.Add(data);
             } else {
                 data_list.Add(data);

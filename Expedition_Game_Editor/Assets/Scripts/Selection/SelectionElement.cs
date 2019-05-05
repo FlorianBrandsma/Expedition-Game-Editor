@@ -8,31 +8,58 @@ using System.Linq;
 
 public class SelectionElement : MonoBehaviour
 {
-    public Route route = new Route();
-
+    public SegmentController segmentController;
+    public GameObject displayParent;
     public SelectionManager.Type selectionType;
+    public SelectionManager.Property selectionProperty;
     public Enums.ElementType elementType;
 
     public SelectionElement child;
     public GameObject glow;
-    //Active Property
     public bool selected;
 
-    public SelectionElement ParentElement { get; set; }
-    public ListManager ListManager { get; set; }
-    public IElement Element { get; set; }
+    public Route route = new Route();
 
-    public void InitializeElement(ListManager listManager, SelectionManager.Property property)
+    public IElement Element                 { get; set; }
+    public IEditor DataEditor               { get; set; }
+    public SelectionElement ParentElement   { get; set; }
+    public ListManager ListManager          { get; set; }
+
+    public IDataController DataController
     {
-        if (selected)
-            CancelSelection();
+        get
+        {
+            if (GetComponent<IDataController>() != null)
+                return GetComponent<IDataController>();
+            else
+                return ListManager.listProperties.SegmentController.DataController;
+        }
+    }
+
+    public void InitializeElement()
+    {
+        DataEditor = segmentController.editorController.pathController.dataEditor;
+
+        route.data = new Data(GetComponent<IDataController>());
+
+        CancelSelection();
+
+        route.property = selectionProperty;
+
+        GetComponent<IElement>().InitializeElement();
+    }
+
+    public void InitializeElement(ListManager listManager, SelectionManager.Property selectionProperty)
+    {
+        CancelSelection();
 
         ListManager = listManager;
+        
+        route.property = selectionProperty;
 
-        //segmentController = listManager.listProperties.dataController.segmentController;
+        segmentController = listManager.listProperties.SegmentController;
 
         selectionType = listManager.selectionType;
-        route.property = property;
 
         GetComponent<IElement>().InitializeElement();
 
@@ -48,9 +75,27 @@ public class SelectionElement : MonoBehaviour
             SetElement();
     }
 
+    public void SetElement(IEnumerable dataElement)
+    {
+        int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
+        dataElement.Cast<GeneralData>().FirstOrDefault().index = index;
+
+        //Data attached to the element gets replaced, 
+        //but not the data from the controller's data list.
+        //(Only necessary for id exclusion in search lists)
+        DataController.ReplaceData(dataElement);
+        //Possible to draw element data straight from the controller?
+        route.data.element = dataElement;
+
+        SetElement();
+    }
+
     public void SetElement()
     {
         GetComponent<IElement>().SetElement();
+
+        if (displayParent != null)
+            displayParent.GetComponent<IDisplay>().SetDisplay();
     }
 
     public void ActivateSelection()
@@ -65,6 +110,8 @@ public class SelectionElement : MonoBehaviour
 
     public void CancelSelection()
     {
+        if (!selected) return;
+
         selected = false;
 
         if (ListManager != null)
@@ -75,43 +122,50 @@ public class SelectionElement : MonoBehaviour
 
     public void SelectElement()
     {
-        if(SelectionManager.getElement != null)
-        {
-            SelectionManager.SelectSet(this);
-            return;
-        }
+        if (selected) return;
 
-        if (!selected)
-        {
-            EditorPath editorPath = new EditorPath(this);
+        EditorPath editorPath = new EditorPath(this);
 
-            switch (route.property)
-            {
-                case SelectionManager.Property.Get:
-                    EditorManager.editorManager.InitializePath(editorPath.path);
+        switch (route.property)
+        {
+            case SelectionManager.Property.Get:
+                EditorManager.editorManager.InitializePath(editorPath.path);
+
+                if (ListManager == null)
                     ActivateSelection();
-                    break;
 
-                case SelectionManager.Property.Set:
-                    SelectionManager.SelectSet(this);
-                    break;
+                SelectionManager.SelectSearch(this);
+                break;
 
-                case SelectionManager.Property.Enter:
-                    EditorManager.editorManager.InitializePath(editorPath.path);
-                    break;
+            case SelectionManager.Property.Set:
+                SelectionManager.SelectSet(this);
+                break;
 
-                case SelectionManager.Property.Edit:
-                    EditorManager.editorManager.InitializePath(editorPath.path);
-                    break;
+            case SelectionManager.Property.Enter:
+                EditorManager.editorManager.InitializePath(editorPath.path);
+                break;
 
-                case SelectionManager.Property.Open:
-                    EditorManager.editorManager.InitializePath(editorPath.path);
-                    break;
+            case SelectionManager.Property.Edit:
+                EditorManager.editorManager.InitializePath(editorPath.path);
+                break;
 
-                default:
-                    break;
-            }
-        }          
+            case SelectionManager.Property.Open:
+                EditorManager.editorManager.InitializePath(editorPath.path);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void SetResult(IEnumerable dataElement)
+    {
+        if (displayParent != null)
+            displayParent.GetComponent<IDisplay>().ClearDisplay();
+
+        SetElement(dataElement);
+
+        segmentController.GetComponent<ISegment>().SetSearchResult(this);
     }
 
     public GeneralData GeneralData()

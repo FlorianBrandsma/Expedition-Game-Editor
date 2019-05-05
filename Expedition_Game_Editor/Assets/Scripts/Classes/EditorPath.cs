@@ -9,6 +9,15 @@ public class EditorPath
     {
         Route route = new Route(origin.route);
 
+        if(origin.route.property == SelectionManager.Property.Get)
+        {
+            PathManager.Search search = new PathManager.Search(route, origin);
+
+            path = search.Get();
+
+            return;
+        }
+
         switch (route.GeneralData().table)
         {
             case "Chapter":

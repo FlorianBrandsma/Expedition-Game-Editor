@@ -366,6 +366,38 @@ public class PathManager
 
     #endregion
 
+    #region Search
+
+    public class Search
+    {
+        Route route;
+        SearchData searchData;
+
+        List<int> controllers = new List<int>() { 1 };
+
+        public Search(Route route, SelectionElement origin)
+        {
+            SearchParameters searchParameters = origin.DataController.SearchParameters;
+
+            if (searchParameters.unique)
+                searchParameters.exclusedIdList = origin.DataController.DataList.Cast<GeneralData>().Select(x => x.id).ToList();
+
+            searchData = new SearchData(searchParameters, route.GeneralData());
+
+            //Overwriting IElement with searchData might cause problems?
+            route.data = new Data(route.data.controller, new[] { searchData });
+            this.route = route;
+        }
+
+        public Path Get()
+        {
+            EditorForm form = EditorManager.editorManager.forms[2];
+            return CreatePath(CreateRoutes(controllers, route), form, null);
+        }
+    }
+
+    #endregion
+
     #endregion
 
     #endregion

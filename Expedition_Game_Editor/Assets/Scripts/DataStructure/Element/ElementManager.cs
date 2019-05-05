@@ -4,22 +4,18 @@ using System.Linq;
 
 public class ElementManager
 {
-    private ElementController dataController;
     private List<ElementData> elementDataList;
-
-    private List<DataManager.ObjectGraphicData> objectGraphicData_list;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
 
     private DataManager dataManager = new DataManager();
 
-    public List<ElementDataElement> GetElementDataElements(ElementController dataController)
+    public List<ElementDataElement> GetElementDataElements(List<int> idList)
     {
-        this.dataController = dataController;
-
-        GetElementData();
+        GetElementData(idList);
         GetObjectGraphicData();
 
         var list = (from elementData in elementDataList
-                    join objectGraphicData in objectGraphicData_list on elementData.objectGraphicId equals objectGraphicData.id
+                    join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
                     select new ElementDataElement()
                     {
                         id      = elementData.id,
@@ -40,29 +36,36 @@ public class ElementManager
         return list;
     }
 
-    internal void GetElementData()
+    internal void GetElementData(List<int> idList)
     {
         elementDataList = new List<ElementData>();
 
         //Temporary
-        for (int i = 0; i < dataController.temp_id_count; i++)
+        //For filtering out the polearm, just because (index matches id)
+        var objectList = new List<int> { 0, 0, 2, 3, 4 };
+
+        int index = 0;
+
+        foreach(int id in idList)
         {
             var elementData = new ElementData();
 
-            elementData.id      = (i + 1);
-            elementData.table   = "Element";
-            elementData.index   = i;
+            elementData.id = id;
+            elementData.table = "Element";
+            elementData.index = index;
 
-            elementData.objectGraphicId = (i % 2);
-            elementData.name    = "Element " + (i + 1);
+            elementData.objectGraphicId = objectList[id];
+            elementData.name = "Element " + (index + 1);
 
             elementDataList.Add(elementData);
+
+            index++;
         }
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicData_list = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), false);
+        objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), false);
     }
 
     internal class ElementData : GeneralData

@@ -34,7 +34,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         {
             IEnumerable new_data = new[] { data };
 
-            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().name);
+            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().Name);
 
             if (graphic_prefab == null) continue;
 

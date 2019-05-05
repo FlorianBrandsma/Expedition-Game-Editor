@@ -5,25 +5,40 @@ using System.Linq;
 
 public class ElementController : MonoBehaviour, IDataController
 {
-    public bool searchById;
+    [HideInInspector]
+    public List<int> idList = new List<int>();
     public int temp_id_count;
+
+    public SearchParameters searchParameters;
 
     private ElementManager elementManager       = new ElementManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+
     public Enums.DataType DataType              { get { return Enums.DataType.Element; } }
     public ICollection DataList                 { get; set; }
 
-    public void InitializeController()
+    public SearchParameters SearchParameters
     {
-        GetData(new List<int>());
+        get { return searchParameters; }
+        set { searchParameters = value; }
     }
 
-    public void GetData(List<int> id_list)
+    public void InitializeController()
     {
-        DataList = elementManager.GetElementDataElements(this);
+        for (int id = 1; id <= temp_id_count; id++)
+        {
+            if(!searchParameters.exclusedIdList.Contains(id))
+                idList.Add(id);
+        }
+
+        GetData(idList);
+    }
+
+    public void GetData(List<int> idList)
+    {
+        DataList = elementManager.GetElementDataElements(idList);
 
         var elementDataElements = DataList.Cast<ElementDataElement>();
 
@@ -34,5 +49,15 @@ public class ElementController : MonoBehaviour, IDataController
     public void GetData(SearchData searchData)
     {
 
+    }
+
+    public void ReplaceData(IEnumerable dataElement)
+    {
+        var elementDataElement = dataElement.Cast<ElementDataElement>().FirstOrDefault();
+
+        var replacementList = DataList.Cast<ElementDataElement>().ToList();
+        replacementList[elementDataElement.index] = elementDataElement;
+
+        DataList = replacementList; 
     }
 }

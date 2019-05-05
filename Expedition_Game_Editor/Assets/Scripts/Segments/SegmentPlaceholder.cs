@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SegmentPlaceholder : MonoBehaviour, ISegment
 {
-    public IEditor dataEditor { get; set; }
+    public IEditor DataEditor { get; set; }
     SegmentController segmentController;
 
     public void InitializeSegment()
@@ -31,7 +31,7 @@ public class SegmentPlaceholder : MonoBehaviour, ISegment
 
     }
 
-    public void SetSearchResult(SearchElement searchElement)
+    public void SetSearchResult(SelectionElement selectionElement)
     {
 
     }

@@ -50,7 +50,7 @@ public class StructureComponent : MonoBehaviour, IComponent
         List<ChapterDataElement> dataElements = dataController.DataList.Cast<ChapterDataElement>().ToList();
 
         foreach(ChapterDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name)); 
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name)); 
     }
 
     private void SetPhaseOptions()

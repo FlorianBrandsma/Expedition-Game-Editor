@@ -5,17 +5,24 @@ using System.Linq;
 
 public class ItemController : MonoBehaviour, IDataController
 {
-    public Enums.ItemType itemType;
-    public bool searchById;
     public int temp_id_count;
+    public Enums.ItemType itemType;
+
+    public SearchParameters searchParameters;
 
     private ItemManager itemManager             = new ItemManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+
     public Enums.DataType DataType              { get { return Enums.DataType.Item; } }
     public ICollection DataList                 { get; set; }
+
+    public SearchParameters SearchParameters
+    {
+        get { return searchParameters; }
+        set { searchParameters = value; }
+    }
 
     public void InitializeController()
     {
@@ -33,6 +40,11 @@ public class ItemController : MonoBehaviour, IDataController
     }
 
     public void GetData(SearchData searchData)
+    {
+
+    }
+
+    public void ReplaceData(IEnumerable dataElement)
     {
 
     }

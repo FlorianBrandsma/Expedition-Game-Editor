@@ -5,16 +5,23 @@ using System.Linq;
 
 public class TerrainTileController : MonoBehaviour, IDataController
 {
-    public bool search_by_id;
     public int temp_id_count;
+
+    public SearchParameters searchParameters;
 
     private TerrainTileManager terrainTileManager = new TerrainTileManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+
     public Enums.DataType DataType              { get { return Enums.DataType.TerrainTile; } }
     public ICollection DataList                 { get; set; }
+
+    public SearchParameters SearchParameters
+    {
+        get { return searchParameters; }
+        set { searchParameters = value; }
+    }
 
     public void InitializeController()
     {
@@ -32,6 +39,11 @@ public class TerrainTileController : MonoBehaviour, IDataController
     }
 
     public void GetData(SearchData searchData)
+    {
+
+    }
+
+    public void ReplaceData(IEnumerable dataElement)
     {
 
     }

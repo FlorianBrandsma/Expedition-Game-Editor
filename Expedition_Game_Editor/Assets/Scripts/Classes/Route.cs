@@ -37,12 +37,12 @@ public class Route
         this.property = property;
     }
 
-    public bool Equals(Route new_route)
+    public bool Equals(Route route)
     {
-        if (controller != new_route.controller)
+        if (controller != route.controller)
             return false;
 
-        if (!GeneralData().Equals(new_route.GeneralData()))
+        if (!GeneralData().Equals(route.GeneralData()))
             return false;
 
         return true;

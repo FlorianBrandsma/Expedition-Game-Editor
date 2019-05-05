@@ -6,7 +6,7 @@ using System.Linq;
 public class DefaultHeader : MonoBehaviour, ISegment
 {
     private SegmentController segmentController;
-    public IEditor dataEditor { get; set; }
+    public IEditor DataEditor { get; set; }
 
     #region UI
     public IndexSwitch index_switch;
@@ -30,18 +30,18 @@ public class DefaultHeader : MonoBehaviour, ISegment
         {
             _name = value;
 
-            switch (dataEditor.data.controller.DataType)
+            switch (DataEditor.data.controller.DataType)
             {
                 case Enums.DataType.Chapter:
 
-                    ChapterDataElement chapterData = dataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
-                    chapterData.name = value;
+                    ChapterDataElement chapterData = DataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
+                    chapterData.Name = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    PhaseDataElement phaseData = dataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
+                    PhaseDataElement phaseData = DataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
                     phaseData.name = value;
 
                     break; 
@@ -54,7 +54,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
     public void UpdateName()
     {
         Name = input_field.text;
-        dataEditor.UpdateEditor();
+        DataEditor.UpdateEditor();
     }
     #endregion
 
@@ -62,31 +62,30 @@ public class DefaultHeader : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         segmentController = GetComponent<SegmentController>();
-        dataEditor = segmentController.editorController.pathController.dataEditor;
+        DataEditor = segmentController.editorController.pathController.dataEditor;
 
-        switch (dataEditor.data.controller.DataType)
+        switch (DataEditor.data.controller.DataType)
         {
             case Enums.DataType.Chapter: InitializeChapterData(); break;
             case Enums.DataType.Phase: InitializePhaseData(); break;
         }
 
         if (index_switch != null)
-            index_switch.InitializeSwitch(this, _index, dataEditor.data.controller.DataList.Count - 1); 
+            index_switch.InitializeSwitch(this, _index, DataEditor.data.controller.DataList.Count - 1); 
     }
 
     private void InitializeChapterData()
     {
-        ChapterDataElement chapterData = dataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement chapterData = DataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
 
         _id = chapterData.id;
-        _index = chapterData.index;
-        _name = chapterData.name;
-        _icon = chapterData.icon;
+        _index = chapterData.Index;
+        _name = chapterData.Name;
     }
 
     private void InitializePhaseData()
     {
-        PhaseDataElement phaseData = dataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
+        PhaseDataElement phaseData = DataEditor.data.element.Cast<PhaseDataElement>().FirstOrDefault();
 
         _id = phaseData.id;
         _index = phaseData.index;
@@ -119,7 +118,7 @@ public class DefaultHeader : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SearchElement searchElement)
+    public void SetSearchResult(SelectionElement selectionElement)
     {
 
     }

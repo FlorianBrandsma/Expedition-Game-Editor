@@ -19,6 +19,7 @@ public class Data
     public Data(IDataController controller)
     {
         this.controller = controller;
+        element = new[] { new GeneralData() };
     }
 
     public Data(IDataController controller, IEnumerable element)

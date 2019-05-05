@@ -4,41 +4,37 @@ using System.Linq;
 
 public class ObjectGraphicManager
 {
-    private List<int> id_list;
+    private List<ObjectGraphicData> objectGraphicDataList;
 
-    private List<ObjectGraphicData> objectGraphicData_list;
-
-    public List<ObjectGraphicDataElement> GetObjectGraphicDataElements(List<int> id_list)
+    public List<ObjectGraphicDataElement> GetObjectGraphicDataElements(List<int> idList)
     {
-        this.id_list = id_list;
+        GetObjectGraphicData(idList);
 
-        GetObjectGraphicData();
-
-        var list = (from objectGraphicData in objectGraphicData_list
+        var list = (from objectGraphicData in objectGraphicDataList
                     select new ObjectGraphicDataElement()
                     {
                         id = objectGraphicData.id,
                         table = objectGraphicData.table,
                         type = objectGraphicData.type,
 
-                        name = objectGraphicData.name,
-                        icon = objectGraphicData.icon
+                        Name = objectGraphicData.name,
+                        Icon = objectGraphicData.icon
 
-                    }).OrderBy(x => x.name).ToList();
+                    }).OrderByDescending(x => x.id == 0).ThenBy(x => x.Name).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list;
     }
 
-    public void GetObjectGraphicData()
+    public void GetObjectGraphicData(List<int> idList)
     {
-        objectGraphicData_list = new List<ObjectGraphicData>();
+        objectGraphicDataList = new List<ObjectGraphicData>();
 
-        string[] object_names = new string[] { "Null", "Warrior", "Polearm" };
+        string[] object_names = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
 
         //Temporary
-        foreach (int id in id_list)
+        foreach (int id in idList)
         {
             var objectGraphicData = new ObjectGraphicData();
 
@@ -48,7 +44,7 @@ public class ObjectGraphicManager
             objectGraphicData.name = object_names[id];
             objectGraphicData.icon = "Textures/Icons/Objects/" + object_names[id];
 
-            objectGraphicData_list.Add(objectGraphicData);
+            objectGraphicDataList.Add(objectGraphicData);
         }
     }
 

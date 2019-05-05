@@ -54,7 +54,7 @@ public class ItemManager
             itemData.type = (int)dataController.itemType;
             itemData.index = i;
 
-            itemData.objectId = 2;
+            itemData.objectId = 1;
             itemData.name = "Item " + (i + 1);
 
             itemDataList.Add(itemData);
