@@ -18,7 +18,7 @@ public class ItemEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        itemData = data.element.Cast<ItemDataElement>().FirstOrDefault();
+        itemData = data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             itemData.ClearChanges();
@@ -36,12 +36,12 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<ItemDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<ItemDataElement>().ToList();
 
         list.RemoveAt(itemData.Index);
         list.Insert(index, itemData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -54,7 +54,7 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        if(pathController.route.data.controller == selectionElement.ListManager.listProperties.SegmentController.DataController)
+        if(pathController.route.data.DataController == selectionElement.ListManager.listProperties.DataController)
             selectionElement.ListManager.UpdateData();
     }
 

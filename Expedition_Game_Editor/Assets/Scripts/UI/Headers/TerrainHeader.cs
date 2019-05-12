@@ -24,8 +24,8 @@ public class TerrainHeader : MonoBehaviour, ISegment
     #region Data Methods
     private void InitializeData()
     {
-        terrain_data = DataEditor.data.element.Cast<TerrainDataElement>().FirstOrDefault();
-        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.element.Cast<RegionDataElement>().FirstOrDefault();
+        terrain_data = DataEditor.data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
+        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
 
         _id = terrain_data.id;
     }

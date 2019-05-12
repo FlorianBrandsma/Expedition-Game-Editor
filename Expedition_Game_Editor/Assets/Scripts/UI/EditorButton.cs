@@ -19,7 +19,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data.controller.DataType)
+        switch (element.route.data.DataController.DataType)
         {
             case Enums.DataType.Item:       SetItemElement();       break;
             default: Debug.Log("CASE MISSING");                     break;
@@ -28,7 +28,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        ItemDataElement data = element.route.data.element.Cast<ItemDataElement>().FirstOrDefault();
+        ItemDataElement data = element.route.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
 
         label.text = data.originalName;
     }

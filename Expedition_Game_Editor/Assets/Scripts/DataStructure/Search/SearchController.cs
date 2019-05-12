@@ -5,39 +5,38 @@ using System.Linq;
 
 public class SearchController : MonoBehaviour
 {
-    private Data data;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
-    public Enums.DataType DataType              { get; set; }
 
     public void InitializeController()
     {
-        data = SegmentController.editorController.pathController.route.data;
+        CloseController();
 
-        if (data.element.GetType() != typeof(SearchData[])) return;
+        Data data = SegmentController.editorController.pathController.route.data;
+        
+        if (data.SearchParameters == null) return;
+        
+        var searchParameters = data.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
 
-        SearchData searchData = data.element.Cast<SearchData>().FirstOrDefault();
-
-        DataType = data.controller.DataType;
-
-        switch (DataType)
+        switch (searchParameters.dataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                gameObject.AddComponent<ObjectGraphicController>();
-                GetComponent<ObjectGraphicController>().temp_id_count = 5;
+                ObjectGraphicController objectGraphicController = gameObject.AddComponent<ObjectGraphicController>();
+                objectGraphicController.SearchParameters = data.SearchParameters;
+
+                objectGraphicController.searchParameters.temp_id_count = 5;
 
                 break;
 
             case Enums.DataType.Element:
 
-                gameObject.AddComponent<ElementController>();
-                GetComponent<ElementController>().temp_id_count = 4;
+                ElementController elementController = gameObject.AddComponent<ElementController>();
+                elementController.SearchParameters = data.SearchParameters;
+
+                GetComponent<ElementController>().searchParameters.temp_id_count = 4;
+
                 break;
         }
-
-        GetComponent<IDataController>().SearchParameters = searchData.searchParameters.Copy();
-        GetComponent<IDataController>().SearchParameters.searching = true;
     }
 
     public void CloseController()

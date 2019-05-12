@@ -61,33 +61,17 @@ public class EditorSection : MonoBehaviour
         targetLayout.SetLayout(); 
     }
 
-    public void InitializeDisplay()
-    {
-        if (targetController == null) return;
-
-        targetController.InitializeDisplay();
-    }
-
-    public void SetDisplay()
+    public void OpenEditor()
     {
         if (targetController == null) return;
 
         displayTargetController = targetController;
 
-        displayTargetController.SetDisplay();
+        targetController.OpenSegments();
 
         SetActionButtons();
 
         active = true;
-    }
-
-    public void CloseDisplay()
-    {
-        if (displayTargetController == null) return;
-
-        displayTargetController.CloseDisplay();
-
-        displayTargetController = null;
     }
 
     public void SetActionButtons()
@@ -105,8 +89,6 @@ public class EditorSection : MonoBehaviour
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
-        targetController.CloseController();
-
         targetController = null;
 
         active = false;
@@ -115,6 +97,8 @@ public class EditorSection : MonoBehaviour
     public void CloseLayout()
     {
         if (targetLayout == null) return;
+
+        displayTargetController.CloseController();
 
         targetLayout.CloseLayout();
 

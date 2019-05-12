@@ -10,6 +10,7 @@ public class Enums
         ObjectGraphic,
         Item,
         Element,
+        ChapterElement,
         Region,
         Terrain,
         Tile,

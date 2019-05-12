@@ -23,6 +23,6 @@ public class ObjectGraphic : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return route.data.element.Cast<GeneralData>().FirstOrDefault();
+        return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();
     }
 }

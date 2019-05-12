@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TileController : MonoBehaviour, IDataController
+public class TileController : MonoBehaviour//, IDataController
 {
     public int temp_id_count;
 
-    public SearchParameters searchParameters;
-
     private TileManager tileManager             = new TileManager();
+
+    public SearchParameters searchParameters;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -25,10 +25,10 @@ public class TileController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData(new List<int>());
+        //GetData(new List<int>());
     }
 
-    public void GetData(List<int> id_list)
+    public void GetData(SearchParameters searchParameters)
     {
         DataList = tileManager.GetTileDataElements(this);
 
@@ -36,11 +36,6 @@ public class TileController : MonoBehaviour, IDataController
 
         //tileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //tileDataElements[0].Update();
-    }
-
-    public void GetData(SearchData searchData)
-    {
-
     }
 
     public void ReplaceData(IEnumerable dataElement)

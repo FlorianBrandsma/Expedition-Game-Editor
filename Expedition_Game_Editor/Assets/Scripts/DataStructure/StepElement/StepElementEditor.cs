@@ -19,7 +19,7 @@ public class StepElementEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        stepElementData = data.element.Cast<StepElementDataElement>().FirstOrDefault();
+        stepElementData = data.ElementData.Cast<StepElementDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             stepElementData.ClearChanges();

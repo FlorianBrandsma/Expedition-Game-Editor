@@ -19,7 +19,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        terrainData = data.element.Cast<TerrainDataElement>().FirstOrDefault();
+        terrainData = data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             terrainData.ClearChanges();

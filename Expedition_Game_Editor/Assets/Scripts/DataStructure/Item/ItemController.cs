@@ -8,7 +8,7 @@ public class ItemController : MonoBehaviour, IDataController
     public int temp_id_count;
     public Enums.ItemType itemType;
 
-    public SearchParameters searchParameters;
+    public Search.Item searchParameters;
 
     private ItemManager itemManager             = new ItemManager();
 
@@ -18,20 +18,20 @@ public class ItemController : MonoBehaviour, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Item; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Item>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        GetData(new List<int>());
+        itemManager.InitializeManager(this);
     }
 
-    public void GetData(List<int> id_list)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = itemManager.GetItemDataElements(this);
+        DataList = itemManager.GetItemDataElements(searchParameters);
 
         var itemDataElements = DataList.Cast<ItemDataElement>();
 
@@ -39,12 +39,7 @@ public class ItemController : MonoBehaviour, IDataController
         //itemDataElements[0].Update();
     }
 
-    public void GetData(SearchData searchData)
-    {
-
-    }
-
-    public void ReplaceData(IEnumerable dataElement)
+    public void ReplaceData(SelectionElement searchElement, Data resultData)
     {
 
     }

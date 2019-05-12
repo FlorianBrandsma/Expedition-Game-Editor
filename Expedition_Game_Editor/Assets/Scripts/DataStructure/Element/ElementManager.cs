@@ -1,17 +1,33 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class ElementManager
 {
+    private ElementController elementController;
+
     private List<ElementData> elementDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
 
     private DataManager dataManager = new DataManager();
 
-    public List<ElementDataElement> GetElementDataElements(List<int> idList)
+    public void InitializeManager(ElementController elementController)
     {
-        GetElementData(idList);
+        this.elementController = elementController;
+    }
+
+    public List<ElementDataElement> GetElementDataElements(IEnumerable searchParameters)
+    {
+        var elementSearchData = searchParameters.Cast<Search.Element>().FirstOrDefault();
+
+        switch(elementSearchData.requestType)
+        {  
+            case Search.Element.RequestType.Custom:
+                GetCustomElementData(elementSearchData);
+                break;
+        }
+
         GetObjectGraphicData();
 
         var list = (from elementData in elementDataList
@@ -27,7 +43,7 @@ public class ElementManager
                         Name    = elementData.name,
 
                         objectGraphicName = objectGraphicData.name,
-                        objectGraphicIcon    = objectGraphicData.icon
+                        objectGraphicIcon = objectGraphicData.icon
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -36,26 +52,32 @@ public class ElementManager
         return list;
     }
 
-    internal void GetElementData(List<int> idList)
+    internal void GetCustomElementData(Search.Element searchParameters)
     {
         elementDataList = new List<ElementData>();
 
         //Temporary
         //For filtering out the polearm, just because (index matches id)
-        var objectList = new List<int> { 0, 0, 2, 3, 4 };
+        var objectList = new List<int> { 0, 2, 3, 4 };
 
         int index = 0;
 
-        foreach(int id in idList)
+        for(int i = 0; i < searchParameters.temp_id_count; i++)
         {
             var elementData = new ElementData();
+
+            var id = (i + 1);
+
+            if (searchParameters.exclusedIdList.Count > 0 && searchParameters.exclusedIdList.Contains(id)) continue;
+
+            if (searchParameters.includedIdList.Count > 0 && !searchParameters.includedIdList.Contains(id)) continue;
 
             elementData.id = id;
             elementData.table = "Element";
             elementData.index = index;
 
-            elementData.objectGraphicId = objectList[id];
-            elementData.name = "Element " + (index + 1);
+            elementData.objectGraphicId = objectList[i];
+            elementData.name = "Element " + id;
 
             elementDataList.Add(elementData);
 

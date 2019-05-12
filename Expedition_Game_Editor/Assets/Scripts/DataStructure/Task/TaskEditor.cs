@@ -19,7 +19,7 @@ public class TaskEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        taskData = data.element.Cast<TaskDataElement>().FirstOrDefault();
+        taskData = data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             taskData.ClearChanges();
@@ -37,12 +37,12 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<TaskDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<TaskDataElement>().ToList();
 
         list.RemoveAt(taskData.index);
         list.Insert(index, taskData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

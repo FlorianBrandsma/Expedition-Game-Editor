@@ -44,29 +44,15 @@ public class EditorController : MonoBehaviour
             segment.InitializeSegment(this);
     }
 
+    public void OpenSegments()
+    {
+        foreach (SegmentController segment in segments)
+            segment.OpenSegment();
+    }
+
     private void CloseSegments()
     {
         foreach (SegmentController segment in segments)
             segment.CloseSegment();
     }
-
-    #region Display
-    public void InitializeDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.InitializeSegmentDisplay();
-    }
-
-    public void SetDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.SetSegmentDisplay();
-    }
-
-    public void CloseDisplay()
-    {
-        foreach (SegmentController segment in segments)
-            segment.CloseSegmentDisplay();
-    }
-    #endregion
 }

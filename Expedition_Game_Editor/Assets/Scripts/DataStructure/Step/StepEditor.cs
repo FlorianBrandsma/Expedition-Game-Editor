@@ -19,7 +19,7 @@ public class StepEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        stepData = data.element.Cast<StepDataElement>().FirstOrDefault();
+        stepData = data.ElementData.Cast<StepDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             stepData.ClearChanges();
@@ -37,12 +37,12 @@ public class StepEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<StepDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<StepDataElement>().ToList();
 
         list.RemoveAt(stepData.index);
         list.Insert(index, stepData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

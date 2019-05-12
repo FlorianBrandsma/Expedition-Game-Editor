@@ -18,7 +18,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        chapterData = data.element.Cast<ChapterDataElement>().FirstOrDefault();
+        chapterData = data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
         
         if (!pathController.loaded)
             chapterData.ClearChanges();
@@ -36,12 +36,12 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<ChapterDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<ChapterDataElement>().ToList();
 
         list.RemoveAt(chapterData.Index);
         list.Insert(index, chapterData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

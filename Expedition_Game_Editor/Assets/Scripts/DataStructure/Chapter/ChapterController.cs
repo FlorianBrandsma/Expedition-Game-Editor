@@ -5,9 +5,7 @@ using System.Linq;
 
 public class ChapterController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
-
-    public SearchParameters searchParameters;
+    public Search.Chapter searchParameters;
 
     private ChapterManager chapterManager       = new ChapterManager();
 
@@ -17,20 +15,20 @@ public class ChapterController : MonoBehaviour, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Chapter; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Chapter>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        GetData(new List<int>());
+        chapterManager.InitializeManager(this);
     }
 
-    public void GetData(List<int> idList)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = chapterManager.GetChapterDataElements(this);
+        DataList = chapterManager.GetChapterDataElements(searchParameters);
 
         var chapterDataElements = DataList.Cast<ChapterDataElement>();
 
@@ -38,12 +36,7 @@ public class ChapterController : MonoBehaviour, IDataController
         //chapterDataElements[0].Update();
     }
 
-    public void GetData(SearchData searchData)
-    {
-
-    }
-
-    public void ReplaceData(IEnumerable dataElement)
+    public void ReplaceData(SelectionElement searchElement, Data resultData)
     {
 
     }

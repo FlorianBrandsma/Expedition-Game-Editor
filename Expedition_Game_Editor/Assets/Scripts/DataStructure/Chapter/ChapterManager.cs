@@ -1,28 +1,33 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class ChapterManager
 {
-    private ChapterController dataController;
-    private List<ChapterData> chapterData_list;
+    private ChapterController chapterController;
+    private List<ChapterData> chapterDataList;
 
-    public List<ChapterDataElement> GetChapterDataElements(ChapterController dataController)
+    public void InitializeManager(ChapterController chapterController)
     {
-        this.dataController = dataController;
+        this.chapterController = chapterController;
+    }
 
-        GetChapterData();
-        //GetIconData()?
+    public List<ChapterDataElement> GetChapterDataElements(IEnumerable searchParameters)
+    {
+        var chapterSearchData = searchParameters.Cast<Search.Chapter>().FirstOrDefault();
 
-        var list = (from oCore in chapterData_list
+        GetChapterData(chapterSearchData);
+
+        var list = (from chapterData in chapterDataList
                     select new ChapterDataElement()
                     {
-                        id = oCore.id,
-                        table = oCore.table,
-                        type = oCore.type,
-                        Index = oCore.index,
-                        Name = oCore.name,
-                        Description = oCore.description,
+                        id = chapterData.id,
+                        table = chapterData.table,
+                        type = chapterData.type,
+                        Index = chapterData.index,
+                        Name = chapterData.name,
+                        Description = chapterData.description,
 
                         elementIds = new List<int>() { 1, 2 }
 
@@ -33,23 +38,27 @@ public class ChapterManager
         return list;
     }
 
-    public void GetChapterData()
+    public void GetChapterData(Search.Chapter searchParameters)
     {
-        chapterData_list = new List<ChapterData>();
+        chapterDataList = new List<ChapterData>();
 
         //Temporary
-        for (int i = 0; i < dataController.temp_id_count; i++)
+        for (int i = 0; i < searchParameters.temp_id_count; i++)
         {
             var chapterData = new ChapterData();
 
-            chapterData.id = (i + 1);
+            int id = (i + 1);
+
+            if (searchParameters.exclusedIdList.Contains(id)) continue;
+            
+            chapterData.id = id;
             chapterData.table = "Chapter";
             chapterData.index = i;
 
-            chapterData.name = "Chapter " + (i + 1);
+            chapterData.name = "Chapter " + id;
             chapterData.description = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
-            chapterData_list.Add(chapterData);
+            chapterDataList.Add(chapterData);
         }
     }
 

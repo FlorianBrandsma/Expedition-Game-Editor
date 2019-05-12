@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ElementCore : GeneralData
 {
+    private int index;
     private int objectGraphicId;
     private string name;
     

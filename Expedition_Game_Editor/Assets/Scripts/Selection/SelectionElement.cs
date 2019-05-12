@@ -32,7 +32,7 @@ public class SelectionElement : MonoBehaviour
             if (GetComponent<IDataController>() != null)
                 return GetComponent<IDataController>();
             else
-                return ListManager.listProperties.SegmentController.DataController;
+                return ListManager.listProperties.DataController;
         }
     }
 
@@ -57,7 +57,7 @@ public class SelectionElement : MonoBehaviour
         
         route.property = selectionProperty;
 
-        segmentController = listManager.listProperties.SegmentController;
+        segmentController = listManager.listProperties.DataController.SegmentController;
 
         selectionType = listManager.selectionType;
 
@@ -77,15 +77,17 @@ public class SelectionElement : MonoBehaviour
 
     public void SetElement(IEnumerable dataElement)
     {
-        int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
-        dataElement.Cast<GeneralData>().FirstOrDefault().index = index;
+        //int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
+        //dataElement.Cast<GeneralData>().FirstOrDefault().index = index;
 
         //Data attached to the element gets replaced, 
         //but not the data from the controller's data list.
         //(Only necessary for id exclusion in search lists)
-        DataController.ReplaceData(dataElement);
+
+        //DataController.ReplaceData(this, dataElement);
+
         //Possible to draw element data straight from the controller?
-        route.data.element = dataElement;
+        route.data.ElementData = dataElement;
 
         SetElement();
     }
@@ -95,7 +97,7 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().SetElement();
 
         if (displayParent != null)
-            displayParent.GetComponent<IDisplay>().SetDisplay();
+            displayParent.GetComponent<IDisplay>().DataController = DataController;
     }
 
     public void ActivateSelection()
@@ -158,18 +160,19 @@ public class SelectionElement : MonoBehaviour
         }
     }
 
-    public void SetResult(IEnumerable dataElement)
+    public void SetResult(Data elementData)
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
-        SetElement(dataElement);
-
+        DataController.ReplaceData(this, elementData);
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
+
+        SetElement();
     }
 
     public GeneralData GeneralData()
     {
-        return route.data.element.Cast<GeneralData>().FirstOrDefault();
+        return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();      
     }
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
@@ -20,25 +20,51 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-        
-        InitializeChapterData();
+
+        InitializeElementData();
+
+        SetSearchParameters();
     }
 
-    private void InitializeChapterData()
+    private void InitializeElementData()
     {
-        ChapterDataElement chapterData = DataEditor.data.element.Cast<ChapterDataElement>().FirstOrDefault();
+        if (SegmentController.editorController.pathController.loaded) return;
 
-        SegmentController.DataController.GetData(chapterData.elementIds);
+        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+
+        var searchParameters = new Search.Element();
+
+        searchParameters.requestType = Search.Element.RequestType.Custom;
+        searchParameters.includedIdList = chapterData.elementIds;
+        searchParameters.temp_id_count = 4;
+
+        SegmentController.DataController.GetData(new[] { searchParameters });
+    }
+
+    private void SetSearchParameters()
+    {
+        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        var searchParameters = SegmentController.DataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
+
+        searchParameters.exclusedIdList = chapterData.elementIds;
     }
 
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)
-            GetComponent<IDisplay>().SetDisplay();
+            GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
+        
 
+        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+
+        chapterData.ElementIds = SegmentController.DataController.DataList.Cast<ElementDataElement>().Select(x => x.id).ToList();
+
+        DataEditor.UpdateEditor();
+
+        SetSearchParameters();
     }
 }

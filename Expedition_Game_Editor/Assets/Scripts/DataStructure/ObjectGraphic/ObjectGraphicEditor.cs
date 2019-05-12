@@ -19,7 +19,7 @@ public class ObjectGraphicEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        objectGraphicData = data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+        objectGraphicData = data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             objectGraphicData.ClearChanges();

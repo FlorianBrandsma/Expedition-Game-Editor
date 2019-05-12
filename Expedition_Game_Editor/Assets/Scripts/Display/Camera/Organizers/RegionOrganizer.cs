@@ -18,7 +18,7 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
     public void InitializeOrganizer()
     {
         manager = GetComponent<CameraManager>();
-        route = manager.cameraProperties.route;
+        //route = manager.cameraProperties.route;
     }
 
     public void SetProperties()

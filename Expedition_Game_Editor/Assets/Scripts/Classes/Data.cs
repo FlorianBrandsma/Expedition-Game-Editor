@@ -3,33 +3,41 @@ using System.Collections;
 
 public class Data
 {
-    public IDataController controller { get; set; }
-    public IEnumerable element { get; set; }
+    public IDataController DataController   { get; set; }
+    public IEnumerable ElementData          { get; set; }
+    public IEnumerable SearchParameters     { get; set; }
 
     public Data()
     {
-        element = new[] { new GeneralData() };
+        ElementData = new[] { new GeneralData() };
     }
 
-    public Data(IEnumerable element)
+    public Data(IEnumerable elementData)
     {
-        this.element = element;
+        ElementData = elementData;
     }
 
     public Data(IDataController controller)
     {
-        this.controller = controller;
-        element = new[] { new GeneralData() };
+        DataController = controller;
+        ElementData = new[] { new GeneralData() };
     }
 
     public Data(IDataController controller, IEnumerable element)
     {
-        this.controller = controller;
-        this.element = element;
+        DataController = controller;
+        ElementData = element;
+    }
+
+    public Data(IDataController controller, IEnumerable element, IEnumerable searchParameters)
+    {
+        DataController = controller;
+        ElementData = element;
+        SearchParameters = searchParameters;
     }
 
     public Data Copy()
     {
-        return new Data(element);
+        return new Data(ElementData);
     }
 }

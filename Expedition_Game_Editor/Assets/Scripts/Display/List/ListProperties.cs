@@ -21,22 +21,35 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool enableNumbers;
     public bool enablePaging;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public void InitializeProperties()
+    private IDataController dataController;
+    public IDataController DataController
     {
-        if (SegmentController.DataController == null) return;
+        get { return dataController; }
+        set
+        {
+            dataController = value;
 
+            if (DataController != null)
+                OpenList();
+        }
+    }
+
+    private void OpenList()
+    { 
+        InitializeProperties();
+        SetDisplay();
+    }
+
+    private void InitializeProperties()
+    {
         if (GetComponent<IProperties>() != null)
             displayType = GetComponent<IProperties>().Type();
 
         listManager.InitializeList(this);
     }
 
-    public void SetDisplay()
+    private void SetDisplay()
     {
-        if (SegmentController.DataController == null) return;
-
         listManager.SetProperties();
         listManager.SetList();  
     }
@@ -45,9 +58,11 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public void CloseDisplay()
     {
-        if (SegmentController.DataController == null) return;
+        if (DataController == null) return;
 
         listManager.CloseList();
+
+        DataController = null;
     }
 
     public void AutoSelectElement()

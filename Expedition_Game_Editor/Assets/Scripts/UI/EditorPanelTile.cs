@@ -38,7 +38,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (Element.route.data.controller.DataType)
+        switch (Element.route.data.DataController.DataType)
         {
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
@@ -49,7 +49,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainElementElement()
     {
         Data data = Element.route.data;
-        TerrainElementDataElement data_element = data.element.Cast<TerrainElementDataElement>().FirstOrDefault();
+        TerrainElementDataElement data_element = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
         header.text = data_element.original_name;
@@ -64,7 +64,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainObjectElement()
     {
         Data data = Element.route.data;
-        TerrainObjectDataElement data_element = data.element.Cast<TerrainObjectDataElement>().FirstOrDefault();
+        TerrainObjectDataElement data_element = data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
         header.text = data_element.original_name;

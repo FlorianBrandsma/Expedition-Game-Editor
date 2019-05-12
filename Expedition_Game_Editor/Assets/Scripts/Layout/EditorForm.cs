@@ -75,7 +75,7 @@ public class EditorForm : MonoBehaviour
     public void ClosePath()
     {
         if (!active) return;
-
+        
         baseController.ClosePath(activePath);
 
         foreach (EditorSection section in editorSections)
@@ -102,11 +102,8 @@ public class EditorForm : MonoBehaviour
         //Activate dependencies and set content layout based on header and footer
         SetLayout();
 
-        //Set up the organizers
-        InitializeDisplay();
-
-        //Set the visual component (list/camera)
-        SetDisplay();
+        //Open the target editors
+        OpenEditor();
 
         //Activate all components along the path and sort them
         if (baseController.SetComponents(path))
@@ -121,8 +118,6 @@ public class EditorForm : MonoBehaviour
         CloseLayout();
 
         baseController.CloseTabs(activePath);
-
-        CloseDisplay();
 
         if (close_components)
             ComponentManager.componentManager.CloseComponents();
@@ -182,33 +177,20 @@ public class EditorForm : MonoBehaviour
     }
     #endregion
 
-    #region Display
-    private void InitializeDisplay()
+    #region Editor
+    private void OpenEditor()
     {
         foreach (EditorSection section in editorSections)
-            section.InitializeDisplay();
-    }
-
-    private void SetDisplay()
-    {
-        foreach (EditorSection section in editorSections)
-            section.SetDisplay();
-    }
-
-    private void CloseDisplay()
-    {
-        foreach (EditorSection section in editorSections)
-            section.CloseDisplay();
+            section.OpenEditor();
     }
     #endregion
 
     public void CloseForm(bool close_components)
     {
         if (!active) return;
-
+        
         ClosePath();
         CloseLayout(close_components);
-        CloseDisplay();
 
         closed = true;
 

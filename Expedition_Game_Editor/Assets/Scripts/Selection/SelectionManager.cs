@@ -62,7 +62,7 @@ static public class SelectionManager
 
     static public void SelectSet(SelectionElement setElement)
     {
-        getElement.SetResult(setElement.route.data.element);
+        getElement.SetResult(setElement.route.data);
 
         CancelGetSelection();
     }

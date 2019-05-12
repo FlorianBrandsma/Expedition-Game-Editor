@@ -35,7 +35,7 @@ public class PagingManager : MonoBehaviour, IOverlay
         organizer = new_organizer;
         list = new_list;
 
-        int list_count = overlayManager.listManager.listProperties.SegmentController.DataController.DataList.Count;
+        int list_count = overlayManager.listManager.listProperties.DataController.DataList.Count;
 
         Vector2 list_size = list.GetListSize(list_count, false);
 
@@ -106,7 +106,7 @@ public class PagingManager : MonoBehaviour, IOverlay
         if (count > remainder)
             count = remainder;
 
-        var dataController = overlayManager.listManager.listProperties.SegmentController.DataController;
+        var dataController = overlayManager.listManager.listProperties.DataController;
 
         organizer.ResetData(dataController.DataList.Cast<GeneralData>().ToList().GetRange(start, count));
     }

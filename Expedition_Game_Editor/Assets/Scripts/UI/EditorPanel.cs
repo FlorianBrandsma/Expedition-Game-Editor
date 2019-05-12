@@ -62,7 +62,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (Element.route.data.controller.DataType)
+        switch (Element.route.data.DataController.DataType)
         {
             case Enums.DataType.Chapter:        SetChapterElement();        break;
             case Enums.DataType.Phase:          SetPhaseElement();          break;
@@ -87,7 +87,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetChapterElement()
     {
         Data data = Element.route.data;
-        ChapterDataElement dataElement = data.element.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement dataElement = data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
         
         id.text             = dataElement.id.ToString();
         header.text         = dataElement.originalName;
@@ -100,11 +100,11 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetPhaseElement()
     {
         Data data = Element.route.data;
-        PhaseDataElement dataElement = data.element.Cast<PhaseDataElement>().FirstOrDefault();
+        PhaseDataElement dataElement = data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.original_name;
-        description.text = dataElement.original_description;
+        header.text = dataElement.originalName;
+        description.text = dataElement.originalDescription;
 
         if (properties.icon)
             IconTexture = Resources.Load<Texture2D>(dataElement.icon);
@@ -116,7 +116,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetQuestElement()
     {
         Data data = Element.route.data;
-        QuestDataElement dataElement = data.element.Cast<QuestDataElement>().FirstOrDefault();
+        QuestDataElement dataElement = data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.original_name;
@@ -128,7 +128,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetStepElement()
     {
         Data data = Element.route.data;
-        StepDataElement dataElement = data.element.Cast<StepDataElement>().FirstOrDefault();
+        StepDataElement dataElement = data.ElementData.Cast<StepDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.original_name;
@@ -143,7 +143,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetStepElementElement()
     {
         Data data = Element.route.data;
-        StepElementDataElement dataElement = data.element.Cast<StepElementDataElement>().FirstOrDefault();
+        StepElementDataElement dataElement = data.ElementData.Cast<StepElementDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.name;
@@ -158,7 +158,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetTaskElement()
     {
         Data data = Element.route.data;
-        TaskDataElement dataElement = data.element.Cast<TaskDataElement>().FirstOrDefault();
+        TaskDataElement dataElement = data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         description.text = dataElement.original_description;
@@ -170,7 +170,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetRegionElement()
     {
         Data data = Element.route.data;
-        RegionDataElement dataElement = data.element.Cast<RegionDataElement>().FirstOrDefault();
+        RegionDataElement dataElement = data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.original_name;
@@ -182,7 +182,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetObjectGraphicElement()
     {
         Data data = Element.route.data;
-        ObjectGraphicDataElement dataElement = data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+        ObjectGraphicDataElement dataElement = data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.originalName;
@@ -193,7 +193,7 @@ public class EditorPanel : MonoBehaviour, IElement
     private void SetElementElement()
     {
         Data data = Element.route.data;
-        ElementDataElement dataElement = data.element.Cast<ElementDataElement>().FirstOrDefault();
+        ElementDataElement dataElement = data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.originalName;

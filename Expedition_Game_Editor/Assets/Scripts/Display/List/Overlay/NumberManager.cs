@@ -26,7 +26,7 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int list_count = overlayManager.listManager.listProperties.SegmentController.DataController.DataList.Count;
+        int list_count = overlayManager.listManager.listProperties.DataController.DataList.Count;
 
         Vector2 list_size = list.GetListSize(list_count, false);
 

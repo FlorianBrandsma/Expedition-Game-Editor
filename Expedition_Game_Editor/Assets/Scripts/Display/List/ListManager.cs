@@ -77,7 +77,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.SegmentController.DataController.DataList.Count == 0) return;
+        if (listProperties.DataController.DataList.Count == 0) return;
 
         list.SetElementSize();
 
@@ -85,9 +85,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        listParent.sizeDelta = list.GetListSize(listProperties.SegmentController.DataController.DataList.Count, true);
+        listParent.sizeDelta = list.GetListSize(listProperties.DataController.DataList.Count, true);
 
-        listSize = list.GetListSize(listProperties.SegmentController.DataController.DataList.Count, false);
+        listSize = list.GetListSize(listProperties.DataController.DataList.Count, false);
 
         if (!listProperties.enablePaging)
             SetData();
@@ -97,7 +97,7 @@ public class ListManager : MonoBehaviour
         listMin = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         listMax = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
-        if (EditorManager.historyManager.returned || !listProperties.SegmentController.editorController.pathController.loaded)
+        if (EditorManager.historyManager.returned || !listProperties.DataController.SegmentController.editorController.pathController.loaded)
             ResetListPosition();
     }
 
@@ -123,7 +123,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.ResetData(listProperties.SegmentController.DataController.DataList);
+        organizer.ResetData(listProperties.DataController.DataList);
     }
 
     public void UpdateOverlay()

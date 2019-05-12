@@ -19,7 +19,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        regionData = data.element.Cast<RegionDataElement>().FirstOrDefault();
+        regionData = data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             regionData.ClearChanges();
@@ -37,12 +37,12 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<RegionDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<RegionDataElement>().ToList();
 
         list.RemoveAt(regionData.index);
         list.Insert(index, regionData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

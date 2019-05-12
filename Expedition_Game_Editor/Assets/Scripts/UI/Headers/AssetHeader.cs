@@ -32,18 +32,18 @@ public class AssetHeader : MonoBehaviour, ISegment
         {
             _name = value;
 
-            switch (DataEditor.data.controller.DataType)
+            switch (DataEditor.data.DataController.DataType)
             {
                 case Enums.DataType.Item:
 
-                    ItemDataElement itemData = DataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
+                    ItemDataElement itemData = DataEditor.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
                     itemData.Name = value;
 
                     break;
 
                 case Enums.DataType.Element:
 
-                    ElementDataElement elementData = DataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
+                    ElementDataElement elementData = DataEditor.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
                     elementData.Name = value;
 
                     break;
@@ -59,11 +59,11 @@ public class AssetHeader : MonoBehaviour, ISegment
             _objectGraphicName  = value.Name;
             _objectGraphicIcon  = value.Icon;
 
-            switch (DataEditor.data.controller.DataType)
+            switch (DataEditor.data.DataController.DataType)
             {
                 case Enums.DataType.Item:
 
-                    ItemDataElement itemData    = DataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
+                    ItemDataElement itemData    = DataEditor.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
                     itemData.ObjectGraphicId    = value.id;
                     itemData.objectGraphicName  = value.Name;
                     itemData.objectGraphicIcon  = value.Icon;
@@ -72,7 +72,7 @@ public class AssetHeader : MonoBehaviour, ISegment
 
                 case Enums.DataType.Element:
 
-                    ElementDataElement elementData  = DataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
+                    ElementDataElement elementData  = DataEditor.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
                     elementData.ObjectGraphicId     = value.id;
                     elementData.objectGraphicName   = value.Name;
                     elementData.objectGraphicIcon   = value.Icon;
@@ -107,7 +107,7 @@ public class AssetHeader : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
 
-        switch (DataEditor.data.controller.DataType)
+        switch (DataEditor.data.DataController.DataType)
         {
             case Enums.DataType.Item:       InitializeItemData();       break;
             case Enums.DataType.Element:    InitializeElementData();    break;
@@ -116,12 +116,12 @@ public class AssetHeader : MonoBehaviour, ISegment
         selectionElement.InitializeElement();
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, _index, DataEditor.data.controller.DataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, _index, DataEditor.data.DataController.DataList.Count - 1);
     }
 
     private void InitializeItemData()
     {
-        ItemDataElement itemData = DataEditor.data.element.Cast<ItemDataElement>().FirstOrDefault();
+        ItemDataElement itemData = DataEditor.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
 
         _id                 = itemData.id;
         _index              = itemData.Index;
@@ -136,7 +136,7 @@ public class AssetHeader : MonoBehaviour, ISegment
 
     private void InitializeElementData()
     {
-        ElementDataElement elementData = DataEditor.data.element.Cast<ElementDataElement>().FirstOrDefault();
+        ElementDataElement elementData = DataEditor.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
         _id                 = elementData.id;
         _index              = elementData.Index;
@@ -184,11 +184,11 @@ public class AssetHeader : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        switch(selectionElement.route.data.controller.DataType)
+        switch(selectionElement.route.data.DataController.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var objectGraphicDataElement = selectionElement.route.data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+                var objectGraphicDataElement = selectionElement.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
                 UpdateObjectGraphic(objectGraphicDataElement);
 

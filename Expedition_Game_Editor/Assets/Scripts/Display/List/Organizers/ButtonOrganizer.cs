@@ -22,7 +22,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.SegmentController.DataController;
+        dataController = listManager.listProperties.DataController;
     }
 
     public void SetProperties()

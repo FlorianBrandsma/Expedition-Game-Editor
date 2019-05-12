@@ -2,18 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class SearchParameters
 {
+    public Enums.DataType dataType;
+
+    [HideInInspector]
+    public List<int> idList;
     [HideInInspector]
     public List<int> includedIdList = new List<int>();
     [HideInInspector]
     public List<int> exclusedIdList = new List<int>();
+    
+    [HideInInspector]
+    public bool displayNullId;
 
-    public bool searching;
+    public int temp_id_count;
 
     public bool unique;
-    public bool displayNullId;
+    
+    public string value;
 
     public SearchParameters Copy()
     {
@@ -23,7 +30,7 @@ public class SearchParameters
         searchParameters.exclusedIdList = exclusedIdList;
 
         searchParameters.unique = unique;
-        searchParameters.displayNullId = displayNullId;
+        //searchParameters.displayNullId = displayNullId;
 
         return searchParameters;
     }

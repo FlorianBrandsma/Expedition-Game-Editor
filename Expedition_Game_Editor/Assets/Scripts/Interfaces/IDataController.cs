@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public interface IDataController
 {
-    ICollection DataList                { get; set; }
-    Enums.DataType DataType             { get; }
-    SearchParameters SearchParameters   { get; set; }
+    SegmentController SegmentController { get; }
+
+    ICollection DataList            { get; set; }
+    Enums.DataType DataType         { get; }
+    IEnumerable SearchParameters    { get; set; }
 
     void InitializeController();
-    void GetData(List<int> idList);
-    void GetData(SearchData searchData);
-    void ReplaceData(IEnumerable elementData);
+    void GetData(IEnumerable searchParameters);
+    void ReplaceData(SelectionElement searchElement, Data resultData);
 }

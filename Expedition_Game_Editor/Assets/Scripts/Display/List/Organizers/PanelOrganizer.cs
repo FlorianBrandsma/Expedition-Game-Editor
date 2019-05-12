@@ -22,7 +22,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void InitializeOrganizer()
     {
-        dataController = ListManager.listProperties.SegmentController.DataController;
+        dataController = ListManager.listProperties.DataController;
     }
 
     public void SetProperties()
@@ -51,7 +51,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float positionSum = 0;
 
-        for (int i = 0; i < ListManager.listProperties.SegmentController.DataController.DataList.Count; i++)
+        for (int i = 0; i < ListManager.listProperties.DataController.DataList.Count; i++)
         {
             rowHeight.Add(ElementSize.y);
 

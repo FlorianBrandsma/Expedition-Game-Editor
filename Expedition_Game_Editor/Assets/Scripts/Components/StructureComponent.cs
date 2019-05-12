@@ -58,7 +58,7 @@ public class StructureComponent : MonoBehaviour, IComponent
         List<PhaseDataElement> dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
 
         foreach (PhaseDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
     }
 
     private void SetQuestOptions()

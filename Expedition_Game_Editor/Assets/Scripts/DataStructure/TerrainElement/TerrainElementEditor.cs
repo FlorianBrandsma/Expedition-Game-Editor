@@ -19,7 +19,7 @@ public class TerrainElementEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        terrainElementData = data.element.Cast<TerrainElementDataElement>().FirstOrDefault();
+        terrainElementData = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             terrainElementData.ClearChanges();
@@ -37,12 +37,12 @@ public class TerrainElementEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<TerrainElementDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
         list.RemoveAt(terrainElementData.index);
         list.Insert(index, terrainElementData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

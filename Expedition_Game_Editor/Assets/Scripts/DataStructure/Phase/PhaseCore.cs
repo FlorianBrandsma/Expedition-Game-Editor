@@ -3,62 +3,62 @@ using System.Collections;
 
 public class PhaseCore : GeneralData
 {
-    private int _index;
-    private string _name;
-    private string _description;
+    private int index;
+    private string name;
+    private string description;
 
-    public int original_index;
-    public string original_name;
-    public string original_description;
+    public int originalIndex;
+    public string originalName;
+    public string originalDescription;
 
     public bool changed;
-    private bool changed_id;
-    private bool changed_table;
-    private bool changed_type;
-    private bool changed_index;
-    private bool changed_name;
-    private bool changed_description;
+    private bool changedId;
+    private bool changedTable;
+    private bool changedType;
+    private bool changedIndex;
+    private bool changedName;
+    private bool changedDescription;
 
     #region Properties
 
-    public int index
+    public int Index
     {
-        get { return _index; }
+        get { return index; }
         set
         {
-            if (value == _index) return;
+            if (value == index) return;
 
-            changed_index = true;
+            changedIndex = true;
 
-            _index = value;
+            index = value;
         }
     }
 
-    public string name
+    public string Name
     {
-        get { return _name; }
+        get { return name; }
         set
         {
-            if (value == _name) return;
+            if (value == name) return;
 
             changed = true;
-            changed_name = true;
+            changedName = true;
 
-            _name = value;
+            name = value;
         }
     }
 
-    public string description
+    public string Description
     {
-        get { return _description; }
+        get { return description; }
         set
         {
-            if (value == _description) return;
+            if (value == description) return;
 
             changed = true;
-            changed_description = true;
+            changedDescription = true;
 
-            _description = value;
+            description = value;
         }
     }
 
@@ -89,25 +89,25 @@ public class PhaseCore : GeneralData
 
     public void UpdateIndex()
     {
-        if (changed_index)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
-            changed_index = false;
+            changedIndex = false;
         }
     }
 
     public void SetOriginalValues()
     {
-        original_name = name;
-        original_description = description;
+        originalName = name;
+        originalDescription = description;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = original_name;
-        description = original_description;
+        name = originalName;
+        description = originalDescription;
     }
 
     public void ClearChanges()
@@ -115,12 +115,12 @@ public class PhaseCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changed_id = false;
-        changed_table = false;
-        changed_type = false;
-        changed_index = false;
-        changed_name = false;
-        changed_description = false;
+        changedId = false;
+        changedTable = false;
+        changedType = false;
+        changedIndex = false;
+        changedName = false;
+        changedDescription = false;
     }
 
     public void Delete()

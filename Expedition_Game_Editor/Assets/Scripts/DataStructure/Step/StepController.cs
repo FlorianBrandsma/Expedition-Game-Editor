@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class StepController : MonoBehaviour, IDataController
+public class StepController : MonoBehaviour//, IDataController
 {
     public int temp_id_count;
 
@@ -25,10 +25,10 @@ public class StepController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        GetData(new List<int>());
+        //GetData(new List<int>());
     }
 
-    public void GetData(List<int> id_list)
+    public void GetData(SearchParameters searchParameters)
     {
         DataList = stepManager.GetStepDataElements(this);
 
@@ -36,11 +36,6 @@ public class StepController : MonoBehaviour, IDataController
 
         //stepDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
         //stepDataElements[0].Update();
-    }
-
-    public void GetData(SearchData searchData)
-    {
-
     }
 
     public void ReplaceData(IEnumerable dataElement)

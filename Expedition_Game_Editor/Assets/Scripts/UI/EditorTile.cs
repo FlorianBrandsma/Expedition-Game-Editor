@@ -17,52 +17,61 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data.controller.DataType)
+        switch (element.route.data.DataController.DataType)
         {
             case Enums.DataType.Element:        SetElementElement();        break;
             case Enums.DataType.Terrain:        SetTerrainElement();        break;
             case Enums.DataType.Tile:           SetTileElement();           break;
             case Enums.DataType.TerrainTile:    SetTerrainTileElement();    break;
             case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
+            case Enums.DataType.ChapterElement: SetChapterElementElement(); break;
             default: Debug.Log("CASE MISSING");                             break;
         }
     }
 
     private void SetElementElement()
     {
-        ElementDataElement data = element.route.data.element.Cast<ElementDataElement>().FirstOrDefault();
+        var data = element.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
-        icon.texture = Resources.Load<Texture2D>(data.originalObjectGraphicIcon);
+        icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
     }
 
     private void SetTerrainElement()
     {
-        TerrainDataElement data = element.route.data.element.Cast<TerrainDataElement>().FirstOrDefault();
+        var data = element.route.data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetTileElement()
     {
-        TileDataElement data = element.route.data.element.Cast<TileDataElement>().FirstOrDefault();
+        var data = element.route.data.ElementData.Cast<TileDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetTerrainTileElement()
     {
-        TerrainTileDataElement data = element.route.data.element.Cast<TerrainTileDataElement>().FirstOrDefault();
+        var data = element.route.data.ElementData.Cast<TerrainTileDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetObjectGraphicElement()
     {
-        element.route.data.controller.DataList = element.route.data.element.Cast<ObjectGraphicDataElement>().ToList();
+        //Required for initialization of the DataList. Better suited elsewhere
+        element.route.data.DataController.DataList = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().ToList();
 
-        var objectGraphicDataElement = element.route.data.element.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+        var objectGraphicDataElement = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
         icon.texture = Resources.Load<Texture2D>(objectGraphicDataElement.Icon);
+    }
+
+    private void SetChapterElementElement()
+    {
+        var data = element.route.data.ElementData.Cast<ChapterElementDataElement>().FirstOrDefault();
+
+        icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
     }
 
     public void CloseElement()

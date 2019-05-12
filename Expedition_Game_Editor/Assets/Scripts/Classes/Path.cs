@@ -174,7 +174,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().table == data.element.Cast<GeneralData>().FirstOrDefault().table)
+            if (r.GeneralData().table == data.ElementData.Cast<GeneralData>().FirstOrDefault().table)
                 r.data = data;
         }
     }

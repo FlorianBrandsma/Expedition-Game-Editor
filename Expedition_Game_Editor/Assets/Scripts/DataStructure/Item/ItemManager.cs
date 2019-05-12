@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class ItemManager
 {
-    private ItemController dataController;
+    private ItemController itemController;
     private List<ItemData> itemDataList;
 
     private List<DataManager.ObjectGraphicData> objectGraphicData_list;
 
     private DataManager dataManager = new DataManager();
 
-    public List<ItemDataElement> GetItemDataElements(ItemController dataController)
+    public void InitializeManager(ItemController itemController)
     {
-        this.dataController = dataController;
+        this.itemController = itemController;
+    }
 
-        GetItemData();
+    public List<ItemDataElement> GetItemDataElements(IEnumerable searchParameters)
+    {
+        var searchItem = searchParameters.Cast<Search.Item>().FirstOrDefault();
+
+        GetItemData(searchItem);
         GetObjectGraphicData();
 
         var list = (from itemData in itemDataList
@@ -40,18 +46,18 @@ public class ItemManager
         return list;
     }
 
-    internal void GetItemData()
+    internal void GetItemData(Search.Item searchParameters)
     {
         itemDataList = new List<ItemData>();
 
         //Temporary
-        for (int i = 0; i < dataController.temp_id_count; i++)
+        for (int i = 0; i < searchParameters.temp_id_count; i++)
         {
             var itemData = new ItemData();
 
             itemData.id = (i + 1);
             itemData.table = "Item";
-            itemData.type = (int)dataController.itemType;
+            itemData.type = (int)itemController.itemType;
             itemData.index = i;
 
             itemData.objectId = 1;

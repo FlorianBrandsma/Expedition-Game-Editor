@@ -5,11 +5,7 @@ using System.Linq;
 
 public class ElementController : MonoBehaviour, IDataController
 {
-    [HideInInspector]
-    public List<int> idList = new List<int>();
-    public int temp_id_count;
-
-    public SearchParameters searchParameters;
+    public Search.Element searchParameters;
 
     private ElementManager elementManager       = new ElementManager();
 
@@ -19,26 +15,20 @@ public class ElementController : MonoBehaviour, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Element; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Element>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        for (int id = 1; id <= temp_id_count; id++)
-        {
-            if(!searchParameters.exclusedIdList.Contains(id))
-                idList.Add(id);
-        }
-
-        GetData(idList);
+        elementManager.InitializeManager(this);
     }
 
-    public void GetData(List<int> idList)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = elementManager.GetElementDataElements(idList);
+        DataList = elementManager.GetElementDataElements(searchParameters);
 
         var elementDataElements = DataList.Cast<ElementDataElement>();
 
@@ -46,18 +36,24 @@ public class ElementController : MonoBehaviour, IDataController
         //elementDataElements[0].Update();
     }
 
-    public void GetData(SearchData searchData)
+    public void ReplaceData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = searchElement.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
-    }
+        var elementDataElement = DataList.Cast<ElementDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-    public void ReplaceData(IEnumerable dataElement)
-    {
-        var elementDataElement = dataElement.Cast<ElementDataElement>().FirstOrDefault();
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.Element:
 
-        var replacementList = DataList.Cast<ElementDataElement>().ToList();
-        replacementList[elementDataElement.index] = elementDataElement;
+                var resultElementData = resultData.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
-        DataList = replacementList; 
+                elementDataElement.id = resultElementData.id;
+                elementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
+
+                break;
+        }
+
+        searchElement.route.data.ElementData = new[] { elementDataElement };
     }
 }

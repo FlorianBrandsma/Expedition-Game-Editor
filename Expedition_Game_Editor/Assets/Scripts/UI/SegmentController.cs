@@ -6,8 +6,7 @@ using System.Collections.Generic;
 public class SegmentController : MonoBehaviour
 {
     public GameObject dataControllerParent;
-    
-    public bool autoLoad;
+
     public bool loadOnce;
 
     public bool disableToggle;
@@ -70,32 +69,40 @@ public class SegmentController : MonoBehaviour
         content.SetActive(toggle.isOn);
     }
 
-    public void CloseSegment()
-    {
-        if(Segment != null)
-            Segment.CloseSegment();
-    }
-
     public void InitializeSegment(EditorController editorController)
     {
         this.editorController = editorController;
 
         path = editorController.pathController.route.path;
 
+        if (DataController != null)
+            DataController.InitializeController();
+
+        if (GetComponent<SearchController>() != null)
+            GetComponent<SearchController>().InitializeController();
+
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
 
-        if (!loaded && !editorController.pathController.loaded && autoLoad)
-        {
-            if (GetComponent<SearchController>() != null)
-                GetComponent<SearchController>().InitializeController();
+        loaded = true;
+    }
 
-            if (DataController != null)
-            {
-                DataController.InitializeController();
-                loaded = true;
-            }
-        }     
+    public void OpenSegment()
+    {
+        if (GetComponent<ISegment>() != null)
+            GetComponent<ISegment>().OpenSegment();
+    }
+
+    public void CloseSegment()
+    {
+        if (Segment != null)
+            Segment.CloseSegment();
+
+        if (Display != null)
+            Display.CloseDisplay();
+
+        if (!loadOnce)
+            loaded = false;
     }
 
     public void FilterRows(List<GeneralData> list)
@@ -103,38 +110,10 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ListProperties>() != null)
         {
             GetComponent<ListProperties>().CloseDisplay();
-            GetComponent<ListProperties>().SegmentController.DataController.DataList = new List<GeneralData>(list);
+            GetComponent<ListProperties>().DataController.DataList = new List<GeneralData>(list);
         }
 
-        SetSegmentDisplay();
-    }
-
-    public void InitializeSegmentDisplay()
-    {
-        if (Display != null)
-            Display.InitializeProperties();
-    }
-
-    public void SetSegmentDisplay()
-    {
-        if (Display != null && autoLoad)
-            Display.SetDisplay();
-
-        //This block might belong in a non-display method
-        if (GetComponent<ISegment>() != null)
-            GetComponent<ISegment>().OpenSegment();
-    }
-
-    public void CloseSegmentDisplay()
-    {
-        if (Display != null)
-            Display.CloseDisplay();
-
-        if (GetComponent<SearchController>() != null)
-            GetComponent<SearchController>().CloseController();
-
-        if (!loadOnce)
-            loaded = false;
+        OpenSegment();
     }
 
     public bool AutoSelectElement()

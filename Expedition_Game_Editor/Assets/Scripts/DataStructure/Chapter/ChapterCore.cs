@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ChapterCore : GeneralData
 {
+    private int index;
     private string name;
     private string description;
 
@@ -67,9 +68,9 @@ public class ChapterCore : GeneralData
         
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!changed) return;
+        //if (!changed) return;
 
         //Debug.Log("Updated " + name);
 
@@ -80,24 +81,24 @@ public class ChapterCore : GeneralData
         //if (changed_name)           return;
         //if (changed_description)    return;
 
-        SetOriginalValues();     
+        //SetOriginalValues();     
     }
 
     public void UpdateIndex()
     {
-        if(changedIndex)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
             changedIndex = false;
         }
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalName           = name;
         originalDescription    = description;
 
-        ClearChanges();
+        //ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -106,7 +107,7 @@ public class ChapterCore : GeneralData
         description = originalDescription;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 

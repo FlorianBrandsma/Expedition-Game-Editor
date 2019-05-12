@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class ObjectGraphicManager
 {
+    private ObjectGraphicController objectGraphicController;
     private List<ObjectGraphicData> objectGraphicDataList;
 
-    public List<ObjectGraphicDataElement> GetObjectGraphicDataElements(List<int> idList)
+    public void InitializeManager(ObjectGraphicController objectGraphicController)
     {
-        GetObjectGraphicData(idList);
+        this.objectGraphicController = objectGraphicController;
+    }
+
+    public List<ObjectGraphicDataElement> GetObjectGraphicDataElements(IEnumerable searchParameters)
+    {
+        var objectGraphicSearchData = searchParameters.Cast<Search.ObjectGraphic>().FirstOrDefault();
+
+        GetObjectGraphicData(objectGraphicSearchData);
 
         var list = (from objectGraphicData in objectGraphicDataList
                     select new ObjectGraphicDataElement()
@@ -27,22 +36,24 @@ public class ObjectGraphicManager
         return list;
     }
 
-    public void GetObjectGraphicData(List<int> idList)
+    public void GetObjectGraphicData(Search.ObjectGraphic searchParameters)
     {
         objectGraphicDataList = new List<ObjectGraphicData>();
 
         string[] object_names = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
 
         //Temporary
-        foreach (int id in idList)
+        for(int i = 0; i < searchParameters.temp_id_count; i++)
         {
             var objectGraphicData = new ObjectGraphicData();
+
+            var id = (i + 1);
 
             objectGraphicData.id = id;
             objectGraphicData.table = "ObjectGraphic";
 
-            objectGraphicData.name = object_names[id];
-            objectGraphicData.icon = "Textures/Icons/Objects/" + object_names[id];
+            objectGraphicData.name = object_names[i];
+            objectGraphicData.icon = "Textures/Icons/Objects/" + object_names[i];
 
             objectGraphicDataList.Add(objectGraphicData);
         }

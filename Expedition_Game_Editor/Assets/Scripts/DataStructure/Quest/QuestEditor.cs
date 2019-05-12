@@ -18,7 +18,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        questData = data.element.Cast<QuestDataElement>().FirstOrDefault();
+        questData = data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             questData.ClearChanges();
@@ -36,12 +36,12 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<QuestDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<QuestDataElement>().ToList();
 
         list.RemoveAt(questData.index);
         list.Insert(index, questData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

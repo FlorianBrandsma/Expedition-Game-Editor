@@ -14,7 +14,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
     public void InitializeOrganizer()
     {
-        dataController = cameraManager.cameraProperties.SegmentController.DataController;
+        dataController = cameraManager.cameraProperties.DataController;
     }
 
     public void SetProperties()

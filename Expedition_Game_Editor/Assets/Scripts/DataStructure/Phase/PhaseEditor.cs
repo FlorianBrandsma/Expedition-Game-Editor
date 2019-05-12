@@ -18,7 +18,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        phaseData = data.element.Cast<PhaseDataElement>().FirstOrDefault();
+        phaseData = data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
 
         if (!pathController.loaded)
             phaseData.ClearChanges();
@@ -36,16 +36,16 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<PhaseDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<PhaseDataElement>().ToList();
 
-        list.RemoveAt(phaseData.index);
+        list.RemoveAt(phaseData.Index);
         list.Insert(index, phaseData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
-            list[i].index = i;
+            list[i].Index = i;
             list[i].UpdateIndex();
         }
 

@@ -5,11 +5,7 @@ using System.Linq;
 
 public class ObjectGraphicController : MonoBehaviour, IDataController
 {
-    [HideInInspector]
-    public List<int> idList = new List<int>();
-    public int temp_id_count;
-
-    public SearchParameters searchParameters;
+    public Search.ObjectGraphic searchParameters;
 
     private ObjectGraphicManager objectGraphicManager = new ObjectGraphicManager();
 
@@ -19,23 +15,20 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.ObjectGraphic; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.ObjectGraphic>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        for (int id = 0; id < temp_id_count; id++)
-            idList.Add(id);
-
-        GetData(idList);
+        objectGraphicManager.InitializeManager(this);
     }
 
-    public void GetData(List<int> idList)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = objectGraphicManager.GetObjectGraphicDataElements(idList);
+        DataList = objectGraphicManager.GetObjectGraphicDataElements(searchParameters);
 
         var objectGraphicDataElements = DataList.Cast<ObjectGraphicDataElement>();
 
@@ -44,13 +37,25 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
         //objectGraphicDataElements[0].Update();
     }
 
-    public void GetData(SearchData searchData)
+    public void ReplaceData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = searchElement.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 
-    }
+        var objectGraphicDataElement = DataList.Cast<ObjectGraphicDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-    public void ReplaceData(IEnumerable dataElement)
-    {
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.ObjectGraphic:
 
+                var resultElementData = resultData.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+
+                objectGraphicDataElement.id = resultElementData.id;
+                objectGraphicDataElement.Icon = resultElementData.Icon;
+                objectGraphicDataElement.Name = resultElementData.Name;
+             
+                break;
+        }
+
+        searchElement.route.data.ElementData = new[] { objectGraphicDataElement };
     }
 }

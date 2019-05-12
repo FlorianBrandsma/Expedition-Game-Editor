@@ -19,7 +19,7 @@ public class TileEditor : MonoBehaviour, IEditor
 
         data = pathController.route.data;
 
-        tileData = data.element.Cast<TileDataElement>().FirstOrDefault();
+        tileData = data.ElementData.Cast<TileDataElement>().FirstOrDefault();
         
         if (!pathController.loaded)
             tileData.ClearChanges();
@@ -37,12 +37,12 @@ public class TileEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = data.controller.DataList.Cast<TileDataElement>().ToList();
+        var list = data.DataController.DataList.Cast<TileDataElement>().ToList();
 
         list.RemoveAt(tileData.index);
         list.Insert(index, tileData);
 
-        selectionElement.ListManager.listProperties.SegmentController.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {

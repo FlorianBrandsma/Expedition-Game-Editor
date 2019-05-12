@@ -62,11 +62,12 @@ public class PathManager
 
         EditorForm form  = EditorManager.editorManager.forms[0];
 
-        public Structure(Route route, SelectionElement origin) //Combine existing path with new route
+        public Structure(SelectionElement origin) //Combine existing path with new route
         {
-            this.route  = route;
+            route = origin.route;
             this.origin = origin;
-            path        = origin.ListManager.listProperties.SegmentController.path;
+
+            path = origin.ListManager.listProperties.DataController.SegmentController.path;
         }
 
         public Path Enter()
@@ -96,9 +97,9 @@ public class PathManager
         List<int> edit;
         List<int> get;
 
-        public Item(Route route, SelectionElement origin)
+        public Item(SelectionElement origin)
         {
-            this.route = route;
+            route = origin.route;
             this.origin = origin;
 
             enter   = new List<int>() { 0, 0, 0, route.GeneralData().type };
@@ -138,9 +139,9 @@ public class PathManager
         int enter;
         List<int> edit;
 
-        public Element(Route route, SelectionElement origin)
+        public Element(SelectionElement origin)
         {
-            this.route  = route;
+            route = origin.route;
             this.origin = origin;
 
             enter   = 0;
@@ -151,7 +152,7 @@ public class PathManager
         {
             route.controller = enter;
             //Looks convoluted
-            path = origin.ListManager.listProperties.SegmentController.path;
+            path = origin.ListManager.listProperties.DataController.SegmentController.path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
@@ -180,9 +181,9 @@ public class PathManager
 
         List<int> get;
 
-        public ObjectGraphic(Route route, SelectionElement origin)
+        public ObjectGraphic(SelectionElement origin)
         {
-            this.route  = route;
+            route = origin.route;
             this.origin = origin;
 
             get = new List<int>() { 1 };
@@ -204,19 +205,20 @@ public class PathManager
         Path path;
         Route route;
         SelectionElement origin;
+        
 
         List<int> enter = new List<int>() { 0, 3 };
         List<int> edit  = new List<int>() { 0, 4 };
 
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public Region(Route route, SelectionElement origin)
+        public Region(SelectionElement origin)
         {
-            this.route  = route;
+            route = origin.route;
             this.origin = origin;
 
-            if(origin.ListManager != null)
-                path        = origin.ListManager.listProperties.SegmentController.path;
+            if (origin.ListManager != null)
+                path = origin.ListManager.listProperties.DataController.SegmentController.path;
         }
 
         public Path Enter()
@@ -282,17 +284,17 @@ public class PathManager
 
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public Terrain(Route route, SelectionElement origin)
+        public Terrain(SelectionElement origin)
         {
-            this.route  = route;
             this.origin = origin;
+            route  = origin.route;
         }
 
         public Path Edit()
         {
             route.controller = edit;
 
-            path = origin.ListManager.listProperties.SegmentController.path;
+            path = origin.ListManager.listProperties.DataController.SegmentController.path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, origin, path.start);
         }
@@ -304,9 +306,9 @@ public class PathManager
         Route route;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public TerrainElement(Route route, SelectionElement origin)
+        public TerrainElement(SelectionElement origin)
         {
-            route = new Route(0, route.data, route.property);
+            route = new Route(0, origin.route.data, origin.route.property);
 
             path = form.activePath.Trim(form.activePath.start + 3);
             
@@ -325,9 +327,9 @@ public class PathManager
         Route route;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public TerrainObject(Route route, SelectionElement origin)
+        public TerrainObject(SelectionElement origin)
         {
-            route = new Route(1, route.data, route.property);
+            route = new Route(1, origin.route.data, origin.route.property);
 
             path = form.activePath.Trim(form.activePath.start + 3);
 
@@ -351,9 +353,9 @@ public class PathManager
 
         List<int> enter = new List<int>() { 0 };
 
-        public Option(Route route, SelectionElement origin)
+        public Option(SelectionElement origin)
         {
-            this.route  = route;
+            route = origin.route;
             this.origin = origin;
         }
 
@@ -371,22 +373,26 @@ public class PathManager
     public class Search
     {
         Route route;
-        SearchData searchData;
 
         List<int> controllers = new List<int>() { 1 };
 
-        public Search(Route route, SelectionElement origin)
+        public Search(SelectionElement origin)
         {
-            SearchParameters searchParameters = origin.DataController.SearchParameters;
+            route = origin.route;
 
-            if (searchParameters.unique)
-                searchParameters.exclusedIdList = origin.DataController.DataList.Cast<GeneralData>().Select(x => x.id).ToList();
+            SearchParameters searchParameters = origin.DataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
 
-            searchData = new SearchData(searchParameters, route.GeneralData());
+            var generalData = route.GeneralData();
 
-            //Overwriting IElement with searchData might cause problems?
-            route.data = new Data(route.data.controller, new[] { searchData });
-            this.route = route;
+            //searchParameters.generalData = route.GeneralData();
+
+            //if (searchParameters.unique)
+            //    searchParameters.exclusedIdList = origin.DataController.DataList.Cast<GeneralData>().Select(x => x.id).ToList();
+
+            //searchData = new SearchData(searchParameters, route.GeneralData());
+
+
+            route.data = new Data(route.data.DataController, route.data.ElementData, origin.DataController.SearchParameters);
         }
 
         public Path Get()
