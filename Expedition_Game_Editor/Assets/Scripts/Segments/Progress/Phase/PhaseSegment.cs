@@ -30,8 +30,7 @@ public class PhaseSegment : MonoBehaviour, ISegment
         var searchParameters = new Search.Phase();
 
         searchParameters.temp_id_count = 15;
-        searchParameters.integerColumn = Search.Phase.IntegerColumn.chapterId;
-        searchParameters.value = SegmentController.path.FindLastRoute("Chapter").GeneralData().id.ToString();
+        searchParameters.chapterId.Add(SegmentController.path.FindLastRoute("Chapter").GeneralData().id);
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

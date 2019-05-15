@@ -36,7 +36,7 @@ public class ElementController : MonoBehaviour, IDataController
         //elementDataElements[0].Update();
     }
 
-    public void ReplaceData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
         var searchElementData = searchElement.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 

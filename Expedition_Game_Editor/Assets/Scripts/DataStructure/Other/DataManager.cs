@@ -10,7 +10,6 @@ public class DataManager
     {
         List<ObjectGraphicData> dataList = new List<ObjectGraphicData>();
 
-        //Temporary
         string[] objectNames = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
 
         for (int id = 0; id < objectNames.Length; id++)
@@ -31,9 +30,13 @@ public class DataManager
                 dataList.Add(data);
             }
         }
-        //
 
         return dataList;
+    }
+
+    public List<ElementData> GetElementData()
+    {
+        return GetElementData(new List<int>());
     }
 
     public List<ElementData> GetElementData(List<int> idList, bool searchById = false)

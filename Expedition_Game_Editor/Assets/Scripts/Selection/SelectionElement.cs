@@ -165,7 +165,7 @@ public class SelectionElement : MonoBehaviour
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
-        DataController.ReplaceData(this, elementData);
+        DataController.SetData(this, elementData);
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 
         SetElement();

@@ -36,7 +36,7 @@ public class ChapterController : MonoBehaviour, IDataController
         //chapterDataElements[0].Update();
     }
 
-    public void ReplaceData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

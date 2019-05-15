@@ -4,8 +4,13 @@ using System.Linq;
 
 public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 {
+    private DataManager dataManager = new DataManager();
+    private List<DataManager.ElementData> elementList;
+
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
+
+    private ElementController ElementController { get { return (ElementController)SegmentController.DataController; } }
 
     public void ApplySegment()
     {
@@ -35,7 +40,7 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
         var searchParameters = new Search.Element();
 
         searchParameters.requestType = Search.Element.RequestType.Custom;
-        searchParameters.includedIdList = chapterData.elementIds;
+        searchParameters.id = chapterData.elementIds;
         searchParameters.temp_id_count = 4;
 
         SegmentController.DataController.GetData(new[] { searchParameters });
@@ -44,9 +49,12 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     private void SetSearchParameters()
     {
         ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
-        var searchParameters = SegmentController.DataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
+        var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
-        searchParameters.exclusedIdList = chapterData.elementIds;
+        //Out of all the elements, select only those that are not in this list:
+        var list = dataManager.GetElementData().Where(x => !chapterData.elementIds.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+
+        searchParameters.id = list;
     }
 
     public void OpenSegment()
@@ -57,8 +65,6 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        
-
         ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
 
         chapterData.ElementIds = SegmentController.DataController.DataList.Cast<ElementDataElement>().Select(x => x.id).ToList();

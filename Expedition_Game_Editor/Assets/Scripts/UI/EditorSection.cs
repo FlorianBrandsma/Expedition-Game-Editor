@@ -67,7 +67,7 @@ public class EditorSection : MonoBehaviour
 
         displayTargetController = targetController;
 
-        targetController.OpenSegments();
+        displayTargetController.OpenSegments();
 
         SetActionButtons();
 
@@ -98,7 +98,7 @@ public class EditorSection : MonoBehaviour
     {
         if (targetLayout == null) return;
 
-        displayTargetController.CloseController();
+        displayTargetController.CloseSegments();
 
         targetLayout.CloseLayout();
 

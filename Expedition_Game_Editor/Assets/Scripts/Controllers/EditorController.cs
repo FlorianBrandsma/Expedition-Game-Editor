@@ -24,12 +24,6 @@ public class EditorController : MonoBehaviour
         }
     }
 
-    public void CloseController()
-    {
-        CloseEditor();
-        CloseSegments();
-    }
-
     private void InitializeEditor()
     {
         if (pathController.dataEditor != null)
@@ -50,7 +44,7 @@ public class EditorController : MonoBehaviour
             segment.OpenSegment();
     }
 
-    private void CloseSegments()
+    public void CloseSegments()
     {
         foreach (SegmentController segment in segments)
             segment.CloseSegment();

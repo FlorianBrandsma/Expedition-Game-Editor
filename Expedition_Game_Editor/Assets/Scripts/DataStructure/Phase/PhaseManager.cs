@@ -45,11 +45,11 @@ public class PhaseManager
 
             var id = (i + 1);
 
-            if (searchParameters.integerColumn == Search.Phase.IntegerColumn.id && int.Parse(searchParameters.value) != id) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(id)) continue;
 
             var chapterId = (i % 2) + 1;
 
-            if (searchParameters.integerColumn == Search.Phase.IntegerColumn.chapterId && int.Parse(searchParameters.value) != chapterId) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterId)) continue;
 
             phaseData.id = (i + 1);
             phaseData.table = "Phase";

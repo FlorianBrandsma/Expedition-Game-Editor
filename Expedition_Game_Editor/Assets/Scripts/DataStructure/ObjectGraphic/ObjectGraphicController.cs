@@ -37,7 +37,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
         //objectGraphicDataElements[0].Update();
     }
 
-    public void ReplaceData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
         var searchElementData = searchElement.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
 

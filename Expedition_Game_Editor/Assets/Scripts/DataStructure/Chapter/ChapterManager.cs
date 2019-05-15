@@ -42,14 +42,11 @@ public class ChapterManager
     {
         chapterDataList = new List<ChapterData>();
 
-        //Temporary
         for (int i = 0; i < searchParameters.temp_id_count; i++)
         {
             var chapterData = new ChapterData();
 
             int id = (i + 1);
-
-            if (searchParameters.exclusedIdList.Contains(id)) continue;
             
             chapterData.id = id;
             chapterData.table = "Chapter";

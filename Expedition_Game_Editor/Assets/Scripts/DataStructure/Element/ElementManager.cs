@@ -56,7 +56,6 @@ public class ElementManager
     {
         elementDataList = new List<ElementData>();
 
-        //Temporary
         //For filtering out the polearm, just because (index matches id)
         var objectList = new List<int> { 0, 2, 3, 4 };
 
@@ -68,9 +67,7 @@ public class ElementManager
 
             var id = (i + 1);
 
-            if (searchParameters.exclusedIdList.Count > 0 && searchParameters.exclusedIdList.Contains(id)) continue;
-
-            if (searchParameters.includedIdList.Count > 0 && !searchParameters.includedIdList.Contains(id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(id)) continue;
 
             elementData.id = id;
             elementData.table = "Element";

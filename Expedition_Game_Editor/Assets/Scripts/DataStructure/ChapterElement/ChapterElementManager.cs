@@ -70,7 +70,7 @@ public class ChapterElementManager
 
             var id = (i + 1);
 
-            if (!searchParameters.includedIdList.Contains(id)) continue;
+            if (!searchParameters.id.Contains(id)) continue;
 
             chapterElementData.id = id;
             chapterElementData.table = "ChapterElement";
