@@ -25,7 +25,7 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
+        
         InitializeElementData();
 
         SetSearchParameters();
@@ -33,26 +33,33 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
     private void InitializeElementData()
     {
-        if (SegmentController.editorController.pathController.loaded) return;
+        var chapterEditor = (ChapterEditor)DataEditor;
 
-        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        if (chapterEditor.chapterElementDataList.Count > 0) return;
 
-        var searchParameters = new Search.Element();
+        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
 
-        searchParameters.requestType = Search.Element.RequestType.Custom;
-        searchParameters.id = chapterData.elementIds;
+        var searchParameters = new Search.ChapterElement();
+
+        searchParameters.requestType = Search.ChapterElement.RequestType.Custom;
+        searchParameters.chapterId = new List<int>() { chapterData.id };
         searchParameters.temp_id_count = 4;
-
+        
         SegmentController.DataController.GetData(new[] { searchParameters });
+        
+        var chapterElementList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().ToList();
+
+        chapterElementList.ForEach(x => chapterEditor.chapterElementDataList.Add(x));
     }
 
     private void SetSearchParameters()
     {
-        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
-        //Out of all the elements, select only those that are not in this list:
-        var list = dataManager.GetElementData().Where(x => !chapterData.elementIds.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        //Out of all the elements, select only those that are not in this list
+        var idList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().Select(x => x.ElementId).ToList();
+        var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
         searchParameters.id = list;
     }
@@ -61,13 +68,15 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     {
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
+
+        //DataEditor.DataElements = SegmentController.DataController.DataList.Cast<IDataElement>().ToList();
     }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        ChapterDataElement chapterData = DataEditor.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
 
-        chapterData.ElementIds = SegmentController.DataController.DataList.Cast<ElementDataElement>().Select(x => x.id).ToList();
+        //chapterData.ElementIds = SegmentController.DataController.DataList.Cast<ElementDataElement>().Select(x => x.id).ToList();
 
         DataEditor.UpdateEditor();
 

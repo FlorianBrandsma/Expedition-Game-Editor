@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainElementController : MonoBehaviour//, IDataController
+public class TerrainElementController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.TerrainElement searchParameters;
 
-    public SearchParameters searchParameters;
-
-    private TerrainElementManager terrainElementManager = new TerrainElementManager();
+    private TerrainElementDataManager terrainElementDataManager = new TerrainElementDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -17,28 +15,23 @@ public class TerrainElementController : MonoBehaviour//, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.TerrainElement; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.TerrainElement>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        terrainElementDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = terrainElementManager.GetTerrainElementDataElements(this);
-
-        var terrainElementDataElements = DataList.Cast<TerrainElementDataElement>();
-
-        //terrainElementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //terrainElementDataElements[0].Update();
+        DataList = terrainElementDataManager.GetTerrainElementDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainController : MonoBehaviour//, IDataController
+public class TerrainController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.Terrain searchParameters;
 
-    public SearchParameters searchParameters;
-
-    private TerrainManager terrainManager       = new TerrainManager();
+    private TerrainDataManager terrainDataManager = new TerrainDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -17,28 +15,23 @@ public class TerrainController : MonoBehaviour//, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Terrain; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Terrain>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        terrainDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = terrainManager.GetTerrainDataElements(this);
-
-        var terrainDataElements = DataList.Cast<TerrainDataElement>();
-
-        //terrainDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //terrainDataElements[0].Update();
+        DataList = terrainDataManager.GetTerrainDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

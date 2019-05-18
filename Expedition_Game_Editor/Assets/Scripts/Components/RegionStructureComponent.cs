@@ -8,26 +8,29 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 {
     private Enums.RegionType type;
 
-    public RegionDisplayManager default_display;
+    public RegionDisplayManager defaultDisplay;
 
     private PathController pathController { get { return GetComponent<PathController>(); } }
 
     public EditorComponent component;
-    private List<Data> data_list = new List<Data>();
-    private List<Dropdown> dropdown_list = new List<Dropdown>();
+    private List<Data> dataList = new List<Data>();
+    private List<Dropdown> dropdownList = new List<Dropdown>();
 
-    public List<string> structure_list;
+    public List<string> structureList;
 
-    private Route region;
+    private Route route;
+    private RegionDataElement regionDataElement;
 
-    private Path active_path;
+    private Path activePath;
 
     public void InitializeComponent(Path path)
     {
-        active_path = path;
+        activePath = path;
 
-        region = active_path.FindLastRoute("Region").Copy();
-        type = (Enums.RegionType)region.GeneralData().type;
+        route = activePath.FindLastRoute("Region").Copy();
+        regionDataElement = route.data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+
+        type = (Enums.RegionType)regionDataElement.type;
 
         InitializeData();
 
@@ -42,61 +45,61 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             if (index > (pathController.controllers.Length - 1))
                 index = (pathController.controllers.Length - 1);
 
-            region.controller = index;
+            route.controller = index;
 
-            path.Add(region);
+            path.Add(route);
         }     
     }
 
     private void InitializeData()
     {
-        if (active_path.type != Path.Type.New) return;
+        if (activePath.type != Path.Type.New) return;
 
         if(type == Enums.RegionType.Task)
             RegionDisplayManager.active_display = 0;
 
-        data_list.Clear();
+        dataList.Clear();
 
         InitializeStructureData();
         InitializeRegionData();
 
         //TEMPORARY
-        if (region.GeneralData().id == 0)
-            region.GeneralData().id = 1;
+        if (regionDataElement.id == 0)
+            regionDataElement.id = 1;
     }
 
     private void InitializeStructureData()
     {
-        for (int i = 0; i < structure_list.Count; i++)
+        for (int i = 0; i < structureList.Count; i++)
         {
-            Data data = active_path.FindLastRoute(structure_list[i]).data;
+            Data data = activePath.FindLastRoute(structureList[i]).data;
 
-            data_list.Add(data);
+            dataList.Add(data);
         }
     }
 
     private void InitializeRegionData()
     {
-        Data data = active_path.FindFirstRoute("Region").data;
+        Data data = activePath.FindFirstRoute("Region").data;
 
         if (type == Enums.RegionType.Task)
             ((RegionController)data.DataController).InitializeController();
 
-        data_list.Add(data);
+        dataList.Add(data);
     }
 
     public void SetComponent(Path new_path)
     {
-        for (int i = 0; i < data_list.Count; i++)
+        for (int i = 0; i < dataList.Count; i++)
             SetStructureComponent(i);      
     }
 
     private void SetStructureComponent(int index)
     {
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
-        dropdown_list.Add(dropdown);
+        dropdownList.Add(dropdown);
 
-        Data data = data_list[index];
+        Data data = dataList[index];
 
         dropdown.gameObject.AddComponent(data.DataController.GetType());
 
@@ -105,22 +108,22 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             case Enums.DataType.Chapter:        SetChapterOptions(dropdown, data);      break;
             case Enums.DataType.Phase:          SetPhaseOptions(dropdown, data);        break;
             case Enums.DataType.Quest:          SetQuestOptions(dropdown, data);        break;
-            case Enums.DataType.Step:           SetStepOptions(dropdown, data);         break;
-            case Enums.DataType.StepElement:    SetStepElementOptions(dropdown, data);  break;
+            case Enums.DataType.Objective:      SetObjectiveOptions(dropdown, data);    break;
+            case Enums.DataType.TerrainElement: SetTerrainElementOptions(dropdown, data); break;
             case Enums.DataType.Task:           SetTaskOptions(dropdown, data);         break;
             case Enums.DataType.Region:         SetRegionOptions(dropdown, data);       break;
-            default: Debug.Log("YOU ARE MISSING A CASE");                               break;
+            default:                            Debug.Log("CASE MISSING");              break;
         }
 
-        int selected_index = data.DataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == data.ElementData.Cast<GeneralData>().FirstOrDefault().id);
+        int selectedIndex = data.DataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == data.ElementData.Cast<GeneralData>().FirstOrDefault().id);
 
-        dropdown.value = selected_index;
-        dropdown.captionText.text = dropdown.options[selected_index].text;
+        dropdown.value = selectedIndex;
+        dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(pathController.route.path, 
-            new Data(   data.DataController, 
-                        GetEnumerable(dropdown, data.DataController.DataList)),
-            index);
+        dropdown.onValueChanged.AddListener(delegate {  InitializePath(pathController.route.path, 
+                                                        new Data(   data.DataController, 
+                                                        GetEnumerable(dropdown, data.DataController.DataList)),
+                                                        index);
         });
     }
 
@@ -132,8 +135,8 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
         foreach (ChapterDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-
-        dropdown.GetComponent<ChapterController>().searchParameters.temp_id_count = ((ChapterController)data.DataController).DataList.Count;
+        
+        //dropdown.GetComponent<ChapterController>().searchParameters.temp_id_count = ((ChapterController)data.DataController).DataList.Count;
     }
 
     private void SetPhaseOptions(Dropdown dropdown, Data data)
@@ -143,7 +146,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         foreach (PhaseDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
 
-        dropdown.GetComponent<PhaseController>().searchParameters.temp_id_count = ((PhaseController)data.DataController).DataList.Count;
+        //dropdown.GetComponent<PhaseController>().searchParameters.temp_id_count = ((PhaseController)data.DataController).DataList.Count;
     }
 
     private void SetQuestOptions(Dropdown dropdown, Data data)
@@ -151,29 +154,29 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         List<QuestDataElement> dataElements = data.DataController.DataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
 
-        dropdown.GetComponent<QuestController>().temp_id_count = ((QuestController)data.DataController).temp_id_count;
+        //dropdown.GetComponent<QuestController>().searchParameters.temp_id_count = ((QuestController)data.DataController).searchParameters.temp_id_count;
     }
 
-    private void SetStepOptions(Dropdown dropdown, Data data)
+    private void SetObjectiveOptions(Dropdown dropdown, Data data)
     {
-        List<StepDataElement> dataElements = data.DataController.DataList.Cast<StepDataElement>().ToList();
+        List<ObjectiveDataElement> dataElements = data.DataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
-        foreach (StepDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+        foreach (ObjectiveDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
 
-        dropdown.GetComponent<StepController>().temp_id_count = ((StepController)data.DataController).temp_id_count;
+        //dropdown.GetComponent<ObjectiveController>().searchParameters.temp_id_count = ((ObjectiveController)data.DataController).searchParameters.temp_id_count;
     }
 
-    private void SetStepElementOptions(Dropdown dropdown, Data data)
+    private void SetTerrainElementOptions(Dropdown dropdown, Data data)
     {
-        List<StepElementDataElement> dataElements = data.DataController.DataList.Cast<StepElementDataElement>().ToList();
+        List<TerrainElementDataElement> dataElements = data.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        foreach (StepElementDataElement dataElement in dataElements)
+        foreach (TerrainElementDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
 
-        dropdown.GetComponent<StepElementController>().temp_id_count = ((StepElementController)data.DataController).temp_id_count;
+        //dropdown.GetComponent<TerrainElementController>().searchParameters.temp_id_count = ((TerrainElementController)data.DataController).searchParameters.temp_id_count;
     }
 
     private void SetTaskOptions(Dropdown dropdown, Data data)
@@ -181,9 +184,9 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         List<TaskDataElement> dataElements = data.DataController.DataList.Cast<TaskDataElement>().ToList();
 
         foreach (TaskDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.description));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Description));
 
-        dropdown.GetComponent<TaskController>().temp_id_count = ((TaskController)data.DataController).temp_id_count;
+        //dropdown.GetComponent<TaskController>().searchParameters.temp_id_count = ((TaskController)data.DataController).searchParameters.temp_id_count;
     }
 
     private void SetRegionOptions(Dropdown dropdown, Data data)
@@ -191,9 +194,9 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         List<RegionDataElement> dataElements = data.DataController.DataList.Cast<RegionDataElement>().ToList();
 
         foreach (RegionDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
 
-        dropdown.GetComponent<RegionController>().temp_id_count = ((RegionController)data.DataController).temp_id_count;
+        //dropdown.GetComponent<RegionController>().searchParameters.temp_id_count = ((RegionController)data.DataController).searchParameters.temp_id_count;
     }
 
     #endregion
@@ -202,7 +205,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     {
         path.ReplaceAllRoutes(data);
 
-        data_list[index] = data;
+        dataList[index] = data;
         
         SetStructureData(path, data, index + 1);
 
@@ -211,18 +214,18 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetStructureData(Path path, Data data, int index)
     {
-        for (int i = index; i < data_list.Count; i++)
+        for (int i = index; i < dataList.Count; i++)
         {
-            Data structure_data = new Data(dropdown_list[i].GetComponent<IDataController>(), data_list[i].ElementData);
+            Data structure_data = new Data(dropdownList[i].GetComponent<IDataController>(), dataList[i].ElementData);
 
-            data_list[i] = structure_data;
+            dataList[i] = structure_data;
 
             structure_data.DataController.InitializeController();
 
             //(TASK belongs to an ELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
             //TASK: load ELEMENT > TERRAIN > REGION
 
-            structure_data.ElementData = GetEnumerable(0, data_list[i].DataController.DataList);
+            structure_data.ElementData = GetEnumerable(0, dataList[i].DataController.DataList);
 
             path.ReplaceAllRoutes(structure_data);
         }
@@ -260,6 +263,6 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     public void CloseComponent()
     {
-        dropdown_list.Clear();
+        dropdownList.Clear();
     }
 }

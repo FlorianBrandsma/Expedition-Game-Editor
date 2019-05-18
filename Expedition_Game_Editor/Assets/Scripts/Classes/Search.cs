@@ -42,6 +42,10 @@ public class Search
     [System.Serializable]
     public class Item : SearchParameters
     {
+        public List<int> index = new List<int>();
+        public List<int> type = new List<int>();
+        public List<string> name = new List<string>();
+
         public enum RequestType
         {
             Custom,
@@ -112,7 +116,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class Step : SearchParameters
+    public class Objective : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<string> name = new List<string>();
@@ -127,7 +131,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class StepElement : SearchParameters
+    public class ObjectiveElement : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<string> name = new List<string>();
@@ -170,7 +174,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class RegionTerrain : SearchParameters
+    public class Terrain : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<string> name = new List<string>();

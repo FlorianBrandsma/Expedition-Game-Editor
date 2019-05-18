@@ -3,59 +3,25 @@ using System.Collections;
 
 public class TerrainObjectCore : GeneralData
 {
-    private int _index;
-    private string _name;
-    private string _description;
+    private int index;
 
-    public int original_index;
-    public string original_name;
-    public string original_description;
+    public int originalIndex;
 
     public bool changed;
-    private bool changed_index;
-    private bool changed_name;
-    private bool changed_description;
+    private bool changedIndex;
 
     #region Properties
 
-    public int index
+    public int Index
     {
-        get { return _index; }
+        get { return index; }
         set
         {
-            if (value == _index) return;
+            if (value == index) return;
 
-            changed_index = true;
+            changedIndex = true;
 
-            _index = value;
-        }
-    }
-
-    public string name
-    {
-        get { return _name; }
-        set
-        {
-            if (value == _name) return;
-
-            changed = true;
-            changed_name = true;
-
-            _name = value;
-        }
-    }
-
-    public string description
-    {
-        get { return _description; }
-        set
-        {
-            if (value == _description) return;
-
-            changed = true;
-            changed_description = true;
-
-            _description = value;
+            index = value;
         }
     }
 
@@ -86,25 +52,21 @@ public class TerrainObjectCore : GeneralData
 
     public void UpdateIndex()
     {
-        if (changed_index)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
-            changed_index = false;
+            changedIndex = false;
         }
     }
 
     public void SetOriginalValues()
     {
-        original_name = name;
-        original_description = description;
-
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = original_name;
-        description = original_description;
+
     }
 
     public void ClearChanges()
@@ -112,9 +74,7 @@ public class TerrainObjectCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changed_index = false;
-        changed_name = false;
-        changed_description = false;
+        changedIndex = false;
     }
 
     public void Delete()

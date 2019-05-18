@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public class QuestDataElement : QuestCore
+public class QuestDataElement : QuestCore, IDataElement
 {
     public QuestDataElement() : base() { }
 
-    //ChapterElements
+    public bool Changed { get { return changed; } }
 }

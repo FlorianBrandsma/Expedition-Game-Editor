@@ -20,8 +20,7 @@ public class Enums
         Chapter,
         Phase,
         Quest,
-        Step,
-        StepElement,
+        Objective,
         Task      
     }
 

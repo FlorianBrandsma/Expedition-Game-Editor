@@ -51,8 +51,6 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void InitializeEdit()
     {
-        EditButton.ParentElement = Element;
-
         EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
 
         EditButton.gameObject.SetActive(true);
@@ -67,13 +65,13 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.Chapter:        SetChapterElement();        break;
             case Enums.DataType.Phase:          SetPhaseElement();          break;
             case Enums.DataType.Quest:          SetQuestElement();          break;
-            case Enums.DataType.Step:           SetStepElement();           break;
-            case Enums.DataType.StepElement:    SetStepElementElement();    break;
+            case Enums.DataType.Objective:      SetObjectiveElement();      break;
             case Enums.DataType.Task:           SetTaskElement();           break;
             case Enums.DataType.Region:         SetRegionElement();         break;
             case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
             case Enums.DataType.Element:        SetElementElement();        break;
-            default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
+            case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
+            default:                            Debug.Log("CASE MISSING");  break;
         }
 
         if (description == null) return;
@@ -119,31 +117,28 @@ public class EditorPanel : MonoBehaviour, IElement
         QuestDataElement dataElement = data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.original_name;
+        header.text = dataElement.originalName;
 
         if (properties.edit)
             EditButtonData = data;
     }
 
-    private void SetStepElement()
+    private void SetObjectiveElement()
     {
         Data data = Element.route.data;
-        StepDataElement dataElement = data.ElementData.Cast<StepDataElement>().FirstOrDefault();
+        ObjectiveDataElement dataElement = data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.original_name;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.icon);
+        header.text = dataElement.originalName;
 
         if (properties.edit)
             EditButtonData = data;
     }
 
-    private void SetStepElementElement()
+    private void SetTerrainElementElement()
     {
         Data data = Element.route.data;
-        StepElementDataElement dataElement = data.ElementData.Cast<StepElementDataElement>().FirstOrDefault();
+        TerrainElementDataElement dataElement = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.name;
@@ -161,7 +156,7 @@ public class EditorPanel : MonoBehaviour, IElement
         TaskDataElement dataElement = data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        description.text = dataElement.original_description;
+        description.text = dataElement.originalDescription;
 
         if (properties.edit)
             EditButtonData = data;
@@ -173,7 +168,7 @@ public class EditorPanel : MonoBehaviour, IElement
         RegionDataElement dataElement = data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.original_name;
+        header.text = dataElement.originalName;
 
         if (properties.edit)
             EditButtonData = data;

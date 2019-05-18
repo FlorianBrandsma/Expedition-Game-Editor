@@ -13,13 +13,13 @@ public class Path
         Reload
     }
 
-    public List<Route> route    { get; set; }
-    public EditorForm form      { get; set; }
-    public Type type            { get; set; }
+    public List<Route> route;
+    public EditorForm form;
+    public Type type;
 
-    public int start            { get; set; }
+    public int start;
 
-    public SelectionElement origin { get; set; }
+    public ListManager origin;
 
     public Path()
     {
@@ -29,7 +29,7 @@ public class Path
         origin  = null;
     }
 
-    public Path(List<Route> route, EditorForm form, SelectionElement origin)
+    public Path(List<Route> route, EditorForm form, ListManager origin)
     {
         this.route  = route;
         this.form   = form;
@@ -38,7 +38,7 @@ public class Path
         type    = Type.New;
     }
 
-    public Path(List<Route> route, EditorForm form, SelectionElement origin, int start)
+    public Path(List<Route> route, EditorForm form, ListManager origin, int start)
     {
         this.route  = route;
         this.form   = form;

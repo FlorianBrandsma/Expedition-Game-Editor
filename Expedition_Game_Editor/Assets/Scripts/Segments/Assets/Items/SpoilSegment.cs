@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SpoilSegment : MonoBehaviour, ISegment
 {
@@ -20,20 +20,27 @@ public class SpoilSegment : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
 
-        InitializeChapterData();
+        InitializeData();
     }
 
-    private void InitializeChapterData()
+    private void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        SegmentController.DataController.InitializeController();
+        if (!SegmentController.loaded && !SegmentController.editorController.pathController.loaded)
+        {
+            var searchParameters = new Search.Item();
+            searchParameters.type = new List<int>() { (int)Enums.ItemType.Spoils };
+            searchParameters.temp_id_count = 45;
+
+            SegmentController.DataController.GetData(new[] { searchParameters });
+        }
     }
 
     public void OpenSegment()
     {
-        //if (GetComponent<IDisplay>() != null)
-        //    GetComponent<IDisplay>().SetDisplay();
+        if (GetComponent<IDisplay>() != null)
+            GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(SelectionElement selectionElement)

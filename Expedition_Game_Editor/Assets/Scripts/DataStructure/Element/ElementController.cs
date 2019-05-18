@@ -7,7 +7,7 @@ public class ElementController : MonoBehaviour, IDataController
 {
     public Search.Element searchParameters;
 
-    private ElementManager elementManager       = new ElementManager();
+    private ElementDataManager elementDataManager       = new ElementDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -23,17 +23,12 @@ public class ElementController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        elementManager.InitializeManager(this);
+        elementDataManager.InitializeManager(this);
     }
 
     public void GetData(IEnumerable searchParameters)
     {
-        DataList = elementManager.GetElementDataElements(searchParameters);
-
-        var elementDataElements = DataList.Cast<ElementDataElement>();
-
-        //elementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //elementDataElements[0].Update();
+        DataList = elementDataManager.GetElementDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, Data resultData)

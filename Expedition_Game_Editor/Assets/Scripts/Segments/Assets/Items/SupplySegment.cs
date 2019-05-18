@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SupplySegment : MonoBehaviour, ISegment
 {
@@ -30,8 +30,8 @@ public class SupplySegment : MonoBehaviour, ISegment
         if (!SegmentController.loaded && !SegmentController.editorController.pathController.loaded)
         {
             var searchParameters = new Search.Item();
-
-            searchParameters.temp_id_count = 15;
+            searchParameters.type = new List<int>() { (int)Enums.ItemType.Supplies };
+            searchParameters.temp_id_count = 45;
 
             SegmentController.DataController.GetData(new[] { searchParameters });
         }

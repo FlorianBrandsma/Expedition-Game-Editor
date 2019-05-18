@@ -109,8 +109,6 @@ public class ListManager : MonoBehaviour
 
     public void UpdateData()
     {
-        if (!gameObject.activeInHierarchy) return;
-
         organizer.UpdateData();
     }
 
@@ -156,7 +154,7 @@ public class ListManager : MonoBehaviour
                     selectedElement = element.child;
 
                     element.child.ActivateSelection();
-
+                    
                     selectedRoute = route.Copy();
 
                     CorrectPosition(element);
@@ -233,9 +231,7 @@ public class ListManager : MonoBehaviour
 
         overlayManager.CloseOverlay();
         organizer.CloseOrganizer();
-
-        selectedElement = null;
-
+        
         elementList.Clear();
 
         SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
@@ -291,6 +287,9 @@ public class ListManager : MonoBehaviour
                 element.child.GetComponent<Button>().onClick.RemoveAllListeners();
             }      
         }
+
+        if (selectedElement != null)
+            selectedElement.CancelSelection();
 
         elementList.Clear();
     }

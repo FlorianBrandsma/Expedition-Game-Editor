@@ -61,7 +61,7 @@ public class ElementCore : GeneralData
             objectGraphicId = value;
         }
     }
-
+    
     #endregion
 
     #region Methods

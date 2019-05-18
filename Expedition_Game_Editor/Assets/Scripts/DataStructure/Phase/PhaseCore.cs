@@ -62,6 +62,8 @@ public class PhaseCore : GeneralData
         }
     }
 
+    public bool Changed { get { return changed; } }
+
     #endregion
 
     #region Methods

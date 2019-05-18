@@ -14,5 +14,4 @@ public class SearchParameters
     public string value;
 
     public List<int> id     = new List<int>();
-    public List<int> type   = new List<int>();
 }

@@ -3,42 +3,42 @@ using System.Collections;
 
 public class TaskCore : GeneralData
 {
-    private int _index;
-    private string _description;
+    private int index;
+    private string description;
 
-    public int original_index;
-    public string original_description;
+    public int originalIndex;
+    public string originalDescription;
 
     public bool changed;
-    private bool changed_index;
-    private bool changed_description;
+    private bool changedIndex;
+    private bool changedDescription;
 
     #region Properties
 
-    public int index
+    public int Index
     {
-        get { return _index; }
+        get { return index; }
         set
         {
-            if (value == _index) return;
+            if (value == index) return;
 
-            changed_index = true;
+            changedIndex = true;
 
-            _index = value;
+            index = value;
         }
     }
 
-    public string description
+    public string Description
     {
-        get { return _description; }
+        get { return description; }
         set
         {
-            if (value == _description) return;
+            if (value == description) return;
 
             changed = true;
-            changed_description = true;
+            changedDescription = true;
 
-            _description = value;
+            description = value;
         }
     }
 
@@ -69,23 +69,23 @@ public class TaskCore : GeneralData
 
     public void UpdateIndex()
     {
-        if (changed_index)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
-            changed_index = false;
+            changedIndex = false;
         }
     }
 
     public void SetOriginalValues()
     {
-        original_description = description;
+        originalDescription = description;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        description = original_description;
+        description = originalDescription;
     }
 
     public void ClearChanges()
@@ -93,8 +93,8 @@ public class TaskCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changed_index = false;
-        changed_description = false;
+        changedIndex = false;
+        changedDescription = false;
     }
 
     public void Delete()

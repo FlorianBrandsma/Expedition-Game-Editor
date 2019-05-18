@@ -33,8 +33,9 @@ public class StructureComponent : MonoBehaviour, IComponent
             case Enums.DataType.Chapter:        SetChapterOptions();        break;
             case Enums.DataType.Phase:          SetPhaseOptions();          break;
             case Enums.DataType.Quest:          SetQuestOptions();          break;
-            case Enums.DataType.Step:           SetStepOptions();           break;
-            case Enums.DataType.StepElement:    SetStepElementOptions();    break;
+            case Enums.DataType.Objective:      SetObjectiveOptions();      break;
+            case Enums.DataType.TerrainElement: SetTerrainElementOptions(); break;
+            default:                            Debug.Log("CASE MISSING");  break;
         }
 
         int selected_index = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
@@ -66,22 +67,22 @@ public class StructureComponent : MonoBehaviour, IComponent
         List<QuestDataElement> dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
     }
 
-    private void SetStepOptions()
+    private void SetObjectiveOptions()
     {
-        List<StepDataElement> dataElements = dataController.DataList.Cast<StepDataElement>().ToList();
+        List<ObjectiveDataElement> dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
-        foreach (StepDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+        foreach (ObjectiveDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
     }
 
-    private void SetStepElementOptions()
+    private void SetTerrainElementOptions()
     {
-        List<StepElementDataElement> dataElements = dataController.DataList.Cast<StepElementDataElement>().ToList();
+        List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        foreach (StepElementDataElement dataElement in dataElements)
+        foreach (TerrainElementDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
     }
 

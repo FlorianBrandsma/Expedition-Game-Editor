@@ -5,9 +5,11 @@ using System.Linq;
 
 public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 {
+    public RegionEditor regionEditor;
+
     private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
     private IDataController dataController { get { return GetComponent<IDataController>(); } }
-    public IEditor DataEditor { get; set; }
+    public IEditor DataEditor { get { return null/*regionEditor*/; } }
 
     private TaskDataElement task_data;
     private RegionDataElement region_data;
@@ -32,7 +34,7 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeSegment()
     {
-        DataEditor = segmentController.editorController.pathController.dataEditor;
+        //DataEditor = segmentController.editorController.pathController.dataEditor;
 
         InitializeData();
 

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ItemCore : GeneralData
 {
+    private int type;
     private int index;
     private int objectGraphicId;
     private string name;
@@ -20,6 +21,12 @@ public class ItemCore : GeneralData
     private bool changedName;
 
     #region Properties
+
+    public int Type
+    {
+        get { return type; }
+        set { type = value; }
+    }
 
     public int Index
     {

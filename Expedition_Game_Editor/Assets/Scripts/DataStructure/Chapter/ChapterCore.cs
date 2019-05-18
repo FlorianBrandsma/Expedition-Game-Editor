@@ -59,6 +59,8 @@ public class ChapterCore : GeneralData
         }
     }
 
+    public bool Changed { get { return changed; } }
+
     #endregion
 
     #region Methods

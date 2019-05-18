@@ -26,8 +26,6 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
         if (properties.edit)
         {
-            EditButton.ParentElement = Element;
-
             EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
 
             EditButton.gameObject.SetActive(true);
@@ -52,7 +50,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         TerrainElementDataElement data_element = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
-        header.text = data_element.original_name;
+        header.text = data_element.name;
 
         if (properties.icon)
             icon.texture = Resources.Load<Texture2D>(data_element.icon);
@@ -67,7 +65,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         TerrainObjectDataElement data_element = data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
 
         id.text = data_element.id.ToString();
-        header.text = data_element.original_name;
+        header.text = data_element.name;
 
         if (properties.icon)
             icon.texture = Resources.Load<Texture2D>(data_element.icon);

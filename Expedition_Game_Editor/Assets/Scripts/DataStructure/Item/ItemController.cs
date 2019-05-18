@@ -5,12 +5,9 @@ using System.Linq;
 
 public class ItemController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
-    public Enums.ItemType itemType;
-
     public Search.Item searchParameters;
 
-    private ItemManager itemManager             = new ItemManager();
+    private ItemDataManager itemDataManager     = new ItemDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -26,17 +23,12 @@ public class ItemController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        itemManager.InitializeManager(this);
+        itemDataManager.InitializeManager(this);
     }
 
     public void GetData(IEnumerable searchParameters)
     {
-        DataList = itemManager.GetItemDataElements(searchParameters);
-
-        var itemDataElements = DataList.Cast<ItemDataElement>();
-
-        //itemDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //itemDataElements[0].Update();
+        DataList = itemDataManager.GetItemDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, Data resultData)

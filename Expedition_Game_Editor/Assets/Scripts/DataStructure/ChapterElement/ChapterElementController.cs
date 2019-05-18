@@ -7,13 +7,13 @@ public class ChapterElementController : MonoBehaviour, IDataController
 {
     public Search.Element searchParameters;
 
-    public ChapterElementManager chapterElementManager = new ChapterElementManager();
+    public ChapterElementDataManager chapterElementDataManager = new ChapterElementDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.ChapterElement; } }
-    public ICollection DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.ChapterElement; } }
+    public ICollection DataList                 { get; set; }
 
     public IEnumerable SearchParameters
     {
@@ -23,17 +23,12 @@ public class ChapterElementController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        chapterElementManager.InitializeManager(this);
+        chapterElementDataManager.InitializeManager(this);
     }
 
     public void GetData(IEnumerable searchParameters)
     {
-        DataList = chapterElementManager.GetChapterElementDataElements(searchParameters);
-
-        var chapterElementDataElements = DataList.Cast<ChapterElementDataElement>();
-
-        //chapterElementDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //chapterElementDataElements[0].Update();
+        DataList = chapterElementDataManager.GetChapterElementDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, Data resultData)

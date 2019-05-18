@@ -16,7 +16,7 @@ public class PathController : MonoBehaviour
 
     public EditorSection    editorSection;
 
-    private EditorController editorController   { get { return GetComponent<EditorController>(); } }
+    private EditorController EditorController   { get { return GetComponent<EditorController>(); } }
 
     public IDataController  dataController      { get; set; }
     public IEditor          dataEditor          { get; set; }
@@ -26,15 +26,20 @@ public class PathController : MonoBehaviour
 
     private PathController parentController;
 
+    public SelectionElement Origin
+    {
+        get { return route.path.origin.selectedElement; }
+    }
+
     //Necessary steps to set up the correct path for the controller
     public void InitializePath(Path mainPath, int step, bool reload, PathController parentController)
     {
         this.parentController = parentController;
-
-        if (editorController != null)
+        
+        if (EditorController != null)
         {
-            editorSection.targetController = editorController;
-            editorSection.editorForm.mainController = editorController;
+            editorSection.targetController = EditorController;
+            editorSection.editorForm.mainController = EditorController;
         }
             
         this.step = step;
@@ -53,7 +58,7 @@ public class PathController : MonoBehaviour
             //Don't check this if force is true. Must load!
             if(!reload)
                 loaded = IsLoaded();
-
+            
             //If this hasn't loaded, force load the next one
             if (!loaded || reload)
             {
@@ -71,8 +76,10 @@ public class PathController : MonoBehaviour
             foreach (PathController controller in controllers)
                 controller.history.group = history.group;
         }
-            
+
         InitializeComponents(mainPath);
+
+        editorSection.targetPath = route.path;
 
         if (step < mainPath.route.Count)
         {
@@ -123,15 +130,15 @@ public class PathController : MonoBehaviour
     public bool IsLoaded()
     {
         //If there is no previous controller then it definitely hasn't loaded yet
-        if (editorSection.previousControllerPath == null)
+        if (editorSection.previousTargetPath == null)
             return false;
-
+        
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
-        if (step > editorSection.previousControllerPath.route.Count)
+        if (step > editorSection.previousTargetPath.route.Count)
             return false;
-
+        
         //If false then everything afterwards must be false as well
-        return route.path.Equals(editorSection.previousControllerPath);
+        return route.path.Equals(editorSection.previousTargetPath);
     }
 
     public bool GetComponents(Path path)

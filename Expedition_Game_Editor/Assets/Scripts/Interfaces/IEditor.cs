@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public interface IEditor
 {
-    Data data { get; set; }
+    bool Loaded { get; }
+    Data Data { get; set; }
+    List<IDataElement> DataElements { get; }
     bool Changed();
     void InitializeEditor();
     void UpdateEditor();

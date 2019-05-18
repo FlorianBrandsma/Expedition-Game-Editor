@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public class ChapterElementDataElement : ChapterElementCore
+public class ChapterElementDataElement : ChapterElementCore, IDataElement
 {
     public ChapterElementDataElement() : base() { }
 

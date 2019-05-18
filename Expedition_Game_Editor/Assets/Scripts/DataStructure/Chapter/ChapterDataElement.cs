@@ -4,29 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 
 [System.Serializable]
-public class ChapterDataElement : ChapterCore
+public class ChapterDataElement : ChapterCore, IDataElement
 {
     public ChapterDataElement() : base() { }
 
-    public List<int> elementIds;
+    //public List<int> elementIds;
 
-    public List<int> originalElementIds;
+    //public List<int> originalElementIds;
 
-    private bool changedElementIds;
+    //private bool changedElementIds;
 
-    public List<int> ElementIds
-    {
-        get { return elementIds; }
-        set
-        {
-            if (elementIds.SequenceEqual(value)) return;
+    //public List<int> ElementIds
+    //{
+    //    get { return elementIds; }
+    //    set
+    //    {
+    //        if (elementIds.SequenceEqual(value)) return;
 
-            changed = true;
-            changedElementIds = true;
+    //        changed = true;
+    //        changedElementIds = true;
 
-            elementIds = value;
-        }
-    }
+    //        elementIds = value;
+    //    }
+    //}
 
     public override void Update()
     {
@@ -41,19 +41,19 @@ public class ChapterDataElement : ChapterCore
     {
         base.SetOriginalValues();
 
-        originalElementIds = elementIds;
+        //originalElementIds = elementIds;
 
         ClearChanges();
     }
 
     public new void GetOriginalValues()
     {
-        elementIds = originalElementIds;
+        //elementIds = originalElementIds;
     }
 
     public override void ClearChanges()
     {
-        changedElementIds = false;
+        //changedElementIds = false;
 
         base.ClearChanges();
 

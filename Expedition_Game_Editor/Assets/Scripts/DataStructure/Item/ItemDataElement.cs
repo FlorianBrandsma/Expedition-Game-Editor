@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ItemDataElement : ItemCore
+public class ItemDataElement : ItemCore, IDataElement
 {
     public ItemDataElement() : base() { }
 
@@ -42,4 +42,6 @@ public class ItemDataElement : ItemCore
 
         GetOriginalValues();
     }
+
+    public bool Changed { get { return changed; } }
 }

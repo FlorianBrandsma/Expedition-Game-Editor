@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class PhaseDataElement : PhaseCore
+public class PhaseDataElement : PhaseCore, IDataElement
 {
     public PhaseDataElement() : base() { }
 

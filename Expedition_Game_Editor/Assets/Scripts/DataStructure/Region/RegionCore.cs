@@ -3,42 +3,42 @@ using System.Collections;
 
 public class RegionCore : GeneralData
 {
-    private int _index;
-    private string _name;
+    private int index;
+    private string name;
 
-    public int original_index;
-    public string original_name;
+    public int originalIndex;
+    public string originalName;
 
     public bool changed;
-    private bool changed_index;
-    private bool changed_name;
+    private bool changedIndex;
+    private bool changedName;
 
     #region Properties
 
-    public int index
+    public int Index
     {
-        get { return _index; }
+        get { return index; }
         set
         {
-            if (value == _index) return;
+            if (value == index) return;
 
-            changed_index = true;
+            changedIndex = true;
 
-            _index = value;
+            index = value;
         }
     }
 
-    public string name
+    public string Name
     {
-        get { return _name; }
+        get { return name; }
         set
         {
-            if (value == _name) return;
+            if (value == name) return;
 
             changed = true;
-            changed_name = true;
+            changedName = true;
 
-            _name = value;
+            name = value;
         }
     }
 
@@ -69,23 +69,23 @@ public class RegionCore : GeneralData
 
     public void UpdateIndex()
     {
-        if (changed_index)
+        if (changedIndex)
         {
             //Debug.Log("Update index " + index);
-            changed_index = false;
+            changedIndex = false;
         }
     }
 
     public void SetOriginalValues()
     {
-        original_name = name;
+        originalName = name;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = original_name;
+        name = originalName;
     }
 
     public void ClearChanges()
@@ -93,8 +93,8 @@ public class RegionCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changed_index = false;
-        changed_name = false;
+        changedIndex = false;
+        changedName = false;
     }
 
     public void Delete()

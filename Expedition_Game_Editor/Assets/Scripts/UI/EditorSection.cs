@@ -8,13 +8,26 @@ using System.Linq;
 
 public class EditorSection : MonoBehaviour
 {
-    public bool active { get; set; }
+    [HideInInspector]
+    public bool active;
 
-    public EditorForm editorForm                { get; set; }
-    public EditorController displayTargetController { get; set; }
-    public EditorController targetController    { get; set; }
-    public LayoutDependency targetLayout        { get; set; }
-    public Path previousControllerPath          { get; set; }
+    [HideInInspector]
+    public EditorForm editorForm;
+
+    [HideInInspector]
+    public EditorController displayTargetController;
+
+    [HideInInspector]
+    public EditorController targetController;
+
+    [HideInInspector]
+    public LayoutDependency targetLayout;
+
+    [HideInInspector]
+    public Path targetPath;
+
+    [HideInInspector]
+    public Path previousTargetPath;
     
     public IEditor dataEditor;
 
@@ -40,10 +53,7 @@ public class EditorSection : MonoBehaviour
 
     public void SetPreviousPath()
     {
-        if (targetController != null)
-            previousControllerPath = targetController.pathController.route.path;
-        else
-            previousControllerPath = null;
+        previousTargetPath = targetPath;
     }
 
     public void InitializeLayout()
@@ -76,7 +86,7 @@ public class EditorSection : MonoBehaviour
 
     public void SetActionButtons()
     {
-        if (dataEditor != null)
+        if (dataEditor == null) return;
 
         if (buttonActionManager != null && dataEditor != null)
             buttonActionManager.SetButtons(dataEditor.Changed());

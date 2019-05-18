@@ -5,13 +5,13 @@ public class EditorPath
 {
     public Path path;
 
-    public EditorPath(SelectionElement origin)
+    public EditorPath(SelectionElement selection)
     {
-        Route route = new Route(origin.route);
+        Route route = new Route(selection.route);
 
-        if(origin.route.property == SelectionManager.Property.Get)
+        if(selection.route.property == SelectionManager.Property.Get)
         {
-            PathManager.Search search = new PathManager.Search(origin);
+            PathManager.Search search = new PathManager.Search(selection);
 
             path = search.Get();
 
@@ -22,7 +22,7 @@ public class EditorPath
         {
             case "Chapter":
 
-                PathManager.Structure chapter = new PathManager.Structure(origin);
+                PathManager.Structure chapter = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = chapter.Enter();
@@ -34,7 +34,7 @@ public class EditorPath
 
             case "Phase":
 
-                PathManager.Structure phase = new PathManager.Structure(origin);
+                PathManager.Structure phase = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = phase.Enter();
@@ -46,7 +46,7 @@ public class EditorPath
 
             case "Quest":
 
-                PathManager.Structure quest = new PathManager.Structure(origin);
+                PathManager.Structure quest = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = quest.Enter();
@@ -56,21 +56,21 @@ public class EditorPath
 
                 break;
 
-            case "Step":
+            case "Objective":
 
-                PathManager.Structure step = new PathManager.Structure(origin);
+                PathManager.Structure objective = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
-                    path = step.Enter();
+                    path = objective.Enter();
 
                 if (route.property == SelectionManager.Property.Edit)
-                    path = step.Edit();
+                    path = objective.Edit();
 
                 break;
 
-            case "StepElement":
+            case "TerrainElement":
 
-                PathManager.Structure stepElement = new PathManager.Structure(origin);
+                PathManager.Structure stepElement = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = stepElement.Enter();
@@ -79,7 +79,7 @@ public class EditorPath
 
             case "Task":
 
-                PathManager.Structure task = new PathManager.Structure(origin);
+                PathManager.Structure task = new PathManager.Structure(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = task.Enter();
@@ -91,7 +91,7 @@ public class EditorPath
 
             case "Region":
 
-                PathManager.Region region = new PathManager.Region(origin);
+                PathManager.Region region = new PathManager.Region(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = region.Enter();
@@ -106,25 +106,25 @@ public class EditorPath
 
             case "Terrain":
 
-                PathManager.Terrain terrain = new PathManager.Terrain(origin);
+                PathManager.Terrain terrain = new PathManager.Terrain(selection);
 
                 if (route.property == SelectionManager.Property.Edit)
                     path = terrain.Edit();
 
                 break;
 
-            case "TerrainElement":
+            //case "TerrainElement":
 
-                PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(origin);
+            //    PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
-                    path = terrainElement.Enter();
+            //    if (route.property == SelectionManager.Property.Enter)
+            //        path = terrainElement.Enter();
 
-                break;
+            //    break;
 
             case "TerrainObject":
 
-                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(origin);
+                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = terrainObject.Enter();
@@ -133,7 +133,7 @@ public class EditorPath
 
             case "Item":
 
-                PathManager.Item item = new PathManager.Item(origin);
+                PathManager.Item item = new PathManager.Item(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = item.Enter();
@@ -148,7 +148,7 @@ public class EditorPath
 
             case "Element":
 
-                PathManager.Element element = new PathManager.Element(origin);
+                PathManager.Element element = new PathManager.Element(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = element.Enter();
@@ -163,7 +163,7 @@ public class EditorPath
 
             case "ObjectGraphic":
 
-                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(origin);
+                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection);
 
                 if (route.property == SelectionManager.Property.Get)
                     path = objectGraphic.Get();
@@ -172,7 +172,7 @@ public class EditorPath
 
             case "Option":
 
-                PathManager.Option option = new PathManager.Option(origin);
+                PathManager.Option option = new PathManager.Option(selection);
 
                 if (route.property == SelectionManager.Property.Enter)
                     path = option.Enter();

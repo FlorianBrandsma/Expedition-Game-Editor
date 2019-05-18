@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class RegionController : MonoBehaviour//, IDataController
+public class RegionController : MonoBehaviour, IDataController
 {
     public Enums.RegionType regionType;
-    public int temp_id_count;
 
-    public SearchParameters searchParameters;
+    public Search.Region searchParameters;
 
-    private RegionManager regionManager         = new RegionManager();
+    private RegionDataManager regionDataManager = new RegionDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -18,28 +17,23 @@ public class RegionController : MonoBehaviour//, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Region; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Region>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        regionDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = regionManager.GetRegionDataElements(this);
-
-        var regionDataElements = DataList.Cast<RegionDataElement>();
-
-        //regionDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //regionDataElements[0].Update();
+        DataList = regionDataManager.GetRegionDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

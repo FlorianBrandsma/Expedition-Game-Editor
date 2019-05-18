@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestController : MonoBehaviour//, IDataController
+public class QuestController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.Quest searchParameters;
 
-    public SearchParameters searchParameters;
-
-    private QuestManager questManager           = new QuestManager();
+    private QuestDataManager questDataManager   = new QuestDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -17,28 +15,23 @@ public class QuestController : MonoBehaviour//, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Quest; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Quest>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        questDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = questManager.GetQuestDataElements(this);
-
-        var questDataElements = DataList.Cast<QuestDataElement>();
-
-        //questDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //questDataElements[0].Update();
+        DataList = questDataManager.GetQuestDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

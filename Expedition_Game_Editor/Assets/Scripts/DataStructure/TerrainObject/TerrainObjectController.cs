@@ -9,7 +9,7 @@ public class TerrainObjectController : MonoBehaviour//, IDataController
 
     public SearchParameters searchParameters;
 
-    private TerrainObjectManager terrainObjectManager = new TerrainObjectManager();
+    private TerrainObjectDataManager terrainObjectDataManager = new TerrainObjectDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -30,7 +30,7 @@ public class TerrainObjectController : MonoBehaviour//, IDataController
 
     public void GetData(SearchParameters searchParameters)
     {
-        DataList = terrainObjectManager.GetTerrainObjectDataElements(this);
+        DataList = terrainObjectDataManager.GetTerrainObjectDataElements(this);
 
         var terrainObjectDataElements = DataList.Cast<TerrainObjectDataElement>();
 

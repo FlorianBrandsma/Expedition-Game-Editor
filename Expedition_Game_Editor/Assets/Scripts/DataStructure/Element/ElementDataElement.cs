@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class ElementDataElement : ElementCore
+public class ElementDataElement : ElementCore, IDataElement
 {
     public ElementDataElement() : base() { }
 
@@ -43,4 +43,6 @@ public class ElementDataElement : ElementCore
 
         GetOriginalValues();
     }
+
+    public bool Changed { get { return changed; } }
 }

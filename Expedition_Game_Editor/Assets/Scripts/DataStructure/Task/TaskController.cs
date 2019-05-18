@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TaskController : MonoBehaviour//, IDataController
+public class TaskController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.Task searchParameters;
 
-    public SearchParameters searchParameters;
-
-    private TaskManager taskManager             = new TaskManager();
+    private TaskDataManager taskDataManager     = new TaskDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -17,28 +15,23 @@ public class TaskController : MonoBehaviour//, IDataController
     public Enums.DataType DataType              { get { return Enums.DataType.Task; } }
     public ICollection DataList                 { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Task>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        taskDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = taskManager.GetTaskDataElements(this);
-
-        var taskDataElements = DataList.Cast<TaskDataElement>();
-
-        //taskDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //taskDataElements[0].Update();
+        DataList = taskDataManager.GetTaskDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
 
     }

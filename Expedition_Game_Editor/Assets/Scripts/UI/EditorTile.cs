@@ -33,7 +33,7 @@ public class EditorTile : MonoBehaviour, IElement
     {
         var data = element.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
-        icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+        icon.texture = Resources.Load<Texture2D>(data.originalObjectGraphicIcon);
     }
 
     private void SetTerrainElement()
@@ -71,6 +71,7 @@ public class EditorTile : MonoBehaviour, IElement
     {
         var data = element.route.data.ElementData.Cast<ChapterElementDataElement>().FirstOrDefault();
 
+        //There should be a distinction when an element is being set as result of a search, or by creating the list
         icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
     }
 

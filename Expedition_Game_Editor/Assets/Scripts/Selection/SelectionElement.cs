@@ -22,7 +22,6 @@ public class SelectionElement : MonoBehaviour
 
     public IElement Element                 { get; set; }
     public IEditor DataEditor               { get; set; }
-    public SelectionElement ParentElement   { get; set; }
     public ListManager ListManager          { get; set; }
 
     public IDataController DataController
@@ -67,14 +66,6 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void UpdateElement()
-    {
-        if (ParentElement != null)
-            ParentElement.SetElement();
-        else
-            SetElement();
-    }
-
     public void SetElement(IEnumerable dataElement)
     {
         //int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
@@ -88,7 +79,7 @@ public class SelectionElement : MonoBehaviour
 
         //Possible to draw element data straight from the controller?
         route.data.ElementData = dataElement;
-
+        
         SetElement();
     }
 

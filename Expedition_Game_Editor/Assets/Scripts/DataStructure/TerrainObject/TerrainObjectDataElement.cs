@@ -7,4 +7,5 @@ public class TerrainObjectDataElement : TerrainObjectCore
     public TerrainObjectDataElement() : base() { }
 
     public string icon;
+    public string name;
 }

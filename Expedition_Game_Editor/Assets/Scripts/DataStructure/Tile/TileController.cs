@@ -7,7 +7,7 @@ public class TileController : MonoBehaviour//, IDataController
 {
     public int temp_id_count;
 
-    private TileManager tileManager             = new TileManager();
+    private TileDataManager tileDataManager             = new TileDataManager();
 
     public SearchParameters searchParameters;
 
@@ -30,7 +30,7 @@ public class TileController : MonoBehaviour//, IDataController
 
     public void GetData(SearchParameters searchParameters)
     {
-        DataList = tileManager.GetTileDataElements(this);
+        DataList = tileDataManager.GetTileDataElements(this);
 
         var tileDataElements = DataList.Cast<TileDataElement>();
 
