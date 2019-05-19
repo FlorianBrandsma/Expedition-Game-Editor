@@ -35,6 +35,6 @@ public class RegionController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
-
+        
     }
 }

@@ -6,5 +6,7 @@ public class TaskDataElement : TaskCore, IDataElement
 {
     public TaskDataElement() : base() { }
 
+    public string regionName;
+
     public bool Changed { get { return changed; } }
 }

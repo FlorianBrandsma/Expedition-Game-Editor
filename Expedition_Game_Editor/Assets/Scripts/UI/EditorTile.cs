@@ -25,6 +25,8 @@ public class EditorTile : MonoBehaviour, IElement
             case Enums.DataType.TerrainTile:    SetTerrainTileElement();    break;
             case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
             case Enums.DataType.ChapterElement: SetChapterElementElement(); break;
+            case Enums.DataType.QuestElement:   SetQuestElementElement();   break;
+            case Enums.DataType.ObjectiveElement: SetObjectiveElementElement(); break;
             default: Debug.Log("CASE MISSING");                             break;
         }
     }
@@ -73,6 +75,20 @@ public class EditorTile : MonoBehaviour, IElement
 
         //There should be a distinction when an element is being set as result of a search, or by creating the list
         icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+    }
+
+    private void SetQuestElementElement()
+    {
+        var data = element.route.data.ElementData.Cast<QuestElementDataElement>().FirstOrDefault();
+
+        //icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+    }
+
+    private void SetObjectiveElementElement()
+    {
+        var data = element.route.data.ElementData.Cast<ObjectiveElementDataElement>().FirstOrDefault();
+
+        //icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
     }
 
     public void CloseElement()

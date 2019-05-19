@@ -100,6 +100,7 @@ public class EditorSection : MonoBehaviour
             buttonActionManager.CloseButtons();
 
         targetController = null;
+        targetPath = null;
 
         active = false;
     }

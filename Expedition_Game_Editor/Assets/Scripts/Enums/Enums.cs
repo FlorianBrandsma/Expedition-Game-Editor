@@ -7,10 +7,10 @@ public class Enums
     {
         None,
         Search,
+        Icon,
         ObjectGraphic,
         Item,
         Element,
-        ChapterElement,
         Region,
         Terrain,
         Tile,
@@ -18,9 +18,14 @@ public class Enums
         TerrainElement,
         TerrainObject,
         Chapter,
+        ChapterRegion,
+        ChapterElement,
         Phase,
+        PhaseRegion,
         Quest,
+        QuestElement,
         Objective,
+        ObjectiveElement,
         Task      
     }
 

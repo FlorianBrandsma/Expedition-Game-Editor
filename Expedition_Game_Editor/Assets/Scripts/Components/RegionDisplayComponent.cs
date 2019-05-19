@@ -15,14 +15,14 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
     {
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        dropdown.captionText.text = Enum.GetName(typeof(RegionDisplayManager.Display), RegionDisplayManager.active_display);
+        dropdown.captionText.text = Enum.GetName(typeof(RegionDisplayManager.Display), RegionDisplayManager.activeDisplay);
 
         foreach (var display in Enum.GetValues(typeof(RegionDisplayManager.Display)))
         {
             dropdown.options.Add(new Dropdown.OptionData(display.ToString()));
         }
 
-        dropdown.value = (int)RegionDisplayManager.active_display;
+        dropdown.value = (int)RegionDisplayManager.activeDisplay;
 
         dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(dropdown.value, pathController.route.path); });
     }

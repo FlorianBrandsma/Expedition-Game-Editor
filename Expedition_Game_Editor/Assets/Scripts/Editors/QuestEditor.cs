@@ -5,6 +5,7 @@ using System.Linq;
 public class QuestEditor : MonoBehaviour, IEditor
 {
     private QuestDataElement questData;
+    public List<QuestElementDataElement> questElementDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -18,6 +19,7 @@ public class QuestEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(questData);
+            questElementDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -30,6 +32,7 @@ public class QuestEditor : MonoBehaviour, IEditor
         Data = PathController.route.data;
 
         questData = Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        questElementDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
     }

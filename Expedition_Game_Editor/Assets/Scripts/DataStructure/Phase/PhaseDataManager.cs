@@ -4,12 +4,22 @@ using System.Linq;
 
 public class PhaseDataManager
 {
-    private PhaseController dataController;
+    private PhaseController phaseController;
     private List<PhaseData> phaseDataList;
+
+    public void InitializeManager(PhaseController phaseController)
+    {
+        this.phaseController = phaseController;
+    }
 
     public List<PhaseDataElement> GetPhaseDataElements(Search.Phase searchParameters)
     {
-        GetPhaseData(searchParameters);
+        switch(searchParameters.requestType)
+        {
+            case Search.Phase.RequestType.Custom:               GetCustomPhaseData(searchParameters); break;
+            case Search.Phase.RequestType.GetPhaseWithQuests:   GetPhaseWithQuests(searchParameters); break;
+            default: Debug.Log("CASE MISSING"); break;
+        }
 
         var list = (from phaseData in phaseDataList
                     select new PhaseDataElement()
@@ -30,11 +40,9 @@ public class PhaseDataManager
         return list;
     }
 
-    public void GetPhaseData(Search.Phase searchParameters)
+    private void GetCustomPhaseData(Search.Phase searchParameters)
     {
         phaseDataList = new List<PhaseData>();
-
-        //Temporary
 
         int index = 0;
 
@@ -57,10 +65,15 @@ public class PhaseDataManager
 
             phaseData.chapterId = chapterId;
             phaseData.name = "Phase " + index;
-            phaseData.description = "This is definitely a test"; //"This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
+            phaseData.description = "This is definitely a test";
 
             phaseDataList.Add(phaseData);
         }
+    }
+
+    private void GetPhaseWithQuests(Search.Phase searchParameters)
+    {
+        
     }
 
     internal class PhaseData : GeneralData

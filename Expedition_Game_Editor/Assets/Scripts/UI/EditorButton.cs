@@ -12,7 +12,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        properties = element.ListManager.listProperties.GetComponent<ButtonProperties>();
+        //properties = element.ListManager.listProperties.GetComponent<ButtonProperties>();
 
         icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + element.route.property.ToString());
     }
@@ -21,16 +21,24 @@ public class EditorButton : MonoBehaviour, IElement
     {
         switch (element.route.data.DataController.DataType)
         {
-            case Enums.DataType.Item:       SetItemElement();       break;
-            default: Debug.Log("CASE MISSING");                     break;
+            case Enums.DataType.Item:           SetItemElement();           break;
+            case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
+            default: Debug.Log("CASE MISSING");                             break;
         }
     }
 
     private void SetItemElement()
     {
-        ItemDataElement data = element.route.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+        var data = element.route.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
 
         label.text = data.originalName;
+    }
+
+    private void SetChapterRegionElement()
+    {
+        var data = element.route.data.ElementData.Cast<ChapterRegionDataElement>().FirstOrDefault();
+
+        label.text = data.Name;
     }
 
     public void CloseElement()

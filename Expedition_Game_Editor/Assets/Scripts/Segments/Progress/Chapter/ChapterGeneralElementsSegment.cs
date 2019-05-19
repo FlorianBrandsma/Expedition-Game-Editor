@@ -5,7 +5,6 @@ using System.Linq;
 public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 {
     private DataManager dataManager = new DataManager();
-    private List<DataManager.ElementData> elementList;
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
@@ -68,15 +67,11 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     {
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
-
-        //DataEditor.DataElements = SegmentController.DataController.DataList.Cast<IDataElement>().ToList();
     }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
         ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
-
-        //chapterData.ElementIds = SegmentController.DataController.DataList.Cast<ElementDataElement>().Select(x => x.id).ToList();
 
         DataEditor.UpdateEditor();
 

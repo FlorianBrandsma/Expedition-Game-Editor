@@ -52,7 +52,7 @@ public class PathController : MonoBehaviour
             route = new Route(path);
 
         route.path = path;
-        
+
         if (step > 0)
         {
             //Don't check this if force is true. Must load!
@@ -68,7 +68,7 @@ public class PathController : MonoBehaviour
 
         GetDataController();
         GetDataEditor();
-
+        
         if (subControllerManager != null)
         {
             InitializeTabs(mainPath);
@@ -79,7 +79,7 @@ public class PathController : MonoBehaviour
 
         InitializeComponents(mainPath);
 
-        editorSection.targetPath = route.path;
+        editorSection.targetPath = mainPath;
 
         if (step < mainPath.route.Count)
         {
@@ -132,7 +132,7 @@ public class PathController : MonoBehaviour
         //If there is no previous controller then it definitely hasn't loaded yet
         if (editorSection.previousTargetPath == null)
             return false;
-        
+
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
         if (step > editorSection.previousTargetPath.route.Count)
             return false;

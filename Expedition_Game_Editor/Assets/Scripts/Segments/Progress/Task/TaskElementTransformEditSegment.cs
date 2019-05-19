@@ -1,56 +1,65 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 {
-    public RegionEditor regionEditor;
-
-    private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    private IDataController dataController { get { return GetComponent<IDataController>(); } }
-    public IEditor DataEditor { get { return null/*regionEditor*/; } }
-
-    private TaskDataElement task_data;
-    private RegionDataElement region_data;
-    //private RegionDataElement region_data;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    private IDataController DataController { get { return GetComponent<IDataController>(); } }
+    public IEditor DataEditor { get; set; }
 
     #region UI
-    public SelectionElement editor_button;
+
+    public SelectionElement editButton;
+
     #endregion
 
     #region Data Methods
+
     private void InitializeData()
     {
-        //region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.Cast<RegionDataElement>().FirstOrDefault();
-        region_data = new RegionDataElement();
-
-        region_data.id = 0;
-        region_data.table = "Region";
-        region_data.type = (int)Enums.RegionType.Task;
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
+
+    private void InitializeEditButton()
+    {
+        var regionData = new RegionDataElement();
+
+        regionData.id = 1;
+        regionData.table = "Region";
+        regionData.type = (int)Enums.RegionType.Task;
+
+        editButton.route.path = SegmentController.editorController.pathController.route.path;
+
+        editButton.InitializeElement();
+
+        var searchParameters = new Search.Region();
+        searchParameters.temp_id_count = 15;
+
+        DataController.GetData(new[] { searchParameters });
+
+        editButton.route.data = new Data(DataController, new[] { regionData });
+
+        var taskData = DataEditor.Data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
+
+        editButton.GetComponentInChildren<Text>().text = Enum.GetName(typeof(SelectionManager.Property), editButton.selectionProperty) + " " + taskData.regionName;
+    }
+
     #endregion
 
     #region Segment
+
     public void InitializeSegment()
     {
-        //DataEditor = segmentController.editorController.pathController.dataEditor;
-
         InitializeData();
-
-        SelectionElement element = editor_button.GetComponent<SelectionElement>();
-
-        element.route = segmentController.editorController.pathController.route.Copy();
-        element.route.property = SelectionManager.Property.Open;
-
-        //Data could be initialized here
-
-        element.route.data = new Data(dataController, new[] { region_data });
+        InitializeEditButton();
     }
 
     public void OpenSegment()
     {
-        //editor_button.GetComponentInChildren<Text>().text = "Open " + region_data.name;
+        
         gameObject.SetActive(true);
     }
 
@@ -68,5 +77,6 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
     {
 
     }
+
     #endregion
 }

@@ -64,6 +64,7 @@ public class EditorPanel : MonoBehaviour, IElement
         {
             case Enums.DataType.Chapter:        SetChapterElement();        break;
             case Enums.DataType.Phase:          SetPhaseElement();          break;
+            case Enums.DataType.PhaseRegion:    SetPhaseRegionElement();    break;
             case Enums.DataType.Quest:          SetQuestElement();          break;
             case Enums.DataType.Objective:      SetObjectiveElement();      break;
             case Enums.DataType.Task:           SetTaskElement();           break;
@@ -109,6 +110,15 @@ public class EditorPanel : MonoBehaviour, IElement
 
         if (properties.edit)
             EditButtonData = data;
+    }
+
+    private void SetPhaseRegionElement()
+    {
+        Data data = Element.route.data;
+        PhaseRegionDataElement dataElement = data.ElementData.Cast<PhaseRegionDataElement>().FirstOrDefault();
+
+        id.text = dataElement.id.ToString();
+        header.text = dataElement.originalName;
     }
 
     private void SetQuestElement()

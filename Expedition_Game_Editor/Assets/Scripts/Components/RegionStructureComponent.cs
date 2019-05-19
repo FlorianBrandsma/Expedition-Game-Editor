@@ -19,7 +19,6 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     public List<string> structureList;
 
     private Route route;
-    private RegionDataElement regionDataElement;
 
     private Path activePath;
 
@@ -28,8 +27,8 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         activePath = path;
 
         route = activePath.FindLastRoute("Region").Copy();
-        regionDataElement = route.data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
 
+        var regionDataElement = route.data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
         type = (Enums.RegionType)regionDataElement.type;
 
         InitializeData();
@@ -40,7 +39,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             //It tries to add another route every time it gets opened, causing the selection to appear.
             //This attempt gets blocked by using the max_length variable
 
-            int index = (int)RegionDisplayManager.active_display;
+            int index = (int)RegionDisplayManager.activeDisplay;
 
             if (index > (pathController.controllers.Length - 1))
                 index = (pathController.controllers.Length - 1);
@@ -55,24 +54,20 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     {
         if (activePath.type != Path.Type.New) return;
 
-        if(type == Enums.RegionType.Task)
-            RegionDisplayManager.active_display = 0;
+        if (type == Enums.RegionType.Task)
+            RegionDisplayManager.activeDisplay = 0;
 
         dataList.Clear();
 
         InitializeStructureData();
         InitializeRegionData();
-
-        //TEMPORARY
-        if (regionDataElement.id == 0)
-            regionDataElement.id = 1;
     }
 
     private void InitializeStructureData()
     {
-        for (int i = 0; i < structureList.Count; i++)
+        foreach(string structure in structureList)
         {
-            Data data = activePath.FindLastRoute(structureList[i]).data;
+            Data data = activePath.FindLastRoute(structure).data;
 
             dataList.Add(data);
         }
@@ -82,13 +77,10 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     {
         Data data = activePath.FindFirstRoute("Region").data;
 
-        if (type == Enums.RegionType.Task)
-            ((RegionController)data.DataController).InitializeController();
-
         dataList.Add(data);
     }
 
-    public void SetComponent(Path new_path)
+    public void SetComponent(Path path)
     {
         for (int i = 0; i < dataList.Count; i++)
             SetStructureComponent(i);      
@@ -102,6 +94,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         Data data = dataList[index];
 
         dropdown.gameObject.AddComponent(data.DataController.GetType());
+        dropdown.GetComponent<IDataController>().InitializeController();
 
         switch (data.DataController.DataType)
         {
@@ -120,10 +113,9 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         dropdown.value = selectedIndex;
         dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate {  InitializePath(pathController.route.path, 
-                                                        new Data(   data.DataController, 
-                                                        GetEnumerable(dropdown, data.DataController.DataList)),
-                                                        index);
+        dropdown.onValueChanged.AddListener(delegate {  InitializePath( pathController.route.path, 
+                                                                        new Data(data.DataController, GetEnumerable(dropdown, data.DataController.DataList)),
+                                                                        index);
         });
     }
 
@@ -131,72 +123,51 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
     private void SetChapterOptions(Dropdown dropdown, Data data)
     {
-        List<ChapterDataElement> dataElements = data.DataController.DataList.Cast<ChapterDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<ChapterDataElement>().ToList();
 
-        foreach (ChapterDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-        
-        //dropdown.GetComponent<ChapterController>().searchParameters.temp_id_count = ((ChapterController)data.DataController).DataList.Count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseOptions(Dropdown dropdown, Data data)
     {
-        List<PhaseDataElement> dataElements = data.DataController.DataList.Cast<PhaseDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<PhaseDataElement>().ToList();
 
-        foreach (PhaseDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-
-        //dropdown.GetComponent<PhaseController>().searchParameters.temp_id_count = ((PhaseController)data.DataController).DataList.Count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestOptions(Dropdown dropdown, Data data)
     {
-        List<QuestDataElement> dataElements = data.DataController.DataList.Cast<QuestDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<QuestDataElement>().ToList();
 
-        foreach (QuestDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-
-        //dropdown.GetComponent<QuestController>().searchParameters.temp_id_count = ((QuestController)data.DataController).searchParameters.temp_id_count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveOptions(Dropdown dropdown, Data data)
     {
-        List<ObjectiveDataElement> dataElements = data.DataController.DataList.Cast<ObjectiveDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
-        foreach (ObjectiveDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-
-        //dropdown.GetComponent<ObjectiveController>().searchParameters.temp_id_count = ((ObjectiveController)data.DataController).searchParameters.temp_id_count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetTerrainElementOptions(Dropdown dropdown, Data data)
     {
-        List<TerrainElementDataElement> dataElements = data.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        foreach (TerrainElementDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
-
-        //dropdown.GetComponent<TerrainElementController>().searchParameters.temp_id_count = ((TerrainElementController)data.DataController).searchParameters.temp_id_count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.name)));
     }
 
     private void SetTaskOptions(Dropdown dropdown, Data data)
     {
-        List<TaskDataElement> dataElements = data.DataController.DataList.Cast<TaskDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<TaskDataElement>().ToList();
 
-        foreach (TaskDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Description));
-
-        //dropdown.GetComponent<TaskController>().searchParameters.temp_id_count = ((TaskController)data.DataController).searchParameters.temp_id_count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Description)));
     }
 
     private void SetRegionOptions(Dropdown dropdown, Data data)
     {
-        List<RegionDataElement> dataElements = data.DataController.DataList.Cast<RegionDataElement>().ToList();
+        var dataElements = data.DataController.DataList.Cast<RegionDataElement>().ToList();
 
-        foreach (RegionDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
-
-        //dropdown.GetComponent<RegionController>().searchParameters.temp_id_count = ((RegionController)data.DataController).searchParameters.temp_id_count;
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     #endregion
@@ -207,28 +178,117 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
         dataList[index] = data;
         
-        SetStructureData(path, data, index + 1);
+        SetStructureData(path, index + 1);
 
         EditorManager.editorManager.InitializePath(path);
     }
 
-    private void SetStructureData(Path path, Data data, int index)
+    private void SetStructureData(Path path, int index)
     {
         for (int i = index; i < dataList.Count; i++)
         {
-            Data structure_data = new Data(dropdownList[i].GetComponent<IDataController>(), dataList[i].ElementData);
+            var data = dataList[i];
 
-            dataList[i] = structure_data;
+            switch (data.DataController.DataType)
+            {
+                case Enums.DataType.Chapter:        GetChapterData(i);          break;
+                case Enums.DataType.Phase:          GetPhaseData(i);            break;
+                case Enums.DataType.Quest:          GetQuestData(i);            break;
+                case Enums.DataType.Objective:      GetObjectiveData(i);        break;
+                case Enums.DataType.TerrainElement: GetTerrainElementData(i);   break;
+                case Enums.DataType.Task:           GetTaskData(i);             break;
+                case Enums.DataType.Region:         GetRegionData(i);           break;
 
-            structure_data.DataController.InitializeController();
+                default: Debug.Log("CASE MISSING"); break;
+            }
 
-            //(TASK belongs to an ELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
-            //TASK: load ELEMENT > TERRAIN > REGION
+            var dataController = dropdownList[i].GetComponent<IDataController>();
 
-            structure_data.ElementData = GetEnumerable(0, dataList[i].DataController.DataList);
+            dataList[i] = new Data(dataController, GetEnumerable(0, dataController.DataList));
 
-            path.ReplaceAllRoutes(structure_data);
+            //(TASK belongs to an TERRAINELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
+            //TASK: load TERRAINELEMENT > TERRAIN > REGION
+
+            path.ReplaceAllRoutes(dataList[i]);
         }
+    }
+
+    private void GetChapterData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.Chapter();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetPhaseData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.Phase();
+
+        //searchParameters.requestType = Search.Phase.RequestType.GetPhaseWithQuests;
+
+        //var chapterData = dataList[index - 1].ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        //searchParameters.chapterId = new List<int>() { chapterData.id };
+
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetQuestData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.Quest();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetObjectiveData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.Objective();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetTerrainElementData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.TerrainElement();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetTaskData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        var searchParameters = new Search.Task();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
+    }
+
+    private void GetRegionData(int index)
+    {
+        var dataController = dropdownList[index].GetComponent<IDataController>();
+
+        ((RegionController)dataController).regionType = type;
+
+        var searchParameters = new Search.Region();
+        searchParameters.temp_id_count = 15;
+
+        dataController.GetData(new[] { searchParameters });
     }
 
     public IEnumerable GetEnumerable(int index, ICollection list)

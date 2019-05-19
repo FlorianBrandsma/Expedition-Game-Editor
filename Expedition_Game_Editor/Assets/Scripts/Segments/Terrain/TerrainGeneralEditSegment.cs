@@ -1,55 +1,58 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Linq;
 
-public class TerrainHeader : MonoBehaviour, ISegment
+public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 {
-    private SegmentController segmentController { get { return GetComponent<SegmentController>(); } }
-    private IDataController dataController { get { return GetComponent<IDataController>(); } }
-    public IEditor DataEditor { get; set; }
-
-    private TerrainDataElement terrain_data;
-    private RegionDataElement region_data;
-
     #region UI
-    public Button editor_button;
-    public Text id;
+
+    public SelectionElement editButton;
+
     #endregion
 
     #region Data Variables
-    private int _id;
+
     #endregion
 
-    #region Data Methods
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor { get; set; }
+
+    #region Methods
+
     private void InitializeData()
     {
-        terrain_data = DataEditor.Data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
-        region_data = segmentController.editorController.pathController.route.path.FindLastRoute("Region").data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
-
-        _id = terrain_data.id;
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
+
+    private void InitializeEditButton()
+    {
+        var data = SegmentController.path.FindLastRoute("Region").data;
+        var regionData = data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+
+        editButton.route.path = SegmentController.editorController.pathController.route.path;
+
+        editButton.InitializeElement();
+
+        editButton.route.data = new Data(data.DataController, new[] { regionData });
+
+        editButton.GetComponentInChildren<Text>().text = Enum.GetName(typeof(SelectionManager.Property), editButton.selectionProperty) + " " + regionData.Name;
+    }
+
     #endregion
 
     #region Segment
+
     public void InitializeSegment()
     {
-        DataEditor = segmentController.editorController.pathController.dataEditor;
-
         InitializeData();
-
-        SelectionElement element = editor_button.GetComponent<SelectionElement>();
-
-        element.route = segmentController.editorController.pathController.route.Copy();
-        element.route.property = SelectionManager.Property.Open;
-
-        element.route.data = new Data(dataController, new[] { region_data });
+        InitializeEditButton();
     }
 
     public void OpenSegment()
     {
-        id.text = _id.ToString();
-        editor_button.GetComponentInChildren<Text>().text = "Open " + region_data.Name;
+        
         gameObject.SetActive(true);
     }
 
@@ -67,5 +70,6 @@ public class TerrainHeader : MonoBehaviour, ISegment
     {
 
     }
+
     #endregion
 }

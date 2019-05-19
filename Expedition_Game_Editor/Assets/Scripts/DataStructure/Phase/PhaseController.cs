@@ -23,17 +23,12 @@ public class PhaseController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        phaseDataManager.InitializeManager(this);
     }
 
     public void GetData(IEnumerable searchParameters)
     {
         DataList = phaseDataManager.GetPhaseDataElements(searchParameters.Cast<Search.Phase>().FirstOrDefault());
-
-        var phaseDataElements = DataList.Cast<PhaseDataElement>();
-
-        //phaseDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //phaseDataElements[0].Update();
     }
 
     public void SetData(SelectionElement searchElement, Data resultData)

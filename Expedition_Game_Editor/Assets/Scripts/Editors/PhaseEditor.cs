@@ -5,7 +5,7 @@ using System.Linq;
 public class PhaseEditor : MonoBehaviour, IEditor
 {
     private PhaseDataElement phaseData;
-    private SelectionElement selectionElement;
+    public List<PhaseRegionDataElement> phaseRegionDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -19,6 +19,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(phaseData);
+            phaseRegionDataList.ForEach(x => list.Add(x));
             
             return list;
         }
@@ -28,11 +29,10 @@ public class PhaseEditor : MonoBehaviour, IEditor
     {
         if (Loaded) return;
 
-        selectionElement = PathController.Origin;
-
         Data = PathController.route.data;
 
         phaseData = Data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
+        phaseRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
     }
@@ -49,7 +49,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
         list.RemoveAt(phaseData.Index);
         list.Insert(index, phaseData);
 
-        selectionElement.ListManager.listProperties.DataController.DataList = list;
+        PathController.Origin.ListManager.listProperties.DataController.DataList = list;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -62,7 +62,9 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     private void UpdateList()
     {
-        selectionElement.ListManager.UpdateData();
+        if (PathController.Origin == null) return;
+
+        PathController.Origin.ListManager.UpdateData();
     }
 
     public void OpenEditor()

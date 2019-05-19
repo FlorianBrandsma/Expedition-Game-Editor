@@ -6,6 +6,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 {
     private ChapterDataElement chapterData;
     public List<ChapterElementDataElement> chapterElementDataList;
+    public List<ChapterRegionDataElement> chapterRegionDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -20,6 +21,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
             list.Add(chapterData);
             chapterElementDataList.ForEach(x => list.Add(x));
+            chapterRegionDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -33,6 +35,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         chapterData = Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
         chapterElementDataList.Clear();
+        chapterRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
     }

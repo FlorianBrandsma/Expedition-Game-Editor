@@ -4,6 +4,17 @@ using System.Collections.Generic;
 public class Search
 {
     [System.Serializable]
+    public class Icon : SearchParameters
+    {
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
     public class ObjectGraphic : SearchParameters
     {
         public enum RequestType
@@ -74,11 +85,26 @@ public class Search
     public class ChapterElement : SearchParameters
     {
         public List<int> chapterId = new List<int>();
+        public List<int> elementId = new List<int>();
 
         public enum RequestType
         {
             Custom,
             GetChapterElementsById
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
+    public class ChapterRegion : SearchParameters
+    {
+        public List<int> chapterId = new List<int>();
+        public List<int> regionId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
         }
 
         public RequestType requestType;
@@ -94,6 +120,21 @@ public class Search
 
         public enum RequestType
         {
+            Custom,
+            GetPhaseWithQuests
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
+    public class PhaseRegion : SearchParameters
+    {
+        public List<int> phaseId = new List<int>();
+        public List<int> regionId = new List<int>();
+
+        public enum RequestType
+        {
             Custom
         }
 
@@ -106,6 +147,20 @@ public class Search
         public List<int> index = new List<int>();
         public List<string> name = new List<string>();
         public List<string> description = new List<string>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
+    public class QuestElement : SearchParameters
+    {
+        public List<int> questId = new List<int>();
+        public List<int> elementId = new List<int>();
 
         public enum RequestType
         {
