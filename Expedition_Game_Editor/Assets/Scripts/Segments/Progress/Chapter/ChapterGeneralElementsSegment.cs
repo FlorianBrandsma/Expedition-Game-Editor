@@ -42,8 +42,7 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.ChapterElement.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
-        searchParameters.temp_id_count = 4;
-        
+
         SegmentController.DataController.GetData(new[] { searchParameters });
         
         var chapterElementList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().ToList();

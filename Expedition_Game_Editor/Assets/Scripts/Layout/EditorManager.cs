@@ -16,6 +16,9 @@ public class EditorManager : MonoBehaviour
 
     private void Awake()
     {
+        Fixtures.LoadFixtures();
+        //Fixtures.CalculateFixtures();
+
         editorManager = this;
 
         UI = GetComponent<RectTransform>();
@@ -29,11 +32,6 @@ public class EditorManager : MonoBehaviour
         LanguageManager.GetLanguage();
 
         InitializePath(new PathManager.Main().Initialize());
-
-        //poolManager.Test();
-
-        //Debugging
-        //InitializePath(new PathManager.Form(forms[1]).Initialize());
     }
 
     private void Update()

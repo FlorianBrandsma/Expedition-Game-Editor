@@ -3,8 +3,6 @@ using System.Collections;
 
 public class TileCore : GeneralData
 {
-    private int index;
-
     public int originalIndex;
 
     public bool changed;

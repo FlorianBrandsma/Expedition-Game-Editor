@@ -3,15 +3,15 @@ using System.Collections;
 
 public class ChapterRegionCore : GeneralData
 {
-    private int index;
-    private string name;
+    private int chapterId;
+    private int regionId;
 
     public int originalIndex;
-    public string originalName;
+    public int originalRegionId;
 
     public bool changed;
     private bool changedIndex;
-    private bool changedName;
+    private bool changedRegionId;
 
     #region Properties
 
@@ -28,17 +28,22 @@ public class ChapterRegionCore : GeneralData
         }
     }
 
-    public string Name
+    public int ChapterId
     {
-        get { return name; }
+        get { return chapterId; }
+        set { chapterId = value; }
+    }
+
+    public int RegionId
+    {
+        get { return regionId; }
         set
         {
-            if (value == name) return;
+            if (value == regionId) return;
 
-            changed = true;
-            changedName = true;
+            changedRegionId = true;
 
-            name = value;
+            regionId = value;
         }
     }
 
@@ -78,14 +83,14 @@ public class ChapterRegionCore : GeneralData
 
     public void SetOriginalValues()
     {
-        originalName = name;
+        originalRegionId = regionId;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = originalName;
+        regionId = originalRegionId;
     }
 
     public void ClearChanges()
@@ -94,7 +99,7 @@ public class ChapterRegionCore : GeneralData
 
         changed = false;
         changedIndex = false;
-        changedName = false;
+        changedRegionId = false;
     }
 
     public void Delete()

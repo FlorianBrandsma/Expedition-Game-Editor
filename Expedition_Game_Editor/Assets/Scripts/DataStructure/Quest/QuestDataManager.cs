@@ -26,7 +26,8 @@ public class QuestDataManager
                         table = questData.table,
 
                         Index = questData.index,
-                        Name = questData.name
+                        Name = questData.name,
+                        Notes = questData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -39,15 +40,19 @@ public class QuestDataManager
     {
         questDataList = new List<QuestData>();
 
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
-        {
+        foreach(Fixtures.Quest quest in Fixtures.questList)
+        { 
             var questData = new QuestData();
 
-            questData.id = (i + 1);
+            questData.id = quest.id;
             questData.table = "Quest";
-            questData.index = i;
+            questData.index = quest.index;
 
-            questData.name = "Quest " + (i + 1);
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
+
+            questData.phaseId = quest.phaseId;
+            questData.name = quest.name;
+            questData.notes = quest.notes;
 
             questDataList.Add(questData);
         }
@@ -55,7 +60,8 @@ public class QuestDataManager
 
     internal class QuestData : GeneralData
     {
-        public int index;
+        public int phaseId;
         public string name;
+        public string notes;
     }
 }

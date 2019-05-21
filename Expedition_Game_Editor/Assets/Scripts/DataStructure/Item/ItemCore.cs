@@ -4,7 +4,6 @@ using System.Collections;
 public class ItemCore : GeneralData
 {
     private int type;
-    private int index;
     private int objectGraphicId;
     private string name;
 

@@ -30,7 +30,6 @@ public class RegionSegment : MonoBehaviour, ISegment
         if (!SegmentController.loaded && !SegmentController.editorController.pathController.loaded)
         {
             var searchParameters = new Search.Region();
-            searchParameters.temp_id_count = 15;
 
             SegmentController.DataController.GetData(new[] { searchParameters });
         }

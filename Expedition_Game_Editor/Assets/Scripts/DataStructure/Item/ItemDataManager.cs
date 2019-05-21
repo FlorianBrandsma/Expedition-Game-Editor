@@ -50,30 +50,22 @@ public class ItemDataManager
     {
         itemDataList = new List<ItemData>();
 
-        int index = 0;
-
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.Item item in Fixtures.itemList)
         {
             var itemData = new ItemData();
 
-            int id = (i + 1);
-
-            itemData.id = id;
+            itemData.id = item.id;
             itemData.table = "Item";
 
-            int type = (i / (searchParameters.temp_id_count / 3));
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
 
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(type)) continue;
+            itemData.type = item.type;
+            itemData.index = item.index;
 
-            itemData.type = type;
-            itemData.index = index;
-
-            itemData.objectId = 1;
-            itemData.name = "Item " + id;
+            itemData.objectId = item.objectGraphicId;
+            itemData.name = item.name;
 
             itemDataList.Add(itemData);
-
-            index++;
         }
     }
 

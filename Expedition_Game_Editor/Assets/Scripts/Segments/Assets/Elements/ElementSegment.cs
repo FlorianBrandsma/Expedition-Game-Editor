@@ -30,7 +30,6 @@ public class ElementSegment : MonoBehaviour, ISegment
         if (!SegmentController.loaded && !SegmentController.editorController.pathController.loaded)
         {
             var searchParameters = new Search.Element();
-            searchParameters.temp_id_count = 4;
 
             SegmentController.DataController.GetData(new[] { searchParameters });
         }

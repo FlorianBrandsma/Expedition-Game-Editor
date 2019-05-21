@@ -3,9 +3,8 @@ using System.Collections;
 
 public class ChapterCore : GeneralData
 {
-    private int index;
     private string name;
-    private string description;
+    private string notes;
 
     public int originalIndex;
     public string originalName;
@@ -14,7 +13,7 @@ public class ChapterCore : GeneralData
     public bool changed;
     private bool changedIndex;
     private bool changedName;
-    private bool changedDescription;
+    private bool changedNotes;
 
     #region Properties
 
@@ -45,17 +44,17 @@ public class ChapterCore : GeneralData
         }
     }
 
-    public string Description
+    public string Notes
     {
-        get { return description; }
+        get { return notes; }
         set
         {
-            if (value == description) return;
+            if (value == notes) return;
 
             changed = true;
-            changedDescription = true;
+            changedNotes = true;
 
-            description = value;
+            notes = value;
         }
     }
 
@@ -98,7 +97,7 @@ public class ChapterCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalName           = name;
-        originalDescription    = description;
+        originalDescription    = notes;
 
         //ClearChanges();
     }
@@ -106,7 +105,7 @@ public class ChapterCore : GeneralData
     public void GetOriginalValues()
     {
         name        = originalName;
-        description = originalDescription;
+        notes = originalDescription;
     }
 
     public virtual void ClearChanges()
@@ -116,7 +115,7 @@ public class ChapterCore : GeneralData
         changed             = false;
         changedIndex       = false;
         changedName        = false;
-        changedDescription = false;
+        changedNotes = false;
     }
 
     public void Delete()

@@ -54,30 +54,21 @@ public class ElementDataManager
     internal void GetCustomElementData(Search.Element searchParameters)
     {
         elementDataList = new List<ElementData>();
-
-        //For filtering out the polearm, just because (index matches id)
-        var objectList = new List<int> { 0, 2, 3, 4 };
-
-        int index = 0;
-
-        for(int i = 0; i < searchParameters.temp_id_count; i++)
-        {
+        
+        foreach(Fixtures.Element element in Fixtures.elementList)
+        { 
             var elementData = new ElementData();
+            
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(element.id)) continue;
 
-            var id = (i + 1);
-
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(id)) continue;
-
-            elementData.id = id;
+            elementData.id = element.id;
             elementData.table = "Element";
-            elementData.index = index;
+            elementData.index = element.index;
 
-            elementData.objectGraphicId = objectList[i];
-            elementData.name = "Element " + id;
+            elementData.objectGraphicId = element.objectGraphicId;
+            elementData.name = element.name;
 
             elementDataList.Add(elementData);
-
-            index++;
         }
     }
 
@@ -88,7 +79,6 @@ public class ElementDataManager
 
     internal class ElementData : GeneralData
     {
-        public int index;
         public int objectGraphicId;
         public string name;
     }

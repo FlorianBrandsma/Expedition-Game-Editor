@@ -27,7 +27,7 @@ public class ChapterDataManager
 
                         Index = chapterData.index,
                         Name = chapterData.name,
-                        Description = chapterData.description
+                        Notes = chapterData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -40,18 +40,16 @@ public class ChapterDataManager
     {
         chapterDataList = new List<ChapterData>();
 
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.Chapter chapter in Fixtures.chapterList)
         {
             var chapterData = new ChapterData();
-
-            int id = (i + 1);
             
-            chapterData.id = id;
+            chapterData.id = chapter.id;
             chapterData.table = "Chapter";
-            chapterData.index = i;
+            chapterData.index = chapter.index;
 
-            chapterData.name = "Chapter " + id;
-            chapterData.description = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
+            chapterData.name = chapter.name;
+            chapterData.notes = chapter.notes;
 
             chapterDataList.Add(chapterData);
         }
@@ -59,8 +57,7 @@ public class ChapterDataManager
 
     internal class ChapterData : GeneralData
     {
-        public int index;
         public string name;
-        public string description;      
+        public string notes;      
     }
 }

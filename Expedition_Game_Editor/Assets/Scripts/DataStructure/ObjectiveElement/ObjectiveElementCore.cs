@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ObjectiveElementCore : GeneralData
 {
-    private int index;
     private string name;
 
     public int originalIndex;

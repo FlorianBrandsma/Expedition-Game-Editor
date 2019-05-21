@@ -38,7 +38,7 @@ public class EditorButton : MonoBehaviour, IElement
     {
         var data = element.route.data.ElementData.Cast<ChapterRegionDataElement>().FirstOrDefault();
 
-        label.text = data.Name;
+        label.text = data.name;
     }
 
     public void CloseElement()

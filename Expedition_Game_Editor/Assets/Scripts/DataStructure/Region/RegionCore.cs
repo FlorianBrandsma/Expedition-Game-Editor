@@ -3,7 +3,6 @@ using System.Collections;
 
 public class RegionCore : GeneralData
 {
-    private int index;
     private string name;
 
     public int originalIndex;

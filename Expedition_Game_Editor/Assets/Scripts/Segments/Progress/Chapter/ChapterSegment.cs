@@ -28,7 +28,6 @@ public class ChapterSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.pathController.loaded) return;
 
         var searchParameters = new Search.Chapter();
-        searchParameters.temp_id_count = 15;
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

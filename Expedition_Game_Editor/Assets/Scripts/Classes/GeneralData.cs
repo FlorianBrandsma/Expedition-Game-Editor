@@ -5,6 +5,7 @@ public class GeneralData
 {
     public string table;
     public int id;
+    public int index;
 
     //Temporary
     public int id_count;
@@ -13,12 +14,14 @@ public class GeneralData
     {
         table = "";
         id = 0;
+        index = 0;
     }
 
-    public GeneralData(string table, int id)
+    public GeneralData(string table, int id, int index)
     {
         this.table = table;
         this.id = id;
+        this.index = index;
     }
 
     public bool Equals(GeneralData data)
@@ -34,6 +37,6 @@ public class GeneralData
 
     public GeneralData Copy()
     {
-        return new GeneralData(table, id);
+        return new GeneralData(table, id, index);
     }
 }

@@ -39,20 +39,15 @@ public class ObjectGraphicDataManager
     {
         objectGraphicDataList = new List<ObjectGraphicData>();
 
-        string[] object_names = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
-
-        //Temporary
-        for(int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
             var objectGraphicData = new ObjectGraphicData();
 
-            var id = (i + 1);
-
-            objectGraphicData.id = id;
+            objectGraphicData.id = objectGraphic.id;
             objectGraphicData.table = "ObjectGraphic";
 
-            objectGraphicData.name = object_names[i];
-            objectGraphicData.icon = "Textures/Icons/Objects/" + object_names[i];
+            objectGraphicData.name = objectGraphic.name;
+            objectGraphicData.icon = objectGraphic.icon;
 
             objectGraphicDataList.Add(objectGraphicData);
         }

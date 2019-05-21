@@ -103,7 +103,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.originalName;
-        description.text = dataElement.originalDescription;
+        description.text = dataElement.originalNotes;
 
         if (properties.icon)
             IconTexture = Resources.Load<Texture2D>(dataElement.icon);
@@ -128,6 +128,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.originalName;
+        description.text = dataElement.originalNotes;
 
         if (properties.edit)
             EditButtonData = data;
@@ -140,6 +141,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.originalName;
+        description.text = dataElement.originalNotes;
 
         if (properties.edit)
             EditButtonData = data;

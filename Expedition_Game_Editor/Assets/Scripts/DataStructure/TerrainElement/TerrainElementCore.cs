@@ -3,8 +3,6 @@ using System.Collections;
 
 public class TerrainElementCore : GeneralData
 {
-    private int index;
-
     public int originalIndex;
 
     public bool changed;

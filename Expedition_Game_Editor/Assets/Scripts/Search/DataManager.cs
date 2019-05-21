@@ -10,21 +10,19 @@ public class DataManager
     {
         List<ObjectGraphicData> dataList = new List<ObjectGraphicData>();
 
-        string[] objectNames = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
-
-        for (int id = 0; id < objectNames.Length; id++)
+        foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
             var data = new ObjectGraphicData();
 
-            data.id = id;
-
+            data.id = objectGraphic.id;
             data.table = "ObjectGraphic";
-            data.name = objectNames[id];
-            data.icon = "Textures/Icons/Objects/" + objectNames[id];
+
+            data.name = objectGraphic.name;
+            data.icon = objectGraphic.icon;
 
             if (searchById)
             {
-                if (idList.Contains(id))
+                if (idList.Contains(objectGraphic.id))
                     dataList.Add(data);
             } else {
                 dataList.Add(data);
@@ -43,22 +41,18 @@ public class DataManager
     {
         List<ElementData> dataList = new List<ElementData>();
 
-        var objectList = new List<int> { 0, 2, 3, 4 };
-
-        for (int i = 0; i < objectList.Count; i++)
+        foreach(Fixtures.Element element in Fixtures.elementList)
         {
             var data = new ElementData();
-
-            int id = (i + 1);
-
-            data.id = id;
+            
+            data.id = element.id;
             data.table = "Element";
 
-            data.objectGraphicId = objectList[i];
+            data.objectGraphicId = element.objectGraphicId;
 
             if (searchById)
             {
-                if (idList.Contains(id))
+                if (idList.Contains(element.id))
                     dataList.Add(data);
             }
             else
@@ -88,6 +82,33 @@ public class DataManager
         return dataList;
     }
 
+    public List<RegionData> GetRegionData(List<int> idList, bool searchById = false)
+    {
+        List<RegionData> dataList = new List<RegionData>();
+
+        foreach (Fixtures.Region element in Fixtures.regionList)
+        {
+            var data = new RegionData();
+
+            data.id = element.id;
+            data.table = "Region";
+
+            data.name = element.name;
+
+            if (searchById)
+            {
+                if (idList.Contains(element.id))
+                    dataList.Add(data);
+            }
+            else
+            {
+                dataList.Add(data);
+            }
+        }
+
+        return dataList;
+    }
+
     #endregion
 
     #region Classes
@@ -106,6 +127,11 @@ public class DataManager
     public class ChapterElementData : GeneralData
     {
 
+    }
+
+    public class RegionData : GeneralData
+    {
+        public string name;
     }
 
     #endregion

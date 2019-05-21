@@ -62,26 +62,19 @@ public class ChapterElementDataManager
     {
         chapterElementDataList = new List<ChapterElementData>();
 
-        //Temporary
-        var elementList = new List<int> { 1, 2, 3, 4 };
-
-        for (int i = 0; i < elementList.Count; i++)
+        foreach(Fixtures.ChapterElement chapterElement in Fixtures.chapterElementList)
         {
             var chapterElementData = new ChapterElementData();
+            
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterElement.id)) continue;
 
-            var id = (i + 1);
-
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(id)) continue;
-
-            chapterElementData.id = id;
+            chapterElementData.id = chapterElement.id;
             chapterElementData.table = "ChapterElement";
+            
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterElement.chapterId)) continue;
 
-            var chapterId = (i % 2) + 1;
-
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterId)) continue;
-
-            chapterElementData.chapterId = chapterId;
-            chapterElementData.elementId = elementList[i];
+            chapterElementData.chapterId = chapterElement.chapterId;
+            chapterElementData.elementId = chapterElement.elementId;
 
             chapterElementDataList.Add(chapterElementData);
         }

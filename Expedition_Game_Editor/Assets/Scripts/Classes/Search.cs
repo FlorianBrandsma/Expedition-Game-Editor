@@ -145,6 +145,7 @@ public class Search
     public class Quest : SearchParameters
     {
         public List<int> index = new List<int>();
+        public List<int> phaseId = new List<int>();
         public List<string> name = new List<string>();
         public List<string> description = new List<string>();
 
@@ -174,6 +175,7 @@ public class Search
     public class Objective : SearchParameters
     {
         public List<int> index = new List<int>();
+        public List<int> questId = new List<int>();
         public List<string> name = new List<string>();
         public List<string> description = new List<string>();
 

@@ -218,7 +218,6 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         var dataController = dropdownList[index].GetComponent<IDataController>();
 
         var searchParameters = new Search.Chapter();
-        searchParameters.temp_id_count = 15;
 
         dataController.GetData(new[] { searchParameters });
     }
@@ -286,7 +285,6 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         ((RegionController)dataController).regionType = type;
 
         var searchParameters = new Search.Region();
-        searchParameters.temp_id_count = 15;
 
         dataController.GetData(new[] { searchParameters });
     }

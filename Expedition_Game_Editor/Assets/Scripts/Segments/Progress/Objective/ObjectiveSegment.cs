@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ObjectiveSegment : MonoBehaviour, ISegment
 {
@@ -28,7 +28,8 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.pathController.loaded) return;
 
         var searchParameters = new Search.Objective();
-        searchParameters.temp_id_count = 15;
+
+        searchParameters.questId = new List<int>() { SegmentController.path.FindLastRoute("Quest").GeneralData().id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

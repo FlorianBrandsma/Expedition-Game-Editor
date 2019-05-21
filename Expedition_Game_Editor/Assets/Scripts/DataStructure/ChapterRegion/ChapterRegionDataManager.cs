@@ -7,6 +7,9 @@ public class ChapterRegionDataManager
 {
     private ChapterRegionController chapterRegionController;
     private List<ChapterRegionData> chapterRegionDataList;
+    private List<DataManager.RegionData> regionDataList;
+
+    private DataManager dataManager = new DataManager();
 
     public void InitializeManager(ChapterRegionController chapterRegionController)
     {
@@ -19,14 +22,20 @@ public class ChapterRegionDataManager
 
         GetChapterRegionData(chapterRegionSearchData);
 
+        GetRegionData();
+
         var list = (from chapterRegionData in chapterRegionDataList
+                    join regionData in regionDataList on chapterRegionData.regionId equals regionData.id
                     select new ChapterRegionDataElement()
                     {
                         id = chapterRegionData.id,
                         table = chapterRegionData.table,
-
                         Index = chapterRegionData.index,
-                        Name = chapterRegionData.name
+
+                        ChapterId = chapterRegionData.chapterId,
+                        RegionId = chapterRegionData.regionId,
+
+                        name = regionData.name
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -39,23 +48,31 @@ public class ChapterRegionDataManager
     {
         chapterRegionDataList = new List<ChapterRegionData>();
 
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.ChapterRegion chapterRegion in Fixtures.chapterRegionList)
         {
             var chapterRegionData = new ChapterRegionData();
 
-            chapterRegionData.id = (i + 1);
+            chapterRegionData.id = chapterRegion.id;
             chapterRegionData.table = "ChapterRegion";
-            chapterRegionData.index = i;
+            chapterRegionData.index = chapterRegion.id;
 
-            chapterRegionData.name = "ChapterRegion " + (i + 1);
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
+
+            chapterRegionData.chapterId = chapterRegion.chapterId;
+            chapterRegionData.regionId = chapterRegion.regionId;
 
             chapterRegionDataList.Add(chapterRegionData);
         }
     }
 
+    internal void GetRegionData()
+    {
+        regionDataList = dataManager.GetRegionData(chapterRegionDataList.Select(x => x.regionId).Distinct().ToList(), true);
+    }
+
     internal class ChapterRegionData : GeneralData
     {
-        public int index;
-        public string name;
+        public int chapterId;
+        public int regionId;
     }
 }

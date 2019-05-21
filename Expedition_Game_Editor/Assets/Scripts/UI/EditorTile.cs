@@ -65,7 +65,6 @@ public class EditorTile : MonoBehaviour, IElement
         element.route.data.DataController.DataList = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().ToList();
 
         var objectGraphicDataElement = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
-
         icon.texture = Resources.Load<Texture2D>(objectGraphicDataElement.Icon);
     }
 

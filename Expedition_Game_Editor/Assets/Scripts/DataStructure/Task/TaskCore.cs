@@ -3,7 +3,6 @@ using System.Collections;
 
 public class TaskCore : GeneralData
 {
-    private int index;
     private string description;
 
     public int originalIndex;

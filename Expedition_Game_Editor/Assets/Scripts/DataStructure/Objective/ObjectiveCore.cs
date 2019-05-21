@@ -3,15 +3,20 @@ using System.Collections;
 
 public class ObjectiveCore : GeneralData
 {
-    private int index;
     private string name;
+    private string journal;
+    private string notes;
 
     public int originalIndex;
     public string originalName;
+    public string originalJournal;
+    public string originalNotes;
 
     public bool changed;
     private bool changedIndex;
     private bool changedName;
+    private bool changedJournal;
+    private bool changedNotes;
 
     #region Properties
 
@@ -39,6 +44,34 @@ public class ObjectiveCore : GeneralData
             changedName = true;
 
             name = value;
+        }
+    }
+
+    public string Journal
+    {
+        get { return journal; }
+        set
+        {
+            if (value == journal) return;
+
+            changed = true;
+            changedJournal = true;
+
+            journal = value;
+        }
+    }
+
+    public string Notes
+    {
+        get { return notes; }
+        set
+        {
+            if (value == notes) return;
+
+            changed = true;
+            changedNotes = true;
+
+            notes = value;
         }
     }
 
@@ -79,6 +112,8 @@ public class ObjectiveCore : GeneralData
     public void SetOriginalValues()
     {
         originalName = name;
+        originalJournal = journal;
+        originalNotes = notes;
 
         ClearChanges();
     }
@@ -86,6 +121,8 @@ public class ObjectiveCore : GeneralData
     public void GetOriginalValues()
     {
         name = originalName;
+        journal = originalJournal;
+        notes = originalNotes;
     }
 
     public void ClearChanges()
@@ -95,6 +132,8 @@ public class ObjectiveCore : GeneralData
         changed = false;
         changedIndex = false;
         changedName = false;
+        changedJournal = false;
+        changedNotes = false;
     }
 
     public void Delete()

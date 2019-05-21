@@ -24,16 +24,12 @@ public class SearchController : MonoBehaviour
                 ObjectGraphicController objectGraphicController = gameObject.AddComponent<ObjectGraphicController>();
                 objectGraphicController.SearchParameters = data.SearchParameters;
 
-                objectGraphicController.searchParameters.temp_id_count = 5;
-
                 break;
 
             case Enums.DataType.Element:
 
                 ElementController elementController = gameObject.AddComponent<ElementController>();
                 elementController.SearchParameters = data.SearchParameters;
-
-                GetComponent<ElementController>().searchParameters.temp_id_count = 4;
 
                 break;
         }

@@ -26,7 +26,9 @@ public class ObjectiveDataManager
                         table = objectiveData.table,
 
                         Index = objectiveData.index,
-                        Name = objectiveData.name
+                        Name = objectiveData.name,
+                        Journal = objectiveData.journal,
+                        Notes = objectiveData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -38,30 +40,31 @@ public class ObjectiveDataManager
     public void GetObjectiveData(Search.Objective searchParameters)
     {
         objectiveDataList = new List<ObjectiveData>();
-
-        int index = 0;
-
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        
+        foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
             var objectiveData = new ObjectiveData();
-
-            int id = (i + 1);
-
-            objectiveData.id = id;
+            
+            objectiveData.id = objective.id;
             objectiveData.table = "Objective";
-            objectiveData.index = index;
+            objectiveData.index = objective.index;
 
-            objectiveData.name = "Objective " + id;
+            if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
+
+            objectiveData.questId = objective.questId;
+            objectiveData.name = objective.name;
+            objectiveData.journal = objective.journal;
+            objectiveData.notes = objective.notes;
 
             objectiveDataList.Add(objectiveData);
-
-            index++;
         }
     }
 
     internal class ObjectiveData : GeneralData
     {
-        public int index;
+        public int questId;
         public string name;
+        public string journal;
+        public string notes;
     }
 }

@@ -29,7 +29,7 @@ public class PhaseDataManager
 
                         Index = phaseData.index,
                         Name = phaseData.name,
-                        Description = phaseData.description,
+                        Notes = phaseData.notes,
 
                         icon = "Textures/Characters/1"
 
@@ -44,28 +44,21 @@ public class PhaseDataManager
     {
         phaseDataList = new List<PhaseData>();
 
-        int index = 0;
-
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.Phase phase in Fixtures.phaseList)
         {
             var phaseData = new PhaseData();
 
-            var id = (i + 1);
-
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(id)) continue;
-
-            var chapterId = (i % 2) + 1;
-
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterId)) continue;
-
-            phaseData.id = (i + 1);
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phase.id)) continue;
+            
+            phaseData.id = phase.id;
             phaseData.table = "Phase";
-            phaseData.index = index;
-            index++;
+            phaseData.index = phase.index;
 
-            phaseData.chapterId = chapterId;
-            phaseData.name = "Phase " + index;
-            phaseData.description = "This is definitely a test";
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
+
+            phaseData.chapterId = phase.chapterId;
+            phaseData.name = phase.name;
+            phaseData.notes = phase.notes;
 
             phaseDataList.Add(phaseData);
         }
@@ -78,9 +71,8 @@ public class PhaseDataManager
 
     internal class PhaseData : GeneralData
     {
-        public int index;
         public int chapterId;
         public string name;
-        public string description;
+        public string notes;
     }
 }

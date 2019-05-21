@@ -31,7 +31,6 @@ public class GearSegment : MonoBehaviour, ISegment
         {
             var searchParameters = new Search.Item();
             searchParameters.type = new List<int>() { (int)Enums.ItemType.Gear };
-            searchParameters.temp_id_count = 45;
 
             SegmentController.DataController.GetData(new[] { searchParameters });
         }

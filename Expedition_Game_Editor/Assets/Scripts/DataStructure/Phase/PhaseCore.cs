@@ -3,13 +3,12 @@ using System.Collections;
 
 public class PhaseCore : GeneralData
 {
-    private int index;
     private string name;
-    private string description;
+    private string notes;
 
     public int originalIndex;
     public string originalName;
-    public string originalDescription;
+    public string originalNotes;
 
     public bool changed;
     private bool changedId;
@@ -17,7 +16,7 @@ public class PhaseCore : GeneralData
     private bool changedType;
     private bool changedIndex;
     private bool changedName;
-    private bool changedDescription;
+    private bool changedNotes;
 
     #region Properties
 
@@ -48,17 +47,17 @@ public class PhaseCore : GeneralData
         }
     }
 
-    public string Description
+    public string Notes
     {
-        get { return description; }
+        get { return notes; }
         set
         {
-            if (value == description) return;
+            if (value == notes) return;
 
             changed = true;
-            changedDescription = true;
+            changedNotes = true;
 
-            description = value;
+            notes = value;
         }
     }
 
@@ -101,7 +100,7 @@ public class PhaseCore : GeneralData
     public void SetOriginalValues()
     {
         originalName = name;
-        originalDescription = description;
+        originalNotes = notes;
 
         ClearChanges();
     }
@@ -109,7 +108,7 @@ public class PhaseCore : GeneralData
     public void GetOriginalValues()
     {
         name = originalName;
-        description = originalDescription;
+        notes = originalNotes;
     }
 
     public void ClearChanges()
@@ -122,7 +121,7 @@ public class PhaseCore : GeneralData
         changedType = false;
         changedIndex = false;
         changedName = false;
-        changedDescription = false;
+        changedNotes = false;
     }
 
     public void Delete()

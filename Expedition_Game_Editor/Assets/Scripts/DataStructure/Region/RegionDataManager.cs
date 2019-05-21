@@ -43,17 +43,15 @@ public class RegionDataManager
 
         int index = 0;
         
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach(Fixtures.Region region in Fixtures.regionList)
         {
             var regionData = new RegionData();
 
-            int id = (i + 1);
-
-            regionData.id = id;
+            regionData.id = region.id;
             regionData.table = "Region";
 
-            regionData.index = index;
-            regionData.name = "Region " + id;
+            regionData.index = region.index;
+            regionData.name = region.name;
 
             regionDataList.Add(regionData);
 
@@ -63,7 +61,6 @@ public class RegionDataManager
 
     internal class RegionData : GeneralData
     {
-        public int index;
         public string name;
     }
 }
