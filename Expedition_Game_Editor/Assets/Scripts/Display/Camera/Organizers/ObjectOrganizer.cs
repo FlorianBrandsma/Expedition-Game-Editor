@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using Source;
 
 public class ObjectOrganizer : MonoBehaviour, IOrganizer
 {
@@ -34,7 +35,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         {
             IEnumerable new_data = new[] { data };
 
-            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().Name);
+            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().Path);
 
             if (graphic_prefab == null) continue;
 

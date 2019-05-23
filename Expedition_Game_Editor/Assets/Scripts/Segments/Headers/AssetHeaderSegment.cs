@@ -20,7 +20,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     private int index;
     private int objectGraphicId;
     private string name;
-    private string objectGraphicName;
+    private string objectGraphicPath;
     private string objectGraphicIcon;
     #endregion
 
@@ -56,7 +56,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         set
         {
             objectGraphicId    = value.id;
-            objectGraphicName  = value.Name;
+            objectGraphicPath  = value.Path;
             objectGraphicIcon  = value.Icon;
 
             switch (DataEditor.Data.DataController.DataType)
@@ -65,7 +65,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                     ItemDataElement itemData    = DataEditor.Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
                     itemData.ObjectGraphicId    = value.id;
-                    itemData.objectGraphicName  = value.Name;
+                    itemData.objectGraphicPath  = value.Path;
                     itemData.objectGraphicIcon  = value.Icon;
 
                     break;
@@ -74,7 +74,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                     ElementDataElement elementData  = DataEditor.Data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
                     elementData.ObjectGraphicId     = value.id;
-                    elementData.objectGraphicName   = value.Name;
+                    elementData.objectGraphicPath   = value.Path;
                     elementData.objectGraphicIcon   = value.Icon;
 
                     break;
@@ -128,7 +128,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         name               = itemData.Name;
 
         objectGraphicId    = itemData.ObjectGraphicId;
-        objectGraphicName  = itemData.objectGraphicName;
+        objectGraphicPath  = itemData.objectGraphicPath;
         objectGraphicIcon  = itemData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = false;
@@ -143,7 +143,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         name               = elementData.Name;
 
         objectGraphicId    = elementData.ObjectGraphicId;
-        objectGraphicName  = elementData.objectGraphicName;
+        objectGraphicPath  = elementData.objectGraphicPath;
         objectGraphicIcon  = elementData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = true;
@@ -161,7 +161,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         var objectGraphicDataElement    = new ObjectGraphicDataElement();
 
         objectGraphicDataElement.id     = objectGraphicId;
-        objectGraphicDataElement.Name   = objectGraphicName;
+        objectGraphicDataElement.Path   = objectGraphicPath;
         objectGraphicDataElement.Icon   = objectGraphicIcon;
 
         selectionElement.SetElement(new[] { objectGraphicDataElement });

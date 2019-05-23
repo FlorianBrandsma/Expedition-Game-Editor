@@ -26,9 +26,10 @@ public class ObjectGraphicDataManager
                         table = objectGraphicData.table,
 
                         Name = objectGraphicData.name,
+                        Path = objectGraphicData.path,
                         Icon = objectGraphicData.icon
 
-                    }).OrderByDescending(x => x.id == 0).ThenBy(x => x.Name).ToList();
+                    }).OrderByDescending(x => x.id == 1).ThenBy(x => x.Name).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -47,6 +48,7 @@ public class ObjectGraphicDataManager
             objectGraphicData.table = "ObjectGraphic";
 
             objectGraphicData.name = objectGraphic.name;
+            objectGraphicData.path = objectGraphic.path;
             objectGraphicData.icon = objectGraphic.icon;
 
             objectGraphicDataList.Add(objectGraphicData);
@@ -56,6 +58,7 @@ public class ObjectGraphicDataManager
     internal class ObjectGraphicData : GeneralData
     {
         public string name;
+        public string path;
         public string icon;
     }
 }

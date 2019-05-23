@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011833688540}
   - 114: {fileID: 114000011358167914}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Nothing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,4 +52,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  name: 
   pivot: 0

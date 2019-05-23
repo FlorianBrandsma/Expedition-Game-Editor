@@ -2,27 +2,32 @@
 using System.Collections;
 using System.Linq;
 
-public class ObjectGraphic : MonoBehaviour
+namespace Source
 {
-    public Route route = new Route();
-
-    public int id;
-
-    //Don't know about that "data" variable, old
-    //public ObjectGraphicData data;
-    public ObjectProperties.Pivot pivot;
-
-    public CameraManager cameraManager { get; set; }
-
-    public void InitializeGraphic(CameraManager cameraManager)
+    public class ObjectGraphic : MonoBehaviour
     {
-        this.cameraManager = cameraManager;
+        public Route route = new Route();
 
-        cameraManager.backgroundManager.SetBackground(this);
-    }
+        public int id;
 
-    public GeneralData GeneralData()
-    {
-        return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();
+        public string name;
+        //Don't know about that "data" variable, old
+        //public ObjectGraphicData data;
+        public ObjectProperties.Pivot pivot;
+
+        public CameraManager cameraManager { get; set; }
+
+        public void InitializeGraphic(CameraManager cameraManager)
+        {
+            this.cameraManager = cameraManager;
+
+            cameraManager.backgroundManager.SetBackground(this);
+        }
+
+        public GeneralData GeneralData()
+        {
+            return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();
+        }
     }
 }
+

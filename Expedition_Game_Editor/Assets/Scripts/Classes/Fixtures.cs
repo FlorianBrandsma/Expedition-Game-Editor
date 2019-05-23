@@ -13,7 +13,7 @@ static public class Fixtures
     static public int icons = 9;
     static public int regions = 5;
     static public int chapters = 3;
-    static public int elementsInChapter = 2;
+    static public int elementsInChapter = 4;
     static public int regionsInChapter = 2;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
@@ -57,6 +57,7 @@ static public class Fixtures
     public class ObjectGraphic : GeneralData
     {
         public string name;
+        public string path;
         public string icon;
     }
 
@@ -133,16 +134,21 @@ static public class Fixtures
 
     static public void LoadObjectGraphics()
     {
-        string[] objectNames = new string[] { "Nothing", "Polearm", "Warrior", "Blue", "Green" };
-
+        string[] objectNames = new string[] { "Nothing", "Polearm","MightyPolearm","Crossbow","StrongCrossbow","Shortbow","Longbow","Staff","MenacingStaff", "Warrior","Ranger","Mage", "Blue", "Green", "Drake" };
+        //                                        0         1           2               3           4             5          6          7       8                9        10      11      12       13       14
         for (int id = 1; id <= objectNames.Length; id++)
         {
             var objectGraphic = new ObjectGraphic();
 
             objectGraphic.id = id;
 
-            objectGraphic.name = objectNames[id-1];
-            objectGraphic.icon = "Textures/Icons/Objects/" + objectNames[id-1];
+            string path = objectNames[id - 1];
+
+            var objectResource = Resources.Load<Source.ObjectGraphic>("Objects/" + path);
+
+            objectGraphic.name = objectResource.name;
+            objectGraphic.path = path;
+            objectGraphic.icon = "Textures/Icons/Objects/" + path;
 
             objectGraphicList.Add(objectGraphic);
         }
@@ -170,7 +176,7 @@ static public class Fixtures
             item.type = (int)Enums.ItemType.Supplies;
             item.index = index;
 
-            item.objectGraphicId = 2;
+            item.objectGraphicId = 1;
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -183,7 +189,9 @@ static public class Fixtures
     {
         int index = 0;
 
-        for (int i = 0; i < gear; i++)
+        var gearList = new List<int> { 2, 3, 4, 5, 6, 7, 8, 9 };
+
+        for (int i = 0; i < gearList.Count; i++)
         {
             var item = new Item();
 
@@ -194,7 +202,7 @@ static public class Fixtures
             item.type = (int)Enums.ItemType.Gear;
             item.index = index;
 
-            item.objectGraphicId = 2;
+            item.objectGraphicId = gearList[i];
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -218,7 +226,7 @@ static public class Fixtures
             item.type = (int)Enums.ItemType.Spoils;
             item.index = index;
 
-            item.objectGraphicId = 2;
+            item.objectGraphicId = 1;
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -229,7 +237,7 @@ static public class Fixtures
 
     static public void LoadElements()
     {
-        var objectList = new List<int> { 1, 3, 4, 5 };
+        var objectList = new List<int> { 10, 11, 12, 13, 14, 15 };
 
         for (int i = 0; i < objectList.Count; i++)
         {

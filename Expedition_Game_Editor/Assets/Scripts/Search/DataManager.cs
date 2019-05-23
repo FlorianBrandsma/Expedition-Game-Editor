@@ -18,6 +18,7 @@ public class DataManager
             data.table = "ObjectGraphic";
 
             data.name = objectGraphic.name;
+            data.path = objectGraphic.path;
             data.icon = objectGraphic.icon;
 
             if (searchById)
@@ -116,6 +117,7 @@ public class DataManager
     public class ObjectGraphicData : GeneralData
     {
         public string name;
+        public string path;
         public string icon;
     }
 

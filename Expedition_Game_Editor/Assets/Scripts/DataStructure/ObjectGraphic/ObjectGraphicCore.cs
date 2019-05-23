@@ -4,13 +4,16 @@ using System.Collections;
 public class ObjectGraphicCore : GeneralData
 {
     private string name;
+    private string path;
     private string icon;
 
     public string originalName;
+    public string originalPath;
     public string originalIcon;
 
     public bool changed;
     private bool changedName;
+    private bool changedPath;
     private bool changedIcon;
 
     #region Properties
@@ -26,6 +29,20 @@ public class ObjectGraphicCore : GeneralData
             changedName = true;
 
             name = value;
+        }
+    }
+
+    public string Path
+    {
+        get { return path; }
+        set
+        {
+            if (value == path) return;
+
+            changed = true;
+            changedPath = true;
+
+            path = value;
         }
     }
 
@@ -71,6 +88,7 @@ public class ObjectGraphicCore : GeneralData
     public void SetOriginalValues()
     {
         originalName = name;
+        originalPath = path;
         originalIcon = icon;
 
         ClearChanges();
@@ -79,6 +97,7 @@ public class ObjectGraphicCore : GeneralData
     public void GetOriginalValues()
     {
         name = originalName;
+        path = originalPath;
         icon = originalIcon;
     }
 
@@ -88,6 +107,7 @@ public class ObjectGraphicCore : GeneralData
 
         changed = false;
         changedName = false;
+        changedPath = false;
         changedIcon = false;
     }
 

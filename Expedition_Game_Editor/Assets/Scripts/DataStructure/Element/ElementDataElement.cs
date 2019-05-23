@@ -6,10 +6,10 @@ public class ElementDataElement : ElementCore, IDataElement
 {
     public ElementDataElement() : base() { }
 
-    public string objectGraphicName;
+    public string objectGraphicPath;
     public string objectGraphicIcon;
 
-    public string originalObjectGraphicName;
+    public string originalObjectGraphicPath;
     public string originalObjectGraphicIcon;
 
     public override void Update()
@@ -25,7 +25,7 @@ public class ElementDataElement : ElementCore, IDataElement
     {
         base.SetOriginalValues();
 
-        originalObjectGraphicName = objectGraphicName;
+        originalObjectGraphicPath = objectGraphicPath;
         originalObjectGraphicIcon = objectGraphicIcon;
 
         ClearChanges();
@@ -33,7 +33,7 @@ public class ElementDataElement : ElementCore, IDataElement
 
     public new void GetOriginalValues()
     {
-        objectGraphicName = originalObjectGraphicName;
+        objectGraphicPath = originalObjectGraphicPath;
         objectGraphicIcon = originalObjectGraphicIcon;
     }
 

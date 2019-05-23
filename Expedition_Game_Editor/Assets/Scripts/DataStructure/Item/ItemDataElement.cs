@@ -5,10 +5,10 @@ public class ItemDataElement : ItemCore, IDataElement
 {
     public ItemDataElement() : base() { }
 
-    public string objectGraphicName;
+    public string objectGraphicPath;
     public string objectGraphicIcon;
 
-    public string originalObjectGraphicName;
+    public string originalObjectGraphicPath;
     public string originalObjectGraphicIcon;
 
     public override void Update()
@@ -24,7 +24,7 @@ public class ItemDataElement : ItemCore, IDataElement
     {
         base.SetOriginalValues();
 
-        originalObjectGraphicName = objectGraphicName;
+        originalObjectGraphicPath = objectGraphicPath;
         originalObjectGraphicIcon = objectGraphicIcon;
         
         ClearChanges();
@@ -32,7 +32,7 @@ public class ItemDataElement : ItemCore, IDataElement
 
     public new void GetOriginalValues()
     {
-        objectGraphicName = originalObjectGraphicName;
+        objectGraphicPath = originalObjectGraphicPath;
         objectGraphicIcon = originalObjectGraphicIcon;
     }
 

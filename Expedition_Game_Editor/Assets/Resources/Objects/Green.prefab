@@ -50,7 +50,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011040765584}
   - 114: {fileID: 114000010321463136}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1793,7 +1793,7 @@ Transform:
   m_GameObject: {fileID: 1000012371759722}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 200.00009, y: 200.00005, z: 200.00005}
+  m_LocalScale: {x: 200, y: 200.00005, z: 200.00005}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 180}
   m_Children:
   - {fileID: 4000011465740050}
@@ -1916,7 +1916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  id: 13
+  name: Green Warrior
   pivot: 3
 --- !u!137 &137000010930396922
 SkinnedMeshRenderer:

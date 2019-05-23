@@ -36,7 +36,7 @@ public class ItemDataManager
                         ObjectGraphicId = itemData.objectId,
                         Name    = itemData.name,
 
-                        objectGraphicName   = objectGraphicData.name,
+                        objectGraphicPath   = objectGraphicData.path,
                         objectGraphicIcon   = objectGraphicData.icon
 
                     }).OrderBy(x => x.Index).ToList();

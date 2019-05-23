@@ -43219,6 +43219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be45bd8b5c0734e9bc26faeb098846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectiveElementDataList: []
 --- !u!224 &1804515258 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000012771355508, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -44733,6 +44734,7 @@ MonoBehaviour:
     value: 
     id: 
     index: 
+    phaseId: 
     name: []
     description: []
     requestType: 0
@@ -48636,6 +48638,7 @@ MonoBehaviour:
     value: 
     id: 
     index: 
+    questId: 
     name: []
     description: []
     requestType: 0

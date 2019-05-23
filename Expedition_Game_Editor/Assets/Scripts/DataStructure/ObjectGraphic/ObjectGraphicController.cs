@@ -51,6 +51,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
 
                 objectGraphicDataElement.id = resultElementData.id;
                 objectGraphicDataElement.Icon = resultElementData.Icon;
+                objectGraphicDataElement.Path = resultElementData.Path;
                 objectGraphicDataElement.Name = resultElementData.Name;
              
                 break;
