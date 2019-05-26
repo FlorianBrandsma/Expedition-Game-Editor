@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PhaseSegment : MonoBehaviour, ISegment
 {
+    ChapterDataElement chapterData;
+    private DataManager dataManager = new DataManager();
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
@@ -20,6 +23,8 @@ public class PhaseSegment : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
 
+        chapterData = SegmentController.editorController.pathController.route.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+
         InitializePhaseData();
     }
 
@@ -29,7 +34,7 @@ public class PhaseSegment : MonoBehaviour, ISegment
 
         var searchParameters = new Search.Phase();
 
-        searchParameters.chapterId = new List<int>() { SegmentController.path.FindLastRoute("Chapter").GeneralData().id };
+        searchParameters.chapterId = new List<int>() { chapterData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

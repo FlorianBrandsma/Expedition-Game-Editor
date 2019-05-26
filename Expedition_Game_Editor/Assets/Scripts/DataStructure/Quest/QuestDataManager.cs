@@ -25,6 +25,7 @@ public class QuestDataManager
                         id = questData.id,
                         table = questData.table,
 
+                        PhaseId = questData.phaseId,
                         Index = questData.index,
                         Name = questData.name,
                         Notes = questData.notes
@@ -47,7 +48,7 @@ public class QuestDataManager
             questData.id = quest.id;
             questData.table = "Quest";
             questData.index = quest.index;
-
+            
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
 
             questData.phaseId = quest.phaseId;

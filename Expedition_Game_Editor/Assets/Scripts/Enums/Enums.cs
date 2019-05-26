@@ -19,13 +19,11 @@ public class Enums
         TerrainObject,
         Chapter,
         ChapterRegion,
-        ChapterElement,
         Phase,
+        PhaseElement,
         PhaseRegion,
         Quest,
-        QuestElement,
         Objective,
-        ObjectiveElement,
         Task      
     }
 

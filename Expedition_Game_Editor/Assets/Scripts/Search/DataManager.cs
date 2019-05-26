@@ -12,22 +12,17 @@ public class DataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
+            if (searchById && !idList.Contains(objectGraphic.id)) continue;
+
             var data = new ObjectGraphicData();
 
             data.id = objectGraphic.id;
-            data.table = "ObjectGraphic";
 
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
             data.icon = objectGraphic.icon;
 
-            if (searchById)
-            {
-                if (idList.Contains(objectGraphic.id))
-                    dataList.Add(data);
-            } else {
-                dataList.Add(data);
-            }
+            dataList.Add(data);
         }
 
         return dataList;
@@ -44,41 +39,103 @@ public class DataManager
 
         foreach(Fixtures.Element element in Fixtures.elementList)
         {
+            if (searchById && !idList.Contains(element.id)) continue;
+
             var data = new ElementData();
             
             data.id = element.id;
-            data.table = "Element";
 
             data.objectGraphicId = element.objectGraphicId;
+            data.name = element.name;
 
-            if (searchById)
-            {
-                if (idList.Contains(element.id))
-                    dataList.Add(data);
-            }
-            else
-            {
-                dataList.Add(data);
-            }
+            dataList.Add(data);
         }
 
         return dataList;
     }
 
-    public List<ChapterElementData> GetChapterElementData(int chapterId, bool searchById = false)
+    public List<TerrainElementData> GetTerrainElementData(List<int> idList, bool searchById = false)
     {
-        List<ChapterElementData> dataList = new List<ChapterElementData>();
+        List<TerrainElementData> dataList = new List<TerrainElementData>();
 
-        //for(int i = 0; i < 4; i++)
-        //{
-        //    var data = new ChapterElementData();
+        foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList)
+        {
+            if (searchById && !idList.Contains(terrainElement.id)) continue;
 
-        //    int id = (i + 1);
+            var data = new TerrainElementData();
 
-        //    int chapterId = (i + 1);
+            data.id = terrainElement.id;
 
-        //    if(searchById && )
-        //}
+            data.chapterId = terrainElement.chapterId;
+            data.objectiveId = terrainElement.objectiveId;
+            data.elementId = terrainElement.elementId;
+            data.taskIndex = terrainElement.taskIndex;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TerrainElementData> GetChapterTerrainElementData(int chapterId, bool searchById = false)
+    {
+        List<TerrainElementData> dataList = new List<TerrainElementData>();
+
+        foreach (Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList)
+        {
+            if (searchById && chapterId != terrainElement.chapterId) continue;
+
+            var data = new TerrainElementData();
+
+            data.id = terrainElement.id;
+            
+            data.chapterId = terrainElement.chapterId;
+            data.objectiveId = terrainElement.objectiveId;
+            data.elementId = terrainElement.elementId;
+            data.taskIndex = terrainElement.taskIndex;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<PhaseData> GetPhaseData(int chapterId, bool searchById = false)
+    {
+        List<PhaseData> dataList = new List<PhaseData>();
+
+        foreach(Fixtures.Phase phase in Fixtures.phaseList)
+        {
+            if (searchById && chapterId != phase.chapterId) continue;
+
+            var data = new PhaseData();
+
+            data.id = phase.id;
+            data.chapterId = phase.chapterId;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<PhaseElementData> GetPhaseElementData(List<int> idList, bool searchById = false)
+    {
+        List<PhaseElementData> dataList = new List<PhaseElementData>();
+
+        foreach(Fixtures.PhaseElement phaseElement in Fixtures.phaseElementList)
+        {
+            if (searchById && !idList.Contains(phaseElement.phaseId)) continue;
+
+            var data = new PhaseElementData();
+
+            data.id = phaseElement.id;
+
+            data.phaseId = phaseElement.phaseId;
+            data.terrainElementId = phaseElement.terrainElementId;
+
+            dataList.Add(data);
+        }
 
         return dataList;
     }
@@ -89,22 +146,16 @@ public class DataManager
 
         foreach (Fixtures.Region element in Fixtures.regionList)
         {
+            if (searchById && !idList.Contains(element.id)) continue;
+
             var data = new RegionData();
 
             data.id = element.id;
-            data.table = "Region";
 
             data.name = element.name;
 
-            if (searchById)
-            {
-                if (idList.Contains(element.id))
-                    dataList.Add(data);
-            }
-            else
-            {
-                dataList.Add(data);
-            }
+            dataList.Add(data);
+            
         }
 
         return dataList;
@@ -124,11 +175,26 @@ public class DataManager
     public class ElementData : GeneralData
     {
         public int objectGraphicId;
+        public string name;
     }
 
-    public class ChapterElementData : GeneralData
+    public class TerrainElementData : GeneralData
     {
+        public int chapterId;
+        public int objectiveId;
+        public int elementId;
+        public int taskIndex;
+    }
 
+    public class PhaseData : GeneralData
+    {
+        public int chapterId;
+    }
+
+    public class PhaseElementData : GeneralData
+    {
+        public int phaseId;
+        public int terrainElementId;
     }
 
     public class RegionData : GeneralData

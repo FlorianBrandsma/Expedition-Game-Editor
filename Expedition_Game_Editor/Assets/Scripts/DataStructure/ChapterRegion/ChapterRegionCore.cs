@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class ChapterRegionCore : GeneralData
 {
@@ -60,23 +60,22 @@ public class ChapterRegionCore : GeneralData
     {
         if (!changed) return;
 
-        //Debug.Log("Updated " + name);
+        var regionData = Fixtures.chapterRegionList.Where(x => x.id == id).FirstOrDefault();
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (changedRegionId)
+            regionData.regionId = regionId;
 
         SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
+        var regionData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            regionData.index = index;
+
             changedIndex = false;
         }
     }

@@ -11,6 +11,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     #region UI
 
     public IndexSwitch indexSwitch;
+    public SelectionElement selectionElement;
     public InputField inputField;
     public Text idText;
 

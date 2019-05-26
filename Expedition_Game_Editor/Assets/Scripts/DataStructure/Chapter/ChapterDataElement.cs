@@ -8,25 +8,7 @@ public class ChapterDataElement : ChapterCore, IDataElement
 {
     public ChapterDataElement() : base() { }
 
-    //public List<int> elementIds;
-
-    //public List<int> originalElementIds;
-
-    //private bool changedElementIds;
-
-    //public List<int> ElementIds
-    //{
-    //    get { return elementIds; }
-    //    set
-    //    {
-    //        if (elementIds.SequenceEqual(value)) return;
-
-    //        changed = true;
-    //        changedElementIds = true;
-
-    //        elementIds = value;
-    //    }
-    //}
+    public string objectGraphicIcon;
 
     public override void Update()
     {
@@ -41,20 +23,13 @@ public class ChapterDataElement : ChapterCore, IDataElement
     {
         base.SetOriginalValues();
 
-        //originalElementIds = elementIds;
-
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        //elementIds = originalElementIds;
-    }
+    public new void GetOriginalValues() { }
 
     public override void ClearChanges()
     {
-        //changedElementIds = false;
-
         base.ClearChanges();
 
         GetOriginalValues();

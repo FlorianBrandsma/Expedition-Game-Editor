@@ -38,7 +38,6 @@ public class ChapterRegionsRegionsSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.ChapterRegion.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
-        searchParameters.temp_id_count = 15;
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 

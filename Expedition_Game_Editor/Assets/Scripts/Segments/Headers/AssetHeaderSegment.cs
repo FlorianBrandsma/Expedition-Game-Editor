@@ -19,7 +19,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     private int id;
     private int index;
     private int objectGraphicId;
-    private string name;
+    private string assetName;
     private string objectGraphicPath;
     private string objectGraphicIcon;
     #endregion
@@ -27,10 +27,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #region Properties
     public string Name
     {
-        get { return name; }
+        get { return assetName; }
         set
         {
-            name = value;
+            assetName = value;
 
             switch (DataEditor.Data.DataController.DataType)
             {
@@ -123,13 +123,13 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         ItemDataElement itemData = DataEditor.Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
 
-        id                 = itemData.id;
-        index              = itemData.Index;
-        name               = itemData.Name;
+        id                  = itemData.id;
+        index               = itemData.Index;
+        assetName           = itemData.Name;
 
-        objectGraphicId    = itemData.ObjectGraphicId;
-        objectGraphicPath  = itemData.objectGraphicPath;
-        objectGraphicIcon  = itemData.objectGraphicIcon;
+        objectGraphicId     = itemData.ObjectGraphicId;
+        objectGraphicPath   = itemData.objectGraphicPath;
+        objectGraphicIcon   = itemData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = false;
     }
@@ -138,13 +138,13 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         ElementDataElement elementData = DataEditor.Data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
 
-        id                 = elementData.id;
-        index              = elementData.Index;
-        name               = elementData.Name;
+        id                  = elementData.id;
+        index               = elementData.Index;
+        assetName           = elementData.Name;
 
-        objectGraphicId    = elementData.ObjectGraphicId;
-        objectGraphicPath  = elementData.objectGraphicPath;
-        objectGraphicIcon  = elementData.objectGraphicIcon;
+        objectGraphicId     = elementData.ObjectGraphicId;
+        objectGraphicPath   = elementData.objectGraphicPath;
+        objectGraphicIcon   = elementData.objectGraphicIcon;
 
         GetComponent<ObjectProperties>().castShadow = true;
     }
@@ -156,7 +156,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         idText.text = id.ToString();
 
-        inputField.text = name;
+        inputField.text = assetName;
 
         var objectGraphicDataElement    = new ObjectGraphicDataElement();
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 static public class Fixtures
 {
@@ -13,12 +14,12 @@ static public class Fixtures
     static public int icons = 9;
     static public int regions = 5;
     static public int chapters = 3;
-    static public int elementsInChapter = 4;
+    static public int elementsInChapter = 3;
     static public int regionsInChapter = 2;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
     static public int objectivesInQuest = 3;
-    static public int sideObjectiveElements = 2;
+    static public int elementsInObjective = 2;
     static public int sideTerrainElements = 1;
     static public int baseTasks = 4;
     static public int baseTerrains = 9;
@@ -34,12 +35,15 @@ static public class Fixtures
     static public List<Icon> iconList = new List<Icon>();
     static public List<Region> regionList = new List<Region>();
     static public List<Chapter> chapterList = new List<Chapter>();
-    static public List<ChapterElement> chapterElementList = new List<ChapterElement>();
     static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
     static public List<Phase> phaseList = new List<Phase>();
+    static public List<PhaseElement> phaseElementList = new List<PhaseElement>();
     static public List<PhaseRegion> phaseRegionList = new List<PhaseRegion>();
     static public List<Quest> questList = new List<Quest>();
     static public List<Objective> objectiveList = new List<Objective>();
+    static public List<Task> taskList = new List<Task>();
+
+    static public List<TerrainElement> terrainElementList = new List<TerrainElement>();
 
     public class Item : GeneralData
     {
@@ -52,6 +56,14 @@ static public class Fixtures
     {
         public int objectGraphicId;
         public string name;
+    }
+
+    public class TerrainElement : GeneralData
+    {
+        public int chapterId;
+        public int objectiveId;
+        public int elementId;
+        public int taskIndex;
     }
 
     public class ObjectGraphic : GeneralData
@@ -74,14 +86,9 @@ static public class Fixtures
 
     public class Chapter : GeneralData
     {
+        public int elementId;
         public string name;
         public string notes;
-    }
-
-    public class ChapterElement : GeneralData
-    {
-        public int chapterId;
-        public int elementId;
     }
 
     public class ChapterRegion : GeneralData
@@ -95,6 +102,13 @@ static public class Fixtures
         public int chapterId;
         public string name;
         public string notes;
+    }
+
+    public class PhaseElement : GeneralData
+    {
+        public int phaseId;
+        public int questId;
+        public int terrainElementId;
     }
 
     public class PhaseRegion : GeneralData
@@ -118,6 +132,13 @@ static public class Fixtures
         public string notes;
     }
     
+    public class Task : GeneralData
+    {
+        public int terrainElementId;
+        public int objectiveId;
+        public string description;
+    }
+
     static public void LoadFixtures()
     {
         LoadObjectGraphics();
@@ -125,11 +146,14 @@ static public class Fixtures
         LoadElements();
         LoadRegions();
         LoadChapters();
-        LoadChapterElements();
+        LoadChapterTerrainElements();
         LoadChapterRegions();
         LoadPhases();
         LoadQuests();
+        LoadPhaseElements();
         LoadObjectives();
+        LoadObjectiveTerrainElements();
+        LoadTasks();
     }
 
     static public void LoadObjectGraphics()
@@ -275,7 +299,9 @@ static public class Fixtures
 
     static public void LoadChapters()
     {
-        int index = 0;
+        List<int> randomElements = new List<int>();
+
+        elementList.ForEach(x => randomElements.Add(x.id));
 
         for (int i = 0; i < chapters; i++)
         {
@@ -284,32 +310,34 @@ static public class Fixtures
             int id = (i + 1);
 
             chapter.id = id;
-            chapter.index = index;
+            chapter.index = i;
+
+            int randomElement = Random.Range(0, randomElements.Count);
+
+            chapter.elementId = randomElements[randomElement];
+
             chapter.name = "Chapter " + id;
             chapter.notes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
 
             chapterList.Add(chapter);
-
-            index++;
         }
     }
 
-    static public void LoadChapterElements()
+    static public void LoadChapterTerrainElements()
     {
         foreach(Chapter chapter in chapterList)
         {
             List<int> randomElements = new List<int>();
 
-            elementList.ForEach(x => randomElements.Add(x.id));
+            elementList.Where(x => x.id != chapter.elementId).Distinct().ToList().ForEach(x => randomElements.Add(x.id));
 
             for (int i = 0; i < elementsInChapter; i++)
             {
-                var chapterElement = new ChapterElement();
+                var chapterElement = new TerrainElement();
 
-                int id = chapterElementList.Count > 0 ? (chapterElementList[chapterElementList.Count - 1].id + 1) : 1;
+                int id = terrainElementList.Count > 0 ? (terrainElementList[terrainElementList.Count - 1].id + 1) : 1;
 
                 chapterElement.id = id;
-                
                 chapterElement.chapterId = chapter.id;
 
                 int randomElement = Random.Range(0, randomElements.Count);
@@ -318,7 +346,7 @@ static public class Fixtures
 
                 randomElements.RemoveAt(randomElement);
 
-                chapterElementList.Add(chapterElement);
+                terrainElementList.Add(chapterElement);
             }
         }
     }
@@ -397,6 +425,38 @@ static public class Fixtures
         }
     }
 
+    static public void LoadPhaseElements()
+    {
+        foreach (Chapter chapter in chapterList)
+        {
+            foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.id).Distinct().ToList())
+            {
+                var chapterElements = terrainElementList.Where(x => x.chapterId == chapter.id).Distinct().ToList();
+                var questIds = questList.Where(x => x.phaseId == phase.id).Select(x => x.id).Distinct().ToList();
+
+                for (int i = 0; i < chapterElements.Count; i++)
+                {
+                    var phaseElement = new PhaseElement();
+
+                    int id = phaseElementList.Count > 0 ? (phaseElementList[phaseElementList.Count - 1].id + 1) : 1;
+
+                    phaseElement.id = id;
+
+                    phaseElement.phaseId = phase.id;
+                    phaseElement.terrainElementId = chapterElements[i].id;
+
+                    int randomQuestId = Random.Range(0, questIds.Count);
+
+                    phaseElement.questId = questIds[randomQuestId];
+
+                    questIds.RemoveAt(randomQuestId);
+
+                    phaseElementList.Add(phaseElement);
+                }
+            }
+        }
+    }
+
     static public void LoadObjectives()
     {
         foreach (Quest quest in questList)
@@ -419,70 +479,58 @@ static public class Fixtures
         }
     }
 
-    static public void CalculateFixtures()
+    static public void LoadObjectiveTerrainElements()
     {
-        for (int i = 0; i < 100000; i++)
-            chapterList.Add(new Chapter());
+        foreach (Objective objective in objectiveList)
+        {
+            List<int> randomElements = new List<int>();
 
-        Debug.Log("done: " + chapterList.Count);
+            elementList.ForEach(x => randomElements.Add(x.id));
 
-        //int total = 0;
+            for(int i = 0; i < elementsInObjective; i++)
+            {
+                var objectiveElement = new TerrainElement();
 
-        //int items = supplies + gear + spoils;
-        
-        //total += items;
-        //total += elements;
-        //total += objectGraphics;
-        //total += icons;
-        //total += regions;
+                int id = terrainElementList.Count > 0 ? (terrainElementList[terrainElementList.Count - 1].id + 1) : 1;
 
-        //total += chapters;
+                objectiveElement.id = id;
+                objectiveElement.index = i;
 
-        ////Each chapter has a set of elements
-        //int chapterElements = chapters * baseChapterElements;
-        //total += chapterElements;
-        //Debug.Log("chapterElements: " + chapterElements);
+                objectiveElement.objectiveId = objective.id;
 
-        ////Each chapter has a set of regions
-        //int chapterRegions = chapters * baseChapterRegions;
-        //total += chapterRegions;
-        //Debug.Log("chapterRegions: " + chapterRegions);
+                int randomElement = Random.Range(0, randomElements.Count);
+                objectiveElement.elementId = randomElements[randomElement];
 
-        ////Each chapter has a set of phases
-        //int phases = chapters * basePhases;
-        //total += phases;
-        //Debug.Log("phases: " + phases);
+                terrainElementList.Add(objectiveElement);
+            }
+        }
+    }
 
-        ////Each phase has a copy of the chapter's regions, both day and night
-        //int phaseRegions = phases * chapterRegions * timeFrames;
-        //total += phaseRegions;
-        //Debug.Log("phaseRegions: " + phaseRegions);
+    static public void LoadTasks()
+    {
+        foreach (Objective objective in objectiveList)
+        {
+            var phaseElementTerrainElementIds = phaseElementList.Where(x => x.questId == objective.questId).Select(x => x.terrainElementId).Distinct().ToList();
+            var terrainElements = terrainElementList.Where(x => phaseElementTerrainElementIds.Contains(x.id) || x.objectiveId == objective.id).Distinct().ToList();
 
-        ////Each phase has a set of quests
-        //int quests = phases * baseQuests;
-        //total += quests;
-        //Debug.Log("quests: " + quests);
+            foreach(TerrainElement terrainElement in terrainElements)
+            {
+                for (int i = 0; i < baseTasks; i++)
+                {
+                    var task = new Task();
 
-        ////Phase elements are divided over all the quests in the phase
-        //int questElements = baseChapterElements * phases;
-        //total += questElements;
-        //Debug.Log("questElements: " + questElements);
+                    int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].id + 1) : 1;
 
-        ////Each quest has a set of objectives
-        //int objectives = quests * baseObjectives;
-        //total += objectives;
-        //Debug.Log("objectives: " + objectives);
+                    task.id = id;
+                    task.index = i;
 
-        //int objectiveElements = sideObjectiveElements * objectives;
-        //total += objectiveElements;
-        //Debug.Log("objectiveElements: " + objectiveElements);
+                    task.objectiveId = objective.id;
+                    task.terrainElementId = terrainElement.id;
+                    task.description = "Perform a simple task. Property of objective" + objective.id;
 
-        //int terrainElements = questElements + objectiveElements + (sideTerrainElements * phaseRegions);
-        //total += terrainElements;
-        //Debug.Log("terrainElements: " + terrainElements);
-
-        //int tasks = terrainElements * baseTasks * timeFrames;
-
-        //Debug.Log(total);
+                    taskList.Add(task);
+                }
+            }
+        }
     }
 }

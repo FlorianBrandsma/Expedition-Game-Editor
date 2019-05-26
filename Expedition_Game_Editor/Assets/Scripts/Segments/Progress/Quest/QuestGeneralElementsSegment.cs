@@ -38,15 +38,14 @@ public class QuestGeneralElementsSegment : MonoBehaviour, ISegment
 
         QuestDataElement questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
 
-        var searchParameters = new Search.QuestElement();
+        var searchParameters = new Search.PhaseElement();
 
-        searchParameters.requestType = Search.QuestElement.RequestType.Custom;
-        searchParameters.questId = new List<int>() { questData.id };
-        searchParameters.temp_id_count = 4;
+        searchParameters.requestType = Search.PhaseElement.RequestType.Custom;
+        searchParameters.phaseId = new List<int>() { questData.PhaseId };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var questElementList = SegmentController.DataController.DataList.Cast<QuestElementDataElement>().ToList();
+        var questElementList = SegmentController.DataController.DataList.Cast<PhaseElementDataElement>().ToList();
 
         questElementList.ForEach(x => questEditor.questElementDataList.Add(x));
     }

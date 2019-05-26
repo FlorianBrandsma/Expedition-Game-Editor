@@ -115,6 +115,8 @@ public class SelectionElement : MonoBehaviour
 
     public void SelectElement()
     {
+        if (selectionType == SelectionManager.Type.None) return;
+
         if (selected) return;
 
         EditorPath editorPath = new EditorPath(this);

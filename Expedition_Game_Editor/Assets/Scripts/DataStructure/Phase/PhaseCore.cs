@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class PhaseCore : GeneralData
 {
@@ -11,9 +11,6 @@ public class PhaseCore : GeneralData
     public string originalNotes;
 
     public bool changed;
-    private bool changedId;
-    private bool changedTable;
-    private bool changedType;
     private bool changedIndex;
     private bool changedName;
     private bool changedNotes;
@@ -61,48 +58,43 @@ public class PhaseCore : GeneralData
         }
     }
 
-    public bool Changed { get { return changed; } }
-
     #endregion
 
     #region Methods
 
-    public void Create()
+    public virtual void Create()
     {
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!changed) return;
+        var phaseData = Fixtures.phaseList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedName)
+            phaseData.name = name;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (changedNotes)
+            phaseData.notes = notes;
 
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
+        var phaseData = Fixtures.phaseList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            phaseData.index = index;
+
             changedIndex = false;
         }
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalName = name;
         originalNotes = notes;
-
-        ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -111,14 +103,11 @@ public class PhaseCore : GeneralData
         notes = originalNotes;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
         changed = false;
-        changedId = false;
-        changedTable = false;
-        changedType = false;
         changedIndex = false;
         changedName = false;
         changedNotes = false;

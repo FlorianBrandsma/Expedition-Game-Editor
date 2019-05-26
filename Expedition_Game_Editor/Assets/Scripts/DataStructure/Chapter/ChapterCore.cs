@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class ChapterCore : GeneralData
 {
+    private int elementId;
     private string name;
     private string notes;
 
     public int originalIndex;
+    public int originalElementId;
     public string originalName;
     public string originalDescription;
 
     public bool changed;
     private bool changedIndex;
+    private bool changedElementId;
     private bool changedName;
     private bool changedNotes;
 
@@ -27,6 +30,20 @@ public class ChapterCore : GeneralData
             changedIndex = true;
 
             index = value;
+        }
+    }
+
+    public int ElementId
+    {
+        get { return elementId; }
+        set
+        {
+            if (value == elementId) return;
+
+            changed = true;
+            changedElementId = true;
+
+            elementId = value;
         }
     }
 
@@ -71,40 +88,41 @@ public class ChapterCore : GeneralData
 
     public virtual void Update()
     {
-        //if (!changed) return;
+        var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedElementId)
+            chapterData.elementId = elementId;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (changedName)
+            chapterData.name = name;
 
-        //SetOriginalValues();     
+        if (changedNotes)
+            chapterData.notes = notes;
     }
 
     public void UpdateIndex()
     {
+        var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            chapterData.index = index;
+
             changedIndex = false;
         }
     }
 
     public virtual void SetOriginalValues()
     {
-        originalName           = name;
-        originalDescription    = notes;
-
-        //ClearChanges();
+        originalElementId = elementId;
+        originalName = name;
+        originalDescription = notes;
     }
 
     public void GetOriginalValues()
     {
-        name        = originalName;
+        elementId = originalElementId;
+        name = originalName;
         notes = originalDescription;
     }
 
@@ -112,9 +130,10 @@ public class ChapterCore : GeneralData
     {
         GetOriginalValues();
 
-        changed             = false;
-        changedIndex       = false;
-        changedName        = false;
+        changed = false;
+        changedIndex = false;
+        changedElementId = false;
+        changedName = false;
         changedNotes = false;
     }
 

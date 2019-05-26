@@ -36,11 +36,6 @@ public class EditorForm : MonoBehaviour
     #region Path
     public void InitializePath(Path path, bool reload = false)
     {
-        //Debug.Log(EditorManager.PathString(path));
-
-        //if (formComponent != null)
-        //    ResetSiblingForm();
-
         OpenPath(path, reload);
         OpenLayout(path);
 
@@ -50,6 +45,9 @@ public class EditorForm : MonoBehaviour
         closed = false;
         //Auto select element
         mainController.FinalizeController();
+
+        if (formComponent != null)
+            ResetSiblingForm();
     }
 
     public void OpenPath(Path path, bool reload)

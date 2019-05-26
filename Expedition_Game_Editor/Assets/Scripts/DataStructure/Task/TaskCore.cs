@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class TaskCore : GeneralData
 {
+    private int terrainElementId;
     private string description;
 
     public int originalIndex;
@@ -13,6 +14,12 @@ public class TaskCore : GeneralData
     private bool changedDescription;
 
     #region Properties
+
+    public int TerrainElementId
+    {
+        get { return terrainElementId; }
+        set { terrainElementId = value; }
+    }
 
     public int Index
     {
@@ -54,23 +61,22 @@ public class TaskCore : GeneralData
     {
         if (!changed) return;
 
-        //Debug.Log("Updated " + name);
+        var taskData = Fixtures.taskList.Where(x => x.id == id).FirstOrDefault();
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
+        if (changedDescription)
+            taskData.description = description;
+        
         SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
+        var taskData = Fixtures.taskList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            taskData.index = index;
+
             changedIndex = false;
         }
     }

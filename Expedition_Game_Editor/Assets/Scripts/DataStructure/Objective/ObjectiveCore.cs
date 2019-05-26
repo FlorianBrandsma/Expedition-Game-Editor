@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class ObjectiveCore : GeneralData
 {
@@ -88,23 +88,28 @@ public class ObjectiveCore : GeneralData
     {
         if (!changed) return;
 
-        //Debug.Log("Updated " + name);
+        var objectiveData = Fixtures.objectiveList.Where(x => x.id == id).FirstOrDefault();
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if(changedName)
+            objectiveData.name = name;
 
+        if (changedJournal)
+            objectiveData.journal = journal;
+
+        if (changedNotes)
+            objectiveData.notes = notes;
+        
         SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
+        var objectiveData = Fixtures.objectiveList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            objectiveData.index = index;
+
             changedIndex = false;
         }
     }

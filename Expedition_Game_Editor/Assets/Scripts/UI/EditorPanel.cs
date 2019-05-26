@@ -156,7 +156,7 @@ public class EditorPanel : MonoBehaviour, IElement
         header.text = dataElement.name;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.icon);
+            IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIcon);
 
         if (properties.edit)
             EditButtonData = data;

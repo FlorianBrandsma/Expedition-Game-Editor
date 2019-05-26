@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class TerrainElementSegment : MonoBehaviour, ISegment
 {
@@ -28,7 +28,7 @@ public class TerrainElementSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.pathController.loaded) return;
 
         var searchParameters = new Search.TerrainElement();
-        searchParameters.temp_id_count = 15;
+        searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

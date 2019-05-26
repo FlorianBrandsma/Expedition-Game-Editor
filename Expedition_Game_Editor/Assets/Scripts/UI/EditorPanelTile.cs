@@ -47,13 +47,13 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainElementElement()
     {
         Data data = Element.route.data;
-        TerrainElementDataElement data_element = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
+        TerrainElementDataElement dataElement = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
-        id.text = data_element.id.ToString();
-        header.text = data_element.name;
+        id.text = dataElement.id.ToString();
+        header.text = dataElement.name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data_element.icon);
+            icon.texture = Resources.Load<Texture2D>(dataElement.objectGraphicIcon);
 
         if (properties.edit)
             EditButton.route.data = data;
@@ -62,13 +62,13 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainObjectElement()
     {
         Data data = Element.route.data;
-        TerrainObjectDataElement data_element = data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
+        TerrainObjectDataElement dataElement = data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
 
-        id.text = data_element.id.ToString();
-        header.text = data_element.name;
+        id.text = dataElement.id.ToString();
+        header.text = dataElement.name;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(data_element.icon);
+            icon.texture = Resources.Load<Texture2D>(dataElement.icon);
 
         if (properties.edit)
             EditButton.route.data = data;

@@ -34,21 +34,20 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
     {
         var objectiveEditor = (ObjectiveEditor)DataEditor;
 
-        if (objectiveEditor.objectiveElementDataList.Count > 0) return;
+        if (objectiveEditor.terrainElementDataList.Count > 0) return;
 
         ObjectiveDataElement objectiveData = DataEditor.Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
 
-        var searchParameters = new Search.ObjectiveElement();
+        var searchParameters = new Search.TerrainElement();
 
-        searchParameters.requestType = Search.ObjectiveElement.RequestType.Custom;
-        //searchParameters.objectiveId = new List<int>() { objectiveData.id };
-        searchParameters.temp_id_count = 4;
+        searchParameters.requestType = Search.TerrainElement.RequestType.Custom;
+        searchParameters.objectiveId = new List<int>() { objectiveData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var objectiveElementList = SegmentController.DataController.DataList.Cast<ObjectiveElementDataElement>().ToList();
+        var terrainElementList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        objectiveElementList.ForEach(x => objectiveEditor.objectiveElementDataList.Add(x));
+        terrainElementList.ForEach(x => objectiveEditor.terrainElementDataList.Add(x));
     }
 
     private void SetSearchParameters()

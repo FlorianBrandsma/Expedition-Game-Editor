@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class ItemCore : GeneralData
 {
@@ -12,9 +12,6 @@ public class ItemCore : GeneralData
     public string originalName;
 
     public bool changed;
-    private bool changedId;
-    private bool changedTable;
-    private bool changedType;
     private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
@@ -40,6 +37,20 @@ public class ItemCore : GeneralData
         }
     }
 
+    public int ObjectGraphicId
+    {
+        get { return objectGraphicId; }
+        set
+        {
+            if (value == objectGraphicId) return;
+
+            changed = true;
+            changedObjectGraphicId = true;
+
+            objectGraphicId = value;
+        }
+    }
+
     public string Name
     {
         get { return name; }
@@ -54,20 +65,6 @@ public class ItemCore : GeneralData
         }
     }
 
-    public int ObjectGraphicId
-    {
-        get { return objectGraphicId; }
-        set
-        {
-            if (value == objectGraphicId) return;
-
-            changed = true;
-            changedObjectGraphicId = true;
-            
-            objectGraphicId = value;
-        }
-    }
-
     #endregion
 
     #region Methods
@@ -79,25 +76,23 @@ public class ItemCore : GeneralData
 
     public virtual void Update()
     {
-        //if (!changed) return;
+        var itemData = Fixtures.itemList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedObjectGraphicId)
+            itemData.objectGraphicId = objectGraphicId;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        //SetOriginalValues();
+        if (changedName)
+            itemData.name = name;
     }
 
     public void UpdateIndex()
     {
+        var itemData = Fixtures.itemList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            itemData.index = index;
+
             changedIndex = false;
         }
     }
@@ -106,8 +101,6 @@ public class ItemCore : GeneralData
     {
         originalName = Name;
         originalObjectGraphicId = ObjectGraphicId;
-
-        //ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -121,9 +114,6 @@ public class ItemCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changedId = false;
-        changedTable = false;
-        changedType = false;
         changedIndex = false;
         changedObjectGraphicId = false;
         changedName = false;

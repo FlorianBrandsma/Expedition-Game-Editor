@@ -5,8 +5,10 @@ using System.Linq;
 public class ChapterEditor : MonoBehaviour, IEditor
 {
     private ChapterDataElement chapterData;
-    public List<ChapterElementDataElement> chapterElementDataList;
+    public List<TerrainElementDataElement> terrainElementDataList;
     public List<ChapterRegionDataElement> chapterRegionDataList;
+
+    private DataManager dataManager = new DataManager();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -20,7 +22,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(chapterData);
-            chapterElementDataList.ForEach(x => list.Add(x));
+            terrainElementDataList.ForEach(x => list.Add(x));
             chapterRegionDataList.ForEach(x => list.Add(x));
 
             return list;
@@ -34,7 +36,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         Data = PathController.route.data;
 
         chapterData = Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
-        chapterElementDataList.Clear();
+        terrainElementDataList.Clear();
         chapterRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -92,6 +94,32 @@ public class ChapterEditor : MonoBehaviour, IEditor
         UpdateList();
 
         UpdateEditor();
+
+        UpdatePhaseElements();
+    }
+
+    private void UpdatePhaseElements()
+    {
+        var phaseList = dataManager.GetPhaseData(chapterData.id, true);
+
+        var phaseElementList = dataManager.GetPhaseElementData(phaseList.Select(x => x.id).Distinct().ToList());
+
+        //Replace phase elements to match the chapter's terrain elements
+        //UPDATE: TerrainElement doesn't get replaced (idiot), the element does and that gets carried over anyway
+        //foreach(TerrainElementDataElement terrainElement in terrainElementDataList)
+        //{
+        //    var phaseElements = phaseElementList.Where(x => x.terrainElementId == terrainElement.id).ToList();
+            
+        //    foreach(DataManager.PhaseElementData phaseElement in phaseElements)
+        //    {
+        //        Fixtures.phaseElementList.Where(x => x.id == phaseElement.id).ToList().ForEach(x => 
+        //        {
+        //            Debug.Log(x.terrainElementId + ":" + terrainElement.id);
+
+        //            x.terrainElementId = terrainElement.id;
+        //        });
+        //    }
+        //}
     }
 
     public void CancelEdit()

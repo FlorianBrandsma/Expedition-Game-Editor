@@ -6,7 +6,12 @@ using System.Linq;
 public class TerrainElementDataManager
 {
     private TerrainElementController terrainElementController;
-    private List<TerrainElementData> terrainElementDataList;
+    private List<TerrainElementData> terrainElementDataList = new List<TerrainElementData>();
+
+    private DataManager dataManager = new DataManager();
+
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.ElementData> elementDataList;
 
     public void InitializeManager(TerrainElementController terrainElementController)
     {
@@ -17,49 +22,109 @@ public class TerrainElementDataManager
     {
         var terrainElementSearchData = searchParameters.Cast<Search.TerrainElement>().FirstOrDefault();
 
-        GetTerrainElementData(terrainElementSearchData);
+        switch (terrainElementSearchData.requestType)
+        {
+            case Search.TerrainElement.RequestType.Custom:
+
+                GetCustomTerrainElementData(terrainElementSearchData);
+                break;
+
+            case Search.TerrainElement.RequestType.GetQuestAndObjectiveElements:
+
+                GetQuestAndObjectiveTerrainElementData(terrainElementSearchData);
+                break;
+        }
+
+        if (terrainElementDataList.Count == 0) return new List<TerrainElementDataElement>();
+
+        GetElementData();
+        GetObjectGraphicData();
 
         var list = (from terrainElementData in terrainElementDataList
+                    join elementData in elementDataList on terrainElementData.elementId equals elementData.id
+                    join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
                     select new TerrainElementDataElement()
                     {
                         id = terrainElementData.id,
-                        table = terrainElementData.table,
+                        table = "TerrainElement",
 
-                        Index = terrainElementData.index,
+                        ChapterId = terrainElementData.chapterId,
+                        ElementId = terrainElementData.elementId,
 
-                        icon = "Textures/Icons/Objects/Nothing"
+                        name = elementData.name,
+                        objectGraphicIcon = objectGraphicData.icon
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list;
     }
 
-    public void GetTerrainElementData(Search.TerrainElement searchParameters)
+    internal void GetCustomTerrainElementData(Search.TerrainElement searchParameters)
     {
         terrainElementDataList = new List<TerrainElementData>();
 
-        int index = 0;
+        foreach (Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainElement.id)) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(terrainElement.chapterId)) continue;
+            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(terrainElement.objectiveId)) continue;
 
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+            var terrainElementData = new TerrainElementData();
+
+            terrainElementData.id = terrainElement.id;
+
+            terrainElementData.chapterId = terrainElement.chapterId;
+            terrainElementData.objectiveId = terrainElement.objectiveId;
+            terrainElementData.elementId = terrainElement.elementId;
+
+            terrainElementDataList.Add(terrainElementData);
+        }
+    }
+
+    internal void GetQuestAndObjectiveTerrainElementData(Search.TerrainElement searchParameters)
+    {
+        terrainElementDataList = new List<TerrainElementData>();
+
+        var objectiveData = terrainElementController.SegmentController.path.FindLastRoute("Objective").data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        var questData = terrainElementController.SegmentController.path.FindLastRoute("Quest").data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+
+        List<int> terrainElementIds = new List<int>();
+
+        Fixtures.phaseElementList.Where(x => x.questId == questData.id).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
+        Fixtures.terrainElementList.Where(x => x.objectiveId == objectiveData.id).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
+
+        foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList())
         {
             var terrainElementData = new TerrainElementData();
 
-            int id = (i + 1);
-
-            terrainElementData.id = id;
+            terrainElementData.id = terrainElement.id;
             terrainElementData.table = "TerrainElement";
-            terrainElementData.index = index;
+
+            terrainElementData.chapterId = terrainElement.chapterId;
+            terrainElementData.objectiveId = terrainElement.objectiveId;
+            terrainElementData.elementId = terrainElement.elementId;
 
             terrainElementDataList.Add(terrainElementData);
-
-            index++;
         }
+    }
+
+    internal void GetElementData()
+    {
+        elementDataList = dataManager.GetElementData(terrainElementDataList.Select(x => x.elementId).Distinct().ToList(), true);
+    }
+
+    internal void GetObjectGraphicData()
+    {
+        objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
     }
 
     internal class TerrainElementData : GeneralData
     {
-        public int index;
+        public int chapterId;
+        public int objectiveId;
+        public int elementId;
+        public int taskIndex;
     }
 }

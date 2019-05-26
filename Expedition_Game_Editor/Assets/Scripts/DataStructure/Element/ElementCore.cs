@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class ElementCore : GeneralData
 {
@@ -11,9 +11,6 @@ public class ElementCore : GeneralData
     public string originalName;
 
     public bool changed;
-    private bool changedId;
-    private bool changedTable;
-    private bool changedType;
     private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
@@ -72,25 +69,23 @@ public class ElementCore : GeneralData
 
     public virtual void Update()
     {
-        //if (!changed) return;
+        var elementData = Fixtures.elementList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedName)
+            elementData.name = name;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        //SetOriginalValues();
+        if (changedObjectGraphicId)
+            elementData.objectGraphicId = objectGraphicId;
     }
 
     public void UpdateIndex()
     {
+        var elementData = Fixtures.elementList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            elementData.index = index;
+
             changedIndex = false;
         }
     }
@@ -99,8 +94,6 @@ public class ElementCore : GeneralData
     {
         originalName = Name;
         originalObjectGraphicId = ObjectGraphicId;
-
-        //ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -114,9 +107,6 @@ public class ElementCore : GeneralData
         GetOriginalValues();
 
         changed = false;
-        changedId = false;
-        changedTable = false;
-        changedType = false;
         changedIndex = false;
         changedObjectGraphicId = false;
         changedName = false;

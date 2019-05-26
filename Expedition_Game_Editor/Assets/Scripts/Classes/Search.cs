@@ -82,21 +82,6 @@ public class Search
     }
 
     [System.Serializable]
-    public class ChapterElement : SearchParameters
-    {
-        public List<int> chapterId = new List<int>();
-        public List<int> elementId = new List<int>();
-
-        public enum RequestType
-        {
-            Custom,
-            GetChapterElementsById
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
     public class ChapterRegion : SearchParameters
     {
         public List<int> chapterId = new List<int>();
@@ -122,6 +107,21 @@ public class Search
         {
             Custom,
             GetPhaseWithQuests
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
+    public class PhaseElement : SearchParameters
+    {
+        public List<int> phaseId = new List<int>();
+        public List<int> questId = new List<int>();
+        public List<int> terrainElementId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
         }
 
         public RequestType requestType;
@@ -158,20 +158,6 @@ public class Search
     }
 
     [System.Serializable]
-    public class QuestElement : SearchParameters
-    {
-        public List<int> questId = new List<int>();
-        public List<int> elementId = new List<int>();
-
-        public enum RequestType
-        {
-            Custom
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
     public class Objective : SearchParameters
     {
         public List<int> index = new List<int>();
@@ -188,26 +174,11 @@ public class Search
     }
 
     [System.Serializable]
-    public class ObjectiveElement : SearchParameters
-    {
-        public List<int> index = new List<int>();
-        public List<string> name = new List<string>();
-        public List<string> description = new List<string>();
-
-        public enum RequestType
-        {
-            Custom
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
     public class Task : SearchParameters
     {
         public List<int> index = new List<int>();
-        public List<string> name = new List<string>();
-        public List<string> description = new List<string>();
+        public List<int> objectiveId = new List<int>();
+        public List<int> terrainElementId = new List<int>();
 
         public enum RequestType
         {
@@ -268,10 +239,15 @@ public class Search
 
     public class TerrainElement : SearchParameters
     {
+        public List<int> chapterId = new List<int>();
+        public List<int> objectiveId = new List<int>();
+        public List<int> elementId = new List<int>();
+        public List<int> taskIndex = new List<int>();
 
         public enum RequestType
         {
-            Custom
+            Custom,
+            GetQuestAndObjectiveElements
         }
 
         public RequestType requestType;

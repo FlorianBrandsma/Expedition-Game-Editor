@@ -18,7 +18,8 @@ static public class SelectionManager
         Set,
         Edit,
         Enter,
-        Open
+        Open,
+        Toggle
     }
 
     static public List<ListManager> lists = new List<ListManager>();

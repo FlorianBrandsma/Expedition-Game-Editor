@@ -34,20 +34,20 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 
-        if (chapterEditor.chapterElementDataList.Count > 0) return;
+        if (chapterEditor.terrainElementDataList.Count > 0) return;
 
         ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
 
-        var searchParameters = new Search.ChapterElement();
+        var searchParameters = new Search.TerrainElement();
 
-        searchParameters.requestType = Search.ChapterElement.RequestType.Custom;
+        searchParameters.requestType = Search.TerrainElement.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
         
-        var chapterElementList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().ToList();
+        var chapterElementList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        chapterElementList.ForEach(x => chapterEditor.chapterElementDataList.Add(x));
+        chapterElementList.ForEach(x => chapterEditor.terrainElementDataList.Add(x));
     }
 
     private void SetSearchParameters()
@@ -56,7 +56,9 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
         //Out of all the elements, select only those that are not in this list
-        var idList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().Select(x => x.ElementId).ToList();
+        var idList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().Select(x => x.ElementId).ToList();
+        idList.Add(chapterData.ElementId);
+
         var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
         searchParameters.id = list;

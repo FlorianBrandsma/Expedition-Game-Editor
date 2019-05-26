@@ -25,7 +25,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
     private int id;
     private int index;
     private string description;
-    private string icon;
+    private string objectGraphicIcon;
 
     #endregion
 
@@ -69,6 +69,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
         id = taskData.id;
         index = taskData.Index;
         description = taskData.Description;
+        objectGraphicIcon = taskData.objectGraphicIcon;
     }
 
     public void OpenSegment()
@@ -79,6 +80,8 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
         idText.text = id.ToString();
 
         inputField.text = description;
+
+        selectionElement.GetComponent<EditorTile>().icon.texture = Resources.Load<Texture2D>(objectGraphicIcon);
 
         gameObject.SetActive(true);
     }

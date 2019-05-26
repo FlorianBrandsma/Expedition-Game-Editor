@@ -5,20 +5,20 @@ using System.Linq;
 
 public class TerrainElementController : MonoBehaviour, IDataController
 {
-    public Search.TerrainElement searchParameters;
+    public Search.Element searchParameters;
 
-    private TerrainElementDataManager terrainElementDataManager = new TerrainElementDataManager();
+    public TerrainElementDataManager terrainElementDataManager = new TerrainElementDataManager();
 
-    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType              { get { return Enums.DataType.TerrainElement; } }
-    public ICollection DataList                 { get; set; }
+    public Enums.DataType DataType { get { return Enums.DataType.TerrainElement; } }
+    public ICollection DataList { get; set; }
 
     public IEnumerable SearchParameters
     {
         get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.TerrainElement>().FirstOrDefault(); }
+        set { searchParameters = value.Cast<Search.Element>().FirstOrDefault(); }
     }
 
     public void InitializeController()
@@ -33,6 +33,22 @@ public class TerrainElementController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = searchElement.route.data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
 
+        var terrainElementDataElement = DataList.Cast<TerrainElementDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
+
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.Element:
+
+                var resultElementData = resultData.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+
+                terrainElementDataElement.ElementId = resultElementData.id;
+                terrainElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
+
+                break;
+        }
+
+        searchElement.route.data.ElementData = new[] { terrainElementDataElement };
     }
 }

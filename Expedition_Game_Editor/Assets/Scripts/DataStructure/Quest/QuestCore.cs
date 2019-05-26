@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class QuestCore : GeneralData
 {
+    private int phaseId;
     private string name;
     private string notes;
 
@@ -28,6 +29,12 @@ public class QuestCore : GeneralData
 
             index = value;
         }
+    }
+
+    public int PhaseId
+    {
+        get { return phaseId; }
+        set { phaseId = value; }
     }
 
     public string Name
@@ -71,23 +78,25 @@ public class QuestCore : GeneralData
     {
         if (!changed) return;
 
-        //Debug.Log("Updated " + name);
+        var questData = Fixtures.questList.Where(x => x.id == id).FirstOrDefault();
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (changedName)
+            questData.name = name;
+
+        if (changedNotes)
+            questData.notes = notes;
 
         SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
+        var questData = Fixtures.questList.Where(x => x.id == id).FirstOrDefault();
+
         if (changedIndex)
         {
-            //Debug.Log("Update index " + index);
+            questData.index = index;
+
             changedIndex = false;
         }
     }

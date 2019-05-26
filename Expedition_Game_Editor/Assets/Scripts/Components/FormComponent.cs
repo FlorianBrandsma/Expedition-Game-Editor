@@ -26,31 +26,26 @@ public class FormComponent : MonoBehaviour, IComponent
     public void InitializeComponent(Path new_path)
     {
         editorForm.formComponent = this;
-    }
-
-    public void SetComponent(Path new_path)
-    {
-        SetButton();
 
         //If the component was manually closed, don't open it here
         if (constant && manually_closed) return;
 
-        if(auto_open)
+        if (auto_open)
         {
             if (locked) return;
-            
-            if(!initialized)
+
+            if (!initialized)
             {
                 EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());
 
                 initialized = true;
-            } else {
+            }
+            else
+            {
                 //Set to true so the list will reset when selection is closed
-                
+
                 EditorManager.editorManager.InitializePath(editorForm.activePath, true);
             }
-
-            button.GetComponent<EditorButton>().icon.texture = open_icon;
 
             if (open_once)
                 locked = true;
@@ -59,9 +54,15 @@ public class FormComponent : MonoBehaviour, IComponent
         manually_closed = false;
     }
 
+    public void SetComponent(Path new_path)
+    {
+        SetButton();
+    }
+
     private void SetButton()
     {
         button = ComponentManager.componentManager.AddFormButton(component);
+        button.GetComponent<EditorButton>().icon.texture = open_icon;
 
         button.onClick.AddListener(delegate { Interact(); });
     }
@@ -84,16 +85,11 @@ public class FormComponent : MonoBehaviour, IComponent
 
         EditorManager.editorManager.InitializePath(path);
 
-        //Preferred in the form itself (where it causes crashes)
-        editorForm.ResetSiblingForm();
-
         button.GetComponent<EditorButton>().icon.texture = open_icon;
     }
 
     public void OpenFormExternally()
     {
-        editorForm.ResetSiblingForm();
-
         button.GetComponent<EditorButton>().icon.texture = open_icon;
     }
 

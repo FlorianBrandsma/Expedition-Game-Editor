@@ -1,25 +1,45 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class TerrainElementCore : GeneralData
 {
-    public int originalIndex;
+    private int chapterId;
+    private int elementId;
+
+    public int originalChapterId;
+    public int originalElementId;
 
     public bool changed;
-    private bool changedIndex;
+    private bool changedChapterId;
+    private bool changedElementId;
 
     #region Properties
 
-    public int Index
+    public int ChapterId
     {
-        get { return index; }
+        get { return chapterId; }
         set
         {
-            if (value == index) return;
+            if (value == chapterId) return;
 
-            changedIndex = true;
+            changed = true;
+            changedChapterId = true;
 
-            index = value;
+            chapterId = value;
+        }
+    }
+
+    public int ElementId
+    {
+        get { return elementId; }
+        set
+        {
+            if (value == elementId) return;
+
+            changed = true;
+            changedElementId = true;
+
+            elementId = value;
         }
     }
 
@@ -32,47 +52,37 @@ public class TerrainElementCore : GeneralData
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!changed) return;
+        var terrainElementData = Fixtures.terrainElementList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
-
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        SetOriginalValues();
+        if (changedElementId)
+            terrainElementData.elementId = elementId;
     }
 
-    public void UpdateIndex()
-    {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
-    }
+    public void UpdateIndex() { }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
-        ClearChanges();
+        originalChapterId = ChapterId;
+        originalElementId = ElementId;
+
+        //ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-
+        ChapterId = originalChapterId;
+        ElementId = originalElementId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
         changed = false;
-        changedIndex = false;
+        changedChapterId = false;
+        changedElementId = false;
     }
 
     public void Delete()

@@ -7,7 +7,7 @@ public class PhaseController : MonoBehaviour, IDataController
 {
     public Search.Phase searchParameters;
 
-    private PhaseDataManager phaseDataManager           = new PhaseDataManager();
+    private PhaseDataManager phaseDataManager   = new PhaseDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -26,6 +26,11 @@ public class PhaseController : MonoBehaviour, IDataController
         phaseDataManager.InitializeManager(this);
     }
 
+    private void CreatePhaseElements()
+    {
+
+    }
+
     public void GetData(IEnumerable searchParameters)
     {
         DataList = phaseDataManager.GetPhaseDataElements(searchParameters.Cast<Search.Phase>().FirstOrDefault());
@@ -33,6 +38,6 @@ public class PhaseController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
-
+        CreatePhaseElements();
     }
 }
