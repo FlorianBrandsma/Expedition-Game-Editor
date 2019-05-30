@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class EditorTile : MonoBehaviour, IElement
@@ -32,7 +32,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetElementElement()
     {
-        var data = element.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+        var data = (ElementDataElement)element.route.data.DataElement;
 
         if(data.originalObjectGraphicIcon == null)
             icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
@@ -42,21 +42,21 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainElement()
     {
-        var data = element.route.data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
+        var data = (TerrainDataElement)element.route.data.DataElement;
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetTileElement()
     {
-        var data = element.route.data.ElementData.Cast<TileDataElement>().FirstOrDefault();
+        var data = (TileDataElement)element.route.data.DataElement;
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
 
     private void SetTerrainTileElement()
     {
-        var data = element.route.data.ElementData.Cast<TerrainTileDataElement>().FirstOrDefault();
+        var data = (TerrainTileDataElement)element.route.data.DataElement;
 
         icon.texture = Resources.Load<Texture2D>(data.icon);
     }
@@ -64,15 +64,15 @@ public class EditorTile : MonoBehaviour, IElement
     private void SetObjectGraphicElement()
     {
         //Required for initialization of the DataList. Better suited elsewhere
-        element.route.data.DataController.DataList = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().ToList();
+        element.route.data.DataController.DataList = new List<IDataElement>() { element.route.data.DataElement };
 
-        var objectGraphicDataElement = element.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+        var objectGraphicDataElement = (ObjectGraphicDataElement)element.route.data.DataElement;
         icon.texture = Resources.Load<Texture2D>(objectGraphicDataElement.Icon);
     }
 
     private void SetTerrainElementElement()
     {
-        var data = element.route.data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
+        var data = (TerrainElementDataElement)element.route.data.DataElement;
 
         //There should be a distinction when an element is being set as result of a search, or by creating the list
         icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
@@ -80,7 +80,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetPhaseElementElement()
     {
-        var data = element.route.data.ElementData.Cast<PhaseElementDataElement>().FirstOrDefault();
+        var data = (PhaseElementDataElement)element.route.data.DataElement;
 
         icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
     }

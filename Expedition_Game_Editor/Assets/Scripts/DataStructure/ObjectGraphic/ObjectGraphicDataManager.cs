@@ -13,7 +13,7 @@ public class ObjectGraphicDataManager
         this.objectGraphicController = objectGraphicController;
     }
 
-    public List<ObjectGraphicDataElement> GetObjectGraphicDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetObjectGraphicDataElements(IEnumerable searchParameters)
     {
         var objectGraphicSearchData = searchParameters.Cast<Search.ObjectGraphic>().FirstOrDefault();
 
@@ -33,7 +33,7 @@ public class ObjectGraphicDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetObjectGraphicData(Search.ObjectGraphic searchParameters)

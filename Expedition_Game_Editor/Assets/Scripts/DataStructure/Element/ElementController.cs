@@ -13,7 +13,7 @@ public class ElementController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.Element; } }
-    public ICollection DataList                 { get; set; }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {
@@ -33,7 +33,7 @@ public class ElementController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
-        var searchElementData = searchElement.route.data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+        var searchElementData = (ElementDataElement)searchElement.route.data.DataElement;
 
         var elementDataElement = DataList.Cast<ElementDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
@@ -41,7 +41,7 @@ public class ElementController : MonoBehaviour, IDataController
         {
             case Enums.DataType.Element:
 
-                var resultElementData = resultData.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+                var resultElementData = (ElementDataElement)resultData.DataElement;
 
                 elementDataElement.id = resultElementData.id;
                 elementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
@@ -49,6 +49,6 @@ public class ElementController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.ElementData = new[] { elementDataElement };
+        searchElement.route.data.DataElement = elementDataElement;
     }
 }

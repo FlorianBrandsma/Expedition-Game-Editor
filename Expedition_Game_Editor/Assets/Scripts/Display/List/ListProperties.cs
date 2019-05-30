@@ -48,7 +48,7 @@ public class ListProperties : MonoBehaviour, IDisplay
         listManager.InitializeList(this);
     }
 
-    private void SetDisplay()
+    public void SetDisplay()
     {
         listManager.SetProperties();
         listManager.SetList();  

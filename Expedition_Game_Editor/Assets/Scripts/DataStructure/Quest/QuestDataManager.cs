@@ -13,7 +13,7 @@ public class QuestDataManager
         this.questController = questController;
     }
 
-    public List<QuestDataElement> GetQuestDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetQuestDataElements(IEnumerable searchParameters)
     {
         var questSearchData = searchParameters.Cast<Search.Quest>().FirstOrDefault();
 
@@ -34,7 +34,7 @@ public class QuestDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetQuestData(Search.Quest searchParameters)

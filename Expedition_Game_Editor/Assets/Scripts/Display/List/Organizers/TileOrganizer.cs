@@ -5,35 +5,35 @@ using System.Linq;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ListManager listManager { get { return GetComponent<ListManager>(); } }
+    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
 
     static public List<SelectionElement> elementList = new List<SelectionElement>();
 
     public Vector2 ElementSize { get; set; }
-    private Vector2 list_size;
+    private Vector2 listSize;
 
     private TileProperties properties;
     private bool horizontal, vertical;
 
     private IDataController dataController;
-    private List<GeneralData> generalData_list;
+    private List<GeneralData> generalDataList;
 
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.DataController;
+        dataController = ListManager.listProperties.DataController;
     }
 
     public void SetProperties()
     {
-        properties = listManager.listProperties.GetComponent<TileProperties>();
+        properties = ListManager.listProperties.GetComponent<TileProperties>();
 
-        horizontal = listManager.listProperties.horizontal;
-        vertical = listManager.listProperties.vertical;
+        horizontal = ListManager.listProperties.horizontal;
+        vertical = ListManager.listProperties.vertical;
     }
 
     public void SetElementSize()
     {
-        ElementSize = listManager.listProperties.elementSize;
+        ElementSize = ListManager.listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int elementCount, bool exact)
@@ -55,7 +55,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         }
 
         if (exact)
-            return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
+            return new Vector2(new_size.x - ListManager.rectTransform.rect.width, new_size.y);
         else
             return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
     }
@@ -64,7 +64,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int x = 0;
 
-        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.rectTransform.rect.max.x)
+        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < ListManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -74,7 +74,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.rectTransform.rect.max.y)
+        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < ListManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -85,20 +85,21 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(dataController.DataList);
     }
 
-    public void SetData(ICollection list)
+    public void SetData(List<IDataElement> list)
     {
-        generalData_list = list.Cast<GeneralData>().ToList();
+        generalDataList = list.Cast<GeneralData>().ToList();
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Tile");
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/Tile");
 
-        list_size = GetListSize(list.Count, false);
+        listSize = GetListSize(list.Count, false);
 
-        foreach (var data in list)
+        foreach (IDataElement data in list)
         {
-            SelectionElement element = listManager.SpawnElement(elementList, element_prefab, Enums.ElementType.Tile);
-            listManager.elementList.Add(element);
+            SelectionElement element = ListManager.SpawnElement(elementList, elementPrefab, Enums.ElementType.Tile);
+            ListManager.elementList.Add(element);
 
-            element.route.data = new Data(dataController, new[] { data });
+            data.SelectionElement = element;
+            element.route.data = new Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -113,10 +114,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         ResetData(dataController.DataList);
 
-        SelectionManager.ResetSelection(listManager);
+        SelectionManager.ResetSelection(ListManager);
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseList();
         SetData(filter);
@@ -128,24 +129,24 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
 
         rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
         
-        rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (list_size.x - 1)) + (index % list_size.x * ElementSize.x),
-                                                     -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / list_size.x) * ElementSize.y));
+        rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (listSize.x - 1)) + (index % listSize.x * ElementSize.x),
+                                                     -(ElementSize.y * 0.5f) + (ListManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / listSize.x) * ElementSize.y));
 
         rect.gameObject.SetActive(true);
     }
 
     public SelectionElement GetElement(int index)
     {
-        return listManager.elementList[index];
+        return ListManager.elementList[index];
     }
 
     public void CloseList()
     {
-        listManager.ResetElement();
+        ListManager.ResetElement();
     }
 
     public void ClearOrganizer() { }

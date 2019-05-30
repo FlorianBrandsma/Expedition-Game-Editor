@@ -16,7 +16,7 @@ public class ChapterRegionDataManager
         this.chapterRegionController = chapterRegionController;
     }
 
-    public List<ChapterRegionDataElement> GetChapterRegionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetChapterRegionDataElements(IEnumerable searchParameters)
     {
         var chapterRegionSearchData = searchParameters.Cast<Search.ChapterRegion>().FirstOrDefault();
 
@@ -41,7 +41,7 @@ public class ChapterRegionDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetChapterRegionData(Search.ChapterRegion searchParameters)

@@ -4,10 +4,15 @@ using System.Collections.Generic;
 [System.Serializable]
 public class TerrainElementDataElement : TerrainElementCore, IDataElement
 {
+    public SelectionElement SelectionElement { get; set; }
+
     public TerrainElementDataElement() : base() { }
 
-    public string name;
+    public string elementName;
     public string objectGraphicIcon;
+
+    public string originalElementName;
+    public string originalObjectGraphicIcon;
 
     public override void Update()
     {
@@ -22,10 +27,17 @@ public class TerrainElementDataElement : TerrainElementCore, IDataElement
     {
         base.SetOriginalValues();
 
+        originalElementName = elementName;
+        originalObjectGraphicIcon = objectGraphicIcon;
+
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
+    public new void GetOriginalValues()
+    {
+        elementName = originalElementName;
+        objectGraphicIcon = originalObjectGraphicIcon;
+    }
 
     public override void ClearChanges()
     {

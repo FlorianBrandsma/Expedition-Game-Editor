@@ -47,10 +47,10 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainElementElement()
     {
         Data data = Element.route.data;
-        TerrainElementDataElement dataElement = data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
+        TerrainElementDataElement dataElement = (TerrainElementDataElement)data.DataElement;
 
         id.text = dataElement.id.ToString();
-        header.text = dataElement.name;
+        header.text = dataElement.elementName;
 
         if (properties.icon)
             icon.texture = Resources.Load<Texture2D>(dataElement.objectGraphicIcon);
@@ -62,7 +62,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainObjectElement()
     {
         Data data = Element.route.data;
-        TerrainObjectDataElement dataElement = data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
+        TerrainObjectDataElement dataElement = (TerrainObjectDataElement)data.DataElement;
 
         id.text = dataElement.id.ToString();
         header.text = dataElement.name;

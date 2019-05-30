@@ -29,7 +29,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        terrainData = Data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
+        terrainData = (TerrainDataElement)Data.DataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }

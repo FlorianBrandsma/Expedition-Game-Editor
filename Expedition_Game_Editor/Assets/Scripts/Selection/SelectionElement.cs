@@ -66,7 +66,7 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElement(IEnumerable dataElement)
+    public void SetElement(IDataElement dataElement)
     {
         //int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
         //dataElement.Cast<GeneralData>().FirstOrDefault().index = index;
@@ -78,7 +78,7 @@ public class SelectionElement : MonoBehaviour
         //DataController.ReplaceData(this, dataElement);
 
         //Possible to draw element data straight from the controller?
-        route.data.ElementData = dataElement;
+        route.data.DataElement = dataElement;
         
         SetElement();
     }
@@ -124,16 +124,20 @@ public class SelectionElement : MonoBehaviour
         switch (route.property)
         {
             case SelectionManager.Property.Get:
+
+                var dataElement = route.data.DataElement;
+
                 EditorManager.editorManager.InitializePath(editorPath.path);
+
+                SelectionManager.SelectSearch(dataElement);
 
                 if (ListManager == null)
                     ActivateSelection();
 
-                SelectionManager.SelectSearch(this);
                 break;
 
             case SelectionManager.Property.Set:
-                SelectionManager.SelectSet(this);
+                SelectionManager.SelectSet(route.data.DataElement);
                 break;
 
             case SelectionManager.Property.Enter:
@@ -166,6 +170,6 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();      
+        return (GeneralData)route.data.DataElement;      
     }
 }

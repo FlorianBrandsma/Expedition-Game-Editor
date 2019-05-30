@@ -32,7 +32,7 @@ public class PhaseRegionsRegionsSegment : MonoBehaviour, ISegment
 
         if (phaseEditor.phaseRegionDataList.Count > 0) return;
 
-        PhaseDataElement phaseData = DataEditor.Data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
+        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
 
         var searchParameters = new Search.PhaseRegion();
 

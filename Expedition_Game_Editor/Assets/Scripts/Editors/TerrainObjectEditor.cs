@@ -20,7 +20,7 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
 
         Data = PathController.route.data;
 
-        terrainObjectData = Data.ElementData.Cast<TerrainObjectDataElement>().FirstOrDefault();
+        terrainObjectData = (TerrainObjectDataElement)Data.DataElement;
 
         if (!PathController.loaded)
             terrainObjectData.ClearChanges();
@@ -38,7 +38,7 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
         list.RemoveAt(terrainObjectData.Index);
         list.Insert(index, terrainObjectData);
 
-        selectionElement.ListManager.listProperties.DataController.DataList = list;
+        selectionElement.ListManager.listProperties.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

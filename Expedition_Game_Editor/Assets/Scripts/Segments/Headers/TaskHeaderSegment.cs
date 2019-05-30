@@ -64,7 +64,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskData()
     {
-        taskData = DataEditor.Data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
+        taskData = (TaskDataElement)DataEditor.Data.DataElement;
 
         id = taskData.id;
         index = taskData.Index;

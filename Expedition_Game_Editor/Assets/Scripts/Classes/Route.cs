@@ -15,7 +15,7 @@ public class Route
     public Route(Path path)
     {
         controller = 0;
-        data = new Data(null, new[] { new GeneralData() }, new[] { new SearchParameters() });
+        data = new Data(null, new GeneralDataElement(), new[] { new SearchParameters() });
         this.path = path;
     }
 
@@ -55,6 +55,6 @@ public class Route
 
     public GeneralData GeneralData()
     {
-        return data.ElementData.Cast<GeneralData>().FirstOrDefault();
+        return (GeneralData)data.DataElement;
     }
 }

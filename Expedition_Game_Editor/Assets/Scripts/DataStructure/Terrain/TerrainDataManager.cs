@@ -13,7 +13,7 @@ public class TerrainDataManager
         this.terrainController = terrainController;
     }
 
-    public List<TerrainDataElement> GetTerrainDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetTerrainDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Terrain>().FirstOrDefault();
 
@@ -31,7 +31,7 @@ public class TerrainDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetTerrainData(Search.Terrain searchParameters)

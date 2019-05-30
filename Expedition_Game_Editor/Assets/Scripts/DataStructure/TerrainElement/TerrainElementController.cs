@@ -9,11 +9,11 @@ public class TerrainElementController : MonoBehaviour, IDataController
 
     public TerrainElementDataManager terrainElementDataManager = new TerrainElementDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.TerrainElement; } }
-    public ICollection DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.TerrainElement; } }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {
@@ -33,7 +33,7 @@ public class TerrainElementController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
-        var searchElementData = searchElement.route.data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
+        var searchElementData = (TerrainElementDataElement)searchElement.route.data.DataElement;
 
         var terrainElementDataElement = DataList.Cast<TerrainElementDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
@@ -41,7 +41,7 @@ public class TerrainElementController : MonoBehaviour, IDataController
         {
             case Enums.DataType.Element:
 
-                var resultElementData = resultData.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+                var resultElementData = (ElementDataElement)resultData.DataElement;
 
                 terrainElementDataElement.ElementId = resultElementData.id;
                 terrainElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
@@ -49,6 +49,6 @@ public class TerrainElementController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.ElementData = new[] { terrainElementDataElement };
+        searchElement.route.data.DataElement = terrainElementDataElement;
     }
 }

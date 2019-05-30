@@ -36,7 +36,7 @@ public class QuestGeneralElementsSegment : MonoBehaviour, ISegment
 
         if (questEditor.questElementDataList.Count > 0) return;
 
-        QuestDataElement questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        var questData = (QuestDataElement)DataEditor.Data.DataElement;
 
         var searchParameters = new Search.PhaseElement();
 
@@ -70,7 +70,7 @@ public class QuestGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        QuestDataElement questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        var questData = (QuestDataElement)DataEditor.Data.DataElement;
 
         DataEditor.UpdateEditor();
 

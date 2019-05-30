@@ -4,40 +4,40 @@ using System.Collections;
 public class Data
 {
     public IDataController DataController   { get; set; }
-    public IEnumerable ElementData          { get; set; }
+    public IDataElement DataElement         { get; set; }
     public IEnumerable SearchParameters     { get; set; }
 
     public Data()
     {
-        ElementData = new[] { new GeneralData() };
+        DataElement = new GeneralDataElement();
     }
 
-    public Data(IEnumerable elementData)
+    public Data(IDataElement elementData)
     {
-        ElementData = elementData;
+        DataElement = elementData;
     }
 
     public Data(IDataController controller)
     {
         DataController = controller;
-        ElementData = new[] { new GeneralData() };
+        DataElement = new GeneralDataElement();
     }
 
-    public Data(IDataController controller, IEnumerable element)
+    public Data(IDataController controller, IDataElement element)
     {
         DataController = controller;
-        ElementData = element;
+        DataElement = element;
     }
 
-    public Data(IDataController controller, IEnumerable element, IEnumerable searchParameters)
+    public Data(IDataController controller, IDataElement element, IEnumerable searchParameters)
     {
         DataController = controller;
-        ElementData = element;
+        DataElement = element;
         SearchParameters = searchParameters;
     }
 
     public Data Copy()
     {
-        return new Data(ElementData);
+        return new Data(DataElement);
     }
 }

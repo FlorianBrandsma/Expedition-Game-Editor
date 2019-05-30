@@ -26,7 +26,7 @@ namespace Source
 
         public GeneralData GeneralData()
         {
-            return route.data.ElementData.Cast<GeneralData>().FirstOrDefault();
+            return (GeneralData)route.data.DataElement;
         }
     }
 }

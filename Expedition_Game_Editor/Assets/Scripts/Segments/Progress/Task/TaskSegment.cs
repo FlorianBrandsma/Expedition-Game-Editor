@@ -31,10 +31,10 @@ public class TaskSegment : MonoBehaviour, ISegment
         var searchParameters = new Search.Task();
 
         //If a terrainElement is selected without being directly related to an objective, don't try to get this data
-        var objectiveData = SegmentController.path.FindLastRoute("Objective").data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        var objectiveData = (ObjectiveDataElement)SegmentController.path.FindLastRoute("Objective").data.DataElement;
         searchParameters.objectiveId = new List<int>() { objectiveData.id };
 
-        var terrainElementData = SegmentController.path.FindLastRoute("TerrainElement").data.ElementData.Cast<TerrainElementDataElement>().FirstOrDefault();
+        var terrainElementData = (TerrainElementDataElement)SegmentController.path.FindLastRoute("TerrainElement").data.DataElement;
         searchParameters.terrainElementId = new List<int>() { terrainElementData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });

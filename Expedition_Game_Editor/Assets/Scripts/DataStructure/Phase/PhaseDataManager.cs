@@ -12,7 +12,7 @@ public class PhaseDataManager
         this.phaseController = phaseController;
     }
 
-    public List<PhaseDataElement> GetPhaseDataElements(Search.Phase searchParameters)
+    public List<IDataElement> GetPhaseDataElements(Search.Phase searchParameters)
     {
         switch(searchParameters.requestType)
         {
@@ -29,15 +29,13 @@ public class PhaseDataManager
 
                         Index = phaseData.index,
                         Name = phaseData.name,
-                        Notes = phaseData.notes,
-
-                        icon = "Textures/Characters/1"
+                        Notes = phaseData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     private void GetCustomPhaseData(Search.Phase searchParameters)

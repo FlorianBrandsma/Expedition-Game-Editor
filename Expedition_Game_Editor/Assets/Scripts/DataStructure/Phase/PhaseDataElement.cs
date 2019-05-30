@@ -4,9 +4,9 @@ using System.Collections;
 [System.Serializable]
 public class PhaseDataElement : PhaseCore, IDataElement
 {
-    public PhaseDataElement() : base() { }
+    public SelectionElement SelectionElement { get; set; }
 
-    public string icon;
+    public PhaseDataElement() : base() { }
 
     public override void Create()
     {

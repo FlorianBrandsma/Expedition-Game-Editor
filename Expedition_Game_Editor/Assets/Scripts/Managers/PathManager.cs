@@ -102,7 +102,7 @@ public class PathManager
             route = selection.route;
             origin = selection.ListManager;
 
-            var itemDataElement = route.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+            var itemDataElement = (ItemDataElement)route.data.DataElement;
 
             enter   = new List<int>() { 0, 0, 0, itemDataElement.Type };
             edit    = new List<int>() { 0, 1, 0, itemDataElement.Type };
@@ -219,7 +219,7 @@ public class PathManager
             route = selection.route;
             origin = selection.ListManager;
 
-            regionDataElement = route.data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+            regionDataElement = (RegionDataElement)route.data.DataElement;
 
             if (selection.ListManager != null)
                 path = selection.ListManager.listProperties.DataController.SegmentController.path;
@@ -392,7 +392,7 @@ public class PathManager
             //searchData = new SearchData(searchParameters, route.GeneralData());
 
 
-            route.data = new Data(route.data.DataController, route.data.ElementData, selection.DataController.SearchParameters);
+            route.data = new Data(route.data.DataController, route.data.DataElement, selection.DataController.SearchParameters);
         }
 
         public Path Get()

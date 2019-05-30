@@ -13,7 +13,7 @@ public class PhaseRegionDataManager
         this.phaseRegionController = phaseRegionController;
     }
 
-    public List<PhaseRegionDataElement> GetPhaseRegionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetPhaseRegionDataElements(IEnumerable searchParameters)
     {
         var phaseRegionSearchData = searchParameters.Cast<Search.PhaseRegion>().FirstOrDefault();
 
@@ -32,7 +32,7 @@ public class PhaseRegionDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetPhaseRegionData(Search.PhaseRegion searchParameters)

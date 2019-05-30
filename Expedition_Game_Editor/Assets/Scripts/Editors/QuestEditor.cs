@@ -31,7 +31,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        questData = Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        questData = (QuestDataElement)Data.DataElement;
         questElementDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -49,7 +49,7 @@ public class QuestEditor : MonoBehaviour, IEditor
         list.RemoveAt(questData.Index);
         list.Insert(index, questData);
 
-        Data.DataController.DataList = list;
+        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

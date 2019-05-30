@@ -45,18 +45,19 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(dataController.DataList);
     }
 
-    public void SetData(ICollection list)
+    public void SetData(List<IDataElement> list)
     {
         generalDataList = list.Cast<GeneralData>().ToList();
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/Button");
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/Button");
 
-        foreach (var data in list)
+        foreach (IDataElement data in list)
         {
-            SelectionElement element = listManager.SpawnElement(elementList, element_prefab, Enums.ElementType.Button);
+            SelectionElement element = listManager.SpawnElement(elementList, elementPrefab, Enums.ElementType.Button);
             listManager.elementList.Add(element);
 
-            element.route.data = new Data(dataController, new[] { data });
+            data.SelectionElement = element;
+            element.route.data = new Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -74,7 +75,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         SelectionManager.ResetSelection(listManager);
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseList();
         SetData(filter);

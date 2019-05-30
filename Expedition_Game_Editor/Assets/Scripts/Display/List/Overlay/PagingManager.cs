@@ -108,7 +108,7 @@ public class PagingManager : MonoBehaviour, IOverlay
 
         var dataController = overlayManager.listManager.listProperties.DataController;
 
-        organizer.ResetData(dataController.DataList.Cast<GeneralData>().ToList().GetRange(start, count));
+        organizer.ResetData(dataController.DataList.GetRange(start, count));
     }
      
     public void UpdateOverlay()

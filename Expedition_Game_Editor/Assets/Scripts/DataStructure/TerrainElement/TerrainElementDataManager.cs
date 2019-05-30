@@ -18,7 +18,7 @@ public class TerrainElementDataManager
         this.terrainElementController = terrainElementController;
     }
 
-    public List<TerrainElementDataElement> GetTerrainElementDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetTerrainElementDataElements(IEnumerable searchParameters)
     {
         var terrainElementSearchData = searchParameters.Cast<Search.TerrainElement>().FirstOrDefault();
 
@@ -35,7 +35,7 @@ public class TerrainElementDataManager
                 break;
         }
 
-        if (terrainElementDataList.Count == 0) return new List<TerrainElementDataElement>();
+        if (terrainElementDataList.Count == 0) return new List<IDataElement>();
 
         GetElementData();
         GetObjectGraphicData();
@@ -51,14 +51,14 @@ public class TerrainElementDataManager
                         ChapterId = terrainElementData.chapterId,
                         ElementId = terrainElementData.elementId,
 
-                        name = elementData.name,
+                        elementName = elementData.name,
                         objectGraphicIcon = objectGraphicData.icon
 
                     }).OrderBy(x => x.id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     internal void GetCustomTerrainElementData(Search.TerrainElement searchParameters)
@@ -87,8 +87,8 @@ public class TerrainElementDataManager
     {
         terrainElementDataList = new List<TerrainElementData>();
 
-        var objectiveData = terrainElementController.SegmentController.path.FindLastRoute("Objective").data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
-        var questData = terrainElementController.SegmentController.path.FindLastRoute("Quest").data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        var objectiveData = (ObjectiveDataElement)terrainElementController.SegmentController.path.FindLastRoute("Objective").data.DataElement;
+        var questData = (QuestDataElement)terrainElementController.SegmentController.path.FindLastRoute("Quest").data.DataElement;
 
         List<int> terrainElementIds = new List<int>();
 

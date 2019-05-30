@@ -5,6 +5,7 @@ using System.Linq;
 public class ChapterEditor : MonoBehaviour, IEditor
 {
     private ChapterDataElement chapterData;
+    public ElementDataElement elementDataElement;
     public List<TerrainElementDataElement> terrainElementDataList;
     public List<ChapterRegionDataElement> chapterRegionDataList;
 
@@ -22,6 +23,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(chapterData);
+            list.Add(elementDataElement);
             terrainElementDataList.ForEach(x => list.Add(x));
             chapterRegionDataList.ForEach(x => list.Add(x));
 
@@ -35,7 +37,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        chapterData = Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        chapterData = (ChapterDataElement)Data.DataElement;
+        elementDataElement = new ElementDataElement();
         terrainElementDataList.Clear();
         chapterRegionDataList.Clear();
 
@@ -54,7 +57,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         list.RemoveAt(chapterData.Index);
         list.Insert(index, chapterData);
 
-        Data.DataController.DataList = list;
+        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

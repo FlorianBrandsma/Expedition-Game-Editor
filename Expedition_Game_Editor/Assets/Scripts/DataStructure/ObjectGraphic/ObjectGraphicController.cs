@@ -13,7 +13,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.ObjectGraphic; } }
-    public ICollection DataList                 { get; set; }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {
@@ -31,15 +31,11 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
         DataList = objectGraphicDataManager.GetObjectGraphicDataElements(searchParameters);
 
         var objectGraphicDataElements = DataList.Cast<ObjectGraphicDataElement>();
-
-        //Debug.Log(segmentController.editorController.pathController.route.data.element.Cast<ElementDataElement>().FirstOrDefault().object_graphic_id);
-        //objectGraphicDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //objectGraphicDataElements[0].Update();
     }
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
-        var searchElementData = searchElement.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+        var searchElementData = (ObjectGraphicDataElement)searchElement.route.data.DataElement;
 
         var objectGraphicDataElement = DataList.Cast<ObjectGraphicDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
@@ -47,7 +43,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
         {
             case Enums.DataType.ObjectGraphic:
 
-                var resultElementData = resultData.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+                var resultElementData = (ObjectGraphicDataElement)resultData.DataElement;
 
                 objectGraphicDataElement.id = resultElementData.id;
                 objectGraphicDataElement.Icon = resultElementData.Icon;
@@ -57,6 +53,6 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.ElementData = new[] { objectGraphicDataElement };
+        searchElement.route.data.DataElement = objectGraphicDataElement;
     }
 }

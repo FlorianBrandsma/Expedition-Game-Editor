@@ -4,6 +4,8 @@ using System.Collections;
 [System.Serializable]
 public class ElementDataElement : ElementCore, IDataElement
 {
+    public SelectionElement SelectionElement { get; set; }
+
     public ElementDataElement() : base() { }
 
     public string objectGraphicPath;

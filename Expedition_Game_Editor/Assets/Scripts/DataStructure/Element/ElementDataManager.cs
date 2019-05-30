@@ -17,7 +17,7 @@ public class ElementDataManager
         this.elementController = elementController;
     }
 
-    public List<ElementDataElement> GetElementDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetElementDataElements(IEnumerable searchParameters)
     {
         var elementSearchData = searchParameters.Cast<Search.Element>().FirstOrDefault();
 
@@ -48,7 +48,7 @@ public class ElementDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     internal void GetCustomElementData(Search.Element searchParameters)

@@ -13,7 +13,7 @@ public class TerrainController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.Terrain; } }
-    public ICollection DataList                 { get; set; }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

@@ -13,7 +13,7 @@ public class IconDataManager
         this.iconController = iconController;
     }
 
-    public List<IconDataElement> GetIconDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetIconDataElements(IEnumerable searchParameters)
     {
         var iconSearchData = searchParameters.Cast<Search.Icon>().FirstOrDefault();
 
@@ -32,7 +32,7 @@ public class IconDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetIconData(Search.Icon searchParameters)

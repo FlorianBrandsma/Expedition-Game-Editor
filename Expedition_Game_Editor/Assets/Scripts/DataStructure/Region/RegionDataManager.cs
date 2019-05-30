@@ -13,7 +13,7 @@ public class RegionDataManager
         this.regionController = regionController;
     }
 
-    public List<RegionDataElement> GetRegionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetRegionDataElements(IEnumerable searchParameters)
     {
         var searchRegion = searchParameters.Cast<Search.Region>().FirstOrDefault();
 
@@ -34,7 +34,7 @@ public class RegionDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetRegionData(Search.Region searchParameters)

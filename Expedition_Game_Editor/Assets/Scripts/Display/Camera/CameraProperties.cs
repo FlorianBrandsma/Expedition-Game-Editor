@@ -32,7 +32,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
         cameraManager.InitializeCamera(this);
     }
 
-    private void SetDisplay()
+    public void SetDisplay()
     {
         cameraManager.SetProperties();
         cameraManager.SetCamera();

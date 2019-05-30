@@ -36,15 +36,15 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    ItemDataElement itemData = DataEditor.Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
-                    itemData.Name = value;
+                    var itemData    = (ItemDataElement)DataEditor.Data.DataElement;
+                    itemData.Name   = value;
 
                     break;
 
                 case Enums.DataType.Element:
 
-                    ElementDataElement elementData = DataEditor.Data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
-                    elementData.Name = value;
+                    var elementData     = (ElementDataElement)DataEditor.Data.DataElement;
+                    elementData.Name    = value;
 
                     break;
             }
@@ -63,7 +63,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    ItemDataElement itemData    = DataEditor.Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+                    var itemData                = (ItemDataElement)DataEditor.Data.DataElement;
                     itemData.ObjectGraphicId    = value.id;
                     itemData.objectGraphicPath  = value.Path;
                     itemData.objectGraphicIcon  = value.Icon;
@@ -72,7 +72,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Element:
 
-                    ElementDataElement elementData  = DataEditor.Data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+                    var elementData                 = (ElementDataElement)DataEditor.Data.DataElement;
                     elementData.ObjectGraphicId     = value.id;
                     elementData.objectGraphicPath   = value.Path;
                     elementData.objectGraphicIcon   = value.Icon;
@@ -121,7 +121,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeItemData()
     {
-        ItemDataElement itemData = DataEditor.Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+        var itemData        = (ItemDataElement)DataEditor.Data.DataElement;
 
         id                  = itemData.id;
         index               = itemData.Index;
@@ -136,7 +136,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeElementData()
     {
-        ElementDataElement elementData = DataEditor.Data.ElementData.Cast<ElementDataElement>().FirstOrDefault();
+        var elementData     = (ElementDataElement)DataEditor.Data.DataElement;
 
         id                  = elementData.id;
         index               = elementData.Index;
@@ -164,7 +164,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         objectGraphicDataElement.Path   = objectGraphicPath;
         objectGraphicDataElement.Icon   = objectGraphicIcon;
 
-        selectionElement.SetElement(new[] { objectGraphicDataElement });
+        objectGraphicDataElement.SelectionElement = selectionElement;
+        selectionElement.SetElement(objectGraphicDataElement);
 
         gameObject.SetActive(true);
     }
@@ -188,7 +189,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             case Enums.DataType.ObjectGraphic:
 
-                var objectGraphicDataElement = selectionElement.route.data.ElementData.Cast<ObjectGraphicDataElement>().FirstOrDefault();
+                var objectGraphicDataElement = (ObjectGraphicDataElement)selectionElement.route.data.DataElement;
 
                 UpdateObjectGraphic(objectGraphicDataElement);
 

@@ -13,7 +13,7 @@ public class ObjectiveController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.Objective; } }
-    public ICollection DataList                 { get; set; }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

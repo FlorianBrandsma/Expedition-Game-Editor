@@ -105,17 +105,6 @@ public class SegmentController : MonoBehaviour
             loaded = false;
     }
 
-    public void FilterRows(List<GeneralData> list)
-    {
-        if (GetComponent<ListProperties>() != null)
-        {
-            GetComponent<ListProperties>().CloseDisplay();
-            GetComponent<ListProperties>().DataController.DataList = new List<GeneralData>(list);
-        }
-
-        OpenSegment();
-    }
-
     public bool AutoSelectElement()
     {
         if (GetComponent<ListProperties>() != null)

@@ -11,11 +11,11 @@ public class PhaseRegionController : MonoBehaviour, IDataController
 
     private PhaseRegionDataManager phaseRegionDataManager = new PhaseRegionDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.PhaseRegion; } }
-    public ICollection DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.PhaseRegion; } }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

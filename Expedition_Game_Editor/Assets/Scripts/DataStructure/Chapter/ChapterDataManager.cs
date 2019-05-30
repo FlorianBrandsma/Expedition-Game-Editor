@@ -18,7 +18,7 @@ public class ChapterDataManager
         this.chapterController = chapterController;
     }
 
-    public List<ChapterDataElement> GetChapterDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetChapterDataElements(IEnumerable searchParameters)
     {
         var chapterSearchData = searchParameters.Cast<Search.Chapter>().FirstOrDefault();
 
@@ -38,15 +38,13 @@ public class ChapterDataManager
 
                         ElementId = chapterData.elementId,
                         Name = chapterData.name,
-                        Notes = chapterData.notes,
-
-                        objectGraphicIcon = objectGraphicData.icon
+                        Notes = chapterData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetChapterData(Search.Chapter searchParameters)

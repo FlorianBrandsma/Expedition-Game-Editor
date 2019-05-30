@@ -29,7 +29,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        regionData = Data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+        regionData = (RegionDataElement)Data.DataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }
@@ -46,7 +46,7 @@ public class RegionEditor : MonoBehaviour, IEditor
         list.RemoveAt(regionData.Index);
         list.Insert(index, regionData);
 
-        Data.DataController.DataList = list;
+        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

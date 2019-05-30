@@ -43,7 +43,7 @@ public class StructureComponent : MonoBehaviour, IComponent
         dropdown.value = selected_index;
         dropdown.captionText.text = dropdown.options[selected_index].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, GetEnumerable(dataController.DataList))); });
+        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
     }
 
     private void SetChapterOptions()
@@ -83,7 +83,7 @@ public class StructureComponent : MonoBehaviour, IComponent
         List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
         foreach (TerrainElementDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.name));
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.elementName));
     }
 
     public void InitializePath(Path path, Data data)

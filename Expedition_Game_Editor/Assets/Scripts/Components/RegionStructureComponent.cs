@@ -28,7 +28,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
         route = activePath.FindLastRoute("Region").Copy();
 
-        var regionDataElement = route.data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+        var regionDataElement = (RegionDataElement)route.data.DataElement;
         type = (Enums.RegionType)regionDataElement.type;
 
         InitializeData();
@@ -108,13 +108,13 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             default:                            Debug.Log("CASE MISSING");              break;
         }
 
-        int selectedIndex = data.DataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == data.ElementData.Cast<GeneralData>().FirstOrDefault().id);
+        int selectedIndex = data.DataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == ((GeneralData)data.DataElement).id);
 
         dropdown.value = selectedIndex;
         dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
         dropdown.onValueChanged.AddListener(delegate {  InitializePath( pathController.route.path, 
-                                                                        new Data(data.DataController, GetEnumerable(dropdown, data.DataController.DataList)),
+                                                                        new Data(data.DataController,  data.DataController.DataList[dropdown.value]),
                                                                         index);
         });
     }
@@ -153,7 +153,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     {
         var dataElements = data.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.elementName)));
     }
 
     private void SetTaskOptions(Dropdown dropdown, Data data)
@@ -204,7 +204,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
 
             var dataController = dropdownList[i].GetComponent<IDataController>();
 
-            dataList[i] = new Data(dataController, GetEnumerable(0, dataController.DataList));
+            dataList[i] = new Data(dataController, dataController.DataList.FirstOrDefault());
 
             //(TASK belongs to an TERRAINELEMENT which is placed on a TERRAIN which belongs to a REGION and a PHASE)
             //TASK: load TERRAINELEMENT > TERRAIN > REGION
@@ -289,35 +289,35 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         dataController.GetData(new[] { searchParameters });
     }
 
-    public IEnumerable GetEnumerable(int index, ICollection list)
-    {
-        int i = 0;
+    //public IEnumerable GetEnumerable(int index, ICollection list)
+    //{
+    //    int i = 0;
 
-        foreach(var data in list)
-        {
-            if (i == index)
-                return new[] { data };
+    //    foreach(var data in list)
+    //    {
+    //        if (i == index)
+    //            return new[] { data };
 
-            i++;
-        }
+    //        i++;
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
-    public IEnumerable GetEnumerable(Dropdown dropdown, ICollection list)
-    {
-        int i = 0;
+    //public IEnumerable GetEnumerable(Dropdown dropdown, ICollection list)
+    //{
+    //    int i = 0;
 
-        foreach (var data in list)
-        {
-            if (i == dropdown.value)
-                return new[] { data };
+    //    foreach (var data in list)
+    //    {
+    //        if (i == dropdown.value)
+    //            return new[] { data };
 
-            i++;
-        }
+    //        i++;
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
     public void CloseComponent()
     {

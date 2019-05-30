@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 static public class SelectionManager
 {
@@ -24,7 +25,7 @@ static public class SelectionManager
 
     static public List<ListManager> lists = new List<ListManager>();
 
-    static public SelectionElement getElement;
+    static public IDataElement getDataElement;
 
     static public void SelectElements()
     {
@@ -56,14 +57,14 @@ static public class SelectionManager
         }           
     }
 
-    static public void SelectSearch(SelectionElement selectionElement)
+    static public void SelectSearch(IDataElement selectedDataElement)
     {
-        getElement = selectionElement;
+        getDataElement = selectedDataElement;
     }
 
-    static public void SelectSet(SelectionElement setElement)
+    static public void SelectSet(IDataElement setDataElement)
     {
-        getElement.SetResult(setElement.route.data);
+        getDataElement.SelectionElement.SetResult(setDataElement.SelectionElement.route.data);
 
         CancelGetSelection();
     }
@@ -76,10 +77,10 @@ static public class SelectionManager
 
     static public void CancelGetSelection()
     {
-        if (getElement == null) return;
+        if (getDataElement == null) return;
 
-        getElement.CancelSelection();
-        getElement = null;
+        getDataElement.SelectionElement.CancelSelection();
+        getDataElement = null;
 
         //Return to previous path in form
         EditorManager.editorManager.InitializePath(EditorManager.editorManager.forms[2].previousPath);  

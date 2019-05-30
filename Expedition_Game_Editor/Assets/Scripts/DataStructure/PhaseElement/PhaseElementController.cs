@@ -9,11 +9,11 @@ public class PhaseElementController : MonoBehaviour, IDataController
 
     private PhaseElementDataManager phaseElementDataManager = new PhaseElementDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.PhaseElement; } }
-    public ICollection DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.PhaseElement; } }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

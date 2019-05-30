@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PhaseElementDataElement : PhaseElementCore, IDataElement
 {
+    public SelectionElement SelectionElement { get; set; }
+
     public PhaseElementDataElement() : base() { }
 
     public string objectGraphicIcon;

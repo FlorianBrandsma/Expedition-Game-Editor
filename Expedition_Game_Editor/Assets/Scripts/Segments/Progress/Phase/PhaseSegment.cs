@@ -23,7 +23,7 @@ public class PhaseSegment : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
 
-        chapterData = SegmentController.editorController.pathController.route.data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        chapterData = (ChapterDataElement)SegmentController.editorController.pathController.route.data.DataElement;
 
         InitializePhaseData();
     }

@@ -6,9 +6,9 @@ using System.Linq;
 [System.Serializable]
 public class ChapterDataElement : ChapterCore, IDataElement
 {
-    public ChapterDataElement() : base() { }
+    public SelectionElement SelectionElement { get; set; }
 
-    public string objectGraphicIcon;
+    public ChapterDataElement() : base() { }
 
     public override void Update()
     {
@@ -34,4 +34,6 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public bool Changed { get { return changed; } }
 }

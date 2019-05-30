@@ -31,7 +31,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        objectiveData = Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        objectiveData = (ObjectiveDataElement)Data.DataElement;
         terrainElementDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -49,7 +49,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
         list.RemoveAt(objectiveData.Index);
         list.Insert(index, objectiveData);
 
-        Data.DataController.DataList = list;
+        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

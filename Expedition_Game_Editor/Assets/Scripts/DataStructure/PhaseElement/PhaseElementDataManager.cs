@@ -19,7 +19,7 @@ public class PhaseElementDataManager
         this.phaseElementController = phaseElementController;
     }
 
-    public List<PhaseElementDataElement> GetQuestElementDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetQuestElementDataElements(IEnumerable searchParameters)
     {
         var phaseElementSearchData = searchParameters.Cast<Search.PhaseElement>().FirstOrDefault();
 
@@ -49,7 +49,7 @@ public class PhaseElementDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetPhaseElementData(Search.PhaseElement searchParameters)

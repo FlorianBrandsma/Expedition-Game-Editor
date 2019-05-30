@@ -32,7 +32,7 @@ public class ChapterRegionsRegionsSegment : MonoBehaviour, ISegment
 
         if (chapterEditor.chapterRegionDataList.Count > 0) return;
 
-        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
 
         var searchParameters = new Search.ChapterRegion();
 

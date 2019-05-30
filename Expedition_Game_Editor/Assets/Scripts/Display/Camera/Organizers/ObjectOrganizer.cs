@@ -29,20 +29,21 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             SetData(dataController.DataList);
     }
 
-    public void SetData(IEnumerable list)
+    public void SetData(List<IDataElement> list)
     {
-        foreach (var data in list)
+        foreach (IDataElement data in list)
         {
-            IEnumerable new_data = new[] { data };
+            var objectGraphicData = (ObjectGraphicDataElement)data;
 
-            ObjectGraphic graphic_prefab = Resources.Load<ObjectGraphic>("Objects/" + new_data.Cast<ObjectGraphicDataElement>().FirstOrDefault().Path);
+            ObjectGraphic graphicPrefab = Resources.Load<ObjectGraphic>("Objects/" + (objectGraphicData.Path));
 
-            if (graphic_prefab == null) continue;
+            if (graphicPrefab == null) continue;
 
-            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphicList, graphic_prefab);
+            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphicList, graphicPrefab);
             cameraManager.graphicList.Add(graphic);
 
-            graphic.route.data = new Data(dataController, new_data);
+            //data.SelectionElement = element;
+            graphic.route.data = new Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -58,7 +59,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseOrganizer();
         SetData();

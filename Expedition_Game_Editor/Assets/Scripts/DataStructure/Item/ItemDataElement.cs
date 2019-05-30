@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ItemDataElement : ItemCore, IDataElement
 {
+    public SelectionElement SelectionElement { get; set; }
+
     public ItemDataElement() : base() { }
 
     public string objectGraphicPath;

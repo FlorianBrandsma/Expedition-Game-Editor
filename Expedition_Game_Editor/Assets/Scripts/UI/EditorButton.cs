@@ -29,14 +29,14 @@ public class EditorButton : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        var data = element.route.data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+        var data = (ItemDataElement)element.route.data.DataElement;
 
         label.text = data.originalName;
     }
 
     private void SetChapterRegionElement()
     {
-        var data = element.route.data.ElementData.Cast<ChapterRegionDataElement>().FirstOrDefault();
+        var data = (ChapterRegionDataElement)element.route.data.DataElement;
 
         label.text = data.name;
     }

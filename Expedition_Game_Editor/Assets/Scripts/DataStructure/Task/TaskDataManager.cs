@@ -19,7 +19,7 @@ public class TaskDataManager
         this.taskController = taskController;
     }
 
-    public List<TaskDataElement> GetTaskDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetTaskDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Task>().FirstOrDefault();
 
@@ -47,7 +47,7 @@ public class TaskDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetTaskData(Search.Task searchParameters)

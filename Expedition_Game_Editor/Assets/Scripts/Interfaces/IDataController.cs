@@ -6,7 +6,7 @@ public interface IDataController
 {
     SegmentController SegmentController { get; }
 
-    ICollection DataList            { get; set; }
+    List<IDataElement> DataList     { get; set; }
     Enums.DataType DataType         { get; }
     IEnumerable SearchParameters    { get; set; }
 

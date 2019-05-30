@@ -40,9 +40,9 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
         DataController.GetData(new[] { searchParameters });
 
-        editButton.route.data = new Data(DataController, new[] { regionData });
+        editButton.route.data = new Data(DataController, regionData);
 
-        var taskData = DataEditor.Data.ElementData.Cast<TaskDataElement>().FirstOrDefault();
+        var taskData = (TaskDataElement)DataEditor.Data.DataElement;
 
         editButton.GetComponentInChildren<Text>().text = Enum.GetName(typeof(SelectionManager.Property), editButton.selectionProperty) + " " + taskData.regionName;
     }

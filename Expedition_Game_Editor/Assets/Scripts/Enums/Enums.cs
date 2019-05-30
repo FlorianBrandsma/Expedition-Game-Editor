@@ -44,7 +44,7 @@ public class Enums
     public enum ElementType
     {
         Panel,
-        SearchPanel,
+        CompactPanel,
         Tile,
         PanelTile,
         Button

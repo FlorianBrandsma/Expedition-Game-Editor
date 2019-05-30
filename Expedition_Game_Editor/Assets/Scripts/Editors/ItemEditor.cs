@@ -29,7 +29,7 @@ public class ItemEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        itemData = Data.ElementData.Cast<ItemDataElement>().FirstOrDefault();
+        itemData = (ItemDataElement)Data.DataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }
@@ -46,7 +46,7 @@ public class ItemEditor : MonoBehaviour, IEditor
         list.RemoveAt(itemData.Index);
         list.Insert(index, itemData);
 
-        Data.DataController.DataList = list;
+        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

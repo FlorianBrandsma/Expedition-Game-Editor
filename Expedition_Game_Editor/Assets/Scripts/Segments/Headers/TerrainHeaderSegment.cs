@@ -60,7 +60,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskData()
     {
-        terrainData = DataEditor.Data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
+        terrainData = (TerrainDataElement)DataEditor.Data.DataElement;
 
         id = terrainData.id;
         index = terrainData.Index;

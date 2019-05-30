@@ -36,7 +36,7 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
         if (objectiveEditor.terrainElementDataList.Count > 0) return;
 
-        ObjectiveDataElement objectiveData = DataEditor.Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
 
         var searchParameters = new Search.TerrainElement();
 
@@ -70,7 +70,7 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        ObjectiveDataElement objectiveData = DataEditor.Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
 
         DataEditor.UpdateEditor();
 

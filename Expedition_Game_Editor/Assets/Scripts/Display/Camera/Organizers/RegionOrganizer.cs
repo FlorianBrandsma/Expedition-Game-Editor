@@ -106,7 +106,7 @@ public class RegionOrganizer : MonoBehaviour, IOrganizer
         //}
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseOrganizer();
         SetData();

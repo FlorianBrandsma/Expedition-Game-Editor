@@ -10,7 +10,7 @@ public class ChapterCore : GeneralData
     public int originalIndex;
     public int originalElementId;
     public string originalName;
-    public string originalDescription;
+    public string originalNotes;
 
     public bool changed;
     private bool changedIndex;
@@ -75,8 +75,6 @@ public class ChapterCore : GeneralData
         }
     }
 
-    public bool Changed { get { return changed; } }
-
     #endregion
 
     #region Methods
@@ -116,14 +114,14 @@ public class ChapterCore : GeneralData
     {
         originalElementId = elementId;
         originalName = name;
-        originalDescription = notes;
+        originalNotes = notes;
     }
 
     public void GetOriginalValues()
     {
         elementId = originalElementId;
         name = originalName;
-        notes = originalDescription;
+        notes = originalNotes;
     }
 
     public virtual void ClearChanges()

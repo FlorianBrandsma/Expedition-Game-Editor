@@ -38,35 +38,35 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Chapter:
 
-                    var chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+                    var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
                     chapterData.Name = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = DataEditor.Data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
+                    var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
                     phaseData.Name = value;
 
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+                    var questData = (QuestDataElement)DataEditor.Data.DataElement;
                     questData.Name = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = DataEditor.Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+                    var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
                     objectiveData.Name = value;
 
                     break;
 
                 case Enums.DataType.Region:
 
-                    var regionData = DataEditor.Data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+                    var regionData = (RegionDataElement)DataEditor.Data.DataElement;
                     regionData.Name = value;
 
                     break;
@@ -108,7 +108,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterData()
     {
-        var chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
 
         id = chapterData.id;
         index = chapterData.Index;
@@ -117,17 +117,16 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        var phaseData = DataEditor.Data.ElementData.Cast<PhaseDataElement>().FirstOrDefault();
+        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
 
         id = phaseData.id;
         index = phaseData.Index;
         name = phaseData.Name;
-        icon = phaseData.icon;
     }
 
     private void InitializeQuestData()
     {
-        var questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
+        var questData = (QuestDataElement)DataEditor.Data.DataElement;
 
         id = questData.id;
         index = questData.Index;
@@ -136,7 +135,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeObjectiveData()
     {
-        var objectiveData = DataEditor.Data.ElementData.Cast<ObjectiveDataElement>().FirstOrDefault();
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
 
         id = objectiveData.id;
         index = objectiveData.Index;
@@ -145,7 +144,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeRegionData()
     {
-        var regionData = DataEditor.Data.ElementData.Cast<RegionDataElement>().FirstOrDefault();
+        var regionData = (RegionDataElement)DataEditor.Data.DataElement;
 
         id = regionData.id;
         index = regionData.Index;
@@ -154,7 +153,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTerrainData()
     {
-        var terrainData = DataEditor.Data.ElementData.Cast<TerrainDataElement>().FirstOrDefault();
+        var terrainData = (TerrainDataElement)DataEditor.Data.DataElement;
 
         id = terrainData.id;
         name = terrainData.Name;

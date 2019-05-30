@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
+public class ChapterElementsWorldElementsSegment : MonoBehaviour, ISegment
 {
     private DataManager dataManager = new DataManager();
 
@@ -36,7 +36,7 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
         if (chapterEditor.terrainElementDataList.Count > 0) return;
 
-        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
 
         var searchParameters = new Search.TerrainElement();
 
@@ -52,12 +52,14 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        var chapterEditor = (ChapterEditor)DataEditor;
+
+        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
         //Out of all the elements, select only those that are not in this list
-        var idList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().Select(x => x.ElementId).ToList();
-        idList.Add(chapterData.ElementId);
+        var idList = chapterEditor.terrainElementDataList.Select(x => x.ElementId).ToList();
+        idList.Add(chapterEditor.elementDataElement.id);
 
         var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
@@ -72,7 +74,7 @@ public class ChapterGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
+        //ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
 
         DataEditor.UpdateEditor();
 

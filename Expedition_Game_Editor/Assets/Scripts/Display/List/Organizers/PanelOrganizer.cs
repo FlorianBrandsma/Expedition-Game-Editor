@@ -65,27 +65,30 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(dataController.DataList);
     }
 
-    public void SetData(ICollection list)
+    public void SetData(List<IDataElement> list)
     {
         generalDataList = list.Cast<GeneralData>().ToList();
         
-        string element = Enum.GetName(typeof(Enums.ElementType), properties.elementType);
+        string elementType = Enum.GetName(typeof(Enums.ElementType), properties.elementType);
 
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + element);
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
 
-        foreach (var data in list)
+        foreach (IDataElement data in list)
         {
-            SelectionElement selectionElement = ListManager.SpawnElement(elementList, elementPrefab, properties.elementType);
-            ListManager.elementList.Add(selectionElement);
+            SelectionElement element = ListManager.SpawnElement(elementList, elementPrefab, properties.elementType);
+            ListManager.elementList.Add(element);
 
-            selectionElement.route.data = new Data(dataController, new[] { data });
+            element.selectionProperty = ListManager.listProperties.selectionProperty;
+            
+            data.SelectionElement = element;
+            element.route.data = new Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            selectionElement.name = generalData.table + generalData.id;
+            element.name = generalData.table + generalData.id;
             //
 
-            SetElement(selectionElement);
+            SetElement(element);
         }
     }
 
@@ -96,7 +99,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         SelectionManager.ResetSelection(ListManager);
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseList();
         SetData(filter);

@@ -13,7 +13,7 @@ public class ObjectiveDataManager
         this.objectiveController = objectiveController;
     }
 
-    public List<ObjectiveDataElement> GetObjectiveDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetObjectiveDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Objective>().FirstOrDefault();
 
@@ -34,7 +34,7 @@ public class ObjectiveDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     public void GetObjectiveData(Search.Objective searchParameters)

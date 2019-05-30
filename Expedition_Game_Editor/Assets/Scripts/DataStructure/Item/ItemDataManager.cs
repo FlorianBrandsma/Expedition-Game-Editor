@@ -17,7 +17,7 @@ public class ItemDataManager
         this.itemController = itemController;
     }
 
-    public List<ItemDataElement> GetItemDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetItemDataElements(IEnumerable searchParameters)
     {
         var searchItem = searchParameters.Cast<Search.Item>().FirstOrDefault();
 
@@ -43,7 +43,7 @@ public class ItemDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
     internal void GetItemData(Search.Item searchParameters)

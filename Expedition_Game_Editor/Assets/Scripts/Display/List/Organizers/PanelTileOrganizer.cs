@@ -10,13 +10,13 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     static public List<SelectionElement> element_list = new List<SelectionElement>();
 
     public Vector2 ElementSize { get; set; }
-    private Vector2 list_size;
+    private Vector2 listSize;
 
     private PanelTileProperties properties;
     private bool horizontal, vertical;
 
     private IDataController dataController;
-    private List<GeneralData> generalData_list;
+    private List<GeneralData> generalDataList;
 
     public void InitializeOrganizer()
     {
@@ -84,20 +84,21 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(dataController.DataList);
     }
 
-    public void SetData(ICollection list)
+    public void SetData(List<IDataElement> list)
     {
-        generalData_list = list.Cast<GeneralData>().ToList();
+        generalDataList = list.Cast<GeneralData>().ToList();
 
-        SelectionElement element_prefab = Resources.Load<SelectionElement>("UI/PanelTile");
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/PanelTile");
 
-        list_size = GetListSize(list.Count, false);
+        listSize = GetListSize(list.Count, false);
 
-        foreach (var data in list)
+        foreach (IDataElement data in list)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, element_prefab, Enums.ElementType.PanelTile);
+            SelectionElement element = listManager.SpawnElement(element_list, elementPrefab, Enums.ElementType.PanelTile);
             listManager.elementList.Add(element);
 
-            element.route.data = new Data(dataController, new[] { data });
+            data.SelectionElement = element;
+            element.route.data = new Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -115,7 +116,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         SelectionManager.ResetSelection(listManager);
     }
 
-    public void ResetData(ICollection filter)
+    public void ResetData(List<IDataElement> filter)
     {
         CloseList();
         SetData(filter);
@@ -127,12 +128,12 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalData_list.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
 
         rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
-        rect.transform.localPosition = new Vector2(-((ElementSize.x * 0.5f) * (list_size.x - 1)) + Mathf.Floor(index / list_size.y) * ElementSize.x, 
-                                                     (ElementSize.y * 0.5f) - (index % list_size.y * ElementSize.y));
+        rect.transform.localPosition = new Vector2(-((ElementSize.x * 0.5f) * (listSize.x - 1)) + Mathf.Floor(index / listSize.y) * ElementSize.x, 
+                                                     (ElementSize.y * 0.5f) - (index % listSize.y * ElementSize.y));
 
         rect.gameObject.SetActive(true);
     }
