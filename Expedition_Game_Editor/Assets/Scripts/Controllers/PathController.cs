@@ -31,17 +31,36 @@ public class PathController : MonoBehaviour
         get { return route.path.origin.selectedElement; }
     }
 
-    //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path mainPath, int step, bool reload, PathController parentController)
+    public void InitializeDependencies(PathController parentController = null)
     {
         this.parentController = parentController;
-        
+
+        GetDataController();
+        GetDataEditor();
+
+        foreach (PathController pathController in controllers)
+            pathController.InitializeDependencies(this);
+
+        if (EditorController != null)
+            EditorController.InitializeDependencies();
+    }
+
+    //Necessary steps to set up the correct path for the controller
+    public void InitializePath(Path mainPath, int step, bool reload, PathController parentController = null)
+    {
+        //This is an exception to ensure shared controllers have the correct values
+        //One way to circumvent this is to simply get rid of shared controllers
+        this.parentController = parentController;
+
+        GetDataController();
+        GetDataEditor();
+
         if (EditorController != null)
         {
             editorSection.targetController = EditorController;
             editorSection.editorForm.mainController = EditorController;
         }
-            
+
         this.step = step;
 
         Path path = mainPath.Trim(step);
@@ -66,9 +85,6 @@ public class PathController : MonoBehaviour
             } 
         }
 
-        GetDataController();
-        GetDataEditor();
-        
         if (subControllerManager != null)
         {
             InitializeTabs(mainPath);

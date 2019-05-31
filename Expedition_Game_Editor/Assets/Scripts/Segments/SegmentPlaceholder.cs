@@ -3,12 +3,22 @@ using System.Collections;
 
 public class SegmentPlaceholder : MonoBehaviour, ISegment
 {
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
-    SegmentController segmentController;
+
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
 
     public void InitializeSegment()
     {
-        segmentController = GetComponent<SegmentController>();
+        
+    }
+
+    public void InitializeData()
+    {
+
     }
 
     public void OpenSegment()

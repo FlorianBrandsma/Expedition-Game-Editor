@@ -103,20 +103,31 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
-    public void InitializeSegment()
+
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
 
-        switch (DataEditor.Data.DataController.DataType)
-        {
-            case Enums.DataType.Item:       InitializeItemData();       break;
-            case Enums.DataType.Element:    InitializeElementData();    break;
-        }
+    public void InitializeSegment()
+    {
+        InitializeDependencies();
+
+        InitializeData();
 
         selectionElement.InitializeElement();
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1);
+    }
+
+    public void InitializeData()
+    {
+        switch (DataEditor.Data.DataController.DataType)
+        {
+            case Enums.DataType.Item: InitializeItemData(); break;
+            case Enums.DataType.Element: InitializeElementData(); break;
+        }
     }
 
     private void InitializeItemData()
@@ -165,7 +176,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         objectGraphicDataElement.Icon   = objectGraphicIcon;
 
         objectGraphicDataElement.SelectionElement = selectionElement;
-        selectionElement.SetElement(objectGraphicDataElement);
+
+        selectionElement.route.data.DataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
+        selectionElement.route.data.DataElement = objectGraphicDataElement;
+
+        selectionElement.SetElement();
 
         gameObject.SetActive(true);
     }

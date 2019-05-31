@@ -17,14 +17,17 @@ public class TaskSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeTaskData();
     }
 
-    private void InitializeTaskData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
 

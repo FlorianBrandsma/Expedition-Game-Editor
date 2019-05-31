@@ -21,16 +21,17 @@ public class QuestGeneralElementsSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeElementData();
-
-        SetSearchParameters();
     }
 
-    private void InitializeElementData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         var questEditor = (QuestEditor)DataEditor;
 
@@ -64,6 +65,8 @@ public class QuestGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        SetSearchParameters();
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }

@@ -5,10 +5,12 @@ using System.Linq;
 
 public class EditorTile : MonoBehaviour, IElement
 {
-    private SelectionElement element { get { return GetComponent<SelectionElement>(); } }
-    private TileProperties properties;
-
     public RawImage icon;
+
+    private string iconPath;
+
+    private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
+    private TileProperties properties;
 
     public void InitializeElement()
     {
@@ -17,7 +19,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data.DataController.DataType)
+        switch (Element.route.data.DataController.DataType)
         {
             case Enums.DataType.Element:        SetElementElement();        break;
             case Enums.DataType.Terrain:        SetTerrainElement();        break;
@@ -32,57 +34,86 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetElementElement()
     {
-        var data = (ElementDataElement)element.route.data.DataElement;
+        var dataElement = (ElementDataElement)Element.route.data.DataElement;
 
-        if(data.originalObjectGraphicIcon == null)
-            icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.objectGraphicIcon;
         else
-            icon.texture = Resources.Load<Texture2D>(data.originalObjectGraphicIcon);
+            iconPath = dataElement.originalObjectGraphicIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainElement()
     {
-        var data = (TerrainDataElement)element.route.data.DataElement;
+        var dataElement = (TerrainDataElement)Element.route.data.DataElement;
 
-        icon.texture = Resources.Load<Texture2D>(data.icon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.objectGraphicIcon;
+        else
+            iconPath = dataElement.originalObjectGraphicIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTileElement()
     {
-        var data = (TileDataElement)element.route.data.DataElement;
+        var dataElement = (TileDataElement)Element.route.data.DataElement;
 
-        icon.texture = Resources.Load<Texture2D>(data.icon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.icon;
+        else
+            iconPath = dataElement.icon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainTileElement()
     {
-        var data = (TerrainTileDataElement)element.route.data.DataElement;
+        var dataElement = (TerrainTileDataElement)Element.route.data.DataElement;
 
-        icon.texture = Resources.Load<Texture2D>(data.icon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.tileIcon;
+        else
+            iconPath = dataElement.originalTileIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetObjectGraphicElement()
     {
-        //Required for initialization of the DataList. Better suited elsewhere
-        element.route.data.DataController.DataList = new List<IDataElement>() { element.route.data.DataElement };
+        var dataElement = (ObjectGraphicDataElement)Element.route.data.DataElement;
 
-        var objectGraphicDataElement = (ObjectGraphicDataElement)element.route.data.DataElement;
-        icon.texture = Resources.Load<Texture2D>(objectGraphicDataElement.Icon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.Icon;
+        else
+            iconPath = dataElement.originalIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainElementElement()
     {
-        var data = (TerrainElementDataElement)element.route.data.DataElement;
+        var dataElement = (TerrainElementDataElement)Element.route.data.DataElement;
 
-        //There should be a distinction when an element is being set as result of a search, or by creating the list
-        icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.objectGraphicIcon;
+        else
+            iconPath = dataElement.originalObjectGraphicIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetPhaseElementElement()
     {
-        var data = (PhaseElementDataElement)element.route.data.DataElement;
+        var dataElement = (PhaseElementDataElement)Element.route.data.DataElement;
 
-        icon.texture = Resources.Load<Texture2D>(data.objectGraphicIcon);
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.objectGraphicIcon;
+        else
+            iconPath = dataElement.originalObjectGraphicIcon;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     public void CloseElement()

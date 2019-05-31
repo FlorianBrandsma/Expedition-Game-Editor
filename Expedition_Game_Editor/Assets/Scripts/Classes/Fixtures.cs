@@ -14,7 +14,8 @@ static public class Fixtures
     static public int icons = 9;
     static public int regions = 5;
     static public int chapters = 3;
-    static public int elementsInChapter = 3;
+    static public int partyElementsInChapter = 1;
+    static public int worldElementsInChapter = 3;
     static public int regionsInChapter = 2;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
@@ -43,6 +44,7 @@ static public class Fixtures
     static public List<Objective> objectiveList = new List<Objective>();
     static public List<Task> taskList = new List<Task>();
 
+    static public List<PartyElement> partyElementList = new List<PartyElement>();
     static public List<TerrainElement> terrainElementList = new List<TerrainElement>();
 
     public class Item : GeneralData
@@ -56,6 +58,12 @@ static public class Fixtures
     {
         public int objectGraphicId;
         public string name;
+    }
+
+    public class PartyElement : GeneralData
+    {
+        public int chapterId;
+        public int elementId;
     }
 
     public class TerrainElement : GeneralData
@@ -146,6 +154,7 @@ static public class Fixtures
         LoadElements();
         LoadRegions();
         LoadChapters();
+        LoadChapterPartyElements();
         LoadChapterTerrainElements();
         LoadChapterRegions();
         LoadPhases();
@@ -323,15 +332,45 @@ static public class Fixtures
         }
     }
 
+    static public void LoadChapterPartyElements()
+    {
+        foreach (Chapter chapter in chapterList)
+        {
+            List<int> randomElements = new List<int>();
+
+            var terrainElementIds = terrainElementList.Where(x => x.chapterId == chapter.id).Select(x => x.elementId).Distinct().ToList();
+            elementList.Where(x => !terrainElementIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomElements.Add(x.id));
+
+            for (int i = 0; i < partyElementsInChapter; i++)
+            {
+                var partyElement = new PartyElement();
+
+                int id = partyElementList.Count > 0 ? (partyElementList[partyElementList.Count - 1].id + 1) : 1;
+
+                partyElement.id = id;
+                partyElement.chapterId = chapter.id;
+
+                int randomElement = Random.Range(0, randomElements.Count);
+
+                partyElement.elementId = randomElements[randomElement];
+
+                randomElements.RemoveAt(randomElement);
+
+                partyElementList.Add(partyElement);
+            }
+        }
+    }
+
     static public void LoadChapterTerrainElements()
     {
         foreach(Chapter chapter in chapterList)
         {
             List<int> randomElements = new List<int>();
 
-            elementList.Where(x => x.id != chapter.elementId).Distinct().ToList().ForEach(x => randomElements.Add(x.id));
+            var partyElementIds = partyElementList.Where(x => x.chapterId == chapter.id).Select(x => x.elementId).Distinct().ToList();
+            elementList.Where(x => !partyElementIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomElements.Add(x.id));
 
-            for (int i = 0; i < elementsInChapter; i++)
+            for (int i = 0; i < worldElementsInChapter; i++)
             {
                 var chapterElement = new TerrainElement();
 

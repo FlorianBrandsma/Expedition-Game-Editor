@@ -25,7 +25,7 @@ public class TerrainDataManager
                         id = terrainData.id,
                         table = terrainData.table,
 
-                        icon = "Textures/Icons/Objects/Nothing"
+                        objectGraphicIcon = "Textures/Icons/Objects/Nothing"
 
                     }).ToList();
 

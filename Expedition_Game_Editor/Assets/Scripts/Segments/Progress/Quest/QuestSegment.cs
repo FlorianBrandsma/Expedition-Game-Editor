@@ -16,14 +16,17 @@ public class QuestSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeQuestData();
     }
 
-    private void InitializeQuestData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
 

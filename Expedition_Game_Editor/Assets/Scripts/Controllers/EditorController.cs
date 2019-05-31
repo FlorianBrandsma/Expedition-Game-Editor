@@ -10,6 +10,12 @@ public class EditorController : MonoBehaviour
     public PathController   pathController { get {return GetComponent<PathController>(); } }
     public SegmentController[] 	segments;
 
+    public void InitializeDependencies()
+    {
+        foreach (SegmentController segment in segments)
+            segment.InitializeDependencies(this);
+    }
+
     public void InitializeController()
     {
         InitializeEditor();

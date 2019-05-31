@@ -6,5 +6,6 @@ public class TerrainTileDataElement : TerrainTileCore
 {
     public TerrainTileDataElement() : base() { }
 
-    public string icon;
+    public string tileIcon;
+    public string originalTileIcon;
 }

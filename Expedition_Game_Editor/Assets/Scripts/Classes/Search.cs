@@ -252,4 +252,17 @@ public class Search
 
         public RequestType requestType;
     }
+
+    public class PartyElement : SearchParameters
+    {
+        public List<int> chapterId = new List<int>();
+        public List<int> elementId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
 }

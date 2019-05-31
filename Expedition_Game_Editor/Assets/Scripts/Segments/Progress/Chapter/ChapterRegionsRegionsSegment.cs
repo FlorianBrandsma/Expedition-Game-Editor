@@ -19,14 +19,17 @@ public class ChapterRegionsRegionsSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeRegionData();
     }
 
-    private void InitializeRegionData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class DefaultHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController segmentController;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
     #region UI
@@ -86,24 +86,34 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
+
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
+
     public void InitializeSegment()
     {
-        segmentController = GetComponent<SegmentController>();
-        DataEditor = segmentController.editorController.pathController.dataEditor;
+        InitializeDependencies();
 
-        switch (DataEditor.Data.DataController.DataType)
-        {
-            case Enums.DataType.Chapter:    InitializeChapterData();    break;
-            case Enums.DataType.Phase:      InitializePhaseData();      break;
-            case Enums.DataType.Quest:      InitializeQuestData();      break;
-            case Enums.DataType.Objective:  InitializeObjectiveData();  break;
-            case Enums.DataType.Region:     InitializeRegionData();     break;
-            case Enums.DataType.Terrain:    InitializeTerrainData();    break;
-            default:                        Debug.Log("CASE MISSING");  break;
-        }
+        InitializeData();
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1); 
+    }
+
+    public void InitializeData()
+    {
+        switch (DataEditor.Data.DataController.DataType)
+        {
+            case Enums.DataType.Chapter: InitializeChapterData(); break;
+            case Enums.DataType.Phase: InitializePhaseData(); break;
+            case Enums.DataType.Quest: InitializeQuestData(); break;
+            case Enums.DataType.Objective: InitializeObjectiveData(); break;
+            case Enums.DataType.Region: InitializeRegionData(); break;
+            case Enums.DataType.Terrain: InitializeTerrainData(); break;
+            default: Debug.Log("CASE MISSING"); break;
+        }
     }
 
     private void InitializeChapterData()

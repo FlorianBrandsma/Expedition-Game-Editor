@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TerrainHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController segmentController;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     private TerrainDataElement terrainData;
 
@@ -50,15 +50,18 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
-    public void InitializeSegment()
-    {
-        segmentController = GetComponent<SegmentController>();
-        DataEditor = segmentController.editorController.pathController.dataEditor;
 
-        InitializeTaskData();
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
 
-    private void InitializeTaskData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         terrainData = (TerrainDataElement)DataEditor.Data.DataElement;
 

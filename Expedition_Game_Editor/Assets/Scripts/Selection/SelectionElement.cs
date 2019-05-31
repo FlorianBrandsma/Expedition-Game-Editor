@@ -66,23 +66,6 @@ public class SelectionElement : MonoBehaviour
             GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
     }
 
-    public void SetElement(IDataElement dataElement)
-    {
-        //int index = route.data.element.Cast<GeneralData>().FirstOrDefault().index;
-        //dataElement.Cast<GeneralData>().FirstOrDefault().index = index;
-
-        //Data attached to the element gets replaced, 
-        //but not the data from the controller's data list.
-        //(Only necessary for id exclusion in search lists)
-
-        //DataController.ReplaceData(this, dataElement);
-
-        //Possible to draw element data straight from the controller?
-        route.data.DataElement = dataElement;
-        
-        SetElement();
-    }
-
     public void SetElement()
     {
         GetComponent<IElement>().SetElement();

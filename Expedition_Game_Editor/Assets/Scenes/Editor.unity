@@ -1288,6 +1288,23 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000012151473904, guid: 1280af98e3595384ba80db985c15c225,
     type: 2}
   m_PrefabInternal: {fileID: 992923143}
+--- !u!1 &31460526 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225,
+    type: 2}
+  m_PrefabInternal: {fileID: 1980694660}
+--- !u!114 &31460527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31460526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639b639bf5502b747a8e65ec1b992fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1564145255}
 --- !u!1 &33534892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3132,7 +3149,8 @@ MonoBehaviour:
   segmentName: Terrain
   header: {fileID: 1733334818}
   content: {fileID: 572661448}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &123624108
@@ -4321,7 +4339,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &157412616
@@ -6223,7 +6242,8 @@ MonoBehaviour:
   segmentName: Regions
   header: {fileID: 292242725}
   content: {fileID: 2097024301}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &226968968
@@ -7156,7 +7176,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &267928741
@@ -9890,19 +9911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca2f63b97421ec4aad4e5c1db4dd348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementDataElement:
-    table: 
-    id: 0
-    index: 0
-    id_count: 0
-    originalIndex: 0
-    originalObjectGraphicId: 0
-    originalName: 
-    changed: 0
-    objectGraphicPath: 
-    objectGraphicIcon: 
-    originalObjectGraphicPath: 
-    originalObjectGraphicIcon: 
+  partyElementDataList: []
   terrainElementDataList: []
   chapterRegionDataList: []
 --- !u!1 &401679383
@@ -11952,7 +11961,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &527584521
@@ -12302,9 +12312,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 556929365}
   - 114: {fileID: 556929366}
-  - 114: {fileID: 556929369}
-  - 114: {fileID: 556929368}
-  - 114: {fileID: 556929367}
   m_Layer: 5
   m_Name: Supplies (controller)
   m_TagString: Untagged
@@ -12344,45 +12351,6 @@ MonoBehaviour:
   - {fileID: 1229205255}
   - {fileID: 1628976941}
   - {fileID: 249830645}
---- !u!114 &556929367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 556929364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af0e39dde1959f48850fbf0ea2383b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pivotPosition: 
-  castShadow: 0
---- !u!114 &556929368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 556929364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aab7862b8393944fb1345b795fbb4aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displayType: 0
-  cameraManager: {fileID: 1494783355}
---- !u!114 &556929369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 556929364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a95eccc7a7d3e4bb939548b30fa5b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  segments:
-  - {fileID: 0}
 --- !u!1 &557072963
 GameObject:
   m_ObjectHideFlags: 0
@@ -15650,7 +15618,8 @@ MonoBehaviour:
   segmentName: Elements
   header: {fileID: 2011115488}
   content: {fileID: 651794691}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &686303416
@@ -17260,7 +17229,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &762467505
@@ -17944,7 +17914,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &779831816
@@ -18050,7 +18021,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &783246984
@@ -18378,7 +18350,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!1 &797773985 stripped
@@ -18506,8 +18479,7 @@ MonoBehaviour:
     group: 0
   editorSection: {fileID: 1367463360}
   subControllerManager: {fileID: 0}
-  controllers:
-  - {fileID: 0}
+  controllers: []
 --- !u!114 &802936706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19281,7 +19253,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &848345539
@@ -20639,7 +20612,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &901607029 stripped
@@ -22001,7 +21975,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &959242522
@@ -25971,12 +25946,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
   loadOnce: 0
-  disableToggle: 0
+  disableToggle: 1
   toggle: {fileID: 1580393936}
   segmentName: Regions
   header: {fileID: 1052570349}
   content: {fileID: 7019415}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1117863452
@@ -27222,7 +27198,8 @@ MonoBehaviour:
   segmentName: Elements
   header: {fileID: 1240155048}
   content: {fileID: 378626265}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 1674728137}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1158307204
@@ -30477,7 +30454,8 @@ MonoBehaviour:
   segmentName: Result
   header: {fileID: 312806387}
   content: {fileID: 1181876631}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1270903438
@@ -31420,7 +31398,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!1001 &1299931159
@@ -32301,6 +32280,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1371255622}
     m_Modifications:
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013086219806, guid: d5d5cc4bc0b7550419135245deaec57a,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -32399,6 +32383,31 @@ Prefab:
     - target: {fileID: 1000010175877134, guid: d5d5cc4bc0b7550419135245deaec57a, type: 2}
       propertyPath: m_Name
       value: Notes (inputText)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 31460527}
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateNotes
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5d5cc4bc0b7550419135245deaec57a, type: 2}
@@ -32760,7 +32769,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1338035986
@@ -33041,7 +33051,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 1035881207}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!4 &1356472175 stripped
@@ -33361,6 +33372,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutDependency: {fileID: 658467595}
+--- !u!114 &1366824609 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000012628092190, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1476248545}
+  m_Script: {fileID: 11500000, guid: 5b67d6e157920124ca488fba78ea9177, type: 3}
 --- !u!1 &1367463357
 GameObject:
   m_ObjectHideFlags: 0
@@ -36496,7 +36513,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1511168228
@@ -37437,7 +37455,8 @@ MonoBehaviour:
   segmentName: Edit
   header: {fileID: 2010836689}
   content: {fileID: 621515320}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!1 &1553673200
@@ -37524,7 +37543,8 @@ MonoBehaviour:
   segmentName: Elements
   header: {fileID: 1361342036}
   content: {fileID: 892433157}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1553673204
@@ -37971,6 +37991,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
     type: 2}
   m_PrefabInternal: {fileID: 1563841982}
+  m_Script: {fileID: 575553740, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!114 &1564145255 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000010633277046, guid: d5d5cc4bc0b7550419135245deaec57a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1328804488}
   m_Script: {fileID: 575553740, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1566016562
 GameObject:
@@ -40971,7 +40997,8 @@ MonoBehaviour:
   segmentName: Elements
   header: {fileID: 1521687042}
   content: {fileID: 1866502513}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 1158307203}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1674728138
@@ -40986,7 +41013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementType: 1
-  referenceArea: {fileID: 2011085735}
+  referenceArea: {fileID: 1965906595}
   icon: 1
   constantHeight: 0
   zigzag: 0
@@ -41003,7 +41030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayType: 0
-  listManager: {fileID: 512245080}
+  listManager: {fileID: 1366824609}
   selectionType: 1
   selectionProperty: 1
   elementSize: {x: 0, y: 50}
@@ -41025,6 +41052,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f977eab970d94f4f95c43f3f35b29b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  searchParameters:
+    dataType: 5
+    temp_id_count: 0
+    unique: 0
+    exact: 0
+    value: 
+    id: 
+    index: 
+    name: []
+    requestType: 0
 --- !u!114 &1674728141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43252,7 +43289,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1791099887
@@ -44392,7 +44430,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1849985780
@@ -45459,7 +45498,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1902833974
@@ -45882,7 +45922,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1919670064
@@ -46764,7 +46805,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 615650207}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &1965906595 stripped
@@ -47036,7 +47078,13 @@ Prefab:
       propertyPath: segmentName
       value: Notes
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: disableToggle
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114000010378739750, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1981482129 stripped
@@ -48106,7 +48154,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &2016447748
@@ -48933,7 +48982,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &2057401921 stripped
@@ -49497,7 +49547,8 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   content: {fileID: 0}
-  siblingSegments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &2077475959

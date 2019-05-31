@@ -12,7 +12,6 @@ public class TerrainTileDataManager
         this.dataController = dataController;
 
         GetTerrainTileData();
-        //GetIconData()?
 
         var list = (from terrainTileData in terrainTileDataList
                     select new TerrainTileDataElement()
@@ -21,7 +20,7 @@ public class TerrainTileDataManager
                         table = terrainTileData.table,
 
                         Index = terrainTileData.index,
-                        icon = "Textures/Icons/Objects/Nothing"
+                        tileIcon = "Textures/Icons/Objects/Nothing"
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -49,6 +48,6 @@ public class TerrainTileDataManager
 
     internal class TerrainTileData : GeneralData
     {
-        public int index;
+
     }
 }

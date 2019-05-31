@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TaskHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController segmentController;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     private TaskDataElement taskData;
 
@@ -51,18 +51,21 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
+
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
+
     public void InitializeSegment()
     {
-        segmentController = GetComponent<SegmentController>();
-        DataEditor = segmentController.editorController.pathController.dataEditor;
-
-        InitializeTaskData();
+        InitializeData();
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1);
     }
 
-    private void InitializeTaskData()
+    public void InitializeData()
     {
         taskData = (TaskDataElement)DataEditor.Data.DataElement;
 

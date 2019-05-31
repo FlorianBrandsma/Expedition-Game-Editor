@@ -31,6 +31,8 @@ public class EditorForm : MonoBehaviour
     {
         foreach (EditorSection section in editorSections)
             section.InitializeSection(this);
+
+        baseController.InitializeDependencies();
     }
 
     #region Path
@@ -56,7 +58,7 @@ public class EditorForm : MonoBehaviour
         ClosePath();
 
         //Flesh out the path and determine the target controller
-        baseController.InitializePath(path, path.start, reload, null);
+        baseController.InitializePath(path, path.start, reload);
 
         //Save previous target to compare data with
         SetPreviousPath();

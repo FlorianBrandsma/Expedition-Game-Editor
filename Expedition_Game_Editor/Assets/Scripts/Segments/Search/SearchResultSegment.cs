@@ -16,14 +16,17 @@ public class SearchResultSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
 
+    public void InitializeSegment()
+    {
         InitializeData();
     }
 
-    private void InitializeData()
+    public void InitializeData()
     {
         if (SegmentController.DataController == null) return;
         

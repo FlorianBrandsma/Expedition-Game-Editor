@@ -3,13 +3,16 @@ using System.Collections;
 
 public class TerrainCore : GeneralData
 {
+    private int objectGraphicId;
     private string name;
 
     public int originalIndex;
+    public int originalObjectGraphicId;
     public string originalName;
 
     public bool changed;
     private bool changedIndex;
+    private bool changedObjectGraphicId;
     private bool changedName;
 
     #region Properties
@@ -24,6 +27,18 @@ public class TerrainCore : GeneralData
             changedIndex = true;
 
             index = value;
+        }
+    }
+
+    public int ObjectGraphicId
+    {
+        get { return objectGraphicId; }
+        set
+        {
+            if (value == objectGraphicId) return;
+
+            changed = true;
+            changedObjectGraphicId = true;
         }
     }
 
@@ -50,49 +65,48 @@ public class TerrainCore : GeneralData
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!changed) return;
+        //var elementData = Fixtures.elementList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        //if (changedName)
+        //    elementData.name = name;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        SetOriginalValues();
+        //if (changedObjectGraphicId)
+        //    elementData.objectGraphicId = objectGraphicId;
     }
 
     public void UpdateIndex()
     {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
+        //var elementData = Fixtures.elementList.Where(x => x.id == id).FirstOrDefault();
+
+        //if (changedIndex)
+        //{
+        //    elementData.index = index;
+
+        //    changedIndex = false;
+        //}
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
-        originalName = name;
-
-        ClearChanges();
+        originalName = Name;
+        originalObjectGraphicId = ObjectGraphicId;
     }
 
     public void GetOriginalValues()
     {
-        name = originalName;
+        Name = originalName;
+        ObjectGraphicId = originalObjectGraphicId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
         changed = false;
-        changedIndex = false;
+
+        changedObjectGraphicId = false;
         changedName = false;
     }
 

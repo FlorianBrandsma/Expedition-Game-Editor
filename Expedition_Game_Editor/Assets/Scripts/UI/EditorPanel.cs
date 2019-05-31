@@ -74,6 +74,7 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.Item:           SetItemElement();           break;
             case Enums.DataType.Element:        SetElementElement();        break;
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
+            case Enums.DataType.PartyElement:   SetPartyElementElement();   break;
             default:                            Debug.Log("CASE MISSING");  break;
         }
 
@@ -216,6 +217,32 @@ public class EditorPanel : MonoBehaviour, IElement
         }
 
         idText.text     = dataElement.id.ToString();
+        headerText.text = header;
+
+        if (properties.icon)
+            IconTexture = Resources.Load<Texture2D>(iconPath);
+
+        if (properties.edit)
+            EditButtonData = data;
+    }
+
+    private void SetPartyElementElement()
+    {
+        Data data = Element.route.data;
+        var dataElement = (PartyElementDataElement)data.DataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.elementName;
+            iconPath = dataElement.objectGraphicIcon;
+
+        } else {
+
+            header = dataElement.originalElementName;
+            iconPath = dataElement.originalObjectGraphicIcon;
+        }
+
+        idText.text = dataElement.id.ToString();
         headerText.text = header;
 
         if (properties.icon)

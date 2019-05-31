@@ -15,8 +15,9 @@ public class SegmentController : MonoBehaviour
     public Text header;
     public GameObject content;
 
-    public SegmentController[] siblingSegments;
-
+    public SegmentController[] segmentGroup;
+    public SegmentController siblingSegment;
+    
     [HideInInspector]
     public EditorController editorController;
 
@@ -26,7 +27,7 @@ public class SegmentController : MonoBehaviour
     [HideInInspector]
     public Path path;
 
-    private ISegment Segment { get { return GetComponent<ISegment>(); } }
+    public ISegment Segment { get { return GetComponent<ISegment>(); } }
 
     public IDataController DataController
     {
@@ -60,13 +61,21 @@ public class SegmentController : MonoBehaviour
 
     public void ActivateSegment()
     {
-        foreach(SegmentController segment in siblingSegments)
+        foreach(SegmentController segment in segmentGroup)
         {
             if (segment.toggle.isOn != toggle.isOn)
                 segment.toggle.isOn  = toggle.isOn;
         }
 
         content.SetActive(toggle.isOn);
+    }
+
+    public void InitializeDependencies(EditorController editorController)
+    {
+        this.editorController = editorController;
+
+        if (Segment != null)
+            Segment.InitializeDependencies();
     }
 
     public void InitializeSegment(EditorController editorController)
@@ -84,7 +93,10 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
 
-        loaded = true;
+        if (siblingSegment != null)
+            siblingSegment.Segment.InitializeData();
+
+        loaded = true; 
     }
 
     public void OpenSegment()

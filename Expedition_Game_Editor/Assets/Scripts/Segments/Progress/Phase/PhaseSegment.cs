@@ -4,7 +4,6 @@ using System.Linq;
 
 public class PhaseSegment : MonoBehaviour, ISegment
 {
-    ChapterDataElement chapterData;
     private DataManager dataManager = new DataManager();
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
@@ -19,22 +18,23 @@ public class PhaseSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        chapterData = (ChapterDataElement)SegmentController.editorController.pathController.route.data.DataElement;
-
-        InitializePhaseData();
     }
 
-    private void InitializePhaseData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
         var searchParameters = new Search.Phase();
 
-        searchParameters.chapterId = new List<int>() { chapterData.id };
+        searchParameters.chapterId = new List<int>() { SegmentController.path.FindLastRoute("Chapter").GeneralData().id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

@@ -18,11 +18,6 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
     #region Data Methods
 
-    private void InitializeData()
-    {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
-    }
-
     private void InitializeEditButton()
     {
         var regionData = new RegionDataElement();
@@ -51,10 +46,20 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
     #region Segment
 
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
+
     public void InitializeSegment()
     {
         InitializeData();
         InitializeEditButton();
+    }
+
+    public void InitializeData()
+    {
+        
     }
 
     public void OpenSegment()

@@ -21,16 +21,17 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeElementData();
-
-        SetSearchParameters();
     }
 
-    private void InitializeElementData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         var objectiveEditor = (ObjectiveEditor)DataEditor;
 
@@ -64,6 +65,8 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        SetSearchParameters();
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }

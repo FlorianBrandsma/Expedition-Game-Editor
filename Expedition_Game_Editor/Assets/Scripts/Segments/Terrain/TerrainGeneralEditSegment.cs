@@ -21,11 +21,6 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 
     #region Methods
 
-    private void InitializeData()
-    {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
-    }
-
     private void InitializeEditButton()
     {
         var data = SegmentController.path.FindLastRoute("Region").data;
@@ -44,10 +39,20 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 
     #region Segment
 
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
+    }
+
     public void InitializeSegment()
     {
         InitializeData();
         InitializeEditButton();
+    }
+
+    public void InitializeData()
+    {
+        
     }
 
     public void OpenSegment()

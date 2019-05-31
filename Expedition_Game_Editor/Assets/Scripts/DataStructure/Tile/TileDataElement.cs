@@ -7,4 +7,5 @@ public class TileDataElement : TileCore
     public TileDataElement() : base() { }
 
     public string icon;
+    public string originalIcon;
 }

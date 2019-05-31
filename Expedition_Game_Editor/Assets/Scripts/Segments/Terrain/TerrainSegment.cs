@@ -16,14 +16,17 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-
-        InitializeTerrainData();
     }
 
-    private void InitializeTerrainData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
 

@@ -21,16 +21,17 @@ public class ChapterElementsWorldElementsSegment : MonoBehaviour, ISegment
         
     }
 
-    public void InitializeSegment()
+    public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
-        
-        InitializeElementData();
-
-        SetSearchParameters();
     }
 
-    private void InitializeElementData()
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+
+    public void InitializeData()
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 
@@ -46,7 +47,6 @@ public class ChapterElementsWorldElementsSegment : MonoBehaviour, ISegment
         SegmentController.DataController.GetData(new[] { searchParameters });
         
         var chapterElementList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
-
         chapterElementList.ForEach(x => chapterEditor.terrainElementDataList.Add(x));
     }
 
@@ -57,9 +57,9 @@ public class ChapterElementsWorldElementsSegment : MonoBehaviour, ISegment
         var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
-        //Out of all the elements, select only those that are not in this list
-        var idList = chapterEditor.terrainElementDataList.Select(x => x.ElementId).ToList();
-        idList.Add(chapterEditor.elementDataElement.id);
+        List<int> idList = new List<int>();
+        chapterEditor.partyElementDataList.ForEach(x => idList.Add(x.ElementId));
+        chapterEditor.terrainElementDataList.ForEach(x => idList.Add(x.ElementId));
 
         var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
@@ -68,14 +68,14 @@ public class ChapterElementsWorldElementsSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        SetSearchParameters();
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        //ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
-
         DataEditor.UpdateEditor();
 
         SetSearchParameters();

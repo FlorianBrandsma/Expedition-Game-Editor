@@ -24,7 +24,8 @@ public class Enums
         PhaseRegion,
         Quest,
         Objective,
-        Task      
+        Task,
+        PartyElement
     }
 
     public enum ItemType
