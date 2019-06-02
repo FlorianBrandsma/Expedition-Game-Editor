@@ -15,7 +15,7 @@ public class ItemDataElement : ItemCore, IDataElement
 
     public override void Update()
     {
-        if (!changed) return;
+        if (!base.Changed) return;
 
         base.Update();
 
@@ -44,6 +44,4 @@ public class ItemDataElement : ItemCore, IDataElement
 
         GetOriginalValues();
     }
-
-    public bool Changed { get { return changed; } }
 }

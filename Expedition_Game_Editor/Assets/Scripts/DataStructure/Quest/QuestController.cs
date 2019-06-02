@@ -35,4 +35,9 @@ public class QuestController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

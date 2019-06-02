@@ -12,11 +12,18 @@ public class ChapterCore : GeneralData
     public string originalName;
     public string originalNotes;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedElementId;
     private bool changedName;
     private bool changedNotes;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedElementId || changedName || changedNotes;
+        }
+    }
 
     #region Properties
 
@@ -40,8 +47,7 @@ public class ChapterCore : GeneralData
         {
             if (value == elementId) return;
 
-            changed = true;
-            changedElementId = true;
+            changedElementId = (value != originalElementId);
 
             elementId = value;
         }
@@ -54,8 +60,7 @@ public class ChapterCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -68,8 +73,7 @@ public class ChapterCore : GeneralData
         {
             if (value == notes) return;
 
-            changed = true;
-            changedNotes = true;
+            changedNotes = (value != originalNotes);
 
             notes = value;
         }
@@ -128,7 +132,6 @@ public class ChapterCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedElementId = false;
         changedName = false;

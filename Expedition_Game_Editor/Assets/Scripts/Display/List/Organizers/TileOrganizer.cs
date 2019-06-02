@@ -146,7 +146,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void CloseList()
     {
-        ListManager.ResetElement();
+        ListManager.CloseElement();
     }
 
     public void ClearOrganizer() { }

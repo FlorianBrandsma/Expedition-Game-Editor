@@ -16,7 +16,7 @@ public class PartyElementDataElement : PartyElementCore, IDataElement
 
     public override void Update()
     {
-        if (!changed) return;
+        if (!Changed) return;
 
         base.Update();
 
@@ -45,6 +45,4 @@ public class PartyElementDataElement : PartyElementCore, IDataElement
 
         GetOriginalValues();
     }
-
-    public bool Changed { get { return changed; } }
 }

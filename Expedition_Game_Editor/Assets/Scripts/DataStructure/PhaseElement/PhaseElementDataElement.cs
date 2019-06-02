@@ -8,12 +8,17 @@ public class PhaseElementDataElement : PhaseElementCore, IDataElement
 
     public PhaseElementDataElement() : base() { }
 
+    public Enums.ElementStatus elementStatus;
+
+    public string elementName;
     public string objectGraphicIcon;
+
+    public string originalElementName;
     public string originalObjectGraphicIcon;
 
     public override void Update()
     {
-        if (!changed) return;
+        if (!base.Changed) return;
 
         base.Update();
 
@@ -24,6 +29,7 @@ public class PhaseElementDataElement : PhaseElementCore, IDataElement
     {
         base.SetOriginalValues();
 
+        originalElementName = elementName;
         originalObjectGraphicIcon = objectGraphicIcon;
 
         ClearChanges();
@@ -31,6 +37,7 @@ public class PhaseElementDataElement : PhaseElementCore, IDataElement
 
     public new void GetOriginalValues()
     {
+        elementName = originalElementName;
         objectGraphicIcon = originalObjectGraphicIcon;
     }
 
@@ -40,6 +47,4 @@ public class PhaseElementDataElement : PhaseElementCore, IDataElement
 
         GetOriginalValues();
     }
-
-    public bool Changed { get { return changed; } }
 }

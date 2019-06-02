@@ -40,4 +40,9 @@ public class PhaseController : MonoBehaviour, IDataController
     {
         CreatePhaseElements();
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

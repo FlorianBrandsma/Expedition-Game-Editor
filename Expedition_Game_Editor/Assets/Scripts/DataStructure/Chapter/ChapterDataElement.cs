@@ -12,7 +12,7 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
     public override void Update()
     {
-        if (!changed) return;
+        if (!base.Changed) return;
 
         base.Update();
 
@@ -34,6 +34,4 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
         GetOriginalValues();
     }
-
-    public bool Changed { get { return changed; } }
 }

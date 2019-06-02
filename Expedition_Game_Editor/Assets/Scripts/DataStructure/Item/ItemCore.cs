@@ -11,10 +11,17 @@ public class ItemCore : GeneralData
     public int originalObjectGraphicId;
     public string originalName;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedObjectGraphicId || changedName;
+        }
+    }
 
     #region Properties
 
@@ -44,8 +51,7 @@ public class ItemCore : GeneralData
         {
             if (value == objectGraphicId) return;
 
-            changed = true;
-            changedObjectGraphicId = true;
+            changedObjectGraphicId = (value != originalObjectGraphicId);
 
             objectGraphicId = value;
         }
@@ -58,8 +64,7 @@ public class ItemCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -113,7 +118,6 @@ public class ItemCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedObjectGraphicId = false;
         changedName = false;

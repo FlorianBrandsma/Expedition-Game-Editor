@@ -66,7 +66,7 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
 
     public bool Changed()
     {
-        return terrainObjectData.changed;
+        return terrainObjectData.Changed;
     }
 
     public void ApplyChanges()

@@ -10,10 +10,17 @@ public class PhaseCore : GeneralData
     public string originalName;
     public string originalNotes;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedName;
     private bool changedNotes;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedName || changedNotes;
+        }
+    }
 
     #region Properties
 
@@ -37,8 +44,7 @@ public class PhaseCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -51,8 +57,7 @@ public class PhaseCore : GeneralData
         {
             if (value == notes) return;
 
-            changed = true;
-            changedNotes = true;
+            changedNotes = (value != originalNotes);
 
             notes = value;
         }
@@ -107,7 +112,6 @@ public class PhaseCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedName = false;
         changedNotes = false;

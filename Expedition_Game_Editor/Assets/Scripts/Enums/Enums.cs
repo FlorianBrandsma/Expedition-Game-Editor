@@ -50,4 +50,11 @@ public class Enums
         PanelTile,
         Button
     }
+
+    public enum ElementStatus
+    {
+        Enabled,
+        Disabled,
+        Locked
+    }
 }

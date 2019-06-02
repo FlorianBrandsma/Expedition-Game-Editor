@@ -9,9 +9,16 @@ public class PartyElementCore : GeneralData
     public int originalChapterId;
     public int originalElementId;
 
-    public bool changed;
     private bool changedChapterId;
     private bool changedElementId;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedChapterId || changedElementId;
+        }
+    }
 
     #region Properties
 
@@ -22,8 +29,7 @@ public class PartyElementCore : GeneralData
         {
             if (value == chapterId) return;
 
-            changed = true;
-            changedChapterId = true;
+            changedChapterId = (value != originalChapterId);
 
             chapterId = value;
         }
@@ -36,8 +42,7 @@ public class PartyElementCore : GeneralData
         {
             if (value == elementId) return;
 
-            changed = true;
-            changedElementId = true;
+            changedElementId = (value != originalElementId);
 
             elementId = value;
         }
@@ -66,8 +71,6 @@ public class PartyElementCore : GeneralData
     {
         originalChapterId = ChapterId;
         originalElementId = ElementId;
-
-        //ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -80,7 +83,6 @@ public class PartyElementCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedChapterId = false;
         changedElementId = false;
     }

@@ -5,8 +5,15 @@ public class TerrainTileCore : GeneralData
 {
     public int originalIndex;
 
-    public bool changed;
     private bool changedIndex;
+
+    public bool Changed
+    {
+        get
+        {
+            return false;
+        }
+    }
 
     #region Properties
 
@@ -34,7 +41,7 @@ public class TerrainTileCore : GeneralData
 
     public void Update()
     {
-        if (!changed) return;
+        if (!Changed) return;
 
         //Debug.Log("Updated " + name);
 
@@ -71,7 +78,6 @@ public class TerrainTileCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
     }
 

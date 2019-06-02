@@ -35,4 +35,9 @@ public class ChapterRegionController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

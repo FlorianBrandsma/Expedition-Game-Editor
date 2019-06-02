@@ -113,8 +113,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
 
-        rect.offsetMin = new Vector2(rect.offsetMin.x, ListManager.listParent.sizeDelta.y - (rowOffsetMax[index] + rowHeight[index]));
-        rect.offsetMax = new Vector2(rect.offsetMax.x, -rowOffsetMax[index]);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
+
+        element.transform.localPosition = new Vector2(element.transform.localPosition.x, 
+                                                     (ListManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
 
         rect.gameObject.SetActive(true);     
     }
@@ -124,14 +126,9 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         return ListManager.elementList[index];
     }
 
-    float ListPosition(int i)
-    {
-        return ListManager.listParent.TransformPoint(new Vector2(0, (ListManager.listParent.sizeDelta.y / 2.222f) - rowOffsetMax[i])).y;
-    }
-
     public void CloseList()
     {
-        ListManager.ResetElement();
+        ListManager.CloseElement();
     }
 
     public void ClearOrganizer() { }

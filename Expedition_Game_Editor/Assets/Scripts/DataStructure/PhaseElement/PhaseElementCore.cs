@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class PhaseElementCore : GeneralData
 {
@@ -12,11 +12,18 @@ public class PhaseElementCore : GeneralData
     public int originalQuestId;
     public int originalTerrainElementId;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedPhaseId;
     private bool changedQuestId;
     private bool changedTerrainElementId;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedPhaseId || changedQuestId || changedTerrainElementId;
+        }
+    }
 
     #region Properties
 
@@ -40,7 +47,7 @@ public class PhaseElementCore : GeneralData
         {
             if (value == phaseId) return;
 
-            changedPhaseId = true;
+            changedPhaseId = (value != originalPhaseId);
 
             phaseId = value;
         }
@@ -53,7 +60,7 @@ public class PhaseElementCore : GeneralData
         {
             if (value == questId) return;
 
-            changedQuestId = true;
+            changedQuestId = (value != originalQuestId);
 
             questId = value;
         }
@@ -66,7 +73,7 @@ public class PhaseElementCore : GeneralData
         {
             if (value == terrainElementId) return;
 
-            changedTerrainElementId = true;
+            changedTerrainElementId = (value != originalTerrainElementId);
 
             terrainElementId = value;
         }
@@ -83,18 +90,14 @@ public class PhaseElementCore : GeneralData
 
     public virtual void Update()
     {
-        //if (!changed) return;
+        var phaseElementData = Fixtures.phaseElementList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedQuestId)
+        {
+            phaseElementData.questId = questId;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        //SetOriginalValues();
+            Fixtures.taskList.Where(x => x.terrainElementId == phaseElementData.terrainElementId).Distinct().ToList().ForEach(x => Fixtures.taskList.Remove(x));
+        }
     }
 
     public void UpdateIndex() { }
@@ -104,8 +107,6 @@ public class PhaseElementCore : GeneralData
         originalPhaseId = phaseId;
         originalQuestId = questId;
         originalTerrainElementId = terrainElementId;
-
-        //ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -119,7 +120,6 @@ public class PhaseElementCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedPhaseId = false;
         changedQuestId = false;

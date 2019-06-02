@@ -9,6 +9,5 @@ public class ChapterRegionDataElement : ChapterRegionCore, IDataElement
     public ChapterRegionDataElement() : base() { }
 
     public string name;
-
-    public bool Changed { get { return changed; } }
+    public string originalName;
 }

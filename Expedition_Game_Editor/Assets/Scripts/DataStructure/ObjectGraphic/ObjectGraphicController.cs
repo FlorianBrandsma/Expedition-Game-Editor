@@ -55,4 +55,9 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
 
         searchElement.route.data.DataElement = objectGraphicDataElement;
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

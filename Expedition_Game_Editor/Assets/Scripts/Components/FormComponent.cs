@@ -6,31 +6,34 @@ public class FormComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
+    private bool open;
     private bool initialized;
     private bool locked;
-    private bool manually_closed;
+    private bool closedManually;
 
     //Don't reset form when opening
     public bool constant;
-    public bool auto_open;
-    public bool auto_close;
-    public bool open_once;
-    public bool reset_components;
+    public bool autoOpen;
+    public bool autoClose;
+    public bool openOnce;
 
     public EditorForm editorForm;
 
-    public Texture2D open_icon, close_icon;
+    public Texture2D openIcon;
+    public Texture2D closeIcon;
 
     private Button button;
 
-    public void InitializeComponent(Path new_path)
+    EditorButton Button { get { return button.GetComponent<EditorButton>(); } }
+
+    public void InitializeComponent(Path path)
     {
         editorForm.formComponent = this;
 
         //If the component was manually closed, don't open it here
-        if (constant && manually_closed) return;
+        if (constant && closedManually) return;
 
-        if (auto_open)
+        if (autoOpen)
         {
             if (locked) return;
 
@@ -47,11 +50,11 @@ public class FormComponent : MonoBehaviour, IComponent
                 EditorManager.editorManager.InitializePath(editorForm.activePath, true);
             }
 
-            if (open_once)
+            if (openOnce)
                 locked = true;
         }
 
-        manually_closed = false;
+        closedManually = false;
     }
 
     public void SetComponent(Path new_path)
@@ -62,7 +65,9 @@ public class FormComponent : MonoBehaviour, IComponent
     private void SetButton()
     {
         button = ComponentManager.componentManager.AddFormButton(component);
-        button.GetComponent<EditorButton>().icon.texture = open_icon;
+
+        if (editorForm.gameObject.activeInHierarchy)
+            Button.icon.texture = openIcon;
 
         button.onClick.AddListener(delegate { Interact(); });
     }
@@ -72,10 +77,10 @@ public class FormComponent : MonoBehaviour, IComponent
         if (editorForm.gameObject.activeInHierarchy)
         {
             CloseForm();
-            manually_closed = true;
+            closedManually = true;
         } else {
             OpenForm();
-            manually_closed = false;
+            closedManually = false;
         }      
     }
 
@@ -85,12 +90,7 @@ public class FormComponent : MonoBehaviour, IComponent
 
         EditorManager.editorManager.InitializePath(path);
 
-        button.GetComponent<EditorButton>().icon.texture = open_icon;
-    }
-
-    public void OpenFormExternally()
-    {
-        button.GetComponent<EditorButton>().icon.texture = open_icon;
+        button.GetComponent<EditorButton>().icon.texture = openIcon;
     }
 
     private void CloseForm()
@@ -99,12 +99,12 @@ public class FormComponent : MonoBehaviour, IComponent
 
         editorForm.CloseForm(false);
 
-        button.GetComponent<EditorButton>().icon.texture = close_icon;
+        button.GetComponent<EditorButton>().icon.texture = closeIcon;
     }
 
     public void CloseComponent()
     {
-        if(auto_close)
+        if(autoClose)
             CloseForm();
     }
 }

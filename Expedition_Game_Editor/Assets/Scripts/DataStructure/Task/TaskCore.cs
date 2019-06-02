@@ -9,9 +9,16 @@ public class TaskCore : GeneralData
     public int originalIndex;
     public string originalDescription;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedDescription;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedDescription;
+        }
+    }
 
     #region Properties
 
@@ -41,8 +48,7 @@ public class TaskCore : GeneralData
         {
             if (value == description) return;
 
-            changed = true;
-            changedDescription = true;
+            changedDescription = (value != originalDescription);
 
             description = value;
         }
@@ -59,7 +65,7 @@ public class TaskCore : GeneralData
 
     public void Update()
     {
-        if (!changed) return;
+        if (!Changed) return;
 
         var taskData = Fixtures.taskList.Where(x => x.id == id).FirstOrDefault();
 
@@ -97,7 +103,6 @@ public class TaskCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedDescription = false;
     }

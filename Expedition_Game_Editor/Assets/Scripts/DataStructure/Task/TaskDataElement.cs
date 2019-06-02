@@ -10,6 +10,4 @@ public class TaskDataElement : TaskCore, IDataElement
 
     public string objectGraphicIcon;
     public string regionName;
-
-    public bool Changed { get { return changed; } }
 }

@@ -13,4 +13,5 @@ public interface IDataController
     void InitializeController();
     void GetData(IEnumerable searchParameters);
     void SetData(SelectionElement searchElement, Data resultData);
+    void ToggleElement(IDataElement dataElement);
 }

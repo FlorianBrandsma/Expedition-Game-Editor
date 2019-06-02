@@ -14,7 +14,7 @@ public class TerrainDataElement : TerrainCore, IDataElement
 
     public override void Update()
     {
-        if (!changed) return;
+        if (!base.Changed) return;
 
         base.Update();
 
@@ -41,6 +41,4 @@ public class TerrainDataElement : TerrainCore, IDataElement
 
         GetOriginalValues();
     }
-
-    public bool Changed { get { return changed; } }
 }

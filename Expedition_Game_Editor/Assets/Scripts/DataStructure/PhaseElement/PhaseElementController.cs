@@ -35,4 +35,31 @@ public class PhaseElementController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+        var phaseElementData = (PhaseElementDataElement)dataElement;
+        var questData = (QuestDataElement)SegmentController.editorController.pathController.route.data.DataElement;
+
+        switch(phaseElementData.elementStatus)
+        {
+            case Enums.ElementStatus.Enabled:
+
+                phaseElementData.QuestId = 0;
+                phaseElementData.elementStatus = Enums.ElementStatus.Disabled;
+
+                break;
+
+            case Enums.ElementStatus.Disabled:
+
+                phaseElementData.QuestId = questData.id;
+                phaseElementData.elementStatus = Enums.ElementStatus.Enabled;
+
+                break;
+        }
+
+        SegmentController.Segment.DataEditor.UpdateEditor();
+
+        dataElement.SelectionElement.SetOverlay(phaseElementData.elementStatus); 
+    }
 }

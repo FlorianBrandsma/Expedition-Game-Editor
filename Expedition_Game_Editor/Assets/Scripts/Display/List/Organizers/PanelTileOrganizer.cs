@@ -150,7 +150,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void CloseList()
     {
-        listManager.ResetElement();
+        listManager.CloseElement();
     }
 
     public void ClearOrganizer() { }

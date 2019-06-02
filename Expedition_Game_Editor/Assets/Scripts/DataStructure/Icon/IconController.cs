@@ -35,4 +35,9 @@ public class IconController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

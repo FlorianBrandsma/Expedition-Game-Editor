@@ -6196,7 +6196,7 @@ GameObject:
   - 114: {fileID: 226968969}
   - 114: {fileID: 226968968}
   m_Layer: 5
-  m_Name: Regions (segment-listProperties-panel)
+  m_Name: Regions (segment-listProperties-compactPanel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6257,7 +6257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementType: 0
+  elementType: 1
   referenceArea: {fileID: 1671440038}
   icon: 0
   constantHeight: 0
@@ -6278,7 +6278,7 @@ MonoBehaviour:
   listManager: {fileID: 1313395481}
   selectionType: 1
   selectionProperty: 0
-  elementSize: {x: 0, y: 35}
+  elementSize: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
   enableAdding: 0
@@ -7409,13 +7409,12 @@ MonoBehaviour:
     anchor: 2
     width: 30
   constant: 1
-  auto_open: 1
-  auto_close: 0
-  open_once: 1
-  reset_components: 1
+  autoOpen: 1
+  autoClose: 0
+  openOnce: 1
   editorForm: {fileID: 1374861249}
-  open_icon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
-  close_icon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
+  openIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
+  closeIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
 --- !u!114 &281672007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7449,13 +7448,12 @@ MonoBehaviour:
     anchor: 1
     width: 30
   constant: 0
-  auto_open: 0
-  auto_close: 1
-  open_once: 0
-  reset_components: 0
+  autoOpen: 0
+  autoClose: 1
+  openOnce: 0
   editorForm: {fileID: 778174905}
-  open_icon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
-  close_icon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+  openIcon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+  closeIcon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
 --- !u!1 &292242723
 GameObject:
   m_ObjectHideFlags: 0
@@ -14936,8 +14934,13 @@ MonoBehaviour:
   selectionType: 1
   selectionProperty: 1
   elementType: 2
+  elementStatus: 0
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0}
+  background: {fileID: 0}
   child: {fileID: 0}
   glow: {fileID: 2064085898}
+  lockIcon: {fileID: 0}
   selected: 0
 --- !u!224 &679307797
 RectTransform:
@@ -15557,7 +15560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayType: 0
   listManager: {fileID: 2127060161}
-  selectionType: 0
+  selectionType: 1
   selectionProperty: 1
   elementSize: {x: 50, y: 50}
   horizontal: 0
@@ -15579,7 +15582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 0
+    dataType: 5
     temp_id_count: 0
     unique: 0
     exact: 0
@@ -15630,10 +15633,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 686303410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 979218788476d9d45b5f65cb3812da1b, type: 3}
+  m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid_size: {x: 0, y: 0}
+  elementType: 1
+  referenceArea: {fileID: 2032012824}
+  icon: 1
+  constantHeight: 0
+  zigzag: 0
+  edit: 0
 --- !u!1001 &688668654
 Prefab:
   m_ObjectHideFlags: 0
@@ -21508,6 +21516,77 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &947968235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1000012083942944, guid: 15cc202bc726849429641411fd665057,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 947968238}
+  - 222: {fileID: 947968237}
+  - 114: {fileID: 947968236}
+  m_Layer: 5
+  m_Name: Lock_Icon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &947968236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114000011342353290, guid: 15cc202bc726849429641411fd665057,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 947968235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -98529514, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Texture: {fileID: 2800000, guid: 8a3e44accb2aa2f4091ab19f63f1b457, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &947968237
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222000010579751322, guid: 15cc202bc726849429641411fd665057,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 947968235}
+--- !u!224 &947968238
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224000011790216260, guid: 15cc202bc726849429641411fd665057,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 947968235}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1349812898}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &950533437
 GameObject:
   m_ObjectHideFlags: 0
@@ -22696,13 +22775,12 @@ MonoBehaviour:
     anchor: 1
     width: 30
   constant: 1
-  auto_open: 1
-  auto_close: 1
-  open_once: 0
-  reset_components: 0
+  autoOpen: 1
+  autoClose: 1
+  openOnce: 0
   editorForm: {fileID: 1250721019}
-  open_icon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
-  close_icon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
+  openIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
+  closeIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
 --- !u!114 &993477355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25905,7 +25983,7 @@ GameObject:
   - 114: {fileID: 1117863453}
   - 114: {fileID: 1117863452}
   m_Layer: 5
-  m_Name: Regions (segment-listProperties-button)
+  m_Name: Regions (segment-listProperties-compactPanel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25963,9 +26041,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1117863449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a1bb311782edf47bcfc186fdc56e68, type: 3}
+  m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementType: 1
+  referenceArea: {fileID: 189467853}
+  icon: 0
+  constantHeight: 0
+  zigzag: 0
+  edit: 0
 --- !u!114 &1117863453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25979,7 +26063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayType: 0
   listManager: {fileID: 460277706}
-  selectionType: 1
+  selectionType: 0
   selectionProperty: 1
   elementSize: {x: 0, y: 40}
   horizontal: 0
@@ -32884,6 +32968,7 @@ RectTransform:
   m_Children:
   - {fileID: 1603210585}
   - {fileID: 309810417}
+  - {fileID: 947968238}
   m_Father: {fileID: 1791099888}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0.5}
@@ -37588,10 +37673,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553673200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 979218788476d9d45b5f65cb3812da1b, type: 3}
+  m_Script: {fileID: 11500000, guid: ef58d8936a9dd9a40bb503ca559a8277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid_size: {x: 0, y: 0}
+  elementType: 1
+  referenceArea: {fileID: 1130421893}
+  icon: 1
+  constantHeight: 0
+  zigzag: 0
+  edit: 0
 --- !u!1 &1554158939
 GameObject:
   m_ObjectHideFlags: 0
@@ -50899,8 +50989,13 @@ MonoBehaviour:
   selectionType: 1
   selectionProperty: 1
   elementType: 2
+  elementStatus: 0
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  background: {fileID: 0}
   child: {fileID: 0}
   glow: {fileID: 1603210582}
+  lockIcon: {fileID: 947968235}
   selected: 0
 --- !u!114 &2135834314
 MonoBehaviour:

@@ -10,10 +10,17 @@ public class TerrainCore : GeneralData
     public int originalObjectGraphicId;
     public string originalName;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedObjectGraphicId || changedName;
+        }
+    }
 
     #region Properties
 
@@ -37,8 +44,7 @@ public class TerrainCore : GeneralData
         {
             if (value == objectGraphicId) return;
 
-            changed = true;
-            changedObjectGraphicId = true;
+            changedObjectGraphicId = (value != originalObjectGraphicId);
         }
     }
 
@@ -49,8 +55,7 @@ public class TerrainCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -103,8 +108,6 @@ public class TerrainCore : GeneralData
     public virtual void ClearChanges()
     {
         GetOriginalValues();
-
-        changed = false;
 
         changedObjectGraphicId = false;
         changedName = false;

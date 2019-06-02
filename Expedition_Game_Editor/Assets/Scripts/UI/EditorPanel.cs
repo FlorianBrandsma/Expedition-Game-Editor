@@ -64,8 +64,10 @@ public class EditorPanel : MonoBehaviour, IElement
         switch (Element.route.data.DataController.DataType)
         {
             case Enums.DataType.Chapter:        SetChapterElement();        break;
+            case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
             case Enums.DataType.Phase:          SetPhaseElement();          break;
             case Enums.DataType.PhaseRegion:    SetPhaseRegionElement();    break;
+            case Enums.DataType.PhaseElement:   SetPhaseElementElement();   break;
             case Enums.DataType.Quest:          SetQuestElement();          break;
             case Enums.DataType.Objective:      SetObjectiveElement();      break;
             case Enums.DataType.Task:           SetTaskElement();           break;
@@ -110,6 +112,24 @@ public class EditorPanel : MonoBehaviour, IElement
             EditButtonData = data;
     }
 
+    private void SetChapterRegionElement()
+    {
+        Data data = Element.route.data;
+        var dataElement = (ChapterRegionDataElement)data.DataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.name;
+
+        } else {
+
+            header = dataElement.originalName;
+        }
+
+        idText.text = dataElement.id.ToString();
+        headerText.text = header;
+    }
+
     private void SetPhaseElement()
     {
         Data data = Element.route.data;
@@ -150,6 +170,34 @@ public class EditorPanel : MonoBehaviour, IElement
 
         idText.text     = dataElement.id.ToString();
         headerText.text = header;
+    }
+
+    private void SetPhaseElementElement()
+    {
+        Data data = Element.route.data;
+        var dataElement = (PhaseElementDataElement)data.DataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.elementName;
+            iconPath = dataElement.objectGraphicIcon;
+
+        } else {
+
+            header = dataElement.originalElementName;
+            iconPath = dataElement.originalObjectGraphicIcon;
+        }
+
+        Element.elementStatus = dataElement.elementStatus;
+
+        idText.text = dataElement.id.ToString();
+        headerText.text = header;
+
+        if (properties.icon)
+            IconTexture = Resources.Load<Texture2D>(iconPath);
+        
+        if (properties.edit)
+            EditButtonData = data;
     }
 
     private void SetQuestElement()

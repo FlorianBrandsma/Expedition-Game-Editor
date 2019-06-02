@@ -51,4 +51,9 @@ public class ElementController : MonoBehaviour, IDataController
 
         searchElement.route.data.DataElement = elementDataElement;
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

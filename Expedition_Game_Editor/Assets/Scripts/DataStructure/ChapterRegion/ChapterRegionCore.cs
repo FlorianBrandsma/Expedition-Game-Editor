@@ -9,9 +9,16 @@ public class ChapterRegionCore : GeneralData
     public int originalIndex;
     public int originalRegionId;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedRegionId;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedRegionId;
+        }
+    }
 
     #region Properties
 
@@ -41,7 +48,7 @@ public class ChapterRegionCore : GeneralData
         {
             if (value == regionId) return;
 
-            changedRegionId = true;
+            changedRegionId = (value != originalRegionId);
 
             regionId = value;
         }
@@ -58,7 +65,7 @@ public class ChapterRegionCore : GeneralData
 
     public void Update()
     {
-        if (!changed) return;
+        if (!Changed) return;
 
         var regionData = Fixtures.chapterRegionList.Where(x => x.id == id).FirstOrDefault();
 
@@ -96,7 +103,6 @@ public class ChapterRegionCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedRegionId = false;
     }

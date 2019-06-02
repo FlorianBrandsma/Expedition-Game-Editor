@@ -44,11 +44,17 @@ public class TerrainElementController : MonoBehaviour, IDataController
                 var resultElementData = (ElementDataElement)resultData.DataElement;
 
                 terrainElementDataElement.ElementId = resultElementData.id;
+                terrainElementDataElement.elementName = resultElementData.Name;
                 terrainElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
 
                 break;
         }
 
         searchElement.route.data.DataElement = terrainElementDataElement;
+    }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
     }
 }

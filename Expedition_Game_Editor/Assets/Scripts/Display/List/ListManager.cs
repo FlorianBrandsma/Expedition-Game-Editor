@@ -26,7 +26,8 @@ public class ListManager : MonoBehaviour
     private Vector3         listMin, 
                             listMax;
 
-    public Vector2          listSize       { get; set; }
+    public Vector2          listSize        { get; set; }
+    public RectTransform    ParentRect      { get { return transform.parent.GetComponent<RectTransform>(); } }
 
     public List<SelectionElement> elementList = new List<SelectionElement>();
     public SelectionElement selectedElement { get; set; }
@@ -93,7 +94,7 @@ public class ListManager : MonoBehaviour
             SetData();
 
         overlayManager.SetOverlay();
-
+        
         listMin = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
         listMax = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
 
@@ -182,13 +183,29 @@ public class ListManager : MonoBehaviour
 
     private void CorrectPosition(SelectionElement element)
     {
-        if (element.transform.position.x > listMax.x ||
-            element.transform.position.x < listMin.x ||
-            element.transform.position.z > listMax.z ||
-            element.transform.position.z < listMin.z)
+        //To offset jittering when selecting edge elements
+        float positionOffset = 0.999f;
+
+        Vector3 inverseElementPoint = transform.InverseTransformPoint(element.transform.position) * positionOffset;
+
+        Vector3 intermediateMin = new Vector3(inverseElementPoint.x - element.RectTransform.rect.max.x, 
+                                              inverseElementPoint.y - element.RectTransform.rect.max.y, 
+                                              inverseElementPoint.z);
+
+        Vector3 intermediateMax = new Vector3(inverseElementPoint.x + element.RectTransform.rect.max.x, 
+                                              inverseElementPoint.y + element.RectTransform.rect.max.y, 
+                                              inverseElementPoint.z);
+
+        Vector3 elementMin = transform.TransformPoint(intermediateMin);
+        Vector3 elementMax = transform.TransformPoint(intermediateMax);
+
+        if (elementMax.x > listMax.x ||
+            elementMin.x < listMin.x ||
+            elementMax.z > listMax.z ||
+            elementMin.z < listMin.z)
         {
             scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - list.ElementSize.x) / 2) / 2;
-            scrollRect.verticalNormalizedPosition   = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.ElementSize.y) / 2)) / (listParent.sizeDelta.y - list.ElementSize.y);
+            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.ElementSize.y) / 2)) / (listParent.sizeDelta.y - list.ElementSize.y);
         }
     }
 
@@ -213,6 +230,8 @@ public class ListManager : MonoBehaviour
     public void AutoSelectElement()
     {
         if (organizer == null) return;
+
+        if (listProperties.DataController.DataList.Count == 0) return;
 
         if (selectionType == SelectionManager.Type.Automatic)
         {
@@ -272,20 +291,27 @@ public class ListManager : MonoBehaviour
         element.transform.SetParent(listParent, false);
     }
 
-    public void ResetElement()
+    public void CloseElement()
     {
         foreach(SelectionElement element in elementList)
         {
             element.GetComponent<IElement>().CloseElement();
-
-            element.gameObject.SetActive(false);
             element.GetComponent<Button>().onClick.RemoveAllListeners();
+
+            if (element.elementStatus != Enums.ElementStatus.Enabled)
+            {
+                element.elementStatus = Enums.ElementStatus.Enabled;
+                element.background.color = element.enabledColor;
+                element.lockIcon.SetActive(false);
+            }
 
             if (element.child != null)
             {
                 element.child.gameObject.SetActive(false);
                 element.child.GetComponent<Button>().onClick.RemoveAllListeners();
-            }      
+            }
+
+            element.gameObject.SetActive(false);
         }
 
         if (selectedElement != null)

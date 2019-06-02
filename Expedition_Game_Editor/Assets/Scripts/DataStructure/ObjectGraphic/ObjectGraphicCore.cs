@@ -11,10 +11,17 @@ public class ObjectGraphicCore : GeneralData
     public string originalPath;
     public string originalIcon;
 
-    public bool changed;
     private bool changedName;
     private bool changedPath;
     private bool changedIcon;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedName || changedPath || changedIcon;
+        }
+    }
 
     #region Properties
 
@@ -25,8 +32,7 @@ public class ObjectGraphicCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -39,8 +45,7 @@ public class ObjectGraphicCore : GeneralData
         {
             if (value == path) return;
 
-            changed = true;
-            changedPath = true;
+            changedPath = (value != originalPath);
 
             path = value;
         }
@@ -53,8 +58,7 @@ public class ObjectGraphicCore : GeneralData
         {
             if (value == icon) return;
 
-            changed = true;
-            changedIcon = true;
+            changedIcon = (value != originalIcon);
 
             icon = value;
         }
@@ -71,16 +75,7 @@ public class ObjectGraphicCore : GeneralData
 
     public void Update()
     {
-        if (!changed) return;
-
-        //Debug.Log("Updated " + name);
-
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (!Changed) return;
 
         SetOriginalValues();
     }
@@ -105,7 +100,6 @@ public class ObjectGraphicCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedName = false;
         changedPath = false;
         changedIcon = false;

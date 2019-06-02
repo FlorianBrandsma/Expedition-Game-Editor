@@ -35,4 +35,9 @@ public class TaskController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

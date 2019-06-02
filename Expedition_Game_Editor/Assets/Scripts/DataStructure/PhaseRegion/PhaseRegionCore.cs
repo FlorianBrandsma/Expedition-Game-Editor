@@ -8,9 +8,16 @@ public class PhaseRegionCore : GeneralData
     public int originalIndex;
     public string originalName;
 
-    public bool changed;
     private bool changedIndex;
     private bool changedName;
+
+    public bool Changed
+    {
+        get
+        {
+            return changedName;
+        }
+    }
 
     #region Properties
 
@@ -34,8 +41,7 @@ public class PhaseRegionCore : GeneralData
         {
             if (value == name) return;
 
-            changed = true;
-            changedName = true;
+            changedName = (value != originalName);
 
             name = value;
         }
@@ -52,7 +58,7 @@ public class PhaseRegionCore : GeneralData
 
     public void Update()
     {
-        if (!changed) return;
+        if (!Changed) return;
 
         //Debug.Log("Updated " + name);
 
@@ -91,7 +97,6 @@ public class PhaseRegionCore : GeneralData
     {
         GetOriginalValues();
 
-        changed = false;
         changedIndex = false;
         changedName = false;
     }

@@ -43,6 +43,8 @@ public class PhaseElementDataManager
                         QuestId = phaseElementData.questId,
                         TerrainElementId = phaseElementData.terrainElementId,
 
+                        elementStatus = GetElementStatus(phaseElementData),
+                        elementName = elementData.name,
                         objectGraphicIcon = objectGraphicData.icon
 
                     }).OrderBy(x => x.Index).ToList();
@@ -87,6 +89,18 @@ public class PhaseElementDataManager
     internal void GetObjectGraphicData()
     {
         objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    Enums.ElementStatus GetElementStatus(PhaseElementData phaseData)
+    {
+        var questData = (QuestDataElement)phaseElementController.SegmentController.editorController.pathController.route.data.DataElement;
+
+        if (phaseData.questId == questData.id)
+            return Enums.ElementStatus.Enabled;
+        else if (phaseData.questId == 0)
+            return Enums.ElementStatus.Disabled;
+        else
+            return Enums.ElementStatus.Locked;
     }
 
     internal class PhaseElementData : GeneralData

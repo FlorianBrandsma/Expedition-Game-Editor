@@ -44,11 +44,17 @@ public class PartyElementController : MonoBehaviour, IDataController
                 var resultElementData = (ElementDataElement)resultData.DataElement;
 
                 partyElementDataElement.ElementId = resultElementData.id;
+                partyElementDataElement.elementName = resultElementData.Name;
                 partyElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
 
                 break;
         }
 
         searchElement.route.data.DataElement = partyElementDataElement;
+    }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
     }
 }

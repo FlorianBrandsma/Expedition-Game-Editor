@@ -35,4 +35,9 @@ public class TerrainController : MonoBehaviour, IDataController
     {
 
     }
+
+    public void ToggleElement(IDataElement dataElement)
+    {
+
+    }
 }

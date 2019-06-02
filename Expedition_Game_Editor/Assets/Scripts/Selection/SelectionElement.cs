@@ -14,11 +14,38 @@ public class SelectionElement : MonoBehaviour
     public SelectionManager.Property selectionProperty;
     public Enums.ElementType elementType;
 
+    public Enums.ElementStatus elementStatus;
+    public Color enabledColor;
+    public Color disabledColor;
+    public Image background;
+
     public SelectionElement child;
     public GameObject glow;
+    public GameObject lockIcon;
+
     public bool selected;
 
     public Route route = new Route();
+
+    public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
+
+    public Color BackgroundColor
+    {
+        get
+        {
+            if (elementType == Enums.ElementType.Tile)
+                return GetComponent<EditorTile>().icon.color;
+            else
+                return background.color;
+        }
+        set
+        {
+            if (elementType == Enums.ElementType.Tile)
+                GetComponent<EditorTile>().icon.color = value;
+            else
+                background.color = value;
+        }
+    }
 
     public IElement Element                 { get; set; }
     public IEditor DataEditor               { get; set; }
@@ -70,8 +97,36 @@ public class SelectionElement : MonoBehaviour
     {
         GetComponent<IElement>().SetElement();
 
+        SetOverlay(elementStatus);
+
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = DataController;
+    }
+
+    public void SetOverlay(Enums.ElementStatus elementStatus)
+    {
+        switch (elementStatus)
+        {
+            case Enums.ElementStatus.Enabled:
+
+                BackgroundColor = enabledColor;
+                lockIcon.SetActive(false);
+
+                break;
+
+            case Enums.ElementStatus.Disabled:
+
+                BackgroundColor = disabledColor;
+
+                break;
+
+            case Enums.ElementStatus.Locked:
+
+                BackgroundColor = disabledColor;
+                lockIcon.SetActive(true);
+
+                break;
+        }
     }
 
     public void ActivateSelection()
@@ -106,6 +161,8 @@ public class SelectionElement : MonoBehaviour
 
         switch (route.property)
         {
+            case SelectionManager.Property.None: break;
+
             case SelectionManager.Property.Get:
 
                 var dataElement = route.data.DataElement;
@@ -135,8 +192,13 @@ public class SelectionElement : MonoBehaviour
                 EditorManager.editorManager.InitializePath(editorPath.path);
                 break;
 
-            default:
+            case SelectionManager.Property.Toggle:
+
+                DataController.ToggleElement(route.data.DataElement);
+
                 break;
+
+            default: Debug.Log("CASE MISSING"); break;
         }
     }
 
