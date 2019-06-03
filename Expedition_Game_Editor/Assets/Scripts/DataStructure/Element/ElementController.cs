@@ -44,7 +44,7 @@ public class ElementController : MonoBehaviour, IDataController
                 var resultElementData = (ElementDataElement)resultData.DataElement;
 
                 elementDataElement.id = resultElementData.id;
-                elementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
+                elementDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 
                 break;
         }

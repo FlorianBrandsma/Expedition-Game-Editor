@@ -9,10 +9,10 @@ public class PartyElementDataElement : PartyElementCore, IDataElement
     public PartyElementDataElement() : base() { }
 
     public string elementName;
-    public string objectGraphicIcon;
+    public string objectGraphicIconPath;
 
     public string originalElementName;
-    public string originalObjectGraphicIcon;
+    public string originalObjectGraphicIconPath;
 
     public override void Update()
     {
@@ -28,7 +28,7 @@ public class PartyElementDataElement : PartyElementCore, IDataElement
         base.SetOriginalValues();
 
         originalElementName = elementName;
-        originalObjectGraphicIcon = objectGraphicIcon;
+        originalObjectGraphicIconPath = objectGraphicIconPath;
 
         ClearChanges();
     }
@@ -36,7 +36,7 @@ public class PartyElementDataElement : PartyElementCore, IDataElement
     public new void GetOriginalValues()
     {
         elementName = originalElementName;
-        objectGraphicIcon = originalObjectGraphicIcon;
+        objectGraphicIconPath = originalObjectGraphicIconPath;
     }
 
     public override void ClearChanges()

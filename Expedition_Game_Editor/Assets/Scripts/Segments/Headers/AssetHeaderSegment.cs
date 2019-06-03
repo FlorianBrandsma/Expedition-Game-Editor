@@ -21,7 +21,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     private int objectGraphicId;
     private string assetName;
     private string objectGraphicPath;
-    private string objectGraphicIcon;
+    private string objectGraphicIconPath;
     #endregion
 
     #region Properties
@@ -57,7 +57,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             objectGraphicId    = value.id;
             objectGraphicPath  = value.Path;
-            objectGraphicIcon  = value.Icon;
+            objectGraphicIconPath  = value.iconPath;
 
             switch (DataEditor.Data.DataController.DataType)
             {
@@ -66,7 +66,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                     var itemData                = (ItemDataElement)DataEditor.Data.DataElement;
                     itemData.ObjectGraphicId    = value.id;
                     itemData.objectGraphicPath  = value.Path;
-                    itemData.objectGraphicIcon  = value.Icon;
+                    itemData.objectGraphicIconPath  = value.iconPath;
 
                     break;
 
@@ -75,7 +75,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                     var elementData                 = (ElementDataElement)DataEditor.Data.DataElement;
                     elementData.ObjectGraphicId     = value.id;
                     elementData.objectGraphicPath   = value.Path;
-                    elementData.objectGraphicIcon   = value.Icon;
+                    elementData.objectGraphicIconPath   = value.iconPath;
 
                     break;
             }
@@ -140,7 +140,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         objectGraphicId     = itemData.ObjectGraphicId;
         objectGraphicPath   = itemData.objectGraphicPath;
-        objectGraphicIcon   = itemData.objectGraphicIcon;
+        objectGraphicIconPath   = itemData.objectGraphicIconPath;
 
         GetComponent<ObjectProperties>().castShadow = false;
     }
@@ -155,7 +155,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         objectGraphicId     = elementData.ObjectGraphicId;
         objectGraphicPath   = elementData.objectGraphicPath;
-        objectGraphicIcon   = elementData.objectGraphicIcon;
+        objectGraphicIconPath   = elementData.objectGraphicIconPath;
 
         GetComponent<ObjectProperties>().castShadow = true;
     }
@@ -173,7 +173,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         objectGraphicDataElement.id     = objectGraphicId;
         objectGraphicDataElement.Path   = objectGraphicPath;
-        objectGraphicDataElement.Icon   = objectGraphicIcon;
+        objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
         objectGraphicDataElement.SelectionElement = selectionElement;
 

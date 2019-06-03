@@ -18,7 +18,7 @@ public class PhaseElementDataElement : PhaseElementCore, IDataElement
 
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 

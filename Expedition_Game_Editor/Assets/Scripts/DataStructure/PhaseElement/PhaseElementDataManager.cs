@@ -11,8 +11,9 @@ public class PhaseElementDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.TerrainElementData> terrainElementDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.ElementData> elementDataList;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(PhaseElementController phaseElementController)
     {
@@ -28,11 +29,13 @@ public class PhaseElementDataManager
         GetTerrainElementData();
         GetElementData();
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from phaseElementData in phaseElementDataList
                     join terrainElementData in terrainElementDataList on phaseElementData.terrainElementId equals terrainElementData.id
                     join elementData in elementDataList on terrainElementData.elementId equals elementData.id
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new PhaseElementDataElement()
                     {
                         id = phaseElementData.id,
@@ -45,7 +48,7 @@ public class PhaseElementDataManager
 
                         elementStatus = GetElementStatus(phaseElementData),
                         elementName = elementData.name,
-                        objectGraphicIcon = objectGraphicData.icon
+                        objectGraphicIcon = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -89,6 +92,11 @@ public class PhaseElementDataManager
     internal void GetObjectGraphicData()
     {
         objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     Enums.ElementStatus GetElementStatus(PhaseElementData phaseData)

@@ -53,7 +53,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         header.text = dataElement.elementName;
 
         if (properties.icon)
-            icon.texture = Resources.Load<Texture2D>(dataElement.objectGraphicIcon);
+            icon.texture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
 
         if (properties.edit)
             EditButton.route.data = data;

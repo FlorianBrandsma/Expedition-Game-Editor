@@ -8,11 +8,9 @@ namespace Source
     {
         public Route route = new Route();
 
+        [HideInInspector]
         public int id;
 
-        public string name;
-        //Don't know about that "data" variable, old
-        //public ObjectGraphicData data;
         public ObjectProperties.Pivot pivot;
 
         public CameraManager cameraManager { get; set; }

@@ -11,8 +11,9 @@ public class TaskDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.TerrainElementData> terrainElementDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.ElementData> elementDataList;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(TaskController taskController)
     {
@@ -28,11 +29,13 @@ public class TaskDataManager
         GetTerrainElementData();
         GetElementData();
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from taskData in taskDataList
                     join terrainElementData in terrainElementDataList on taskData.terrainElementId equals terrainElementData.id
                     join elementData in elementDataList on terrainElementData.elementId equals elementData.id
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new TaskDataElement()
                     {
                         id = taskData.id,
@@ -41,7 +44,7 @@ public class TaskDataManager
                         Index = taskData.index,
                         Description = taskData.description,
 
-                        objectGraphicIcon = objectGraphicData.icon
+                        objectGraphicIconPath = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -85,6 +88,11 @@ public class TaskDataManager
     internal void GetObjectGraphicData()
     {
         objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TaskData : GeneralData

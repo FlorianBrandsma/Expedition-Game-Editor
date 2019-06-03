@@ -45,7 +45,7 @@ public class PartyElementController : MonoBehaviour, IDataController
 
                 partyElementDataElement.ElementId = resultElementData.id;
                 partyElementDataElement.elementName = resultElementData.Name;
-                partyElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
+                partyElementDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 
                 break;
         }

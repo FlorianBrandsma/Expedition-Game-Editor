@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  name: 
   pivot: 2
 --- !u!114 &114000013544542766
 MonoBehaviour:
@@ -133,6 +132,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
-  name: Shortbow
+  id: 0
   pivot: 2

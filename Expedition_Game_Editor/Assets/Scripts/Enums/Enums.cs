@@ -28,6 +28,20 @@ public class Enums
         PartyElement
     }
 
+    public enum IconCategory
+    {
+        Nothing,
+        Polearm,
+        Bow,
+        Crossbow,
+        Staff,
+        Humanoid,
+        Dragonkin,
+        Goblin,
+        Sand,
+        Snow
+    }
+
     public enum ItemType
     {
         Supplies,

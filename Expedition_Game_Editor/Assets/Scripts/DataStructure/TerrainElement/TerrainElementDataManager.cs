@@ -10,8 +10,9 @@ public class TerrainElementDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.ElementData> elementDataList;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(TerrainElementController terrainElementController)
     {
@@ -39,10 +40,12 @@ public class TerrainElementDataManager
 
         GetElementData();
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from terrainElementData in terrainElementDataList
                     join elementData in elementDataList on terrainElementData.elementId equals elementData.id
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new TerrainElementDataElement()
                     {
                         id = terrainElementData.id,
@@ -52,7 +55,7 @@ public class TerrainElementDataManager
                         ElementId = terrainElementData.elementId,
 
                         elementName = elementData.name,
-                        objectGraphicIcon = objectGraphicData.icon
+                        objectGraphicIconPath = iconData.path
 
                     }).OrderBy(x => x.id).ToList();
 
@@ -118,6 +121,11 @@ public class TerrainElementDataManager
     internal void GetObjectGraphicData()
     {
         objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TerrainElementData : GeneralData

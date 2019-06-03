@@ -8,14 +8,14 @@ public class ItemDataElement : ItemCore, IDataElement
     public ItemDataElement() : base() { }
 
     public string objectGraphicPath;
-    public string objectGraphicIcon;
+    public string objectGraphicIconPath;
 
     public string originalObjectGraphicPath;
-    public string originalObjectGraphicIcon;
+    public string originalObjectGraphicIconPath;
 
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 
@@ -27,7 +27,7 @@ public class ItemDataElement : ItemCore, IDataElement
         base.SetOriginalValues();
 
         originalObjectGraphicPath = objectGraphicPath;
-        originalObjectGraphicIcon = objectGraphicIcon;
+        originalObjectGraphicIconPath = objectGraphicIconPath;
         
         ClearChanges();
     }
@@ -35,7 +35,7 @@ public class ItemDataElement : ItemCore, IDataElement
     public new void GetOriginalValues()
     {
         objectGraphicPath = originalObjectGraphicPath;
-        objectGraphicIcon = originalObjectGraphicIcon;
+        objectGraphicIconPath = originalObjectGraphicIconPath;
     }
 
     public override void ClearChanges()

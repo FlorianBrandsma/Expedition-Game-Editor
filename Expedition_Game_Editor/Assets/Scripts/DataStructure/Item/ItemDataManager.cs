@@ -8,7 +8,8 @@ public class ItemDataManager
     private ItemController itemController;
     private List<ItemData> itemDataList;
 
-    private List<DataManager.ObjectGraphicData> objectGraphicData_list;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     private DataManager dataManager = new DataManager();
 
@@ -23,9 +24,11 @@ public class ItemDataManager
 
         GetItemData(searchItem);
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from itemData in itemDataList
-                    join objectGraphicData in objectGraphicData_list on itemData.objectId equals objectGraphicData.id
+                    join objectGraphicData in objectGraphicDataList on itemData.objectId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ItemDataElement()
                     {
                         id      = itemData.id,
@@ -37,7 +40,7 @@ public class ItemDataManager
                         Name    = itemData.name,
 
                         objectGraphicPath   = objectGraphicData.path,
-                        objectGraphicIcon   = objectGraphicData.icon
+                        objectGraphicIconPath   = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -71,13 +74,17 @@ public class ItemDataManager
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicData_list = dataManager.GetObjectGraphicData(itemDataList.Select(x => x.objectId).Distinct().ToList(), true);
+        objectGraphicDataList = dataManager.GetObjectGraphicData(itemDataList.Select(x => x.objectId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class ItemData : GeneralData
     {
         public int type;
-        public int index;
         public string name;
         public int objectId;
     }

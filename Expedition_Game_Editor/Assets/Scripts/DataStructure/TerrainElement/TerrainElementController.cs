@@ -45,7 +45,7 @@ public class TerrainElementController : MonoBehaviour, IDataController
 
                 terrainElementDataElement.ElementId = resultElementData.id;
                 terrainElementDataElement.elementName = resultElementData.Name;
-                terrainElementDataElement.objectGraphicIcon = resultElementData.objectGraphicIcon;
+                terrainElementDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 
                 break;
         }

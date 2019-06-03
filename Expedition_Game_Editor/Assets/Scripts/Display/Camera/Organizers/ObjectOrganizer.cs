@@ -34,10 +34,12 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         foreach (IDataElement data in list)
         {
             var objectGraphicData = (ObjectGraphicDataElement)data;
-
-            ObjectGraphic graphicPrefab = Resources.Load<ObjectGraphic>("Objects/" + (objectGraphicData.Path));
+            
+            ObjectGraphic graphicPrefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
 
             if (graphicPrefab == null) continue;
+
+            graphicPrefab.id = objectGraphicData.id;
 
             ObjectGraphic graphic = cameraManager.SpawnGraphic(graphicList, graphicPrefab);
             cameraManager.graphicList.Add(graphic);

@@ -72,7 +72,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
         id = taskData.id;
         index = taskData.Index;
         description = taskData.Description;
-        objectGraphicIcon = taskData.objectGraphicIcon;
+        objectGraphicIcon = taskData.objectGraphicIconPath;
     }
 
     public void OpenSegment()

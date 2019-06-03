@@ -2000,8 +2000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 10
-  name: Ranger
+  id: 13
   pivot: 3
 --- !u!137 &137000013863110462
 SkinnedMeshRenderer:

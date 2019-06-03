@@ -38,7 +38,7 @@ GameObject:
   - 4: {fileID: 4000011243959974}
   - 114: {fileID: 114000011511681712}
   m_Layer: 10
-  m_Name: MightyPolearm
+  m_Name: Mighty Polearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
-  name: Mighty Polearm
+  id: 0
   pivot: 2

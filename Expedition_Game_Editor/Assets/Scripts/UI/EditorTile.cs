@@ -37,9 +37,9 @@ public class EditorTile : MonoBehaviour, IElement
         var dataElement = (ElementDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIcon;
+            iconPath = dataElement.objectGraphicIconPath;
         else
-            iconPath = dataElement.originalObjectGraphicIcon;
+            iconPath = dataElement.originalObjectGraphicIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
@@ -85,9 +85,9 @@ public class EditorTile : MonoBehaviour, IElement
         var dataElement = (ObjectGraphicDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.Icon;
+            iconPath = dataElement.iconPath;
         else
-            iconPath = dataElement.originalIcon;
+            iconPath = dataElement.originalIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
@@ -97,9 +97,9 @@ public class EditorTile : MonoBehaviour, IElement
         var dataElement = (TerrainElementDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIcon;
+            iconPath = dataElement.objectGraphicIconPath;
         else
-            iconPath = dataElement.originalObjectGraphicIcon;
+            iconPath = dataElement.originalObjectGraphicIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

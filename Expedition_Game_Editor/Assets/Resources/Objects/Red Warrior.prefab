@@ -836,7 +836,7 @@ GameObject:
   - 4: {fileID: 4000010027762900}
   - 114: {fileID: 114000013500638938}
   m_Layer: 10
-  m_Name: Warrior
+  m_Name: Red Warrior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1916,8 +1916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 9
-  name: Red Warrior
+  id: 10
   pivot: 3
 --- !u!137 &137000011199564968
 SkinnedMeshRenderer:

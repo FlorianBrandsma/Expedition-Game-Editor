@@ -9,10 +9,10 @@ public class TerrainElementDataElement : TerrainElementCore, IDataElement
     public TerrainElementDataElement() : base() { }
 
     public string elementName;
-    public string objectGraphicIcon;
+    public string objectGraphicIconPath;
 
     public string originalElementName;
-    public string originalObjectGraphicIcon;
+    public string originalObjectGraphicIconPath;
 
     public override void Update()
     {
@@ -28,7 +28,7 @@ public class TerrainElementDataElement : TerrainElementCore, IDataElement
         base.SetOriginalValues();
 
         originalElementName = elementName;
-        originalObjectGraphicIcon = objectGraphicIcon;
+        originalObjectGraphicIconPath = objectGraphicIconPath;
 
         ClearChanges();
     }
@@ -36,7 +36,7 @@ public class TerrainElementDataElement : TerrainElementCore, IDataElement
     public new void GetOriginalValues()
     {
         elementName = originalElementName;
-        objectGraphicIcon = originalObjectGraphicIcon;
+        objectGraphicIconPath = originalObjectGraphicIconPath;
     }
 
     public override void ClearChanges()

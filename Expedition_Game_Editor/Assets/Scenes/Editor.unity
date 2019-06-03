@@ -4272,7 +4272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementType: 1
   referenceArea: {fileID: 1079844675}
-  icon: 0
+  icon: 1
   constantHeight: 0
   zigzag: 0
   edit: 0
@@ -7110,7 +7110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementType: 1
   referenceArea: {fileID: 1079844675}
-  icon: 0
+  icon: 1
   constantHeight: 0
   zigzag: 0
   edit: 0
@@ -17855,7 +17855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementType: 1
   referenceArea: {fileID: 1079844675}
-  icon: 0
+  icon: 1
   constantHeight: 0
   zigzag: 0
   edit: 0
@@ -30555,7 +30555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementType: 1
   referenceArea: {fileID: 1367463358}
-  icon: 0
+  icon: 1
   constantHeight: 0
   zigzag: 0
   edit: 0
@@ -45945,7 +45945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementType: 1
   referenceArea: {fileID: 1079844675}
-  icon: 0
+  icon: 1
   constantHeight: 0
   zigzag: 0
   edit: 0

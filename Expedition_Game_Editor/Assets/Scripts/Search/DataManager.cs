@@ -6,6 +6,27 @@ public class DataManager
 {
     #region Functions
 
+    public List<IconData> GetIconData(List<int> idList, bool searchById = false)
+    {
+        List<IconData> dataList = new List<IconData>();
+
+        foreach (Fixtures.Icon icon in Fixtures.iconList)
+        {
+            if (searchById && !idList.Contains(icon.id)) continue;
+
+            var data = new IconData();
+
+            data.id = icon.id;
+
+            data.category = icon.category;
+            data.path = icon.path;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<ObjectGraphicData> GetObjectGraphicData(List<int> idList, bool searchById = false)
     {
         List<ObjectGraphicData> dataList = new List<ObjectGraphicData>();
@@ -20,7 +41,7 @@ public class DataManager
 
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
-            data.icon = objectGraphic.icon;
+            data.iconId = objectGraphic.iconId;
 
             dataList.Add(data);
         }
@@ -165,11 +186,17 @@ public class DataManager
 
     #region Classes
 
+    public class IconData : GeneralData
+    {
+        public int category;
+        public string path;
+    }
+
     public class ObjectGraphicData : GeneralData
     {
+        public int iconId;
         public string name;
         public string path;
-        public string icon;
     }
 
     public class ElementData : GeneralData

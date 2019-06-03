@@ -256,12 +256,12 @@ public class EditorPanel : MonoBehaviour, IElement
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.elementName;
-            iconPath    = dataElement.objectGraphicIcon;
+            iconPath    = dataElement.objectGraphicIconPath;
 
         } else {
 
             header      = dataElement.originalElementName;
-            iconPath    = dataElement.originalObjectGraphicIcon;
+            iconPath    = dataElement.originalObjectGraphicIconPath;
         }
 
         idText.text     = dataElement.id.ToString();
@@ -282,12 +282,12 @@ public class EditorPanel : MonoBehaviour, IElement
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header = dataElement.elementName;
-            iconPath = dataElement.objectGraphicIcon;
+            iconPath = dataElement.objectGraphicIconPath;
 
         } else {
 
             header = dataElement.originalElementName;
-            iconPath = dataElement.originalObjectGraphicIcon;
+            iconPath = dataElement.originalObjectGraphicIconPath;
         }
 
         idText.text = dataElement.id.ToString();
@@ -350,12 +350,12 @@ public class EditorPanel : MonoBehaviour, IElement
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
-            iconPath    = dataElement.Icon;
+            iconPath    = dataElement.iconPath;
 
         } else {
 
             header      = dataElement.originalName;
-            iconPath    = dataElement.originalIcon;
+            iconPath    = dataElement.originalIconPath;
         }
 
         idText.text     = dataElement.id.ToString();
@@ -371,12 +371,12 @@ public class EditorPanel : MonoBehaviour, IElement
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
-            iconPath    = dataElement.objectGraphicIcon;
+            iconPath    = dataElement.objectGraphicIconPath;
 
         } else {
 
             header      = dataElement.originalName;
-            iconPath    = dataElement.originalObjectGraphicIcon;
+            iconPath    = dataElement.originalObjectGraphicIconPath;
         }
 
         idText.text     = dataElement.id.ToString();
@@ -392,12 +392,12 @@ public class EditorPanel : MonoBehaviour, IElement
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
-            iconPath    = dataElement.objectGraphicIcon;
+            iconPath    = dataElement.objectGraphicIconPath;
 
         } else {
 
             header      = dataElement.originalName;
-            iconPath    = dataElement.originalObjectGraphicIcon;
+            iconPath    = dataElement.originalObjectGraphicIconPath;
         }
 
         idText.text     = dataElement.id.ToString();

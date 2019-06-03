@@ -3,23 +3,23 @@ using System.Collections;
 
 public class ObjectGraphicCore : GeneralData
 {
+    private int iconId;
     private string name;
     private string path;
-    private string icon;
 
+    public int originalIconId;
     public string originalName;
     public string originalPath;
-    public string originalIcon;
 
+    private bool changedIconId;
     private bool changedName;
     private bool changedPath;
-    private bool changedIcon;
-
+    
     public bool Changed
     {
         get
         {
-            return changedName || changedPath || changedIcon;
+            return changedName || changedPath || changedIconId;
         }
     }
 
@@ -51,16 +51,16 @@ public class ObjectGraphicCore : GeneralData
         }
     }
 
-    public string Icon
+    public int IconId
     {
-        get { return icon; }
+        get { return iconId; }
         set
         {
-            if (value == icon) return;
+            if (value == iconId) return;
 
-            changedIcon = (value != originalIcon);
+            changedIconId = (value != originalIconId);
 
-            icon = value;
+            iconId = value;
         }
     }
 
@@ -73,36 +73,29 @@ public class ObjectGraphicCore : GeneralData
 
     }
 
-    public void Update()
-    {
-        if (!Changed) return;
+    public virtual void Update() { }
 
-        SetOriginalValues();
-    }
-
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalName = name;
         originalPath = path;
-        originalIcon = icon;
-
-        ClearChanges();
+        originalIconId = iconId;
     }
 
     public void GetOriginalValues()
     {
         name = originalName;
         path = originalPath;
-        icon = originalIcon;
+        iconId = originalIconId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
         changedName = false;
         changedPath = false;
-        changedIcon = false;
+        changedIconId = false;
     }
 
     public void Delete()

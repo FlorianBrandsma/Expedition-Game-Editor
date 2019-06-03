@@ -10,8 +10,9 @@ public class PartyElementDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.ElementData> elementDataList;
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(PartyElementController partyElementController)
     {
@@ -34,10 +35,12 @@ public class PartyElementDataManager
 
         GetElementData();
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from partyElementData in partyElementDataList
                     join elementData in elementDataList on partyElementData.elementId equals elementData.id
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new PartyElementDataElement()
                     {
                         id = partyElementData.id,
@@ -47,7 +50,7 @@ public class PartyElementDataManager
                         ElementId = partyElementData.elementId,
 
                         elementName = elementData.name,
-                        objectGraphicIcon = objectGraphicData.icon
+                        objectGraphicIconPath = iconData.path
 
                     }).OrderBy(x => x.id).ToList();
 
@@ -84,6 +87,11 @@ public class PartyElementDataManager
     internal void GetObjectGraphicData()
     {
         objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class PartyElementData : GeneralData

@@ -29,11 +29,10 @@ static public class Fixtures
     static public int baseTerrainTiles = 25;
     static public int baseTerrainObjects = 5;
 
-
+    static public List<Icon> iconList = new List<Icon>();
+    static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
     static public List<Item> itemList = new List<Item>();
     static public List<Element> elementList = new List<Element>();
-    static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
-    static public List<Icon> iconList = new List<Icon>();
     static public List<Region> regionList = new List<Region>();
     static public List<Chapter> chapterList = new List<Chapter>();
     static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
@@ -76,13 +75,14 @@ static public class Fixtures
 
     public class ObjectGraphic : GeneralData
     {
+        public int iconId;
         public string name;
-        public string path;
-        public string icon;
+        public string path;   
     }
 
     public class Icon : GeneralData
     {
+        public int category;
         public string path;
     }
 
@@ -149,6 +149,7 @@ static public class Fixtures
 
     static public void LoadFixtures()
     {
+        LoadIcons();
         LoadObjectGraphics();
         LoadItems();
         LoadElements();
@@ -165,27 +166,86 @@ static public class Fixtures
         LoadTasks();
     }
 
+    #region Icons
+
+    static public void LoadIcons()
+    {
+        /*01*/CreateIcon("Textures/Icons/Objects/Nothing",          Enums.IconCategory.Nothing);
+        /*02*/CreateIcon("Textures/Icons/Objects/Polearm",          Enums.IconCategory.Polearm);
+        /*03*/CreateIcon("Textures/Icons/Objects/MightyPolearm",    Enums.IconCategory.Polearm);
+        /*04*/CreateIcon("Textures/Icons/Objects/Shortbow",         Enums.IconCategory.Bow);
+        /*05*/CreateIcon("Textures/Icons/Objects/Longbow",          Enums.IconCategory.Bow);
+        /*06*/CreateIcon("Textures/Icons/Objects/Crossbow",         Enums.IconCategory.Crossbow);
+        /*07*/CreateIcon("Textures/Icons/Objects/StrongCrossbow",   Enums.IconCategory.Crossbow);
+        /*08*/CreateIcon("Textures/Icons/Objects/Staff",            Enums.IconCategory.Staff);
+        /*09*/CreateIcon("Textures/Icons/Objects/MenacingStaff",    Enums.IconCategory.Staff);
+        /*10*/CreateIcon("Textures/Icons/Objects/Warrior",          Enums.IconCategory.Humanoid);
+        /*11*/CreateIcon("Textures/Icons/Objects/Blue",             Enums.IconCategory.Humanoid);
+        /*12*/CreateIcon("Textures/Icons/Objects/Green",            Enums.IconCategory.Humanoid);
+        /*13*/CreateIcon("Textures/Icons/Objects/Ranger",           Enums.IconCategory.Humanoid);
+        /*14*/CreateIcon("Textures/Icons/Objects/Mage",             Enums.IconCategory.Humanoid);
+        /*15*/CreateIcon("Textures/Icons/Objects/Drake",            Enums.IconCategory.Dragonkin);
+        /*16*/CreateIcon("Textures/Icons/Objects/Skull",            Enums.IconCategory.Dragonkin);
+        /*17*/CreateIcon("Textures/Icons/Objects/Goblin",           Enums.IconCategory.Goblin);
+
+        for(int i = 0; i < 9; i++)
+            CreateIcon("Textures/Tiles/Sand/" + i, Enums.IconCategory.Sand);
+
+        for (int i = 0; i < 9; i++)
+            CreateIcon("Textures/Tiles/Snow/" + i, Enums.IconCategory.Snow);
+    }
+
+    static public void CreateIcon(string path, Enums.IconCategory category)
+    {
+        var icon = new Icon();
+
+        int id = iconList.Count > 0 ? (iconList[iconList.Count - 1].id + 1) : 1;
+
+        icon.id = id;
+        icon.category = (int)category;
+        icon.path = path;
+
+        iconList.Add(icon);
+    }
+
+    #endregion
+
+    #region ObjectGraphics
+
     static public void LoadObjectGraphics()
     {
-        string[] objectNames = new string[] { "Nothing", "Polearm","MightyPolearm","Crossbow","StrongCrossbow","Shortbow","Longbow","Staff","MenacingStaff", "Warrior","Ranger","Mage", "Blue", "Green", "Drake" };
-        //                                        0         1           2               3           4             5          6          7       8                9        10      11      12       13       14
-        for (int id = 1; id <= objectNames.Length; id++)
-        {
-            var objectGraphic = new ObjectGraphic();
-
-            objectGraphic.id = id;
-
-            string path = objectNames[id - 1];
-
-            var objectResource = Resources.Load<Source.ObjectGraphic>("Objects/" + path);
-
-            objectGraphic.name = objectResource.name;
-            objectGraphic.path = path;
-            objectGraphic.icon = "Textures/Icons/Objects/" + path;
-
-            objectGraphicList.Add(objectGraphic);
-        }
+        /*01*/CreateObjectGraphic("Nothing",        1);
+        /*02*/CreateObjectGraphic("Polearm",        2);
+        /*03*/CreateObjectGraphic("Mighty Polearm", 3);
+        /*04*/CreateObjectGraphic("Shortbow",       4);
+        /*05*/CreateObjectGraphic("Longbow",        5);
+        /*06*/CreateObjectGraphic("Crossbow",       6);
+        /*07*/CreateObjectGraphic("Strong Crossbow",7);
+        /*08*/CreateObjectGraphic("Staff",          8);
+        /*09*/CreateObjectGraphic("Menacing Staff", 9);
+        /*10*/CreateObjectGraphic("Red Warrior",    10);
+        /*11*/CreateObjectGraphic("Blue Warrior",   11);
+        /*12*/CreateObjectGraphic("Green Warrior",  12);
+        /*13*/CreateObjectGraphic("Ranger",         13);
+        /*14*/CreateObjectGraphic("Mage",           14);
+        /*15*/CreateObjectGraphic("Drake",          15);
     }
+
+    static public void CreateObjectGraphic(string name, int iconId)
+    {
+        var objectGraphic = new ObjectGraphic();
+
+        int id = objectGraphicList.Count > 0 ? (objectGraphicList[objectGraphicList.Count - 1].id + 1) : 1;
+
+        objectGraphic.id = id;
+        objectGraphic.iconId = iconId;
+        objectGraphic.name = name;
+        objectGraphic.path = "Objects/" + name;
+
+        objectGraphicList.Add(objectGraphic);
+    }
+
+    #endregion
 
     static public void LoadItems()
     {

@@ -9,6 +9,7 @@ public class ElementDataManager
 
     private List<ElementData> elementDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     private DataManager dataManager = new DataManager();
 
@@ -29,9 +30,11 @@ public class ElementDataManager
         }
 
         GetObjectGraphicData();
+        GetIconData();
 
         var list = (from elementData in elementDataList
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ElementDataElement()
                     {
                         id      = elementData.id,
@@ -42,7 +45,7 @@ public class ElementDataManager
                         Name    = elementData.name,
 
                         objectGraphicPath = objectGraphicData.path,
-                        objectGraphicIcon = objectGraphicData.icon
+                        objectGraphicIconPath = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -74,7 +77,12 @@ public class ElementDataManager
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), false);
+        objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class ElementData : GeneralData
