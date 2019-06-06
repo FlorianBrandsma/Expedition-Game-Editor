@@ -106,12 +106,12 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     {
         switch (DataEditor.Data.DataController.DataType)
         {
-            case Enums.DataType.Chapter: InitializeChapterData(); break;
-            case Enums.DataType.Phase: InitializePhaseData(); break;
-            case Enums.DataType.Quest: InitializeQuestData(); break;
-            case Enums.DataType.Objective: InitializeObjectiveData(); break;
-            case Enums.DataType.Region: InitializeRegionData(); break;
-            case Enums.DataType.Terrain: InitializeTerrainData(); break;
+            case Enums.DataType.Chapter:    InitializeChapterData();    break;
+            case Enums.DataType.Phase:      InitializePhaseData();      break;
+            case Enums.DataType.Quest:      InitializeQuestData();      break;
+            case Enums.DataType.Objective:  InitializeObjectiveData();  break;
+            case Enums.DataType.Region:     InitializeRegionData();     break;
+            case Enums.DataType.Terrain:    InitializeTerrainData();    break;
             default: Debug.Log("CASE MISSING"); break;
         }
     }

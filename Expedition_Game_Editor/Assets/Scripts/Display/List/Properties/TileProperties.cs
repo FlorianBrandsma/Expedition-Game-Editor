@@ -4,12 +4,7 @@
 
 public class TileProperties : MonoBehaviour, IProperties
 {
-    public Vector2 grid_size;
-
-    public void Copy(TileProperties new_properties)
-    {
-        grid_size = new_properties.grid_size;
-    }
+    public Vector2 GridSize { get; set; }
 
     #region IProperties
     public DisplayManager.Type Type()

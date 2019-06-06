@@ -36,8 +36,10 @@ public class ListManager : MonoBehaviour
 
     public void InitializeList(ListProperties listProperties)
     {
-        this.listProperties = listProperties;
+        if (GetComponent<IOrganizer>() != null) return;
 
+        this.listProperties = listProperties;
+        
         switch(listProperties.displayType)
         {
             case DisplayManager.Type.None:      organizer = null;                                           break;

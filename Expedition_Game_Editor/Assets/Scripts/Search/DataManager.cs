@@ -161,6 +161,23 @@ public class DataManager
         return dataList;
     }
 
+    public List<TileSetData> GetTileSetData()
+    {
+        var dataList = new List<TileSetData>();
+
+        foreach(Fixtures.TileSet tileSet in Fixtures.tileSetList)
+        {
+            var data = new TileSetData();
+
+            data.id = tileSet.id;
+            data.name = tileSet.name;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<RegionData> GetRegionData(List<int> idList, bool searchById = false)
     {
         List<RegionData> dataList = new List<RegionData>();
@@ -172,7 +189,6 @@ public class DataManager
             var data = new RegionData();
 
             data.id = element.id;
-
             data.name = element.name;
 
             dataList.Add(data);
@@ -222,6 +238,11 @@ public class DataManager
     {
         public int phaseId;
         public int terrainElementId;
+    }
+
+    public class TileSetData : GeneralData
+    {
+        public string name;
     }
 
     public class RegionData : GeneralData

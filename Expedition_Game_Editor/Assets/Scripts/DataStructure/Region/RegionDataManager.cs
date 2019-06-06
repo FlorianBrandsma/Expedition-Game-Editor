@@ -24,9 +24,14 @@ public class RegionDataManager
                     {
                         id = regionData.id,
                         table = regionData.table,
-
                         Index = regionData.index,
+
+                        ChapterRegionId = regionData.chapterRegionId,
+                        PhaseId = regionData.phaseId,
+                        TileSetId = regionData.tileSetId,
                         Name = regionData.name,
+                        RegionSize = regionData.regionSize,
+                        TerrainSize = regionData.terrainSize,
 
                         type = (int)regionController.regionType
 
@@ -49,9 +54,14 @@ public class RegionDataManager
 
             regionData.id = region.id;
             regionData.table = "Region";
-
             regionData.index = region.index;
+
+            regionData.chapterRegionId = region.chapterRegionId;
+            regionData.phaseId = region.phaseId;
+            regionData.tileSetId = region.tileSetId;
             regionData.name = region.name;
+            regionData.regionSize = region.regionSize;
+            regionData.terrainSize = region.terrainSize;
 
             regionDataList.Add(regionData);
 
@@ -61,6 +71,11 @@ public class RegionDataManager
 
     internal class RegionData : GeneralData
     {
+        public int chapterRegionId;
+        public int phaseId;
+        public int tileSetId;
         public string name;
+        public int regionSize;
+        public int terrainSize;
     }
 }

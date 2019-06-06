@@ -8,10 +8,11 @@ public class ElementDataManager
     private ElementController elementController;
 
     private List<ElementData> elementDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
 
     private DataManager dataManager = new DataManager();
+
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(ElementController elementController)
     {
@@ -39,8 +40,8 @@ public class ElementDataManager
                     {
                         id      = elementData.id,
                         table   = elementData.table,
-
                         Index   = elementData.index,
+
                         ObjectGraphicId = elementData.objectGraphicId,
                         Name    = elementData.name,
 
@@ -59,10 +60,10 @@ public class ElementDataManager
         elementDataList = new List<ElementData>();
         
         foreach(Fixtures.Element element in Fixtures.elementList)
-        { 
-            var elementData = new ElementData();
-            
+        {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(element.id)) continue;
+
+            var elementData = new ElementData();
 
             elementData.id = element.id;
             elementData.table = "Element";

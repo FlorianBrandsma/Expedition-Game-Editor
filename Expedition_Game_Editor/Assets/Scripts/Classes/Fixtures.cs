@@ -5,14 +5,16 @@ using System.Linq;
 static public class Fixtures
 {
     static public int timeFrames = 2;
-
+ 
     static public int supplies = 4;
     static public int gear = 6;
     static public int spoils = 10;
     static public int elements = 6;
     static public int objectGraphics = 15;
     static public int icons = 9;
-    static public int regions = 5;
+    static public int regions = 2;
+    static public int terrainsInRegions = 3;
+    static public int terrainTilesInTerrains = 5;
     static public int chapters = 3;
     static public int partyElementsInChapter = 1;
     static public int worldElementsInChapter = 3;
@@ -23,17 +25,19 @@ static public class Fixtures
     static public int elementsInObjective = 2;
     static public int sideTerrainElements = 1;
     static public int baseTasks = 4;
-    static public int baseTerrains = 9;
     static public int tileSets = 2;
-    static public int tiles = 20;
-    static public int baseTerrainTiles = 25;
+    static public int tilesInTileSet = 10;
     static public int baseTerrainObjects = 5;
 
     static public List<Icon> iconList = new List<Icon>();
     static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
     static public List<Item> itemList = new List<Item>();
     static public List<Element> elementList = new List<Element>();
+    static public List<TileSet> tileSetList = new List<TileSet>();
+    static public List<Tile> tileList = new List<Tile>();
     static public List<Region> regionList = new List<Region>();
+    static public List<Terrain> terrainList = new List<Terrain>();
+    static public List<TerrainTile> terrainTileList = new List<TerrainTile>();
     static public List<Chapter> chapterList = new List<Chapter>();
     static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
     static public List<Phase> phaseList = new List<Phase>();
@@ -86,10 +90,39 @@ static public class Fixtures
         public string path;
     }
 
-    public class Region : GeneralData
+    public class TileSet : GeneralData
     {
         public string name;
-        public int dimension;
+        public float tileSize;
+    }
+
+    public class Tile : GeneralData
+    {
+        public int tileSetId;
+        public int iconId;
+    }
+    
+    public class Region : GeneralData
+    {
+        public int chapterRegionId;
+        public int phaseId;
+        public int tileSetId;
+        public string name;
+        public int regionSize;
+        public int terrainSize;
+    }
+
+    public class Terrain : GeneralData
+    {
+        public int regionId;
+        public int iconId;
+        public string name;
+    }
+
+    public class TerrainTile : GeneralData
+    {
+        public int terrainId;
+        public int tileId;
     }
 
     public class Chapter : GeneralData
@@ -151,9 +184,13 @@ static public class Fixtures
     {
         LoadIcons();
         LoadObjectGraphics();
+        LoadTileSets();
+        LoadTiles();
         LoadItems();
         LoadElements();
         LoadRegions();
+        LoadTerrains();
+        LoadTerrainTiles();
         LoadChapters();
         LoadChapterPartyElements();
         LoadChapterTerrainElements();
@@ -187,15 +224,9 @@ static public class Fixtures
         /*15*/CreateIcon("Textures/Icons/Objects/Drake",            Enums.IconCategory.Dragonkin);
         /*16*/CreateIcon("Textures/Icons/Objects/Skull",            Enums.IconCategory.Dragonkin);
         /*17*/CreateIcon("Textures/Icons/Objects/Goblin",           Enums.IconCategory.Goblin);
-
-        for(int i = 0; i < 9; i++)
-            CreateIcon("Textures/Tiles/Sand/" + i, Enums.IconCategory.Sand);
-
-        for (int i = 0; i < 9; i++)
-            CreateIcon("Textures/Tiles/Snow/" + i, Enums.IconCategory.Snow);
     }
 
-    static public void CreateIcon(string path, Enums.IconCategory category)
+    static public int CreateIcon(string path, Enums.IconCategory category)
     {
         var icon = new Icon();
 
@@ -206,6 +237,8 @@ static public class Fixtures
         icon.path = path;
 
         iconList.Add(icon);
+
+        return id;
     }
 
     #endregion
@@ -246,6 +279,48 @@ static public class Fixtures
     }
 
     #endregion
+
+    static public void LoadTileSets()
+    {
+        CreateTileSet("Sand");
+        CreateTileSet("Snow");
+    }
+
+    static public void CreateTileSet(string name)
+    {
+        var tileSet = new TileSet();
+
+        int id = tileSetList.Count > 0 ? (tileSetList[tileSetList.Count - 1].id + 1) : 1;
+
+        tileSet.id = id;
+        tileSet.name = name;
+        tileSet.tileSize = 31.75f;
+
+        tileSetList.Add(tileSet);
+    }
+
+    static public void LoadTiles()
+    {
+        int index = 0;
+
+        foreach(TileSet tileSet in tileSetList)
+        {
+            for (int i = 0; i < tilesInTileSet; i++)
+            {
+                var tile = new Tile();
+
+                int id = tileList.Count > 0 ? (tileList[tileList.Count - 1].id + 1) : 1;
+
+                tile.id = id;
+                tile.tileSetId = tileSet.id;
+                tile.iconId = CreateIcon("Textures/Tiles/" + tileSet.name + "/" + i, (Enums.IconCategory)index);
+
+                tileList.Add(tile);
+            }
+
+            index++;
+        }
+    }
 
     static public void LoadItems()
     {
@@ -354,15 +429,68 @@ static public class Fixtures
         {
             var region = new Region();
 
-            int id = (i + 1);
+            int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
 
             region.id = id;
             region.table = "Region";
-
             region.index = i;
+
+            region.chapterRegionId = 0;
+            region.phaseId = 0;
+            region.tileSetId = (i % tileSetList.Count) + 1;
             region.name = "Region " + id;
+            region.regionSize = terrainsInRegions;
+            region.terrainSize = terrainTilesInTerrains;
 
             regionList.Add(region);
+        }
+    }
+
+    static public void LoadTerrains()
+    {
+        foreach(Region region in regionList)
+        {
+            for(int i = 0; i < (region.regionSize * region.regionSize); i++)
+            {
+                var terrain = new Terrain();
+
+                int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
+
+                terrain.id = id;
+                terrain.table = "Terrain";
+                terrain.index = i;
+
+                terrain.regionId = region.id;
+                terrain.iconId = 1;
+                terrain.name = "Terrain " + id;
+
+                terrainList.Add(terrain);
+            }
+        }
+    }
+
+    static public void LoadTerrainTiles()
+    {
+        foreach(Terrain terrain in terrainList)
+        {
+            var regionData = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+            var tileData = tileList.Where(x => x.tileSetId == regionData.tileSetId).ToList();
+
+            for (int i = 0; i < (regionData.terrainSize * regionData.terrainSize); i++)
+            {
+                var terrainTile = new TerrainTile();
+
+                int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
+
+                terrainTile.id = id;
+                terrainTile.table = "TerrainTile";
+                terrainTile.index = i;
+
+                terrainTile.terrainId = terrain.id;
+                terrainTile.tileId = tileData.FirstOrDefault().id;
+
+                terrainTileList.Add(terrainTile);
+            }
         }
     }
 

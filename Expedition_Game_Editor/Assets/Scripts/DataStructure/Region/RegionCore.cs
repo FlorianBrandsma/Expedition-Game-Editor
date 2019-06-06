@@ -1,21 +1,36 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class RegionCore : GeneralData
 {
+    private int chapterRegionId;
+    private int phaseId;
+    private int tileSetId;
     private string name;
+    private int regionSize;
+    private int terrainSize;
 
     public int originalIndex;
+    public int originalChapterRegionId;
+    public int originalPhaseId;
+    public int originalTileSetId;
     public string originalName;
+    public int originalRegionSize;
+    public int originalTerrainSize;
 
     private bool changedIndex;
+    private bool changedChapterRegionId;
+    private bool changedPhaseId;
+    private bool changedTileSetId;
     private bool changedName;
-
+    private bool changedRegionSize;
+    private bool changedTerrainSize;
+    
     public bool Changed
     {
         get
         {
-            return changedName;
+            return changedChapterRegionId || changedPhaseId || changedTileSetId || changedName || changedRegionSize || changedTerrainSize;
         }
     }
 
@@ -34,6 +49,45 @@ public class RegionCore : GeneralData
         }
     }
 
+    public int ChapterRegionId
+    {
+        get { return chapterRegionId; }
+        set
+        {
+            if (value == chapterRegionId) return;
+
+            changedChapterRegionId = (value != originalChapterRegionId);
+
+            chapterRegionId = value;
+        }
+    }
+
+    public int PhaseId
+    {
+        get { return phaseId; }
+        set
+        {
+            if (value == phaseId) return;
+
+            changedPhaseId = (value != originalPhaseId);
+
+            phaseId = value;
+        }
+    }
+
+    public int TileSetId
+    {
+        get { return tileSetId; }
+        set
+        {
+            if (value == tileSetId) return;
+
+            changedTileSetId = (value != originalTileSetId);
+
+            tileSetId = value;
+        }
+    }
+
     public string Name
     {
         get { return name; }
@@ -44,6 +98,32 @@ public class RegionCore : GeneralData
             changedName = (value != originalName);
 
             name = value;
+        }
+    }
+
+    public int RegionSize
+    {
+        get { return regionSize; }
+        set
+        {
+            if (value == regionSize) return;
+
+            changedRegionSize = (value != originalRegionSize);
+
+            regionSize = value;
+        }
+    }
+
+    public int TerrainSize
+    {
+        get { return terrainSize; }
+        set
+        {
+            if (value == terrainSize) return;
+
+            changedTerrainSize = (value != originalTerrainSize);
+
+            terrainSize = value;
         }
     }
 
@@ -58,16 +138,19 @@ public class RegionCore : GeneralData
 
     public void Update()
     {
-        if (!Changed) return;
+        var regionData = Fixtures.regionList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedTileSetId)
+            regionData.tileSetId = tileSetId;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
+        if (changedName)
+            regionData.name = name;
+
+        if (changedRegionSize)
+            regionData.regionSize = regionSize;
+
+        if (changedTerrainSize)
+            regionData.terrainSize = terrainSize;
 
         SetOriginalValues();
     }
@@ -83,14 +166,24 @@ public class RegionCore : GeneralData
 
     public void SetOriginalValues()
     {
+        originalChapterRegionId = chapterRegionId;
+        originalPhaseId = phaseId;
+        originalTileSetId = tileSetId;
         originalName = name;
+        originalRegionSize = regionSize;
+        originalTerrainSize = terrainSize;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
+        chapterRegionId = originalChapterRegionId;
+        phaseId = originalPhaseId;
+        tileSetId = originalTileSetId;
         name = originalName;
+        regionSize = originalRegionSize;
+        terrainSize = originalTerrainSize;
     }
 
     public void ClearChanges()
@@ -98,7 +191,12 @@ public class RegionCore : GeneralData
         GetOriginalValues();
 
         changedIndex = false;
+        changedChapterRegionId = false;
+        changedPhaseId = false;
+        changedTileSetId = false;
         changedName = false;
+        changedRegionSize = false;
+        changedTerrainSize = false;
     }
 
     public void Delete()

@@ -12,7 +12,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     public Vector2 ElementSize { get; set; }
     private Vector2 listSize;
 
-    private TileProperties properties;
+    private TileProperties tileProperties;
     private bool horizontal, vertical;
 
     private IDataController dataController;
@@ -25,11 +25,27 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetProperties()
     {
-        properties = ListManager.listProperties.GetComponent<TileProperties>();
+        tileProperties = ListManager.listProperties.GetComponent<TileProperties>();
 
         horizontal = ListManager.listProperties.horizontal;
         vertical = ListManager.listProperties.vertical;
+
+        switch (dataController.DataType)
+        {
+            case Enums.DataType.Terrain:    SetTerrainGridSize();   break;
+            case Enums.DataType.Tile:       SetTileGridSize();      break;
+            default: Debug.Log(dataController.DataType + " CASE MISSING"); break;
+        }
     }
+
+    private void SetTerrainGridSize()
+    {
+        var regionData = (RegionDataElement)ListManager.listProperties.SegmentController.path.FindLastRoute("Region").data.DataElement;
+
+        tileProperties.GridSize = new Vector2(regionData.RegionSize, regionData.RegionSize);
+    }
+
+    private void SetTileGridSize() { }
 
     public void SetElementSize()
     {
@@ -38,26 +54,26 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public Vector2 GetListSize(int elementCount, bool exact)
     {
-        Vector2 new_size;
+        Vector2 gridSize;
 
         if(horizontal && vertical)
         {
-            new_size = new Vector2( horizontal  ? properties.grid_size.x * ElementSize.x : ElementSize.x,
-                                    vertical    ? properties.grid_size.y * ElementSize.y : ElementSize.y);
+            gridSize = new Vector2( horizontal  ? tileProperties.GridSize.x * ElementSize.x : ElementSize.x,
+                                    vertical    ? tileProperties.GridSize.y * ElementSize.y : ElementSize.y);
         } else {
 
-            int list_width  = GetListWidth(elementCount);
-            int list_height = GetListHeight(elementCount);
+            int listWidth  = GetListWidth(elementCount);
+            int listHeight = GetListHeight(elementCount);
 
             //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
-            new_size = new Vector2( horizontal  ? 0                                                                 : list_width  * ElementSize.x,
-                                    vertical    ? (Mathf.Ceil(elementCount / (float)list_width) * ElementSize.y)  : list_height * ElementSize.y);
+            gridSize = new Vector2( horizontal  ? 0                                                              : listWidth  * ElementSize.x,
+                                    vertical    ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y)  : listHeight * ElementSize.y);
         }
 
         if (exact)
-            return new Vector2(new_size.x - ListManager.rectTransform.rect.width, new_size.y);
+            return new Vector2(gridSize.x - ListManager.rectTransform.rect.width, gridSize.y);
         else
-            return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
+            return new Vector2(gridSize.x / ElementSize.x, gridSize.y / ElementSize.y);
     }
 
     public int GetListWidth(int elementCount)

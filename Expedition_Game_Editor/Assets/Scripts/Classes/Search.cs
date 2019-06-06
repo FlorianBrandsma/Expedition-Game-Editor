@@ -27,6 +27,8 @@ public class Search
 
     public class Tile : SearchParameters
     {
+        public List<int> tileSetId = new List<int>();
+
         public enum RequestType
         {
             Custom
@@ -205,8 +207,9 @@ public class Search
     public class Terrain : SearchParameters
     {
         public List<int> index = new List<int>();
+        public List<int> regionId = new List<int>();
         public List<string> name = new List<string>();
-
+        
         public enum RequestType
         {
             Custom

@@ -34,6 +34,8 @@ public class ListProperties : MonoBehaviour, IDisplay
         }
     }
 
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     private void OpenList()
     { 
         InitializeProperties();

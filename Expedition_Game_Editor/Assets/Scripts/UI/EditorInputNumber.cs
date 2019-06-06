@@ -3,29 +3,36 @@ using UnityEngine.UI;
 
 public class EditorInputNumber : MonoBehaviour
 {
+    private int inputValue;
+
     public UnitManager.Unit unit;
 
     public InputField inputField;
 
-    public int input = 0;
-
+    public bool enableLimit;
     public int min, max;
-    private bool limit_enabled;
+
+    public int Value
+    {
+        get { return inputValue; }
+        set
+        {
+            inputValue = value;
+            inputField.text = inputValue.ToString();
+        }
+    }
 
     private void Awake()
     {
-        if (max > 0)
-            limit_enabled = true;
-
-        if (limit_enabled)
+        if (enableLimit)
             inputField.placeholder.GetComponent<Text>().text = min + "-" + max;
     }
 
     public void ChangeValue(int value)
     {
-        input += value;
+        inputValue += value;
 
-        inputField.text = input.ToString();
+        inputField.text = inputValue.ToString();
 
         OnValueChanged();
     }
@@ -34,11 +41,11 @@ public class EditorInputNumber : MonoBehaviour
     {
         if (inputField.text.Length == 0) return;
 
-        if(limit_enabled)
-        {
-            //Allow writing negative numbers
-            if (inputField.text.Length == 1 && inputField.text == "-") return;
+        //Allow writing negative numbers
+        if (inputField.text.Length == 1 && inputField.text == "-") return;
 
+        if (enableLimit)
+        {
             if (int.Parse(inputField.text) < min)
                 inputField.text = min.ToString();
 
@@ -46,14 +53,14 @@ public class EditorInputNumber : MonoBehaviour
                 inputField.text = max.ToString();
         }
 
-        input = int.Parse(inputField.text);
+        inputValue = int.Parse(inputField.text);
     }
 
     public void OnEndEdit()
     {
         if (inputField.text.Length == 0) return;
 
-        input = int.Parse(inputField.text);
-        inputField.text = input.ToString();
+        inputValue = int.Parse(inputField.text);
+        inputField.text = inputValue.ToString();
     }
 }

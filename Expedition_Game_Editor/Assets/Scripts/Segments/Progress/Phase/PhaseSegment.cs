@@ -8,16 +8,6 @@ public class PhaseSegment : MonoBehaviour, ISegment
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.pathController.dataEditor;
@@ -45,8 +35,8 @@ public class PhaseSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
+    public void ApplySegment() { }
+    public void CloseSegment() { }
 
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

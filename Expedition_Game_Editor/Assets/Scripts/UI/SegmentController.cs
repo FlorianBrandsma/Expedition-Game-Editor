@@ -9,7 +9,7 @@ public class SegmentController : MonoBehaviour
 
     public bool loadOnce;
 
-    public bool disableToggle;
+    public bool enableToggle;
     public Toggle toggle;
     public string segmentName;
     public Text header;
@@ -48,15 +48,14 @@ public class SegmentController : MonoBehaviour
 
         header.text = segmentName;
 
-        if (disableToggle)
-            DisableToggle();
+        if (enableToggle)
+            EnableToggle();
     }
 
-    private void DisableToggle()
+    private void EnableToggle()
     {
-        toggle.interactable = false;
-        toggle.isOn = true;
-        toggle.targetGraphic.color = Color.gray;
+        toggle.interactable = true;
+        toggle.targetGraphic.color = Color.white;
     }
 
     public void ActivateSegment()

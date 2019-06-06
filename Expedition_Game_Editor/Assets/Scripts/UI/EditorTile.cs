@@ -49,9 +49,9 @@ public class EditorTile : MonoBehaviour, IElement
         var dataElement = (TerrainDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIcon;
+            iconPath = dataElement.iconPath;
         else
-            iconPath = dataElement.originalObjectGraphicIcon;
+            iconPath = dataElement.originalIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

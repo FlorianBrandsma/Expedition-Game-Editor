@@ -208,14 +208,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b221e43e1408346449190ae95b53cb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auto_load: 1
-  dataController_parent: {fileID: 0}
-  disable_toggle: 1
+  dataControllerParent: {fileID: 0}
+  loadOnce: 0
+  enableToggle: 0
   toggle: {fileID: 114000014088138430}
-  segment_name: 
+  segmentName: 
   header: {fileID: 114000011368750460}
   content: {fileID: 1000012956841928}
-  sibling_segments: []
+  segmentGroup: []
+  siblingSegment: {fileID: 0}
+  editorController: {fileID: 0}
+  loaded: 0
 --- !u!114 &114000013440364948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,7 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -304,7 +307,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114000013684356068}
   toggleTransition: 0
   graphic: {fileID: 114000013684356068}

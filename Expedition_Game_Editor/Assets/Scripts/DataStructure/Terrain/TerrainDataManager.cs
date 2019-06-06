@@ -8,6 +8,10 @@ public class TerrainDataManager
     private TerrainController terrainController;
     private List<TerrainData> terrainDataList;
 
+    private DataManager dataManager = new DataManager();
+
+    private List<DataManager.IconData> iconDataList;
+
     public void InitializeManager(TerrainController terrainController)
     {
         this.terrainController = terrainController;
@@ -18,14 +22,20 @@ public class TerrainDataManager
         var objectiveSearchData = searchParameters.Cast<Search.Terrain>().FirstOrDefault();
 
         GetTerrainData(objectiveSearchData);
+        GetIconData();
 
         var list = (from terrainData in terrainDataList
+                    join iconData in iconDataList on terrainData.iconId equals iconData.id
                     select new TerrainDataElement()
                     {
                         id = terrainData.id,
                         table = terrainData.table,
+                        index = terrainData.index,
 
-                        objectGraphicIcon = "Textures/Icons/Objects/Nothing"
+                        RegionId = terrainData.regionId,
+                        IconId = terrainData.iconId,
+
+                        iconPath = iconData.path
 
                     }).ToList();
 
@@ -38,29 +48,33 @@ public class TerrainDataManager
     {
         terrainDataList = new List<TerrainData>();
 
-        int index = 0;
-
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
+
             var terrainData = new TerrainData();
 
-            int id = (i + 1);
-
-            terrainData.id = id;
+            terrainData.id = terrain.id;
             terrainData.table = "Terrain";
-            terrainData.index = index;
+            terrainData.index = terrain.index;
 
-            terrainData.name = "Terrain " + id;
+            terrainData.regionId = terrain.regionId;
+            terrainData.iconId = terrain.iconId;
+            terrainData.name = terrain.name;
 
             terrainDataList.Add(terrainData);
-
-            index++;
         }
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(terrainDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TerrainData : GeneralData
     {
-        public int index;
+        public int regionId;
+        public int iconId;
         public string name;
     }
 }

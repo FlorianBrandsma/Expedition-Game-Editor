@@ -3,43 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TileController : MonoBehaviour//, IDataController
+public class TileController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.Element searchParameters;
 
-    private TileDataManager tileDataManager             = new TileDataManager();
+    public TileDataManager tileDataManager = new TileDataManager();
 
-    public SearchParameters searchParameters;
+    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public Enums.DataType DataType { get { return Enums.DataType.Tile; } }
+    public List<IDataElement> DataList { get; set; }
 
-    public Enums.DataType DataType              { get { return Enums.DataType.Tile; } }
-    public ICollection DataList                 { get; set; }
-
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.Element>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        tileDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = tileDataManager.GetTileDataElements(this);
-
-        var tileDataElements = DataList.Cast<TileDataElement>();
-
-        //tileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //tileDataElements[0].Update();
+        DataList = tileDataManager.GetTileDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
-    {
+    public void SetData(SelectionElement searchElement, Data resultData) { }
 
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

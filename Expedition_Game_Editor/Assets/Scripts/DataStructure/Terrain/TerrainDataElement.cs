@@ -8,9 +8,9 @@ public class TerrainDataElement : TerrainCore, IDataElement
 
     public TerrainDataElement() : base() { }
 
-    public string objectGraphicIcon;
+    public string iconPath;
 
-    public string originalObjectGraphicIcon;
+    public string originalIconPath;
 
     public override void Update()
     {
@@ -25,14 +25,14 @@ public class TerrainDataElement : TerrainCore, IDataElement
     {
         base.SetOriginalValues();
 
-        originalObjectGraphicIcon = objectGraphicIcon;
+        originalIconPath = iconPath;
 
         ClearChanges();
     }
 
     public new void GetOriginalValues()
     {
-        objectGraphicIcon = originalObjectGraphicIcon;
+        iconPath = originalIconPath;
     }
 
     public override void ClearChanges()

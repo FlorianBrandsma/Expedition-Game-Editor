@@ -21,7 +21,6 @@ public class Enums
         ChapterRegion,
         Phase,
         PhaseElement,
-        PhaseRegion,
         Quest,
         Objective,
         Task,

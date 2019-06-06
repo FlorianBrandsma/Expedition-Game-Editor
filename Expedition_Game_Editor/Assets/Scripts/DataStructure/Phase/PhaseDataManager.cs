@@ -44,15 +44,14 @@ public class PhaseDataManager
 
         foreach(Fixtures.Phase phase in Fixtures.phaseList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phase.id)) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
+
             var phaseData = new PhaseData();
 
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phase.id)) continue;
-            
             phaseData.id = phase.id;
             phaseData.table = "Phase";
             phaseData.index = phase.index;
-
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
 
             phaseData.chapterId = phase.chapterId;
             phaseData.name = phase.name;
