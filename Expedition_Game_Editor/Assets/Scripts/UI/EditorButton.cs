@@ -14,7 +14,7 @@ public class EditorButton : MonoBehaviour, IElement
     {
         //properties = element.ListManager.listProperties.GetComponent<ButtonProperties>();
 
-        icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + element.route.property.ToString());
+        icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + element.selectionProperty.ToString());
     }
 
     public void SetElement()

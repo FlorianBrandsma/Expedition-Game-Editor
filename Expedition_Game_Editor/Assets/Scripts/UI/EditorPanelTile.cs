@@ -26,7 +26,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
         if (properties.edit)
         {
-            EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
+            EditButton.InitializeElement(Element.ListManager, EditButton.selectionType, EditButton.selectionProperty);
 
             EditButton.gameObject.SetActive(true);
 

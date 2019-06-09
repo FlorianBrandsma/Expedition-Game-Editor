@@ -23,38 +23,56 @@ static public class SelectionManager
         Toggle
     }
 
-    static public List<ListManager> lists = new List<ListManager>();
-
     static public IDataElement getDataElement;
 
     static public void SelectElements()
     {
-        foreach(EditorForm form in EditorManager.editorManager.forms)
+        List<Route> routeList = new List<Route>();
+
+        foreach (EditorForm form in EditorManager.editorManager.forms)
         {
             if (!form.active) continue;
-            
+
             foreach (EditorSection section in form.editorSections)
             {
                 if (!section.active) continue;
-                
-                SelectElement(section.targetController.pathController.route);
-            }       
+
+                routeList.Add(section.targetController.pathController.route);
+            }
         }
+
+        SelectElement(routeList);
     }
 
-    static public void ResetSelection(ListManager listManager)
+    static public void SelectElement(List<Route> routeList)
     {
-        listManager.ResetSelection();
-    }
-
-    static public void SelectElement(Route route)
-    {
-        foreach (ListManager list in lists)
+        foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy))
         {
-            Property property = list.listProperties.selectionProperty;
+            if (selectionElement.selectionProperty == Property.Set) continue;
 
-            list.SelectElement(route);
-        }           
+            foreach (Route route in routeList)
+            {
+                //Should a selection rely on a type, rather than a property, to pick an element?
+                //Mainly concerns elements with children that otherwise have the same data
+                if (selectionElement.GeneralData().Equals(route.GeneralData()) &&
+                    selectionElement.selectionGroup == route.selectionGroup)
+                {
+                    selectionElement.ActivateSelection();
+
+                    if (selectionElement.ListManager != null)
+                    {
+                        selectionElement.ListManager.selectedElement = selectionElement;
+
+                        if (selectionElement.parent == null)
+                            selectionElement.ListManager.CorrectPosition(selectionElement);
+                        else
+                            selectionElement.ListManager.CorrectPosition(selectionElement.parent);
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 
     static public void SelectSearch(IDataElement selectedDataElement)
@@ -71,8 +89,19 @@ static public class SelectionManager
 
     static public void CancelSelection(Route route)
     {
-        foreach (ListManager list in lists)
-            list.CancelSelection(route);                 
+        //Closing only one route may cause problems
+        foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy).Where(x => x.selected))
+        {
+            if (selectionElement.GeneralData().Equals(route.GeneralData()))
+            {
+                if (selectionElement.ListManager != null)
+                    selectionElement.ListManager.selectedElement = null;
+
+                selectionElement.CancelSelection();
+
+                return;
+            }          
+        }              
     }
 
     static public void CancelGetSelection()

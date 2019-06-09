@@ -51,7 +51,7 @@ public class CameraManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.SetProperties();
+        organizer.InitializeProperties();
 
         transform.parent.gameObject.SetActive(true);
     }

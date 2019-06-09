@@ -10,6 +10,7 @@ public class SelectionElement : MonoBehaviour
 {
     public SegmentController segmentController;
     public GameObject displayParent;
+    public Enums.SelectionGroup selectionGroup;
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
     public Enums.ElementType elementType;
@@ -19,6 +20,8 @@ public class SelectionElement : MonoBehaviour
     public Color disabledColor;
     public Image background;
 
+    public bool disableSpawn;
+    public SelectionElement parent;
     public SelectionElement child;
     public GameObject glow;
     public GameObject lockIcon;
@@ -67,25 +70,24 @@ public class SelectionElement : MonoBehaviour
         DataEditor = segmentController.editorController.pathController.dataEditor;
 
         route.data = new Data(GetComponent<IDataController>());
+        route.selectionGroup = selectionGroup;
 
         CancelSelection();
-
-        route.property = selectionProperty;
 
         GetComponent<IElement>().InitializeElement();
     }
 
-    public void InitializeElement(ListManager listManager, SelectionManager.Property selectionProperty)
+    public void InitializeElement(ListManager listManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
         CancelSelection();
 
         ListManager = listManager;
-        
-        route.property = selectionProperty;
-
         segmentController = listManager.listProperties.DataController.SegmentController;
 
-        selectionType = listManager.selectionType;
+        route.selectionGroup = selectionGroup;
+
+        this.selectionType = selectionType;
+        this.selectionProperty = selectionProperty;
 
         GetComponent<IElement>().InitializeElement();
 
@@ -159,7 +161,7 @@ public class SelectionElement : MonoBehaviour
 
         EditorPath editorPath = new EditorPath(this);
 
-        switch (route.property)
+        switch (selectionProperty)
         {
             case SelectionManager.Property.None: break;
 

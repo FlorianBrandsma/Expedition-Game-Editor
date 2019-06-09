@@ -6,8 +6,6 @@ using System;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    static public List<SelectionElement> elementList = new List<SelectionElement>();
-
     private IDataController dataController;
     private List<GeneralData> generalDataList;
 
@@ -18,14 +16,17 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     private ListManager ListManager { get { return GetComponent<ListManager>(); } }
 
+    public List<SelectionElement> ElementList { get; set; }
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
         dataController = ListManager.listProperties.DataController;
+
+        ElementList = new List<SelectionElement>();
     }
 
-    public void SetProperties()
+    public void InitializeProperties()
     {
         properties = ListManager.listProperties.GetComponent<PanelProperties>();
     }
@@ -75,11 +76,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = ListManager.SpawnElement(elementList, elementPrefab, properties.elementType);
-            ListManager.elementList.Add(element);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, properties.elementType,
+                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+            ElementList.Add(element);
 
-            element.selectionProperty = ListManager.listProperties.selectionProperty;
-            
             data.SelectionElement = element;
             element.route.data = new Data(dataController, data);
 
@@ -96,7 +96,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         ResetData(dataController.DataList);
 
-        SelectionManager.ResetSelection(ListManager);
+        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -107,8 +107,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     void SetElement(SelectionElement element)
     {
-        element.SetElement();
-
         RectTransform rect = element.GetComponent<RectTransform>();
 
         int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
@@ -118,17 +116,14 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         element.transform.localPosition = new Vector2(element.transform.localPosition.x, 
                                                      (ListManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
 
-        rect.gameObject.SetActive(true);     
-    }
+        rect.gameObject.SetActive(true);
 
-    public SelectionElement GetElement(int index)
-    {
-        return ListManager.elementList[index];
+        element.SetElement();
     }
 
     public void CloseList()
     {
-        ListManager.CloseElement();
+        SelectionElementManager.CloseElement(ElementList);
     }
 
     public void ClearOrganizer() { }

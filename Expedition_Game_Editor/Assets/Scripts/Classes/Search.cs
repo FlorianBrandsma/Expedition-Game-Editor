@@ -222,6 +222,8 @@ public class Search
     {
         public List<int> index = new List<int>();
 
+        public List<int> regionId = new List<int>();
+
         public enum RequestType
         {
             Custom

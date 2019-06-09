@@ -69,17 +69,6 @@ public class EditorManager : MonoBehaviour
         SelectionManager.SelectElements();
     }
 
-    static public void SelectElement(int id)
-    {
-        //set_id = id;
-    }
-
-    static public void ResetSelection()
-    {
-        //get_id = false;
-        //set_id = 0;
-    }
-
     static public string PathString(Path path)
     {
         string str = "route: ";

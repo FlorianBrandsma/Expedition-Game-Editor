@@ -18,7 +18,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         dataController = cameraManager.cameraProperties.DataController;
     }
 
-    public void SetProperties()
+    public void InitializeProperties()
     {
         properties = cameraManager.cameraProperties.GetComponent<ObjectProperties>();
     }

@@ -34,6 +34,8 @@ public class ListManager : MonoBehaviour
 
     public Route selectedRoute { get; set; }
 
+    public SegmentController segmentController;
+
     public void InitializeList(ListProperties listProperties)
     {
         if (GetComponent<IOrganizer>() != null) return;
@@ -47,7 +49,8 @@ public class ListManager : MonoBehaviour
             case DisplayManager.Type.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();       break;
             case DisplayManager.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
             case DisplayManager.Type.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
-            default:                                                                                        break;
+            case DisplayManager.Type.MultiGrid: organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
+            default: Debug.Log("CASE MISSING: " + listProperties.displayType);                              break;
         }
 
         if (organizer == null) return;
@@ -55,8 +58,6 @@ public class ListManager : MonoBehaviour
         organizer.InitializeOrganizer();
 
         overlayManager.InitializeOverlay(this);
-
-        SelectionManager.lists.Add(this);
     }
 
     public void SetProperties()
@@ -69,7 +70,7 @@ public class ListManager : MonoBehaviour
         selectionProperty       = listProperties.selectionProperty;
         selectionType           = listProperties.selectionType;
 
-        organizer.SetProperties();
+        organizer.InitializeProperties();
 
         overlayManager.SetOverlayProperties(listProperties);
 
@@ -134,56 +135,7 @@ public class ListManager : MonoBehaviour
         overlayManager.UpdateOverlay();
     }
 
-    public void ResetSelection()
-    {
-        SelectElement(selectedRoute);
-    }
-
-    public void SelectElement(Route route)
-    {
-        if (selectedElement != null) return;
-
-        if (selectionProperty == SelectionManager.Property.Set) return;
-
-        foreach (SelectionElement element in elementList)
-        {
-            //Check if element has child first (and that child is active)
-            //If child data matches route data, check if property matches in case parent and child have same data
-            if (element.child != null && element.child.gameObject.activeInHierarchy && 
-                element.child.GeneralData().Equals(route.GeneralData()))
-            {
-                if (element.child.route.property == route.property)
-                {
-                    selectedElement = element.child;
-
-                    element.child.ActivateSelection();
-                    
-                    selectedRoute = route.Copy();
-
-                    CorrectPosition(element);
-
-                    return;
-                }  
-            }
-
-            //Either child didn't exist or have matching property
-            //All that's left is for main element data to match the route data
-            if (element.GeneralData().Equals(route.GeneralData()))
-            {
-                selectedElement = element;
-
-                element.ActivateSelection();
-
-                selectedRoute = route.Copy();
-
-                CorrectPosition(element);
-
-                return;
-            }
-        }
-    }
-
-    private void CorrectPosition(SelectionElement element)
+    public void CorrectPosition(SelectionElement element)
     {
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
@@ -211,24 +163,6 @@ public class ListManager : MonoBehaviour
         }
     }
 
-    public void CancelSelection(Route route)
-    {
-        foreach (SelectionElement element in elementList)
-        {
-            if (element.GeneralData().Equals(route.GeneralData()))
-            {
-                if (element.child != null && element.child.route.property == route.property)
-                    element.child.CancelSelection();
-                else
-                    element.CancelSelection();
-
-                selectedElement = null;
-
-                return;
-            }
-        }
-    }
-
     public void AutoSelectElement()
     {
         if (organizer == null) return;
@@ -237,7 +171,7 @@ public class ListManager : MonoBehaviour
 
         if (selectionType == SelectionManager.Type.Automatic)
         {
-            SelectionElement element = list.GetElement(0);
+            SelectionElement element = list.ElementList.FirstOrDefault();
 
             element.GetComponent<Button>().onClick.Invoke();
         }
@@ -255,7 +189,8 @@ public class ListManager : MonoBehaviour
         
         elementList.Clear();
 
-        SelectionManager.lists.RemoveAt(SelectionManager.lists.IndexOf(this));
+        if (selectedElement != null)
+            selectedElement.CancelSelection();
 
         transform.parent.gameObject.SetActive(false);
     }
@@ -263,62 +198,5 @@ public class ListManager : MonoBehaviour
     public void CloseOrganizer()
     {
         
-    }
-
-    public SelectionElement SpawnElement(List<SelectionElement> list, SelectionElement elementPrefab, Enums.ElementType elementType)
-    {
-        foreach(SelectionElement element in list)
-        {
-            if (!element.gameObject.activeInHierarchy && element.elementType == elementType)
-            {
-                InitializeElement(element);
-                return element;
-            }     
-        }
-
-        SelectionElement newElement = Instantiate(elementPrefab);
-        newElement.elementType = elementType;
-
-        InitializeElement(newElement);
-
-        list.Add(newElement);
-
-        return newElement;
-    }
-
-    public void InitializeElement(SelectionElement element)
-    {
-        element.InitializeElement(this, selectionProperty);
-
-        element.transform.SetParent(listParent, false);
-    }
-
-    public void CloseElement()
-    {
-        foreach(SelectionElement element in elementList)
-        {
-            element.GetComponent<IElement>().CloseElement();
-            element.GetComponent<Button>().onClick.RemoveAllListeners();
-
-            if (element.elementStatus != Enums.ElementStatus.Enabled)
-            {
-                element.elementStatus = Enums.ElementStatus.Enabled;
-                element.background.color = element.enabledColor;
-                element.lockIcon.SetActive(false);
-            }
-
-            if (element.child != null)
-            {
-                element.child.gameObject.SetActive(false);
-                element.child.GetComponent<Button>().onClick.RemoveAllListeners();
-            }
-
-            element.gameObject.SetActive(false);
-        }
-
-        if (selectedElement != null)
-            selectedElement.CancelSelection();
-
-        elementList.Clear();
     }
 }

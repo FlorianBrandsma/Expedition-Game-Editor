@@ -52,7 +52,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void InitializeEdit()
     {
-        EditButton.InitializeElement(Element.ListManager, EditButton.selectionProperty);
+        EditButton.InitializeElement(Element.ListManager, EditButton.selectionType, EditButton.selectionProperty);
 
         EditButton.gameObject.SetActive(true);
 
@@ -76,7 +76,7 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.Element:        SetElementElement();        break;
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.PartyElement:   SetPartyElementElement();   break;
-            default:                            Debug.Log("CASE MISSING");  break;
+            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType);  break;
         }
 
         if (descriptionText == null) return;

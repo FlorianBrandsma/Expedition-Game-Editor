@@ -9,6 +9,7 @@ public class DisplayManager
         Tile,
         Panel,
         PanelTile,
+        MultiGrid,
         Object,
         Region
     }

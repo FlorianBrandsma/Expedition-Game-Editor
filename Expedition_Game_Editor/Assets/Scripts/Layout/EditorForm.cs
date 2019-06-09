@@ -185,12 +185,12 @@ public class EditorForm : MonoBehaviour
     }
     #endregion
 
-    public void CloseForm(bool close_components)
+    public void CloseForm(bool closeComponents)
     {
         if (!active) return;
         
         ClosePath();
-        CloseLayout(close_components);
+        CloseLayout(closeComponents);
 
         closed = true;
 

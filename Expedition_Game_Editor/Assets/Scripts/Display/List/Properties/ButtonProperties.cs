@@ -4,11 +4,6 @@
 
 public class ButtonProperties : MonoBehaviour, IProperties
 {
-    public void Copy(ButtonProperties new_properties)
-    {
-
-    }
-
     #region IProperties
     public DisplayManager.Type Type()
     {

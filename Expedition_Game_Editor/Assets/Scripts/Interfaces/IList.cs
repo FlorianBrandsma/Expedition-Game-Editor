@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public interface IList
 {
-    SelectionElement GetElement(int index);
+    List<SelectionElement> ElementList { get; set; }
     void SetElementSize();
     Vector2 GetListSize(int elementCount, bool exact);
     Vector2 ElementSize { get; set; }

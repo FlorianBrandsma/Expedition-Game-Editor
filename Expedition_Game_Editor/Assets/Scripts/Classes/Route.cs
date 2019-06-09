@@ -8,7 +8,7 @@ public class Route
     public Data data        { get; set; }
     public Path path        { get; set; }
 
-    public SelectionManager.Property property   { get; set; }
+    public Enums.SelectionGroup selectionGroup { get; set; }
 
     public Route() { }
 
@@ -24,17 +24,17 @@ public class Route
         controller = route.controller;
         data = route.data;
 
-        property = route.property;
+        selectionGroup = route.selectionGroup;
 
         path = route.path;
     }
 
-    public Route(int controller, Data data, SelectionManager.Property property)
+    public Route(int controller, Data data, Enums.SelectionGroup selectionGroup)
     {
         this.controller = controller;
         this.data = data;
 
-        this.property = property;
+        this.selectionGroup = selectionGroup;
     }
 
     public bool Equals(Route route)

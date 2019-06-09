@@ -5,11 +5,6 @@ using System.Collections;
 
 public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ListManager listManager { get { return GetComponent<ListManager>(); } }
-
-    static public List<SelectionElement> element_list = new List<SelectionElement>();
-
-    public Vector2 ElementSize { get; set; }
     private Vector2 listSize;
 
     private PanelTileProperties properties;
@@ -18,22 +13,28 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     private IDataController dataController;
     private List<GeneralData> generalDataList;
 
+    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
+
+    public List<SelectionElement> ElementList { get; set; }
+    public Vector2 ElementSize { get; set; }
+
     public void InitializeOrganizer()
     {
-        dataController = listManager.listProperties.DataController;
+        dataController = ListManager.listProperties.DataController;
+        ElementList = new List<SelectionElement>();
     }
 
-    public void SetProperties()
+    public void InitializeProperties()
     {
-        properties = listManager.listProperties.GetComponent<PanelTileProperties>();
+        properties = ListManager.listProperties.GetComponent<PanelTileProperties>();
 
-        horizontal = listManager.listProperties.horizontal;
-        vertical = listManager.listProperties.vertical;
+        horizontal = ListManager.listProperties.horizontal;
+        vertical = ListManager.listProperties.vertical;
     }
 
     public void SetElementSize()
     {
-        ElementSize = listManager.listProperties.elementSize;
+        ElementSize = ListManager.listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
@@ -54,7 +55,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
                                 vertical    ? 0                                                                                 : list_height * ElementSize.y);
 
         if (exact)
-            return new Vector2(new_size.x - listManager.rectTransform.rect.width, new_size.y);
+            return new Vector2(new_size.x - ListManager.rectTransform.rect.width, new_size.y);
         else
             return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
     }
@@ -63,7 +64,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int x = 0;
 
-        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.rectTransform.rect.max.x)
+        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < ListManager.rectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -73,7 +74,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.rectTransform.rect.max.y)
+        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < ListManager.rectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -94,8 +95,9 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = listManager.SpawnElement(element_list, elementPrefab, Enums.ElementType.PanelTile);
-            listManager.elementList.Add(element);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.PanelTile,
+                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+            ElementList.Add(element);
 
             data.SelectionElement = element;
             element.route.data = new Data(dataController, data);
@@ -113,7 +115,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         ResetData(null);
 
-        SelectionManager.ResetSelection(listManager);
+        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -124,8 +126,6 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     void SetElement(SelectionElement element)
     {
-        element.SetElement();
-
         RectTransform rect = element.GetComponent<RectTransform>();
 
         int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
@@ -136,11 +136,8 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
                                                      (ElementSize.y * 0.5f) - (index % listSize.y * ElementSize.y));
 
         rect.gameObject.SetActive(true);
-    }
 
-    public SelectionElement GetElement(int index)
-    {
-        return listManager.elementList[index];
+        element.SetElement();
     }
 
     float ListPosition(int i)
@@ -150,7 +147,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void CloseList()
     {
-        listManager.CloseElement();
+        SelectionElementManager.CloseElement(ElementList);
     }
 
     public void ClearOrganizer() { }

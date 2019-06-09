@@ -19,7 +19,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(source, form), form, null);
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionGroup.Main), form, null);
         }
     }
 
@@ -40,7 +40,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(source, form), form, null);
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionGroup.Main), form, null);
         }
     }
 
@@ -90,6 +90,8 @@ public class PathManager
 
     public class Item
     {
+        SelectionElement selectionElement;
+
         Route route;
         ListManager origin;
 
@@ -99,6 +101,8 @@ public class PathManager
 
         public Item(SelectionElement selection)
         {
+            selectionElement = selection;
+
             route = selection.route;
             origin = selection.ListManager;
 
@@ -112,19 +116,19 @@ public class PathManager
         public Path Enter()
         {
             EditorForm form = EditorManager.editorManager.forms[1];
-            return CreatePath(CreateRoutes(enter, route), form, origin);
+            return CreatePath(CreateRoutes(enter, route, selectionElement.selectionGroup), form, origin);
         }
 
         public Path Edit()
         {
             EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(CreateRoutes(edit, route), form, origin);
+            return CreatePath(CreateRoutes(edit, route, selectionElement.selectionGroup), form, origin);
         }
 
         public Path Get()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(CreateRoutes(get, route), form, origin);
+            return CreatePath(CreateRoutes(get, route, selectionElement.selectionGroup), form, origin);
         }
     }
 
@@ -134,6 +138,8 @@ public class PathManager
 
     public class Element
     {
+        SelectionElement selectionElement;
+
         Path path;
         Route route;
         ListManager origin;
@@ -143,6 +149,8 @@ public class PathManager
 
         public Element(SelectionElement selection)
         {
+            selectionElement = selection;
+
             route = selection.route;
             origin = selection.ListManager;
 
@@ -163,7 +171,7 @@ public class PathManager
         public Path Edit()
         {
             EditorForm form = EditorManager.editorManager.forms[0];
-            return CreatePath(CreateRoutes(edit, route), form, origin);
+            return CreatePath(CreateRoutes(edit, route, selectionElement.selectionGroup), form, origin);
         }
 
         public Path Get()
@@ -178,6 +186,8 @@ public class PathManager
 
     public class ObjectGraphic
     {
+        SelectionElement selectionElement;
+
         Route route;
         ListManager origin;
 
@@ -185,6 +195,8 @@ public class PathManager
 
         public ObjectGraphic(SelectionElement selection)
         {
+            selectionElement = selection;
+
             route = selection.route;
             origin = selection.ListManager;
 
@@ -194,7 +206,7 @@ public class PathManager
         public Path Get()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(CreateRoutes(get, route), form, origin);
+            return CreatePath(CreateRoutes(get, route, selectionElement.selectionGroup), form, origin);
         }
     }
 
@@ -204,6 +216,7 @@ public class PathManager
 
     public class Region
     {
+        SelectionElement selectionElement;
         Path path;
         Route route;
         ListManager origin;
@@ -216,6 +229,8 @@ public class PathManager
 
         public Region(SelectionElement selection)
         {
+            selectionElement = selection;
+
             route = selection.route;
             origin = selection.ListManager;
 
@@ -238,10 +253,10 @@ public class PathManager
             switch (regionDataElement.type)
             {
                 case (int)Enums.RegionType.Base:
-                    path = CreatePath(CreateRoutes(enter, route), form, origin);
+                    path = CreatePath(CreateRoutes(enter, route, selectionElement.selectionGroup), form, origin);
                     break;
                 case (int)Enums.RegionType.Phase:
-                    routes = CreateRoutes(enter, route);
+                    routes = CreateRoutes(enter, route, selectionElement.selectionGroup);
                     path = ExtendPath(path, routes, origin);
                     break;
             }
@@ -253,16 +268,16 @@ public class PathManager
 
         public Path Edit()
         {
-            return CreatePath(CreateRoutes(edit, route), form, origin);
+            return CreatePath(CreateRoutes(edit, route, selectionElement.selectionGroup), form, origin);
         }
 
         public Path Open()
         {
             List<int> open = new List<int>() { 1, regionDataElement.type };
 
-            Route custom_route = new Route(1, route.data, route.property);
+            Route customRoute = new Route(1, route.data, selectionElement.selectionGroup);
 
-            path = ExtendPath(route.path, CreateRoutes(open, custom_route), origin);
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, selectionElement.selectionGroup), origin);
             path.type = Path.Type.New;
 
             return path;
@@ -308,7 +323,7 @@ public class PathManager
 
         public TerrainElement(SelectionElement selection)
         {
-            route = new Route(0, selection.route.data, selection.route.property);
+            route = new Route(0, selection.route.data, selection.selectionGroup);
 
             path = form.activePath.Trim(form.activePath.start + 3);
             
@@ -329,7 +344,7 @@ public class PathManager
 
         public TerrainObject(SelectionElement selection)
         {
-            route = new Route(1, selection.route.data, selection.route.property);
+            route = new Route(1, selection.route.data, selection.selectionGroup);
 
             path = form.activePath.Trim(form.activePath.start + 3);
 
@@ -348,6 +363,7 @@ public class PathManager
 
     public class Option
     {
+        SelectionElement selectionElement;
         Route route;
         ListManager origin;
 
@@ -355,6 +371,8 @@ public class PathManager
 
         public Option(SelectionElement selection)
         {
+            selectionElement = selection;
+
             route = selection.route;
             origin = selection.ListManager;
         }
@@ -362,7 +380,7 @@ public class PathManager
         public Path Enter()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(CreateRoutes(enter, route), form, origin);
+            return CreatePath(CreateRoutes(enter, route, selectionElement.selectionGroup), form, origin);
         }
     }
 
@@ -372,12 +390,14 @@ public class PathManager
 
     public class Search
     {
+        SelectionElement selectionElement;
         Route route;
 
         List<int> controllers = new List<int>() { 1 };
 
         public Search(SelectionElement selection)
         {
+            selectionElement = selection;
             route = selection.route;
 
             SearchParameters searchParameters = selection.DataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
@@ -398,7 +418,7 @@ public class PathManager
         public Path Get()
         {
             EditorForm form = EditorManager.editorManager.forms[2];
-            return CreatePath(CreateRoutes(controllers, route), form, null);
+            return CreatePath(CreateRoutes(controllers, route, selectionElement.selectionGroup), form, null);
         }
     }
 
@@ -410,17 +430,17 @@ public class PathManager
 
     #region Methods
 
-    static public List<Route> CreateRoutes(List<int> controllers, EditorForm form)
+    static public List<Route> CreateRoutes(List<int> controllers, EditorForm form, Enums.SelectionGroup selectionGroup)
     {
-        return CreateRoutes(controllers, new Route(form.activePath));
+        return CreateRoutes(controllers, new Route(form.activePath), selectionGroup);
     }
 
-    static public List<Route> CreateRoutes(List<int> controllers, Route route)
+    static public List<Route> CreateRoutes(List<int> controllers, Route route, Enums.SelectionGroup selectionGroup)
     {
         List<Route> routes = new List<Route>();
 
         foreach(int controller in controllers)
-            routes.Add(new Route(controller, route.data, route.property));
+            routes.Add(new Route(controller, route.data, selectionGroup));
 
         return routes;
     }

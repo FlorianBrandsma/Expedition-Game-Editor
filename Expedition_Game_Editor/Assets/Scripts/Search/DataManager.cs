@@ -178,6 +178,26 @@ public class DataManager
         return dataList;
     }
 
+    public List<TileData> GetTileData(List<int> idList, bool searchById = false)
+    {
+        var dataList = new List<TileData>();
+
+        foreach (Fixtures.Tile tile in Fixtures.tileList)
+        {
+            if (searchById && !idList.Contains(tile.id)) continue;
+
+            var data = new TileData();
+
+            data.id = tile.id;
+            data.tileSetId = tile.tileSetId;
+            data.iconId = tile.iconId;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<RegionData> GetRegionData(List<int> idList, bool searchById = false)
     {
         List<RegionData> dataList = new List<RegionData>();
@@ -243,6 +263,12 @@ public class DataManager
     public class TileSetData : GeneralData
     {
         public string name;
+    }
+
+    public class TileData : GeneralData
+    {
+        public int tileSetId;
+        public int iconId;
     }
 
     public class RegionData : GeneralData

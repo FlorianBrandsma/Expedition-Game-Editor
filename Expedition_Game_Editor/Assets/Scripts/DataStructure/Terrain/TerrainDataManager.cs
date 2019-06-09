@@ -29,7 +29,7 @@ public class TerrainDataManager
                     select new TerrainDataElement()
                     {
                         id = terrainData.id,
-                        table = terrainData.table,
+                        table = "Terrain",
                         index = terrainData.index,
 
                         RegionId = terrainData.regionId,
@@ -55,7 +55,6 @@ public class TerrainDataManager
             var terrainData = new TerrainData();
 
             terrainData.id = terrain.id;
-            terrainData.table = "Terrain";
             terrainData.index = terrain.index;
 
             terrainData.regionId = terrain.regionId;

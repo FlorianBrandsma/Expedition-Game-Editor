@@ -641,13 +641,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionType: 0
+  selectionGroup: 1
+  selectionType: 1
   selectionProperty: 3
   elementType: 0
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
   background: {fileID: 0}
+  disableSpawn: 1
+  parent: {fileID: 114000014068437212}
   child: {fileID: 0}
   glow: {fileID: 1000013419032810}
   lockIcon: {fileID: 0}
@@ -665,6 +668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+  selectionGroup: 0
   selectionType: 0
   selectionProperty: 0
   elementType: 0
@@ -672,6 +676,8 @@ MonoBehaviour:
   enabledColor: {r: 0.8627451, g: 0.8627451, b: 0.7647059, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
   background: {fileID: 114000012849546894}
+  disableSpawn: 0
+  parent: {fileID: 0}
   child: {fileID: 114000013981185266}
   glow: {fileID: 1000011839947422}
   lockIcon: {fileID: 1000012670962318}

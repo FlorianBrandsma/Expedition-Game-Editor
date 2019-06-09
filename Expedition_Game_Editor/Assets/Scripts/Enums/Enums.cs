@@ -55,12 +55,20 @@ public class Enums
         Task
     }
 
+    public enum SelectionGroup
+    {
+        Main,
+        Child
+    }
+
     public enum ElementType
     {
         Panel,
         CompactPanel,
         Tile,
         PanelTile,
+        MultiGrid,
+        CompactMultiGrid,
         Button
     }
 

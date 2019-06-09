@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainTileController : MonoBehaviour//, IDataController
+public class TerrainTileController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
-
-    public SearchParameters searchParameters;
+    public Search.TerrainTile searchParameters;
 
     private TerrainTileDataManager terrainTileDataManager = new TerrainTileDataManager();
 
@@ -15,30 +13,30 @@ public class TerrainTileController : MonoBehaviour//, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.TerrainTile; } }
-    public ICollection DataList                 { get; set; }
+    public List<IDataElement> DataList          { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.TerrainTile>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        terrainTileDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = terrainTileDataManager.GetTerrainTileDataElements(this);
-
-        var terrainTileDataElements = DataList.Cast<TerrainTileDataElement>();
-
-        //terrainTileDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //terrainTileDataElements[0].Update();
+        DataList = terrainTileDataManager.GetTerrainTileDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
+    {
+
+    }
+
+    public void ToggleElement(IDataElement dataElement)
     {
 
     }

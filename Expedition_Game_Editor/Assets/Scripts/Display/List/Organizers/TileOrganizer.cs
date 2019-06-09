@@ -5,11 +5,6 @@ using System.Linq;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
-
-    static public List<SelectionElement> elementList = new List<SelectionElement>();
-
-    public Vector2 ElementSize { get; set; }
     private Vector2 listSize;
 
     private TileProperties tileProperties;
@@ -18,34 +13,41 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     private IDataController dataController;
     private List<GeneralData> generalDataList;
 
+    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
+
+    public List<SelectionElement> ElementList { get; set; }
+    public Vector2 ElementSize { get; set; }
+
     public void InitializeOrganizer()
     {
         dataController = ListManager.listProperties.DataController;
+
+        ElementList = new List<SelectionElement>();
     }
 
-    public void SetProperties()
+    public void InitializeProperties()
     {
         tileProperties = ListManager.listProperties.GetComponent<TileProperties>();
 
         horizontal = ListManager.listProperties.horizontal;
         vertical = ListManager.listProperties.vertical;
 
-        switch (dataController.DataType)
-        {
-            case Enums.DataType.Terrain:    SetTerrainGridSize();   break;
-            case Enums.DataType.Tile:       SetTileGridSize();      break;
-            default: Debug.Log(dataController.DataType + " CASE MISSING"); break;
-        }
+        //switch (dataController.DataType)
+        //{
+        //    case Enums.DataType.Terrain:    SetTerrainGridSize();   break;
+        //    case Enums.DataType.Tile:       SetTileGridSize();      break;
+        //    default: Debug.Log(dataController.DataType + " CASE MISSING"); break;
+        //}
     }
 
-    private void SetTerrainGridSize()
-    {
-        var regionData = (RegionDataElement)ListManager.listProperties.SegmentController.path.FindLastRoute("Region").data.DataElement;
+    //private void SetTerrainGridSize()
+    //{
+    //    var regionData = (RegionDataElement)ListManager.listProperties.SegmentController.path.FindLastRoute("Region").data.DataElement;
 
-        tileProperties.GridSize = new Vector2(regionData.RegionSize, regionData.RegionSize);
-    }
+    //    tileProperties.GridSize = new Vector2(regionData.RegionSize, regionData.RegionSize);
+    //}
 
-    private void SetTileGridSize() { }
+    //private void SetTileGridSize() { }
 
     public void SetElementSize()
     {
@@ -111,8 +113,9 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = ListManager.SpawnElement(elementList, elementPrefab, Enums.ElementType.Tile);
-            ListManager.elementList.Add(element);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.Tile, 
+                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+            ElementList.Add(element);
 
             data.SelectionElement = element;
             element.route.data = new Data(dataController, data);
@@ -130,7 +133,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         ResetData(dataController.DataList);
 
-        SelectionManager.ResetSelection(ListManager);
+        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -141,8 +144,6 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     void SetElement(SelectionElement element)
     {
-        element.SetElement();
-
         RectTransform rect = element.GetComponent<RectTransform>();
 
         int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
@@ -153,16 +154,13 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
                                                      -(ElementSize.y * 0.5f) + (ListManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / listSize.x) * ElementSize.y));
 
         rect.gameObject.SetActive(true);
-    }
 
-    public SelectionElement GetElement(int index)
-    {
-        return ListManager.elementList[index];
+        element.SetElement();
     }
 
     public void CloseList()
     {
-        ListManager.CloseElement();
+        SelectionElementManager.CloseElement(ElementList);
     }
 
     public void ClearOrganizer() { }

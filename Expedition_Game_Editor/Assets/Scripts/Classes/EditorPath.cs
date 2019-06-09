@@ -9,7 +9,7 @@ public class EditorPath
     {
         Route route = new Route(selection.route);
 
-        if(selection.route.property == SelectionManager.Property.Get)
+        if(selection.selectionProperty == SelectionManager.Property.Get)
         {
             PathManager.Search search = new PathManager.Search(selection);
 
@@ -24,10 +24,10 @@ public class EditorPath
 
                 PathManager.Structure chapter = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = chapter.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = chapter.Edit();
 
                 break;
@@ -36,10 +36,10 @@ public class EditorPath
 
                 PathManager.Structure phase = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = phase.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = phase.Edit();
 
                 break;
@@ -48,10 +48,10 @@ public class EditorPath
 
                 PathManager.Structure quest = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = quest.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = quest.Edit();
 
                 break;
@@ -60,10 +60,10 @@ public class EditorPath
 
                 PathManager.Structure objective = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = objective.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = objective.Edit();
 
                 break;
@@ -72,7 +72,7 @@ public class EditorPath
 
                 PathManager.Structure stepElement = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = stepElement.Enter();
 
                 break;
@@ -81,10 +81,10 @@ public class EditorPath
 
                 PathManager.Structure task = new PathManager.Structure(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = task.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = task.Edit();
 
                 break;
@@ -93,13 +93,13 @@ public class EditorPath
 
                 PathManager.Region region = new PathManager.Region(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = region.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = region.Edit();
 
-                if (route.property == SelectionManager.Property.Open)
+                if (selection.selectionProperty == SelectionManager.Property.Open)
                     path = region.Open();
 
                 break;
@@ -108,7 +108,7 @@ public class EditorPath
 
                 PathManager.Terrain terrain = new PathManager.Terrain(selection);
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = terrain.Edit();
 
                 break;
@@ -126,7 +126,7 @@ public class EditorPath
 
                 PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = terrainObject.Enter();
 
                 break;
@@ -135,13 +135,13 @@ public class EditorPath
 
                 PathManager.Item item = new PathManager.Item(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = item.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = item.Edit();
 
-                if (route.property == SelectionManager.Property.Get)
+                if (selection.selectionProperty == SelectionManager.Property.Get)
                     path = item.Get();
 
                 break;
@@ -150,13 +150,13 @@ public class EditorPath
 
                 PathManager.Element element = new PathManager.Element(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = element.Enter();
 
-                if (route.property == SelectionManager.Property.Edit)
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = element.Edit();
 
-                if (route.property == SelectionManager.Property.Get)
+                if (selection.selectionProperty == SelectionManager.Property.Get)
                     path = element.Get();
 
                 break;
@@ -165,7 +165,7 @@ public class EditorPath
 
                 PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection);
 
-                if (route.property == SelectionManager.Property.Get)
+                if (selection.selectionProperty == SelectionManager.Property.Get)
                     path = objectGraphic.Get();
 
                 break;
@@ -174,7 +174,7 @@ public class EditorPath
 
                 PathManager.Option option = new PathManager.Option(selection);
 
-                if (route.property == SelectionManager.Property.Enter)
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = option.Enter();
 
             break;

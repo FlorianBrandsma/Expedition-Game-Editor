@@ -6,7 +6,7 @@ public interface IOrganizer
 {
     void InitializeOrganizer();
 
-    void SetProperties();
+    void InitializeProperties();
     void UpdateData();
     void SetData();
     void ResetData(List<IDataElement> filter);

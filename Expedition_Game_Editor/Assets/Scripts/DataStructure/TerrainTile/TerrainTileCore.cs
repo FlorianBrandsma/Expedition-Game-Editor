@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class TerrainTileCore : GeneralData
 {
+    private int terrainId;
+    private int tileId;
+
     public int originalIndex;
+    public int originalTerrainId;
+    public int originalTileId;
 
     private bool changedIndex;
+    private bool changedTerrainId;
+    private bool changedTileId;
 
     public bool Changed
     {
         get
         {
-            return false;
+            return changedTerrainId || changedTileId;
         }
     }
 
@@ -30,6 +37,32 @@ public class TerrainTileCore : GeneralData
         }
     }
 
+    public int TerrainId
+    {
+        get { return terrainId; }
+        set
+        {
+            if (value == terrainId) return;
+
+            changedTerrainId = (value != originalTerrainId);
+
+            terrainId = value;
+        }
+    }
+
+    public int TileId
+    {
+        get { return tileId; }
+        set
+        {
+            if (value == tileId) return;
+
+            changedTileId = (value != originalTileId);
+
+            tileId = value;
+        }
+    }
+
     #endregion
 
     #region Methods
@@ -39,46 +72,37 @@ public class TerrainTileCore : GeneralData
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!Changed) return;
+        var terrainTileData = Fixtures.terrainTileList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
+        if (changedTerrainId)
+            terrainTileData.terrainId = terrainId;
 
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        SetOriginalValues();
+        if (changedTileId)
+            terrainTileData.tileId = tileId;
     }
 
-    public void UpdateIndex()
-    {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
-    }
+    public void UpdateIndex() { }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
-        ClearChanges();
+        originalTerrainId = TerrainId;
+        originalTileId = TileId;
     }
 
     public void GetOriginalValues()
     {
-
+        TerrainId = originalTerrainId;
+        TileId = originalTileId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
+        changedTerrainId = false;
+        changedTileId = false;
     }
 
     public void Delete()
