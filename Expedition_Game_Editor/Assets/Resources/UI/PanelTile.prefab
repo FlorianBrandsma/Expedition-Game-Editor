@@ -485,7 +485,7 @@ MonoBehaviour:
   selectionGroup: 0
   selectionType: 0
   selectionProperty: 0
-  elementType: 0
+  elementType: 4
   elementStatus: 0
   enabledColor: {r: 0.8627451, g: 0.8627451, b: 0.7647059, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}

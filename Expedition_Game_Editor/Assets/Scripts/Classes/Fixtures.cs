@@ -216,14 +216,16 @@ static public class Fixtures
         /*07*/CreateIcon("Textures/Icons/Objects/StrongCrossbow",   Enums.IconCategory.Crossbow);
         /*08*/CreateIcon("Textures/Icons/Objects/Staff",            Enums.IconCategory.Staff);
         /*09*/CreateIcon("Textures/Icons/Objects/MenacingStaff",    Enums.IconCategory.Staff);
-        /*10*/CreateIcon("Textures/Icons/Objects/Warrior",          Enums.IconCategory.Humanoid);
-        /*11*/CreateIcon("Textures/Icons/Objects/Blue",             Enums.IconCategory.Humanoid);
-        /*12*/CreateIcon("Textures/Icons/Objects/Green",            Enums.IconCategory.Humanoid);
+        /*10*/CreateIcon("Textures/Icons/Objects/RedWarrior",       Enums.IconCategory.Humanoid);
+        /*11*/CreateIcon("Textures/Icons/Objects/BlueWarrior",      Enums.IconCategory.Humanoid);
+        /*12*/CreateIcon("Textures/Icons/Objects/GreenWarrior",     Enums.IconCategory.Humanoid);
         /*13*/CreateIcon("Textures/Icons/Objects/Ranger",           Enums.IconCategory.Humanoid);
         /*14*/CreateIcon("Textures/Icons/Objects/Mage",             Enums.IconCategory.Humanoid);
         /*15*/CreateIcon("Textures/Icons/Objects/Drake",            Enums.IconCategory.Dragonkin);
-        /*16*/CreateIcon("Textures/Icons/Objects/Skull",            Enums.IconCategory.Dragonkin);
-        /*17*/CreateIcon("Textures/Icons/Objects/Goblin",           Enums.IconCategory.Goblin);
+        /*16*/CreateIcon("Textures/Icons/Objects/Goblin",           Enums.IconCategory.Goblin);
+        /*17*/CreateIcon("Textures/Icons/Objects/Skull",            Enums.IconCategory.Environment);
+        /*18*/CreateIcon("Textures/Icons/Objects/Rock",             Enums.IconCategory.Environment);
+        /*19*/CreateIcon("Textures/Icons/Objects/Cactus",           Enums.IconCategory.Environment);
     }
 
     static public int CreateIcon(string path, Enums.IconCategory category)

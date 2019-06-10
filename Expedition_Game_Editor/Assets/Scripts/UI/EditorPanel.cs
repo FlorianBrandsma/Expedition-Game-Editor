@@ -7,6 +7,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public Text idText;
     public Text headerText;
     public Text descriptionText;
+    public RectTransform iconParent;
     public RawImage icon;
     public RectTransform content;
 
@@ -46,8 +47,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void InitializeIcon()
     {
-        content.offsetMin = new Vector2(icon.rectTransform.rect.width, content.offsetMin.y);
-        icon.gameObject.SetActive(true);
+        content.offsetMin = new Vector2(iconParent.rect.width, content.offsetMin.y);
+        iconParent.gameObject.SetActive(true);
     }
 
     private void InitializeEdit()
@@ -398,7 +399,7 @@ public class EditorPanel : MonoBehaviour, IElement
             descriptionText.text = string.Empty;
 
         if (properties.icon)
-            icon.gameObject.SetActive(false);
+            iconParent.gameObject.SetActive(false);
 
         if (properties.edit)
             EditButton.gameObject.SetActive(false);

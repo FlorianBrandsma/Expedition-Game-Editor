@@ -10,8 +10,11 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
     public Enums.ElementType elementType;
 
-    public RawImage icon;
     public RectTransform innerGrid;
+
+    public RectTransform iconParent;
+    public RawImage icon;
+    public RawImage iconBase;
 
     public Text idText;
     public Text[] headerText;

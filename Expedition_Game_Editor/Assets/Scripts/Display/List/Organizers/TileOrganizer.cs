@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -107,13 +108,15 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         generalDataList = list.Cast<GeneralData>().ToList();
 
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/Tile");
+        string elementType = Enum.GetName(typeof(Enums.ElementType), tileProperties.elementType);
+
+        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
 
         listSize = GetListSize(list.Count, false);
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.Tile, 
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, tileProperties.elementType, 
                                                                             ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
             ElementList.Add(element);
 

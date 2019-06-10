@@ -6,6 +6,7 @@ using System.Linq;
 public class EditorTile : MonoBehaviour, IElement
 {
     public RawImage icon;
+    public RawImage iconBase;
 
     private string iconPath;
 

@@ -36,14 +36,14 @@ public class SelectionElement : MonoBehaviour
     {
         get
         {
-            if (elementType == Enums.ElementType.Tile)
+            if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
                 return GetComponent<EditorTile>().icon.color;
             else
                 return background.color;
         }
         set
         {
-            if (elementType == Enums.ElementType.Tile)
+            if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
                 GetComponent<EditorTile>().icon.color = value;
             else
                 background.color = value;

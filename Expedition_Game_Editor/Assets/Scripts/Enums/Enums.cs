@@ -37,6 +37,7 @@ public class Enums
         Humanoid,
         Dragonkin,
         Goblin,
+        Environment,
         Sand,
         Snow
     }
@@ -66,6 +67,7 @@ public class Enums
         Panel,
         CompactPanel,
         Tile,
+        CompactTile,
         PanelTile,
         MultiGrid,
         CompactMultiGrid,
