@@ -307,6 +307,15 @@ static public class Fixtures
 
         foreach(TileSet tileSet in tileSetList)
         {
+            Enums.IconCategory iconCategory;
+
+            switch(tileSet.name)
+            {
+                case "Sand": iconCategory = Enums.IconCategory.Sand; break;
+                case "Snow": iconCategory = Enums.IconCategory.Snow; break;
+                default: iconCategory = Enums.IconCategory.Nothing; break;
+            }
+
             for (int i = 0; i < tilesInTileSet; i++)
             {
                 var tile = new Tile();
@@ -315,7 +324,7 @@ static public class Fixtures
 
                 tile.id = id;
                 tile.tileSetId = tileSet.id;
-                tile.iconId = CreateIcon("Textures/Tiles/" + tileSet.name + "/" + i, (Enums.IconCategory)index);
+                tile.iconId = CreateIcon("Textures/Tiles/" + tileSet.name + "/" + i, iconCategory);
 
                 tileList.Add(tile);
             }

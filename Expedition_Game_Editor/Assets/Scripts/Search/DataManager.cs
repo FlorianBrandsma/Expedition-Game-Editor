@@ -276,5 +276,10 @@ public class DataManager
         public string name;
     }
 
+    public class TerrainTileData : GeneralData
+    {
+        public int terrainId;
+        public int tileId;
+    }
     #endregion
 }

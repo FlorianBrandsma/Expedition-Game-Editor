@@ -33,7 +33,23 @@ public class IconController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = (IconDataElement)searchElement.route.data.DataElement;
 
+        var iconDataElement = DataList.Cast<IconDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
+
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.Icon:
+
+                var resultElementData = (IconDataElement)resultData.DataElement;
+
+                iconDataElement.id = resultElementData.id;
+                iconDataElement.Path = resultElementData.Path;
+
+                break;
+        }
+
+        searchElement.route.data.DataElement = iconDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement)

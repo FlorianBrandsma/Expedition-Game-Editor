@@ -33,8 +33,8 @@ public class ChapterDataManager
                     select new ChapterDataElement()
                     {
                         id = chapterData.id,
-                        table = chapterData.table,
-                        Index = chapterData.index,
+                        table = "Chapter",
+                        index = chapterData.index,
 
                         ElementId = chapterData.elementId,
                         Name = chapterData.name,
@@ -56,7 +56,6 @@ public class ChapterDataManager
             var chapterData = new ChapterData();
             
             chapterData.id = chapter.id;
-            chapterData.table = "Chapter";
             chapterData.index = chapter.index;
 
             chapterData.elementId = chapter.elementId;

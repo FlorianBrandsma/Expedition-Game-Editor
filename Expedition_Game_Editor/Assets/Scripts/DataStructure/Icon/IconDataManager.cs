@@ -23,10 +23,10 @@ public class IconDataManager
                     select new IconDataElement()
                     {
                         id = iconData.id,
-                        table = iconData.table,
+                        table = "Icon",
+                        index = iconData.index,
 
-                        Index = iconData.index,
-                        Name = iconData.name
+                        Path = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -39,15 +39,16 @@ public class IconDataManager
     {
         iconDataList = new List<IconData>();
 
-        for (int i = 0; i < searchParameters.temp_id_count; i++)
+        foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
+            if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.category)) continue;
+
             var iconData = new IconData();
 
-            iconData.id = (i + 1);
-            iconData.table = "Icon";
-            iconData.index = i;
+            iconData.id = icon.id;
+            iconData.index = icon.index;
 
-            iconData.name = "Icon " + (i + 1);
+            iconData.path = icon.path;
 
             iconDataList.Add(iconData);
         }
@@ -55,7 +56,6 @@ public class IconDataManager
 
     internal class IconData : GeneralData
     {
-        public int index;
-        public string name;
+        public string path;
     }
 }

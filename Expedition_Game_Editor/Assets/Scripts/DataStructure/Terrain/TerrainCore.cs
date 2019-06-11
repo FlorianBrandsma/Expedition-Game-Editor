@@ -48,6 +48,8 @@ public class TerrainCore : GeneralData
             if (value == regionId) return;
 
             changedRegionId = (value != originalRegionId);
+
+            regionId = value;
         }
     }
 
@@ -57,8 +59,10 @@ public class TerrainCore : GeneralData
         set
         {
             if (value == iconId) return;
-
+            
             changedIconId = (value != originalIconId);
+
+            iconId = value;
         }
     }
 
@@ -70,7 +74,7 @@ public class TerrainCore : GeneralData
             if (value == name) return;
 
             changedName = (value != originalName);
-
+            
             name = value;
         }
     }
@@ -90,7 +94,7 @@ public class TerrainCore : GeneralData
 
         if (changedIconId)
             terrainData.iconId = iconId;
-        
+
         if (changedName)
             terrainData.name = name;
     }

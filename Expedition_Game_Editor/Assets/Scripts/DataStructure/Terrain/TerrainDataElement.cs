@@ -9,12 +9,13 @@ public class TerrainDataElement : TerrainCore, IDataElement
     public TerrainDataElement() : base() { }
 
     public string iconPath;
+    public string baseTilePath;
 
     public string originalIconPath;
 
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 

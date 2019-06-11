@@ -6,6 +6,8 @@ public class Search
     [System.Serializable]
     public class Icon : SearchParameters
     {
+        public List<int> category = new List<int>();
+
         public enum RequestType
         {
             Custom

@@ -3,19 +3,19 @@ using System.Collections;
 
 public class IconCore : GeneralData
 {
-    private string name;
+    private string path;
 
     public int originalIndex;
-    public string originalName;
+    public string originalPath;
 
     private bool changedIndex;
-    private bool changedName;
+    private bool changedPath;
 
     public bool Changed
     {
         get
         {
-            return changedName;
+            return changedPath;
         }
     }
 
@@ -34,16 +34,16 @@ public class IconCore : GeneralData
         }
     }
 
-    public string Name
+    public string Path
     {
-        get { return name; }
+        get { return path; }
         set
         {
-            if (value == name) return;
+            if (value == path) return;
 
-            changedName = (value != originalName);
+            changedPath = (value != originalPath);
 
-            name = value;
+            path = value;
         }
     }
 
@@ -60,15 +60,6 @@ public class IconCore : GeneralData
     {
         if (!Changed) return;
 
-        //Debug.Log("Updated " + name);
-
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
         SetOriginalValues();
     }
 
@@ -83,14 +74,14 @@ public class IconCore : GeneralData
 
     public void SetOriginalValues()
     {
-        originalName = name;
+        originalPath = path;
 
         ClearChanges();
     }
 
     public void GetOriginalValues()
     {
-        name = originalName;
+        path = originalPath;
     }
 
     public void ClearChanges()
@@ -98,7 +89,7 @@ public class IconCore : GeneralData
         GetOriginalValues();
 
         changedIndex = false;
-        changedName = false;
+        changedPath = false;
     }
 
     public void Delete()

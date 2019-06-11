@@ -22,6 +22,7 @@ public class EditorTile : MonoBehaviour, IElement
     {
         switch (Element.route.data.DataController.DataType)
         {
+            case Enums.DataType.Icon:           SetIconElement();           break;
             case Enums.DataType.Element:        SetElementElement();        break;
             case Enums.DataType.Terrain:        SetTerrainElement();        break;
             case Enums.DataType.Tile:           SetTileElement();           break;
@@ -29,8 +30,23 @@ public class EditorTile : MonoBehaviour, IElement
             case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
             case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
             case Enums.DataType.PhaseElement:   SetPhaseElementElement();   break;
-            default: Debug.Log("CASE MISSING");                             break;
+            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
+    }
+
+    private void SetIconElement()
+    {
+        var dataElement = (IconDataElement)Element.route.data.DataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+            iconPath = dataElement.Path;
+        else
+            iconPath = dataElement.originalPath;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
+
+        if(dataElement.baseIconPath != "")
+            iconBase.texture = Resources.Load<Texture2D>(dataElement.baseIconPath);
     }
 
     private void SetElementElement()

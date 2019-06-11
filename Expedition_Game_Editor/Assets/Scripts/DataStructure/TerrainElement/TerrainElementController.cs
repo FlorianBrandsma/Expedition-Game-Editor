@@ -53,8 +53,5 @@ public class TerrainElementController : MonoBehaviour, IDataController
         searchElement.route.data.DataElement = terrainElementDataElement;
     }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

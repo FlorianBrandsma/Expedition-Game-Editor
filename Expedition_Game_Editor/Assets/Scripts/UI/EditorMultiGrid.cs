@@ -19,6 +19,8 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     public Text idText;
     public Text[] headerText;
 
+    private string iconPath;
+
     private MultiGridProperties multiGridProperties;
 
     private List<IDataElement> dataList = new List<IDataElement>();
@@ -53,12 +55,23 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             switch(multiGridProperties.SecondaryDataController.DataType)
             {
                 case Enums.DataType.TerrainTile: SetTerrainTileData(dataElement); break;
-                default: Debug.Log("MISSING CASE: " + multiGridProperties.SecondaryDataController.DataType); break;
+                default: Debug.Log("CASE MISSING: " + multiGridProperties.SecondaryDataController.DataType); break;
             }
+        } 
+
+        if(elementType == Enums.ElementType.CompactMultiGrid)
+        {
+            if (Element.selectionProperty == SelectionManager.Property.Get)
+                iconPath = dataElement.iconPath;
+            else
+                iconPath = dataElement.originalIconPath;
         }
 
         if (icon != null)
-            icon.texture = Resources.Load<Texture2D>(dataElement.iconPath);
+            icon.texture = Resources.Load<Texture2D>(iconPath);
+
+        if (iconBase != null)
+            iconBase.texture = Resources.Load<Texture2D>(dataElement.baseTilePath);
     }
 
     private void SetTerrainTileData(TerrainDataElement terrainData)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SearchParameters
 {
     public Enums.DataType dataType;
+    public Enums.ElementType elementType;
 
     public int temp_id_count;
 

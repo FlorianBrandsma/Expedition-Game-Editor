@@ -7,4 +7,6 @@ public class IconDataElement : IconCore, IDataElement
     public SelectionElement SelectionElement { get; set; }
 
     public IconDataElement() : base() { }
+
+    public string baseIconPath;
 }

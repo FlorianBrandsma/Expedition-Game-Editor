@@ -104,11 +104,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     #region Segment
 
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
-    }
-
     public void InitializeSegment()
     {
         InitializeDependencies();
@@ -119,6 +114,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1);
+    }
+
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
 
     public void InitializeData()
