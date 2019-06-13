@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TerrainTileController : MonoBehaviour, IDataController
 {
-    public Search.TerrainTile searchParameters;
+    public Search.Tile searchParameters;
 
     private TerrainTileDataManager terrainTileDataManager = new TerrainTileDataManager();
 
@@ -18,7 +18,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
     public IEnumerable SearchParameters
     {
         get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.TerrainTile>().FirstOrDefault(); }
+        set { searchParameters = value.Cast<Search.Tile>().FirstOrDefault(); }
     }
 
     public void InitializeController()
@@ -33,11 +33,24 @@ public class TerrainTileController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = (TerrainTileDataElement)searchElement.route.data.DataElement;
 
+        var terrainTileDataElement = DataList.Cast<TerrainTileDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
+
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.Tile:
+
+                var resultElementData = (TileDataElement)resultData.DataElement;
+
+                terrainTileDataElement.TileId = resultElementData.id;
+                terrainTileDataElement.iconPath = resultElementData.icon;
+                
+                break;
+        }
+
+        searchElement.route.data.DataElement = terrainTileDataElement;
     }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 public class EditorMultiGrid : MonoBehaviour, IElement
 {
@@ -17,9 +18,12 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     public RawImage iconBase;
 
     public Text idText;
-    public Text[] headerText;
+    public Text headerText;
 
+    private int id;
+    private string header;
     private string iconPath;
+    private string baseTilePath;
 
     private MultiGridProperties multiGridProperties;
 
@@ -31,6 +35,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     public void InitializeElement()
     {
         multiGridProperties = Element.ListManager.listProperties.GetComponent<MultiGridProperties>();
+
     }
 
     public void SetElement()
@@ -43,6 +48,18 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             case Enums.DataType.Terrain: SetTerrainElement(); break;
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
+
+        if (idText != null)
+            idText.text = id.ToString();
+
+        if (headerText != null)
+            headerText.text = header;
+
+        if (icon != null)
+            icon.texture = Resources.Load<Texture2D>(iconPath);
+
+        if (iconBase != null)
+            iconBase.texture = Resources.Load<Texture2D>(baseTilePath);
     }
 
     private void SetTerrainElement()
@@ -50,38 +67,41 @@ public class EditorMultiGrid : MonoBehaviour, IElement
         Data data = Element.route.data;
         var dataElement = (TerrainDataElement)data.DataElement;
 
-        if (elementType == Enums.ElementType.MultiGrid)
+        if(multiGridProperties.SecondaryDataController != null)
         {
-            switch(multiGridProperties.SecondaryDataController.DataType)
+            switch (multiGridProperties.SecondaryDataController.DataType)
             {
                 case Enums.DataType.TerrainTile: SetTerrainTileData(dataElement); break;
                 default: Debug.Log("CASE MISSING: " + multiGridProperties.SecondaryDataController.DataType); break;
             }
-        } 
+        }
 
-        if(elementType == Enums.ElementType.CompactMultiGrid)
+        if (icon != null)
         {
             if (Element.selectionProperty == SelectionManager.Property.Get)
                 iconPath = dataElement.iconPath;
             else
-                iconPath = dataElement.originalIconPath;
+                iconPath = dataElement.originalIconPath; 
         }
 
-        if (icon != null)
-            icon.texture = Resources.Load<Texture2D>(iconPath);
-
-        if (iconBase != null)
-            iconBase.texture = Resources.Load<Texture2D>(dataElement.baseTilePath);
+        id = dataElement.id;
+        header = dataElement.Name;
+        baseTilePath = dataElement.baseTilePath;
     }
 
     private void SetTerrainTileData(TerrainDataElement terrainData)
     {
         dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileDataElement>().Where(x => x.TerrainId == terrainData.id).Distinct().Cast<IDataElement>().ToList();
 
-        SetData(dataList);
+        var searchParameters = multiGridProperties.SecondaryDataController.SearchParameters.Cast<Search.Tile>().FirstOrDefault();
+        searchParameters.elementType = Enums.ElementType.CompactTile;
+
+        searchParameters.tileSetId = new List<int>() { terrainData.tileSetId };
+
+        SetData(dataList, new[] { searchParameters });
     }
 
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IDataElement> list, IEnumerable searchParameters)
     {
         generalDataList = list.Cast<GeneralData>().ToList();
 
@@ -99,7 +119,10 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             elementList.Add(element);
 
             data.SelectionElement = element;
-            element.route.data = new Data(multiGridProperties.SecondaryDataController, data);
+            element.route.data = new Data(multiGridProperties.SecondaryDataController, data, searchParameters);
+
+            //Overwrites dataController set by initialization
+            element.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
             GeneralData generalData = (GeneralData)data;

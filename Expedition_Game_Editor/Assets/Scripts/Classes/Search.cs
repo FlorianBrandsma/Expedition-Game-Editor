@@ -27,6 +27,7 @@ public class Search
         public RequestType requestType;
     }
 
+    [System.Serializable]
     public class Tile : SearchParameters
     {
         public List<int> tileSetId = new List<int>();
@@ -206,6 +207,7 @@ public class Search
         public RequestType requestType;
     }
 
+    [System.Serializable]
     public class Terrain : SearchParameters
     {
         public List<int> index = new List<int>();
@@ -220,6 +222,7 @@ public class Search
         public RequestType requestType;
     }
 
+    [System.Serializable]
     public class TerrainTile : SearchParameters
     {
         public List<int> index = new List<int>();
@@ -234,6 +237,7 @@ public class Search
         public RequestType requestType;
     }
 
+    [System.Serializable]
     public class TerrainObject : SearchParameters
     {
         public enum RequestType

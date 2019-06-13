@@ -40,6 +40,7 @@ public class EditorForm : MonoBehaviour
     {
         OpenPath(path, reload);
         OpenLayout(path);
+        baseController.ForceLoadPath(path);
 
         previousPath = activePath;
         activePath = path;
@@ -107,7 +108,7 @@ public class EditorForm : MonoBehaviour
 
         //Activate all components along the path and sort them
         if (baseController.SetComponents(path))
-            ComponentManager.componentManager.SortComponents();  
+            ComponentManager.componentManager.SortComponents();
     }
 
     private void CloseLayout(bool close_components)

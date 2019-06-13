@@ -28,7 +28,7 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;
 
-        editButton.InitializeElement();
+        editButton.InitializeElement(null);
 
         var searchParameters = new Search.Region();
         searchParameters.temp_id_count = 15;

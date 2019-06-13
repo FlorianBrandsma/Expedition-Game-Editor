@@ -26,7 +26,8 @@ public class IconDataManager
                         table = "Icon",
                         index = iconData.index,
 
-                        Path = iconData.path
+                        Path = iconData.path,
+                        baseIconPath = ""
 
                     }).OrderBy(x => x.Index).ToList();
 

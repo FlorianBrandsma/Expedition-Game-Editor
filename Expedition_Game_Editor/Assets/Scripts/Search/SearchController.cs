@@ -54,6 +54,13 @@ public class SearchController : MonoBehaviour
     {
         switch (dataType)
         {
+            case Enums.DataType.Tile:
+
+                TileController tileController = gameObject.AddComponent<TileController>();
+                tileController.SearchParameters = data.SearchParameters;
+
+                break;
+
             case Enums.DataType.Icon:
 
                 IconController iconController = gameObject.AddComponent<IconController>();

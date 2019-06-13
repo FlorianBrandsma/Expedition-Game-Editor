@@ -99,7 +99,7 @@ static public class Fixtures
     public class Tile : GeneralData
     {
         public int tileSetId;
-        public int iconId;
+        public string iconPath;
     }
     
     public class Region : GeneralData
@@ -307,15 +307,6 @@ static public class Fixtures
 
         foreach(TileSet tileSet in tileSetList)
         {
-            Enums.IconCategory iconCategory;
-
-            switch(tileSet.name)
-            {
-                case "Sand": iconCategory = Enums.IconCategory.Sand; break;
-                case "Snow": iconCategory = Enums.IconCategory.Snow; break;
-                default: iconCategory = Enums.IconCategory.Nothing; break;
-            }
-
             for (int i = 0; i < tilesInTileSet; i++)
             {
                 var tile = new Tile();
@@ -324,7 +315,7 @@ static public class Fixtures
 
                 tile.id = id;
                 tile.tileSetId = tileSet.id;
-                tile.iconId = CreateIcon("Textures/Tiles/" + tileSet.name + "/" + i, iconCategory);
+                tile.iconPath = "Textures/Tiles/" + tileSet.name + "/" + i;
 
                 tileList.Add(tile);
             }
@@ -473,7 +464,7 @@ static public class Fixtures
 
                 terrain.regionId = region.id;
                 terrain.iconId = 1;
-                terrain.name = "Terrain " + id;
+                terrain.name = "Terrain " + (i + 1);
 
                 terrainList.Add(terrain);
             }

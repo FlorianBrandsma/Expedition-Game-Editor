@@ -24,11 +24,9 @@ public class TerrainTileDataManager
 
         GetTerrainTileData(terrainTileSearchData);
         GetTileData();
-        GetIconData();
 
         var list = (from terrainTileData in terrainTileDataList
                     join tileData in tileDataList on terrainTileData.tileId equals tileData.id
-                    join iconData in iconDataList on tileData.iconId equals iconData.id
                     select new TerrainTileDataElement()
                     {
                         id = terrainTileData.id,
@@ -38,7 +36,7 @@ public class TerrainTileDataManager
                         TerrainId = terrainTileData.terrainId,
                         TileId = terrainTileData.tileId,
 
-                        iconPath = iconData.path
+                        iconPath = tileData.iconPath
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -75,11 +73,6 @@ public class TerrainTileDataManager
     internal void GetTileData()
     {
         tileDataList = dataManager.GetTileData(terrainTileDataList.Select(x => x.tileId).Distinct().ToList(), true);
-    }
-
-    internal void GetIconData()
-    {
-        iconDataList = dataManager.GetIconData(tileDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TerrainTileData : GeneralData

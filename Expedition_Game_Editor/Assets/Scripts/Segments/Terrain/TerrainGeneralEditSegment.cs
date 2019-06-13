@@ -28,7 +28,7 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;
 
-        editButton.InitializeElement();
+        editButton.InitializeElement(null);
 
         editButton.route.data = new Data(data.DataController, regionData);
 

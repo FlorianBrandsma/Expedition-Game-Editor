@@ -190,7 +190,7 @@ public class DataManager
 
             data.id = tile.id;
             data.tileSetId = tile.tileSetId;
-            data.iconId = tile.iconId;
+            data.iconPath = tile.iconPath;
 
             dataList.Add(data);
         }
@@ -268,7 +268,7 @@ public class DataManager
     public class TileData : GeneralData
     {
         public int tileSetId;
-        public int iconId;
+        public string iconPath;
     }
 
     public class RegionData : GeneralData

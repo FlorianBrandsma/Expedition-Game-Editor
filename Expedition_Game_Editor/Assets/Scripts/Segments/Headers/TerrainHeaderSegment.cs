@@ -13,7 +13,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     public EditorTile IconTile { get { return GetComponent<EditorTile>(); } }
 
     public IEditor DataEditor { get; set; }
-
+    
     #region UI
 
     public SelectionElement selectionElement;
@@ -48,7 +48,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         InitializeData();
 
-        selectionElement.InitializeElement();
+        selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
 
     public void InitializeDependencies()
@@ -81,8 +81,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Icon>().FirstOrDefault();
 
-        searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().Where(x =>   x != (int)Enums.IconCategory.Sand && 
-                                                                                                        x != (int)Enums.IconCategory.Snow).ToList();
+        searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().ToList();
 
         selectionElement.route.data.SearchParameters = new[] { searchParameters };
 

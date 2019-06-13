@@ -60,5 +60,8 @@ public class TerrainTilesSegment : MonoBehaviour, ISegment
     public void ApplySegment() { }
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(SelectionElement selectionElement)
+    {
+        selectionElement.route.data.DataElement.Update(); 
+    }
 }

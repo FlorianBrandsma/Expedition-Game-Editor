@@ -400,7 +400,7 @@ public class PathManager
             selectionElement = selection;
             route = selection.route;
 
-            SearchParameters searchParameters = selection.DataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
+            SearchParameters searchParameters = selection.dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
 
             var generalData = route.GeneralData();
 
@@ -412,7 +412,7 @@ public class PathManager
             //searchData = new SearchData(searchParameters, route.GeneralData());
 
 
-            route.data = new Data(route.data.DataController, route.data.DataElement, selection.DataController.SearchParameters);
+            route.data = new Data(route.data.DataController, route.data.DataElement, selection.dataController.SearchParameters);
         }
 
         public Path Get()

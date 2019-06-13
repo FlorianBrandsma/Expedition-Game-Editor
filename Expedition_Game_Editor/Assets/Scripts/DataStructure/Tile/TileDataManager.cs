@@ -23,10 +23,8 @@ public class TileDataManager
         var tileSearchData = searchParameters.Cast<Search.Tile>().FirstOrDefault();
 
         GetTileData(tileSearchData);
-        GetIconData();
 
         var list = (from tileData in tileDataList
-                    join iconData in iconDataList on tileData.iconId equals iconData.id
 
                     select new TileDataElement()
                     {
@@ -34,8 +32,8 @@ public class TileDataManager
                         table = tileData.table,
                         Index = tileData.index,
 
-                        icon = iconData.path
-
+                        icon = tileData.iconPath
+                        
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
@@ -58,20 +56,15 @@ public class TileDataManager
             tileData.index = tile.index;
 
             tileData.tileSetId = tile.tileSetId;
-            tileData.iconId = tile.iconId;
+            tileData.iconPath = tile.iconPath;
             
             tileDataList.Add(tileData);
         }
     }
 
-    internal void GetIconData()
-    {
-        iconDataList = dataManager.GetIconData(tileDataList.Select(x => x.iconId).Distinct().ToList(), true);
-    }
-
     internal class TileData : GeneralData
     {
         public int tileSetId;
-        public int iconId;
+        public string iconPath;
     }
 }

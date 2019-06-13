@@ -52,8 +52,5 @@ public class IconController : MonoBehaviour, IDataController
         searchElement.route.data.DataElement = iconDataElement;
     }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

@@ -110,7 +110,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         InitializeData();
 
-        selectionElement.InitializeElement();
+        selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1);

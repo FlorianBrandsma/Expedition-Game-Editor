@@ -137,6 +137,8 @@ public class ListManager : MonoBehaviour
 
     public void CorrectPosition(SelectionElement element)
     {
+        if (!listProperties.enablePositionCorrection) return;
+
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
 

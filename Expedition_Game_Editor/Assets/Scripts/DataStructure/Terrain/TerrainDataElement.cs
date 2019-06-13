@@ -11,6 +11,8 @@ public class TerrainDataElement : TerrainCore, IDataElement
     public string iconPath;
     public string baseTilePath;
 
+    public int tileSetId;
+
     public string originalIconPath;
 
     public override void Update()

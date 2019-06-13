@@ -37,9 +37,7 @@ public class Enums
         Humanoid,
         Dragonkin,
         Goblin,
-        Environment,
-        Sand,
-        Snow
+        Environment
     }
 
     public enum ItemType

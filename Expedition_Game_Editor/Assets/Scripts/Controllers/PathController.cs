@@ -143,6 +143,14 @@ public class PathController : MonoBehaviour
         }
     }
 
+    public void ForceLoadPath(Path path)
+    {
+        loaded = true;
+
+        if (step < path.route.Count)
+            controllers[path.route[step].controller].ForceLoadPath(path);    
+    }
+
     public bool IsLoaded()
     {
         //If there is no previous controller then it definitely hasn't loaded yet

@@ -26,8 +26,7 @@ public class TerrainDataManager
 
         var list = (from terrainData in terrainDataList
                     join iconData in iconDataList on terrainData.iconId equals iconData.id
-                    join baseIconData in iconDataList on terrainData.baseTileIconId equals baseIconData.id
-                    
+
                     select new TerrainDataElement()
                     {
                         id = terrainData.id,
@@ -40,7 +39,8 @@ public class TerrainDataManager
 
                         iconPath = iconData.path,
 
-                        baseTilePath = baseIconData.path
+                        tileSetId = terrainData.tileSetId,
+                        baseTilePath = terrainData.baseTileIconPath
 
                     }).ToList();
 
@@ -57,6 +57,8 @@ public class TerrainDataManager
         {
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
+            var region = Fixtures.regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+
             var tileList = Fixtures.terrainTileList.Where(x => x.terrainId == terrain.id).Distinct().ToList();
             var mostCommonTileId = tileList.GroupBy(x => x.tileId).OrderByDescending(x => x.Count()).Select(x => x.Key).FirstOrDefault();
 
@@ -71,7 +73,8 @@ public class TerrainDataManager
             terrainData.iconId = terrain.iconId;
             terrainData.name = terrain.name;
 
-            terrainData.baseTileIconId = baseTile.iconId;
+            terrainData.tileSetId = region.tileSetId;
+            terrainData.baseTileIconPath = baseTile.iconPath;
 
             terrainDataList.Add(terrainData);
         }
@@ -79,7 +82,7 @@ public class TerrainDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(terrainDataList.Select(x => new List<int>() { x.iconId, x.baseTileIconId }).SelectMany(x => x).Distinct().ToList(), true);
+        iconDataList = dataManager.GetIconData(terrainDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TerrainData : GeneralData
@@ -88,6 +91,7 @@ public class TerrainDataManager
         public int iconId;
         public string name;
 
-        public int baseTileIconId;
+        public int tileSetId;
+        public string baseTileIconPath;
     }
 }

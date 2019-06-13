@@ -5,9 +5,9 @@ using System.Linq;
 
 public class TileController : MonoBehaviour, IDataController
 {
-    public Search.Element searchParameters;
+    public Search.Tile searchParameters;
 
-    public TileDataManager tileDataManager = new TileDataManager();
+    private TileDataManager tileDataManager = new TileDataManager();
 
     public IDisplay Display { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
@@ -18,7 +18,7 @@ public class TileController : MonoBehaviour, IDataController
     public IEnumerable SearchParameters
     {
         get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Element>().FirstOrDefault(); }
+        set { searchParameters = value.Cast<Search.Tile>().FirstOrDefault(); }
     }
 
     public void InitializeController()
