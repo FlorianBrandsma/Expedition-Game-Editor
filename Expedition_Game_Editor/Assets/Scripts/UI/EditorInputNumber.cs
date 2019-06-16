@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class EditorInputNumber : MonoBehaviour
+public class EditorInputNumber : MonoBehaviour, IEditorElement
 {
     private int inputValue;
 
     public UnitManager.Unit unit;
 
     public InputField inputField;
+    public Button minusButton;
+    public Button plusButton;
 
     public bool enableLimit;
     public int min, max;
+
+    public Image Image { get { return GetComponent<Image>(); } }
+
+    public EditorElement EditorElement { get { return GetComponent<EditorElement>(); } }
 
     public int Value
     {
@@ -26,6 +32,16 @@ public class EditorInputNumber : MonoBehaviour
     {
         if (enableLimit)
             inputField.placeholder.GetComponent<Text>().text = min + "-" + max;
+    }
+
+    public void EnableElement(bool enable)
+    {
+        Image.sprite = enable ? EditorElement.enabledImage : EditorElement.disabledImage;
+
+        inputField.interactable = false;
+
+        minusButton.interactable = enable;
+        plusButton.interactable = enable;
     }
 
     public void ChangeValue(int value)

@@ -34,6 +34,8 @@ public class RegionSegment : MonoBehaviour, ISegment
         {
             var searchParameters = new Search.Region();
 
+            searchParameters.phaseId = new List<int>() { 0 };
+
             SegmentController.DataController.GetData(new[] { searchParameters });
         }
     }

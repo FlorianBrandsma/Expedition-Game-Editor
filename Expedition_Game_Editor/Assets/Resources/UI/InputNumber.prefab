@@ -21,6 +21,7 @@ GameObject:
   - 224: {fileID: 224000011342413274}
   - 222: {fileID: 222000011516182704}
   - 114: {fileID: 114000010693408432}
+  - 114: {fileID: 114000011877858124}
   - 114: {fileID: 114000012723519820}
   m_Layer: 5
   m_Name: InputNumber
@@ -325,6 +326,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000011877858124
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010560943974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 21300000, guid: c5c8782c69b21dc43ba64a2b09e81a70, type: 3}
+  disabledImage: {fileID: 21300000, guid: e6295e927968f7e48aacda3444a07fe6, type: 3}
 --- !u!114 &114000011913619578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -502,7 +516,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: 0
   inputField: {fileID: 114000012641264022}
-  input: 0
+  minusButton: {fileID: 114000012494981308}
+  plusButton: {fileID: 114000013076060600}
+  enableLimit: 0
   min: 0
   max: 0
 --- !u!114 &114000013076060600

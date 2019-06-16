@@ -88,6 +88,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000012166600538}
   - 114: {fileID: 114000013621720546}
+  - 114: {fileID: 114000014025546676}
+  - 114: {fileID: 114000011455358566}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -95,6 +97,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000011455358566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014281339704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000012825630508
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -253,6 +266,21 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &114000014025546676
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014281339704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!222 &222000011871067112
 CanvasRenderer:
   m_ObjectHideFlags: 1

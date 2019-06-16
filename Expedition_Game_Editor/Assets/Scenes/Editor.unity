@@ -3080,12 +3080,13 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 952472123}
+  editorToggle: {fileID: 952472124}
   segmentName: Terrain
   header: {fileID: 1733334818}
-  content: {fileID: 572661448}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements:
+  - {fileID: 135347209}
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &123624108
@@ -3413,6 +3414,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 677626971}
   m_Script: {fileID: 11500000, guid: b221e43e1408346449190ae95b53cb68, type: 3}
+--- !u!114 &135347209 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 578754255}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1001 &136397040
 Prefab:
   m_ObjectHideFlags: 0
@@ -3978,6 +3985,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 153970156}
   - 114: {fileID: 153970157}
+  - 114: {fileID: 153970159}
+  - 114: {fileID: 153970158}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -4064,6 +4073,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &153970158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 153970155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &153970159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 153970155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1001 &155476021
 Prefab:
   m_ObjectHideFlags: 0
@@ -4071,6 +4106,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1886576683}
     m_Modifications:
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -4182,6 +4222,31 @@ Prefab:
     - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: disableToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 2013668343}
+    - target: {fileID: 114000013684356068, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013684356068, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013684356068, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000014088138430, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: m_Interactable
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -4350,12 +4415,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 1
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &157412616
@@ -5322,6 +5387,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 458d04267dd82ec42bcc77e00fda0537, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &187604643 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 417357989}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!224 &189467853 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -5822,6 +5893,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 214173464}
   - 114: {fileID: 214173465}
+  - 114: {fileID: 214173467}
+  - 114: {fileID: 214173466}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -5908,6 +5981,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &214173466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 214173463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &214173467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 214173463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1 &214916379
 GameObject:
   m_ObjectHideFlags: 0
@@ -6402,12 +6501,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 153970157}
+  editorToggle: {fileID: 153970158}
   segmentName: Regions
   header: {fileID: 292242725}
-  content: {fileID: 2097024301}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &226968968
@@ -7207,6 +7306,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &265243580 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1921707788}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &267928735
 GameObject:
   m_ObjectHideFlags: 0
@@ -7317,12 +7422,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 1
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &267928741
@@ -10548,6 +10653,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 20023344}
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
+--- !u!114 &413438981 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011877858124, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
+    type: 2}
+  m_PrefabInternal: {fileID: 1325516156}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1001 &417357989
 Prefab:
   m_ObjectHideFlags: 0
@@ -10672,6 +10783,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 423150523}
   - 114: {fileID: 423150524}
+  - 114: {fileID: 423150526}
+  - 114: {fileID: 423150525}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -10758,6 +10871,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &423150525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 423150522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &423150526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 423150522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!4 &445481876 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011408549314, guid: 458d04267dd82ec42bcc77e00fda0537,
@@ -11694,6 +11833,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cafc55d0b54997e4bb1d840e31fcbbb7, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &483705640 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011877858124, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
+    type: 2}
+  m_PrefabInternal: {fileID: 1010646141}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!224 &489258576 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000013171308716, guid: e459c8c821901e5479d8bd2715d2a2d4,
@@ -12276,12 +12421,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 1257196728}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &527584521
@@ -12737,6 +12882,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutDependency: {fileID: 401679384}
+--- !u!114 &557603019 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1071019263}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!224 &559750488 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000012151473904, guid: 1280af98e3595384ba80db985c15c225,
@@ -12946,6 +13097,7 @@ MonoBehaviour:
     value: 
     id: 
     index: 
+    phaseId: 
     name: []
     requestType: 0
 --- !u!1001 &567593178
@@ -14849,6 +15001,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 136835292}
     m_Modifications:
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -14962,6 +15119,26 @@ Prefab:
       propertyPath: segmentName
       value: Audio
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: enableToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 265243580}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[1]
+      value: 
+      objectReference: {fileID: 831615171}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[2]
+      value: 
+      objectReference: {fileID: 557603019}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_IsPrefabParent: 0
@@ -15480,6 +15657,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 136835292}
     m_Modifications:
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -15593,6 +15775,26 @@ Prefab:
       propertyPath: segmentName
       value: Filter
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: enableToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 1989467387}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[1]
+      value: 
+      objectReference: {fileID: 704536488}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[2]
+      value: 
+      objectReference: {fileID: 413438981}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_IsPrefabParent: 0
@@ -16044,12 +16246,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 214173465}
+  editorToggle: {fileID: 214173466}
   segmentName: Elements
   header: {fileID: 2011115488}
-  content: {fileID: 651794691}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &686303416
@@ -16485,6 +16687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a1bb311782edf47bcfc186fdc56e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &704536488 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1417638257}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &707256325
 GameObject:
   m_ObjectHideFlags: 0
@@ -17563,12 +17771,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &762467505
@@ -18262,12 +18470,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 1
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &779831816
@@ -18281,6 +18489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bb8759a41d496439db8b667190061d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &779844966 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1792452005}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &783246979
 GameObject:
   m_ObjectHideFlags: 0
@@ -18370,12 +18584,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &783246984
@@ -18443,6 +18657,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000012151473904, guid: 1280af98e3595384ba80db985c15c225,
     type: 2}
   m_PrefabInternal: {fileID: 930310302}
+--- !u!114 &791791204 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 337481418}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &794742812
 GameObject:
   m_ObjectHideFlags: 0
@@ -18730,12 +18950,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 2108299154}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &795438776
@@ -19580,6 +19800,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4000011408549314, guid: 458d04267dd82ec42bcc77e00fda0537,
     type: 2}
   m_PrefabInternal: {fileID: 337124151}
+--- !u!114 &831615171 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1792187632}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!4 &835016786 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011408549314, guid: 458d04267dd82ec42bcc77e00fda0537,
@@ -19674,12 +19900,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &848345539
@@ -21035,12 +21261,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 2108299154}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &901607029 stripped
@@ -22178,6 +22404,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 952472122}
   - 114: {fileID: 952472123}
+  - 114: {fileID: 952472125}
+  - 114: {fileID: 952472124}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -22251,7 +22479,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 123624107}
-        m_MethodName: ActivateSegment
+        m_MethodName: ToggleSegment
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22264,6 +22492,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &952472124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 952472121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &952472125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 952472121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1001 &955515193
 Prefab:
   m_ObjectHideFlags: 0
@@ -22271,6 +22525,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1886576683}
     m_Modifications:
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -22384,6 +22643,11 @@ Prefab:
       propertyPath: disableToggle
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 483705640}
     m_RemovedComponents:
     - {fileID: 114000010378739750, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
@@ -22548,12 +22812,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &959242522
@@ -26136,6 +26400,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 1105893784}
   - 114: {fileID: 1105893785}
+  - 114: {fileID: 1105893787}
+  - 114: {fileID: 1105893786}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -26222,6 +26488,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &1105893786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1105893783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1105893787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1105893783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1 &1110288608
 GameObject:
   m_ObjectHideFlags: 0
@@ -26570,12 +26862,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 1580393936}
+  editorToggle: {fileID: 1580393937}
   segmentName: Regions
   header: {fileID: 1052570349}
-  content: {fileID: 7019415}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1117863452
@@ -27827,12 +28119,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 423150524}
+  editorToggle: {fileID: 423150525}
   segmentName: Elements
   header: {fileID: 1240155048}
-  content: {fileID: 378626265}
   segmentGroup: []
   siblingSegment: {fileID: 1674728137}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1158307204
@@ -27853,6 +28145,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 136835292}
     m_Modifications:
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -27966,6 +28263,26 @@ Prefab:
       propertyPath: segmentName
       value: Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: enableToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[0]
+      value: 
+      objectReference: {fileID: 779844966}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[1]
+      value: 
+      objectReference: {fileID: 791791204}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: editorElements.Array.data[2]
+      value: 
+      objectReference: {fileID: 187604643}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
   m_IsPrefabParent: 0
@@ -31314,12 +31631,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 1105893785}
+  editorToggle: {fileID: 1105893786}
   segmentName: Result
   header: {fileID: 312806387}
-  content: {fileID: 1181876631}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1270903439
@@ -31764,6 +32081,11 @@ Prefab:
         type: 2}
       propertyPath: segmentName
       value: Items
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
+        type: 2}
+      propertyPath: enableToggle
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
@@ -32249,12 +32571,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!1001 &1299931159
@@ -33601,6 +33923,7 @@ MonoBehaviour:
     value: 
     id: 
     index: 
+    phaseId: 
     name: []
     requestType: 0
 --- !u!114 &1338035985
@@ -33617,12 +33940,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 1
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1338035986
@@ -33898,12 +34221,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 1035881207}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!4 &1356472175 stripped
@@ -37432,12 +37755,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1511168228
@@ -37711,6 +38034,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 1522126380}
   - 114: {fileID: 1522126381}
+  - 114: {fileID: 1522126383}
+  - 114: {fileID: 1522126382}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -37797,6 +38122,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &1522126382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1522126379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1522126383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1522126379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!224 &1529234944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38375,12 +38726,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 1799468506}
+  editorToggle: {fileID: 1799468507}
   segmentName: Edit
   header: {fileID: 2010836689}
-  content: {fileID: 621515320}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!1 &1553673200
@@ -38464,12 +38815,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 1522126381}
+  editorToggle: {fileID: 1522126382}
   segmentName: Elements
   header: {fileID: 1361342036}
-  content: {fileID: 892433157}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1553673204
@@ -39107,6 +39458,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 1580393935}
   - 114: {fileID: 1580393936}
+  - 114: {fileID: 1580393938}
+  - 114: {fileID: 1580393937}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -39193,6 +39546,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &1580393937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1580393934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1580393938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1580393934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1 &1581687984
 GameObject:
   m_ObjectHideFlags: 0
@@ -40791,7 +41170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 10
+  m_DragThreshold: 15
 --- !u!4 &1618397900
 Transform:
   m_ObjectHideFlags: 0
@@ -41934,12 +42313,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 2102175941}
+  editorToggle: {fileID: 2102175943}
   segmentName: Elements
   header: {fileID: 1521687042}
-  content: {fileID: 1866502513}
   segmentGroup: []
   siblingSegment: {fileID: 1158307203}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1674728138
@@ -44246,12 +44625,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 2135834310}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1791099887
@@ -44783,6 +45162,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 1799468505}
   - 114: {fileID: 1799468506}
+  - 114: {fileID: 1799468508}
+  - 114: {fileID: 1799468507}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -44856,7 +45237,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1552122646}
-        m_MethodName: ActivateSegment
+        m_MethodName: ToggleSegment
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44869,6 +45250,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &1799468507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1799468504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1799468508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1799468504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1 &1800320915
 GameObject:
   m_ObjectHideFlags: 0
@@ -45398,12 +45805,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1849985780
@@ -46468,12 +46875,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1902833974
@@ -46895,12 +47302,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 1
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &1919670064
@@ -47867,12 +48274,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 615650207}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &1965906595 stripped
@@ -48528,6 +48935,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1988507602}
+--- !u!114 &1989467387 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011598394590, guid: fbbcbaa2ee1fc494c825ea84b63c405f,
+    type: 2}
+  m_PrefabInternal: {fileID: 2023297898}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &1996778225
 GameObject:
   m_ObjectHideFlags: 0
@@ -49185,6 +49598,12 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2011115486}
+--- !u!114 &2013668343 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011877858124, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
+    type: 2}
+  m_PrefabInternal: {fileID: 2145338755}
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
 --- !u!1 &2016447746
 GameObject:
   m_ObjectHideFlags: 0
@@ -49217,12 +49636,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &2016447748
@@ -50055,12 +50474,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!224 &2057401921 stripped
@@ -50550,12 +50969,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 0}
+  editorToggle: {fileID: 0}
   segmentName: 
   header: {fileID: 0}
-  content: {fileID: 0}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &2077475959
@@ -51132,6 +51551,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 2102175940}
   - 114: {fileID: 2102175941}
+  - 114: {fileID: 2102175942}
+  - 114: {fileID: 2102175943}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -51218,6 +51639,32 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &2102175942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2102175939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
+--- !u!114 &2102175943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2102175939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2104205821
 GameObject:
   m_ObjectHideFlags: 0

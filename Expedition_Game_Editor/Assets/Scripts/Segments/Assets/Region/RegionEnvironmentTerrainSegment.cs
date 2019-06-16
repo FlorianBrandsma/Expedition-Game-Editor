@@ -46,6 +46,8 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        //SegmentController.EnableSegment(false);
+
         SetDropdown(regionDataElement.TileSetId);
     }
 

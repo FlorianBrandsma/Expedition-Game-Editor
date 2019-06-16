@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 
 public class SegmentController : MonoBehaviour
 {
@@ -10,14 +10,17 @@ public class SegmentController : MonoBehaviour
     public bool loadOnce;
 
     public bool enableToggle;
-    public Toggle toggle;
+
+    public EditorToggle editorToggle;
+
     public string segmentName;
     public Text header;
-    public GameObject content;
 
     public SegmentController[] segmentGroup;
     public SegmentController siblingSegment;
-    
+
+    public EditorElement[] editorElements;
+
     [HideInInspector]
     public EditorController editorController;
 
@@ -48,25 +51,32 @@ public class SegmentController : MonoBehaviour
 
         header.text = segmentName;
 
-        if (enableToggle)
-            EnableToggle();
+        EnableToggle();
+    }
+
+    public void ToggleSegment()
+    {
+        foreach(SegmentController segment in segmentGroup)
+        {
+            if (segment.editorToggle.Toggle.isOn != editorToggle.Toggle.isOn)
+                segment.editorToggle.Toggle.isOn  = editorToggle.Toggle.isOn;
+        }
+
+        foreach (EditorElement editorElement in editorElements)
+            editorElement.GetComponent<IEditorElement>().EnableElement(editorToggle.Toggle.isOn);
     }
 
     private void EnableToggle()
     {
-        toggle.interactable = true;
-        toggle.targetGraphic.color = Color.white;
+        editorToggle.EnableElement(enableToggle);
     }
 
-    public void ActivateSegment()
+    public void EnableSegment(bool enable)
     {
-        foreach(SegmentController segment in segmentGroup)
-        {
-            if (segment.toggle.isOn != toggle.isOn)
-                segment.toggle.isOn  = toggle.isOn;
-        }
+        editorToggle.EnableElement(enable);
 
-        content.SetActive(toggle.isOn);
+        foreach (EditorElement editorElement in editorElements)
+            editorElement.GetComponent<IEditorElement>().EnableElement(enable);
     }
 
     public void InitializeDependencies(EditorController editorController)

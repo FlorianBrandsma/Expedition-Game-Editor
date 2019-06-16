@@ -81,11 +81,30 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
+        if (regionData.changedTileSetId)
+            ChangedTileSet();
+
         DataElements.ForEach(x => x.Update());
 
         UpdateList();
 
         UpdateEditor();
+    }
+
+    private void ChangedTileSet()
+    {
+        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == regionData.id).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.regionId).Distinct().ToList().Contains(x.chapterRegionId)).Distinct().ToList();
+
+        regions.ForEach(x => x.tileSetId = regionData.TileSetId);
+
+        regions.Add(Fixtures.regionList.Where(x => x.id == regionData.id).FirstOrDefault());
+
+        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.id).Distinct().ToList().Contains(x.regionId)).Distinct().ToList();
+        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.id).Distinct().ToList().Contains(x.terrainId)).Distinct().ToList();
+        var firstTile = Fixtures.tileList.Where(x => x.tileSetId == regionData.TileSetId).FirstOrDefault();
+
+        terrainTiles.ForEach(x => x.tileId = firstTile.id);
     }
 
     public void CancelEdit()

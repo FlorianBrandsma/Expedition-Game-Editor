@@ -120,6 +120,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000012196915248}
   - 114: {fileID: 114000014088138430}
+  - 114: {fileID: 114000013783706680}
+  - 114: {fileID: 114000010793704226}
   m_Layer: 5
   m_Name: Header (toggle)
   m_TagString: Untagged
@@ -136,6 +138,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b816eedec682a2e48a9e1a5382c314b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114000010793704226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013160609258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e97d3768ed4649bd04600f995ef87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000011368750460
@@ -211,12 +224,12 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   loadOnce: 0
   enableToggle: 0
-  toggle: {fileID: 114000014088138430}
+  editorToggle: {fileID: 114000010793704226}
   segmentName: 
   header: {fileID: 114000011368750460}
-  content: {fileID: 1000012956841928}
   segmentGroup: []
   siblingSegment: {fileID: 0}
+  editorElements: []
   editorController: {fileID: 0}
   loaded: 0
 --- !u!114 &114000013440364948
@@ -273,6 +286,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000013783706680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013160609258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledImage: {fileID: 0}
+  disabledImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!114 &114000014088138430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,7 +335,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114000013684356068}
   toggleTransition: 0
   graphic: {fileID: 114000013684356068}
@@ -316,7 +344,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114000013256253516}
-        m_MethodName: ActivateSegment
+        m_MethodName: ToggleSegment
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -197,6 +197,7 @@ public class Search
     public class Region : SearchParameters
     {
         public List<int> index = new List<int>();
+        public List<int> phaseId = new List<int>();
         public List<string> name = new List<string>();
 
         public enum RequestType

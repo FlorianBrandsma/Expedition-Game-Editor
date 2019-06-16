@@ -50,6 +50,8 @@ public class RegionDataManager
         
         foreach(Fixtures.Region region in Fixtures.regionList)
         {
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(region.phaseId)) continue;
+
             var regionData = new RegionData();
 
             regionData.id = region.id;

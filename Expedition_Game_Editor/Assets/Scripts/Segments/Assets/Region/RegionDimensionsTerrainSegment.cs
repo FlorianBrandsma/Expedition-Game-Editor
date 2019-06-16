@@ -47,6 +47,8 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        SegmentController.EnableSegment(false);
+
         sizeInputNumber.Value = regionDataElement.TerrainSize;
 
         heightText.text = regionDataElement.TerrainSize.ToString();

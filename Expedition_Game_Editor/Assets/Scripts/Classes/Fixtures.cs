@@ -189,13 +189,14 @@ static public class Fixtures
         LoadItems();
         LoadElements();
         LoadRegions();
-        LoadTerrains();
-        LoadTerrainTiles();
         LoadChapters();
         LoadChapterPartyElements();
         LoadChapterTerrainElements();
         LoadChapterRegions();
         LoadPhases();
+        LoadPhaseRegions();
+        LoadTerrains();
+        LoadTerrainTiles();
         LoadQuests();
         LoadPhaseElements();
         LoadObjectives();
@@ -628,6 +629,37 @@ static public class Fixtures
                 phase.notes = "I belong to Chapter "+ chapter.id +". This is definitely a test";
 
                 phaseList.Add(phase);
+            }
+        }
+    }
+
+    static public void LoadPhaseRegions()
+    {
+        //For every phase
+        //Create a copy of the regions in the chapter
+
+        foreach(Phase phase in phaseList)
+        {
+            foreach(ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
+            {
+                var regionSource = regionList.Where(x => x.id == chapterRegion.regionId).FirstOrDefault();
+
+                var region = new Region();
+
+                int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
+
+                region.id = id;
+                region.phaseId = phase.id;
+                region.chapterRegionId = chapterRegion.id;
+
+                region.index = regionSource.index;
+                region.tileSetId = regionSource.tileSetId;
+
+                region.name = regionSource.name;
+                region.regionSize = regionSource.regionSize;
+                region.terrainSize = regionSource.terrainSize;
+
+                regionList.Add(region);
             }
         }
     }
