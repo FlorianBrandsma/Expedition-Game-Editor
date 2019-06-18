@@ -31,6 +31,7 @@ public class TerrainElementSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.pathController.loaded) return;
 
         var searchParameters = new Search.TerrainElement();
+
         searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
 
         SegmentController.DataController.GetData(new[] { searchParameters });

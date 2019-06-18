@@ -67,7 +67,7 @@ public class PathManager
             route = selection.route;
             origin = selection.ListManager;
 
-            path = origin.listProperties.DataController.SegmentController.path;
+            path = origin.listProperties.DataController.SegmentController.Path;
         }
 
         public Path Enter()
@@ -162,7 +162,7 @@ public class PathManager
         {
             route.controller = enter;
             //Looks convoluted
-            path = origin.listProperties.DataController.SegmentController.path;
+            path = origin.listProperties.DataController.SegmentController.Path;
 
             EditorForm form = EditorManager.editorManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
@@ -237,7 +237,7 @@ public class PathManager
             regionDataElement = (RegionDataElement)route.data.DataElement;
 
             if (selection.ListManager != null)
-                path = selection.ListManager.listProperties.DataController.SegmentController.path;
+                path = selection.ListManager.listProperties.DataController.SegmentController.Path;
         }
 
         public Path Enter()
@@ -309,7 +309,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            path = origin.listProperties.DataController.SegmentController.path;
+            path = origin.listProperties.DataController.SegmentController.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, origin, path.start);
         }

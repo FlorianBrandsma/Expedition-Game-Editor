@@ -31,33 +31,26 @@ public class PhaseRegionsRegionsSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        //var phaseEditor = (PhaseEditor)DataEditor;
+        var phaseEditor = (PhaseEditor)DataEditor;
 
-        //if (phaseEditor.regionDataList.Count > 0) return;
+        if (phaseEditor.regionDataList.Count > 0) return;
 
-        //var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
+        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
 
-        //var searchParameters = new Search.PhaseRegion();
+        var searchParameters = new Search.Region();
 
-        //searchParameters.requestType = Search.PhaseRegion.RequestType.Custom;
-        //searchParameters.phaseId = new List<int>() { phaseData.id };
-        //searchParameters.temp_id_count = 15;
+        searchParameters.requestType = Search.Region.RequestType.Custom;
+        searchParameters.phaseId = new List<int>() { phaseData.id };
 
-        //SegmentController.DataController.GetData(new[] { searchParameters });
-
-        //var chapterRegionList = SegmentController.DataController.DataList.Cast<RegionDataElement>().ToList();
-        //chapterRegionList.ForEach(x => phaseEditor.regionDataList.Add(x));
+        SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
-    private void SetSearchParameters()
-    {
-        
-    }
+    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {
-        //if (GetComponent<IDisplay>() != null)
-        //    GetComponent<IDisplay>().DataController = SegmentController.DataController;
+        if (GetComponent<IDisplay>() != null)
+            GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(SelectionElement selectionElement)

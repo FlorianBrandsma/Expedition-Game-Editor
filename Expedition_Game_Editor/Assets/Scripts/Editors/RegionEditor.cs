@@ -81,6 +81,9 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
+        if (regionData.changedName)
+            ChangedName();
+
         if (regionData.changedTileSetId)
             ChangedTileSet();
 
@@ -91,10 +94,20 @@ public class RegionEditor : MonoBehaviour, IEditor
         UpdateEditor();
     }
 
+    private void ChangedName()
+    {
+        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == regionData.id).Distinct().ToList();
+
+        var test = chapterRegions.Select(y => y.regionId).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
+
+        regions.ForEach(x => x.name = regionData.Name);
+    }
+
     private void ChangedTileSet()
     {
         var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == regionData.id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.regionId).Distinct().ToList().Contains(x.chapterRegionId)).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
 
         regions.ForEach(x => x.tileSetId = regionData.TileSetId);
 

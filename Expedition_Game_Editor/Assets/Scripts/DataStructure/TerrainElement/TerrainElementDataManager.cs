@@ -90,13 +90,13 @@ public class TerrainElementDataManager
     {
         terrainElementDataList = new List<TerrainElementData>();
 
-        var objectiveData = (ObjectiveDataElement)terrainElementController.SegmentController.path.FindLastRoute("Objective").data.DataElement;
-        var questData = (QuestDataElement)terrainElementController.SegmentController.path.FindLastRoute("Quest").data.DataElement;
+        var objectiveId = terrainElementController.SegmentController.Path.FindLastRoute("Objective").GeneralData().id;
+        var questId = terrainElementController.SegmentController.Path.FindLastRoute("Quest").GeneralData().id;
 
         List<int> terrainElementIds = new List<int>();
 
-        Fixtures.phaseElementList.Where(x => x.questId == questData.id).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
-        Fixtures.terrainElementList.Where(x => x.objectiveId == objectiveData.id).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
+        Fixtures.phaseElementList.Where(x => x.questId == questId).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
+        Fixtures.terrainElementList.Where(x => x.objectiveId == objectiveId).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
 
         foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList())
         {

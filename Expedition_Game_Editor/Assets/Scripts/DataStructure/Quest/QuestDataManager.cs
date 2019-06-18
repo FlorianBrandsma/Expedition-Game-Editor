@@ -24,9 +24,9 @@ public class QuestDataManager
                     {
                         id = questData.id,
                         table = questData.table,
+                        index = questData.index,
 
                         PhaseId = questData.phaseId,
-                        Index = questData.index,
                         Name = questData.name,
                         Notes = questData.notes
 
@@ -42,14 +42,14 @@ public class QuestDataManager
         questDataList = new List<QuestData>();
 
         foreach(Fixtures.Quest quest in Fixtures.questList)
-        { 
+        {
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
+
             var questData = new QuestData();
 
             questData.id = quest.id;
             questData.table = "Quest";
             questData.index = quest.index;
-            
-            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
 
             questData.phaseId = quest.phaseId;
             questData.name = quest.name;

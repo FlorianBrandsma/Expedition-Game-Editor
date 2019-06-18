@@ -32,7 +32,7 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
 
         var searchParameters = new Search.Objective();
 
-        searchParameters.questId = new List<int>() { SegmentController.path.FindLastRoute("Quest").GeneralData().id };
+        searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute("Quest").GeneralData().id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

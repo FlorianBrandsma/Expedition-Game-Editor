@@ -24,8 +24,9 @@ public class ObjectiveDataManager
                     {
                         id = objectiveData.id,
                         table = objectiveData.table,
+                        index = objectiveData.index,
 
-                        Index = objectiveData.index,
+                        QuestId = objectiveData.questId,
                         Name = objectiveData.name,
                         Journal = objectiveData.journal,
                         Notes = objectiveData.notes
@@ -43,13 +44,13 @@ public class ObjectiveDataManager
         
         foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
+            if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
+
             var objectiveData = new ObjectiveData();
             
             objectiveData.id = objective.id;
             objectiveData.table = "Objective";
             objectiveData.index = objective.index;
-
-            if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
 
             objectiveData.questId = objective.questId;
             objectiveData.name = objective.name;

@@ -3,6 +3,7 @@ using System.Linq;
 
 public class ObjectiveCore : GeneralData
 {
+    private int questId;
     private string name;
     private string journal;
     private string notes;
@@ -38,6 +39,12 @@ public class ObjectiveCore : GeneralData
 
             index = value;
         }
+    }
+
+    public int QuestId
+    {
+        get { return questId; }
+        set { questId = value; }
     }
 
     public string Name

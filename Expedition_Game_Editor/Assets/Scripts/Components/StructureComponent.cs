@@ -7,6 +7,8 @@ using System.Linq;
 //Attached dataController parent is required to have a DataController component
 public class StructureComponent : MonoBehaviour, IComponent
 {
+    private Path path;
+
     public EditorComponent component;
 
     public GameObject dataController_parent;
@@ -25,6 +27,8 @@ public class StructureComponent : MonoBehaviour, IComponent
     {
         if (dataController == null) return;
 
+        this.path = path;
+
         PathController controller = GetComponent<PathController>();
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
@@ -38,10 +42,10 @@ public class StructureComponent : MonoBehaviour, IComponent
             default:                            Debug.Log("CASE MISSING");  break;
         }
 
-        int selected_index = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
+        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
 
-        dropdown.value = selected_index;
-        dropdown.captionText.text = dropdown.options[selected_index].text;
+        dropdown.value = selectedIndex;
+        dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
         dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
     }
@@ -56,6 +60,15 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetPhaseOptions()
     {
+        if (EditorManager.historyManager.returned)
+        {
+            var searchParameters = new Search.Phase();
+
+            searchParameters.chapterId = new List<int>() { path.FindLastRoute("Chapter").GeneralData().id };
+
+            dataController.GetData(new[] { searchParameters });
+        }
+
         List<PhaseDataElement> dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
 
         foreach (PhaseDataElement dataElement in dataElements)
@@ -64,6 +77,15 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetQuestOptions()
     {
+        if (EditorManager.historyManager.returned)
+        {
+            var searchParameters = new Search.Quest();
+
+            searchParameters.phaseId = new List<int>() { path.FindLastRoute("Phase").GeneralData().id };
+
+            dataController.GetData(new[] { searchParameters });
+        }
+
         List<QuestDataElement> dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
@@ -72,6 +94,15 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetObjectiveOptions()
     {
+        if (EditorManager.historyManager.returned)
+        {
+            var searchParameters = new Search.Objective();
+
+            searchParameters.questId = new List<int>() { path.FindLastRoute("Quest").GeneralData().id };
+
+            dataController.GetData(new[] { searchParameters });
+        }
+
         List<ObjectiveDataElement> dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
         foreach (ObjectiveDataElement dataElement in dataElements)
@@ -80,6 +111,15 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetTerrainElementOptions()
     {
+        if (EditorManager.historyManager.returned)
+        {
+            var searchParameters = new Search.TerrainElement();
+
+            searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
+
+            dataController.GetData(new[] { searchParameters });
+        }
+
         List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
         foreach (TerrainElementDataElement dataElement in dataElements)

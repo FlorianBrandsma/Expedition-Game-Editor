@@ -22,9 +22,9 @@ public class RegionCore : GeneralData
     private bool changedChapterRegionId;
     private bool changedPhaseId;
     public bool changedTileSetId;
-    private bool changedName;
-    public bool changedRegionSize;
-    public bool changedTerrainSize;
+    public bool changedName;
+    private bool changedRegionSize;
+    private bool changedTerrainSize;
     
     public bool Changed
     {

@@ -133,20 +133,6 @@ public class Search
     }
 
     [System.Serializable]
-    public class PhaseRegion : SearchParameters
-    {
-        public List<int> phaseId = new List<int>();
-        public List<int> regionId = new List<int>();
-
-        public enum RequestType
-        {
-            Custom
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
     public class Quest : SearchParameters
     {
         public List<int> index = new List<int>();

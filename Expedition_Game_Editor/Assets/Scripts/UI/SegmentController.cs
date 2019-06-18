@@ -27,8 +27,7 @@ public class SegmentController : MonoBehaviour
     [HideInInspector]
     public bool loaded;
 
-    [HideInInspector]
-    public Path path;
+    public Path Path { get { return editorController.pathController.route.path; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 
@@ -91,14 +90,12 @@ public class SegmentController : MonoBehaviour
     {
         this.editorController = editorController;
 
-        path = editorController.pathController.route.path;
-
         if (DataController != null)
             DataController.InitializeController();
 
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();
-
+        
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
 

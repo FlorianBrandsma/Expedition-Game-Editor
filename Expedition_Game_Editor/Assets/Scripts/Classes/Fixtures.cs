@@ -18,7 +18,6 @@ static public class Fixtures
     static public int chapters = 3;
     static public int partyElementsInChapter = 1;
     static public int worldElementsInChapter = 3;
-    static public int regionsInChapter = 2;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
     static public int objectivesInQuest = 3;
@@ -189,14 +188,14 @@ static public class Fixtures
         LoadItems();
         LoadElements();
         LoadRegions();
+        LoadTerrains();
+        LoadTerrainTiles();
         LoadChapters();
         LoadChapterPartyElements();
         LoadChapterTerrainElements();
         LoadChapterRegions();
         LoadPhases();
         LoadPhaseRegions();
-        LoadTerrains();
-        LoadTerrainTiles();
         LoadQuests();
         LoadPhaseElements();
         LoadObjectives();
@@ -588,12 +587,14 @@ static public class Fixtures
             List<int> randomRegions = new List<int>();
 
             regionList.ForEach(x => randomRegions.Add(x.id));
-            
-            for (int i = 0; i < regionsInChapter; i++)
+
+            int randomRegionAmount = Random.Range(1, regionList.Count + 1);
+
+            for (int i = 0; i < randomRegionAmount; i++)
             {
                 var chapterRegion = new ChapterRegion();
 
-                int id = (i + 1);
+                int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].id + 1) : 1;
 
                 chapterRegion.id = id;
                 chapterRegion.index = i;
@@ -635,9 +636,6 @@ static public class Fixtures
 
     static public void LoadPhaseRegions()
     {
-        //For every phase
-        //Create a copy of the regions in the chapter
-
         foreach(Phase phase in phaseList)
         {
             foreach(ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
@@ -646,19 +644,56 @@ static public class Fixtures
 
                 var region = new Region();
 
-                int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
+                int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
 
-                region.id = id;
+                region.id = regionId;
                 region.phaseId = phase.id;
                 region.chapterRegionId = chapterRegion.id;
 
-                region.index = regionSource.index;
+                region.index = chapterRegion.index;
                 region.tileSetId = regionSource.tileSetId;
 
                 region.name = regionSource.name;
                 region.regionSize = regionSource.regionSize;
                 region.terrainSize = regionSource.terrainSize;
 
+                var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+                foreach (Terrain terrainSource in terrainSourceList)
+                {
+                    var terrain = new Terrain();
+
+                    int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
+
+                    terrain.id = terrainId;
+                    terrain.regionId = region.id;
+
+                    terrain.index = terrainSource.index;
+
+                    terrain.iconId = terrainSource.iconId;
+                    terrain.name = terrainSource.name;
+                    
+                    var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+                    foreach(TerrainTile terrainTileSource in terrainTileSourceList)
+                    {
+                        var terrainTile = new TerrainTile();
+                        
+                        int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
+
+                        terrainTile.id = terrainTileId;
+                        terrainTile.terrainId = terrain.id;
+
+                        terrainTile.index = terrainTileSource.index;
+
+                        terrainTile.tileId = terrainTileSource.tileId;
+                        
+                        terrainTileList.Add(terrainTile);
+                    }
+
+                    terrainList.Add(terrain);
+                }
+                
                 regionList.Add(region);
             }
         }
