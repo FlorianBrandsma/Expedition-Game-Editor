@@ -23,7 +23,7 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 
     private void InitializeEditButton()
     {
-        var data = SegmentController.Path.FindLastRoute("Region").data;
+        var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
         var regionData = (RegionDataElement)data.DataElement;
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;

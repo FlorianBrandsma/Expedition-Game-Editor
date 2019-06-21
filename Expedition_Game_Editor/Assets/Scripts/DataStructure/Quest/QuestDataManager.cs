@@ -22,8 +22,9 @@ public class QuestDataManager
         var list = (from questData in questDataList
                     select new QuestDataElement()
                     {
+                        dataType = Enums.DataType.Quest,
+
                         id = questData.id,
-                        table = questData.table,
                         index = questData.index,
 
                         PhaseId = questData.phaseId,
@@ -43,12 +44,12 @@ public class QuestDataManager
 
         foreach(Fixtures.Quest quest in Fixtures.questList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
 
             var questData = new QuestData();
 
             questData.id = quest.id;
-            questData.table = "Quest";
             questData.index = quest.index;
 
             questData.phaseId = quest.phaseId;

@@ -31,17 +31,18 @@ public class ItemDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ItemDataElement()
                     {
-                        id      = itemData.id,
-                        table   = itemData.table,
+                        dataType = Enums.DataType.Item,
 
-                        Type    = itemData.type,
-                        Index   = itemData.index,
+                        id = itemData.id,
+                        index = itemData.index,
+
+                        Type = itemData.type,
                         ObjectGraphicId = itemData.objectId,
-                        Name    = itemData.name,
+                        Name = itemData.name,
 
-                        objectGraphicPath   = objectGraphicData.path,
-                        objectGraphicIconPath   = iconData.path
-
+                        objectGraphicPath = objectGraphicData.path,
+                        objectGraphicIconPath = iconData.path,
+                        
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
@@ -55,16 +56,15 @@ public class ItemDataManager
 
         foreach(Fixtures.Item item in Fixtures.itemList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(item.id)) continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
+
             var itemData = new ItemData();
 
             itemData.id = item.id;
-            itemData.table = "Item";
-
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
-
-            itemData.type = item.type;
             itemData.index = item.index;
 
+            itemData.type = item.type;
             itemData.objectId = item.objectGraphicId;
             itemData.name = item.name;
 

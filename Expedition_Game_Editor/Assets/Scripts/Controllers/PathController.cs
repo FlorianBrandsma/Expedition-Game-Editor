@@ -52,15 +52,6 @@ public class PathController : MonoBehaviour
         //One way to circumvent this is to simply get rid of shared controllers
         this.parentController = parentController;
 
-        GetDataController();
-        GetDataEditor();
-
-        if (EditorController != null)
-        {
-            editorSection.targetController = EditorController;
-            editorSection.editorForm.mainController = EditorController;
-        }
-
         this.step = step;
 
         Path path = mainPath.Trim(step);
@@ -85,6 +76,9 @@ public class PathController : MonoBehaviour
             } 
         }
 
+        GetDataController();
+        GetDataEditor();
+        
         if (subControllerManager != null)
         {
             InitializeTabs(mainPath);
@@ -96,6 +90,17 @@ public class PathController : MonoBehaviour
         InitializeComponents(mainPath);
 
         editorSection.targetPath = mainPath;
+
+        if (EditorController != null)
+        {
+            editorSection.targetController = EditorController;
+            editorSection.editorForm.mainController = EditorController;
+
+            EditorController.InitializeController();
+        }
+
+        if (dataEditor != null)
+            editorSection.dataEditor = dataEditor;
 
         if (step < mainPath.route.Count)
         {

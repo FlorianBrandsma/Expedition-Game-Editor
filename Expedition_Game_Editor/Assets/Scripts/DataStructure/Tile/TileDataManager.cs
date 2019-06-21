@@ -28,9 +28,10 @@ public class TileDataManager
 
                     select new TileDataElement()
                     {
+                        dataType = Enums.DataType.Tile,
+
                         id = tileData.id,
-                        table = tileData.table,
-                        Index = tileData.index,
+                        index = tileData.index,
 
                         icon = tileData.iconPath
                         
@@ -47,12 +48,12 @@ public class TileDataManager
 
         foreach (Fixtures.Tile tile in Fixtures.tileList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.id)) continue;
             if (searchParameters.tileSetId.Count > 0 && !searchParameters.tileSetId.Contains(tile.tileSetId)) continue;
 
             var tileData = new TileData();
 
             tileData.id = tile.id;
-            tileData.table = "Tile";
             tileData.index = tile.index;
 
             tileData.tileSetId = tile.tileSetId;

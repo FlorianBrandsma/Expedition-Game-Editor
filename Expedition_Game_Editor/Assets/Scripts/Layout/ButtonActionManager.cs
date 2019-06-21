@@ -26,12 +26,6 @@ public class ButtonActionManager : MonoBehaviour
 
     public void CloseButtons()
     {
-        if(apply_button != null)
-            apply_button.onClick.RemoveAllListeners();
-
-        if(close_button != null)
-            close_button.onClick.RemoveAllListeners();
-
         if(trash_toggle != null)
             trash_toggle.isOn = false;
     }

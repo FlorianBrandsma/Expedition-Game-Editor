@@ -38,9 +38,10 @@ public class ElementDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ElementDataElement()
                     {
+                        dataType = Enums.DataType.Element,
+
                         id      = elementData.id,
-                        table   = elementData.table,
-                        Index   = elementData.index,
+                        index   = elementData.index,
 
                         ObjectGraphicId = elementData.objectGraphicId,
                         Name    = elementData.name,
@@ -66,7 +67,6 @@ public class ElementDataManager
             var elementData = new ElementData();
 
             elementData.id = element.id;
-            elementData.table = "Element";
             elementData.index = element.index;
 
             elementData.objectGraphicId = element.objectGraphicId;

@@ -24,6 +24,8 @@ public class TerrainTileCore : GeneralData
 
     #region Properties
 
+    public int Id { get { return id; } }
+
     public int Index
     {
         get { return index; }

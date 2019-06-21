@@ -32,10 +32,11 @@ public class ChapterDataManager
                     join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
                     select new ChapterDataElement()
                     {
-                        id = chapterData.id,
-                        table = "Chapter",
-                        index = chapterData.index,
+                        dataType = Enums.DataType.Chapter,
 
+                        id = chapterData.id,
+                        index = chapterData.index,
+                        
                         ElementId = chapterData.elementId,
                         Name = chapterData.name,
                         Notes = chapterData.notes
@@ -53,6 +54,8 @@ public class ChapterDataManager
 
         foreach(Fixtures.Chapter chapter in Fixtures.chapterList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.id)) return;
+
             var chapterData = new ChapterData();
             
             chapterData.id = chapter.id;

@@ -29,8 +29,9 @@ public class TerrainDataManager
 
                     select new TerrainDataElement()
                     {
+                        dataType = Enums.DataType.Terrain,
+
                         id = terrainData.id,
-                        table = "Terrain",
                         index = terrainData.index,
 
                         RegionId = terrainData.regionId,
@@ -55,6 +56,7 @@ public class TerrainDataManager
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
             var region = Fixtures.regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();

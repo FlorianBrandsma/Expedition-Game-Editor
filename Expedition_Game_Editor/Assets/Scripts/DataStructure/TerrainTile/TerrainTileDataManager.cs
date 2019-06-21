@@ -11,7 +11,6 @@ public class TerrainTileDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.TileData> tileDataList;
-    private List<DataManager.IconData> iconDataList;
 
     public void InitializeManager(TerrainTileController terrainTileController)
     {
@@ -29,8 +28,9 @@ public class TerrainTileDataManager
                     join tileData in tileDataList on terrainTileData.tileId equals tileData.id
                     select new TerrainTileDataElement()
                     {
+                        dataType = Enums.DataType.TerrainTile,
+
                         id = terrainTileData.id,
-                        table = "TerrainTile",
                         index = terrainTileData.index,
 
                         TerrainId = terrainTileData.terrainId,
@@ -51,6 +51,7 @@ public class TerrainTileDataManager
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.id)) continue;
             if (searchParameters.regionId.Count > 0)
             {
                 var terrain = Fixtures.terrainList.Where(x => x.id == terrainTile.terrainId).FirstOrDefault();

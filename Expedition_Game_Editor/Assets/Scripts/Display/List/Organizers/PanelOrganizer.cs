@@ -85,7 +85,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.table + generalData.id;
+            element.name = generalData.DebugName + generalData.id;
             //
 
             SetElement(element);

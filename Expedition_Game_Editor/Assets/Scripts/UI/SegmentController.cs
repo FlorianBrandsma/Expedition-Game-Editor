@@ -88,6 +88,7 @@ public class SegmentController : MonoBehaviour
 
     public void InitializeSegment(EditorController editorController)
     {
+        //Necessary for shared segments
         this.editorController = editorController;
 
         if (DataController != null)
@@ -102,7 +103,7 @@ public class SegmentController : MonoBehaviour
         if (siblingSegment != null)
             siblingSegment.Segment.InitializeData();
 
-        loaded = true; 
+        loaded = true;
     }
 
     public void OpenSegment()

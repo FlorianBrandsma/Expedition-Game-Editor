@@ -32,7 +32,7 @@ public class QuestSegment : MonoBehaviour, ISegment
 
         var searchParameters = new Search.Quest();
 
-        searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute("Phase").GeneralData().id };
+        searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData().id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

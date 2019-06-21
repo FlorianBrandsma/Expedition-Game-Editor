@@ -7,12 +7,5 @@ public class SearchParameters
     public Enums.DataType dataType;
     public Enums.ElementType elementType;
 
-    public int temp_id_count;
-
-    public bool unique;
-    public bool exact;
-    
-    public string value;
-
     public List<int> id     = new List<int>();
 }

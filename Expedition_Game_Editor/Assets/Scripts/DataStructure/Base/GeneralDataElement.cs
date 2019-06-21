@@ -9,6 +9,8 @@ public class GeneralDataElement : GeneralData, IDataElement
 
     public GeneralDataElement() : base() { }
 
+    public int Id { get; set; }
+
     public void Update()
     {
         SetOriginalValues();

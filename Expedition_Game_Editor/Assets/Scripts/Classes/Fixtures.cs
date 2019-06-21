@@ -434,7 +434,6 @@ static public class Fixtures
             int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
 
             region.id = id;
-            region.table = "Region";
             region.index = i;
 
             region.chapterRegionId = 0;
@@ -459,7 +458,6 @@ static public class Fixtures
                 int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
 
                 terrain.id = id;
-                terrain.table = "Terrain";
                 terrain.index = i;
 
                 terrain.regionId = region.id;
@@ -485,7 +483,6 @@ static public class Fixtures
                 int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
 
                 terrainTile.id = id;
-                terrainTile.table = "TerrainTile";
                 terrainTile.index = i;
 
                 terrainTile.terrainId = terrain.id;
@@ -614,20 +611,36 @@ static public class Fixtures
 
     static public void LoadPhases()
     {
-        foreach(Chapter chapter in chapterList)
-        { 
+        //for (int i = 0; i < phasesInChapter; i++)
+        //{
+        //    var phase = new Phase();
+
+        //    int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].id + 1) : 1;
+
+        //    phase.id = id;
+        //    phase.index = i;
+
+        //    phase.chapterId = 1;
+        //    phase.name = "Phase " + (i + 1);
+        //    phase.notes = "I belong to Chapter " + 1 + ". This is definitely a test";
+
+        //    phaseList.Add(phase);
+        //}
+
+        foreach (Chapter chapter in chapterList)
+        {
             for (int i = 0; i < phasesInChapter; i++)
             {
                 var phase = new Phase();
 
                 int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].id + 1) : 1;
 
-                phase.id =  id;
+                phase.id = id;
                 phase.index = i;
 
                 phase.chapterId = chapter.id;
                 phase.name = "Phase " + (i + 1);
-                phase.notes = "I belong to Chapter "+ chapter.id +". This is definitely a test";
+                phase.notes = "I belong to Chapter " + chapter.id + ". This is definitely a test";
 
                 phaseList.Add(phase);
             }

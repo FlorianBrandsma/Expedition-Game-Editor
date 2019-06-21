@@ -14,7 +14,7 @@ public class TerrainTileDataElement : TerrainTileCore, IDataElement
 
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 

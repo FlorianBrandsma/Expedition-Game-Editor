@@ -22,9 +22,10 @@ public class RegionDataManager
         var list = (from regionData in regionDataList
                     select new RegionDataElement()
                     {
+                        dataType = Enums.DataType.Region,
+
                         id = regionData.id,
-                        table = regionData.table,
-                        Index = regionData.index,
+                        index = regionData.index,
 
                         ChapterRegionId = regionData.chapterRegionId,
                         PhaseId = regionData.phaseId,
@@ -35,7 +36,7 @@ public class RegionDataManager
 
                         type = (int)regionController.regionType
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -50,12 +51,12 @@ public class RegionDataManager
         
         foreach(Fixtures.Region region in Fixtures.regionList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(region.phaseId)) continue;
 
             var regionData = new RegionData();
 
             regionData.id = region.id;
-            regionData.table = "Region";
             regionData.index = region.index;
 
             regionData.chapterRegionId = region.chapterRegionId;

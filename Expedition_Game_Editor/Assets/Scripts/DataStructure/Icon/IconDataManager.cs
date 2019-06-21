@@ -22,8 +22,9 @@ public class IconDataManager
         var list = (from iconData in iconDataList
                     select new IconDataElement()
                     {
+                        dataType = Enums.DataType.Icon,
+
                         id = iconData.id,
-                        table = "Icon",
                         index = iconData.index,
 
                         Path = iconData.path,
@@ -42,6 +43,7 @@ public class IconDataManager
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.id)) continue;
             if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.category)) continue;
 
             var iconData = new IconData();

@@ -39,7 +39,7 @@ public class ListManager : MonoBehaviour
     public void InitializeList(ListProperties listProperties)
     {
         if (GetComponent<IOrganizer>() != null) return;
-
+        
         this.listProperties = listProperties;
         
         switch(listProperties.displayType)

@@ -38,10 +38,11 @@ public class TaskDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new TaskDataElement()
                     {
-                        id = taskData.id,
-                        table = "Task",
+                        dataType = Enums.DataType.Task,
 
-                        Index = taskData.index,
+                        id = taskData.id,
+                        index = taskData.index,
+
                         Description = taskData.description,
 
                         objectGraphicIconPath = iconData.path
@@ -59,6 +60,7 @@ public class TaskDataManager
 
         foreach(Fixtures.Task task in Fixtures.taskList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(task.id)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(task.objectiveId)) continue;
             if (searchParameters.terrainElementId.Count > 0 && !searchParameters.terrainElementId.Contains(task.terrainElementId)) continue;
 

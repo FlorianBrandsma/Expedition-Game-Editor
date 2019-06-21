@@ -18,7 +18,7 @@ public class TerrainObjectDataManager
                     select new TerrainObjectDataElement()
                     {
                         id = terrainObjectData.id,
-                        table = terrainObjectData.table,
+                        dataType = terrainObjectData.dataType,
 
                         Index = terrainObjectData.index,
 
@@ -33,19 +33,19 @@ public class TerrainObjectDataManager
 
     public void GetTerrainObjectData()
     {
-        terrainObjectDataList = new List<TerrainObjectData>();
+        //terrainObjectDataList = new List<TerrainObjectData>();
 
-        //Temporary
-        for (int i = 0; i < dataController.temp_id_count; i++)
-        {
-            var terrainObjectData = new TerrainObjectData();
+        ////Temporary
+        //for (int i = 0; i < dataController.temp_id_count; i++)
+        //{
+        //    var terrainObjectData = new TerrainObjectData();
 
-            terrainObjectData.id = (i + 1);
-            terrainObjectData.table = "TerrainObject";
-            terrainObjectData.index = i;
+        //    terrainObjectData.id = (i + 1);
+        //    terrainObjectData.dataType = "TerrainObject";
+        //    terrainObjectData.index = i;
 
-            terrainObjectDataList.Add(terrainObjectData);
-        }
+        //    terrainObjectDataList.Add(terrainObjectData);
+        //}
     }
 
     internal class TerrainObjectData : GeneralData

@@ -48,9 +48,10 @@ public class TerrainElementDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new TerrainElementDataElement()
                     {
-                        id = terrainElementData.id,
-                        table = "TerrainElement",
+                        dataType = Enums.DataType.TerrainElement,
 
+                        id = terrainElementData.id,
+                        
                         ChapterId = terrainElementData.chapterId,
                         ElementId = terrainElementData.elementId,
 
@@ -89,21 +90,17 @@ public class TerrainElementDataManager
     internal void GetQuestAndObjectiveTerrainElementData(Search.TerrainElement searchParameters)
     {
         terrainElementDataList = new List<TerrainElementData>();
-
-        var objectiveId = terrainElementController.SegmentController.Path.FindLastRoute("Objective").GeneralData().id;
-        var questId = terrainElementController.SegmentController.Path.FindLastRoute("Quest").GeneralData().id;
-
+        
         List<int> terrainElementIds = new List<int>();
 
-        Fixtures.phaseElementList.Where(x => x.questId == questId).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
-        Fixtures.terrainElementList.Where(x => x.objectiveId == objectiveId).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
+        Fixtures.phaseElementList.Where(x => searchParameters.questId.Contains(x.questId)).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
+        Fixtures.terrainElementList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
 
         foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList())
         {
             var terrainElementData = new TerrainElementData();
 
             terrainElementData.id = terrainElement.id;
-            terrainElementData.table = "TerrainElement";
 
             terrainElementData.chapterId = terrainElement.chapterId;
             terrainElementData.objectiveId = terrainElement.objectiveId;

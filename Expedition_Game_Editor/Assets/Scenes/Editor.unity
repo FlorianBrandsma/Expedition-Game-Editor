@@ -3046,10 +3046,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     tileSetId: 
     requestType: 0
@@ -4392,10 +4388,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     type: 
@@ -6566,10 +6558,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     phaseId: 
@@ -7425,10 +7413,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -9558,9 +9542,7 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList:
-  - Chapter
-  - Phase
+  structureList: 0d0000000f00000007000000
 --- !u!1 &368725159
 GameObject:
   m_ObjectHideFlags: 0
@@ -13116,10 +13098,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     phaseId: 
@@ -16235,12 +16213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 5
+    dataType: 6
     elementType: 1
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -17818,10 +17792,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     regionId: 
@@ -18472,10 +18442,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     type: 
@@ -18631,10 +18597,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     objectiveId: 
@@ -18951,12 +18913,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 8
+    dataType: 9
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     tileSetId: 
     requestType: 0
@@ -18997,10 +18955,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     regionId: 
@@ -19947,10 +19901,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -22870,10 +22820,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -26961,10 +26907,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     chapterId: 
     regionId: 
@@ -28119,12 +28061,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 5
+    dataType: 6
     elementType: 1
-    temp_id_count: 0
-    unique: 1
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -29582,13 +29520,7 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList:
-  - Chapter
-  - Phase
-  - Quest
-  - Objective
-  - TerrainElement
-  - Task
+  structureList: 0d0000000f00000011000000120000000b0000001300000007000000
 --- !u!114 &1228344528 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000011852793538, guid: e459c8c821901e5479d8bd2715d2a2d4,
@@ -30932,12 +30864,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 2
+    dataType: 3
     elementType: 2
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     category: 
     requestType: 0
@@ -33942,10 +33870,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     phaseId: 
@@ -34223,10 +34147,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -37802,10 +37722,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     chapterId: 
@@ -38873,10 +38789,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     phaseId: 
     questId: 
@@ -42399,12 +42311,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 5
+    dataType: 6
     elementType: 1
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     name: []
@@ -46922,10 +46830,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     phaseId: 
@@ -47304,10 +47208,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     type: 
@@ -51016,10 +50916,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     index: 
     questId: 
@@ -51908,10 +51804,6 @@ MonoBehaviour:
   searchParameters:
     dataType: 0
     elementType: 0
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     tileSetId: 
     requestType: 0
@@ -51930,7 +51822,7 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList: []
+  structureList: 07000000
 --- !u!114 &2108299160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52556,12 +52448,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 3
+    dataType: 4
     elementType: 1
-    temp_id_count: 0
-    unique: 0
-    exact: 0
-    value: 
     id: 
     requestType: 0
 --- !u!224 &2136318648 stripped

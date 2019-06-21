@@ -79,7 +79,7 @@ public class EditorManager : MonoBehaviour
         str += ", id: ";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].GeneralData().table + "-" + path.route[i].GeneralData().id + "/";
+            str += path.route[i].GeneralData().dataType + "-" + path.route[i].GeneralData().id + "/";
 
         return str;
     }

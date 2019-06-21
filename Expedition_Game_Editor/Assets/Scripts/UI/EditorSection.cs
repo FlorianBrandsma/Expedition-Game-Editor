@@ -33,22 +33,12 @@ public class EditorSection : MonoBehaviour
 
     public ButtonActionManager buttonActionManager;
 
-    public void InitializeSection(EditorForm new_form)
+    public void InitializeSection(EditorForm editorForm)
     {
-        //Remove this later
-        editorForm = new_form;
-    }
-
-    public void InitializeController()
-    {
-        if (targetController == null) return;
+        this.editorForm = editorForm;
 
         if (buttonActionManager != null)
             buttonActionManager.InitializeButtons(this);
-
-        targetController.InitializeController();
-
-        dataEditor = targetController.pathController.dataEditor;
     }
 
     public void SetPreviousPath()

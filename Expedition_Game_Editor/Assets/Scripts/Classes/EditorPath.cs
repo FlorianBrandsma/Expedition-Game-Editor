@@ -18,9 +18,9 @@ public class EditorPath
             return;
         }
 
-        switch (route.GeneralData().table)
+        switch (route.GeneralData().dataType)
         {
-            case "Chapter":
+            case Enums.DataType.Chapter:
 
                 PathManager.Structure chapter = new PathManager.Structure(selection);
 
@@ -32,7 +32,7 @@ public class EditorPath
 
                 break;
 
-            case "Phase":
+            case Enums.DataType.Phase:
 
                 PathManager.Structure phase = new PathManager.Structure(selection);
 
@@ -44,7 +44,7 @@ public class EditorPath
 
                 break;
 
-            case "Quest":
+            case Enums.DataType.Quest:
 
                 PathManager.Structure quest = new PathManager.Structure(selection);
 
@@ -56,7 +56,7 @@ public class EditorPath
 
                 break;
 
-            case "Objective":
+            case Enums.DataType.Objective:
 
                 PathManager.Structure objective = new PathManager.Structure(selection);
 
@@ -68,7 +68,7 @@ public class EditorPath
 
                 break;
 
-            case "TerrainElement":
+            case Enums.DataType.TerrainElement:
 
                 PathManager.Structure stepElement = new PathManager.Structure(selection);
 
@@ -77,7 +77,7 @@ public class EditorPath
 
                 break;
 
-            case "Task":
+            case Enums.DataType.Task:
 
                 PathManager.Structure task = new PathManager.Structure(selection);
 
@@ -89,7 +89,7 @@ public class EditorPath
 
                 break;
 
-            case "Region":
+            case Enums.DataType.Region:
 
                 PathManager.Region region = new PathManager.Region(selection);
 
@@ -104,7 +104,7 @@ public class EditorPath
 
                 break;
 
-            case "Terrain":
+            case Enums.DataType.Terrain:
 
                 PathManager.Terrain terrain = new PathManager.Terrain(selection);
 
@@ -122,7 +122,7 @@ public class EditorPath
 
             //    break;
 
-            case "TerrainObject":
+            case Enums.DataType.TerrainObject:
 
                 PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection);
 
@@ -131,7 +131,7 @@ public class EditorPath
 
                 break;
 
-            case "Item":
+            case Enums.DataType.Item:
 
                 PathManager.Item item = new PathManager.Item(selection);
 
@@ -146,7 +146,7 @@ public class EditorPath
 
                 break;
 
-            case "Element":
+            case Enums.DataType.Element:
 
                 PathManager.Element element = new PathManager.Element(selection);
 
@@ -161,7 +161,7 @@ public class EditorPath
 
                 break;
 
-            case "ObjectGraphic":
+            case Enums.DataType.ObjectGraphic:
 
                 PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection);
 
@@ -170,7 +170,7 @@ public class EditorPath
 
                 break;
 
-            case "Option":
+            case Enums.DataType.Option:
 
                 PathManager.Option option = new PathManager.Option(selection);
 

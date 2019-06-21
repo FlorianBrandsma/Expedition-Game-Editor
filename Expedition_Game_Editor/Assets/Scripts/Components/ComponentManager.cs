@@ -177,6 +177,7 @@ public class ComponentManager : MonoBehaviour
             DestroyImmediate((UnityEngine.Object)dropdown.GetComponent<IDataController>());
 
         dropdown.options.Clear();
+        dropdown.value = 0;
         dropdown.onValueChanged.RemoveAllListeners();
 
         AddComponents(dropdown.GetComponent<RectTransform>(), new_component);

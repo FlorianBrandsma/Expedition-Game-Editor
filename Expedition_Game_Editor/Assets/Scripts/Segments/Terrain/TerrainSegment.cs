@@ -22,7 +22,7 @@ public class TerrainSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute("Region").data.DataElement;
+        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.DataElement;
 
         var searchParameters = new Search.Terrain();
 

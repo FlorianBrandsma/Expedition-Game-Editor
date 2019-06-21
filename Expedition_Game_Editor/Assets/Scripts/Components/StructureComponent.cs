@@ -60,15 +60,6 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetPhaseOptions()
     {
-        if (EditorManager.historyManager.returned)
-        {
-            var searchParameters = new Search.Phase();
-
-            searchParameters.chapterId = new List<int>() { path.FindLastRoute("Chapter").GeneralData().id };
-
-            dataController.GetData(new[] { searchParameters });
-        }
-
         List<PhaseDataElement> dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
 
         foreach (PhaseDataElement dataElement in dataElements)
@@ -77,15 +68,6 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetQuestOptions()
     {
-        if (EditorManager.historyManager.returned)
-        {
-            var searchParameters = new Search.Quest();
-
-            searchParameters.phaseId = new List<int>() { path.FindLastRoute("Phase").GeneralData().id };
-
-            dataController.GetData(new[] { searchParameters });
-        }
-
         List<QuestDataElement> dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
 
         foreach (QuestDataElement dataElement in dataElements)
@@ -94,15 +76,6 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetObjectiveOptions()
     {
-        if (EditorManager.historyManager.returned)
-        {
-            var searchParameters = new Search.Objective();
-
-            searchParameters.questId = new List<int>() { path.FindLastRoute("Quest").GeneralData().id };
-
-            dataController.GetData(new[] { searchParameters });
-        }
-
         List<ObjectiveDataElement> dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
         foreach (ObjectiveDataElement dataElement in dataElements)
@@ -111,15 +84,6 @@ public class StructureComponent : MonoBehaviour, IComponent
 
     private void SetTerrainElementOptions()
     {
-        if (EditorManager.historyManager.returned)
-        {
-            var searchParameters = new Search.TerrainElement();
-
-            searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
-
-            dataController.GetData(new[] { searchParameters });
-        }
-
         List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
 
         foreach (TerrainElementDataElement dataElement in dataElements)

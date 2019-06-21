@@ -49,7 +49,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            graphic.name = generalData.table + generalData.id;
+            graphic.name = generalData.DebugName + generalData.id;
             //
 
             SetGraphic(graphic);

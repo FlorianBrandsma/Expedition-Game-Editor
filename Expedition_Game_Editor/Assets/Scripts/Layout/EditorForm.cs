@@ -46,6 +46,7 @@ public class EditorForm : MonoBehaviour
         activePath = path;
         active = true;
         closed = false;
+
         //Auto select element
         mainController.FinalizeController();
 
@@ -63,9 +64,6 @@ public class EditorForm : MonoBehaviour
 
         //Save previous target to compare data with
         SetPreviousPath();
-
-        //Set visual components of editor (list/preview)
-        InitializeController();
 
         //Follows path and adds last route to history
         baseController.FinalizePath(path);
@@ -137,14 +135,6 @@ public class EditorForm : MonoBehaviour
         if (active)
             InitializePath(activePath, true);
     }
-
-    #region Controller
-    private void InitializeController()
-    {
-        foreach (EditorSection section in editorSections)
-            section.InitializeController();
-    }
-    #endregion
 
     #region Layout
     private void InitializeLayout()

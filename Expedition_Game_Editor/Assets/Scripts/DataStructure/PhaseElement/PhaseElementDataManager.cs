@@ -38,10 +38,11 @@ public class PhaseElementDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new PhaseElementDataElement()
                     {
-                        id = phaseElementData.id,
-                        table = phaseElementData.table,
+                        dataType = Enums.DataType.PhaseElement,
 
-                        Index = phaseElementData.index,
+                        id = phaseElementData.id,
+                        index = phaseElementData.index,
+
                         PhaseId = phaseElementData.phaseId,
                         QuestId = phaseElementData.questId,
                         TerrainElementId = phaseElementData.terrainElementId,
@@ -63,13 +64,13 @@ public class PhaseElementDataManager
 
         foreach(Fixtures.PhaseElement phaseElement in Fixtures.phaseElementList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phaseElement.id)) continue;
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseElement.phaseId)) continue;
+
             var phaseElementData = new PhaseElementData();
 
             phaseElementData.id = phaseElement.id;
-            phaseElementData.table = "PhaseElement";
             phaseElementData.index = phaseElement.index;
-
-            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseElement.phaseId)) continue;
 
             phaseElementData.phaseId = phaseElement.phaseId;
             phaseElementData.questId = phaseElement.questId;

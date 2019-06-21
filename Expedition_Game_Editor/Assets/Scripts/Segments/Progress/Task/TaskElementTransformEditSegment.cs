@@ -22,8 +22,8 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
     {
         var regionData = new RegionDataElement();
 
-        regionData.id = 1;
-        regionData.table = "Region";
+        regionData.id = -1;
+        regionData.dataType = Enums.DataType.Region;
         regionData.type = (int)Enums.RegionType.Task;
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;
@@ -31,7 +31,8 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
         editButton.InitializeElement(null);
 
         var searchParameters = new Search.Region();
-        searchParameters.temp_id_count = 15;
+
+        searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData().id };
 
         DataController.GetData(new[] { searchParameters });
 

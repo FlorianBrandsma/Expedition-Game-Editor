@@ -24,10 +24,11 @@ public class PhaseDataManager
         var list = (from phaseData in phaseDataList
                     select new PhaseDataElement()
                     {
-                        id = phaseData.id,
-                        table = phaseData.table,
+                        dataType = Enums.DataType.Phase,
 
-                        Index = phaseData.index,
+                        id = phaseData.id,
+                        index = phaseData.index,
+                        
                         Name = phaseData.name,
                         Notes = phaseData.notes
 
@@ -50,7 +51,6 @@ public class PhaseDataManager
             var phaseData = new PhaseData();
 
             phaseData.id = phase.id;
-            phaseData.table = "Phase";
             phaseData.index = phase.index;
 
             phaseData.chapterId = phase.chapterId;

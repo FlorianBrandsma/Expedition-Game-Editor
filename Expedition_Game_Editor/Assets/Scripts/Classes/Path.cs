@@ -132,21 +132,21 @@ public class Path
         return new_path;
     }
 
-    public Route FindFirstRoute(string table)
+    public Route FindFirstRoute(Enums.DataType dataType)
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().table == table)
+            if (r.GeneralData().dataType == dataType)
                 return r;
         }
         return null;
     }
 
-    public Route FindLastRoute(string table)
+    public Route FindLastRoute(Enums.DataType dataType)
     {
         for(int i = route.Count-1; i > 0; i--)
         {
-            if (route[i].GeneralData().table == table)
+            if (route[i].GeneralData().dataType == dataType)
                 return route[i];   
         }
         return null;
@@ -174,7 +174,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().table == ((GeneralData)data.DataElement).table)
+            if (r.GeneralData().dataType == ((GeneralData)data.DataElement).dataType)
                 r.data = data;
         }
     }

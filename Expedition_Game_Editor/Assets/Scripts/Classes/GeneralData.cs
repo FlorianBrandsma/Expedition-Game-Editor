@@ -1,32 +1,35 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GeneralData
 {
-    public string table;
+    public Enums.DataType dataType;
+
     public int id;
     public int index;
-
-    //Temporary
-    public int id_count;
+ 
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), dataType); } }
 
     public GeneralData()
     {
-        table = "";
+        dataType = Enums.DataType.None;
+
         id = 0;
         index = 0;
     }
 
-    public GeneralData(string table, int id, int index)
+    public GeneralData(Enums.DataType dataType, int id, int index)
     {
-        this.table = table;
+        this.dataType = dataType;
+
         this.id = id;
         this.index = index;
     }
 
     public bool Equals(GeneralData data)
     {
-        if (table != data.table)
+        if (dataType != data.dataType)
             return false;
 
         if (id != data.id)
@@ -37,6 +40,6 @@ public class GeneralData
 
     public GeneralData Copy()
     {
-        return new GeneralData(table, id, index);
+        return new GeneralData(dataType, id, index);
     }
 }

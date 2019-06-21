@@ -22,6 +22,8 @@ public class PartyElementCore : GeneralData
 
     #region Properties
 
+    public int Id { get { return id; } }
+
     public int ChapterId
     {
         get { return chapterId; }

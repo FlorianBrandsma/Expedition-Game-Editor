@@ -22,8 +22,9 @@ public class ObjectiveDataManager
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveDataElement()
                     {
+                        dataType = Enums.DataType.Objective,
+
                         id = objectiveData.id,
-                        table = objectiveData.table,
                         index = objectiveData.index,
 
                         QuestId = objectiveData.questId,
@@ -44,12 +45,12 @@ public class ObjectiveDataManager
         
         foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.id)) continue;
             if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
 
             var objectiveData = new ObjectiveData();
             
             objectiveData.id = objective.id;
-            objectiveData.table = "Objective";
             objectiveData.index = objective.index;
 
             objectiveData.questId = objective.questId;

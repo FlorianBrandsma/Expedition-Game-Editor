@@ -24,12 +24,14 @@ public class ItemCore : GeneralData
     }
 
     #region Properties
-
+    
     public int Type
     {
         get { return type; }
         set { type = value; }
     }
+
+    public int Id { get { return id; } }
 
     public int Index
     {

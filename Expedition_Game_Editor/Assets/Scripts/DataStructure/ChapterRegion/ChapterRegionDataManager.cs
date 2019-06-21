@@ -28,8 +28,9 @@ public class ChapterRegionDataManager
                     join regionData in regionDataList on chapterRegionData.regionId equals regionData.id
                     select new ChapterRegionDataElement()
                     {
+                        dataType = Enums.DataType.ChapterRegion,
+
                         id = chapterRegionData.id,
-                        table = chapterRegionData.table,
                         Index = chapterRegionData.index,
 
                         ChapterId = chapterRegionData.chapterId,
@@ -50,14 +51,14 @@ public class ChapterRegionDataManager
 
         foreach(Fixtures.ChapterRegion chapterRegion in Fixtures.chapterRegionList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterRegion.id)) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
+
             var chapterRegionData = new ChapterRegionData();
 
             chapterRegionData.id = chapterRegion.id;
-            chapterRegionData.table = "ChapterRegion";
             chapterRegionData.index = chapterRegion.id;
-
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
-
+            
             chapterRegionData.chapterId = chapterRegion.chapterId;
             chapterRegionData.regionId = chapterRegion.regionId;
 

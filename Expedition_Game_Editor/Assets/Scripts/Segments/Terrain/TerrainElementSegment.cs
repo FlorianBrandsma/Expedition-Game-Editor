@@ -34,6 +34,9 @@ public class TerrainElementSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
 
+        searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
+        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };
+        
         SegmentController.DataController.GetData(new[] { searchParameters });
     }
 

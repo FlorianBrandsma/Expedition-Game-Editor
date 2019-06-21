@@ -25,6 +25,8 @@ public class ObjectGraphicCore : GeneralData
 
     #region Properties
 
+    public int Id { get { return id; } }
+
     public string Name
     {
         get { return name; }

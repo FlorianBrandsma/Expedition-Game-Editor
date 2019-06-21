@@ -12,7 +12,7 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 

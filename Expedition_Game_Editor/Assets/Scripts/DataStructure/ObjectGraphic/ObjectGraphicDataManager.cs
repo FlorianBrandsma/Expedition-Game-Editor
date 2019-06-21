@@ -28,9 +28,10 @@ public class ObjectGraphicDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ObjectGraphicDataElement()
                     {
-                        id = objectGraphicData.id,
-                        table = objectGraphicData.table,
+                        dataType = Enums.DataType.ObjectGraphic,
 
+                        id = objectGraphicData.id,
+                        
                         Name = objectGraphicData.name,
                         Path = objectGraphicData.path,
                         IconId = objectGraphicData.iconId,
@@ -49,10 +50,11 @@ public class ObjectGraphicDataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
+
             var objectGraphicData = new ObjectGraphicData();
 
             objectGraphicData.id = objectGraphic.id;
-            objectGraphicData.table = "ObjectGraphic";
 
             objectGraphicData.name = objectGraphic.name;
             objectGraphicData.path = objectGraphic.path;

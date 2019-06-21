@@ -11,7 +11,7 @@ public class TerrainItemHeaderSegment : MonoBehaviour, IHeader
         GeneralData data = new_controller.pathController.route.GeneralData();
 
         //Definitely a placeholder
-        label.text = data.table + " " + (data.id - 1);
+        label.text = data.dataType + " " + (data.id - 1);
 
         gameObject.SetActive(true);
     }
