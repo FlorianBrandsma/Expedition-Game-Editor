@@ -399,19 +399,7 @@ public class PathManager
         {
             selectionElement = selection;
             route = selection.route;
-
-            SearchParameters searchParameters = selection.dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
-
-            var generalData = route.GeneralData();
-
-            //searchParameters.generalData = route.GeneralData();
-
-            //if (searchParameters.unique)
-            //    searchParameters.exclusedIdList = origin.DataController.DataList.Cast<GeneralData>().Select(x => x.id).ToList();
-
-            //searchData = new SearchData(searchParameters, route.GeneralData());
-
-
+            
             route.data = new Data(route.data.DataController, route.data.DataElement, selection.dataController.SearchParameters);
         }
 

@@ -6,6 +6,8 @@ using System.Linq;
 
 public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 {
+    private TaskDataElement taskData;
+
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     private IDataController DataController { get { return GetComponent<IDataController>(); } }
     public IEditor DataEditor { get; set; }
@@ -20,9 +22,11 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
     private void InitializeEditButton()
     {
+        taskData = (TaskDataElement)DataEditor.Data.DataElement;
+
         var regionData = new RegionDataElement();
 
-        regionData.id = -1;
+        regionData.id = taskData.regionId;
         regionData.dataType = Enums.DataType.Region;
         regionData.type = (int)Enums.RegionType.Task;
 
@@ -38,9 +42,7 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
         editButton.route.data = new Data(DataController, regionData);
 
-        var taskData = (TaskDataElement)DataEditor.Data.DataElement;
-
-        editButton.GetComponentInChildren<Text>().text = Enum.GetName(typeof(SelectionManager.Property), editButton.selectionProperty) + " " + taskData.regionName;
+        editButton.GetComponentInChildren<Text>().text = taskData.regionName != "" ? "Open " + taskData.regionName : "Set Region";
     }
 
     #endregion

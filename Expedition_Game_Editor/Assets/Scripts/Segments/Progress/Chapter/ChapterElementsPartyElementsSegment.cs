@@ -54,7 +54,6 @@ public class ChapterElementsPartyElementsSegment : MonoBehaviour, ISegment
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
 
         List<int> idList = new List<int>();

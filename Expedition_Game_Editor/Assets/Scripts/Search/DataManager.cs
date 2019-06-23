@@ -198,21 +198,64 @@ public class DataManager
         return dataList;
     }
 
+    public List<TerrainTileData> GetTerrainTileData(List<int> idList, bool searchById = false)
+    {
+        var dataList = new List<TerrainTileData>();
+
+        foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
+        {
+            if (searchById && !idList.Contains(terrainTile.id)) continue;
+
+            var data = new TerrainTileData();
+
+            data.id = terrainTile.id;
+            data.terrainId = terrainTile.terrainId;
+            
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TerrainData> GetTerrainData(List<int> idList, bool searchById = false)
+    {
+        var dataList = new List<TerrainData>();
+
+        foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
+        {
+            if (searchById && !idList.Contains(terrain.id)) continue;
+
+            var data = new TerrainData();
+
+            data.id = terrain.id;
+            data.regionId = terrain.regionId;
+            data.name = terrain.name;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<RegionData> GetRegionData()
+    {
+        return GetRegionData(new List<int>());
+    }
+
     public List<RegionData> GetRegionData(List<int> idList, bool searchById = false)
     {
         List<RegionData> dataList = new List<RegionData>();
 
-        foreach (Fixtures.Region element in Fixtures.regionList)
+        foreach (Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchById && !idList.Contains(element.id)) continue;
+            if (searchById && !idList.Contains(region.id)) continue;
 
             var data = new RegionData();
 
-            data.id = element.id;
-            data.name = element.name;
+            data.id = region.id;
+            data.name = region.name;
 
             dataList.Add(data);
-            
         }
 
         return dataList;
@@ -273,6 +316,12 @@ public class DataManager
 
     public class RegionData : GeneralData
     {
+        public string name;
+    }
+
+    public class TerrainData : GeneralData
+    {
+        public int regionId;
         public string name;
     }
 

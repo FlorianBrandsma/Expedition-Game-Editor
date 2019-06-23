@@ -93,6 +93,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
+        chapterRegionDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
+
         DataElements.ForEach(x => x.Update());
 
         UpdateList();
@@ -102,28 +104,76 @@ public class ChapterEditor : MonoBehaviour, IEditor
         UpdatePhaseElements();
     }
 
+    private void ChangedRegion(ChapterRegionDataElement chapterRegion)
+    {
+        //0. Find all (PHASE)REGIONS linked with the changed CHAPTERREGIONS
+        var phaseRegions = Fixtures.regionList.Where(x => x.chapterRegionId == chapterRegion.id).Distinct().ToList();
+        var terrains = Fixtures.terrainList.Where(x => phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.id).Contains(x.terrainId)).Distinct().ToList();
+
+        //1. Set (PHASE)REGION of all TASKS linked with selected (PHASE)REGIONS to 0
+        var tasks = Fixtures.taskList.Where(x => terrainTiles.Select(y => y.id).Contains(x.terrainTileId)).Distinct().ToList();
+        tasks.ForEach(x => x.terrainTileId = 0);
+
+        //2. Remove all TERRAINS and TERRAINTILES of the selected (PHASE)REGIONS
+        Fixtures.terrainTileList.RemoveAll(x => terrainTiles.Contains(x));
+        Fixtures.terrainList.RemoveAll(x => terrains.Contains(x));
+
+        //3. Create TERRAINS and TERRAINTILES for selected (PHASE)REGIONS based on those of the newly selected CHAPTERREGION's REGION
+        var regionSource = Fixtures.regionList.Where(x => x.id == chapterRegion.RegionId).FirstOrDefault();
+
+        foreach(Fixtures.Region phaseRegion in phaseRegions)
+        {
+            phaseRegion.tileSetId = regionSource.tileSetId;
+
+            phaseRegion.name = regionSource.name;
+            phaseRegion.regionSize = regionSource.regionSize;
+            phaseRegion.terrainSize = regionSource.terrainSize;
+
+            var terrainSourceList = Fixtures.terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+            foreach (Fixtures.Terrain terrainSource in terrainSourceList)
+            {
+                var terrain = new Fixtures.Terrain();
+
+                int terrainId = Fixtures.terrainList.Count > 0 ? (Fixtures.terrainList[Fixtures.terrainList.Count - 1].id + 1) : 1;
+
+                terrain.id = terrainId;
+                terrain.regionId = phaseRegion.id;
+
+                terrain.index = terrainSource.index;
+
+                terrain.iconId = terrainSource.iconId;
+                terrain.name = terrainSource.name;
+
+                var terrainTileSourceList = Fixtures.terrainTileList.Where(x => x.terrainId == terrainSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+                foreach (Fixtures.TerrainTile terrainTileSource in terrainTileSourceList)
+                {
+                    var terrainTile = new Fixtures.TerrainTile();
+
+                    int terrainTileId = Fixtures.terrainTileList.Count > 0 ? (Fixtures.terrainTileList[Fixtures.terrainTileList.Count - 1].id + 1) : 1;
+
+                    terrainTile.id = terrainTileId;
+                    terrainTile.terrainId = terrain.id;
+
+                    terrainTile.index = terrainTileSource.index;
+
+                    terrainTile.tileId = terrainTileSource.tileId;
+
+                    Fixtures.terrainTileList.Add(terrainTile);
+                }
+
+                Fixtures.terrainList.Add(terrain);
+            }
+        }
+    }
+
     private void UpdatePhaseElements()
     {
         var phaseList = dataManager.GetPhaseData(chapterData.id, true);
 
         var phaseElementList = dataManager.GetPhaseElementData(phaseList.Select(x => x.id).Distinct().ToList());
-
-        //Replace phase elements to match the chapter's terrain elements
-        //UPDATE: TerrainElement doesn't get replaced (idiot), the element does and that gets carried over anyway
-        //foreach(TerrainElementDataElement terrainElement in terrainElementDataList)
-        //{
-        //    var phaseElements = phaseElementList.Where(x => x.terrainElementId == terrainElement.id).ToList();
-            
-        //    foreach(DataManager.PhaseElementData phaseElement in phaseElements)
-        //    {
-        //        Fixtures.phaseElementList.Where(x => x.id == phaseElement.id).ToList().ForEach(x => 
-        //        {
-        //            Debug.Log(x.terrainElementId + ":" + terrainElement.id);
-
-        //            x.terrainElementId = terrainElement.id;
-        //        });
-        //    }
-        //}
     }
 
     public void CancelEdit()

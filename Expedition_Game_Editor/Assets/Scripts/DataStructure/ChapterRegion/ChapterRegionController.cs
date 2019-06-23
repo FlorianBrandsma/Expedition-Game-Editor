@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ChapterRegionController : MonoBehaviour, IDataController
 {
-    public Search.ChapterRegion searchParameters;
+    public Search.Region searchParameters;
 
     private ChapterRegionDataManager chapterRegionDataManager = new ChapterRegionDataManager();
 
@@ -18,7 +18,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
     public IEnumerable SearchParameters
     {
         get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.ChapterRegion>().FirstOrDefault(); }
+        set { searchParameters = value.Cast<Search.Region>().FirstOrDefault(); }
     }
 
     public void InitializeController()
@@ -33,7 +33,23 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = (ChapterRegionDataElement)searchElement.route.data.DataElement;
 
+        var chapterRegionDataElement = DataList.Cast<ChapterRegionDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
+
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.Region:
+
+                var resultElementData = (RegionDataElement)resultData.DataElement;
+
+                chapterRegionDataElement.RegionId = resultElementData.id;
+                chapterRegionDataElement.name = resultElementData.Name;
+
+                break;
+        }
+
+        searchElement.route.data.DataElement = chapterRegionDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement)

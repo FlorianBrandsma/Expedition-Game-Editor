@@ -4,6 +4,7 @@ using System.Linq;
 public class TaskCore : GeneralData
 {
     private int terrainElementId;
+    private int terrainTileId;
     private string description;
 
     public int originalIndex;
@@ -22,12 +23,6 @@ public class TaskCore : GeneralData
 
     #region Properties
 
-    public int TerrainElementId
-    {
-        get { return terrainElementId; }
-        set { terrainElementId = value; }
-    }
-
     public int Id { get { return id; } }
 
     public int Index
@@ -41,6 +36,18 @@ public class TaskCore : GeneralData
 
             index = value;
         }
+    }
+
+    public int TerrainElementId
+    {
+        get { return terrainElementId; }
+        set { terrainElementId = value; }
+    }
+
+    public int TerrainTileId
+    {
+        get { return terrainTileId; }
+        set { terrainTileId = value; }
     }
 
     public string Description

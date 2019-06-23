@@ -26871,7 +26871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayType: 0
   listManager: {fileID: 460277706}
-  selectionType: 0
+  selectionType: 1
   selectionProperty: 1
   elementSize: {x: 0, y: 40}
   horizontal: 0
@@ -26905,11 +26905,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
-    dataType: 0
-    elementType: 0
+    dataType: 7
+    elementType: 1
     id: 
-    chapterId: 
-    regionId: 
+    index: 
+    phaseId: 
+    name: []
     requestType: 0
 --- !u!1 &1118073537
 GameObject:

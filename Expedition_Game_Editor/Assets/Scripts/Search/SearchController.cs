@@ -52,38 +52,20 @@ public class SearchController : MonoBehaviour
 
     private void InitializeDataController(Enums.DataType dataType)
     {
+        IDataController dataController;
+
         switch (dataType)
         {
-            case Enums.DataType.Tile:
-
-                TileController tileController = gameObject.AddComponent<TileController>();
-                tileController.SearchParameters = data.SearchParameters;
-
-                break;
-
-            case Enums.DataType.Icon:
-
-                IconController iconController = gameObject.AddComponent<IconController>();
-                iconController.SearchParameters = data.SearchParameters;
-
-                break;
-
-            case Enums.DataType.ObjectGraphic:
-
-                ObjectGraphicController objectGraphicController = gameObject.AddComponent<ObjectGraphicController>();
-                objectGraphicController.SearchParameters = data.SearchParameters;
-
-                break;
-
-            case Enums.DataType.Element:
-
-                ElementController elementController = gameObject.AddComponent<ElementController>();
-                elementController.SearchParameters = data.SearchParameters;
-
-                break;
-
-            default: Debug.Log("CASE MISSING:" + dataType); break;
+            case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileController>();             break;
+            case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconController>();             break;
+            case Enums.DataType.ObjectGraphic:  dataController = gameObject.AddComponent<ObjectGraphicController>();    break;
+            case Enums.DataType.Element:        dataController = gameObject.AddComponent<ElementController>();          break;
+            case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionController>();           break;
+            default:                            dataController = null; Debug.Log("CASE MISSING:" + dataType);           break;
         }
+
+        dataController.InitializeController();
+        dataController.SearchParameters = data.SearchParameters;
     }
 
     public void CloseController()

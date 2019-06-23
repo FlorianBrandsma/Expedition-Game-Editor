@@ -41,7 +41,6 @@ static public class Fixtures
     static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
     static public List<Phase> phaseList = new List<Phase>();
     static public List<PhaseElement> phaseElementList = new List<PhaseElement>();
-    static public List<PhaseRegion> phaseRegionList = new List<PhaseRegion>();
     static public List<Quest> questList = new List<Quest>();
     static public List<Objective> objectiveList = new List<Objective>();
     static public List<Task> taskList = new List<Task>();
@@ -151,12 +150,6 @@ static public class Fixtures
         public int terrainElementId;
     }
 
-    public class PhaseRegion : GeneralData
-    {
-        public int phaseId;
-        public int regionId;
-    }
-
     public class Quest : GeneralData
     {
         public int phaseId;
@@ -176,6 +169,7 @@ static public class Fixtures
     {
         public int terrainElementId;
         public int objectiveId;
+        public int terrainTileId;
         public string description;
     }
 
@@ -587,6 +581,8 @@ static public class Fixtures
 
             int randomRegionAmount = Random.Range(1, regionList.Count + 1);
 
+            //int randomRegionAmount = 1;
+
             for (int i = 0; i < randomRegionAmount; i++)
             {
                 var chapterRegion = new ChapterRegion();
@@ -822,6 +818,11 @@ static public class Fixtures
             var phaseElementTerrainElementIds = phaseElementList.Where(x => x.questId == objective.questId).Select(x => x.terrainElementId).Distinct().ToList();
             var terrainElements = terrainElementList.Where(x => phaseElementTerrainElementIds.Contains(x.id) || x.objectiveId == objective.id).Distinct().ToList();
 
+            var phaseId = phaseList.Where(x => questList.Where(y => y.id == objective.questId).Select(y => y.phaseId).Contains(x.id)).Select(x => x.id).FirstOrDefault();
+            var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();
+            var terrains = terrainList.Where(x => regions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+            var terrainTiles = terrainTileList.Where(x => terrains.Select(y => y.id).Contains(x.terrainId)).Distinct().ToList();
+
             foreach(TerrainElement terrainElement in terrainElements)
             {
                 for (int i = 0; i < baseTasks; i++)
@@ -835,6 +836,10 @@ static public class Fixtures
 
                     task.objectiveId = objective.id;
                     task.terrainElementId = terrainElement.id;
+
+                    int randomTerrainTile = Random.Range(0, terrainTiles.Count);
+
+                    task.terrainTileId = terrainTiles[randomTerrainTile].id;
                     task.description = "Perform a simple task. Property of objective" + objective.id;
 
                     taskList.Add(task);

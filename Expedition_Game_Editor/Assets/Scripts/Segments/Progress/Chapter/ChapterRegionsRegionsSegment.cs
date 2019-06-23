@@ -51,24 +51,30 @@ public class ChapterRegionsRegionsSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        //ChapterDataElement chapterData = DataEditor.Data.ElementData.Cast<ChapterDataElement>().FirstOrDefault();
-        //var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
+        var chapterEditor = (ChapterEditor)DataEditor;
 
-        //Out of all the elements, select only those that are not in this list
-        //var idList = SegmentController.DataController.DataList.Cast<ChapterElementDataElement>().Select(x => x.ElementId).ToList();
-        //var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Region>().FirstOrDefault();
 
-        //searchParameters.id = list;
+        var idList = chapterEditor.chapterRegionDataList.Select(x => x.RegionId).Distinct().ToList();
+
+        var regionList = dataManager.GetRegionData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+
+        searchParameters.id = regionList;
+        searchParameters.phaseId = new List<int>() { 0 };
     }
 
     public void OpenSegment()
     {
+        SetSearchParameters();
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
+        DataEditor.UpdateEditor();
 
+        SetSearchParameters();
     }
 }
