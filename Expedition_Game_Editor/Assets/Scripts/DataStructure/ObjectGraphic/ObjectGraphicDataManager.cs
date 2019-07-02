@@ -35,9 +35,10 @@ public class ObjectGraphicDataManager
                         Name = objectGraphicData.name,
                         Path = objectGraphicData.path,
                         IconId = objectGraphicData.iconId,
-                        iconPath = iconData.path
+                        iconPath = iconData.path,
+                        category = iconData.category
 
-                    }).OrderByDescending(x => x.id == 1).ThenBy(x => x.Name).ToList();
+                    }).OrderByDescending(x => x.id == 1).ThenBy(x => x.category).ThenBy(x => x.Name).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

@@ -47,6 +47,7 @@ static public class Fixtures
 
     static public List<PartyElement> partyElementList = new List<PartyElement>();
     static public List<TerrainElement> terrainElementList = new List<TerrainElement>();
+    static public List<TerrainObject> terrainObjectList = new List<TerrainObject>();
 
     public class Item : GeneralData
     {
@@ -65,6 +66,21 @@ static public class Fixtures
     {
         public int chapterId;
         public int elementId;
+    }
+
+    public class TerrainObject : GeneralData
+    {
+        public int objectGraphicId;
+        public int regionId;
+        public bool boundToTile;
+
+        public float xPos;
+        public float yPos;
+        public float zPos;
+
+        public float xRot;
+        public float yRot;
+        public float zRot;
     }
 
     public class TerrainElement : GeneralData
@@ -169,8 +185,16 @@ static public class Fixtures
     {
         public int terrainElementId;
         public int objectiveId;
-        public int terrainTileId;
+        public int regionId;
         public string description;
+
+        public float xPos;
+        public float yPos;
+        public float zPos;
+
+        public float xRot;
+        public float yRot;
+        public float zRot;
     }
 
     static public void LoadFixtures()
@@ -184,6 +208,7 @@ static public class Fixtures
         LoadRegions();
         LoadTerrains();
         LoadTerrainTiles();
+        LoadTerrainObjects();
         LoadChapters();
         LoadChapterPartyElements();
         LoadChapterTerrainElements();
@@ -220,6 +245,8 @@ static public class Fixtures
         /*17*/CreateIcon("Textures/Icons/Objects/Skull",            Enums.IconCategory.Environment);
         /*18*/CreateIcon("Textures/Icons/Objects/Rock",             Enums.IconCategory.Environment);
         /*19*/CreateIcon("Textures/Icons/Objects/Cactus",           Enums.IconCategory.Environment);
+        /*20*/CreateIcon("Textures/Icons/Objects/Tree",             Enums.IconCategory.Environment);
+        /*21*/CreateIcon("Textures/Icons/Objects/Pool",             Enums.IconCategory.Environment);
     }
 
     static public int CreateIcon(string path, Enums.IconCategory category)
@@ -258,6 +285,11 @@ static public class Fixtures
         /*13*/CreateObjectGraphic("Ranger",         13);
         /*14*/CreateObjectGraphic("Mage",           14);
         /*15*/CreateObjectGraphic("Drake",          15);
+        /*16*/CreateObjectGraphic("Skull",          17);
+        /*17*/CreateObjectGraphic("Rock",           18);
+        /*18*/CreateObjectGraphic("Cactus",         19);
+        /*19*/CreateObjectGraphic("Tree",           20);
+        /*20*/CreateObjectGraphic("Pool",           21);
     }
 
     static public void CreateObjectGraphic(string name, int iconId)
@@ -487,6 +519,96 @@ static public class Fixtures
         }
     }
 
+    static public void LoadTerrainObjects()
+    {
+        foreach (Region region in regionList)
+        {
+            var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
+            var middleTerrain = terrains[terrains.Count / 2];
+            var terrainTiles = terrainTileList.Where(x => x.terrainId == (middleTerrain.id)).Distinct().ToList();
+            var middleTile = terrainTiles[terrainTiles.Count / 2];
+
+            /*Skull*/
+            CreateTerrainObject(17, region.id, false, Vector3.zero, Vector3.zero);
+
+            /*Rock*/
+            CreateTerrainObject(18, region.id, false, Vector3.zero, Vector3.zero);
+
+            /*Cactus*/
+            CreateTerrainObject(19, region.id, false, Vector3.zero, Vector3.zero);
+
+            /*Red warrior*/
+            CreateTerrainElement(1, region.id, Vector3.zero, Vector3.zero);
+
+            /*Ranger*/
+            CreateTerrainElement(4, region.id, Vector3.zero, Vector3.zero);
+
+            /*Mage*/
+            CreateTerrainElement(5, region.id, Vector3.zero, Vector3.zero);
+        }
+    }
+
+    static public void CreateTerrainElement(int elementId, int regionId, Vector3 position, Vector3 rotation)
+    {
+        var terrainElement = new TerrainElement();
+
+        int id = terrainElementList.Count > 0 ? (terrainElementList[terrainElementList.Count - 1].id + 1) : 1;
+
+        terrainElement.id = id;
+        terrainElement.elementId = elementId;
+
+        var task = CreateTask(terrainElement, regionId, position, rotation);
+
+        terrainElementList.Add(terrainElement);
+    }
+
+    static public Task CreateTask(TerrainElement terrainElement, int regionId, Vector3 position, Vector3 rotation)
+    {
+        var task = new Task();
+
+        int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].id + 1) : 1;
+
+        task.id = id;
+        task.terrainElementId = terrainElement.id;
+        task.regionId = regionId;
+
+        task.description = "Talk to {" + terrainElement.elementId + "}";
+
+        task.xPos = position.x;
+        task.yPos = position.y;
+        task.zPos = position.z;
+
+        task.xRot = rotation.x;
+        task.yRot = rotation.y;
+        task.zRot = rotation.z;
+        
+        taskList.Add(task);
+
+        return task;
+    }
+
+    static public void CreateTerrainObject(int objectGraphicId, int regionId, bool boundToTile, Vector3 position, Vector3 rotation)
+    {
+        var terrainObject = new TerrainObject();
+
+        int id = terrainObjectList.Count > 0 ? (terrainObjectList[terrainObjectList.Count - 1].id + 1) : 1;
+
+        terrainObject.id = id;
+        terrainObject.objectGraphicId = objectGraphicId;
+        terrainObject.regionId = regionId;
+        terrainObject.boundToTile = boundToTile;
+        
+        terrainObject.xPos = position.x;
+        terrainObject.yPos = position.y;
+        terrainObject.zPos = position.z;
+
+        terrainObject.xRot = rotation.x;
+        terrainObject.yRot = rotation.y;
+        terrainObject.zRot = rotation.z;
+
+        terrainObjectList.Add(terrainObject);
+    }
+
     static public void LoadChapters()
     {
         List<int> randomElements = new List<int>();
@@ -579,11 +701,9 @@ static public class Fixtures
 
             regionList.ForEach(x => randomRegions.Add(x.id));
 
-            int randomRegionAmount = Random.Range(1, regionList.Count + 1);
+            //int randomRegionAmount = Random.Range(1, regionList.Count + 1);
 
-            //int randomRegionAmount = 1;
-
-            for (int i = 0; i < randomRegionAmount; i++)
+            for (int i = 0; i < /*randomRegionAmount*/1; i++)
             {
                 var chapterRegion = new ChapterRegion();
 
@@ -665,6 +785,69 @@ static public class Fixtures
                 region.name = regionSource.name;
                 region.regionSize = regionSource.regionSize;
                 region.terrainSize = regionSource.terrainSize;
+
+                var terrainElementSourceList = terrainElementList.Where(x => taskList.Where(y => y.regionId == regionSource.id).Select(y => y.terrainElementId).Contains(x.id)).Distinct().ToList();
+
+                foreach (TerrainElement terrainElementSource in terrainElementSourceList)
+                {
+                    var terrainElement = new TerrainElement();
+
+                    int terrainElementId = terrainElementList.Count > 0 ? (terrainElementList[terrainElementList.Count - 1].id + 1) : 1;
+                    
+                    terrainElement.id = terrainElementId;
+
+                    terrainElement.chapterId = terrainElementSource.chapterId;
+                    terrainElement.objectiveId = terrainElementSource.objectiveId;
+                    terrainElement.elementId = terrainElementSource.elementId;
+                    terrainElement.taskIndex = terrainElementSource.taskIndex;
+
+                    var taskSourceList = taskList.Where(x => x.terrainElementId == terrainElementSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+                    foreach (Task taskSource in taskSourceList)
+                    {
+                        var task = new Task();
+
+                        int taskId = taskList.Count > 0 ? (taskList[taskList.Count - 1].id + 1) : 1;
+
+                        task.id = taskId;
+                        task.terrainElementId = terrainElement.id;
+                        task.objectiveId = taskSource.objectiveId;
+                        task.regionId = region.id;
+
+                        task.index = taskSource.index;
+                        task.description = taskSource.description;
+
+                        task.xPos = taskSource.xPos;
+                        task.yPos = taskSource.yPos;
+                        task.zPos = taskSource.zPos;
+
+                        task.xRot = taskSource.xRot;
+                        task.yRot = taskSource.yRot;
+                        task.zRot = taskSource.zRot;
+
+                        taskList.Add(task);
+                    }
+
+                    terrainElementList.Add(terrainElement);
+                }
+
+                var terrainObjectSourceList = terrainObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
+                
+                foreach(TerrainObject terrainObjectSource in terrainObjectSourceList)
+                {
+                    var terrainObject = new TerrainObject();
+
+                    int terrainObjectId = terrainObjectList.Count > 0 ? (terrainObjectList[terrainObjectList.Count - 1].id + 1) : 1;
+
+                    terrainObject.id = terrainObjectId;
+                    terrainObject.regionId = region.id;
+
+                    terrainObject.index = terrainObjectSource.index;
+                    terrainObject.objectGraphicId = terrainObjectSource.objectGraphicId;
+                    terrainObject.boundToTile = terrainObjectSource.boundToTile;
+                    
+                    terrainObjectList.Add(terrainObject);
+                }
 
                 var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
 
@@ -820,8 +1003,6 @@ static public class Fixtures
 
             var phaseId = phaseList.Where(x => questList.Where(y => y.id == objective.questId).Select(y => y.phaseId).Contains(x.id)).Select(x => x.id).FirstOrDefault();
             var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();
-            var terrains = terrainList.Where(x => regions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
-            var terrainTiles = terrainTileList.Where(x => terrains.Select(y => y.id).Contains(x.terrainId)).Distinct().ToList();
 
             foreach(TerrainElement terrainElement in terrainElements)
             {
@@ -837,9 +1018,10 @@ static public class Fixtures
                     task.objectiveId = objective.id;
                     task.terrainElementId = terrainElement.id;
 
-                    int randomTerrainTile = Random.Range(0, terrainTiles.Count);
+                    int randomRegion = Random.Range(0, regions.Count);
 
-                    task.terrainTileId = terrainTiles[randomTerrainTile].id;
+                    task.regionId = regions[randomRegion].id;
+                    
                     task.description = "Perform a simple task. Property of objective" + objective.id;
 
                     taskList.Add(task);

@@ -16,8 +16,6 @@ public class TaskDataManager
     private List<DataManager.IconData> iconDataList;
 
     private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TerrainData> terrainDataList;
-    private List<DataManager.TerrainTileData> terrainTileDataList;
 
     public void InitializeManager(TaskController taskController)
     {
@@ -35,8 +33,6 @@ public class TaskDataManager
         GetObjectGraphicData();
         GetIconData();
 
-        GetTerrainTileData();
-        GetTerrainData();
         GetRegionData();
         
         var list = (from taskData           in taskDataList
@@ -46,12 +42,10 @@ public class TaskDataManager
                     join objectGraphicData  in objectGraphicDataList    on elementData.objectGraphicId  equals objectGraphicData.id
                     join iconData           in iconDataList             on objectGraphicData.iconId     equals iconData.id
 
-                    join leftJoin in (from terrainTileData  in terrainTileDataList
-                                      join terrainData      in terrainDataList  on terrainTileData.terrainId    equals terrainData.id
-                                      join regionData       in regionDataList   on terrainData.regionId         equals regionData.id
-                                      select new { terrainTileData, terrainData, regionData }) on taskData.terrainTileId equals leftJoin.terrainTileData.id into terrainTileData
+                    join leftJoin in (from regionData in regionDataList
+                                      select new { regionData }) on taskData.regionId equals leftJoin.regionData.id into regionData
 
-                    from region in terrainTileData.DefaultIfEmpty()
+                    from region in regionData.DefaultIfEmpty()
                     select new TaskDataElement()
                     {
                         dataType = Enums.DataType.Task,
@@ -60,11 +54,10 @@ public class TaskDataManager
                         index = taskData.index,
 
                         TerrainElementId = taskData.terrainElementId,
-                        TerrainTileId = taskData.terrainTileId,
+                        RegionId = taskData.regionId,
 
                         Description = taskData.description,
                         
-                        regionId    = region != null ? region.regionData.id     : 0,
                         regionName  = region != null ? region.regionData.name   : "",
                         objectGraphicIconPath = iconData.path
 
@@ -92,7 +85,7 @@ public class TaskDataManager
 
             taskData.objectiveId = task.objectiveId;
             taskData.terrainElementId = task.terrainElementId;
-            taskData.terrainTileId = task.terrainTileId;
+            taskData.regionId = task.regionId;
             taskData.description = task.description;
 
             taskDataList.Add(taskData);
@@ -119,26 +112,16 @@ public class TaskDataManager
         iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
-    internal void GetTerrainTileData()
-    {
-        terrainTileDataList = dataManager.GetTerrainTileData(taskDataList.Select(x => x.terrainTileId).Distinct().ToList(), true);
-    }
-
-    internal void GetTerrainData()
-    {
-        terrainDataList = dataManager.GetTerrainData(terrainTileDataList.Select(x => x.terrainId).Distinct().ToList(), true);
-    }
-
     internal void GetRegionData()
     {
-        regionDataList = dataManager.GetRegionData(terrainDataList.Select(x => x.regionId).Distinct().ToList(), true);
+        regionDataList = dataManager.GetRegionData(taskDataList.Select(x => x.regionId).Distinct().ToList(), true);
     }
 
     internal class TaskData : GeneralData
     {
         public int objectiveId;
         public int terrainElementId;
-        public int terrainTileId;
+        public int regionId;
         public string description;
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 public class TaskCore : GeneralData
 {
     private int terrainElementId;
-    private int terrainTileId;
+    private int regionId;
     private string description;
 
     public int originalIndex;
@@ -44,10 +44,10 @@ public class TaskCore : GeneralData
         set { terrainElementId = value; }
     }
 
-    public int TerrainTileId
+    public int RegionId
     {
-        get { return terrainTileId; }
-        set { terrainTileId = value; }
+        get { return regionId; }
+        set { regionId = value; }
     }
 
     public string Description

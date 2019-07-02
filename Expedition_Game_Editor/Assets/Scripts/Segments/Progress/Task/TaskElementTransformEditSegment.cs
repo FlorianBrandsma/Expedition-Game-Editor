@@ -26,7 +26,7 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
         var regionData = new RegionDataElement();
 
-        regionData.id = taskData.regionId;
+        regionData.id = taskData.RegionId;
         regionData.dataType = Enums.DataType.Region;
         regionData.type = (int)Enums.RegionType.Task;
 

@@ -8,6 +8,8 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
     public ObjectGraphicDataElement() : base() { }
 
+    public int category;
+
     public string iconPath;
     public string originalIconPath;
 

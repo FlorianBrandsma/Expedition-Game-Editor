@@ -8,8 +8,6 @@ public class TaskDataElement : TaskCore, IDataElement
 
     public TaskDataElement() : base() { }
 
-    public int regionId;
-
     public string regionName;
     public string objectGraphicIconPath;
 }
