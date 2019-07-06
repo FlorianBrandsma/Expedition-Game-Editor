@@ -557,12 +557,12 @@ static public class Fixtures
         terrainElement.id = id;
         terrainElement.elementId = elementId;
 
-        var task = CreateTask(terrainElement, regionId, position, rotation);
+        CreateTask(terrainElement, regionId, position, rotation);
 
         terrainElementList.Add(terrainElement);
     }
 
-    static public Task CreateTask(TerrainElement terrainElement, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateTask(TerrainElement terrainElement, int regionId, Vector3 position, Vector3 rotation)
     {
         var task = new Task();
 
@@ -583,8 +583,6 @@ static public class Fixtures
         task.zRot = rotation.z;
         
         taskList.Add(task);
-
-        return task;
     }
 
     static public void CreateTerrainObject(int objectGraphicId, int regionId, bool boundToTile, Vector3 position, Vector3 rotation)

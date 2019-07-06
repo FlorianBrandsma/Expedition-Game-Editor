@@ -252,10 +252,10 @@ public class PathManager
 
             switch (regionDataElement.type)
             {
-                case (int)Enums.RegionType.Base:
+                case Enums.RegionType.Base:
                     path = CreatePath(CreateRoutes(enter, route, selectionElement.selectionGroup), form, origin);
                     break;
-                case (int)Enums.RegionType.Phase:
+                case Enums.RegionType.Phase:
                     routes = CreateRoutes(enter, route, selectionElement.selectionGroup);
                     path = ExtendPath(path, routes, origin);
                     break;
@@ -273,7 +273,7 @@ public class PathManager
 
         public Path Open()
         {
-            List<int> open = new List<int>() { 1, regionDataElement.type };
+            List<int> open = new List<int>() { 1, (int)regionDataElement.type };
 
             Route customRoute = new Route(1, route.data, selectionElement.selectionGroup);
 

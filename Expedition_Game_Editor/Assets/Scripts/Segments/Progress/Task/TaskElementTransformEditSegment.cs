@@ -28,7 +28,7 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
 
         regionData.id = taskData.RegionId;
         regionData.dataType = Enums.DataType.Region;
-        regionData.type = (int)Enums.RegionType.Task;
+        regionData.type = Enums.RegionType.Task;
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;
 

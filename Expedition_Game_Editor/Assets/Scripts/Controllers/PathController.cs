@@ -12,6 +12,8 @@ public class PathController : MonoBehaviour
 
     public bool loaded      { get; set; }
 
+    public bool autoExtend;
+
     public HistoryElement   history;
 
     public EditorSection    editorSection;
@@ -78,7 +80,10 @@ public class PathController : MonoBehaviour
 
         GetDataController();
         GetDataEditor();
-        
+
+        if (autoExtend)
+            mainPath.Add();
+
         if (subControllerManager != null)
         {
             InitializeTabs(mainPath);
