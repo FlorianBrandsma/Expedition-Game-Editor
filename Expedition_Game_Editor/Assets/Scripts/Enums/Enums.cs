@@ -28,6 +28,12 @@ public class Enums
         PartyElement
     }
 
+    public enum DataCategory
+    {
+        None,
+        Navigation
+    }
+
     public enum IconCategory
     {
         Nothing,

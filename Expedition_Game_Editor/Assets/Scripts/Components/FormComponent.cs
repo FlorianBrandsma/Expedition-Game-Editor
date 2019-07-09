@@ -11,6 +11,8 @@ public class FormComponent : MonoBehaviour, IComponent
     private bool locked;
     private bool closedManually;
 
+    private PathController pathController;
+
     //Don't reset form when opening
     public bool constant;
     public bool autoOpen;
@@ -26,7 +28,16 @@ public class FormComponent : MonoBehaviour, IComponent
 
     EditorButton Button { get { return button.GetComponent<EditorButton>(); } }
 
-    public void InitializeComponent(Path path)
+    public void InitializeComponent(Path path) {  }
+
+    public void SetComponent(Path path) { InitializeButton(); }
+
+    public void InitializeForm(PathController pathController)
+    {
+        this.pathController = pathController;
+    }
+
+    public void SetForm()
     {
         editorForm.formComponent = this;
 
@@ -42,12 +53,10 @@ public class FormComponent : MonoBehaviour, IComponent
                 EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());
 
                 initialized = true;
-            }
-            else
-            {
-                //Set to true so the list will reset when selection is closed
+            } else {
 
-                EditorManager.editorManager.InitializePath(editorForm.activePath, true);
+                //Set to true so the list will reset when selection is closed
+                EditorManager.editorManager.InitializePath(editorForm.activePath, true, pathController.loaded);
             }
 
             if (openOnce)
@@ -55,21 +64,21 @@ public class FormComponent : MonoBehaviour, IComponent
         }
 
         closedManually = false;
+
+        SetButton();
     }
 
-    public void SetComponent(Path new_path)
+    private void InitializeButton()
     {
-        SetButton();
+        button = ComponentManager.componentManager.AddFormButton(component);
+
+        button.onClick.AddListener(delegate { Interact(); });
     }
 
     private void SetButton()
     {
-        button = ComponentManager.componentManager.AddFormButton(component);
-
         if (editorForm.gameObject.activeInHierarchy)
             Button.icon.texture = openIcon;
-
-        button.onClick.AddListener(delegate { Interact(); });
     }
 
     public void Interact()
@@ -97,7 +106,7 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         SelectionManager.CancelGetSelection();
 
-        editorForm.CloseForm(false);
+        editorForm.CloseForm();
 
         button.GetComponent<EditorButton>().icon.texture = closeIcon;
     }

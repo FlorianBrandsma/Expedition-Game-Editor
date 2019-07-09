@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RegionTerrainObjectSegment : MonoBehaviour {
+public class TerrainObjectSegment : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

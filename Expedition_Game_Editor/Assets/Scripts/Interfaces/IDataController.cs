@@ -8,6 +8,7 @@ public interface IDataController
 
     List<IDataElement> DataList     { get; set; }
     Enums.DataType DataType         { get; }
+    Enums.DataCategory DataCategory { get; }
     IEnumerable SearchParameters    { get; set; }
 
     void InitializeController();

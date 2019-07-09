@@ -11,9 +11,9 @@ public class HistoryElement
         group = historyElement.group;
     }
 
-    public void AddHistory(Path new_path)
+    public void AddHistory(Path path)
     {
-        path = new_path.Copy();
+        this.path = path;
         EditorManager.historyManager.AddHistory(new HistoryElement(this));
     }
 }

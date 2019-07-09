@@ -35,8 +35,9 @@ public class TaskElementTransformEditSegment : MonoBehaviour, ISegment
         editButton.InitializeElement(null);
 
         var searchParameters = new Search.Region();
-
-        searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData().id };
+        //To get all phase regions...?
+        if(SegmentController.Path.FindLastRoute(Enums.DataType.Phase) != null)
+            searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData().id };
 
         DataController.GetData(new[] { searchParameters });
 

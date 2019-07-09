@@ -41,17 +41,15 @@ public class EditorManager : MonoBehaviour
         
         if (Input.GetKeyUp(KeyCode.Escape))
             PreviousEditor();
-        //if (Input.GetKeyUp(KeyCode.Space))
-        //    ResetEditor();
     }
 
-    public void InitializePath(Path path, bool returning = false)
+    public void InitializePath(Path path, bool returning = false, bool reload = false)
     {
         historyManager.returned = returning;
 
         SelectionManager.CancelGetSelection();
 
-        path.form.InitializePath(path);
+        path.form.InitializePath(path, reload);
 
         SelectionManager.SelectElements();
     }

@@ -8,23 +8,17 @@ public class RegionDisplayManager : MonoBehaviour
         Tiles,
     }
 
-    static public Display default_display = Display.Tiles;
-    static public Display activeDisplay;
+    static public Display activeDisplay = Display.Tiles;
 
     static public void GetDisplay()
     {
         activeDisplay = 0;
     }
 
-    static public void SetDisplay(int new_display, Path new_path)
+    static public void SetDisplay(int display, Path path)
     {
-        activeDisplay = (Display)new_display;
+        activeDisplay = (Display)display;
 
-        EditorManager.editorManager.InitializePath(new_path);
-    }
-
-    static public void ResetDisplay()
-    {
-        activeDisplay = default_display;
+        EditorManager.editorManager.InitializePath(path);
     }
 }

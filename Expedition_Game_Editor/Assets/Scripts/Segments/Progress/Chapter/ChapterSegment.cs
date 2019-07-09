@@ -29,7 +29,7 @@ public class ChapterSegment : MonoBehaviour, ISegment
     public void InitializeData()
     {
         if (SegmentController.editorController.pathController.loaded) return;
-
+        
         var searchParameters = new Search.Chapter();
 
         SegmentController.DataController.GetData(new[] { searchParameters });

@@ -34,6 +34,11 @@ public class TerrainElementDataManager
 
                 GetQuestAndObjectiveTerrainElementData(terrainElementSearchData);
                 break;
+
+            case Search.TerrainElement.RequestType.GetElementsFromTaskRegion:
+
+                GetElementsFromTaskRegion(terrainElementSearchData);
+                break;
         }
 
         if (terrainElementDataList.Count == 0) return new List<IDataElement>();
@@ -96,7 +101,31 @@ public class TerrainElementDataManager
         Fixtures.phaseElementList.Where(x => searchParameters.questId.Contains(x.questId)).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.terrainElementId));
         Fixtures.terrainElementList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => terrainElementIds.Add(x.id));
 
-        foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList())
+        var terrainElements = Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList();
+
+        foreach (Fixtures.TerrainElement terrainElement in terrainElements)
+        {
+            var terrainElementData = new TerrainElementData();
+
+            terrainElementData.id = terrainElement.id;
+
+            terrainElementData.chapterId = terrainElement.chapterId;
+            terrainElementData.objectiveId = terrainElement.objectiveId;
+            terrainElementData.elementId = terrainElement.elementId;
+
+            terrainElementDataList.Add(terrainElementData);
+        }
+    }
+
+    internal void GetElementsFromTaskRegion(Search.TerrainElement searchParameters)
+    {
+        terrainElementDataList = new List<TerrainElementData>();
+
+        List<int> terrainElementIds = Fixtures.taskList.Where(x => searchParameters.regionId.Contains(x.regionId)).Select(x => x.terrainElementId).Distinct().ToList();
+
+        var terrainElements = Fixtures.terrainElementList.Where(x => terrainElementIds.Contains(x.id)).Distinct().ToList();
+
+        foreach(Fixtures.TerrainElement terrainElement in terrainElements)
         {
             var terrainElementData = new TerrainElementData();
 

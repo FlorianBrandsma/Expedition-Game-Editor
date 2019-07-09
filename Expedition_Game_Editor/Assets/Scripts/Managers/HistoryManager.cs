@@ -50,15 +50,18 @@ public class HistoryManager
         {
             CloseForm(history[history.Count - 1].path.form);
 
+            var historyForm = history[history.Count - 1].path.form;
+
             history.RemoveAt(history.Count - 1);
 
-            InitializePath();
+            if(historyForm == history[history.Count - 1].path.form)
+                InitializePath();
         }
     }
 
     public void CloseForm(EditorForm form)
     {
-        form.CloseForm(true);
+        form.CloseForm();
     }
 
     public void InitializePath()

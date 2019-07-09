@@ -70,11 +70,20 @@ public class EditorPath
 
             case Enums.DataType.TerrainElement:
 
-                PathManager.Structure stepElement = new PathManager.Structure(selection);
+                //Don't stick with "Enter/Edit/Etc" restrictions
+                //Add Combine, Extend: somewhat global, so not like "TerrainElementExtend"
+
+                //Add another path to root, to directly open Task without going through the path
+                //The way an asset-less Task opens the selection is kind of a happy accident, but something more intentional would be preferable
+
+                PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(selection);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = stepElement.Enter();
+                    path = terrainElement.Enter();
 
+                if (selection.selectionProperty == SelectionManager.Property.Open)
+                    path = terrainElement.Open();
+                
                 break;
 
             case Enums.DataType.Task:

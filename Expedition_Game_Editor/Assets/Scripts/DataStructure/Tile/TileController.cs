@@ -9,11 +9,12 @@ public class TileController : MonoBehaviour, IDataController
 
     private TileDataManager tileDataManager = new TileDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.Tile; } }
-    public List<IDataElement> DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.Tile; } }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

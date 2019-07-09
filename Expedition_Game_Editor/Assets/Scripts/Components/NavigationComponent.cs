@@ -4,23 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-//Attached dataController parent is required to have a DataController component
-public class StructureComponent : MonoBehaviour, IComponent
+public class NavigationComponent : MonoBehaviour, IComponent
 {
     private Path path;
 
     public EditorComponent component;
 
-    public GameObject dataController_parent;
     private IDataController dataController;
 
     private Dropdown dropdown;
 
+    private PathController PathController { get { return GetComponent<PathController>(); } }
+
     public void InitializeComponent(Path path)
     {
-        if (dataController_parent == null) return;
-
-        dataController = dataController_parent.GetComponent<IDataController>();
+        dataController = PathController.route.data.DataController;
     }
 
     public void SetComponent(Path path)
@@ -29,7 +27,6 @@ public class StructureComponent : MonoBehaviour, IComponent
 
         this.path = path;
 
-        PathController controller = GetComponent<PathController>();
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         switch (dataController.DataType)
@@ -42,12 +39,12 @@ public class StructureComponent : MonoBehaviour, IComponent
             default:                            Debug.Log("CASE MISSING");  break;
         }
 
-        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == controller.route.GeneralData().id);
+        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData().id);
 
         dropdown.value = selectedIndex;
         dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(controller.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
+        dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
     }
 
     private void SetChapterOptions()
@@ -85,7 +82,7 @@ public class StructureComponent : MonoBehaviour, IComponent
     private void SetTerrainElementOptions()
     {
         List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
-
+        
         foreach (TerrainElementDataElement dataElement in dataElements)
             dropdown.options.Add(new Dropdown.OptionData(dataElement.elementName));
     }

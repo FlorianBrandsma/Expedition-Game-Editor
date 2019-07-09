@@ -14,7 +14,7 @@ public class LanguageComponent : MonoBehaviour, IComponent
 
     Dropdown dropdown;
 
-    public void InitializeComponent(Path new_path)
+    public void InitializeComponent(Path path)
     {
 
     }

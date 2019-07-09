@@ -5,7 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class RegionStructureComponent : MonoBehaviour, IComponent
+public class NavigationData
+{
+    Enums.DataType dataType;
+    public List<int> idList = new List<int>();
+}
+
+public class RegionNavigationComponent : MonoBehaviour, IComponent
 {
     //On startup, get the data of all relevant routes in the path, based on the data types
     //Load the rest of the data "manually", to filter out dead ends
@@ -33,16 +39,18 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
     
     private List<ComponentData> componentDataList = new List<ComponentData>();
 
-    public List<Enums.DataType> structureList;
+    private List<Enums.DataType> structureList;
 
     private Route regionRoute;
 
     public void InitializeComponent(Path path)
     {
+        structureList = path.route.Where(x => x.data.DataController != null && x.data.DataController.DataCategory == Enums.DataCategory.Navigation).Select(x => x.data.DataController.DataType).Distinct().ToList();
+
         regionRoute = pathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
 
         var regionDataElement = (RegionDataElement)regionRoute.data.DataElement;
-        regionType = (Enums.RegionType)regionDataElement.type;
+        regionType = regionDataElement.type;
 
         InitializeData();
 
@@ -53,91 +61,133 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
             //This attempt gets blocked by using the max_length variable
 
             int index = (int)RegionDisplayManager.activeDisplay;
-
-            if (index > (pathController.controllers.Length - 1))
-                index = (pathController.controllers.Length - 1);
-
+            
             regionRoute.controller = index;
-
+            
             path.Add(regionRoute);
-        }     
+
+            if (RegionDisplayManager.activeDisplay == RegionDisplayManager.Display.Terrain)
+                path.Add(regionRoute);
+        }
     }
 
     private void InitializeData()
     {
         if (pathController.route.path.type != Path.Type.New) return;
-        
+
         if (regionType == Enums.RegionType.Task)
-            RegionDisplayManager.activeDisplay = 0;
+            RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Terrain;
+        else
+            RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
 
         componentDataList.Clear();
 
         InitializeStructureData();
 
-        switch (regionType)
-        {
-            case Enums.RegionType.Base:     FilterBaseData();   break;
-            case Enums.RegionType.Phase:    FilterPhaseData();  break;
-            case Enums.RegionType.Task:     FilterTaskData();   break;
-        }
+        FilterData();
     }
 
     //Remove all dead ends from data
     #region Data Filter
 
-    private void FilterBaseData()
+    private void FilterData()
     {
-        var regionComponent = FindComponentByDataType(Enums.DataType.Region);
-        var regionData = Fixtures.regionList.Where(x => x.phaseId == 0).Distinct().ToList();
-        regionComponent.idList = regionData.Select(x => x.id).Distinct().ToList();
-    }
+        if (structureList.Contains(Enums.DataType.TerrainElement))
+        {
+            var terrainElementData = Fixtures.terrainElementList;//.Where(x => x.objectiveId != 0 || x.chapterId != 0).Distinct().ToList();
+            var terrainElementComponent = FindComponentByDataType(Enums.DataType.TerrainElement);
+            terrainElementComponent.idList = terrainElementData.Select(x => x.id).Distinct().ToList();
+        }
 
-    private void FilterPhaseData()
-    {
-        var phaseRegionIds = Fixtures.regionList.Where(x => x.phaseId != 0).Distinct().ToList();
+        if (structureList.Contains(Enums.DataType.Task))
+        {
+            if (structureList.Contains(Enums.DataType.TerrainElement))
+            {
+                var terrainElementData = FindComponentByDataType(Enums.DataType.TerrainElement).idList;
 
-        var phaseData = Fixtures.phaseList.Where(x => phaseRegionIds.Select(y => y.phaseId).Contains(x.id)).Distinct().ToList();
-        var phaseComponent = FindComponentByDataType(Enums.DataType.Phase);
-        phaseComponent.idList = phaseData.Select(x => x.id).Distinct().ToList();
+                var taskData = Fixtures.taskList.Where(x => terrainElementData.Contains(x.terrainElementId)).Distinct().ToList();
+                var taskComponent = FindComponentByDataType(Enums.DataType.Task);
+                taskComponent.idList = taskData.Select(x => x.id).Distinct().ToList();
+            }  
+        }
 
-        var regionData = Fixtures.regionList.Where(x => phaseData.Select(y => y.id).Contains(x.phaseId)).Distinct().ToList();
-        var regionComponent = FindComponentByDataType(Enums.DataType.Region);
-        regionComponent.idList = regionData.Select(x => x.id).Distinct().ToList();
+        if (structureList.Contains(Enums.DataType.Objective))
+        {
+            if (structureList.Contains(Enums.DataType.Task))
+            {
+                var idList = FindComponentByDataType(Enums.DataType.Task).idList;
+                var taskData = Fixtures.taskList.Where(x => idList.Contains(x.id)).Distinct().ToList();
 
-        var chapterData = Fixtures.phaseList.Where(x => phaseData.Select(y => y.chapterId).Contains(x.id)).Distinct().ToList();
-        var chapterComponent = FindComponentByDataType(Enums.DataType.Chapter);
-        chapterComponent.idList = chapterData.Select(x => x.id).Distinct().ToList();
-    }
-    
-    private void FilterTaskData()
-    {
-        var terrainElementData = Fixtures.terrainElementList.Where(x => x.objectiveId != 0 || x.chapterId != 0).Distinct().ToList();
-        var terrainElementComponent = FindComponentByDataType(Enums.DataType.TerrainElement);
-        terrainElementComponent.idList = terrainElementData.Select(x => x.id).Distinct().ToList();
+                var objectiveData = Fixtures.objectiveList.Where(x => taskData.Select(y => y.objectiveId).Contains(x.id)).Distinct().ToList();
+                var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
+                objectiveComponent.idList = objectiveData.Select(x => x.id).Distinct().ToList();
+            }   
+        }
 
-        var taskData = Fixtures.taskList.Where(x => terrainElementData.Select(y => y.id).Contains(x.terrainElementId)).Distinct().ToList();
-        var taskComponent = FindComponentByDataType(Enums.DataType.Task);
-        taskComponent.idList = taskData.Select(x => x.id).Distinct().ToList();
+        if (structureList.Contains(Enums.DataType.Quest))
+        {
+            if (structureList.Contains(Enums.DataType.Objective))
+            {
+                var idList = FindComponentByDataType(Enums.DataType.Objective).idList;
+                var objectiveData = Fixtures.objectiveList.Where(x => idList.Contains(x.id)).Distinct().ToList();
 
-        var objectiveData = Fixtures.objectiveList.Where(x => taskData.Select(y => y.objectiveId).Contains(x.id)).Distinct().ToList();
-        var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
-        objectiveComponent.idList = objectiveData.Select(x => x.id).Distinct().ToList();
-        
-        var questData = Fixtures.questList.Where(x => objectiveData.Select(y => y.questId).Contains(x.id)).Distinct().ToList();
-        var questComponent = FindComponentByDataType(Enums.DataType.Quest);
-        questComponent.idList = questData.Select(x => x.id).Distinct().ToList();
-        
-        var phaseData = Fixtures.phaseList.Where(x => questData.Select(y => y.phaseId).Contains(x.id)).Distinct().ToList();
-        var phaseComponent = FindComponentByDataType(Enums.DataType.Phase);
-        phaseComponent.idList = phaseData.Select(x => x.id).Distinct().ToList();
+                var questData = Fixtures.questList.Where(x => objectiveData.Select(y => y.questId).Contains(x.id)).Distinct().ToList();
+                var questComponent = FindComponentByDataType(Enums.DataType.Quest);
+                questComponent.idList = questData.Select(x => x.id).Distinct().ToList();
+            }   
+        }
 
-        var regionData = Fixtures.regionList.Where(x => phaseData.Select(y => y.id).Contains(x.phaseId)).Distinct().ToList();
-        var regionComponent = FindComponentByDataType(Enums.DataType.Region);
-        regionComponent.idList = regionData.Select(x => x.id).Distinct().ToList();
+        if (structureList.Contains(Enums.DataType.Phase))
+        {
+            if (structureList.Contains(Enums.DataType.Quest))
+            {
+                var idList = FindComponentByDataType(Enums.DataType.Quest).idList;
+                var questData = Fixtures.questList.Where(x => idList.Contains(x.id)).Distinct().ToList();
 
-        var chapterData = Fixtures.phaseList.Where(x => phaseData.Select(y => y.chapterId).Contains(x.id)).Distinct().ToList();
-        var chapterComponent = FindComponentByDataType(Enums.DataType.Chapter);
-        chapterComponent.idList = chapterData.Select(x => x.id).Distinct().ToList();
+                var phaseData = Fixtures.phaseList.Where(x => questData.Select(y => y.phaseId).Contains(x.id)).Distinct().ToList();
+                var phaseComponent = FindComponentByDataType(Enums.DataType.Phase);
+                phaseComponent.idList = phaseData.Select(x => x.id).Distinct().ToList();
+
+            } else {
+
+                var phaseRegionIds = Fixtures.regionList.Where(x => x.phaseId != 0).Distinct().ToList();
+
+                var phaseData = Fixtures.phaseList.Where(x => phaseRegionIds.Select(y => y.phaseId).Contains(x.id)).Distinct().ToList();
+                var phaseComponent = FindComponentByDataType(Enums.DataType.Phase);
+                phaseComponent.idList = phaseData.Select(x => x.id).Distinct().ToList();
+            }
+        }
+
+        if(structureList.Contains(Enums.DataType.Chapter))
+        {
+            if(structureList.Contains(Enums.DataType.Phase))
+            {
+                var idList = FindComponentByDataType(Enums.DataType.Phase).idList;
+                var phaseData = Fixtures.phaseList.Where(x => idList.Contains(x.id)).Distinct().ToList();
+
+                var chapterData = Fixtures.phaseList.Where(x => phaseData.Select(y => y.chapterId).Contains(x.id)).Distinct().ToList();
+                var chapterComponent = FindComponentByDataType(Enums.DataType.Chapter);
+                chapterComponent.idList = chapterData.Select(x => x.id).Distinct().ToList();
+            }
+        }
+
+        if(structureList.Contains(Enums.DataType.Region))
+        {
+            if (structureList.Contains(Enums.DataType.Phase))
+            {
+                var phaseData = FindComponentByDataType(Enums.DataType.Phase).idList;
+
+                var regionData = Fixtures.regionList.Where(x => phaseData.Contains(x.phaseId)).Distinct().ToList();
+                var regionComponent = FindComponentByDataType(Enums.DataType.Region);
+                regionComponent.idList = regionData.Select(x => x.id).Distinct().ToList();
+
+            } else {
+
+                var regionComponent = FindComponentByDataType(Enums.DataType.Region);
+                var regionData = Fixtures.regionList.Where(x => x.phaseId == 0).Distinct().ToList();
+                regionComponent.idList = regionData.Select(x => x.id).Distinct().ToList();
+            }  
+        }
     }
 
     #endregion
@@ -219,7 +269,7 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         }
 
         searchParameters.id = FindComponentByDataType(dataController.DataType).idList;
-
+        
         dataController.GetData(new[] { searchParameters });
 
         var componentData = FindComponentByDataType(dataController.DataType);
@@ -283,7 +333,9 @@ public class RegionStructureComponent : MonoBehaviour, IComponent
         var searchParameters = new Search.Task();
 
         searchParameters.terrainElementId = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.TerrainElement).GeneralData().id };
-        searchParameters.objectiveId      = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
+
+        if(pathController.route.path.FindFirstRoute(Enums.DataType.Objective) != null)
+            searchParameters.objectiveId      = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
 
         return searchParameters;
     }

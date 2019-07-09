@@ -13,6 +13,7 @@ public class ChapterController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.Chapter; } }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters

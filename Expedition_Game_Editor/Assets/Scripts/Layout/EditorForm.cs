@@ -26,6 +26,7 @@ public class EditorForm : MonoBehaviour
     public Path previousPath;
 
     private bool closed;
+    private bool hasComponents;
 
     public void InitializeForm()
     {
@@ -42,16 +43,20 @@ public class EditorForm : MonoBehaviour
         OpenLayout(path);
         baseController.ForceLoadPath(path);
 
+        SetComponents(path);
+
         previousPath = activePath;
         activePath = path;
         active = true;
         closed = false;
 
+        //Follows path, activates form components and adds last route to history
+        baseController.FinalizePath(path);
+
         //Auto select element
         mainController.FinalizeController();
-
-        if (formComponent != null)
-            ResetSiblingForm();
+        
+        ResetSiblingForm();
     }
 
     public void OpenPath(Path path, bool reload)
@@ -64,10 +69,7 @@ public class EditorForm : MonoBehaviour
 
         //Save previous target to compare data with
         SetPreviousPath();
-
-        //Follows path and adds last route to history
-        baseController.FinalizePath(path);
-
+        
         path.type = Path.Type.Loaded;
     }
 
@@ -87,7 +89,7 @@ public class EditorForm : MonoBehaviour
     public void OpenLayout(Path path)
     {
         //Close previous active layout
-        CloseLayout(mainForm);
+        CloseFormLayout();
 
         //Get the controller that must be visualized
         baseController.GetTargetLayout(path, path.start);
@@ -103,25 +105,37 @@ public class EditorForm : MonoBehaviour
 
         //Open the target editors
         OpenEditor();
-
-        //Activate all components along the path and sort them
-        if (baseController.SetComponents(path))
-            ComponentManager.componentManager.SortComponents();
     }
 
-    private void CloseLayout(bool close_components)
+    private void CloseFormLayout()
     {
         if (closed) return;
 
-        //Tries to close with new target controller. Should be old target
         CloseLayout();
 
         baseController.CloseTabs(activePath);
 
-        if (close_components)
-            ComponentManager.componentManager.CloseComponents();
+        CloseComponents();
 
         GetComponent<LayoutManager>().ResetSiblingLayout();
+    }
+
+    private void SetComponents(Path path)
+    {
+        //Activate all components along the path and sort them
+        hasComponents = baseController.SetComponents(path);
+
+        if (hasComponents)
+            ComponentManager.componentManager.SortComponents();
+    }
+
+    private void CloseComponents()
+    {
+        if (hasComponents)
+        {
+            ComponentManager.componentManager.CloseComponents();
+            hasComponents = false;
+        }
     }
 
     private void SetPreviousPath()
@@ -157,8 +171,15 @@ public class EditorForm : MonoBehaviour
 
     public void ResetLayout()
     {
+        if (!gameObject.activeInHierarchy) return;
+
         OpenLayout(activePath);
+
+        SetComponents(activePath);
+
         SelectionManager.SelectElements();
+
+        ResetSiblingForm();
     }
 
     public void ResetSiblingForm()
@@ -166,6 +187,7 @@ public class EditorForm : MonoBehaviour
         if (siblingForm != null)
             siblingForm.ResetLayout();
     }
+
     #endregion
 
     #region Editor
@@ -176,12 +198,12 @@ public class EditorForm : MonoBehaviour
     }
     #endregion
 
-    public void CloseForm(bool closeComponents)
+    public void CloseForm()
     {
         if (!active) return;
         
         ClosePath();
-        CloseLayout(closeComponents);
+        CloseFormLayout();
 
         closed = true;
 

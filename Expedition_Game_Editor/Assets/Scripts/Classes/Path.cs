@@ -78,7 +78,7 @@ public class Path
         //Use last used step as base
         if (route.Count > 0)
             Add(0, route.LastOrDefault().data, route.LastOrDefault().selectionGroup);
-        else
+         else
             Add(new Route(this));
     }
 
@@ -93,6 +93,8 @@ public class Path
     public void Add(int controller, Data data, Enums.SelectionGroup selectionGroup)
     {
         route.Add(new Route(controller, data, selectionGroup));
+
+        data = new Data();
     }
 
     public void Add(Route route)

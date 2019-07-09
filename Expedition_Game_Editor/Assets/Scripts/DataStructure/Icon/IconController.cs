@@ -9,11 +9,12 @@ public class IconController : MonoBehaviour, IDataController
 
     private IconDataManager iconDataManager = new IconDataManager();
 
-    public IDisplay Display { get { return GetComponent<IDisplay>(); } }
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType { get { return Enums.DataType.Icon; } }
-    public List<IDataElement> DataList { get; set; }
+    public Enums.DataType DataType              { get { return Enums.DataType.Icon; } }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
+    public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters
     {

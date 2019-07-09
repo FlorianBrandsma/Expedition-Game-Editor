@@ -13,6 +13,7 @@ public class PhaseController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.Phase; } }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
     public IEnumerable SearchParameters

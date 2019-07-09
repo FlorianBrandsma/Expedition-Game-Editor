@@ -15,6 +15,8 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
     {
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
+        RegionDisplayManager.activeDisplay = (RegionDisplayManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
+
         dropdown.captionText.text = Enum.GetName(typeof(RegionDisplayManager.Display), RegionDisplayManager.activeDisplay);
 
         foreach (var display in Enum.GetValues(typeof(RegionDisplayManager.Display)))

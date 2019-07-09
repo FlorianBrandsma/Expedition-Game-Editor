@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class TaskSegment : MonoBehaviour, ISegment
+public class TerrainElementSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
@@ -19,7 +19,7 @@ public class TaskSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        //DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
 
     public void InitializeSegment()
@@ -31,17 +31,11 @@ public class TaskSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        var searchParameters = new Search.Task();
+        var searchParameters = new Search.TerrainElement();
 
-        //If a terrainElement is selected without being directly related to an objective, don't try to get this data
-        if(SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
-        {
-            var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.DataElement;
-            searchParameters.objectiveId = new List<int>() { objectiveData.id };
-        }
+        searchParameters.requestType = Search.TerrainElement.RequestType.GetElementsFromTaskRegion;
 
-        var terrainElementData = (TerrainElementDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainElement).data.DataElement;
-        searchParameters.terrainElementId = new List<int>() { terrainElementData.id };
+        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData().id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

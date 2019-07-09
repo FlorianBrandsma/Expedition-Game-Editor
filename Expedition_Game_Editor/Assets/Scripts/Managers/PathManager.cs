@@ -70,6 +70,7 @@ public class PathManager
             path = origin.listProperties.DataController.SegmentController.Path;
         }
 
+        //Rename: Combine
         public Path Enter()
         {
             route.controller = enter;
@@ -248,7 +249,7 @@ public class PathManager
             List<Route> routes;
 
             //Reset display to tiles, only when editor is manually opened
-            RegionDisplayManager.ResetDisplay();
+            //RegionDisplayManager.ResetDisplay();
 
             switch (regionDataElement.type)
             {
@@ -274,7 +275,7 @@ public class PathManager
         public Path Open()
         {
             List<int> open = new List<int>() { 1, (int)regionDataElement.type };
-
+            
             Route customRoute = new Route(1, route.data, selectionElement.selectionGroup);
 
             path = ExtendPath(route.path, CreateRoutes(open, customRoute, selectionElement.selectionGroup), origin);
@@ -317,22 +318,40 @@ public class PathManager
 
     public class TerrainElement
     {
+        SelectionElement selectionElement;
         Path path;
         Route route;
+        ListManager origin;
         EditorForm form = EditorManager.editorManager.forms[0];
+
+        int enter = 0;
 
         public TerrainElement(SelectionElement selection)
         {
-            route = new Route(0, selection.route.data, selection.selectionGroup);
+            //
+            selectionElement = selection;
+            route = selection.route;
+            origin = selection.ListManager;
 
-            path = form.activePath.Trim(form.activePath.start + 3);
-            
-            path.Add(route);
+            //path = form.activePath.Trim(form.activePath.start + 3);
+            path = origin.listProperties.DataController.SegmentController.Path;
+
+            //path.Add(route);
         }
 
         public Path Enter()
         {
-            return path;
+            route.controller = enter;
+
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
+        }
+
+        public Path Open()
+        {
+            //route = new Route(0, selectionElement.route.data, selectionElement.selectionGroup);
+            List<int> source = new List<int>() { 0, 5 };
+
+            return CreatePath(CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main), form, origin);
         }
     }
 

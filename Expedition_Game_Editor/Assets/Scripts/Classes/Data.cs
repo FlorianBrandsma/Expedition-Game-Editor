@@ -35,9 +35,4 @@ public class Data
         DataElement = element;
         SearchParameters = searchParameters;
     }
-
-    public Data Copy()
-    {
-        return new Data(DataElement);
-    }
 }

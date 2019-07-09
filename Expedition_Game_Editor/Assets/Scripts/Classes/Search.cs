@@ -237,6 +237,7 @@ public class Search
 
     public class TerrainElement : SearchParameters
     {
+        public List<int> regionId = new List<int>();
         public List<int> chapterId = new List<int>();
         public List<int> questId = new List<int>();
         public List<int> objectiveId = new List<int>();
@@ -246,7 +247,8 @@ public class Search
         public enum RequestType
         {
             Custom,
-            GetQuestAndObjectiveElements
+            GetQuestAndObjectiveElements,
+            GetElementsFromTaskRegion
         }
 
         public RequestType requestType;

@@ -7,6 +7,8 @@ public class PathController : MonoBehaviour
 {
     public Route route      { get; set; }
 
+    private Route previousRoute;
+
     public int step         { get; set; }
     public int layoutStep   { get; set; }
 
@@ -55,20 +57,20 @@ public class PathController : MonoBehaviour
         this.parentController = parentController;
 
         this.step = step;
-
+        
         Path path = mainPath.Trim(step);
-
+        
         if (path.route.Count > 0)
             route = path.route.Last().Copy();
         else        
             route = new Route(path);
 
         route.path = path;
-
+        
         if (step > 0)
         {
             //Don't check this if force is true. Must load!
-            if(!reload)
+            if (!reload)
                 loaded = IsLoaded();
             
             //If this hasn't loaded, force load the next one
@@ -78,12 +80,17 @@ public class PathController : MonoBehaviour
             } 
         }
 
+        //if(!loaded && autoExtend)
+        //{
+        //    Debug.Log("ADD MORE");
+        //    mainPath.Add();
+        //}
+
+        previousRoute = route;
+
         GetDataController();
         GetDataEditor();
-
-        if (autoExtend)
-            mainPath.Add();
-
+        
         if (subControllerManager != null)
         {
             InitializeTabs(mainPath);
@@ -93,6 +100,7 @@ public class PathController : MonoBehaviour
         }
 
         InitializeComponents(mainPath);
+        InitializeForm();
 
         editorSection.targetPath = mainPath;
 
@@ -106,7 +114,7 @@ public class PathController : MonoBehaviour
 
         if (dataEditor != null)
             editorSection.dataEditor = dataEditor;
-
+        
         if (step < mainPath.route.Count)
         {
             controllers[mainPath.route[step].controller].InitializePath(mainPath, step + 1, reload, this);
@@ -141,22 +149,36 @@ public class PathController : MonoBehaviour
             history.AddHistory(route.path);   
     }
 
-    public void FinalizePath(Path new_path)
+    public void FinalizePath(Path path)
     {
         route.path.type = Path.Type.Loaded;
 
-        if (step < new_path.route.Count)
+        SetForm();
+
+        if (step < path.route.Count)
         {
-            controllers[new_path.route[step].controller].FinalizePath(new_path);
+            controllers[path.route[step].controller].FinalizePath(path);
         } else {
             SetHistory();
         }
     }
 
+    private void InitializeForm()
+    {
+        foreach (FormComponent form in GetComponents<FormComponent>())
+            form.InitializeForm(this);
+    }
+
+    private void SetForm()
+    {
+        foreach (FormComponent form in GetComponents<FormComponent>())
+            form.SetForm();
+    }
+
     public void ForceLoadPath(Path path)
     {
         loaded = true;
-
+        
         if (step < path.route.Count)
             controllers[path.route[step].controller].ForceLoadPath(path);    
     }
@@ -170,7 +192,10 @@ public class PathController : MonoBehaviour
         //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
         if (step > editorSection.previousTargetPath.route.Count)
             return false;
-        
+
+        if (previousRoute != null)
+            return route.Equals(previousRoute);
+
         //If false then everything afterwards must be false as well
         return route.path.Equals(editorSection.previousTargetPath);
     }
