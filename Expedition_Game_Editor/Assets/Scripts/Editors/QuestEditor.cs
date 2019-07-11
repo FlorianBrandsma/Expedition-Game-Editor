@@ -5,7 +5,7 @@ using System.Linq;
 public class QuestEditor : MonoBehaviour, IEditor
 {
     private QuestDataElement questData;
-    public List<PhaseElementDataElement> questElementDataList;
+    public List<PhaseInteractableDataElement> questElementDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 

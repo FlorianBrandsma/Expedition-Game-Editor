@@ -194,7 +194,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties-tile)
+      value: Interactables (segment-listProperties-tile)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -218,7 +218,7 @@ Prefab:
     - target: {fileID: 114000013256253516, guid: 1280af98e3595384ba80db985c15c225,
         type: 2}
       propertyPath: segmentName
-      value: Elements
+      value: Interactables
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1280af98e3595384ba80db985c15c225, type: 2}
@@ -766,7 +766,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -1130,7 +1130,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -2625,7 +2625,7 @@ GameObject:
   - 114: {fileID: 116367560}
   - 114: {fileID: 116367557}
   m_Layer: 5
-  m_Name: Elements
+  m_Name: Interact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7355,7 +7355,7 @@ GameObject:
   - 114: {fileID: 267928738}
   - 114: {fileID: 267928737}
   m_Layer: 5
-  m_Name: Elements (segment-dataController-listProperties-button)
+  m_Name: Interactables (segment-dataController-listProperties-button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8628,7 +8628,7 @@ GameObject:
   - 114: {fileID: 336884789}
   - 114: {fileID: 336884788}
   m_Layer: 5
-  m_Name: Elements
+  m_Name: Interact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8973,7 +8973,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  dataController_parent: {fileID: 1511168223}
 --- !u!1 &339008555
 GameObject:
   m_ObjectHideFlags: 0
@@ -9564,7 +9563,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList: 0d0000000f00000007000000
 --- !u!1 &368725159
 GameObject:
   m_ObjectHideFlags: 0
@@ -10276,7 +10274,7 @@ GameObject:
   - 114: {fileID: 401679384}
   - 114: {fileID: 401679385}
   m_Layer: 5
-  m_Name: Elements (parent-layout)
+  m_Name: Interactables (parent-layout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12210,7 +12208,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -12925,7 +12923,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -13129,7 +13127,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -16080,7 +16078,7 @@ GameObject:
   - 114: {fileID: 686303412}
   - 114: {fileID: 686303416}
   m_Layer: 5
-  m_Name: Elements (segment-listProperties-tile)
+  m_Name: Interactables (segment-listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16176,7 +16174,7 @@ MonoBehaviour:
   loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 214173466}
-  segmentName: Elements
+  segmentName: Interactables
   header: {fileID: 2011115488}
   segmentGroup: []
   siblingSegment: {fileID: 0}
@@ -17537,7 +17535,7 @@ GameObject:
   - 114: {fileID: 754277963}
   - 114: {fileID: 754277962}
   m_Layer: 5
-  m_Name: TerrainElement (controller)
+  m_Name: TerrainInteractable (controller)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17571,7 +17569,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  dataController_parent: {fileID: 2077475954}
 --- !u!114 &754277963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18435,7 +18432,7 @@ GameObject:
   - 114: {fileID: 783246982}
   - 114: {fileID: 783246981}
   m_Layer: 5
-  m_Name: Task (segment-dataController-listProperties-panel)
+  m_Name: Interaction (segment-dataController-listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18534,7 +18531,7 @@ MonoBehaviour:
     id: 
     index: 
     objectiveId: 
-    terrainElementId: 
+    terrainInteractableId: 
     requestType: 0
 --- !u!114 &783246985
 MonoBehaviour:
@@ -21921,7 +21918,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  dataController_parent: {fileID: 1902833969}
 --- !u!1 &942339122 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225,
@@ -22676,7 +22672,7 @@ GameObject:
   - 114: {fileID: 959242520}
   - 114: {fileID: 959242519}
   m_Layer: 5
-  m_Name: TerrainElement (segment-dataController-listProperties-panel)
+  m_Name: TerrainInteractable (segment-dataController-listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23194,7 +23190,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -25958,7 +25954,7 @@ GameObject:
   - 114: {fileID: 1089084922}
   - 114: {fileID: 1089084923}
   m_Layer: 5
-  m_Name: Elements (controller-dataEditor)
+  m_Name: Interactable (controller-dataEditor)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26124,7 +26120,7 @@ GameObject:
   - 114: {fileID: 1092025100}
   - 114: {fileID: 1092025101}
   m_Layer: 5
-  m_Name: Elements
+  m_Name: General
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27930,7 +27926,7 @@ GameObject:
   - 114: {fileID: 1158307201}
   - 114: {fileID: 1158307200}
   m_Layer: 5
-  m_Name: Elements (segment-listProperties-tile)
+  m_Name: Interactables (segment-listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28032,7 +28028,7 @@ MonoBehaviour:
   loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 423150525}
-  segmentName: Elements
+  segmentName: Interactables
   header: {fileID: 1240155048}
   segmentGroup: []
   siblingSegment: {fileID: 1674728137}
@@ -29022,7 +29018,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     - target: {fileID: 224000012549903682, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
         type: 2}
@@ -29472,7 +29468,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList: 0d0000000f00000011000000120000000b0000001300000007000000
 --- !u!114 &1228344528 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000011852793538, guid: e459c8c821901e5479d8bd2715d2a2d4,
@@ -30153,7 +30148,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Elements
+  m_Text: 
 --- !u!222 &1240155049
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30173,7 +30168,7 @@ GameObject:
   - 114: {fileID: 1243632475}
   - 114: {fileID: 1243632474}
   m_Layer: 5
-  m_Name: Task (controller-dataEditor)
+  m_Name: Interaction (controller-dataEditor)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32433,7 +32428,7 @@ GameObject:
   - 114: {fileID: 1297272960}
   - 114: {fileID: 1297272958}
   m_Layer: 5
-  m_Name: Element (segment-cameraProperties-object)
+  m_Name: Interactable (segment-cameraProperties-object)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34028,7 +34023,7 @@ GameObject:
   - 114: {fileID: 1352689287}
   - 114: {fileID: 1352689286}
   m_Layer: 5
-  m_Name: Elements (segment-dataController-listProperties-panelTile)
+  m_Name: Interactables (segment-dataController-listProperties-panelTile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37019,7 +37014,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -37120,7 +37115,7 @@ GameObject:
   - 114: {fileID: 1486959916}
   - 114: {fileID: 1486959915}
   m_Layer: 5
-  m_Name: Element
+  m_Name: Behaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37934,7 +37929,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Elements
+  m_Text: Members
 --- !u!222 &1521687043
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38670,7 +38665,7 @@ GameObject:
   - 114: {fileID: 1553673202}
   - 114: {fileID: 1553673206}
   m_Layer: 5
-  m_Name: Elements (segment-listProperties-tile)
+  m_Name: Interactables (segment-listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38737,7 +38732,7 @@ MonoBehaviour:
   loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 1522126382}
-  segmentName: Elements
+  segmentName: Interactables
   header: {fileID: 1361342036}
   segmentGroup: []
   siblingSegment: {fileID: 0}
@@ -42195,7 +42190,7 @@ GameObject:
   - 114: {fileID: 1674728139}
   - 114: {fileID: 1674728138}
   m_Layer: 5
-  m_Name: Elements (segment-listProperties-tile)
+  m_Name: Interactables (segment-listProperties-tile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42238,7 +42233,7 @@ MonoBehaviour:
   loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 2102175943}
-  segmentName: Elements
+  segmentName: Members
   header: {fileID: 1521687042}
   segmentGroup: []
   siblingSegment: {fileID: 1158307203}
@@ -42431,7 +42426,7 @@ GameObject:
   - 4: {fileID: 1680088283}
   - 114: {fileID: 1680088284}
   m_Layer: 5
-  m_Name: Element (controller)
+  m_Name: Interactable (controller)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42688,7 +42683,7 @@ GameObject:
   - 114: {fileID: 1695877292}
   - 114: {fileID: 1695877294}
   m_Layer: 5
-  m_Name: Elements
+  m_Name: Interactables
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44049,7 +44044,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012063940686, guid: 1280af98e3595384ba80db985c15c225, type: 2}
       propertyPath: m_Name
-      value: Elements (segment-listProperties-missing)
+      value: Interactables (segment-listProperties-missing)
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Text
@@ -46322,7 +46317,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -48132,7 +48127,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -49839,7 +49834,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  dataController_parent: {fileID: 848345534}
 --- !u!1001 &2020412870
 Prefab:
   m_ObjectHideFlags: 0
@@ -50802,7 +50796,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012730720740, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
       propertyPath: m_Name
-      value: Elements (list)
+      value: Interactables (list)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a, type: 2}
@@ -51158,7 +51152,7 @@ GameObject:
   - 114: {fileID: 2083398432}
   - 114: {fileID: 2083398431}
   m_Layer: 5
-  m_Name: Task (controller)
+  m_Name: Interaction (controller)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51192,7 +51186,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  dataController_parent: {fileID: 959242517}
 --- !u!114 &2083398432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51919,7 +51912,6 @@ MonoBehaviour:
   component:
     anchor: 0
     width: 100
-  structureList: 07000000
 --- !u!114 &2108299160
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
-    private ElementController ElementController { get { return (ElementController)SegmentController.DataController; } }
+    private InteractableController ElementController { get { return (InteractableController)SegmentController.DataController; } }
 
     public void ApplySegment()
     {
@@ -39,14 +39,14 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
         var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
 
-        var searchParameters = new Search.TerrainElement();
+        var searchParameters = new Search.TerrainInteractable();
 
-        searchParameters.requestType = Search.TerrainElement.RequestType.Custom;
+        searchParameters.requestType = Search.TerrainInteractable.RequestType.Custom;
         searchParameters.objectiveId = new List<int>() { objectiveData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var terrainElementList = SegmentController.DataController.DataList.Cast<TerrainElementDataElement>().ToList();
+        var terrainElementList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
 
         terrainElementList.ForEach(x => objectiveEditor.terrainElementDataList.Add(x));
     }

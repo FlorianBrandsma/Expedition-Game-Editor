@@ -95,7 +95,7 @@ public class ChapterCore : GeneralData
         var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
 
         if (changedElementId)
-            chapterData.elementId = elementId;
+            chapterData.interactableId = elementId;
 
         if (changedName)
             chapterData.name = name;

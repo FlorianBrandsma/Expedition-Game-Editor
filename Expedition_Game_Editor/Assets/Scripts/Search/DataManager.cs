@@ -49,25 +49,25 @@ public class DataManager
         return dataList;
     }
 
-    public List<ElementData> GetElementData()
+    public List<InteractableData> GetInteractableData()
     {
-        return GetElementData(new List<int>());
+        return GetInteractableData(new List<int>());
     }
 
-    public List<ElementData> GetElementData(List<int> idList, bool searchById = false)
+    public List<InteractableData> GetInteractableData(List<int> idList, bool searchById = false)
     {
-        List<ElementData> dataList = new List<ElementData>();
+        List<InteractableData> dataList = new List<InteractableData>();
 
-        foreach(Fixtures.Element element in Fixtures.elementList)
+        foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchById && !idList.Contains(element.id)) continue;
+            if (searchById && !idList.Contains(interactable.id)) continue;
 
-            var data = new ElementData();
+            var data = new InteractableData();
             
-            data.id = element.id;
+            data.id = interactable.id;
 
-            data.objectGraphicId = element.objectGraphicId;
-            data.name = element.name;
+            data.objectGraphicId = interactable.objectGraphicId;
+            data.name = interactable.name;
 
             dataList.Add(data);
         }
@@ -75,22 +75,22 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainElementData> GetTerrainElementData(List<int> idList, bool searchById = false)
+    public List<TerrainInteractableData> GetTerrainInteractableData(List<int> idList, bool searchById = false)
     {
-        List<TerrainElementData> dataList = new List<TerrainElementData>();
+        List<TerrainInteractableData> dataList = new List<TerrainInteractableData>();
 
-        foreach(Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList)
+        foreach(Fixtures.TerrainInteractable terrainInteractable in Fixtures.terrainInteractableList)
         {
-            if (searchById && !idList.Contains(terrainElement.id)) continue;
+            if (searchById && !idList.Contains(terrainInteractable.id)) continue;
 
-            var data = new TerrainElementData();
+            var data = new TerrainInteractableData();
 
-            data.id = terrainElement.id;
+            data.id = terrainInteractable.id;
 
-            data.chapterId = terrainElement.chapterId;
-            data.objectiveId = terrainElement.objectiveId;
-            data.elementId = terrainElement.elementId;
-            data.taskIndex = terrainElement.taskIndex;
+            data.chapterId = terrainInteractable.chapterId;
+            data.objectiveId = terrainInteractable.objectiveId;
+            data.interactableId = terrainInteractable.interactableId;
+            data.taskIndex = terrainInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -98,22 +98,22 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainElementData> GetChapterTerrainElementData(int chapterId, bool searchById = false)
+    public List<TerrainInteractableData> GetChapterTerrainInteractableData(int chapterId, bool searchById = false)
     {
-        List<TerrainElementData> dataList = new List<TerrainElementData>();
+        List<TerrainInteractableData> dataList = new List<TerrainInteractableData>();
 
-        foreach (Fixtures.TerrainElement terrainElement in Fixtures.terrainElementList)
+        foreach (Fixtures.TerrainInteractable terrainInteractable in Fixtures.terrainInteractableList)
         {
-            if (searchById && chapterId != terrainElement.chapterId) continue;
+            if (searchById && chapterId != terrainInteractable.chapterId) continue;
 
-            var data = new TerrainElementData();
+            var data = new TerrainInteractableData();
 
-            data.id = terrainElement.id;
+            data.id = terrainInteractable.id;
             
-            data.chapterId = terrainElement.chapterId;
-            data.objectiveId = terrainElement.objectiveId;
-            data.elementId = terrainElement.elementId;
-            data.taskIndex = terrainElement.taskIndex;
+            data.chapterId = terrainInteractable.chapterId;
+            data.objectiveId = terrainInteractable.objectiveId;
+            data.interactableId = terrainInteractable.interactableId;
+            data.taskIndex = terrainInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -140,20 +140,20 @@ public class DataManager
         return dataList;
     }
 
-    public List<PhaseElementData> GetPhaseElementData(List<int> idList, bool searchById = false)
+    public List<PhaseInteractableData> GetPhaseInteractableData(List<int> idList, bool searchById = false)
     {
-        List<PhaseElementData> dataList = new List<PhaseElementData>();
+        List<PhaseInteractableData> dataList = new List<PhaseInteractableData>();
 
-        foreach(Fixtures.PhaseElement phaseElement in Fixtures.phaseElementList)
+        foreach(Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
-            if (searchById && !idList.Contains(phaseElement.phaseId)) continue;
+            if (searchById && !idList.Contains(phaseInteractable.phaseId)) continue;
 
-            var data = new PhaseElementData();
+            var data = new PhaseInteractableData();
 
-            data.id = phaseElement.id;
+            data.id = phaseInteractable.id;
 
-            data.phaseId = phaseElement.phaseId;
-            data.terrainElementId = phaseElement.terrainElementId;
+            data.phaseId = phaseInteractable.phaseId;
+            data.terrainInteractableId = phaseInteractable.terrainInteractableId;
 
             dataList.Add(data);
         }
@@ -278,17 +278,17 @@ public class DataManager
         public string path;
     }
 
-    public class ElementData : GeneralData
+    public class InteractableData : GeneralData
     {
         public int objectGraphicId;
         public string name;
     }
 
-    public class TerrainElementData : GeneralData
+    public class TerrainInteractableData : GeneralData
     {
         public int chapterId;
         public int objectiveId;
-        public int elementId;
+        public int interactableId;
         public int taskIndex;
     }
 
@@ -297,10 +297,10 @@ public class DataManager
         public int chapterId;
     }
 
-    public class PhaseElementData : GeneralData
+    public class PhaseInteractableData : GeneralData
     {
         public int phaseId;
-        public int terrainElementId;
+        public int terrainInteractableId;
     }
 
     public class TileSetData : GeneralData

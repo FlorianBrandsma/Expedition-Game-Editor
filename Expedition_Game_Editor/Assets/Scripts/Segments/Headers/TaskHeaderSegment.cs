@@ -7,7 +7,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    private TaskDataElement taskData;
+    private InteractionDataElement taskData;
 
     public IEditor DataEditor { get; set; }
 
@@ -67,7 +67,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        taskData = (TaskDataElement)DataEditor.Data.DataElement;
+        taskData = (InteractionDataElement)DataEditor.Data.DataElement;
 
         id = taskData.id;
         index = taskData.Index;

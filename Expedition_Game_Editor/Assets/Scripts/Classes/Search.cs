@@ -41,7 +41,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class Element : SearchParameters
+    public class Interactable : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<string> name = new List<string>();
@@ -118,7 +118,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class PhaseElement : SearchParameters
+    public class PhaseInteractable : SearchParameters
     {
         public List<int> phaseId = new List<int>();
         public List<int> questId = new List<int>();
@@ -165,11 +165,11 @@ public class Search
     }
 
     [System.Serializable]
-    public class Task : SearchParameters
+    public class Interaction : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<int> objectiveId = new List<int>();
-        public List<int> terrainElementId = new List<int>();
+        public List<int> terrainInteractableId = new List<int>();
 
         public enum RequestType
         {
@@ -235,7 +235,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class TerrainElement : SearchParameters
+    public class TerrainInteractable : SearchParameters
     {
         public List<int> regionId = new List<int>();
         public List<int> chapterId = new List<int>();
@@ -254,7 +254,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class PartyElement : SearchParameters
+    public class PartyMember : SearchParameters
     {
         public List<int> chapterId = new List<int>();
         public List<int> elementId = new List<int>();

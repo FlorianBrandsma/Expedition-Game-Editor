@@ -63,7 +63,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     {
         switch (Element.route.data.DataController.DataType)
         {
-            case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
+            case Enums.DataType.TerrainInteractable: SetTerrainElementElement(); break;
             case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
             default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
         }
@@ -72,10 +72,10 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private void SetTerrainElementElement()
     {
         Data data = Element.route.data;
-        TerrainElementDataElement dataElement = (TerrainElementDataElement)data.DataElement;
+        TerrainInteractableDataElement dataElement = (TerrainInteractableDataElement)data.DataElement;
 
         idText.text = dataElement.id.ToString();
-        headerText.text = dataElement.elementName;
+        headerText.text = dataElement.interactableName;
 
         if (properties.icon)
             IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);

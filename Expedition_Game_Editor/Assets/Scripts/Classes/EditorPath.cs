@@ -68,7 +68,7 @@ public class EditorPath
 
                 break;
 
-            case Enums.DataType.TerrainElement:
+            case Enums.DataType.TerrainInteractable:
 
                 //Don't stick with "Enter/Edit/Etc" restrictions
                 //Add Combine, Extend: somewhat global, so not like "TerrainElementExtend"
@@ -86,7 +86,7 @@ public class EditorPath
                 
                 break;
 
-            case Enums.DataType.Task:
+            case Enums.DataType.Interaction:
 
                 PathManager.Structure task = new PathManager.Structure(selection);
 
@@ -155,7 +155,7 @@ public class EditorPath
 
                 break;
 
-            case Enums.DataType.Element:
+            case Enums.DataType.Interactable:
 
                 PathManager.Element element = new PathManager.Element(selection);
 

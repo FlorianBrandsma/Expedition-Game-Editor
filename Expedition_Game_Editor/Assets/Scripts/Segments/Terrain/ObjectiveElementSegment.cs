@@ -30,9 +30,9 @@ public class ObjectiveElementSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        var searchParameters = new Search.TerrainElement();
+        var searchParameters = new Search.TerrainInteractable();
 
-        searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
+        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveElements;
 
         searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
         searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };

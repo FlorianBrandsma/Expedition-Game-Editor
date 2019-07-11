@@ -11,7 +11,7 @@ public class ChapterDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.ElementData> elementDataList;
+    private List<DataManager.InteractableData> elementDataList;
 
     public void InitializeManager(ChapterController chapterController)
     {
@@ -61,7 +61,7 @@ public class ChapterDataManager
             chapterData.id = chapter.id;
             chapterData.index = chapter.index;
 
-            chapterData.elementId = chapter.elementId;
+            chapterData.elementId = chapter.interactableId;
             chapterData.name = chapter.name;
             chapterData.notes = chapter.notes;
             
@@ -71,7 +71,7 @@ public class ChapterDataManager
 
     internal void GetElementData()
     {
-        elementDataList = dataManager.GetElementData(chapterDataList.Select(x => x.elementId).Distinct().ToList(), true);
+        elementDataList = dataManager.GetInteractableData(chapterDataList.Select(x => x.elementId).Distinct().ToList(), true);
     }
 
     internal void GetObjectGraphicData()

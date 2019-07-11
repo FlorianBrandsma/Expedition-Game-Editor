@@ -92,31 +92,31 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private void FilterData()
     {
-        if (structureList.Contains(Enums.DataType.TerrainElement))
+        if (structureList.Contains(Enums.DataType.TerrainInteractable))
         {
-            var terrainElementData = Fixtures.terrainElementList;//.Where(x => x.objectiveId != 0 || x.chapterId != 0).Distinct().ToList();
-            var terrainElementComponent = FindComponentByDataType(Enums.DataType.TerrainElement);
+            var terrainElementData = Fixtures.terrainInteractableList;//.Where(x => x.objectiveId != 0 || x.chapterId != 0).Distinct().ToList();
+            var terrainElementComponent = FindComponentByDataType(Enums.DataType.TerrainInteractable);
             terrainElementComponent.idList = terrainElementData.Select(x => x.id).Distinct().ToList();
         }
 
-        if (structureList.Contains(Enums.DataType.Task))
+        if (structureList.Contains(Enums.DataType.Interaction))
         {
-            if (structureList.Contains(Enums.DataType.TerrainElement))
+            if (structureList.Contains(Enums.DataType.TerrainInteractable))
             {
-                var terrainElementData = FindComponentByDataType(Enums.DataType.TerrainElement).idList;
+                var terrainElementData = FindComponentByDataType(Enums.DataType.TerrainInteractable).idList;
 
-                var taskData = Fixtures.taskList.Where(x => terrainElementData.Contains(x.terrainElementId)).Distinct().ToList();
-                var taskComponent = FindComponentByDataType(Enums.DataType.Task);
+                var taskData = Fixtures.interactionList.Where(x => terrainElementData.Contains(x.terrainInteractableId)).Distinct().ToList();
+                var taskComponent = FindComponentByDataType(Enums.DataType.Interaction);
                 taskComponent.idList = taskData.Select(x => x.id).Distinct().ToList();
             }  
         }
 
         if (structureList.Contains(Enums.DataType.Objective))
         {
-            if (structureList.Contains(Enums.DataType.Task))
+            if (structureList.Contains(Enums.DataType.Interaction))
             {
-                var idList = FindComponentByDataType(Enums.DataType.Task).idList;
-                var taskData = Fixtures.taskList.Where(x => idList.Contains(x.id)).Distinct().ToList();
+                var idList = FindComponentByDataType(Enums.DataType.Interaction).idList;
+                var taskData = Fixtures.interactionList.Where(x => idList.Contains(x.id)).Distinct().ToList();
 
                 var objectiveData = Fixtures.objectiveList.Where(x => taskData.Select(y => y.objectiveId).Contains(x.id)).Distinct().ToList();
                 var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
@@ -238,8 +238,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Phase:          dataController = dropdown.gameObject.AddComponent<PhaseController>();           break;
             case Enums.DataType.Quest:          dataController = dropdown.gameObject.AddComponent<QuestController>();           break;
             case Enums.DataType.Objective:      dataController = dropdown.gameObject.AddComponent<ObjectiveController>();       break;
-            case Enums.DataType.TerrainElement: dataController = dropdown.gameObject.AddComponent<TerrainElementController>();  break;
-            case Enums.DataType.Task:           dataController = dropdown.gameObject.AddComponent<TaskController>();            break;
+            case Enums.DataType.TerrainInteractable: dataController = dropdown.gameObject.AddComponent<TerrainInteractableController>();  break;
+            case Enums.DataType.Interaction:           dataController = dropdown.gameObject.AddComponent<InteractionController>();            break;
             case Enums.DataType.Region:         dataController = dropdown.gameObject.AddComponent<RegionController>();          break;
             default:                            dataController = null;                                                          break;
         }
@@ -262,8 +262,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Phase:          searchParameters = GetPhaseData();          break;
             case Enums.DataType.Quest:          searchParameters = GetQuestData();          break;
             case Enums.DataType.Objective:      searchParameters = GetObjectiveData();      break;
-            case Enums.DataType.TerrainElement: searchParameters = GetTerrainElementData(); break;
-            case Enums.DataType.Task:           searchParameters = GetTaskData();           break;
+            case Enums.DataType.TerrainInteractable: searchParameters = GetTerrainElementData(); break;
+            case Enums.DataType.Interaction:           searchParameters = GetTaskData();           break;
             case Enums.DataType.Region:         searchParameters = GetRegionData();         break;
             default:                            searchParameters = null;                    break;
         }
@@ -318,9 +318,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private SearchParameters GetTerrainElementData()
     {
-        var searchParameters = new Search.TerrainElement();
+        var searchParameters = new Search.TerrainInteractable();
 
-        searchParameters.requestType = Search.TerrainElement.RequestType.GetQuestAndObjectiveElements;
+        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveElements;
 
         searchParameters.questId     = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Quest).GeneralData().id };
         searchParameters.objectiveId = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
@@ -330,9 +330,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private SearchParameters GetTaskData()
     {
-        var searchParameters = new Search.Task();
+        var searchParameters = new Search.Interaction();
 
-        searchParameters.terrainElementId = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.TerrainElement).GeneralData().id };
+        searchParameters.terrainInteractableId = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.TerrainInteractable).GeneralData().id };
 
         if(pathController.route.path.FindFirstRoute(Enums.DataType.Objective) != null)
             searchParameters.objectiveId      = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
@@ -373,8 +373,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Phase:          SetPhaseOptions         (dropdown, dataController); break;
             case Enums.DataType.Quest:          SetQuestOptions         (dropdown, dataController); break;
             case Enums.DataType.Objective:      SetObjectiveOptions     (dropdown, dataController); break;
-            case Enums.DataType.TerrainElement: SetTerrainElementOptions(dropdown, dataController); break;
-            case Enums.DataType.Task:           SetTaskOptions          (dropdown, dataController); break;
+            case Enums.DataType.TerrainInteractable: SetTerrainElementOptions(dropdown, dataController); break;
+            case Enums.DataType.Interaction:           SetTaskOptions          (dropdown, dataController); break;
             case Enums.DataType.Region:         SetRegionOptions        (dropdown, dataController); break;
         }
 
@@ -419,14 +419,14 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private void SetTerrainElementOptions(Dropdown dropdown, IDataController dataController)
     {
-        var dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
 
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.elementName)));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 
     private void SetTaskOptions(Dropdown dropdown, IDataController dataController)
     {
-        var dataElements = dataController.DataList.Cast<TaskDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<InteractionDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Description)));
     }

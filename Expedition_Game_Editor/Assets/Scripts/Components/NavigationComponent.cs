@@ -35,7 +35,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Phase:          SetPhaseOptions();          break;
             case Enums.DataType.Quest:          SetQuestOptions();          break;
             case Enums.DataType.Objective:      SetObjectiveOptions();      break;
-            case Enums.DataType.TerrainElement: SetTerrainElementOptions(); break;
+            case Enums.DataType.TerrainInteractable: SetTerrainElementOptions(); break;
             default:                            Debug.Log("CASE MISSING");  break;
         }
 
@@ -81,10 +81,10 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     private void SetTerrainElementOptions()
     {
-        List<TerrainElementDataElement> dataElements = dataController.DataList.Cast<TerrainElementDataElement>().ToList();
+        List<TerrainInteractableDataElement> dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
         
-        foreach (TerrainElementDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.elementName));
+        foreach (TerrainInteractableDataElement dataElement in dataElements)
+            dropdown.options.Add(new Dropdown.OptionData(dataElement.interactableName));
     }
 
     public void InitializePath(Path path, Data data)

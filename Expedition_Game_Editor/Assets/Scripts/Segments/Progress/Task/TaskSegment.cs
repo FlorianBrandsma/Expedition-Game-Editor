@@ -31,7 +31,7 @@ public class TaskSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        var searchParameters = new Search.Task();
+        var searchParameters = new Search.Interaction();
 
         //If a terrainElement is selected without being directly related to an objective, don't try to get this data
         if(SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
@@ -40,8 +40,8 @@ public class TaskSegment : MonoBehaviour, ISegment
             searchParameters.objectiveId = new List<int>() { objectiveData.id };
         }
 
-        var terrainElementData = (TerrainElementDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainElement).data.DataElement;
-        searchParameters.terrainElementId = new List<int>() { terrainElementData.id };
+        var terrainElementData = (TerrainInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainInteractable).data.DataElement;
+        searchParameters.terrainInteractableId = new List<int>() { terrainElementData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

@@ -23,13 +23,13 @@ public class EditorTile : MonoBehaviour, IElement
         switch (Element.route.data.DataController.DataType)
         {
             case Enums.DataType.Icon:           SetIconElement();           break;
-            case Enums.DataType.Element:        SetElementElement();        break;
+            case Enums.DataType.Interactable:        SetElementElement();        break;
             case Enums.DataType.Terrain:        SetTerrainElement();        break;
             case Enums.DataType.Tile:           SetTileElement();           break;
             case Enums.DataType.TerrainTile:    SetTerrainTileElement();    break;
             case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
-            case Enums.DataType.TerrainElement: SetTerrainElementElement(); break;
-            case Enums.DataType.PhaseElement:   SetPhaseElementElement();   break;
+            case Enums.DataType.TerrainInteractable: SetTerrainElementElement(); break;
+            case Enums.DataType.PhaseInteractable:   SetPhaseElementElement();   break;
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
     }
@@ -51,7 +51,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetElementElement()
     {
-        var dataElement = (ElementDataElement)Element.route.data.DataElement;
+        var dataElement = (InteractableDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
@@ -111,7 +111,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainElementElement()
     {
-        var dataElement = (TerrainElementDataElement)Element.route.data.DataElement;
+        var dataElement = (TerrainInteractableDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
@@ -123,7 +123,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetPhaseElementElement()
     {
-        var dataElement = (PhaseElementDataElement)Element.route.data.DataElement;
+        var dataElement = (PhaseInteractableDataElement)Element.route.data.DataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIcon;

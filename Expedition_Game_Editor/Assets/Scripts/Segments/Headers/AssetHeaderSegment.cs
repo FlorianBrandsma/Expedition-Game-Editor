@@ -41,9 +41,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                     break;
 
-                case Enums.DataType.Element:
+                case Enums.DataType.Interactable:
 
-                    var elementData     = (ElementDataElement)DataEditor.Data.DataElement;
+                    var elementData     = (InteractableDataElement)DataEditor.Data.DataElement;
                     elementData.Name    = value;
 
                     break;
@@ -70,9 +70,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                     break;
 
-                case Enums.DataType.Element:
+                case Enums.DataType.Interactable:
 
-                    var elementData                 = (ElementDataElement)DataEditor.Data.DataElement;
+                    var elementData                 = (InteractableDataElement)DataEditor.Data.DataElement;
                     elementData.ObjectGraphicId     = value.id;
                     elementData.objectGraphicPath   = value.Path;
                     elementData.objectGraphicIconPath   = value.iconPath;
@@ -126,7 +126,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         switch (DataEditor.Data.DataController.DataType)
         {
             case Enums.DataType.Item: InitializeItemData(); break;
-            case Enums.DataType.Element: InitializeElementData(); break;
+            case Enums.DataType.Interactable: InitializeElementData(); break;
         }
     }
 
@@ -147,7 +147,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeElementData()
     {
-        var elementData     = (ElementDataElement)DataEditor.Data.DataElement;
+        var elementData     = (InteractableDataElement)DataEditor.Data.DataElement;
 
         id                  = elementData.id;
         index               = elementData.Index;

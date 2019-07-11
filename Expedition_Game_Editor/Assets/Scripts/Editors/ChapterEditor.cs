@@ -6,8 +6,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
 {
     private ChapterDataElement chapterData;
 
-    public List<PartyElementDataElement> partyElementDataList;
-    public List<TerrainElementDataElement> terrainElementDataList;
+    public List<PartyMemberDataElement> partyElementDataList;
+    public List<TerrainInteractableDataElement> terrainElementDataList;
     public List<ChapterRegionDataElement> chapterRegionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -116,15 +116,15 @@ public class ChapterEditor : MonoBehaviour, IEditor
         Fixtures.terrainObjectList.RemoveAll(x => terrainObjects.Contains(x));
 
         //2. Remove all TASKS of the selected (PHASE)REGIONS where OBJECTIVEID equals 0
-        var baseTasks = Fixtures.taskList.Where(x => x.objectiveId == 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
-        Fixtures.taskList.RemoveAll(x => baseTasks.Contains(x));
+        var baseTasks = Fixtures.interactionList.Where(x => x.objectiveId == 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+        Fixtures.interactionList.RemoveAll(x => baseTasks.Contains(x));
 
         //3. Remove all TERRAINELEMENTS linked with TASKS from step 2
-        var terrainElements = Fixtures.terrainElementList.Where(x => baseTasks.Select(y => y.terrainElementId).Contains(x.id)).Distinct().ToList();
-        Fixtures.terrainElementList.RemoveAll(x => terrainElements.Contains(x));
+        var terrainElements = Fixtures.terrainInteractableList.Where(x => baseTasks.Select(y => y.terrainInteractableId).Contains(x.id)).Distinct().ToList();
+        Fixtures.terrainInteractableList.RemoveAll(x => terrainElements.Contains(x));
 
         //4. Set (PHASE)REGION of all TASKS linked with selected (PHASE)REGIONS to 0 where OBJECTIVE ID does not equal 0
-        var objectiveTasks = Fixtures.taskList.Where(x => x.objectiveId != 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+        var objectiveTasks = Fixtures.interactionList.Where(x => x.objectiveId != 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
         objectiveTasks.ForEach(x => x.regionId = 0);
 
         //5. Remove all TERRAINS and TERRAINTILES of the selected (PHASE)REGIONS
@@ -143,31 +143,31 @@ public class ChapterEditor : MonoBehaviour, IEditor
             phaseRegion.regionSize = regionSource.regionSize;
             phaseRegion.terrainSize = regionSource.terrainSize;
 
-            var terrainElementSourceList = Fixtures.terrainElementList.Where(x => Fixtures.taskList.Where(y => y.regionId == regionSource.id).Select(y => y.terrainElementId).Contains(x.id)).Distinct().ToList();
+            var terrainElementSourceList = Fixtures.terrainInteractableList.Where(x => Fixtures.interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.terrainInteractableId).Contains(x.id)).Distinct().ToList();
 
-            foreach (Fixtures.TerrainElement terrainElementSource in terrainElementSourceList)
+            foreach (Fixtures.TerrainInteractable terrainElementSource in terrainElementSourceList)
             {
-                var terrainElement = new Fixtures.TerrainElement();
+                var terrainElement = new Fixtures.TerrainInteractable();
 
-                int terrainElementId = Fixtures.terrainElementList.Count > 0 ? (Fixtures.terrainElementList[Fixtures.terrainElementList.Count - 1].id + 1) : 1;
+                int terrainElementId = Fixtures.terrainInteractableList.Count > 0 ? (Fixtures.terrainInteractableList[Fixtures.terrainInteractableList.Count - 1].id + 1) : 1;
 
                 terrainElement.id = terrainElementId;
 
                 terrainElement.chapterId = terrainElementSource.chapterId;
                 terrainElement.objectiveId = terrainElementSource.objectiveId;
-                terrainElement.elementId = terrainElementSource.elementId;
-                terrainElement.taskIndex = terrainElementSource.taskIndex;
+                terrainElement.interactableId = terrainElementSource.interactableId;
+                terrainElement.interactionIndex = terrainElementSource.interactionIndex;
 
-                var taskSourceList = Fixtures.taskList.Where(x => x.terrainElementId == terrainElementSource.id).OrderBy(x => x.index).Distinct().ToList();
+                var taskSourceList = Fixtures.interactionList.Where(x => x.terrainInteractableId == terrainElementSource.id).OrderBy(x => x.index).Distinct().ToList();
 
-                foreach (Fixtures.Task taskSource in taskSourceList)
+                foreach (Fixtures.Interaction taskSource in taskSourceList)
                 {
-                    var task = new Fixtures.Task();
+                    var task = new Fixtures.Interaction();
 
-                    int taskId = Fixtures.taskList.Count > 0 ? (Fixtures.taskList[Fixtures.taskList.Count - 1].id + 1) : 1;
+                    int taskId = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].id + 1) : 1;
 
                     task.id = taskId;
-                    task.terrainElementId = terrainElement.id;
+                    task.terrainInteractableId = terrainElement.id;
                     task.objectiveId = taskSource.objectiveId;
                     task.regionId = phaseRegion.id;
 
@@ -182,10 +182,10 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     task.yRot = taskSource.yRot;
                     task.zRot = taskSource.zRot;
 
-                    Fixtures.taskList.Add(task);
+                    Fixtures.interactionList.Add(task);
                 }
 
-                Fixtures.terrainElementList.Add(terrainElement);
+                Fixtures.terrainInteractableList.Add(terrainElement);
             }
 
             var terrainObjectSourceList = Fixtures.terrainObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
@@ -249,7 +249,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
     {
         var phaseList = dataManager.GetPhaseData(chapterData.id, true);
 
-        var phaseElementList = dataManager.GetPhaseElementData(phaseList.Select(x => x.id).Distinct().ToList());
+        var phaseElementList = dataManager.GetPhaseInteractableData(phaseList.Select(x => x.id).Distinct().ToList());
     }
 
     public void CancelEdit()

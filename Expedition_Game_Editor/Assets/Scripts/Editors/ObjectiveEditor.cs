@@ -5,7 +5,7 @@ using System.Linq;
 public class ObjectiveEditor : MonoBehaviour, IEditor
 {
     private ObjectiveDataElement objectiveData;
-    public List<TerrainElementDataElement> terrainElementDataList;
+    public List<TerrainInteractableDataElement> terrainElementDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 

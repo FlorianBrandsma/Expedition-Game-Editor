@@ -11,21 +11,21 @@ public class Enums
         Icon,
         ObjectGraphic,
         Item,
-        Element,
+        Interactable,
         Region,
         Terrain,
         Tile,
         TerrainTile,
-        TerrainElement,
+        TerrainInteractable,
         TerrainObject,
         Chapter,
         ChapterRegion,
         Phase,
-        PhaseElement,
+        PhaseInteractable,
         Quest,
         Objective,
-        Task,
-        PartyElement
+        Interaction,
+        PartyMember
     }
 
     public enum DataCategory
