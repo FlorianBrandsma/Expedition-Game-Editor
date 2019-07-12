@@ -35,7 +35,6 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     public void InitializeElement()
     {
         multiGridProperties = Element.ListManager.listProperties.GetComponent<MultiGridProperties>();
-
     }
 
     public void SetElement()
@@ -45,7 +44,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
         switch (Element.route.data.DataController.DataType)
         {
-            case Enums.DataType.Terrain: SetTerrainElement(); break;
+            case Enums.DataType.Terrain: SetTerrainInteractable(); break;
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
 
@@ -62,7 +61,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             iconBase.texture = Resources.Load<Texture2D>(baseTilePath);
     }
 
-    private void SetTerrainElement()
+    private void SetTerrainInteractable()
     {
         Data data = Element.route.data;
         var dataElement = (TerrainDataElement)data.DataElement;

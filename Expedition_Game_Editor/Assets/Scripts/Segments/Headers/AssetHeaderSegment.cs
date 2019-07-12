@@ -43,8 +43,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interactable:
 
-                    var elementData     = (InteractableDataElement)DataEditor.Data.DataElement;
-                    elementData.Name    = value;
+                    var interactableData     = (InteractableDataElement)DataEditor.Data.DataElement;
+                    interactableData.Name    = value;
 
                     break;
             }
@@ -72,10 +72,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interactable:
 
-                    var elementData                 = (InteractableDataElement)DataEditor.Data.DataElement;
-                    elementData.ObjectGraphicId     = value.id;
-                    elementData.objectGraphicPath   = value.Path;
-                    elementData.objectGraphicIconPath   = value.iconPath;
+                    var interactableData                 = (InteractableDataElement)DataEditor.Data.DataElement;
+                    interactableData.ObjectGraphicId     = value.id;
+                    interactableData.objectGraphicPath   = value.Path;
+                    interactableData.objectGraphicIconPath   = value.iconPath;
 
                     break;
             }
@@ -125,8 +125,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         switch (DataEditor.Data.DataController.DataType)
         {
-            case Enums.DataType.Item: InitializeItemData(); break;
-            case Enums.DataType.Interactable: InitializeElementData(); break;
+            case Enums.DataType.Item:           InitializeItemData();           break;
+            case Enums.DataType.Interactable:   InitializeInteractableData();   break;
         }
     }
 
@@ -145,17 +145,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         GetComponent<ObjectProperties>().castShadow = false;
     }
 
-    private void InitializeElementData()
+    private void InitializeInteractableData()
     {
-        var elementData     = (InteractableDataElement)DataEditor.Data.DataElement;
+        var interactableData     = (InteractableDataElement)DataEditor.Data.DataElement;
 
-        id                  = elementData.id;
-        index               = elementData.Index;
-        assetName           = elementData.Name;
+        id                  = interactableData.id;
+        index               = interactableData.Index;
+        assetName           = interactableData.Name;
 
-        objectGraphicId     = elementData.ObjectGraphicId;
-        objectGraphicPath   = elementData.objectGraphicPath;
-        objectGraphicIconPath   = elementData.objectGraphicIconPath;
+        objectGraphicId     = interactableData.ObjectGraphicId;
+        objectGraphicPath   = interactableData.objectGraphicPath;
+        objectGraphicIconPath   = interactableData.objectGraphicIconPath;
 
         GetComponent<ObjectProperties>().castShadow = true;
     }

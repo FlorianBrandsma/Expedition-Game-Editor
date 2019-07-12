@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainTilesSegment : MonoBehaviour, ISegment
+public class TerrainTileSegment : MonoBehaviour, ISegment
 {
     private RegionDataElement regionData;
 

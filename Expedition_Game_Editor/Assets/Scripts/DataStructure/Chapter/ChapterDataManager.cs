@@ -11,7 +11,7 @@ public class ChapterDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.InteractableData> elementDataList;
+    private List<DataManager.InteractableData> interactableDataList;
 
     public void InitializeManager(ChapterController chapterController)
     {
@@ -24,12 +24,12 @@ public class ChapterDataManager
 
         GetChapterData(chapterSearchData);
 
-        GetElementData();
+        GetInteractableData();
         GetObjectGraphicData();
 
         var list = (from chapterData in chapterDataList
-                    join elementData in elementDataList on chapterData.elementId equals elementData.id
-                    join objectGraphicData in objectGraphicDataList on elementData.objectGraphicId equals objectGraphicData.id
+                    join interactableData in interactableDataList on chapterData.interactableId equals interactableData.id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
                     select new ChapterDataElement()
                     {
                         dataType = Enums.DataType.Chapter,
@@ -37,7 +37,7 @@ public class ChapterDataManager
                         id = chapterData.id,
                         index = chapterData.index,
                         
-                        ElementId = chapterData.elementId,
+                        InteractableId = chapterData.interactableId,
                         Name = chapterData.name,
                         Notes = chapterData.notes
 
@@ -61,7 +61,7 @@ public class ChapterDataManager
             chapterData.id = chapter.id;
             chapterData.index = chapter.index;
 
-            chapterData.elementId = chapter.interactableId;
+            chapterData.interactableId = chapter.interactableId;
             chapterData.name = chapter.name;
             chapterData.notes = chapter.notes;
             
@@ -69,19 +69,19 @@ public class ChapterDataManager
         }
     }
 
-    internal void GetElementData()
+    internal void GetInteractableData()
     {
-        elementDataList = dataManager.GetInteractableData(chapterDataList.Select(x => x.elementId).Distinct().ToList(), true);
+        interactableDataList = dataManager.GetInteractableData(chapterDataList.Select(x => x.interactableId).Distinct().ToList(), true);
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(elementDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        objectGraphicDataList = dataManager.GetObjectGraphicData(interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
     }
 
     internal class ChapterData : GeneralData
     {
-        public int elementId;
+        public int interactableId;
         public string name;
         public string notes;      
     }

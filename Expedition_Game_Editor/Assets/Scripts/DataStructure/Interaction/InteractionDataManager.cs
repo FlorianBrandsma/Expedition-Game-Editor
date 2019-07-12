@@ -37,10 +37,10 @@ public class InteractionDataManager
         
         var list = (from interactionData    in interactionDataList
 
-                    join terrainElementData in terrainInteractableDataList  on interactionData.terrainInteractableId     equals terrainElementData.id
-                    join elementData        in interactableDataList         on terrainElementData.interactableId    equals elementData.id
-                    join objectGraphicData  in objectGraphicDataList        on elementData.objectGraphicId          equals objectGraphicData.id
-                    join iconData           in iconDataList                 on objectGraphicData.iconId             equals iconData.id
+                    join terrainInteractableData    in terrainInteractableDataList  on interactionData.terrainInteractableId    equals terrainInteractableData.id
+                    join interactableData           in interactableDataList         on terrainInteractableData.interactableId   equals interactableData.id
+                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.id
+                    join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.id into regionData

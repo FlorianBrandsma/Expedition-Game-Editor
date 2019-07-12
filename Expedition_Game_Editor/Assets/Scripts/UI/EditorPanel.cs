@@ -64,19 +64,20 @@ public class EditorPanel : MonoBehaviour, IElement
     {
         switch (Element.route.data.DataController.DataType)
         {
-            case Enums.DataType.Chapter:        SetChapterElement();        break;
-            case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
-            case Enums.DataType.Phase:          SetPhaseElement();          break;
-            case Enums.DataType.PhaseInteractable:   SetPhaseElementElement();   break;
-            case Enums.DataType.Quest:          SetQuestElement();          break;
-            case Enums.DataType.Objective:      SetObjectiveElement();      break;
-            case Enums.DataType.Interaction:           SetTaskElement();           break;
-            case Enums.DataType.Region:         SetRegionElement();         break;
-            case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
-            case Enums.DataType.Item:           SetItemElement();           break;
-            case Enums.DataType.Interactable:        SetElementElement();        break;
-            case Enums.DataType.TerrainInteractable: SetTerrainElementElement(); break;
-            case Enums.DataType.PartyMember:   SetPartyElementElement();   break;
+            case Enums.DataType.Chapter:            SetChapterElement();            break;
+            case Enums.DataType.ChapterRegion:      SetChapterRegionElement();      break;
+            case Enums.DataType.Phase:              SetPhaseElement();              break;
+            case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
+            case Enums.DataType.Quest:              SetQuestElement();              break;
+            case Enums.DataType.Objective:          SetObjectiveElement();          break;
+            case Enums.DataType.Interaction:        SetInteractionElement();        break;
+            case Enums.DataType.Region:             SetRegionElement();             break;
+            case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
+            case Enums.DataType.Item:               SetItemElement();               break;
+            case Enums.DataType.Interactable:       SetInteractableElement();       break;
+            case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
+            case Enums.DataType.PartyMember:        SetPartyMemberElement();        break;
+
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType);  break;
         }
 
@@ -154,7 +155,7 @@ public class EditorPanel : MonoBehaviour, IElement
             EditButtonData = data;
     }
 
-    private void SetPhaseElementElement()
+    private void SetPhaseInteractableElement()
     {
         Data data = Element.route.data;
         var dataElement = (PhaseInteractableDataElement)data.DataElement;
@@ -230,7 +231,7 @@ public class EditorPanel : MonoBehaviour, IElement
             EditButtonData = data;
     }
 
-    private void SetTerrainElementElement()
+    private void SetTerrainInteractableElement()
     {
         Data data = Element.route.data;
         var dataElement = (TerrainInteractableDataElement)data.DataElement;
@@ -256,7 +257,7 @@ public class EditorPanel : MonoBehaviour, IElement
             EditButtonData = data;
     }
 
-    private void SetPartyElementElement()
+    private void SetPartyMemberElement()
     {
         Data data = Element.route.data;
         var dataElement = (PartyMemberDataElement)data.DataElement;
@@ -282,7 +283,7 @@ public class EditorPanel : MonoBehaviour, IElement
             EditButtonData = data;
     }
 
-    private void SetTaskElement()
+    private void SetInteractionElement()
     {
         Data data = Element.route.data;
         var dataElement = (InteractionDataElement)data.DataElement;
@@ -366,7 +367,7 @@ public class EditorPanel : MonoBehaviour, IElement
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetElementElement()
+    private void SetInteractableElement()
     {
         Data data = Element.route.data;
         var dataElement = (InteractableDataElement)data.DataElement;

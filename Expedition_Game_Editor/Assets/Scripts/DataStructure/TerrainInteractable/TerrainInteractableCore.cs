@@ -61,10 +61,10 @@ public class TerrainInteractableCore : GeneralData
 
     public virtual void Update()
     {
-        var terrainElementData = Fixtures.terrainInteractableList.Where(x => x.id == id).FirstOrDefault();
+        var terrainInteractableData = Fixtures.terrainInteractableList.Where(x => x.id == id).FirstOrDefault();
 
         if (changedInteractableId)
-            terrainElementData.interactableId = interactableId;
+            terrainInteractableData.interactableId = interactableId;
     }
 
     public void UpdateIndex() { }

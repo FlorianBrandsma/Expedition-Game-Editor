@@ -3,11 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
 
-public class TaskHeaderSegment : MonoBehaviour, ISegment
+public class InteractionHeaderSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    private InteractionDataElement taskData;
+    private InteractionDataElement interactionData;
 
     public IEditor DataEditor { get; set; }
 
@@ -37,7 +37,7 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
         {
             description = value;
 
-            taskData.Description = value;
+            interactionData.Description = value;
         }
     }
     #endregion
@@ -67,12 +67,12 @@ public class TaskHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        taskData = (InteractionDataElement)DataEditor.Data.DataElement;
+        interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
 
-        id = taskData.id;
-        index = taskData.Index;
-        description = taskData.Description;
-        objectGraphicIcon = taskData.objectGraphicIconPath;
+        id = interactionData.id;
+        index = interactionData.Index;
+        description = interactionData.Description;
+        objectGraphicIcon = interactionData.objectGraphicIconPath;
     }
 
     public void OpenSegment()

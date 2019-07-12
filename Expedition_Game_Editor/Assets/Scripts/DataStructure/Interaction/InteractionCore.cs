@@ -76,21 +76,21 @@ public class InteractionCore : GeneralData
     {
         if (!Changed) return;
 
-        var taskData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
+        var interactionData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
 
         if (changedDescription)
-            taskData.description = description;
+            interactionData.description = description;
         
         SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        var taskData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
+        var interactionData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
 
         if (changedIndex)
         {
-            taskData.index = index;
+            interactionData.index = index;
 
             changedIndex = false;
         }

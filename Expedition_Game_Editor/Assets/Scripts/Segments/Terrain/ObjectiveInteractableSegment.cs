@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
-public class PhaseRegionsRegionsSegment : MonoBehaviour, ISegment
+public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
 {
-    private DataManager dataManager = new DataManager();
-
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
@@ -31,21 +28,17 @@ public class PhaseRegionsRegionsSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        var phaseEditor = (PhaseEditor)DataEditor;
+        if (SegmentController.editorController.pathController.loaded) return;
 
-        if (phaseEditor.regionDataList.Count > 0) return;
+        var searchParameters = new Search.TerrainInteractable();
 
-        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
+        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveInteractables;
 
-        var searchParameters = new Search.Region();
-
-        searchParameters.requestType = Search.Region.RequestType.Custom;
-        searchParameters.phaseId = new List<int>() { phaseData.id };
-
+        searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
+        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };
+        
         SegmentController.DataController.GetData(new[] { searchParameters });
     }
-
-    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {
@@ -53,8 +46,5 @@ public class PhaseRegionsRegionsSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

@@ -71,30 +71,30 @@ public class EditorPath
             case Enums.DataType.TerrainInteractable:
 
                 //Don't stick with "Enter/Edit/Etc" restrictions
-                //Add Combine, Extend: somewhat global, so not like "TerrainElementExtend"
+                //Add Combine, Extend: somewhat global, so not like "TerrainInteractableExtend"
 
-                //Add another path to root, to directly open Task without going through the path
-                //The way an asset-less Task opens the selection is kind of a happy accident, but something more intentional would be preferable
+                //Add another path to root, to directly open Interaction without going through the path
+                //The way an asset-less Interaction opens the selection is kind of a happy accident, but something more intentional would be preferable
 
-                PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(selection);
+                PathManager.TerrainInteractable terrainInteractable = new PathManager.TerrainInteractable(selection);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = terrainElement.Enter();
+                    path = terrainInteractable.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
-                    path = terrainElement.Open();
+                    path = terrainInteractable.Open();
                 
                 break;
 
             case Enums.DataType.Interaction:
 
-                PathManager.Structure task = new PathManager.Structure(selection);
+                PathManager.Structure interaction = new PathManager.Structure(selection);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = task.Enter();
+                    path = interaction.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
-                    path = task.Edit();
+                    path = interaction.Edit();
 
                 break;
 
@@ -122,15 +122,6 @@ public class EditorPath
 
                 break;
 
-            //case "TerrainElement":
-
-            //    PathManager.TerrainElement terrainElement = new PathManager.TerrainElement(selection);
-
-            //    if (route.property == SelectionManager.Property.Enter)
-            //        path = terrainElement.Enter();
-
-            //    break;
-
             case Enums.DataType.TerrainObject:
 
                 PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection);
@@ -157,16 +148,16 @@ public class EditorPath
 
             case Enums.DataType.Interactable:
 
-                PathManager.Element element = new PathManager.Element(selection);
+                PathManager.Interactable interactable = new PathManager.Interactable(selection);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = element.Enter();
+                    path = interactable.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
-                    path = element.Edit();
+                    path = interactable.Edit();
 
                 if (selection.selectionProperty == SelectionManager.Property.Get)
-                    path = element.Get();
+                    path = interactable.Get();
 
                 break;
 

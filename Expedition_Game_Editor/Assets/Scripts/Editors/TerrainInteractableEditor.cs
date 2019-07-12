@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-public class TerrainElementEditor : MonoBehaviour//, IEditor
+public class TerrainInteractableEditor : MonoBehaviour//, IEditor
 {
     //private TerrainElementDataElement terrainElementData;
     //private SelectionElement selectionElement;

@@ -49,7 +49,7 @@ public class Search
         public enum RequestType
         {
             Custom,
-            GetAllElements,
+            GetAllInteractables,
         }
 
         public RequestType requestType;
@@ -122,7 +122,7 @@ public class Search
     {
         public List<int> phaseId = new List<int>();
         public List<int> questId = new List<int>();
-        public List<int> terrainElementId = new List<int>();
+        public List<int> terrainInteractableId = new List<int>();
 
         public enum RequestType
         {
@@ -241,14 +241,14 @@ public class Search
         public List<int> chapterId = new List<int>();
         public List<int> questId = new List<int>();
         public List<int> objectiveId = new List<int>();
-        public List<int> elementId = new List<int>();
-        public List<int> taskIndex = new List<int>();
+        public List<int> interactableId = new List<int>();
+        public List<int> interactionIndex = new List<int>();
 
         public enum RequestType
         {
             Custom,
-            GetQuestAndObjectiveElements,
-            GetElementsFromTaskRegion
+            GetQuestAndObjectiveInteractables,
+            GetInteractablesFromInteractionRegion
         }
 
         public RequestType requestType;
@@ -257,7 +257,7 @@ public class Search
     public class PartyMember : SearchParameters
     {
         public List<int> chapterId = new List<int>();
-        public List<int> elementId = new List<int>();
+        public List<int> interactableId = new List<int>();
 
         public enum RequestType
         {

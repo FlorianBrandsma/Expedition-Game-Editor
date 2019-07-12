@@ -35,7 +35,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
     {
         var questEditor = (QuestEditor)DataEditor;
 
-        if (questEditor.questElementDataList.Count > 0) return;
+        if (questEditor.questInteractableDataList.Count > 0) return;
 
         var questData = (QuestDataElement)DataEditor.Data.DataElement;
 
@@ -46,9 +46,9 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var questElementList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
+        var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
 
-        questElementList.ForEach(x => questEditor.questElementDataList.Add(x));
+        questInteractableList.ForEach(x => questEditor.questInteractableDataList.Add(x));
     }
 
     private void SetSearchParameters()

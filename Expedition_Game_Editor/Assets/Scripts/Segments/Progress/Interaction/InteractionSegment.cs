@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
-public class ObjectiveElementSegment : MonoBehaviour, ISegment
+public class InteractionSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
@@ -30,13 +31,18 @@ public class ObjectiveElementSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.pathController.loaded) return;
 
-        var searchParameters = new Search.TerrainInteractable();
+        var searchParameters = new Search.Interaction();
 
-        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveElements;
+        //If a terrainInteractable is selected without being directly related to an objective, don't try to get this data
+        if(SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
+        {
+            var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.DataElement;
+            searchParameters.objectiveId = new List<int>() { objectiveData.id };
+        }
 
-        searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
-        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };
-        
+        var terrainInteractableData = (TerrainInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainInteractable).data.DataElement;
+        searchParameters.terrainInteractableId = new List<int>() { terrainInteractableData.id };
+
         SegmentController.DataController.GetData(new[] { searchParameters });
     }
 

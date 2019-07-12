@@ -22,14 +22,15 @@ public class EditorTile : MonoBehaviour, IElement
     {
         switch (Element.route.data.DataController.DataType)
         {
-            case Enums.DataType.Icon:           SetIconElement();           break;
-            case Enums.DataType.Interactable:        SetElementElement();        break;
-            case Enums.DataType.Terrain:        SetTerrainElement();        break;
-            case Enums.DataType.Tile:           SetTileElement();           break;
-            case Enums.DataType.TerrainTile:    SetTerrainTileElement();    break;
-            case Enums.DataType.ObjectGraphic:  SetObjectGraphicElement();  break;
-            case Enums.DataType.TerrainInteractable: SetTerrainElementElement(); break;
-            case Enums.DataType.PhaseInteractable:   SetPhaseElementElement();   break;
+            case Enums.DataType.Icon:               SetIconElement();               break;
+            case Enums.DataType.Interactable:       SetInteractableElement();       break;
+            case Enums.DataType.Terrain:            SetTerrainElement();            break;
+            case Enums.DataType.Tile:               SetTileElement();               break;
+            case Enums.DataType.TerrainTile:        SetTerrainTileElement();        break;
+            case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
+            case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
+            case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
+
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
     }
@@ -49,7 +50,7 @@ public class EditorTile : MonoBehaviour, IElement
             iconBase.texture = Resources.Load<Texture2D>(dataElement.baseIconPath);
     }
 
-    private void SetElementElement()
+    private void SetInteractableElement()
     {
         var dataElement = (InteractableDataElement)Element.route.data.DataElement;
 
@@ -109,7 +110,7 @@ public class EditorTile : MonoBehaviour, IElement
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetTerrainElementElement()
+    private void SetTerrainInteractableElement()
     {
         var dataElement = (TerrainInteractableDataElement)Element.route.data.DataElement;
 
@@ -121,7 +122,7 @@ public class EditorTile : MonoBehaviour, IElement
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetPhaseElementElement()
+    private void SetPhaseInteractableElement()
     {
         var dataElement = (PhaseInteractableDataElement)Element.route.data.DataElement;
 

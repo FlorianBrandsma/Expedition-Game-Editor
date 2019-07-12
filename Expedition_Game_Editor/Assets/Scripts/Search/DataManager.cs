@@ -90,7 +90,7 @@ public class DataManager
             data.chapterId = terrainInteractable.chapterId;
             data.objectiveId = terrainInteractable.objectiveId;
             data.interactableId = terrainInteractable.interactableId;
-            data.taskIndex = terrainInteractable.interactionIndex;
+            data.interactionIndex = terrainInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -113,7 +113,7 @@ public class DataManager
             data.chapterId = terrainInteractable.chapterId;
             data.objectiveId = terrainInteractable.objectiveId;
             data.interactableId = terrainInteractable.interactableId;
-            data.taskIndex = terrainInteractable.interactionIndex;
+            data.interactionIndex = terrainInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -289,7 +289,7 @@ public class DataManager
         public int chapterId;
         public int objectiveId;
         public int interactableId;
-        public int taskIndex;
+        public int interactionIndex;
     }
 
     public class PhaseData : GeneralData

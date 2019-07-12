@@ -31,12 +31,13 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
         switch (dataController.DataType)
         {
-            case Enums.DataType.Chapter:        SetChapterOptions();        break;
-            case Enums.DataType.Phase:          SetPhaseOptions();          break;
-            case Enums.DataType.Quest:          SetQuestOptions();          break;
-            case Enums.DataType.Objective:      SetObjectiveOptions();      break;
-            case Enums.DataType.TerrainInteractable: SetTerrainElementOptions(); break;
-            default:                            Debug.Log("CASE MISSING");  break;
+            case Enums.DataType.Chapter:            SetChapterOptions();            break;
+            case Enums.DataType.Phase:              SetPhaseOptions();              break;
+            case Enums.DataType.Quest:              SetQuestOptions();              break;
+            case Enums.DataType.Objective:          SetObjectiveOptions();          break;
+            case Enums.DataType.TerrainInteractable:SetTerrainInteractableOptions();break;
+
+            default: Debug.Log("CASE MISSING: " + dataController.DataType); break;
         }
 
         int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData().id);
@@ -79,7 +80,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
             dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
     }
 
-    private void SetTerrainElementOptions()
+    private void SetTerrainInteractableOptions()
     {
         List<TerrainInteractableDataElement> dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
         

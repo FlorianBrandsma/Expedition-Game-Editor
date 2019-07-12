@@ -6,7 +6,7 @@ using System.Linq;
 
 public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 {
-    private InteractionDataElement taskData;
+    private InteractionDataElement interactionData;
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     private IDataController DataController { get { return GetComponent<IDataController>(); } }
@@ -22,13 +22,13 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
     private void InitializeEditButton()
     {
-        taskData = (InteractionDataElement)DataEditor.Data.DataElement;
+        interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
 
         var regionData = new RegionDataElement();
 
-        regionData.id = taskData.RegionId;
+        regionData.id = interactionData.RegionId;
         regionData.dataType = Enums.DataType.Region;
-        regionData.type = Enums.RegionType.Task;
+        regionData.type = Enums.RegionType.Interaction;
 
         editButton.route.path = SegmentController.editorController.pathController.route.path;
 
@@ -43,7 +43,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
         editButton.route.data = new Data(DataController, regionData);
 
-        editButton.GetComponentInChildren<Text>().text = taskData.regionName != "" ? "Open " + taskData.regionName : "Set Region";
+        editButton.GetComponentInChildren<Text>().text = interactionData.regionName != "" ? "Open " + interactionData.regionName : "Set Region";
     }
 
     #endregion

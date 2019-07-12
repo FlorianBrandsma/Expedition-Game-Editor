@@ -58,7 +58,7 @@ public class Enums
     {
         Base,
         Phase,
-        Task
+        Interaction
     }
 
     public enum SelectionGroup

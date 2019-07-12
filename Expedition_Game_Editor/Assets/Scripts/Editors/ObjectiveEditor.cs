@@ -5,7 +5,7 @@ using System.Linq;
 public class ObjectiveEditor : MonoBehaviour, IEditor
 {
     private ObjectiveDataElement objectiveData;
-    public List<TerrainInteractableDataElement> terrainElementDataList;
+    public List<TerrainInteractableDataElement> terrainInteractableDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -19,7 +19,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(objectiveData);
-            terrainElementDataList.ForEach(x => list.Add(x));
+            terrainInteractableDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -32,7 +32,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
         Data = PathController.route.data;
 
         objectiveData = (ObjectiveDataElement)Data.DataElement;
-        terrainElementDataList.Clear();
+        terrainInteractableDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
     }

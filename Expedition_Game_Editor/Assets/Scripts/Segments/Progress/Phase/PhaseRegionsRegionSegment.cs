@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainInteractableSegment : MonoBehaviour, ISegment
+public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 {
+    private DataManager dataManager = new DataManager();
+
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
@@ -19,7 +21,7 @@ public class TerrainInteractableSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        //DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.pathController.dataEditor;
     }
 
     public void InitializeSegment()
@@ -29,16 +31,21 @@ public class TerrainInteractableSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.pathController.loaded) return;
+        var phaseEditor = (PhaseEditor)DataEditor;
 
-        var searchParameters = new Search.TerrainInteractable();
+        if (phaseEditor.regionDataList.Count > 0) return;
 
-        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetInteractablesFromInteractionRegion;
+        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData().id };
+        var searchParameters = new Search.Region();
+
+        searchParameters.requestType = Search.Region.RequestType.Custom;
+        searchParameters.phaseId = new List<int>() { phaseData.id };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }
+
+    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {
@@ -46,5 +53,8 @@ public class TerrainInteractableSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(SelectionElement selectionElement)
+    {
+
+    }
 }

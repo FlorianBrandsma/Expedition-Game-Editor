@@ -30,14 +30,14 @@ public class TerrainInteractableDataManager
                 GetCustomTerrainInteractableData(terrainInteractableSearchData);
                 break;
 
-            case Search.TerrainInteractable.RequestType.GetQuestAndObjectiveElements:
+            case Search.TerrainInteractable.RequestType.GetQuestAndObjectiveInteractables:
 
                 GetQuestAndObjectiveTerrainInteractableData(terrainInteractableSearchData);
                 break;
 
-            case Search.TerrainInteractable.RequestType.GetElementsFromTaskRegion:
+            case Search.TerrainInteractable.RequestType.GetInteractablesFromInteractionRegion:
 
-                GetElementsFromTaskRegion(terrainInteractableSearchData);
+                GetElementsFromInteractionRegion(terrainInteractableSearchData);
                 break;
         }
 
@@ -117,7 +117,7 @@ public class TerrainInteractableDataManager
         }
     }
 
-    internal void GetElementsFromTaskRegion(Search.TerrainInteractable searchParameters)
+    internal void GetElementsFromInteractionRegion(Search.TerrainInteractable searchParameters)
     {
         terrainInteractableDataList = new List<TerrainInteractableData>();
 
@@ -159,6 +159,6 @@ public class TerrainInteractableDataManager
         public int chapterId;
         public int objectiveId;
         public int interactableId;
-        public int taskIndex;
+        public int interactionIndex;
     }
 }

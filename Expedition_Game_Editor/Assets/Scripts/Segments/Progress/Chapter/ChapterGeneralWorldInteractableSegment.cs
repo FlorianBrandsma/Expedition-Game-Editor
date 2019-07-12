@@ -35,7 +35,7 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 
-        if (chapterEditor.terrainElementDataList.Count > 0) return;
+        if (chapterEditor.terrainInteractableDataList.Count > 0) return;
 
         var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
 
@@ -46,8 +46,8 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.GetData(new[] { searchParameters });
         
-        var chapterElementList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
-        chapterElementList.ForEach(x => chapterEditor.terrainElementDataList.Add(x));
+        var chapterInteractableList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
+        chapterInteractableList.ForEach(x => chapterEditor.terrainInteractableDataList.Add(x));
     }
 
     private void SetSearchParameters()
@@ -58,8 +58,8 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Interactable>().FirstOrDefault();
 
         List<int> idList = new List<int>();
-        chapterEditor.partyElementDataList.ForEach(x => idList.Add(x.InteractableId));
-        chapterEditor.terrainElementDataList.ForEach(x => idList.Add(x.InteractableId));
+        chapterEditor.partyMemberDataList.ForEach(x => idList.Add(x.InteractableId));
+        chapterEditor.terrainInteractableDataList.ForEach(x => idList.Add(x.InteractableId));
 
         var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 

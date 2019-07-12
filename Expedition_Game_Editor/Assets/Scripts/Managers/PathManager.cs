@@ -135,9 +135,9 @@ public class PathManager
 
     #endregion
 
-    #region Element
+    #region Interactable
 
-    public class Element
+    public class Interactable
     {
         SelectionElement selectionElement;
 
@@ -148,7 +148,7 @@ public class PathManager
         int enter;
         List<int> edit;
 
-        public Element(SelectionElement selection)
+        public Interactable(SelectionElement selection)
         {
             selectionElement = selection;
 
@@ -244,7 +244,7 @@ public class PathManager
         public Path Enter()
         {
             //CreatePath OR ExtendPath based on route.data.type
-            //Phase and Task extends current path
+            //Phase and Interaction extends current path
             //Base stands alone
             List<Route> routes;
 
@@ -316,7 +316,7 @@ public class PathManager
         }
     }
 
-    public class TerrainElement
+    public class TerrainInteractable
     {
         SelectionElement selectionElement;
         Path path;
@@ -326,7 +326,7 @@ public class PathManager
 
         int enter = 0;
 
-        public TerrainElement(SelectionElement selection)
+        public TerrainInteractable(SelectionElement selection)
         {
             //
             selectionElement = selection;

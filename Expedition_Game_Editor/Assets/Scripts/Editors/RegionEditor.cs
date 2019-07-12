@@ -117,12 +117,12 @@ public class RegionEditor : MonoBehaviour, IEditor
         
         terrainTiles.ForEach(x => x.tileId = firstTile.id);
         
-        var tasks = Fixtures.interactionList.Where(x => regions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+        var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
 
-        Fixtures.terrainInteractableList.RemoveAll(x => tasks.Where(y => y.objectiveId == 0).Select(y => y.terrainInteractableId).Contains(x.id));
+        Fixtures.terrainInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.terrainInteractableId).Contains(x.id));
         Fixtures.terrainObjectList.RemoveAll(x => regions.Select(y => y.id).Contains(x.regionId));
 
-        Fixtures.interactionList.RemoveAll(x => tasks.Where(y => y.objectiveId == 0).Select(y => y.id).Contains(x.id));
+        Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.id).Contains(x.id));
     }
 
     public void CancelEdit()

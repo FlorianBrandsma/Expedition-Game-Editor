@@ -3,17 +3,17 @@ using System.Linq;
 
 public class ChapterCore : GeneralData
 {
-    private int elementId;
+    private int interactableId;
     private string name;
     private string notes;
 
     public int originalIndex;
-    public int originalElementId;
+    public int originalInteractableId;
     public string originalName;
     public string originalNotes;
 
     private bool changedIndex;
-    private bool changedElementId;
+    private bool changedInteractableId;
     private bool changedName;
     private bool changedNotes;
 
@@ -21,7 +21,7 @@ public class ChapterCore : GeneralData
     {
         get
         {
-            return changedElementId || changedName || changedNotes;
+            return changedInteractableId || changedName || changedNotes;
         }
     }
 
@@ -42,16 +42,16 @@ public class ChapterCore : GeneralData
         }
     }
 
-    public int ElementId
+    public int InteractableId
     {
-        get { return elementId; }
+        get { return interactableId; }
         set
         {
-            if (value == elementId) return;
+            if (value == interactableId) return;
 
-            changedElementId = (value != originalElementId);
+            changedInteractableId = (value != originalInteractableId);
 
-            elementId = value;
+            interactableId = value;
         }
     }
 
@@ -94,8 +94,8 @@ public class ChapterCore : GeneralData
     {
         var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
 
-        if (changedElementId)
-            chapterData.interactableId = elementId;
+        if (changedInteractableId)
+            chapterData.interactableId = interactableId;
 
         if (changedName)
             chapterData.name = name;
@@ -118,14 +118,14 @@ public class ChapterCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalElementId = elementId;
+        originalInteractableId = interactableId;
         originalName = name;
         originalNotes = notes;
     }
 
     public void GetOriginalValues()
     {
-        elementId = originalElementId;
+        interactableId = originalInteractableId;
         name = originalName;
         notes = originalNotes;
     }
@@ -135,7 +135,7 @@ public class ChapterCore : GeneralData
         GetOriginalValues();
 
         changedIndex = false;
-        changedElementId = false;
+        changedInteractableId = false;
         changedName = false;
         changedNotes = false;
     }

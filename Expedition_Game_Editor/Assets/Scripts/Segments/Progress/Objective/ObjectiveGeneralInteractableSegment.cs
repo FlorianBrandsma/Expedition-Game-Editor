@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
+public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 {
     private DataManager dataManager = new DataManager();
 
@@ -35,7 +35,7 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
     {
         var objectiveEditor = (ObjectiveEditor)DataEditor;
 
-        if (objectiveEditor.terrainElementDataList.Count > 0) return;
+        if (objectiveEditor.terrainInteractableDataList.Count > 0) return;
 
         var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
 
@@ -46,9 +46,9 @@ public class ObjectiveGeneralElementsSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var terrainElementList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
+        var terrainInteractableList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
 
-        terrainElementList.ForEach(x => objectiveEditor.terrainElementDataList.Add(x));
+        terrainInteractableList.ForEach(x => objectiveEditor.terrainInteractableDataList.Add(x));
     }
 
     private void SetSearchParameters()

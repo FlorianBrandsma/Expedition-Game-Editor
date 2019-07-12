@@ -63,13 +63,13 @@ public class EditorPanelTile : MonoBehaviour, IElement
     {
         switch (Element.route.data.DataController.DataType)
         {
-            case Enums.DataType.TerrainInteractable: SetTerrainElementElement(); break;
-            case Enums.DataType.TerrainObject:  SetTerrainObjectElement();  break;
-            default: Debug.Log("YOU ARE MISSING THE DATATYPE");             break;
+            case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
+            case Enums.DataType.TerrainObject:      SetTerrainObjectElement();      break;
+            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
     }
 
-    private void SetTerrainElementElement()
+    private void SetTerrainInteractableElement()
     {
         Data data = Element.route.data;
         TerrainInteractableDataElement dataElement = (TerrainInteractableDataElement)data.DataElement;
