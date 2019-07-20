@@ -1,55 +1,93 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class TerrainObjectDataManager
 {
-    private TerrainObjectController dataController;
+    private TerrainObjectController terrainObjectController;
+
     private List<TerrainObjectData> terrainObjectDataList;
 
-    public List<TerrainObjectDataElement> GetTerrainObjectDataElements(TerrainObjectController dataController)
-    {
-        this.dataController = dataController;
+    private DataManager dataManager = new DataManager();
 
-        GetTerrainObjectData();
-        //GetIconData()?
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
+
+    public void InitializeManager(TerrainObjectController elementController)
+    {
+        this.terrainObjectController = elementController;
+    }
+
+    public List<IDataElement> GetTerrainObjectDataElements(IEnumerable searchParameters)
+    {
+        var terrainObjectSearchData = searchParameters.Cast<Search.TerrainObject>().FirstOrDefault();
+
+        switch (terrainObjectSearchData.requestType)
+        {
+            case Search.TerrainObject.RequestType.Custom:
+                GetCustomTerrainObjectData(terrainObjectSearchData);
+                break;
+        }
+
+        GetObjectGraphicData();
+        GetIconData();
 
         var list = (from terrainObjectData in terrainObjectDataList
+                    join objectGraphicData in objectGraphicDataList on terrainObjectData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new TerrainObjectDataElement()
                     {
+                        dataType = Enums.DataType.TerrainObject,
+
                         id = terrainObjectData.id,
-                        dataType = terrainObjectData.dataType,
 
-                        Index = terrainObjectData.index,
+                        ObjectGraphicId = terrainObjectData.objectGraphicId,
+                        RegionId = terrainObjectData.regionId,
 
-                        icon = "Textures/Icons/Objects/Nothing"
+                        objectGraphicName = objectGraphicData.name,
+                        objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list;
+        return list.Cast<IDataElement>().ToList();
     }
 
-    public void GetTerrainObjectData()
+    internal void GetCustomTerrainObjectData(Search.TerrainObject searchParameters)
     {
-        //terrainObjectDataList = new List<TerrainObjectData>();
+        terrainObjectDataList = new List<TerrainObjectData>();
 
-        ////Temporary
-        //for (int i = 0; i < dataController.temp_id_count; i++)
-        //{
-        //    var terrainObjectData = new TerrainObjectData();
+        foreach (Fixtures.TerrainObject terrainObject in Fixtures.terrainObjectList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainObject.id)) continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrainObject.regionId)) continue;
 
-        //    terrainObjectData.id = (i + 1);
-        //    terrainObjectData.dataType = "TerrainObject";
-        //    terrainObjectData.index = i;
+            var terrainObjectData = new TerrainObjectData();
 
-        //    terrainObjectDataList.Add(terrainObjectData);
-        //}
+            terrainObjectData.id = terrainObject.id;
+
+            terrainObjectData.objectGraphicId = terrainObject.objectGraphicId;
+            terrainObjectData.regionId = terrainObject.regionId;
+
+            terrainObjectDataList.Add(terrainObjectData);
+        }
+    }
+
+    internal void GetObjectGraphicData()
+    {
+        objectGraphicDataList = dataManager.GetObjectGraphicData(terrainObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+    }
+
+    internal void GetIconData()
+    {
+        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
     }
 
     internal class TerrainObjectData : GeneralData
     {
-        public int index;
+        public int objectGraphicId;
+        public int regionId;
     }
 }

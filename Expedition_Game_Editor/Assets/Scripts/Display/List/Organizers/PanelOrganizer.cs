@@ -78,8 +78,9 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         {
             SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, properties.elementType,
                                                                             ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
-            ElementList.Add(element);
 
+            ElementList.Add(element);
+            
             data.SelectionElement = element;
             element.route.data = new Data(dataController, data);
 

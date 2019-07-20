@@ -17,7 +17,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     private PanelTileProperties properties;
 
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
-    private SelectionElement EditButton { get { return Element.child; } }
+    private SelectionElement ElementChild { get { return Element.child; } }
 
     private Texture IconTexture
     {
@@ -29,13 +29,13 @@ public class EditorPanelTile : MonoBehaviour, IElement
         }
     }
 
-    private Data EditButtonData
+    private Data ChildButtonData
     {
-        get { return EditButton.route.data; }
+        get { return ElementChild.route.data; }
         set
         {
             InitializeEdit();
-            EditButton.route.data = value;
+            ElementChild.route.data = value;
         }
     }
 
@@ -52,11 +52,11 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private void InitializeEdit()
     {
-        EditButton.InitializeElement(Element.ListManager, EditButton.selectionType, EditButton.selectionProperty);
+        ElementChild.InitializeElement(Element.ListManager, ElementChild.selectionType, properties.childProperty);
 
-        EditButton.gameObject.SetActive(true);
+        ElementChild.gameObject.SetActive(true);
 
-        content.offsetMax = new Vector2(-EditButton.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
+        content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
     }
 
     public void SetElement()
@@ -67,6 +67,9 @@ public class EditorPanelTile : MonoBehaviour, IElement
             case Enums.DataType.TerrainObject:      SetTerrainObjectElement();      break;
             default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
         }
+
+        if (properties.childProperty != SelectionManager.Property.None)
+            ChildButtonData = Element.route.data;
     }
 
     private void SetTerrainInteractableElement()
@@ -79,9 +82,6 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
         if (properties.icon)
             IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
-
-        if (properties.edit)
-            EditButtonData = data;
     }
 
     private void SetTerrainObjectElement()
@@ -90,13 +90,10 @@ public class EditorPanelTile : MonoBehaviour, IElement
         TerrainObjectDataElement dataElement = (TerrainObjectDataElement)data.DataElement;
 
         idText.text = dataElement.id.ToString();
-        headerText.text = dataElement.name;
+        headerText.text = dataElement.objectGraphicName;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.icon);
-
-        if (properties.edit)
-            EditButtonData = data;
+            IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
     }
 
     public void CloseElement()
@@ -110,7 +107,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         if (properties.icon)
             iconParent.gameObject.SetActive(false);
 
-        if (properties.edit)
-            EditButton.gameObject.SetActive(false);
+        if (properties.childProperty != SelectionManager.Property.None)
+            ElementChild.gameObject.SetActive(false);
     }
 }

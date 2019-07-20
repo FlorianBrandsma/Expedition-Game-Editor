@@ -206,7 +206,7 @@ GameObject:
   - 114: {fileID: 114000011030441874}
   - 114: {fileID: 114000010634047418}
   m_Layer: 9
-  m_Name: Edit_Button
+  m_Name: Child_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionGroup: 0
+  selectionGroup: 1
   selectionType: 1
   selectionProperty: 0
   elementType: 0

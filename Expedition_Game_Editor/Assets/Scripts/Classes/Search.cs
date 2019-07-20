@@ -227,6 +227,8 @@ public class Search
     [System.Serializable]
     public class TerrainObject : SearchParameters
     {
+        public List<int> regionId = new List<int>();
+
         public enum RequestType
         {
             Custom

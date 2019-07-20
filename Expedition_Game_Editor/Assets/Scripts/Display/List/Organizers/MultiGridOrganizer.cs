@@ -95,7 +95,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.id;
+            //element.name = generalData.DebugName + generalData.id;
             //
 
             SetElement(element);

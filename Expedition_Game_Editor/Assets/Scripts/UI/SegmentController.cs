@@ -127,7 +127,7 @@ public class SegmentController : MonoBehaviour
     public bool AutoSelectElement()
     {
         if (GetComponent<ListProperties>() != null)
-        {
+        {  
             if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
             {
                 GetComponent<ListProperties>().AutoSelectElement();

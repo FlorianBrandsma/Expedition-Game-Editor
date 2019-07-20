@@ -170,7 +170,7 @@ public class ListManager : MonoBehaviour
         if (organizer == null) return;
 
         if (listProperties.DataController.DataList.Count == 0) return;
-
+        
         if (selectionType == SelectionManager.Type.Automatic)
         {
             SelectionElement element = list.ElementList.FirstOrDefault();

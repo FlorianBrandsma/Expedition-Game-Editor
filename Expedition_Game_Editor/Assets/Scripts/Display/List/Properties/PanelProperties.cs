@@ -9,16 +9,16 @@ public class PanelProperties : MonoBehaviour, IProperties
     public bool icon;
     public bool constantHeight;
     public bool zigzag;
-    public bool edit;
 
-    //public GeneralData edit_data;
+    public SelectionManager.Property childProperty;
 
     public void Copy(PanelProperties panelProperties)
     {
         icon = panelProperties.icon;
         constantHeight = panelProperties.constantHeight;
         zigzag = panelProperties.zigzag;
-        edit = panelProperties.edit;
+
+        childProperty = panelProperties.childProperty;
     }
 
     #region IProperties

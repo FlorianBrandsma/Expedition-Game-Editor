@@ -3,43 +3,56 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainObjectController : MonoBehaviour//, IDataController
+public class TerrainObjectController : MonoBehaviour, IDataController
 {
-    public int temp_id_count;
+    public Search.ObjectGraphic searchParameters;
 
-    public SearchParameters searchParameters;
-
-    private TerrainObjectDataManager terrainObjectDataManager = new TerrainObjectDataManager();
+    public TerrainObjectDataManager terrainObjectDataManager = new TerrainObjectDataManager();
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Enums.DataType DataType              { get { return Enums.DataType.TerrainObject; } }
-    public ICollection DataList                 { get; set; }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
+    public List<IDataElement> DataList          { get; set; }
 
-    public SearchParameters SearchParameters
+    public IEnumerable SearchParameters
     {
-        get { return searchParameters; }
-        set { searchParameters = value; }
+        get { return new[] { searchParameters }; }
+        set { searchParameters = value.Cast<Search.ObjectGraphic>().FirstOrDefault(); }
     }
 
     public void InitializeController()
     {
-        //GetData(new List<int>());
+        terrainObjectDataManager.InitializeManager(this);
     }
 
-    public void GetData(SearchParameters searchParameters)
+    public void GetData(IEnumerable searchParameters)
     {
-        DataList = terrainObjectDataManager.GetTerrainObjectDataElements(this);
-
-        var terrainObjectDataElements = DataList.Cast<TerrainObjectDataElement>();
-
-        //terrainObjectDataElements.Where(x => x.changed).ToList().ForEach(x => x.Update());
-        //terrainObjectDataElements[0].Update();
+        DataList = terrainObjectDataManager.GetTerrainObjectDataElements(searchParameters);
     }
 
-    public void ReplaceData(IEnumerable dataElement)
+    public void SetData(SelectionElement searchElement, Data resultData)
     {
+        var searchElementData = (TerrainObjectDataElement)searchElement.route.data.DataElement;
 
+        var terrainObjectDataElement = DataList.Cast<TerrainObjectDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
+
+        switch (resultData.DataController.DataType)
+        {
+            case Enums.DataType.ObjectGraphic:
+
+                var resultElementData = (ObjectGraphicDataElement)resultData.DataElement;
+
+                terrainObjectDataElement.ObjectGraphicId = resultElementData.id;
+                terrainObjectDataElement.objectGraphicName = resultElementData.Name;
+                terrainObjectDataElement.objectGraphicIconPath = resultElementData.iconPath;
+
+                break;
+        }
+
+        searchElement.route.data.DataElement = terrainObjectDataElement;
     }
+
+    public void ToggleElement(IDataElement dataElement) { }
 }

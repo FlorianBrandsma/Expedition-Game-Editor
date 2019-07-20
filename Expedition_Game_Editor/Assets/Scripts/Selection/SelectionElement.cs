@@ -114,6 +114,8 @@ public class SelectionElement : MonoBehaviour
 
     public void SetOverlay(Enums.ElementStatus elementStatus)
     {
+        if (selectionGroup == Enums.SelectionGroup.Child) return;
+
         switch (elementStatus)
         {
             case Enums.ElementStatus.Enabled:
@@ -173,11 +175,11 @@ public class SelectionElement : MonoBehaviour
             case SelectionManager.Property.None: break;
 
             case SelectionManager.Property.Get:
-
+                
                 var dataElement = route.data.DataElement;
 
                 EditorManager.editorManager.InitializePath(editorPath.path);
-                
+
                 SelectionManager.SelectSearch(dataElement);
 
                 if (ListManager == null)
@@ -217,6 +219,10 @@ public class SelectionElement : MonoBehaviour
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
         dataController.SetData(this, elementData);
+
+        if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
+            route.data.DataElement.Update();
+
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 
         SetElement();

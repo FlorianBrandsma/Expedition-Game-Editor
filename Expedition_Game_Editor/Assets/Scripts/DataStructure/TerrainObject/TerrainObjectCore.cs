@@ -1,32 +1,52 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
 public class TerrainObjectCore : GeneralData
 {
-    public int originalIndex;
+    private int objectGraphicId;
+    private int regionId;
 
-    private bool changedIndex;
+    public int originalObjectGraphicId;
+    public int originalRegionId;
+
+    private bool changedObjectGraphicId;
+    private bool changedRegionId;
 
     public bool Changed
     {
         get
         {
-            return false;
+            return changedObjectGraphicId || changedRegionId;
         }
     }
 
     #region Properties
 
-    public int Index
+    public int Id { get { return id; } }
+
+    public int ObjectGraphicId
     {
-        get { return index; }
+        get { return objectGraphicId; }
         set
         {
-            if (value == index) return;
+            if (value == objectGraphicId) return;
 
-            changedIndex = true;
+            changedObjectGraphicId = (value != originalObjectGraphicId);
 
-            index = value;
+            objectGraphicId = value;
+        }
+    }
+
+    public int RegionId
+    {
+        get { return regionId; }
+        set
+        {
+            if (value == regionId) return;
+
+            changedRegionId = (value != originalRegionId);
+
+            regionId = value;
         }
     }
 
@@ -39,46 +59,34 @@ public class TerrainObjectCore : GeneralData
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!Changed) return;
+        var terrainObjectData = Fixtures.terrainObjectList.Where(x => x.id == id).FirstOrDefault();
 
-        //Debug.Log("Updated " + name);
-
-        //if (changed_id)             return;
-        //if (changed_table)          return;
-        //if (changed_type)           return;
-        //if (changed_index)          return;
-        //if (changed_name)           return;
-        //if (changed_description)    return;
-
-        SetOriginalValues();
+        if (changedObjectGraphicId)
+            terrainObjectData.objectGraphicId = objectGraphicId;
     }
 
-    public void UpdateIndex()
-    {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
-    }
+    public void UpdateIndex() { }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
-        ClearChanges();
+        originalObjectGraphicId = objectGraphicId;
+        originalRegionId = regionId;
     }
 
     public void GetOriginalValues()
     {
-
+        objectGraphicId = originalObjectGraphicId;
+        regionId = originalRegionId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
+        changedObjectGraphicId = false;
+        changedRegionId = false;
     }
 
     public void Delete()

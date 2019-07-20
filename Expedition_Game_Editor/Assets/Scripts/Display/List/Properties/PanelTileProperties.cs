@@ -5,7 +5,7 @@
 public class PanelTileProperties : MonoBehaviour, IProperties
 {
     public bool icon;
-    public bool edit;
+    public SelectionManager.Property childProperty;
 
     #region IProperties
     public DisplayManager.Type Type()

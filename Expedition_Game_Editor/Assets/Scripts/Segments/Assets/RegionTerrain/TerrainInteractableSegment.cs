@@ -36,6 +36,7 @@ public class TerrainInteractableSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.TerrainInteractable.RequestType.GetInteractablesFromInteractionRegion;
 
         searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData().id };
+        searchParameters.objectiveId = new List<int>() { 0 };
 
         SegmentController.DataController.GetData(new[] { searchParameters });
     }

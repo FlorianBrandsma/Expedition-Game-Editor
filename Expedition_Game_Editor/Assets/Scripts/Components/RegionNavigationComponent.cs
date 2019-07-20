@@ -73,18 +73,16 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private void InitializeData()
     {
-        if (pathController.route.path.type != Path.Type.New) return;
+        if (pathController.route.path.type == Path.Type.New)
+        {
+            if (regionType == Enums.RegionType.Interaction)
+                RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Terrain;
+            else
+                RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
+        }
 
-        if (regionType == Enums.RegionType.Interaction)
-            RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Terrain;
-        else
-            RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
-
-        componentDataList.Clear();
-
-        InitializeStructureData();
-
-        FilterData();
+        if (componentDataList.Count != structureList.Count)
+            InitializeStructureData();
     }
 
     //Remove all dead ends from data
@@ -194,11 +192,15 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private void InitializeStructureData()
     {
+        componentDataList.Clear();
+
         foreach (Enums.DataType structure in structureList)
         {
             Data data = pathController.route.path.FindFirstRoute(structure).data;
             componentDataList.Add(new ComponentData(data));
         }
+
+        FilterData();
     }
 
     public void SetComponent(Path path)
@@ -215,9 +217,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         var componentData = FindComponentByDataType(dataType);
 
-        componentData.data.DataController = InitializeDropdown(componentData, dropdown);
+        componentData.data.DataController = InitializeDataController(componentData, dropdown);
 
-        SetStructureOptions(dropdown, componentData.data.DataController);
+        SetOptions(dropdown, componentData.data.DataController);
         
         dropdown.onValueChanged.AddListener(delegate
         {
@@ -226,7 +228,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         });
     }
 
-    private IDataController InitializeDropdown(ComponentData componentData, Dropdown dropdown)
+    private IDataController InitializeDataController(ComponentData componentData, Dropdown dropdown)
     {
         IDataController dataController;
 
@@ -234,14 +236,14 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         switch (dataType)
         {
-            case Enums.DataType.Chapter:        dataController = dropdown.gameObject.AddComponent<ChapterController>();         break;
-            case Enums.DataType.Phase:          dataController = dropdown.gameObject.AddComponent<PhaseController>();           break;
-            case Enums.DataType.Quest:          dataController = dropdown.gameObject.AddComponent<QuestController>();           break;
-            case Enums.DataType.Objective:      dataController = dropdown.gameObject.AddComponent<ObjectiveController>();       break;
-            case Enums.DataType.TerrainInteractable: dataController = dropdown.gameObject.AddComponent<TerrainInteractableController>();  break;
-            case Enums.DataType.Interaction:           dataController = dropdown.gameObject.AddComponent<InteractionController>();            break;
-            case Enums.DataType.Region:         dataController = dropdown.gameObject.AddComponent<RegionController>();          break;
-            default:                            dataController = null;                                                          break;
+            case Enums.DataType.Chapter:            dataController = dropdown.gameObject.AddComponent<ChapterController>();             break;
+            case Enums.DataType.Phase:              dataController = dropdown.gameObject.AddComponent<PhaseController>();               break;
+            case Enums.DataType.Quest:              dataController = dropdown.gameObject.AddComponent<QuestController>();               break;
+            case Enums.DataType.Objective:          dataController = dropdown.gameObject.AddComponent<ObjectiveController>();           break;
+            case Enums.DataType.TerrainInteractable:dataController = dropdown.gameObject.AddComponent<TerrainInteractableController>(); break;
+            case Enums.DataType.Interaction:        dataController = dropdown.gameObject.AddComponent<InteractionController>();         break;
+            case Enums.DataType.Region:             dataController = dropdown.gameObject.AddComponent<RegionController>();              break;
+            default:                                dataController = null;                                                              break;
         }
 
         dataController.InitializeController();
@@ -319,10 +321,27 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.TerrainInteractable();
 
-        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveInteractables;
+        var questRoute = pathController.route.path.FindFirstRoute(Enums.DataType.Quest);
+        var objectiveRoute = pathController.route.path.FindFirstRoute(Enums.DataType.Objective);
 
-        searchParameters.questId     = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Quest).GeneralData().id };
-        searchParameters.objectiveId = new List<int>() { pathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
+        if(questRoute != null && objectiveRoute != null)
+        {
+            searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveInteractables;
+
+            searchParameters.questId = new List<int>() { questRoute.GeneralData().id };
+            searchParameters.objectiveId = new List<int>() { objectiveRoute.GeneralData().id };
+
+        } else {
+
+            searchParameters.requestType = Search.TerrainInteractable.RequestType.GetInteractablesFromInteractionRegion;
+
+            var regionRoute = pathController.route.path.FindFirstRoute(Enums.DataType.Region);
+
+            searchParameters.regionId = new List<int>() { regionRoute.GeneralData().id };
+
+            searchParameters.questId = new List<int>() { 0 };
+            searchParameters.objectiveId = new List<int>() { 0 };
+        }
 
         return searchParameters;
     }
@@ -364,7 +383,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         EditorManager.editorManager.InitializePath(pathController.route.path);
     }
 
-    private void SetStructureOptions(Dropdown dropdown, IDataController dataController)
+    private void SetOptions(Dropdown dropdown, IDataController dataController)
     {
         switch (dataController.DataType)
         {

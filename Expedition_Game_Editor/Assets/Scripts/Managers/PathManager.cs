@@ -70,12 +70,11 @@ public class PathManager
             path = origin.listProperties.DataController.SegmentController.Path;
         }
 
-        //Rename: Combine
         public Path Enter()
         {
             route.controller = enter;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin, path.start);
         }
 
         public Path Edit()
@@ -292,7 +291,6 @@ public class PathManager
     public class Terrain
     {
         int edit = 0;
-        List<int> enter;
 
         Path path;
         Route route;
@@ -328,51 +326,54 @@ public class PathManager
 
         public TerrainInteractable(SelectionElement selection)
         {
-            //
             selectionElement = selection;
             route = selection.route;
             origin = selection.ListManager;
-
-            //path = form.activePath.Trim(form.activePath.start + 3);
-            path = origin.listProperties.DataController.SegmentController.Path;
-
-            //path.Add(route);
         }
 
         public Path Enter()
         {
             route.controller = enter;
 
+            path = origin.listProperties.DataController.SegmentController.Path;
+
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, origin);
         }
 
         public Path Open()
         {
-            //route = new Route(0, selectionElement.route.data, selectionElement.selectionGroup);
             List<int> source = new List<int>() { 0, 5 };
 
-            return CreatePath(CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main), form, origin);
+            route.controller = enter;
+
+            List<Route> routes = CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main);
+            return ExtendPath(form.activePath, routes, origin);
+
+            //return CreatePath(CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main), form, origin);
         }
     }
 
     public class TerrainObject
     {
+        SelectionElement selectionElement;
         Path path;
         Route route;
+        ListManager origin;
         EditorForm form = EditorManager.editorManager.forms[0];
 
         public TerrainObject(SelectionElement selection)
         {
-            route = new Route(1, selection.route.data, selection.selectionGroup);
-
-            path = form.activePath.Trim(form.activePath.start + 3);
-
-            path.Add(route);
+            selectionElement = selection;
+            origin = selection.ListManager;
         }
 
         public Path Enter()
         {
-            return path;
+            List<int> source = new List<int>() { 1 };
+
+            List<Route> routes = CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main);
+            
+            return new Path(form.activePath.CombineRoute(routes), form, origin, form.activePath.start);
         }
     }
 

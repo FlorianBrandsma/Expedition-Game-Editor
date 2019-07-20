@@ -12,101 +12,143 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     private IDataController dataController;
 
-    private Dropdown dropdown;
+    private Data data;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeComponent(Path path)
     {
-        dataController = PathController.route.data.DataController;
+        if(path.route.Count == PathController.step)
+        {
+            var test = path.route.Where(x => x.data.DataController != null && x.data.DataController.DataCategory == Enums.DataCategory.Navigation).Select(x => x.data.DataController.DataType).Distinct().ToList();
+
+            //test.ForEach(x => { Debug.Log(x); });
+        }
+        //InitializeData();
+    }
+
+    private void InitializeData()
+    {
+        Enums.DataType dataType = PathController.route.data.DataController.DataType;
+
+        data = PathController.route.path.FindFirstRoute(dataType).data;
     }
 
     public void SetComponent(Path path)
     {
-        if (dataController == null) return;
+        //this.path = path;
 
-        this.path = path;
+        //Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        dropdown = ComponentManager.componentManager.AddDropdown(component);
+        //data.DataController = InitializeDataController(dropdown);
 
-        switch (dataController.DataType)
+        //SetOptions(dropdown, data.DataController);
+
+        //dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
+    }
+
+    private IDataController InitializeDataController(Dropdown dropdown)
+    {
+        IDataController dataController;
+
+        Enums.DataType dataType = data.DataController.DataType;
+
+        switch (dataType)
         {
-            case Enums.DataType.Chapter:            SetChapterOptions();            break;
-            case Enums.DataType.Phase:              SetPhaseOptions();              break;
-            case Enums.DataType.Quest:              SetQuestOptions();              break;
-            case Enums.DataType.Objective:          SetObjectiveOptions();          break;
-            case Enums.DataType.TerrainInteractable:SetTerrainInteractableOptions();break;
-
-            default: Debug.Log("CASE MISSING: " + dataController.DataType); break;
+            case Enums.DataType.Chapter:            dataController = dropdown.gameObject.AddComponent<ChapterController>();             break;
+            case Enums.DataType.Phase:              dataController = dropdown.gameObject.AddComponent<PhaseController>();               break;
+            case Enums.DataType.Quest:              dataController = dropdown.gameObject.AddComponent<QuestController>();               break;
+            case Enums.DataType.Objective:          dataController = dropdown.gameObject.AddComponent<ObjectiveController>();           break;
+            case Enums.DataType.TerrainInteractable:dataController = dropdown.gameObject.AddComponent<TerrainInteractableController>(); break;
+            default:                                dataController = null;                                                              break;
         }
 
-        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData().id);
+        dataController.InitializeController();
+
+        if (dataController.DataList == null)
+            dataController.DataList = data.DataController.DataList.ToList();
+
+        return dataController;
+    }
+
+    private void SetOptions(Dropdown dropdown, IDataController dataController)
+    {
+        switch (dataController.DataType)
+        {
+            case Enums.DataType.Chapter:            SetChapterOptions(dropdown, dataController); break;
+            case Enums.DataType.Phase:              SetPhaseOptions(dropdown, dataController); break;
+            case Enums.DataType.Quest:              SetQuestOptions(dropdown, dataController); break;
+            case Enums.DataType.Objective:          SetObjectiveOptions(dropdown, dataController); break;
+            case Enums.DataType.TerrainInteractable:SetTerrainInteractableOptions(dropdown, dataController); break;
+        }
+
+        Data data = PathController.route.path.FindLastRoute(dataController.DataType).data;
+
+        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == ((GeneralData)data.DataElement).id);
 
         dropdown.value = selectedIndex;
-        dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
+        dropdown.captionText.text = dropdown.options[dropdown.value].text;
     }
 
-    private void SetChapterOptions()
+    #region Dropdown options
+
+    private void SetChapterOptions(Dropdown dropdown, IDataController dataController)
     {
-        List<ChapterDataElement> dataElements = dataController.DataList.Cast<ChapterDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<ChapterDataElement>().ToList();
 
-        foreach(ChapterDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name)); 
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetPhaseOptions()
+    private void SetPhaseOptions(Dropdown dropdown, IDataController dataController)
     {
-        List<PhaseDataElement> dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
 
-        foreach (PhaseDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetQuestOptions()
+    private void SetQuestOptions(Dropdown dropdown, IDataController dataController)
     {
-        List<QuestDataElement> dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
 
-        foreach (QuestDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetObjectiveOptions()
+    private void SetObjectiveOptions(Dropdown dropdown, IDataController dataController)
     {
-        List<ObjectiveDataElement> dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
+        var dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
-        foreach (ObjectiveDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.Name));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetTerrainInteractableOptions()
+    private void SetTerrainInteractableOptions(Dropdown dropdown, IDataController dataController)
     {
-        List<TerrainInteractableDataElement> dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
-        
-        foreach (TerrainInteractableDataElement dataElement in dataElements)
-            dropdown.options.Add(new Dropdown.OptionData(dataElement.interactableName));
+        var dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
+
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
+
+    #endregion
 
     public void InitializePath(Path path, Data data)
     {
         EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }
 
-    public IEnumerable GetEnumerable(ICollection list)
-    {
-        int index = 0;
+    //public IEnumerable GetEnumerable(ICollection list)
+    //{
+    //    int index = 0;
 
-        foreach(var data in list)
-        {
-            if (index == dropdown.value)
-                return new[] { data };
+    //    foreach(var data in list)
+    //    {
+    //        if (index == dropdown.value)
+    //            return new[] { data };
 
-            index++;
-        }
+    //        index++;
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
     public void CloseComponent() { }
 }

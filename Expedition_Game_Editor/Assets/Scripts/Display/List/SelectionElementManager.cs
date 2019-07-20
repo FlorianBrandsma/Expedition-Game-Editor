@@ -23,12 +23,18 @@ static public class SelectionElementManager
 
         InitializeElement(newElement, listManager, selectionType, selectionProperty, parent);
 
-        elementPool.Add(newElement);
+        Add(newElement);
 
         if (newElement.child != null)
-            elementPool.Add(newElement.child);
+            Add(newElement.child);
 
         return newElement;
+    }
+
+    static public void Add(SelectionElement selectionElement)
+    {
+        if(selectionElement.selectionType != SelectionManager.Type.None)
+            elementPool.Add(selectionElement);
     }
 
     static public void InitializeElement(SelectionElement element, ListManager listManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, Transform parent)

@@ -24,6 +24,7 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool enablePositionCorrection;
 
     private IDataController dataController;
+
     public IDataController DataController
     {
         get { return dataController; }

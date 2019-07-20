@@ -121,7 +121,8 @@ public class TerrainInteractableDataManager
     {
         terrainInteractableDataList = new List<TerrainInteractableData>();
 
-        List<int> terrainInteractableIds = Fixtures.interactionList.Where(x => searchParameters.regionId.Contains(x.regionId)).Select(x => x.terrainInteractableId).Distinct().ToList();
+        List<int> terrainInteractableIds = Fixtures.interactionList.Where(x =>  searchParameters.regionId.Contains(x.regionId) &&
+                                                                                searchParameters.objectiveId.Contains(x.objectiveId)).Select(x => x.terrainInteractableId).Distinct().ToList();
 
         var terrainInteractables = Fixtures.terrainInteractableList.Where(x => terrainInteractableIds.Contains(x.id)).Distinct().ToList();
 

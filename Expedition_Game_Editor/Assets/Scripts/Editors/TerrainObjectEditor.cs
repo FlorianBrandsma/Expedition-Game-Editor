@@ -31,23 +31,7 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
         SetEditor();
     }
 
-    public void UpdateIndex(int index)
-    {
-        var list = Data.DataController.DataList.Cast<TerrainObjectDataElement>().ToList();
-
-        list.RemoveAt(terrainObjectData.Index);
-        list.Insert(index, terrainObjectData);
-
-        selectionElement.ListManager.listProperties.DataController.DataList = list.Cast<IDataElement>().ToList();
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            list[i].Index = i;
-            list[i].UpdateIndex();
-        }
-
-        UpdateList();
-    }
+    public void UpdateIndex(int index) { }
 
     private void UpdateList()
     {
