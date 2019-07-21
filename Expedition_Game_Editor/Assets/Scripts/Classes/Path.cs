@@ -134,6 +134,13 @@ public class Path
         return new_path;
     }
 
+    public Path TrimToLastType(Enums.DataType dataType)
+    {
+        var index = route.FindLastIndex(x => x.data.DataController.DataType == dataType);
+
+        return Trim(index + 1);
+    }
+
     public Route FindFirstRoute(Enums.DataType dataType)
     {
         foreach(Route r in route)

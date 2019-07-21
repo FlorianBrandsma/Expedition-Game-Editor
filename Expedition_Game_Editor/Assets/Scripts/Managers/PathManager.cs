@@ -372,8 +372,8 @@ public class PathManager
             List<int> source = new List<int>() { 1 };
 
             List<Route> routes = CreateRoutes(source, selectionElement.route, Enums.SelectionGroup.Main);
-            
-            return new Path(form.activePath.CombineRoute(routes), form, origin, form.activePath.start);
+
+            return new Path(form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes), form, origin, form.activePath.start);
         }
     }
 

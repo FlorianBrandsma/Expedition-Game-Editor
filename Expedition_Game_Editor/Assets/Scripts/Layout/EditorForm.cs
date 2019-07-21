@@ -55,7 +55,7 @@ public class EditorForm : MonoBehaviour
 
         //Auto select element
         mainController.FinalizeController();
-        
+
         ResetSiblingForm();
     }
 
@@ -127,6 +127,9 @@ public class EditorForm : MonoBehaviour
 
         if (hasComponents)
             ComponentManager.componentManager.SortComponents();
+
+        if (formComponent != null)
+            formComponent.SetIcon(true);
     }
 
     private void CloseComponents()
@@ -208,5 +211,8 @@ public class EditorForm : MonoBehaviour
         closed = true;
 
         ResetSiblingForm();
+
+        if (formComponent != null)
+            formComponent.SetIcon(false);
     }
 }

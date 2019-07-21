@@ -960,7 +960,7 @@ Prefab:
         type: 2}
       propertyPath: m_Texture
       value: 
-      objectReference: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+      objectReference: {fileID: 2800000, guid: 1650e65f13410bb4c9ca478c8bbdf364, type: 3}
     - target: {fileID: 1000012259309892, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
       propertyPath: m_Layer
       value: 5
@@ -7732,8 +7732,8 @@ MonoBehaviour:
   autoClose: 1
   openOnce: 0
   editorForm: {fileID: 778174905}
-  openIcon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
-  closeIcon: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+  openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
+  closeIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
 --- !u!1 &292242723
 GameObject:
   m_ObjectHideFlags: 0
@@ -14207,6 +14207,27 @@ Prefab:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012366534406, guid: 96e1a86ebe98ffd4cb75bbf2a4d98540,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.29411766
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012366534406, guid: 96e1a86ebe98ffd4cb75bbf2a4d98540,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.29411766
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012366534406, guid: 96e1a86ebe98ffd4cb75bbf2a4d98540,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.29411766
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012366534406, guid: 96e1a86ebe98ffd4cb75bbf2a4d98540,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 468ce3a8c952e52488044b0cd47fdbe2,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96e1a86ebe98ffd4cb75bbf2a4d98540, type: 2}
   m_IsPrefabParent: 0
@@ -36314,7 +36335,7 @@ Prefab:
         type: 2}
       propertyPath: m_Texture
       value: 
-      objectReference: {fileID: 2800000, guid: 4e4c99316338eb54baae871fe578f0db, type: 3}
+      objectReference: {fileID: 2800000, guid: 1650e65f13410bb4c9ca478c8bbdf364, type: 3}
     - target: {fileID: 114000011852793538, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
       propertyPath: data.id
@@ -38507,7 +38528,7 @@ Prefab:
     - target: {fileID: 224000013171308716, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 125
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 224000013171308716, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
@@ -38547,12 +38568,17 @@ Prefab:
     - target: {fileID: 114000012904829640, guid: e459c8c821901e5479d8bd2715d2a2d4,
         type: 2}
       propertyPath: m_Text
-      value: Open Editor
+      value: Search Filters
       objectReference: {fileID: 0}
     - target: {fileID: 1000013544506498, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
       propertyPath: m_Name
       value: Search_Editor (button)
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013358529708, guid: e459c8c821901e5479d8bd2715d2a2d4,
+        type: 2}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
   m_IsPrefabParent: 0

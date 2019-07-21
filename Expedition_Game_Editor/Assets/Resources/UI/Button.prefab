@@ -108,12 +108,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6914a9c67c8fe254cb5d4e947def525e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data_type: 0
+  segmentController: {fileID: 0}
+  displayParent: {fileID: 0}
+  selectionGroup: 0
   selectionType: 0
   selectionProperty: 0
-  displayType: 0
+  elementType: 0
+  elementStatus: 0
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0}
+  background: {fileID: 0}
+  disableSpawn: 0
+  parent: {fileID: 0}
   child: {fileID: 0}
   glow: {fileID: 1000014149556330}
+  lockIcon: {fileID: 0}
   selected: 0
 --- !u!114 &114000012059524262
 MonoBehaviour:
@@ -252,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
+  m_Color: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

@@ -35,6 +35,8 @@ public class FormComponent : MonoBehaviour, IComponent
     public void InitializeForm(PathController pathController)
     {
         this.pathController = pathController;
+
+        
     }
 
     public void SetForm()
@@ -65,7 +67,7 @@ public class FormComponent : MonoBehaviour, IComponent
 
         closedManually = false;
 
-        SetButton();
+        SetIcon(true);
     }
 
     private void InitializeButton()
@@ -73,12 +75,6 @@ public class FormComponent : MonoBehaviour, IComponent
         button = ComponentManager.componentManager.AddFormButton(component);
 
         button.onClick.AddListener(delegate { Interact(); });
-    }
-
-    private void SetButton()
-    {
-        if (editorForm.gameObject.activeInHierarchy)
-            Button.icon.texture = openIcon;
     }
 
     public void Interact()
@@ -97,9 +93,7 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         Path path = (constant ? editorForm.activePath : new PathManager.Form(editorForm).Initialize());
 
-        EditorManager.editorManager.InitializePath(path);
-
-        button.GetComponent<EditorButton>().icon.texture = openIcon;
+        EditorManager.editorManager.InitializePath(path); 
     }
 
     private void CloseForm()
@@ -107,8 +101,11 @@ public class FormComponent : MonoBehaviour, IComponent
         SelectionManager.CancelGetSelection();
 
         editorForm.CloseForm();
+    }
 
-        button.GetComponent<EditorButton>().icon.texture = closeIcon;
+    public void SetIcon(bool active)
+    {
+        button.GetComponent<EditorButton>().icon.texture = active ? openIcon : closeIcon;
     }
 
     public void CloseComponent()
