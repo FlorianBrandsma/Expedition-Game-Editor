@@ -7,7 +7,7 @@ using System.IO;
 
 public class EditorController : MonoBehaviour
 {
-    public PathController   pathController { get {return GetComponent<PathController>(); } }
+    public PathController PathController { get {return GetComponent<PathController>(); } }
     public SegmentController[] 	segments;
 
     public void InitializeDependencies()
@@ -32,8 +32,8 @@ public class EditorController : MonoBehaviour
 
     private void InitializeEditor()
     {
-        if (pathController.dataEditor != null)
-            pathController.dataEditor.InitializeEditor();
+        if (PathController.dataEditor != null)
+            PathController.dataEditor.InitializeEditor();
     }
 
     public void CloseEditor() { }

@@ -16,7 +16,7 @@ public class SearchController : MonoBehaviour
     {
         CloseController();
 
-        data = SegmentController.editorController.pathController.route.data;
+        data = SegmentController.editorController.PathController.route.data;
         
         if (data.SearchParameters == null) return;
         

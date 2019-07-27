@@ -2,27 +2,94 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TerrainItemHeaderSegment : MonoBehaviour, IHeader
+public class TerrainItemHeaderSegment : MonoBehaviour, ISegment
 {
-    public Text label;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    public void Activate(EditorController new_controller)
+    //private InteractionDataElement interactionData;
+
+    public IEditor DataEditor { get; set; }
+
+    #region UI
+
+    public Button findButton;
+    public Text idText;
+
+    #endregion
+
+    #region Data Variables
+
+    private int id;
+    private string objectGraphicIconPath;
+
+    #endregion
+
+    #region Data Methods
+    public void UpdateDescription()
     {
-        GeneralData data = new_controller.pathController.route.GeneralData();
+        DataEditor.UpdateEditor();
+    }
+    #endregion
 
-        //Definitely a placeholder
-        label.text = data.dataType + " " + (data.id - 1);
+    #region Segment
+
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
+    }
+
+    public void InitializeSegment()
+    {
+        InitializeDependencies();
+
+        InitializeData();
+    }
+
+    public void InitializeData()
+    {
+        switch (DataEditor.Data.DataController.DataType)
+        {
+            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
+            case Enums.DataType.TerrainObject:  InitializeTerrainObjectData();  break;
+        }
+    }
+
+    private void InitializeInteractionData()
+    {
+        var terrainInteractableData = (InteractionDataElement)DataEditor.Data.DataElement;
+
+        id = terrainInteractableData.id;
+        objectGraphicIconPath = terrainInteractableData.objectGraphicIconPath;
+    }
+
+    private void InitializeTerrainObjectData()
+    {
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+
+        id = terrainObjectData.id;
+        objectGraphicIconPath = terrainObjectData.objectGraphicIconPath;
+    }
+
+    public void OpenSegment()
+    {
+        idText.text = id.ToString();
 
         gameObject.SetActive(true);
     }
 
-    public void UpdateHeader()
+    public void ApplySegment()
     {
 
     }
 
-    public void Deactivate()
+    public void CloseSegment()
     {
         gameObject.SetActive(false);
     }
+
+    public void SetSearchResult(SelectionElement selectionElement)
+    {
+
+    }
+    #endregion
 }

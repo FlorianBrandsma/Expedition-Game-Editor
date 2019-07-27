@@ -27,7 +27,7 @@ public class SegmentController : MonoBehaviour
     [HideInInspector]
     public bool loaded;
 
-    public Path Path { get { return editorController.pathController.route.path; } }
+    public Path Path { get { return editorController.PathController.route.path; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 

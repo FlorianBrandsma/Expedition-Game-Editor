@@ -17,7 +17,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void UpdateSize()
     {
-        regionDataElement.TerrainSize = sizeInputNumber.Value;
+        regionDataElement.TerrainSize = (int)sizeInputNumber.Value;
 
         heightText.text = regionDataElement.TerrainSize.ToString();
 
@@ -30,7 +30,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()

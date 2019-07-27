@@ -15,7 +15,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()
@@ -25,8 +25,8 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.pathController.loaded) return;
-
+        if (SegmentController.editorController.PathController.loaded) return;
+        
         regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.DataElement;
 
         GetTerrainData();

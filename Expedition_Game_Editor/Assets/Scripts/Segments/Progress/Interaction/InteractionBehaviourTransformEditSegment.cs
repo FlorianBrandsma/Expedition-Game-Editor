@@ -30,7 +30,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
         regionData.dataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
 
-        editButton.route.path = SegmentController.editorController.pathController.route.path;
+        editButton.route.path = SegmentController.editorController.PathController.route.path;
 
         editButton.InitializeElement(null);
 
@@ -53,7 +53,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()

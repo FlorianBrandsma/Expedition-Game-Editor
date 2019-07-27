@@ -26,7 +26,7 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
         var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
         var regionData = (RegionDataElement)data.DataElement;
 
-        editButton.route.path = SegmentController.editorController.pathController.route.path;
+        editButton.route.path = SegmentController.editorController.PathController.route.path;
 
         editButton.InitializeElement(null);
 
@@ -41,7 +41,7 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()

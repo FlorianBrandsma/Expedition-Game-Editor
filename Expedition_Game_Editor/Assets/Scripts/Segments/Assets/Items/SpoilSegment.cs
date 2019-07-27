@@ -18,7 +18,7 @@ public class SpoilSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()
@@ -28,9 +28,9 @@ public class SpoilSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.pathController.loaded) return;
+        if (SegmentController.editorController.PathController.loaded) return;
 
-        if (!SegmentController.loaded && !SegmentController.editorController.pathController.loaded)
+        if (!SegmentController.loaded && !SegmentController.editorController.PathController.loaded)
         {
             var searchParameters = new Search.Item();
             searchParameters.type = new List<int>() { (int)Enums.ItemType.Spoils };

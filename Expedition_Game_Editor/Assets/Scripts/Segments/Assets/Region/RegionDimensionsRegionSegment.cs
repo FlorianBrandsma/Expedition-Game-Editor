@@ -17,7 +17,7 @@ public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 
     public void UpdateSize()
     {
-        regionDataElement.RegionSize = sizeInputNumber.Value;
+        regionDataElement.RegionSize = (int)sizeInputNumber.Value;
 
         heightText.text = regionDataElement.RegionSize.ToString();
 
@@ -30,7 +30,7 @@ public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()

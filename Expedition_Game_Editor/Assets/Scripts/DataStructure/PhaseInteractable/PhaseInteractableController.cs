@@ -40,7 +40,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
     public void ToggleElement(IDataElement dataElement)
     {
         var phaseInteractablesData = (PhaseInteractableDataElement)dataElement;
-        var questData = (QuestDataElement)SegmentController.editorController.pathController.route.data.DataElement;
+        var questData = (QuestDataElement)SegmentController.editorController.PathController.route.data.DataElement;
 
         switch(phaseInteractablesData.elementStatus)
         {

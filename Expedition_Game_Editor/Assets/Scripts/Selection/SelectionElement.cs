@@ -69,7 +69,7 @@ public class SelectionElement : MonoBehaviour
 
     public void InitializeElement(IDataController dataController)
     {
-        DataEditor = segmentController.editorController.pathController.dataEditor;
+        DataEditor = segmentController.editorController.PathController.dataEditor;
 
         this.dataController = dataController;
 

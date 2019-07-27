@@ -26,7 +26,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         public ComponentData(Data data)
         {
             this.data = data;
-        }
+        }   
     }
 
     private Enums.RegionType regionType;
@@ -48,10 +48,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         structureList = path.route.Where(x => x.data.DataController != null && x.data.DataController.DataCategory == Enums.DataCategory.Navigation).Select(x => x.data.DataController.DataType).Distinct().ToList();
 
         regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
-
-        var regionDataElement = (RegionDataElement)regionRoute.data.DataElement;
-        regionType = regionDataElement.type;
-
+        
         InitializeData();
 
         if (path.route.Count < (PathController.route.path.route.Count + 1))
@@ -63,26 +60,37 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             int index = (int)RegionDisplayManager.activeDisplay;
             
             regionRoute.controller = index;
-            
-            path.Add(regionRoute);
 
             if (RegionDisplayManager.activeDisplay == RegionDisplayManager.Display.Terrain)
                 path.Add(regionRoute);
-        }
+
+            if (regionType != Enums.RegionType.Interaction)
+            {
+                path.Add(regionRoute);
+
+            } else /*TEMPORARY*/ {
+                var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction).Copy();
+                interactionRoute.controller = 0;
+
+                path.Add(interactionRoute);
+            }
+        }  
     }
 
     private void InitializeData()
     {
         if (PathController.route.path.type == Path.Type.New)
         {
+            var regionDataElement = (RegionDataElement)regionRoute.data.DataElement;
+            regionType = regionDataElement.type;
+
             if (regionType == Enums.RegionType.Interaction)
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Terrain;
             else
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
         }
 
-        //if (componentDataList.Count != structureList.Count)
-            InitializeStructureData();
+        InitializeStructureData();
     }
 
     //Remove all dead ends from data
@@ -453,7 +461,11 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var dataElements = dataController.DataList.Cast<RegionDataElement>().ToList();
 
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => {
+            
+            dropdown.options.Add(new Dropdown.OptionData(x.Name));
+            x.type = regionType;
+        });
     }
 
     #endregion

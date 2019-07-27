@@ -29,7 +29,7 @@ public class TerrainObjectSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.pathController.loaded) return;
+        if (SegmentController.editorController.PathController.loaded) return;
 
         var searchParameters = new Search.TerrainObject();
 

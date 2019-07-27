@@ -3,22 +3,25 @@ using UnityEngine.UI;
 
 public class EditorInputNumber : MonoBehaviour, IEditorElement
 {
-    private int inputValue;
+    private float inputValue;
 
-    public UnitManager.Unit unit;
+    public string valueType;
+    public string valueUnit;
 
     public InputField inputField;
     public Button minusButton;
     public Button plusButton;
+    public Text valueTypeText;
+    public Text valueUnitText;
 
     public bool enableLimit;
-    public int min, max;
+    public float min, max;
 
     public Image Image { get { return GetComponent<Image>(); } }
 
     public EditorElement EditorElement { get { return GetComponent<EditorElement>(); } }
 
-    public int Value
+    public float Value
     {
         get { return inputValue; }
         set
@@ -30,6 +33,20 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
 
     private void Awake()
     {
+        if (valueType.Length > 0)
+        {
+            valueTypeText.text = valueType;
+            Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMin;
+            inputField.GetComponent<RectTransform>().offsetMin = new Vector2(inputFieldOffset.x + valueTypeText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
+        }
+
+        if(valueUnit.Length > 0)
+        {
+            valueUnitText.text = valueUnit;
+            Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMax;
+            inputField.GetComponent<RectTransform>().offsetMax = new Vector2(inputFieldOffset.x - valueUnitText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
+        }
+
         if (enableLimit)
             inputField.placeholder.GetComponent<Text>().text = min + "-" + max;
     }
@@ -62,21 +79,21 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
 
         if (enableLimit)
         {
-            if (int.Parse(inputField.text) < min)
+            if (float.Parse(inputField.text) < min)
                 inputField.text = min.ToString();
 
-            if (int.Parse(inputField.text) > max)
+            if (float.Parse(inputField.text) > max)
                 inputField.text = max.ToString();
         }
 
-        inputValue = int.Parse(inputField.text);
+        inputValue = float.Parse(inputField.text);
     }
 
     public void OnEndEdit()
     {
         if (inputField.text.Length == 0) return;
 
-        inputValue = int.Parse(inputField.text);
+        inputValue = float.Parse(inputField.text);
         inputField.text = inputValue.ToString();
     }
 }

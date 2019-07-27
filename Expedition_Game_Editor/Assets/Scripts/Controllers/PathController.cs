@@ -66,13 +66,13 @@ public class PathController : MonoBehaviour
             route = new Route(path);
 
         route.path = path;
-        
+
         if (step > 0)
         {
             //Don't check this if force is true. Must load!
             if (!reload)
                 loaded = IsLoaded();
-            
+
             //If this hasn't loaded, force load the next one
             if (!loaded || reload)
             {
@@ -193,8 +193,8 @@ public class PathController : MonoBehaviour
         if (step > editorSection.previousTargetPath.route.Count)
             return false;
 
-        if (previousRoute != null)
-            return route.Equals(previousRoute);
+        if (previousRoute != null && !route.Equals(previousRoute))
+            return false;
 
         //If false then everything afterwards must be false as well
         return route.path.Equals(editorSection.previousTargetPath);

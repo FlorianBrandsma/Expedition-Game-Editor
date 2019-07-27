@@ -37,7 +37,7 @@ static public class SelectionManager
             {
                 if (!section.active) continue;
 
-                routeList.Add(section.targetController.pathController.route);
+                routeList.Add(section.targetController.PathController.route);
             }
         }
 

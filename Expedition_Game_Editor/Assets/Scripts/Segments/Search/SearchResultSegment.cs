@@ -18,7 +18,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.pathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
     public void InitializeSegment()
@@ -30,7 +30,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.DataController == null) return;
         
-        var searchParameters = SegmentController.editorController.pathController.route.data.SearchParameters;
+        var searchParameters = SegmentController.editorController.PathController.route.data.SearchParameters;
 
         SegmentController.DataController.GetData(searchParameters);
     }

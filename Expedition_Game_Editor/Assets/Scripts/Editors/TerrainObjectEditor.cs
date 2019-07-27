@@ -1,29 +1,37 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainObjectEditor : MonoBehaviour//, IEditor
+public class TerrainObjectEditor : MonoBehaviour, IEditor
 {
     private TerrainObjectDataElement terrainObjectData;
-    private SelectionElement selectionElement;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
-    
-    public bool subEditor;
 
-    public bool SubEditor { get { return subEditor; } }
+    public bool Loaded { get { return PathController.loaded; } }
     public Data Data { get; set; }
+
+    public List<IDataElement> DataElements
+    {
+        get
+        {
+            var list = new List<IDataElement>();
+
+            list.Add(terrainObjectData);
+
+            return list;
+        }
+    }
 
     public void InitializeEditor()
     {
-        selectionElement = PathController.Origin;
+        if (Loaded) return;
 
         Data = PathController.route.data;
 
         terrainObjectData = (TerrainObjectDataElement)Data.DataElement;
 
-        if (!PathController.loaded)
-            terrainObjectData.ClearChanges();
+        DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void UpdateEditor()
@@ -35,7 +43,9 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
 
     private void UpdateList()
     {
-        selectionElement.ListManager.UpdateData();
+        if (PathController.Origin == null) return;
+
+        PathController.Origin.ListManager.UpdateData();
     }
 
     public void OpenEditor()
@@ -50,14 +60,14 @@ public class TerrainObjectEditor : MonoBehaviour//, IEditor
 
     public bool Changed()
     {
-        return terrainObjectData.Changed;
+        return DataElements.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
-        terrainObjectData.Update();
+        DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        //UpdateList();
 
         UpdateEditor();
     }
