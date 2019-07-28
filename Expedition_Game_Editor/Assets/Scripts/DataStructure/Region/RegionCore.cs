@@ -157,6 +157,8 @@ public class RegionCore : GeneralData
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         if (changedIndex)

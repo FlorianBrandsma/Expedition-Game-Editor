@@ -86,6 +86,8 @@ public class PhaseCore : GeneralData
 
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var phaseData = Fixtures.phaseList.Where(x => x.id == id).FirstOrDefault();

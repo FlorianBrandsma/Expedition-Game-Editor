@@ -57,7 +57,19 @@ public class InteractionDataManager
                         RegionId = interactionData.regionId,
 
                         Description = interactionData.description,
-                        
+
+                        PositionX = interactionData.positionX,
+                        PositionY = interactionData.positionY,
+                        PositionZ = interactionData.positionZ,
+
+                        RotationX = interactionData.rotationX,
+                        RotationY = interactionData.rotationY,
+                        RotationZ = interactionData.rotationZ,
+
+                        ScaleMultiplier = interactionData.scaleMultiplier,
+
+                        Animation = interactionData.animation,
+
                         regionName  = region != null ? region.regionData.name   : "",
                         objectGraphicIconPath = iconData.path
 
@@ -86,7 +98,20 @@ public class InteractionDataManager
             interactionData.objectiveId = interaction.objectiveId;
             interactionData.terrainInteractableId = interaction.terrainInteractableId;
             interactionData.regionId = interaction.regionId;
+
             interactionData.description = interaction.description;
+
+            interactionData.positionX = interaction.positionX;
+            interactionData.positionY = interaction.positionY;
+            interactionData.positionZ = interaction.positionZ;
+
+            interactionData.rotationX = interaction.rotationX;
+            interactionData.rotationY = interaction.rotationY;
+            interactionData.rotationZ = interaction.rotationZ;
+
+            interactionData.scaleMultiplier = interaction.scaleMultiplier;
+
+            interactionData.animation = interaction.animation;
 
             interactionDataList.Add(interactionData);
         }
@@ -122,6 +147,19 @@ public class InteractionDataManager
         public int objectiveId;
         public int terrainInteractableId;
         public int regionId;
+
         public string description;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 }

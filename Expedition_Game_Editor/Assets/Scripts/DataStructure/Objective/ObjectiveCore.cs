@@ -115,6 +115,8 @@ public class ObjectiveCore : GeneralData
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var objectiveData = Fixtures.objectiveList.Where(x => x.id == id).FirstOrDefault();

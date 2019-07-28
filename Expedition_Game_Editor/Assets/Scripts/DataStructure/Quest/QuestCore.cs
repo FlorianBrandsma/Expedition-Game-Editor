@@ -96,6 +96,8 @@ public class QuestCore : GeneralData
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var questData = Fixtures.questList.Where(x => x.id == id).FirstOrDefault();

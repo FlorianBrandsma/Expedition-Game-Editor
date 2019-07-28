@@ -85,6 +85,8 @@ public class TerrainTileCore : GeneralData
             terrainTileData.tileId = tileId;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()

@@ -38,7 +38,7 @@ public class DataManager
             var data = new ObjectGraphicData();
 
             data.id = objectGraphic.id;
-
+            
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
             data.iconId = objectGraphic.iconId;

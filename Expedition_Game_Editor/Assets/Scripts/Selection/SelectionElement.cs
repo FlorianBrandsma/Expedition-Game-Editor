@@ -221,7 +221,7 @@ public class SelectionElement : MonoBehaviour
         dataController.SetData(this, elementData);
 
         if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
-            route.data.DataElement.Update();
+            route.data.DataElement.UpdateSearch();
 
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 

@@ -72,15 +72,20 @@ static public class Fixtures
     {
         public int objectGraphicId;
         public int regionId;
+
         public bool boundToTile;
 
-        public float xPos;
-        public float yPos;
-        public float zPos;
+        public float positionX;
+        public float positionY;
+        public float positionZ;
 
-        public float xRot;
-        public float yRot;
-        public float zRot;
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 
     public class TerrainInteractable : GeneralData
@@ -186,15 +191,20 @@ static public class Fixtures
         public int terrainInteractableId;
         public int objectiveId;
         public int regionId;
+
         public string description;
 
-        public float xPos;
-        public float yPos;
-        public float zPos;
+        public float positionX;
+        public float positionY;
+        public float positionZ;
 
-        public float xRot;
-        public float yRot;
-        public float zRot;
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 
     static public void LoadFixtures()
@@ -529,22 +539,22 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateTerrainObject(17, region.id, false, Vector3.zero, Vector3.zero);
+            CreateTerrainObject(17, region.id, false, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
 
             /*Rock*/
-            CreateTerrainObject(18, region.id, false, Vector3.zero, Vector3.zero);
+            CreateTerrainObject(18, region.id, false, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
 
             /*Cactus*/
-            CreateTerrainObject(19, region.id, false, Vector3.zero, Vector3.zero);
+            CreateTerrainObject(19, region.id, false, new Vector3(0.7f, 0.8f, 0.9f), new Vector3(7, 8, 9));
 
             /*Red warrior*/
-            CreateTerrainInteractable(1, region.id, Vector3.zero, Vector3.zero);
+            CreateTerrainInteractable(1, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
 
             /*Ranger*/
-            CreateTerrainInteractable(4, region.id, Vector3.zero, Vector3.zero);
+            CreateTerrainInteractable(4, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
 
             /*Mage*/
-            CreateTerrainInteractable(5, region.id, Vector3.zero, Vector3.zero);
+            CreateTerrainInteractable(5, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
         }
     }
 
@@ -574,13 +584,15 @@ static public class Fixtures
 
         interaction.description = "Talk to {" + terrainInteractable.interactableId + "}";
 
-        interaction.xPos = position.x;
-        interaction.yPos = position.y;
-        interaction.zPos = position.z;
+        interaction.positionX = position.x;
+        interaction.positionY = position.y;
+        interaction.positionZ = position.z;
 
-        interaction.xRot = rotation.x;
-        interaction.yRot = rotation.y;
-        interaction.zRot = rotation.z;
+        interaction.rotationX = (int)rotation.x;
+        interaction.rotationY = (int)rotation.y;
+        interaction.rotationZ = (int)rotation.z;
+
+        interaction.scaleMultiplier = 1;
         
         interactionList.Add(interaction);
     }
@@ -596,13 +608,15 @@ static public class Fixtures
         terrainObject.regionId = regionId;
         terrainObject.boundToTile = boundToTile;
         
-        terrainObject.xPos = position.x;
-        terrainObject.yPos = position.y;
-        terrainObject.zPos = position.z;
+        terrainObject.positionX = position.x;
+        terrainObject.positionY = position.y;
+        terrainObject.positionZ = position.z;
 
-        terrainObject.xRot = rotation.x;
-        terrainObject.yRot = rotation.y;
-        terrainObject.zRot = rotation.z;
+        terrainObject.rotationX = (int)rotation.x;
+        terrainObject.rotationY = (int)rotation.y;
+        terrainObject.rotationZ = (int)rotation.z;
+
+        terrainObject.scaleMultiplier = 1;
 
         terrainObjectList.Add(terrainObject);
     }
@@ -815,13 +829,15 @@ static public class Fixtures
                         interaction.index = interactionSource.index;
                         interaction.description = interactionSource.description;
 
-                        interaction.xPos = interactionSource.xPos;
-                        interaction.yPos = interactionSource.yPos;
-                        interaction.zPos = interactionSource.zPos;
+                        interaction.positionX = interactionSource.positionX;
+                        interaction.positionY = interactionSource.positionY;
+                        interaction.positionZ = interactionSource.positionZ;
 
-                        interaction.xRot = interactionSource.xRot;
-                        interaction.yRot = interactionSource.yRot;
-                        interaction.zRot = interactionSource.zRot;
+                        interaction.rotationX = interactionSource.rotationX;
+                        interaction.rotationY = interactionSource.rotationY;
+                        interaction.rotationZ = interactionSource.rotationZ;
+                        
+                        interaction.scaleMultiplier = interactionSource.scaleMultiplier;
 
                         interactionList.Add(interaction);
                     }
@@ -840,10 +856,21 @@ static public class Fixtures
                     terrainObject.id = terrainObjectId;
                     terrainObject.regionId = region.id;
 
+                    terrainObject.boundToTile = terrainObjectSource.boundToTile;
+
+                    terrainObject.positionX = terrainObjectSource.positionX;
+                    terrainObject.positionY = terrainObjectSource.positionY;
+                    terrainObject.positionZ = terrainObjectSource.positionZ;
+
+                    terrainObject.rotationX = terrainObjectSource.rotationX;
+                    terrainObject.rotationY = terrainObjectSource.rotationY;
+                    terrainObject.rotationZ = terrainObjectSource.rotationZ;
+
+                    terrainObject.scaleMultiplier = terrainObjectSource.scaleMultiplier;
+
                     terrainObject.index = terrainObjectSource.index;
                     terrainObject.objectGraphicId = terrainObjectSource.objectGraphicId;
-                    terrainObject.boundToTile = terrainObjectSource.boundToTile;
-                    
+
                     terrainObjectList.Add(terrainObject);
                 }
 
@@ -1021,6 +1048,8 @@ static public class Fixtures
                     interaction.regionId = regions[randomRegion].id;
                     
                     interaction.description = "Basically a task description. Property of objective" + objective.id;
+
+                    interaction.scaleMultiplier = 1;
 
                     interactionList.Add(interaction);
                 }

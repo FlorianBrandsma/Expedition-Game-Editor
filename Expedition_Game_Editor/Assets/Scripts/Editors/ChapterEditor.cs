@@ -174,13 +174,13 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     interaction.index = interactionSource.index;
                     interaction.description = interactionSource.description;
 
-                    interaction.xPos = interactionSource.xPos;
-                    interaction.yPos = interactionSource.yPos;
-                    interaction.zPos = interactionSource.zPos;
+                    interaction.positionX = interactionSource.positionX;
+                    interaction.positionY = interactionSource.positionY;
+                    interaction.positionZ = interactionSource.positionZ;
 
-                    interaction.xRot = interactionSource.xRot;
-                    interaction.yRot = interactionSource.yRot;
-                    interaction.zRot = interactionSource.zRot;
+                    interaction.rotationX = interactionSource.rotationX;
+                    interaction.rotationY = interactionSource.rotationY;
+                    interaction.rotationZ = interactionSource.rotationZ;
 
                     Fixtures.interactionList.Add(interaction);
                 }

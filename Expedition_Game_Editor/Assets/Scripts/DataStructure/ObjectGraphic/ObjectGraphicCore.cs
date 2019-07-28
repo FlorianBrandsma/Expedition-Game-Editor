@@ -77,6 +77,8 @@ public class ObjectGraphicCore : GeneralData
 
     public virtual void Update() { }
 
+    public void UpdateSearch() { }
+
     public virtual void SetOriginalValues()
     {
         originalName = name;

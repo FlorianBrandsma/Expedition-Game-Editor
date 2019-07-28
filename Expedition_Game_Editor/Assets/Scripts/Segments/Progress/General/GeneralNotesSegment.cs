@@ -91,11 +91,11 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
     {
         switch (DataEditor.Data.DataController.DataType)
         {
-            case Enums.DataType.Chapter: InitializeChapterData(); break;
-            case Enums.DataType.Phase: InitializePhaseData(); break;
-            case Enums.DataType.Quest: InitializeQuestData(); break;
-            case Enums.DataType.Objective: InitializeObjectiveData(); break;
-            default: Debug.Log("CASE MISSING"); break;
+            case Enums.DataType.Chapter:    InitializeChapterData();    break;
+            case Enums.DataType.Phase:      InitializePhaseData();      break;
+            case Enums.DataType.Quest:      InitializeQuestData();      break;
+            case Enums.DataType.Objective:  InitializeObjectiveData();  break;
+            default:                        Debug.Log("CASE MISSING");  break;
         }
     }
 

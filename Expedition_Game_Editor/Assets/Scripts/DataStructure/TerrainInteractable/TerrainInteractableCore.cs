@@ -59,7 +59,9 @@ public class TerrainInteractableCore : GeneralData
 
     }
 
-    public virtual void Update()
+    public virtual void Update() { }
+
+    public void UpdateSearch()
     {
         var terrainInteractableData = Fixtures.terrainInteractableList.Where(x => x.id == id).FirstOrDefault();
 

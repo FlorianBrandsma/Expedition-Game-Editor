@@ -104,6 +104,8 @@ public class ChapterCore : GeneralData
             chapterData.notes = notes;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();

@@ -101,6 +101,8 @@ public class TerrainCore : GeneralData
             terrainData.name = name;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()

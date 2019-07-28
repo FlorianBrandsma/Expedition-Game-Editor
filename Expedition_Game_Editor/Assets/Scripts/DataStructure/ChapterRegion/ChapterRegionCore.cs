@@ -77,6 +77,8 @@ public class ChapterRegionCore : GeneralData
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var regionData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();

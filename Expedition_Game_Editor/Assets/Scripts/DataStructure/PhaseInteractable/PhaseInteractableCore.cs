@@ -102,6 +102,8 @@ public class PhaseInteractableCore : GeneralData
         }
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()

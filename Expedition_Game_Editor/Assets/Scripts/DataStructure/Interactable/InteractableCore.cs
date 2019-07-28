@@ -85,6 +85,8 @@ public class InteractableCore : GeneralData
             interactableData.objectGraphicId = objectGraphicId;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var interactableData = Fixtures.interactableList.Where(x => x.id == id).FirstOrDefault();

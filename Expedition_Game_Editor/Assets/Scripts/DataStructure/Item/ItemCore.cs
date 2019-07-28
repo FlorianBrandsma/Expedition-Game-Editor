@@ -92,6 +92,8 @@ public class ItemCore : GeneralData
             itemData.name = name;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         var itemData = Fixtures.itemList.Where(x => x.id == id).FirstOrDefault();

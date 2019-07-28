@@ -57,6 +57,8 @@ public class TileCore : GeneralData
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex()
     {
         if (changedIndex)

@@ -67,6 +67,8 @@ public class PartyMemberCore : GeneralData
             partyElementData.interactableId = interactableId;
     }
 
+    public void UpdateSearch() { }
+
     public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()

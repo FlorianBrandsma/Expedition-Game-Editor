@@ -12,9 +12,54 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
 
     #region UI
 
-    public InputField inputField;
+    public EditorInputNumber inputField;
 
     #endregion
+
+    #region Data Variables
+
+    private float scaleMultiplier;
+
+    #endregion
+
+    #region Data Properties
+
+    public float ScaleMultiplier
+    {
+        get { return scaleMultiplier; }
+        set
+        {
+            scaleMultiplier = value;
+
+            switch (DataEditor.Data.DataController.DataType)
+            {
+                case Enums.DataType.Interaction:
+
+                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    interactionData.ScaleMultiplier = value;
+
+                    break;
+
+                case Enums.DataType.TerrainObject:
+
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    terrainObjectData.ScaleMultiplier = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING"); break;
+            }
+        }
+    }
+
+    #endregion
+
+    public void UpdateScaleMultiplier()
+    {
+        ScaleMultiplier = inputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
 
     public void ApplySegment()
     {
@@ -26,27 +71,51 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
 
     }
 
+    public void InitializeSegment()
+    {
+        InitializeDependencies();
+
+        InitializeData();
+    }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.PathController.dataEditor;
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
-
     public void InitializeData()
     {
+        switch (DataEditor.Data.DataController.DataType)
+        {
+            case Enums.DataType.Interaction: InitializeInteractionData(); break;
+            case Enums.DataType.TerrainObject: InitializeTerrainObjectData(); break;
 
+            default: Debug.Log("CASE MISSING"); break;
+        }
     }
 
-    private void SetSearchParameters()
+    private void InitializeInteractionData()
     {
+        var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
 
+        scaleMultiplier = interactionData.ScaleMultiplier;
     }
 
-    public void OpenSegment() { }
+    private void InitializeTerrainObjectData()
+    {
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+
+        scaleMultiplier = terrainObjectData.ScaleMultiplier;
+    }
+
+    private void SetSearchParameters() { }
+
+    public void OpenSegment()
+    {
+        inputField.Value = ScaleMultiplier;
+
+        gameObject.SetActive(true);
+    }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

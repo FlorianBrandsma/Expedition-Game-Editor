@@ -45,6 +45,20 @@ public class TerrainObjectDataManager
                         ObjectGraphicId = terrainObjectData.objectGraphicId,
                         RegionId = terrainObjectData.regionId,
 
+                        BoundToTile = terrainObjectData.boundToTile,
+
+                        PositionX = terrainObjectData.positionX,
+                        PositionY = terrainObjectData.positionY,
+                        PositionZ = terrainObjectData.positionZ,
+
+                        RotationX = terrainObjectData.rotationX,
+                        RotationY = terrainObjectData.rotationY,
+                        RotationZ = terrainObjectData.rotationZ,
+
+                        ScaleMultiplier = terrainObjectData.scaleMultiplier,
+
+                        Animation = terrainObjectData.animation,
+
                         objectGraphicName = objectGraphicData.name,
                         objectGraphicIconPath = iconData.path
 
@@ -71,6 +85,20 @@ public class TerrainObjectDataManager
             terrainObjectData.objectGraphicId = terrainObject.objectGraphicId;
             terrainObjectData.regionId = terrainObject.regionId;
 
+            terrainObjectData.boundToTile = terrainObject.boundToTile;
+
+            terrainObjectData.positionX = terrainObject.positionX;
+            terrainObjectData.positionY = terrainObject.positionY;
+            terrainObjectData.positionZ = terrainObject.positionZ;
+
+            terrainObjectData.rotationX = terrainObject.rotationX;
+            terrainObjectData.rotationY = terrainObject.rotationY;
+            terrainObjectData.rotationZ = terrainObject.rotationZ;
+
+            terrainObjectData.scaleMultiplier = terrainObject.scaleMultiplier;
+
+            terrainObjectData.animation = terrainObject.animation;
+            
             terrainObjectDataList.Add(terrainObjectData);
         }
     }
@@ -89,5 +117,19 @@ public class TerrainObjectDataManager
     {
         public int objectGraphicId;
         public int regionId;
+
+        public bool boundToTile;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 }

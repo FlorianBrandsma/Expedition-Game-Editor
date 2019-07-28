@@ -16,6 +16,8 @@ public class GeneralDataElement : GeneralData, IDataElement
         SetOriginalValues();
     }
 
+    public void UpdateSearch() { }
+
     public void SetOriginalValues()
     {
         ClearChanges();

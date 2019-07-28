@@ -65,14 +65,7 @@ public class IconCore : GeneralData
         SetOriginalValues();
     }
 
-    public void UpdateIndex()
-    {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
-    }
+    public void UpdateSearch() { }
 
     public void SetOriginalValues()
     {

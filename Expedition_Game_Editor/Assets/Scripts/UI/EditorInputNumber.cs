@@ -36,6 +36,7 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
         if (valueType.Length > 0)
         {
             valueTypeText.text = valueType;
+
             Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMin;
             inputField.GetComponent<RectTransform>().offsetMin = new Vector2(inputFieldOffset.x + valueTypeText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
         }
@@ -43,6 +44,7 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
         if(valueUnit.Length > 0)
         {
             valueUnitText.text = valueUnit;
+
             Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMax;
             inputField.GetComponent<RectTransform>().offsetMax = new Vector2(inputFieldOffset.x - valueUnitText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
         }
