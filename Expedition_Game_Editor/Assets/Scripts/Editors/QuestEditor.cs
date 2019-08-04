@@ -10,7 +10,7 @@ public class QuestEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -31,7 +31,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        questData = (QuestDataElement)Data.DataElement;
+        questData = (QuestDataElement)Data.dataElement;
         questInteractableDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -44,12 +44,12 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<QuestDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<QuestDataElement>().ToList();
 
         list.RemoveAt(questData.Index);
         list.Insert(index, questData);
 
-        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

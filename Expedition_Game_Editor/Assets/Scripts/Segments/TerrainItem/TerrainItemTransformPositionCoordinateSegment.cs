@@ -31,18 +31,18 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         {
             positionX = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.PositionX = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.PositionX = value;
 
                     break;
@@ -59,18 +59,18 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         {
             positionY = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.PositionY = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.PositionY = value;
 
                     break;
@@ -87,18 +87,18 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         {
             positionZ = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.PositionZ = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.PositionZ = value;
 
                     break;
@@ -148,7 +148,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
     public void InitializeData()
     {
-        switch (DataEditor.Data.DataController.DataType)
+        switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
             case Enums.DataType.TerrainObject:  InitializeTerrainObjectData();  break;
@@ -159,7 +159,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         positionX = interactionData.PositionX;
         positionY = interactionData.PositionY;
@@ -168,7 +168,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
     private void InitializeTerrainObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
 
         positionX = terrainObjectData.PositionX;
         positionY = terrainObjectData.PositionY;

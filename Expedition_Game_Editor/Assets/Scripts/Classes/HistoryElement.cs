@@ -7,7 +7,7 @@ public class HistoryElement
 
     public HistoryElement(HistoryElement historyElement)
     {
-        path = historyElement.path.Copy();
+        path = historyElement.path;
         group = historyElement.group;
     }
 

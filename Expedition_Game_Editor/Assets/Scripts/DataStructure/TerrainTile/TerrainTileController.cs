@@ -27,22 +27,22 @@ public class TerrainTileController : MonoBehaviour, IDataController
         terrainTileDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = terrainTileDataManager.GetTerrainTileDataElements(searchParameters);
+        return terrainTileDataManager.GetTerrainTileDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (TerrainTileDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (TerrainTileDataElement)searchElement.data.dataElement;
 
         var terrainTileDataElement = DataList.Cast<TerrainTileDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Tile:
 
-                var resultElementData = (TileDataElement)resultData.DataElement;
+                var resultElementData = (TileDataElement)resultData.dataElement;
 
                 terrainTileDataElement.TileId = resultElementData.id;
                 terrainTileDataElement.iconPath = resultElementData.icon;
@@ -50,7 +50,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = terrainTileDataElement;
+        searchElement.data.dataElement = terrainTileDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

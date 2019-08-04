@@ -9,7 +9,7 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -29,7 +29,7 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        interactionData = (InteractionDataElement)Data.DataElement;
+        interactionData = (InteractionDataElement)Data.dataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }

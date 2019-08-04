@@ -31,18 +31,18 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
         {
             rotationX = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.RotationX = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.RotationX = value;
 
                     break;
@@ -59,18 +59,18 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
         {
             rotationY = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.RotationY = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.RotationY = value;
 
                     break;
@@ -87,18 +87,18 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
         {
             rotationZ = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.RotationZ = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.RotationZ = value;
 
                     break;
@@ -148,7 +148,7 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        switch (DataEditor.Data.DataController.DataType)
+        switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
             case Enums.DataType.TerrainObject: InitializeTerrainObjectData(); break;
@@ -159,7 +159,7 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         rotationX = interactionData.RotationX;
         rotationY = interactionData.RotationY;
@@ -168,7 +168,7 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
     private void InitializeTerrainObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
 
         rotationX = terrainObjectData.RotationX;
         rotationY = terrainObjectData.RotationY;

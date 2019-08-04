@@ -26,14 +26,14 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int list_count = overlayManager.listManager.listProperties.DataController.DataList.Count;
+        int listCount = overlayManager.listManager.listProperties.DataController.DataList.Count;
 
-        Vector2 list_size = list.GetListSize(list_count, false);
+        Vector2 listSize = list.GetListSize(listCount, false);
 
-        if (list_size.x > 0)
+        if (listSize.x > 0)
             overlayManager.horizontal_min.gameObject.SetActive(true);
 
-        if (list_size.y > 0)
+        if (listSize.y > 0)
             overlayManager.vertical_min.gameObject.SetActive(true);
     }
 

@@ -8,6 +8,35 @@ using System.Linq;
 
 public class SelectionElement : MonoBehaviour
 {
+    public class Data
+    {
+        public IDataController dataController;
+        public IDataElement dataElement;
+        public IEnumerable searchParameters;
+
+        public Data(IDataController dataController)
+        {
+            this.dataController = dataController;
+            dataElement = new GeneralDataElement();
+        }
+
+        public Data(IDataController dataController, IDataElement dataElement)
+        {
+            this.dataController = dataController;
+            this.dataElement = dataElement;
+        }
+
+        public Data(IDataController dataController, IDataElement dataElement, IEnumerable searchParameters)
+        {
+            this.dataController = dataController;
+            this.dataElement = dataElement;
+            this.searchParameters = searchParameters;
+        }
+    }
+
+    public Data data;
+    public Path path;
+
     public SegmentController segmentController;
     public GameObject displayParent;
     public Enums.SelectionGroup selectionGroup;
@@ -27,9 +56,7 @@ public class SelectionElement : MonoBehaviour
     public GameObject lockIcon;
 
     public bool selected;
-
-    public Route route = new Route();
-
+    
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
 
     public Color BackgroundColor
@@ -54,17 +81,6 @@ public class SelectionElement : MonoBehaviour
     public IEditor DataEditor               { get; set; }
     public ListManager ListManager          { get; set; }
 
-    //public IDataController DataController
-    //{
-    //    get
-    //    {
-    //        if (GetComponent<IDataController>() != null)
-    //            return GetComponent<IDataController>();
-    //        else
-    //            return ListManager.listProperties.DataController;
-    //    }
-    //}
-
     public IDataController dataController;
 
     public void InitializeElement(IDataController dataController)
@@ -73,8 +89,7 @@ public class SelectionElement : MonoBehaviour
 
         this.dataController = dataController;
 
-        route.data = new Data(GetComponent<IDataController>());
-        route.selectionGroup = selectionGroup;
+        data = new Data(GetComponent<IDataController>());
 
         CancelSelection();
 
@@ -90,8 +105,6 @@ public class SelectionElement : MonoBehaviour
 
         //Can be overwritten
         dataController = listManager.listProperties.DataController;
-
-        route.selectionGroup = selectionGroup;
 
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
@@ -168,7 +181,7 @@ public class SelectionElement : MonoBehaviour
 
         if (selected) return;
 
-        EditorPath editorPath = new EditorPath(this);
+        EditorPath editorPath = new EditorPath(this, new Route(this));
 
         switch (selectionProperty)
         {
@@ -176,7 +189,7 @@ public class SelectionElement : MonoBehaviour
 
             case SelectionManager.Property.Get:
                 
-                var dataElement = route.data.DataElement;
+                var dataElement = data.dataElement;
 
                 EditorManager.editorManager.InitializePath(editorPath.path);
 
@@ -188,7 +201,7 @@ public class SelectionElement : MonoBehaviour
                 break;
 
             case SelectionManager.Property.Set:
-                SelectionManager.SelectSet(route.data.DataElement);
+                SelectionManager.SelectSet(data.dataElement);
                 break;
 
             case SelectionManager.Property.Enter:
@@ -205,7 +218,7 @@ public class SelectionElement : MonoBehaviour
 
             case SelectionManager.Property.Toggle:
 
-                dataController.ToggleElement(route.data.DataElement);
+                dataController.ToggleElement(data.dataElement);
 
                 break;
 
@@ -221,7 +234,7 @@ public class SelectionElement : MonoBehaviour
         dataController.SetData(this, elementData);
 
         if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
-            route.data.DataElement.UpdateSearch();
+            data.dataElement.UpdateSearch();
 
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 
@@ -230,6 +243,6 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return (GeneralData)route.data.DataElement;      
+        return (GeneralData)data.dataElement;      
     }
 }

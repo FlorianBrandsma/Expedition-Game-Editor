@@ -36,14 +36,14 @@ public class InteractionSegment : MonoBehaviour, ISegment
         //If a terrainInteractable is selected without being directly related to an objective, don't try to get this data
         if(SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
         {
-            var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.DataElement;
+            var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.dataElement;
             searchParameters.objectiveId = new List<int>() { objectiveData.id };
         }
 
-        var terrainInteractableData = (TerrainInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainInteractable).data.DataElement;
+        var terrainInteractableData = (TerrainInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.TerrainInteractable).data.dataElement;
         searchParameters.terrainInteractableId = new List<int>() { terrainInteractableData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()

@@ -24,7 +24,7 @@ namespace Source
 
         public GeneralData GeneralData()
         {
-            return (GeneralData)route.data.DataElement;
+            return (GeneralData)route.data.dataElement;
         }
     }
 }

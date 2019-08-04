@@ -35,14 +35,14 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 
         if (phaseEditor.regionDataList.Count > 0) return;
 
-        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.Region();
 
         searchParameters.requestType = Search.Region.RequestType.Custom;
         searchParameters.phaseId = new List<int>() { phaseData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     private void SetSearchParameters() { }

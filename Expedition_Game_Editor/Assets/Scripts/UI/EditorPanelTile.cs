@@ -29,13 +29,13 @@ public class EditorPanelTile : MonoBehaviour, IElement
         }
     }
 
-    private Data ChildButtonData
+    private SelectionElement.Data ChildButtonData
     {
-        get { return ElementChild.route.data; }
+        get { return ElementChild.data; }
         set
         {
             InitializeEdit();
-            ElementChild.route.data = value;
+            ElementChild.data = value;
         }
     }
 
@@ -61,21 +61,21 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (Element.route.data.DataController.DataType)
+        switch (Element.data.dataController.DataType)
         {
             case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
             case Enums.DataType.TerrainObject:      SetTerrainObjectElement();      break;
-            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
 
         if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = Element.route.data;
+            ChildButtonData = Element.data;
     }
 
     private void SetTerrainInteractableElement()
     {
-        Data data = Element.route.data;
-        TerrainInteractableDataElement dataElement = (TerrainInteractableDataElement)data.DataElement;
+        var data = Element.data;
+        TerrainInteractableDataElement dataElement = (TerrainInteractableDataElement)data.dataElement;
 
         idText.text = dataElement.id.ToString();
         headerText.text = dataElement.interactableName;
@@ -86,8 +86,8 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private void SetTerrainObjectElement()
     {
-        Data data = Element.route.data;
-        TerrainObjectDataElement dataElement = (TerrainObjectDataElement)data.DataElement;
+        var data = Element.data;
+        TerrainObjectDataElement dataElement = (TerrainObjectDataElement)data.dataElement;
 
         idText.text = dataElement.id.ToString();
         headerText.text = dataElement.objectGraphicName;

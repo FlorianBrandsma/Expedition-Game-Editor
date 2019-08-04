@@ -9,7 +9,7 @@ public class RegionEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -29,7 +29,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        regionData = (RegionDataElement)Data.DataElement;
+        regionData = (RegionDataElement)Data.dataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }
@@ -41,12 +41,12 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<RegionDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<RegionDataElement>().ToList();
 
         list.RemoveAt(regionData.Index);
         list.Insert(index, regionData);
 
-        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

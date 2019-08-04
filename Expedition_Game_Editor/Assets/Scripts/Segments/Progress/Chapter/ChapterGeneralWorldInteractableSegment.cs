@@ -37,14 +37,14 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
 
         if (chapterEditor.terrainInteractableDataList.Count > 0) return;
 
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.TerrainInteractable();
 
         searchParameters.requestType = Search.TerrainInteractable.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
         
         var chapterInteractableList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
         chapterInteractableList.ForEach(x => chapterEditor.terrainInteractableDataList.Add(x));
@@ -54,7 +54,7 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
     {
         var chapterEditor = (ChapterEditor)DataEditor;
 
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Interactable>().FirstOrDefault();
 
         List<int> idList = new List<int>();

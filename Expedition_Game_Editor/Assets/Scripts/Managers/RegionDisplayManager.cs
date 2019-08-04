@@ -10,11 +10,6 @@ public class RegionDisplayManager : MonoBehaviour
 
     static public Display activeDisplay = Display.Tiles;
 
-    static public void GetDisplay()
-    {
-        activeDisplay = 0;
-    }
-
     static public void SetDisplay(int display, Path path)
     {
         activeDisplay = (Display)display;

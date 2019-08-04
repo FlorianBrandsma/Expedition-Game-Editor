@@ -10,7 +10,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -31,7 +31,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        phaseData = (PhaseDataElement)Data.DataElement;
+        phaseData = (PhaseDataElement)Data.dataElement;
         regionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -44,7 +44,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<PhaseDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<PhaseDataElement>().ToList();
 
         list.RemoveAt(phaseData.Index);
         list.Insert(index, phaseData);

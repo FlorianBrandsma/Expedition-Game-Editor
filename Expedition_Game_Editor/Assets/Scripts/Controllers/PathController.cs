@@ -6,9 +6,7 @@ using System.Linq;
 public class PathController : MonoBehaviour
 {
     public Route route      { get; set; }
-
     private Route previousRoute;
-
     public int step         { get; set; }
     public int layoutStep   { get; set; }
 
@@ -57,13 +55,15 @@ public class PathController : MonoBehaviour
         this.parentController = parentController;
 
         this.step = step;
-        
+
         Path path = mainPath.Trim(step);
-        
-        if (path.route.Count > 0)
-            route = path.route.Last().Copy();
-        else        
+
+        if(step > 0)
+        {
+            route = mainPath.route[step - 1];
+        } else {
             route = new Route(path);
+        }
 
         route.path = path;
 
@@ -77,17 +77,10 @@ public class PathController : MonoBehaviour
             if (!loaded || reload)
             {
                 reload = true;
-            } 
+            }
         }
 
-        //if(!loaded && autoExtend)
-        //{
-        //    Debug.Log("ADD MORE");
-        //    mainPath.Add();
-        //}
-
         previousRoute = route;
-
         GetDataController();
         GetDataEditor();
         

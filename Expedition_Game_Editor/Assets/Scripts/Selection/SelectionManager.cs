@@ -82,14 +82,13 @@ static public class SelectionManager
 
     static public void SelectSet(IDataElement setDataElement)
     {
-        getDataElement.SelectionElement.SetResult(setDataElement.SelectionElement.route.data);
+        getDataElement.SelectionElement.SetResult(setDataElement.SelectionElement.data);
 
         CancelGetSelection();
     }
 
     static public void CancelSelection(Route route)
     {
-        //Closing only one route may cause problems
         foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy).Where(x => x.selected))
         {
             if (selectionElement.GeneralData().Equals(route.GeneralData()))

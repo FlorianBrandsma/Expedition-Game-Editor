@@ -91,7 +91,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(element);
 
             data.SelectionElement = element;
-            element.route.data = new Data(primaryDataController, data);
+            element.data = new SelectionElement.Data(primaryDataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;

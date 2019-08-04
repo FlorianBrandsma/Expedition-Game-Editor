@@ -27,22 +27,22 @@ public class TerrainInteractableController : MonoBehaviour, IDataController
         terrainInteractableDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = terrainInteractableDataManager.GetTerrainInteractableDataElements(searchParameters);
+        return terrainInteractableDataManager.GetTerrainInteractableDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (TerrainInteractableDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (TerrainInteractableDataElement)searchElement.data.dataElement;
 
         var terrainInteractableDataElement = DataList.Cast<TerrainInteractableDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData.DataElement;
+                var resultElementData = (InteractableDataElement)resultData.dataElement;
 
                 terrainInteractableDataElement.InteractableId = resultElementData.id;
                 terrainInteractableDataElement.interactableName = resultElementData.Name;
@@ -51,7 +51,7 @@ public class TerrainInteractableController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = terrainInteractableDataElement;
+        searchElement.data.dataElement = terrainInteractableDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

@@ -9,7 +9,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -29,7 +29,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        interactionData = (InteractionDataElement)Data.DataElement;
+        interactionData = (InteractionDataElement)Data.dataElement;
 
         DataElements.ForEach(x => x.ClearChanges());
     }
@@ -41,12 +41,12 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<InteractionDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<InteractionDataElement>().ToList();
 
         list.RemoveAt(interactionData.Index);
         list.Insert(index, interactionData);
 
-        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

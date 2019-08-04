@@ -27,22 +27,22 @@ public class TerrainObjectController : MonoBehaviour, IDataController
         terrainObjectDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = terrainObjectDataManager.GetTerrainObjectDataElements(searchParameters);
+        return terrainObjectDataManager.GetTerrainObjectDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (TerrainObjectDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (TerrainObjectDataElement)searchElement.data.dataElement;
 
         var terrainObjectDataElement = DataList.Cast<TerrainObjectDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var resultElementData = (ObjectGraphicDataElement)resultData.DataElement;
+                var resultElementData = (ObjectGraphicDataElement)resultData.dataElement;
 
                 terrainObjectDataElement.ObjectGraphicId = resultElementData.id;
                 terrainObjectDataElement.objectGraphicName = resultElementData.Name;
@@ -51,7 +51,7 @@ public class TerrainObjectController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = terrainObjectDataElement;
+        searchElement.data.dataElement = terrainObjectDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

@@ -22,13 +22,13 @@ public class TerrainSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.PathController.loaded) return;
 
-        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.DataElement;
+        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
 
         var searchParameters = new Search.Terrain();
 
         searchParameters.regionId = new List<int>() { regionData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()

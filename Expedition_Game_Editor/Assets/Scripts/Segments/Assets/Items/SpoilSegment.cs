@@ -35,7 +35,7 @@ public class SpoilSegment : MonoBehaviour, ISegment
             var searchParameters = new Search.Item();
             searchParameters.type = new List<int>() { (int)Enums.ItemType.Spoils };
 
-            SegmentController.DataController.GetData(new[] { searchParameters });
+            SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
         }
     }
 

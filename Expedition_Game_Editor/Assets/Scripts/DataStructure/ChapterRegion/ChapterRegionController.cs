@@ -27,22 +27,22 @@ public class ChapterRegionController : MonoBehaviour, IDataController
         chapterRegionDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = chapterRegionDataManager.GetChapterRegionDataElements(searchParameters);
+        return chapterRegionDataManager.GetChapterRegionDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (ChapterRegionDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (ChapterRegionDataElement)searchElement.data.dataElement;
 
         var chapterRegionDataElement = DataList.Cast<ChapterRegionDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Region:
 
-                var resultElementData = (RegionDataElement)resultData.DataElement;
+                var resultElementData = (RegionDataElement)resultData.dataElement;
 
                 chapterRegionDataElement.RegionId = resultElementData.id;
                 chapterRegionDataElement.name = resultElementData.Name;
@@ -50,7 +50,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = chapterRegionDataElement;
+        searchElement.data.dataElement = chapterRegionDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement)

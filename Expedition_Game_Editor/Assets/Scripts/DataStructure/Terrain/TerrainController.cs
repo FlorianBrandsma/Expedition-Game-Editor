@@ -27,18 +27,12 @@ public class TerrainController : MonoBehaviour, IDataController
         terrainDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = terrainDataManager.GetTerrainDataElements(searchParameters);
+        return terrainDataManager.GetTerrainDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
-    {
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
 
-    }
-
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

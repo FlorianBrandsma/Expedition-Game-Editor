@@ -52,7 +52,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float positionSum = 0;
 
-        for (int i = 0; i < ListManager.listProperties.DataController.DataList.Count; i++)
+        for (int i = 0; i < ListManager.listProperties.SegmentController.DataController.DataList.Count; i++)
         {
             rowHeight.Add(ElementSize.y);
 
@@ -82,7 +82,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(element);
             
             data.SelectionElement = element;
-            element.route.data = new Data(dataController, data);
+            element.data = new SelectionElement.Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -103,6 +103,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     public void ResetData(List<IDataElement> filter)
     {
         CloseList();
+
         SetData(filter);
     }
 

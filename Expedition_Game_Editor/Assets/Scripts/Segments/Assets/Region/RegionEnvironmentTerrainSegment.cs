@@ -39,7 +39,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        regionDataElement = (RegionDataElement)DataEditor.Data.DataElement;
+        regionDataElement = (RegionDataElement)DataEditor.Data.dataElement;
     }
 
     private void SetSearchParameters() { }
@@ -83,7 +83,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.Tile.RequestType.Custom;
         searchParameters.tileSetId = new List<int>() { regionDataElement.TileSetId };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     private void SetDisplay()

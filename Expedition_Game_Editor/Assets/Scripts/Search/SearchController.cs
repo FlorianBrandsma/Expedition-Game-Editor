@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SearchController : MonoBehaviour
 {
-    private Data data;
+    private Route.Data data;
 
     public RectTransform referenceArea;
     public bool enableIcon;
@@ -18,9 +18,9 @@ public class SearchController : MonoBehaviour
 
         data = SegmentController.editorController.PathController.route.data;
         
-        if (data.SearchParameters == null) return;
+        if (data.searchParameters == null) return;
         
-        var searchParameters = data.SearchParameters.Cast<SearchParameters>().FirstOrDefault();
+        var searchParameters = data.searchParameters.Cast<SearchParameters>().FirstOrDefault();
 
         InitializeListProperties(searchParameters.elementType);
         InitializeDataController(searchParameters.dataType);
@@ -65,7 +65,7 @@ public class SearchController : MonoBehaviour
         }
 
         dataController.InitializeController();
-        dataController.SearchParameters = data.SearchParameters;
+        dataController.SearchParameters = data.searchParameters;
     }
 
     public void CloseController()

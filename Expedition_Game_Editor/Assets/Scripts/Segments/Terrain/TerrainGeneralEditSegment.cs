@@ -24,13 +24,13 @@ public class TerrainGeneralEditSegment : MonoBehaviour, ISegment
     private void InitializeEditButton()
     {
         var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
-        var regionData = (RegionDataElement)data.DataElement;
+        var regionData = (RegionDataElement)data.dataElement;
 
-        editButton.route.path = SegmentController.editorController.PathController.route.path;
+        editButton.path = SegmentController.editorController.PathController.route.path;
 
         editButton.InitializeElement(null);
 
-        editButton.route.data = new Data(data.DataController, regionData);
+        editButton.data = new SelectionElement.Data(data.dataController, regionData);
 
         editButton.GetComponentInChildren<Text>().text = Enum.GetName(typeof(SelectionManager.Property), editButton.selectionProperty) + " " + regionData.Name;
     }

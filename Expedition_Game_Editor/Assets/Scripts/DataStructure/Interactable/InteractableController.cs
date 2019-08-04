@@ -27,22 +27,22 @@ public class InteractableController : MonoBehaviour, IDataController
         interactableDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = interactableDataManager.GetInteractableDataElements(searchParameters);
+        return interactableDataManager.GetInteractableDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (InteractableDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (InteractableDataElement)searchElement.data.dataElement;
 
         var interactableDataElement = DataList.Cast<InteractableDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData.DataElement;
+                var resultElementData = (InteractableDataElement)resultData.dataElement;
 
                 interactableDataElement.id = resultElementData.id;
                 interactableDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
@@ -50,7 +50,7 @@ public class InteractableController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = interactableDataElement;
+        searchElement.data.dataElement = interactableDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

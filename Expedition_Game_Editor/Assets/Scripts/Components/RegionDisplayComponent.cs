@@ -6,14 +6,14 @@ using System.Collections;
 public class RegionDisplayComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
-    Dropdown dropdown;
+
     private PathController pathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeComponent(Path path) { }
 
     public void SetComponent(Path path)
     {
-        dropdown = ComponentManager.componentManager.AddDropdown(component);
+        Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
 
         RegionDisplayManager.activeDisplay = (RegionDisplayManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
 
@@ -27,11 +27,6 @@ public class RegionDisplayComponent : MonoBehaviour, IComponent
         dropdown.value = (int)RegionDisplayManager.activeDisplay;
 
         dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(dropdown.value, pathController.route.path); });
-    }
-
-    public void InitializePath(Path path, Data data)
-    {
-        EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }
 
     public void CloseComponent() {}

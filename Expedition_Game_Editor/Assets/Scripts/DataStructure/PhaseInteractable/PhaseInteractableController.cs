@@ -27,20 +27,17 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
         phaseInteractableDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = phaseInteractableDataManager.GetQuestInteractableDataElements(searchParameters);
+        return phaseInteractableDataManager.GetQuestInteractableDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
-    {
-
-    }
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
 
     public void ToggleElement(IDataElement dataElement)
     {
         var phaseInteractablesData = (PhaseInteractableDataElement)dataElement;
-        var questData = (QuestDataElement)SegmentController.editorController.PathController.route.data.DataElement;
+        var questData = (QuestDataElement)SegmentController.editorController.PathController.route.data.dataElement;
 
         switch(phaseInteractablesData.elementStatus)
         {

@@ -35,8 +35,6 @@ public class FormComponent : MonoBehaviour, IComponent
     public void InitializeForm(PathController pathController)
     {
         this.pathController = pathController;
-
-        
     }
 
     public void SetForm()

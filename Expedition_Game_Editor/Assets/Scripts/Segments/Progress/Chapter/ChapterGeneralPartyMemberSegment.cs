@@ -37,14 +37,14 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 
         if (chapterEditor.partyMemberDataList.Count > 0) return;
 
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.PartyMember();
 
         searchParameters.requestType = Search.PartyMember.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberDataElement>().ToList();
         partyMemberList.ForEach(x => chapterEditor.partyMemberDataList.Add(x));

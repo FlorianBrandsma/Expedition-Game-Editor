@@ -31,18 +31,18 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
         {
             scaleMultiplier = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
                     interactionData.ScaleMultiplier = value;
 
                     break;
 
                 case Enums.DataType.TerrainObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
                     terrainObjectData.ScaleMultiplier = value;
 
                     break;
@@ -85,7 +85,7 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
 
     public void InitializeData()
     {
-        switch (DataEditor.Data.DataController.DataType)
+        switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
             case Enums.DataType.TerrainObject: InitializeTerrainObjectData(); break;
@@ -96,14 +96,14 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         scaleMultiplier = interactionData.ScaleMultiplier;
     }
 
     private void InitializeTerrainObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
 
         scaleMultiplier = terrainObjectData.ScaleMultiplier;
     }

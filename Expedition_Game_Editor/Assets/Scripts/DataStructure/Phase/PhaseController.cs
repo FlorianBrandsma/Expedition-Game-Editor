@@ -32,18 +32,15 @@ public class PhaseController : MonoBehaviour, IDataController
 
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = phaseDataManager.GetPhaseDataElements(searchParameters.Cast<Search.Phase>().FirstOrDefault());
+        return phaseDataManager.GetPhaseDataElements(searchParameters.Cast<Search.Phase>().FirstOrDefault());
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
         CreatePhaseElements();
     }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

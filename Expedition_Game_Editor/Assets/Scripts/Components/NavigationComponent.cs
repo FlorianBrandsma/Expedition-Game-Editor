@@ -10,7 +10,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     public EditorComponent component;
 
-    private IDataController dataController;
+    private Route.Data data;
 
     private Dropdown dropdown;
 
@@ -18,18 +18,18 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     public void InitializeComponent(Path path)
     {
-        dataController = PathController.route.data.DataController;
+        data = PathController.route.data;
     }
 
     public void SetComponent(Path path)
     {
-        if (dataController == null) return;
+        if (data == null) return;
 
         this.path = path;
 
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        switch (dataController.DataType)
+        switch (data.dataController.DataType)
         {
             case Enums.DataType.Chapter:            SetChapterOptions();            break;
             case Enums.DataType.Phase:              SetPhaseOptions();              break;
@@ -37,53 +37,53 @@ public class NavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Objective:          SetObjectiveOptions();          break;
             case Enums.DataType.TerrainInteractable:SetTerrainInteractableOptions();break;
 
-            default: Debug.Log("CASE MISSING: " + dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + data.dataController.DataType); break;
         }
 
-        int selectedIndex = dataController.DataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData().id);
+        int selectedIndex = data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData().id);
 
         dropdown.value = selectedIndex;
         dropdown.captionText.text = dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Data(dataController, dataController.DataList[dropdown.value])); });
+        dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Route.Data(data, data.dataList[dropdown.value])); });
     }
 
     private void SetChapterOptions()
     {
-        var dataElements = dataController.DataList.Cast<ChapterDataElement>().ToList();
+        var dataElements = data.dataList.Cast<ChapterDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseOptions()
     {
-        var dataElements = dataController.DataList.Cast<PhaseDataElement>().ToList();
+        var dataElements = data.dataList.Cast<PhaseDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestOptions()
     {
-        var dataElements = dataController.DataList.Cast<QuestDataElement>().ToList();
+        var dataElements = data.dataList.Cast<QuestDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveOptions()
     {
-        var dataElements = dataController.DataList.Cast<ObjectiveDataElement>().ToList();
+        var dataElements = data.dataList.Cast<ObjectiveDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetTerrainInteractableOptions()
     {
-        var dataElements = dataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
+        var dataElements = data.dataList.Cast<TerrainInteractableDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 
-    public void InitializePath(Path path, Data data)
+    public void InitializePath(Path path, Route.Data data)
     {
         EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }

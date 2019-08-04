@@ -15,7 +15,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -38,7 +38,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        chapterData = (ChapterDataElement)Data.DataElement;
+        chapterData = (ChapterDataElement)Data.dataElement;
         partyMemberDataList.Clear();
         terrainInteractableDataList.Clear();
         chapterRegionDataList.Clear();
@@ -53,12 +53,12 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<ChapterDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<ChapterDataElement>().ToList();
 
         list.RemoveAt(chapterData.Index);
         list.Insert(index, chapterData);
 
-        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -182,6 +182,10 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     interaction.rotationY = interactionSource.rotationY;
                     interaction.rotationZ = interactionSource.rotationZ;
 
+                    interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+
+                    interaction.animation = interactionSource.animation;
+
                     Fixtures.interactionList.Add(interaction);
                 }
 
@@ -201,7 +205,20 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
                 terrainObject.index = terrainObjectSource.index;
                 terrainObject.objectGraphicId = terrainObjectSource.objectGraphicId;
+
                 terrainObject.boundToTile = terrainObjectSource.boundToTile;
+
+                terrainObject.positionX = terrainObjectSource.positionX;
+                terrainObject.positionY = terrainObjectSource.positionY;
+                terrainObject.positionZ = terrainObjectSource.positionZ;
+
+                terrainObject.rotationX = terrainObjectSource.rotationX;
+                terrainObject.rotationY = terrainObjectSource.rotationY;
+                terrainObject.rotationZ = terrainObjectSource.rotationZ;
+
+                terrainObject.scaleMultiplier = terrainObjectSource.scaleMultiplier;
+
+                terrainObject.animation = terrainObjectSource.animation;
 
                 Fixtures.terrainObjectList.Add(terrainObject);
             }

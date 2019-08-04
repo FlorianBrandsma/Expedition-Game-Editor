@@ -12,7 +12,7 @@ public class TerrainTileEditor : MonoBehaviour//, IEditor
     public bool subEditor;
 
     public bool SubEditor { get { return subEditor; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public void InitializeEditor()
     {
@@ -20,7 +20,7 @@ public class TerrainTileEditor : MonoBehaviour//, IEditor
 
         Data = PathController.route.data;
 
-        terrainTileData = (TerrainTileDataElement)Data.DataElement;
+        terrainTileData = (TerrainTileDataElement)Data.dataElement;
 
         if (!PathController.loaded)
             terrainTileData.ClearChanges();
@@ -33,7 +33,7 @@ public class TerrainTileEditor : MonoBehaviour//, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<TerrainTileDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<TerrainTileDataElement>().ToList();
 
         list.RemoveAt(terrainTileData.Index);
         list.Insert(index, terrainTileData);

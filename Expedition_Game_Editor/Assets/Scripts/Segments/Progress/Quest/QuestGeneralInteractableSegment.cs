@@ -37,14 +37,14 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
         if (questEditor.questInteractableDataList.Count > 0) return;
 
-        var questData = (QuestDataElement)DataEditor.Data.DataElement;
+        var questData = (QuestDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.PhaseInteractable();
 
         searchParameters.requestType = Search.PhaseInteractable.RequestType.Custom;
         searchParameters.phaseId = new List<int>() { questData.PhaseId };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
 
@@ -73,7 +73,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        var questData = (QuestDataElement)DataEditor.Data.DataElement;
+        var questData = (QuestDataElement)DataEditor.Data.dataElement;
 
         DataEditor.UpdateEditor();
 

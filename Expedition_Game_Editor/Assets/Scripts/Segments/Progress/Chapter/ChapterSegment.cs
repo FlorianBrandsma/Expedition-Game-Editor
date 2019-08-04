@@ -4,6 +4,7 @@ using System.Collections;
 public class ChapterSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
     public void ApplySegment()
@@ -31,8 +32,8 @@ public class ChapterSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.PathController.loaded) return;
         
         var searchParameters = new Search.Chapter();
-
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()

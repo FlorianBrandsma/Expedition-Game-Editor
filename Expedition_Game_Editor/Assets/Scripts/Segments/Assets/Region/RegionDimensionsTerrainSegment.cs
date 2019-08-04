@@ -40,7 +40,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        regionDataElement = (RegionDataElement)DataEditor.Data.DataElement;
+        regionDataElement = (RegionDataElement)DataEditor.Data.dataElement;
     }
 
     private void SetSearchParameters() { }

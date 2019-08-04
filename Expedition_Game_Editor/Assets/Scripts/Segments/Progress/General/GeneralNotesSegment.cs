@@ -29,32 +29,32 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
         {
             notes = value;
 
-            switch (DataEditor.Data.DataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Chapter:
 
-                    var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+                    var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
                     chapterData.Notes = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
+                    var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
                     phaseData.Notes = value;
 
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questData = (QuestDataElement)DataEditor.Data.DataElement;
+                    var questData = (QuestDataElement)DataEditor.Data.dataElement;
                     questData.Notes = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
+                    var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
                     objectiveData.Notes = value;
 
                     break;
@@ -89,7 +89,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        switch (DataEditor.Data.DataController.DataType)
+        switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Chapter:    InitializeChapterData();    break;
             case Enums.DataType.Phase:      InitializePhaseData();      break;
@@ -101,28 +101,28 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterData()
     {
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
 
         notes = chapterData.Notes;
     }
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.DataElement;
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
 
         notes = phaseData.Notes;
     }
 
     private void InitializeQuestData()
     {
-        var questData = (QuestDataElement)DataEditor.Data.DataElement;
+        var questData = (QuestDataElement)DataEditor.Data.dataElement;
 
         notes = questData.Notes;
     }
 
     private void InitializeObjectiveData()
     {
-        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
 
         notes = objectiveData.Notes;
     }

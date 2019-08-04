@@ -19,7 +19,7 @@ public class EditorButton : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (element.route.data.DataController.DataType)
+        switch (element.data.dataController.DataType)
         {
             case Enums.DataType.Item:           SetItemElement();           break;
             case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
@@ -29,14 +29,14 @@ public class EditorButton : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        var data = (ItemDataElement)element.route.data.DataElement;
+        var data = (ItemDataElement)element.data.dataElement;
 
         label.text = data.originalName;
     }
 
     private void SetChapterRegionElement()
     {
-        var data = (ChapterRegionDataElement)element.route.data.DataElement;
+        var data = (ChapterRegionDataElement)element.data.dataElement;
 
         label.text = data.name;
     }

@@ -27,24 +27,22 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
         objectGraphicDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = objectGraphicDataManager.GetObjectGraphicDataElements(searchParameters);
-
-        var objectGraphicDataElements = DataList.Cast<ObjectGraphicDataElement>();
+        return objectGraphicDataManager.GetObjectGraphicDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (ObjectGraphicDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (ObjectGraphicDataElement)searchElement.data.dataElement;
 
         var objectGraphicDataElement = DataList.Cast<ObjectGraphicDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var resultElementData = (ObjectGraphicDataElement)resultData.DataElement;
+                var resultElementData = (ObjectGraphicDataElement)resultData.dataElement;
 
                 objectGraphicDataElement.id = resultElementData.id;
                 objectGraphicDataElement.IconId = resultElementData.IconId;
@@ -55,11 +53,8 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = objectGraphicDataElement;
+        searchElement.data.dataElement = objectGraphicDataElement;
     }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

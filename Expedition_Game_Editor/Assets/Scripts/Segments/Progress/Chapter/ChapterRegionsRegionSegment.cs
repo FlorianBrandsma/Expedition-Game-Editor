@@ -35,14 +35,14 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
         if (chapterEditor.chapterRegionDataList.Count > 0) return;
 
-        var chapterData = (ChapterDataElement)DataEditor.Data.DataElement;
+        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.ChapterRegion();
 
         searchParameters.requestType = Search.ChapterRegion.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { chapterData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionDataElement>().ToList();
 

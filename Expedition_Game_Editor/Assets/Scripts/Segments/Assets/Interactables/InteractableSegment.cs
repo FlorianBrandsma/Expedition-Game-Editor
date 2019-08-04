@@ -34,7 +34,7 @@ public class InteractableSegment : MonoBehaviour, ISegment
         {
             var searchParameters = new Search.Interactable();
 
-            SegmentController.DataController.GetData(new[] { searchParameters });
+            SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
         }
     }
 

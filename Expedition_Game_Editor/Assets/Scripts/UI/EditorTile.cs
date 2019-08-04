@@ -20,7 +20,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (Element.route.data.DataController.DataType)
+        switch (Element.data.dataController.DataType)
         {
             case Enums.DataType.Icon:               SetIconElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
@@ -31,13 +31,13 @@ public class EditorTile : MonoBehaviour, IElement
             case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
             case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
 
-            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
     }
 
     private void SetIconElement()
     {
-        var dataElement = (IconDataElement)Element.route.data.DataElement;
+        var dataElement = (IconDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.Path;
@@ -52,7 +52,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetInteractableElement()
     {
-        var dataElement = (InteractableDataElement)Element.route.data.DataElement;
+        var dataElement = (InteractableDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
@@ -64,7 +64,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainElement()
     {
-        var dataElement = (TerrainDataElement)Element.route.data.DataElement;
+        var dataElement = (TerrainDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.iconPath;
@@ -76,7 +76,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTileElement()
     {
-        var dataElement = (TileDataElement)Element.route.data.DataElement;
+        var dataElement = (TileDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.icon;
@@ -88,7 +88,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainTileElement()
     {
-        var dataElement = (TerrainTileDataElement)Element.route.data.DataElement;
+        var dataElement = (TerrainTileDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.iconPath;
@@ -100,7 +100,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetObjectGraphicElement()
     {
-        var dataElement = (ObjectGraphicDataElement)Element.route.data.DataElement;
+        var dataElement = (ObjectGraphicDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.iconPath;
@@ -112,7 +112,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetTerrainInteractableElement()
     {
-        var dataElement = (TerrainInteractableDataElement)Element.route.data.DataElement;
+        var dataElement = (TerrainInteractableDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
@@ -124,7 +124,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     private void SetPhaseInteractableElement()
     {
-        var dataElement = (PhaseInteractableDataElement)Element.route.data.DataElement;
+        var dataElement = (PhaseInteractableDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIcon;

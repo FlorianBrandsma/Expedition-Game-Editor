@@ -30,13 +30,13 @@ public class EditorPanel : MonoBehaviour, IElement
         }
     }
 
-    private Data ChildButtonData
+    private SelectionElement.Data ChildButtonData
     {
-        get { return ElementChild.route.data; }
+        get { return ElementChild.data; }
         set
         {
             InitializeEdit();
-            ElementChild.route.data = value;
+            ElementChild.data = value;
         }
     }
     
@@ -62,7 +62,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
     public void SetElement()
     {
-        switch (Element.route.data.DataController.DataType)
+        switch (Element.data.dataController.DataType)
         {
             case Enums.DataType.Chapter:            SetChapterElement();            break;
             case Enums.DataType.ChapterRegion:      SetChapterRegionElement();      break;
@@ -78,7 +78,7 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
             case Enums.DataType.PartyMember:        SetPartyMemberElement();        break;
 
-            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType);  break;
+            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType);  break;
         }
 
         if (descriptionText != null)
@@ -90,13 +90,13 @@ public class EditorPanel : MonoBehaviour, IElement
         }
 
         if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = Element.route.data;
+            ChildButtonData = Element.data;
     }
 
     private void SetChapterElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (ChapterDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (ChapterDataElement)data.dataElement;
 
         if(Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -116,8 +116,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetChapterRegionElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (ChapterRegionDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (ChapterRegionDataElement)data.dataElement;
 
         header = dataElement.name;
 
@@ -127,8 +127,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetPhaseElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (PhaseDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (PhaseDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -148,8 +148,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetPhaseInteractableElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (PhaseInteractableDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (PhaseInteractableDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -173,8 +173,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetQuestElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (QuestDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (QuestDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -194,8 +194,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetObjectiveElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (ObjectiveDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (ObjectiveDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -215,8 +215,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetTerrainInteractableElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (TerrainInteractableDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (TerrainInteractableDataElement)data.dataElement;
 
         header      = dataElement.interactableName;
         iconPath    = dataElement.objectGraphicIconPath;
@@ -230,8 +230,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetPartyMemberElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (PartyMemberDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (PartyMemberDataElement)data.dataElement;
 
         header = dataElement.interactableName;
         iconPath = dataElement.objectGraphicIconPath;
@@ -245,8 +245,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetInteractionElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (InteractionDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (InteractionDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -263,8 +263,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetRegionElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (RegionDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (RegionDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -281,8 +281,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetObjectGraphicElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (ObjectGraphicDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (ObjectGraphicDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -302,8 +302,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (ItemDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (ItemDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
@@ -323,8 +323,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetInteractableElement()
     {
-        Data data = Element.route.data;
-        var dataElement = (InteractableDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (InteractableDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {

@@ -58,7 +58,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        terrainData = (TerrainDataElement)DataEditor.Data.DataElement;
+        terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
     }
 
     public void OpenSegment()
@@ -76,14 +76,14 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         iconDataElement.SelectionElement = selectionElement;
 
-        selectionElement.route.data.DataController.DataList = new List<IDataElement>() { iconDataElement };
-        selectionElement.route.data.DataElement = iconDataElement;
+        selectionElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
+        selectionElement.data.dataElement = iconDataElement;
 
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Icon>().FirstOrDefault();
 
         searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().ToList();
 
-        selectionElement.route.data.SearchParameters = new[] { searchParameters };
+        selectionElement.data.searchParameters = new[] { searchParameters };
 
         selectionElement.SetElement();
 
@@ -102,17 +102,17 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        switch (selectionElement.route.data.DataController.DataType)
+        switch (selectionElement.data.dataController.DataType)
         {
             case Enums.DataType.Icon:
 
-                var iconDataElement = (IconDataElement)selectionElement.route.data.DataElement;
+                var iconDataElement = (IconDataElement)selectionElement.data.dataElement;
 
                 UpdateIcon(iconDataElement);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + selectionElement.route.data.DataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + selectionElement.data.dataController.DataType); break;
         }
     }
     #endregion

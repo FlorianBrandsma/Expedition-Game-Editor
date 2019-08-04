@@ -121,7 +121,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(element);
 
             data.SelectionElement = element;
-            element.route.data = new Data(dataController, data);
+            element.data = new SelectionElement.Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;

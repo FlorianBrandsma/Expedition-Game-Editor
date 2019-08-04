@@ -45,7 +45,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             cameraManager.graphicList.Add(graphic);
 
             //data.SelectionElement = element;
-            graphic.route.data = new Data(dataController, data);
+            graphic.route.data = new Route.Data(dataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;

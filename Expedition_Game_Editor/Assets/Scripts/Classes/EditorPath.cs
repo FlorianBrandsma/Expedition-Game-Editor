@@ -5,24 +5,22 @@ public class EditorPath
 {
     public Path path;
 
-    public EditorPath(SelectionElement selection)
+    public EditorPath(SelectionElement selection, Route route)
     {
-        Route route = new Route(selection.route);
-
         if(selection.selectionProperty == SelectionManager.Property.Get)
         {
-            PathManager.Search search = new PathManager.Search(selection);
+            PathManager.Search search = new PathManager.Search(selection, route);
 
             path = search.Get();
 
             return;
         }
 
-        switch (route.GeneralData().dataType)
+        switch (selection.GeneralData().dataType)
         {
             case Enums.DataType.Chapter:
 
-                PathManager.Structure chapter = new PathManager.Structure(selection);
+                PathManager.Structure chapter = new PathManager.Structure(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = chapter.Enter();
@@ -34,7 +32,7 @@ public class EditorPath
 
             case Enums.DataType.Phase:
 
-                PathManager.Structure phase = new PathManager.Structure(selection);
+                PathManager.Structure phase = new PathManager.Structure(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = phase.Enter();
@@ -46,7 +44,7 @@ public class EditorPath
 
             case Enums.DataType.Quest:
 
-                PathManager.Structure quest = new PathManager.Structure(selection);
+                PathManager.Structure quest = new PathManager.Structure(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = quest.Enter();
@@ -58,7 +56,7 @@ public class EditorPath
 
             case Enums.DataType.Objective:
 
-                PathManager.Structure objective = new PathManager.Structure(selection);
+                PathManager.Structure objective = new PathManager.Structure(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = objective.Enter();
@@ -76,7 +74,7 @@ public class EditorPath
                 //Add another path to root, to directly open Interaction without going through the path
                 //The way an asset-less Interaction opens the selection is kind of a happy accident, but something more intentional would be preferable
 
-                PathManager.TerrainInteractable terrainInteractable = new PathManager.TerrainInteractable(selection);
+                PathManager.TerrainInteractable terrainInteractable = new PathManager.TerrainInteractable(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = terrainInteractable.Enter();
@@ -88,7 +86,7 @@ public class EditorPath
 
             case Enums.DataType.Interaction:
 
-                PathManager.Structure interaction = new PathManager.Structure(selection);
+                PathManager.Structure interaction = new PathManager.Structure(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = interaction.Enter();
@@ -100,7 +98,7 @@ public class EditorPath
 
             case Enums.DataType.Region:
 
-                PathManager.Region region = new PathManager.Region(selection);
+                PathManager.Region region = new PathManager.Region(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = region.Enter();
@@ -115,7 +113,7 @@ public class EditorPath
 
             case Enums.DataType.Terrain:
 
-                PathManager.Terrain terrain = new PathManager.Terrain(selection);
+                PathManager.Terrain terrain = new PathManager.Terrain(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = terrain.Edit();
@@ -124,7 +122,7 @@ public class EditorPath
 
             case Enums.DataType.TerrainObject:
 
-                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection);
+                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = terrainObject.Enter();
@@ -133,7 +131,7 @@ public class EditorPath
 
             case Enums.DataType.Item:
 
-                PathManager.Item item = new PathManager.Item(selection);
+                PathManager.Item item = new PathManager.Item(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = item.Enter();
@@ -148,7 +146,7 @@ public class EditorPath
 
             case Enums.DataType.Interactable:
 
-                PathManager.Interactable interactable = new PathManager.Interactable(selection);
+                PathManager.Interactable interactable = new PathManager.Interactable(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = interactable.Enter();
@@ -163,7 +161,7 @@ public class EditorPath
 
             case Enums.DataType.ObjectGraphic:
 
-                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection);
+                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Get)
                     path = objectGraphic.Get();
@@ -172,7 +170,7 @@ public class EditorPath
 
             case Enums.DataType.Option:
 
-                PathManager.Option option = new PathManager.Option(selection);
+                PathManager.Option option = new PathManager.Option(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = option.Enter();

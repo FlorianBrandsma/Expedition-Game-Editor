@@ -29,18 +29,12 @@ public class RegionController : MonoBehaviour, IDataController
         regionDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = regionDataManager.GetRegionDataElements(searchParameters);
+        return regionDataManager.GetRegionDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
-    {
-        
-    }
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
 
-    public void ToggleElement(IDataElement dataElement)
-    {
-
-    }
+    public void ToggleElement(IDataElement dataElement) { }
 }

@@ -27,22 +27,22 @@ public class IconController : MonoBehaviour, IDataController
         iconDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = iconDataManager.GetIconDataElements(searchParameters);
+        return iconDataManager.GetIconDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (IconDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (IconDataElement)searchElement.data.dataElement;
 
         var iconDataElement = DataList.Cast<IconDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Icon:
 
-                var resultElementData = (IconDataElement)resultData.DataElement;
+                var resultElementData = (IconDataElement)resultData.dataElement;
 
                 iconDataElement.id = resultElementData.id;
                 iconDataElement.Path = resultElementData.Path;
@@ -50,7 +50,7 @@ public class IconController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = iconDataElement;
+        searchElement.data.dataElement = iconDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

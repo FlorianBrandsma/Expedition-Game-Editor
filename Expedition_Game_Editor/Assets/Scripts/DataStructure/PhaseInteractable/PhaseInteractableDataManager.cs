@@ -102,7 +102,7 @@ public class PhaseInteractableDataManager
 
     Enums.ElementStatus GetElementStatus(PhaseInteractableData phaseData)
     {
-        var questData = (QuestDataElement)phaseInteractableController.SegmentController.editorController.PathController.route.data.DataElement;
+        var questData = (QuestDataElement)phaseInteractableController.SegmentController.editorController.PathController.route.data.dataElement;
 
         if (phaseData.questId == questData.id)
             return Enums.ElementStatus.Enabled;

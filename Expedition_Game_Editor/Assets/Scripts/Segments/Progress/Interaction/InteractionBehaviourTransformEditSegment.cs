@@ -22,7 +22,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
     private void InitializeEditButton()
     {
-        interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+        interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         var regionData = new RegionDataElement();
 
@@ -30,19 +30,23 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
         regionData.dataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
 
-        editButton.route.path = SegmentController.editorController.PathController.route.path;
+        editButton.path = SegmentController.editorController.PathController.route.path;
 
         editButton.InitializeElement(null);
 
         var searchParameters = new Search.Region();
 
+        var phaseRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Phase);
+
         //To get all phase regions
-        if (SegmentController.Path.FindLastRoute(Enums.DataType.Phase) != null)
-            searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData().id };
+        if (phaseRoute != null)
+            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData().id };
+        else
+            searchParameters.phaseId = new List<int>() { 0 };
 
-        DataController.GetData(new[] { searchParameters });
+        DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
-        editButton.route.data = new Data(DataController, regionData);
+        editButton.data = new SelectionElement.Data(DataController, regionData);
 
         editButton.GetComponentInChildren<Text>().text = interactionData.regionName != "" ? "Open " + interactionData.regionName : "Set Region";
     }
@@ -69,7 +73,6 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        
         gameObject.SetActive(true);
     }
 

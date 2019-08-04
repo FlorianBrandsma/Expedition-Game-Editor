@@ -81,7 +81,9 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.DataController.DataList.Count == 0) return;
+        var dataList = listProperties.DataController.DataList;
+
+        if (dataList.Count == 0) return;
 
         list.SetElementSize();
 
@@ -89,9 +91,9 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlaySize();
 
-        listParent.sizeDelta = list.GetListSize(listProperties.DataController.DataList.Count, true);
+        listParent.sizeDelta = list.GetListSize(dataList.Count, true);
 
-        listSize = list.GetListSize(listProperties.DataController.DataList.Count, false);
+        listSize = list.GetListSize(dataList.Count, false);
 
         if (!listProperties.enablePaging)
             SetData();

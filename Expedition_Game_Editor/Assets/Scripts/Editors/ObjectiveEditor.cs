@@ -10,7 +10,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public bool Loaded { get { return PathController.loaded; } }
-    public Data Data { get; set; }
+    public Route.Data Data { get; set; }
 
     public List<IDataElement> DataElements
     {
@@ -31,7 +31,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        objectiveData = (ObjectiveDataElement)Data.DataElement;
+        objectiveData = (ObjectiveDataElement)Data.dataElement;
         terrainInteractableDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -44,12 +44,12 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index)
     {
-        var list = Data.DataController.DataList.Cast<ObjectiveDataElement>().ToList();
+        var list = Data.dataController.DataList.Cast<ObjectiveDataElement>().ToList();
 
         list.RemoveAt(objectiveData.Index);
         list.Insert(index, objectiveData);
 
-        Data.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {

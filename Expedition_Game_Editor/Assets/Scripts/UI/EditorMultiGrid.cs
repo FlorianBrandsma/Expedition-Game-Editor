@@ -42,10 +42,10 @@ public class EditorMultiGrid : MonoBehaviour, IElement
         innerGrid.sizeDelta = new Vector2(  Element.RectTransform.sizeDelta.x - multiGridProperties.margin, 
                                             Element.RectTransform.sizeDelta.y - multiGridProperties.margin);
 
-        switch (Element.route.data.DataController.DataType)
+        switch (Element.data.dataController.DataType)
         {
             case Enums.DataType.Terrain: SetTerrainInteractable(); break;
-            default: Debug.Log("CASE MISSING: " + Element.route.data.DataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
 
         if (idText != null)
@@ -63,8 +63,8 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
     private void SetTerrainInteractable()
     {
-        Data data = Element.route.data;
-        var dataElement = (TerrainDataElement)data.DataElement;
+        var data = Element.data;
+        var dataElement = (TerrainDataElement)data.dataElement;
 
         if(multiGridProperties.SecondaryDataController != null)
         {
@@ -118,7 +118,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             elementList.Add(element);
 
             data.SelectionElement = element;
-            element.route.data = new Data(multiGridProperties.SecondaryDataController, data, searchParameters);
+            element.data = new SelectionElement.Data(multiGridProperties.SecondaryDataController, data, searchParameters);
 
             //Overwrites dataController set by initialization
             element.dataController = multiGridProperties.SecondaryDataController;

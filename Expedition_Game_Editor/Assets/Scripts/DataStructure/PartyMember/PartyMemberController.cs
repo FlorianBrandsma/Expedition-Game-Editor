@@ -27,22 +27,22 @@ public class PartyMemberController : MonoBehaviour, IDataController
         partyMemberDataManager.InitializeManager(this);
     }
 
-    public void GetData(IEnumerable searchParameters)
+    public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        DataList = partyMemberDataManager.GetPartyMemberDataElements(searchParameters);
+        return partyMemberDataManager.GetPartyMemberDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, Data resultData)
+    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
     {
-        var searchElementData = (PartyMemberDataElement)searchElement.route.data.DataElement;
+        var searchElementData = (PartyMemberDataElement)searchElement.data.dataElement;
 
         var partyMemberDataElement = DataList.Cast<PartyMemberDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
 
-        switch (resultData.DataController.DataType)
+        switch (resultData.dataController.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData.DataElement;
+                var resultElementData = (InteractableDataElement)resultData.dataElement;
 
                 partyMemberDataElement.InteractableId = resultElementData.id;
                 partyMemberDataElement.interactableName = resultElementData.Name;
@@ -51,7 +51,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
                 break;
         }
 
-        searchElement.route.data.DataElement = partyMemberDataElement;
+        searchElement.data.dataElement = partyMemberDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

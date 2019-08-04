@@ -24,6 +24,8 @@ public class SegmentController : MonoBehaviour
     [HideInInspector]
     public EditorController editorController;
 
+    //public Route.Data RouteData { get { return editorController.PathController.route.data; } }
+    
     [HideInInspector]
     public bool loaded;
 

@@ -27,7 +27,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.PathController.loaded) return;
         
-        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.DataElement;
+        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
 
         GetTerrainData();
         GetTerrainTileData();
@@ -39,7 +39,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
         searchParameters.regionId = new List<int>() { regionData.id };
 
-        TerrainController.GetData(new[] { searchParameters });
+        TerrainController.DataList = TerrainController.GetData(new[] { searchParameters });
     }
 
     private void GetTerrainTileData()
@@ -48,7 +48,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
         searchParameters.regionId = new List<int>() { regionData.id };
 
-        TerrainTileController.GetData(new[] { searchParameters });
+        TerrainTileController.DataList = TerrainTileController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()
@@ -58,10 +58,11 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     }
 
     public void ApplySegment() { }
+
     public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        selectionElement.route.data.DataElement.Update(); 
+        selectionElement.data.dataElement.Update(); 
     }
 }

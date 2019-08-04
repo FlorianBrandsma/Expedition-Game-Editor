@@ -62,12 +62,12 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         InitializeData();
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.DataController.DataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }
 
     public void InitializeData()
     {
-        interactionData = (InteractionDataElement)DataEditor.Data.DataElement;
+        interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         id = interactionData.id;
         index = interactionData.Index;

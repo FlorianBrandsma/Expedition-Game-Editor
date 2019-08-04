@@ -37,14 +37,14 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 
         if (objectiveEditor.terrainInteractableDataList.Count > 0) return;
 
-        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
 
         var searchParameters = new Search.TerrainInteractable();
 
         searchParameters.requestType = Search.TerrainInteractable.RequestType.Custom;
         searchParameters.objectiveId = new List<int>() { objectiveData.id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var terrainInteractableList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
 
@@ -73,7 +73,7 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        var objectiveData = (ObjectiveDataElement)DataEditor.Data.DataElement;
+        var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
 
         DataEditor.UpdateEditor();
 

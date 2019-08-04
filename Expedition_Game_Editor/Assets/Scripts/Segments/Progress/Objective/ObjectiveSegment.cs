@@ -34,7 +34,7 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
 
         searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
 
-        SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()

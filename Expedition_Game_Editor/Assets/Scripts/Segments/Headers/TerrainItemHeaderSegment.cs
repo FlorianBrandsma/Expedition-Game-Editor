@@ -47,7 +47,7 @@ public class TerrainItemHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        switch (DataEditor.Data.DataController.DataType)
+        switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
             case Enums.DataType.TerrainObject:  InitializeTerrainObjectData();  break;
@@ -56,7 +56,7 @@ public class TerrainItemHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var terrainInteractableData = (InteractionDataElement)DataEditor.Data.DataElement;
+        var terrainInteractableData = (InteractionDataElement)DataEditor.Data.dataElement;
 
         id = terrainInteractableData.id;
         objectGraphicIconPath = terrainInteractableData.objectGraphicIconPath;
@@ -64,7 +64,7 @@ public class TerrainItemHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTerrainObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.DataElement;
+        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
 
         id = terrainObjectData.id;
         objectGraphicIconPath = terrainObjectData.objectGraphicIconPath;

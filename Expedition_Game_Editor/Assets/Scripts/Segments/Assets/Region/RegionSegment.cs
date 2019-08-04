@@ -30,14 +30,11 @@ public class RegionSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.PathController.loaded) return;
 
-        if (!SegmentController.loaded && !SegmentController.editorController.PathController.loaded)
-        {
-            var searchParameters = new Search.Region();
+        var searchParameters = new Search.Region();
 
-            searchParameters.phaseId = new List<int>() { 0 };
+        searchParameters.phaseId = new List<int>() { 0 };
 
-            SegmentController.DataController.GetData(new[] { searchParameters });
-        }
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
     public void OpenSegment()
