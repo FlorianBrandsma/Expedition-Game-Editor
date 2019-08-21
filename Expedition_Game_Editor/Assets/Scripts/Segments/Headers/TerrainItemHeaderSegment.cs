@@ -50,24 +50,24 @@ public class TerrainItemHeaderSegment : MonoBehaviour, ISegment
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
-            case Enums.DataType.TerrainObject:  InitializeTerrainObjectData();  break;
+            case Enums.DataType.SceneObject:    InitializeSceneObjectData();    break;
         }
     }
 
     private void InitializeInteractionData()
     {
-        var terrainInteractableData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
-        id = terrainInteractableData.id;
-        objectGraphicIconPath = terrainInteractableData.objectGraphicIconPath;
+        id = interactionData.id;
+        objectGraphicIconPath = interactionData.objectGraphicIconPath;
     }
 
-    private void InitializeTerrainObjectData()
+    private void InitializeSceneObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
+        var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
 
-        id = terrainObjectData.id;
-        objectGraphicIconPath = terrainObjectData.objectGraphicIconPath;
+        id = sceneObjectData.id;
+        objectGraphicIconPath = sceneObjectData.objectGraphicIconPath;
     }
 
     public void OpenSegment()

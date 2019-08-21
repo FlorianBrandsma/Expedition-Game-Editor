@@ -34,7 +34,7 @@ public class PhaseController : MonoBehaviour, IDataController
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        return phaseDataManager.GetPhaseDataElements(searchParameters.Cast<Search.Phase>().FirstOrDefault());
+        return phaseDataManager.GetPhaseDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)

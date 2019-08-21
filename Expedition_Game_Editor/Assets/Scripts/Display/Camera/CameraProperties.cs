@@ -19,6 +19,8 @@ public class CameraProperties : MonoBehaviour, IDisplay
         }
     }
 
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     private void OpenCamera()
     {
         InitializeProperties();

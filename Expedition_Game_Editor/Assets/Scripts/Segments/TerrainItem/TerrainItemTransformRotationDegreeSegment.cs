@@ -40,10 +40,10 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.RotationX = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.RotationX = value;
 
                     break;
 
@@ -68,10 +68,10 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.RotationY = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.RotationY = value;
 
                     break;
 
@@ -96,10 +96,10 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.RotationZ = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.RotationZ = value;
 
                     break;
 
@@ -151,7 +151,7 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
-            case Enums.DataType.TerrainObject: InitializeTerrainObjectData(); break;
+            case Enums.DataType.SceneObject: InitializeSceneObjectData(); break;
 
             default: Debug.Log("CASE MISSING"); break;
         }
@@ -166,13 +166,13 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
         rotationZ = interactionData.RotationZ;
     }
 
-    private void InitializeTerrainObjectData()
+    private void InitializeSceneObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
+        var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
 
-        rotationX = terrainObjectData.RotationX;
-        rotationY = terrainObjectData.RotationY;
-        rotationZ = terrainObjectData.RotationZ;
+        rotationX = sceneObjectData.RotationX;
+        rotationY = sceneObjectData.RotationY;
+        rotationZ = sceneObjectData.RotationZ;
     }
 
     private void SetSearchParameters() { }

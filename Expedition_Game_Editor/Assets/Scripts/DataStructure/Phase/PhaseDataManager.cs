@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,12 +13,14 @@ public class PhaseDataManager
         this.phaseController = phaseController;
     }
 
-    public List<IDataElement> GetPhaseDataElements(Search.Phase searchParameters)
+    public List<IDataElement> GetPhaseDataElements(IEnumerable searchParameters)
     {
-        switch(searchParameters.requestType)
+        var phaseSearchData = searchParameters.Cast<Search.Phase>().FirstOrDefault();
+
+        switch (phaseSearchData.requestType)
         {
-            case Search.Phase.RequestType.Custom:               GetCustomPhaseData(searchParameters); break;
-            case Search.Phase.RequestType.GetPhaseWithQuests:   GetPhaseWithQuests(searchParameters); break;
+            case Search.Phase.RequestType.Custom:               GetCustomPhaseData(phaseSearchData); break;
+            case Search.Phase.RequestType.GetPhaseWithQuests:   GetPhaseWithQuests(phaseSearchData); break;
             default: Debug.Log("CASE MISSING"); break;
         }
 

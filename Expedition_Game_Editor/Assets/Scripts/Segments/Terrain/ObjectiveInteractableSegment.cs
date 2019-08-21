@@ -30,9 +30,9 @@ public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.editorController.PathController.loaded) return;
 
-        var searchParameters = new Search.TerrainInteractable();
+        var searchParameters = new Search.SceneInteractable();
 
-        searchParameters.requestType = Search.TerrainInteractable.RequestType.GetQuestAndObjectiveInteractables;
+        searchParameters.requestType = Search.SceneInteractable.RequestType.GetQuestAndObjectiveInteractables;
 
         searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
         searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };

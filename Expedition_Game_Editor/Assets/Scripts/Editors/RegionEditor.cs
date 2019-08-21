@@ -119,8 +119,8 @@ public class RegionEditor : MonoBehaviour, IEditor
         
         var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
 
-        Fixtures.terrainInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.terrainInteractableId).Contains(x.id));
-        Fixtures.terrainObjectList.RemoveAll(x => regions.Select(y => y.id).Contains(x.regionId));
+        Fixtures.sceneInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.sceneInteractableId).Contains(x.id));
+        Fixtures.sceneObjectList.RemoveAll(x => regions.Select(y => y.id).Contains(x.regionId));
 
         Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.id).Contains(x.id));
     }

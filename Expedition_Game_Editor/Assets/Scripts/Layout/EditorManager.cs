@@ -12,12 +12,10 @@ public class EditorManager : MonoBehaviour
     public EditorForm[] forms;
 
     static public HistoryManager historyManager = new HistoryManager();
-    //static public PoolManager poolManager = new PoolManager();
 
     private void Awake()
     {
         Fixtures.LoadFixtures();
-        //Fixtures.CalculateFixtures();
 
         editorManager = this;
 

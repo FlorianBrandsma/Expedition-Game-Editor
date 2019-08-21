@@ -52,7 +52,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float positionSum = 0;
 
-        for (int i = 0; i < ListManager.listProperties.SegmentController.DataController.DataList.Count; i++)
+        for (int i = 0; i < ListManager.listProperties.DataController.DataList.Count; i++)
         {
             rowHeight.Add(ElementSize.y);
 
@@ -77,7 +77,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         foreach (IDataElement data in list)
         {
             SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, properties.elementType,
-                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+                                                                            ListManager, ListManager.selectionType, 
+                                                                            ListManager.selectionProperty, ListManager.listParent);
 
             ElementList.Add(element);
             

@@ -5,6 +5,7 @@ using System.Linq;
 public class PhaseEditor : MonoBehaviour, IEditor
 {
     private PhaseDataElement phaseData;
+
     public List<RegionDataElement> regionDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -19,8 +20,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(phaseData);
-            //regionDataList.ForEach(x => list.Add(x));
-            
+
             return list;
         }
     }

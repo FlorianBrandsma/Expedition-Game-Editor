@@ -313,7 +313,7 @@ public class PathManager
         }
     }
 
-    public class TerrainInteractable
+    public class SceneInteractable
     {
         SelectionElement selectionElement;
         Path path;
@@ -323,7 +323,7 @@ public class PathManager
 
         int enter = 0;
 
-        public TerrainInteractable(SelectionElement selection, Route route)
+        public SceneInteractable(SelectionElement selection, Route route)
         {
             selectionElement = selection;
             this.route = route;
@@ -350,7 +350,7 @@ public class PathManager
         }
     }
 
-    public class TerrainObject
+    public class SceneObject
     {
         SelectionElement selectionElement;
         Path path;
@@ -358,7 +358,7 @@ public class PathManager
         ListManager origin;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public TerrainObject(SelectionElement selection, Route route)
+        public SceneObject(SelectionElement selection, Route route)
         {
             selectionElement = selection;
             this.route = route;

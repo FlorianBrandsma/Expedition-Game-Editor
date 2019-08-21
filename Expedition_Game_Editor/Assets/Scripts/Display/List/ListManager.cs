@@ -8,8 +8,7 @@ using System.IO;
 
 public class ListManager : MonoBehaviour
 {
-    public IOrganizer organizer { get; set; }
-    private IList list { get { return GetComponent<IList>(); } }
+    public IOrganizer organizer;
 
     public SelectionManager.Property  selectionProperty   { get; set; }
     public SelectionManager.Type      selectionType       { get; set; }
@@ -35,6 +34,8 @@ public class ListManager : MonoBehaviour
     public Route selectedRoute { get; set; }
 
     public SegmentController segmentController;
+
+    private IList List { get { return GetComponent<IList>(); } }
 
     public void InitializeList(ListProperties listProperties)
     {
@@ -85,15 +86,15 @@ public class ListManager : MonoBehaviour
 
         if (dataList.Count == 0) return;
 
-        list.SetElementSize();
+        List.SetElementSize();
 
-        overlayManager.ActivateOverlay(organizer, list);
+        overlayManager.ActivateOverlay(organizer, List);
 
         overlayManager.SetOverlaySize();
 
-        listParent.sizeDelta = list.GetListSize(dataList.Count, true);
+        listParent.sizeDelta = List.GetListSize(dataList.Count, true);
 
-        listSize = list.GetListSize(dataList.Count, false);
+        listSize = List.GetListSize(dataList.Count, false);
 
         if (!listProperties.enablePaging)
             SetData();
@@ -162,8 +163,8 @@ public class ListManager : MonoBehaviour
             elementMax.z > listMax.z ||
             elementMin.z < listMin.z)
         {
-            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - list.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - list.ElementSize.x) / 2) / 2;
-            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - list.ElementSize.y) / 2)) / (listParent.sizeDelta.y - list.ElementSize.y);
+            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
+            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
         }
     }
 
@@ -175,7 +176,7 @@ public class ListManager : MonoBehaviour
         
         if (selectionType == SelectionManager.Type.Automatic)
         {
-            SelectionElement element = list.ElementList.FirstOrDefault();
+            SelectionElement element = List.ElementList.FirstOrDefault();
 
             element.GetComponent<Button>().onClick.Invoke();
         }

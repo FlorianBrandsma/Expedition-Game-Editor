@@ -68,7 +68,10 @@ public class ChapterRegionDataManager
 
     internal void GetRegionData()
     {
-        regionDataList = dataManager.GetRegionData(chapterRegionDataList.Select(x => x.regionId).Distinct().ToList(), true);
+        var searchParameters = new Search.Region();
+        searchParameters.id = chapterRegionDataList.Select(x => x.regionId).Distinct().ToList();
+
+        regionDataList = dataManager.GetRegionData(searchParameters);
     }
 
     internal class ChapterRegionData : GeneralData

@@ -5,6 +5,8 @@ using System.Linq;
 
 public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
+    private SceneDataElement sceneDataElement;
+
     private SegmentController SegmentController     { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                       { get; set; }
 
@@ -13,6 +15,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
     #region UI
 
     public EditorInputNumber xInputField, yInputField, zInputField;
+    public EditorToggle bindToTile;
 
     #endregion
 
@@ -40,10 +43,10 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.PositionX = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.PositionX = value;
 
                     break;
 
@@ -68,10 +71,10 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.PositionY = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.PositionY = value;
 
                     break;
 
@@ -96,10 +99,10 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.PositionZ = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.PositionZ = value;
 
                     break;
 
@@ -130,6 +133,16 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateTile()
+    {
+        //Debug.Log(bindToTile.Toggle.isOn);
+    }
+
+    static public int GetTile()
+    {
+        return 0;
+    }
+
     public void ApplySegment() { }
 
     public void CloseSegment() { }
@@ -148,10 +161,15 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
 
     public void InitializeData()
     {
+        var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        sceneDataElement = regionData.sceneDataElement;
+
+        Debug.Log(sceneDataElement.tileSize);
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
-            case Enums.DataType.TerrainObject:  InitializeTerrainObjectData();  break;
+            case Enums.DataType.SceneObject:    InitializeSceneObjectData();    break;
 
             default: Debug.Log("CASE MISSING"); break;
         }
@@ -166,13 +184,13 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         positionZ = interactionData.PositionZ;
     }
 
-    private void InitializeTerrainObjectData()
+    private void InitializeSceneObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
+        var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
 
-        positionX = terrainObjectData.PositionX;
-        positionY = terrainObjectData.PositionY;
-        positionZ = terrainObjectData.PositionZ;
+        positionX = sceneObjectData.PositionX;
+        positionY = sceneObjectData.PositionY;
+        positionZ = sceneObjectData.PositionZ;
     }
 
     private void SetSearchParameters() { }

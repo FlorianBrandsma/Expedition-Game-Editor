@@ -4,7 +4,7 @@ public class RegionDisplayManager : MonoBehaviour
 {
     public enum Display
     {
-        Terrain,
+        Scene,
         Tiles,
     }
 

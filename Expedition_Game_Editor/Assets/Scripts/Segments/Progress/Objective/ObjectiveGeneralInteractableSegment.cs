@@ -35,20 +35,20 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
     {
         var objectiveEditor = (ObjectiveEditor)DataEditor;
 
-        if (objectiveEditor.terrainInteractableDataList.Count > 0) return;
+        if (objectiveEditor.sceneInteractableDataList.Count > 0) return;
 
         var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
 
-        var searchParameters = new Search.TerrainInteractable();
+        var searchParameters = new Search.SceneInteractable();
 
-        searchParameters.requestType = Search.TerrainInteractable.RequestType.Custom;
+        searchParameters.requestType = Search.SceneInteractable.RequestType.Custom;
         searchParameters.objectiveId = new List<int>() { objectiveData.id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
-        var terrainInteractableList = SegmentController.DataController.DataList.Cast<TerrainInteractableDataElement>().ToList();
+        var sceneInteractableList = SegmentController.DataController.DataList.Cast<SceneInteractableDataElement>().ToList();
 
-        terrainInteractableList.ForEach(x => objectiveEditor.terrainInteractableDataList.Add(x));
+        sceneInteractableList.ForEach(x => objectiveEditor.sceneInteractableDataList.Add(x));
     }
 
     private void SetSearchParameters()

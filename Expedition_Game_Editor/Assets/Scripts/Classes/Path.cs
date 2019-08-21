@@ -99,7 +99,7 @@ public class Path
 
     public void Add(Route route)
     {
-        this.route.Add(route/*.Copy()*/);
+        this.route.Add(route);
     }
 
     #endregion

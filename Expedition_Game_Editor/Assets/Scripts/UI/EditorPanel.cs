@@ -75,7 +75,7 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
             case Enums.DataType.Item:               SetItemElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
-            case Enums.DataType.TerrainInteractable:SetTerrainInteractableElement();break;
+            case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;
             case Enums.DataType.PartyMember:        SetPartyMemberElement();        break;
 
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType);  break;
@@ -213,10 +213,10 @@ public class EditorPanel : MonoBehaviour, IElement
         descriptionText.text    = description;
     }
 
-    private void SetTerrainInteractableElement()
+    private void SetSceneInteractableElement()
     {
         var data = Element.data;
-        var dataElement = (TerrainInteractableDataElement)data.dataElement;
+        var dataElement = (SceneInteractableDataElement)data.dataElement;
 
         header      = dataElement.interactableName;
         iconPath    = dataElement.objectGraphicIconPath;

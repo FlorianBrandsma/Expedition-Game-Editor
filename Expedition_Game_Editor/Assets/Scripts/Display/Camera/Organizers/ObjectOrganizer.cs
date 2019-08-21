@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
-using Source;
 
 public class ObjectOrganizer : MonoBehaviour, IOrganizer
 {
+    private List<IPoolable> poolObjects = new List<IPoolable>();
+
     private CameraManager cameraManager { get { return GetComponent<CameraManager>(); } }
     private ObjectProperties properties;
-
-    static public List<ObjectGraphic> graphicList = new List<ObjectGraphic>();
 
     private IDataController dataController;
 
@@ -34,18 +33,16 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         foreach (IDataElement data in list)
         {
             var objectGraphicData = (ObjectGraphicDataElement)data;
-            
-            ObjectGraphic graphicPrefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
 
-            if (graphicPrefab == null) continue;
+            if (objectGraphicData.id == 1) continue;
 
-            graphicPrefab.id = objectGraphicData.id;
+            ObjectGraphic prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
 
-            ObjectGraphic graphic = cameraManager.SpawnGraphic(graphicList, graphicPrefab);
-            cameraManager.graphicList.Add(graphic);
+            ObjectGraphic graphic = (ObjectGraphic)ObjectManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
 
-            //data.SelectionElement = element;
-            graphic.route.data = new Route.Data(dataController, data);
+            poolObjects.Add(graphic);
+
+            graphic.transform.SetParent(cameraManager.content, false);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -77,7 +74,15 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
     private void ClearCamera()
     {
-        cameraManager.ClearGraphics();
+        foreach (IPoolable poolObject in poolObjects)
+        {
+            switch(poolObject.PoolType)
+            {
+                case ObjectManager.PoolType.ObjectGraphic: ((ObjectGraphic)poolObject).gameObject.SetActive(false); break;
+            }
+        }
+
+        poolObjects.Clear();
     }
 
     private void CloseCamera()

@@ -8,6 +8,10 @@ public class RegionDataManager
     private RegionController regionController;
     private List<RegionData> regionDataList;
 
+    private DataManager dataManager = new DataManager();
+
+    private List<DataManager.TileSetData> tileSetDataList;
+
     public void InitializeManager(RegionController regionController)
     {
         this.regionController = regionController;
@@ -18,8 +22,10 @@ public class RegionDataManager
         var searchRegion = searchParameters.Cast<Search.Region>().FirstOrDefault();
 
         GetRegionData(searchRegion);
+        GetTileSetData();
 
         var list = (from regionData in regionDataList
+                    join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
                     select new RegionDataElement()
                     {
                         dataType = Enums.DataType.Region,
@@ -70,6 +76,14 @@ public class RegionDataManager
 
             index++;
         }
+    }
+
+    private void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+
+        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
     }
 
     internal class RegionData : GeneralData

@@ -10,7 +10,7 @@ public class InteractionDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.TerrainInteractableData> terrainInteractableDataList;
+    private List<DataManager.SceneInteractableData> sceneInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
@@ -28,7 +28,7 @@ public class InteractionDataManager
 
         GetInteractionData(objectiveSearchData);
 
-        GetTerrainInteractableData();
+        GetSceneInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
@@ -37,10 +37,10 @@ public class InteractionDataManager
         
         var list = (from interactionData    in interactionDataList
 
-                    join terrainInteractableData    in terrainInteractableDataList  on interactionData.terrainInteractableId    equals terrainInteractableData.id
-                    join interactableData           in interactableDataList         on terrainInteractableData.interactableId   equals interactableData.id
-                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.id
-                    join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.id
+                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.id into regionData
@@ -53,7 +53,7 @@ public class InteractionDataManager
                         id = interactionData.id,
                         index = interactionData.index,
 
-                        TerrainInteractableId = interactionData.terrainInteractableId,
+                        SceneInteractableId = interactionData.sceneInteractableId,
                         RegionId = interactionData.regionId,
 
                         Description = interactionData.description,
@@ -88,7 +88,7 @@ public class InteractionDataManager
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.id)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
-            if (searchParameters.terrainInteractableId.Count > 0 && !searchParameters.terrainInteractableId.Contains(interaction.terrainInteractableId)) continue;
+            if (searchParameters.sceneInteractableId.Count > 0 && !searchParameters.sceneInteractableId.Contains(interaction.sceneInteractableId)) continue;
 
             var interactionData = new InteractionData();
 
@@ -96,7 +96,7 @@ public class InteractionDataManager
             interactionData.index = interaction.index;
 
             interactionData.objectiveId = interaction.objectiveId;
-            interactionData.terrainInteractableId = interaction.terrainInteractableId;
+            interactionData.sceneInteractableId = interaction.sceneInteractableId;
             interactionData.regionId = interaction.regionId;
 
             interactionData.description = interaction.description;
@@ -117,14 +117,14 @@ public class InteractionDataManager
         }
     }
 
-    internal void GetTerrainInteractableData()
+    internal void GetSceneInteractableData()
     {
-        terrainInteractableDataList = dataManager.GetTerrainInteractableData(interactionDataList.Select(x => x.terrainInteractableId).Distinct().ToList(), true);
+        sceneInteractableDataList = dataManager.GetSceneInteractableData(interactionDataList.Select(x => x.sceneInteractableId).Distinct().ToList(), true);
     }
 
     internal void GetInteractableData()
     {
-        interactableDataList = dataManager.GetInteractableData(terrainInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
+        interactableDataList = dataManager.GetInteractableData(sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
     }
 
     internal void GetObjectGraphicData()
@@ -139,13 +139,16 @@ public class InteractionDataManager
 
     internal void GetRegionData()
     {
-        regionDataList = dataManager.GetRegionData(interactionDataList.Select(x => x.regionId).Distinct().ToList(), true);
+        var searchParameters = new Search.Region();
+        searchParameters.id = interactionDataList.Select(x => x.regionId).Distinct().ToList();
+
+        regionDataList = dataManager.GetRegionData(searchParameters);
     }
 
     internal class InteractionData : GeneralData
     {
         public int objectiveId;
-        public int terrainInteractableId;
+        public int sceneInteractableId;
         public int regionId;
 
         public string description;

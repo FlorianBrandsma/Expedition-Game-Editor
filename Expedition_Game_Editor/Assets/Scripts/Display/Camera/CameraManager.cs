@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Source;
 
 public class CameraManager : MonoBehaviour
 {
@@ -9,8 +8,11 @@ public class CameraManager : MonoBehaviour
 
     public Camera cam;
     public RectTransform content;
-    public BackgroundManager backgroundManager;
-    public CameraProperties cameraProperties { get; set; }
+
+    public OverlayManager overlayManager;
+
+    [HideInInspector]
+    public CameraProperties cameraProperties;
 
     public RectTransform graphicParent;
     public RectTransform displayRect;
@@ -27,7 +29,7 @@ public class CameraManager : MonoBehaviour
         {
             case DisplayManager.Type.None:      organizer = null; break;
             case DisplayManager.Type.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
-            case DisplayManager.Type.Region:    organizer = gameObject.AddComponent<RegionOrganizer>(); break;
+            case DisplayManager.Type.Scene:     organizer = gameObject.AddComponent<SceneOrganizer>(); break;
             default: break;
         }
 
@@ -36,9 +38,6 @@ public class CameraManager : MonoBehaviour
         organizer.InitializeOrganizer();
 
         //organizer.GetData();
-
-        if (backgroundManager != null)
-            backgroundManager.InitializeBackground(this);
 
         //overlayManager.InitializeOverlay(this);
 
@@ -70,21 +69,19 @@ public class CameraManager : MonoBehaviour
         transform.parent.gameObject.SetActive(true);
     }
 
+    public void UpdateCamera()
+    {
+        organizer.UpdateData();
+    }
+
     private void SetData()
     {
-        //ItemController test = (ItemController)properties.segmentController.dataController;
-
-        //organizer.SetData(/*new List<ItemController>() { test }*/);
-
         organizer.SetData();
     }
 
     public void ClearCamera()
     {
         if (organizer == null) return;
-
-        if (backgroundManager != null)
-            backgroundManager.CloseBackground();
 
         organizer.ClearOrganizer();
     }
@@ -98,44 +95,5 @@ public class CameraManager : MonoBehaviour
         organizer.CloseOrganizer();
 
         transform.parent.gameObject.SetActive(false);
-    }
-
-    public ObjectGraphic SpawnGraphic(List<ObjectGraphic> list, ObjectGraphic graphic_prefab)
-    {
-        foreach (ObjectGraphic graphic in list)
-        {
-            if (graphic.id == graphic_prefab.id && !graphic.gameObject.activeInHierarchy)
-            {
-                InitializeGraphic(graphic);
-                return graphic;
-            }
-        }
-
-        ObjectGraphic new_graphic = Instantiate(graphic_prefab);
-
-        InitializeGraphic(new_graphic);
-
-        list.Add(new_graphic);
-
-        return new_graphic;
-    }
-
-    public void InitializeGraphic(ObjectGraphic graphic)
-    {
-        graphic.InitializeGraphic(this);
-
-        graphic.transform.SetParent(graphicParent, false);
-    }
-
-    public void ClearGraphics()
-    {
-        foreach (ObjectGraphic graphic in graphicList)
-        {
-            //element.GetComponent<IElement>().CloseElement();
-
-            graphic.gameObject.SetActive(false);
-        }
-
-        graphicList.Clear();
     }
 }

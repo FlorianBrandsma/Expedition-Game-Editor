@@ -75,22 +75,22 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainInteractableData> GetTerrainInteractableData(List<int> idList, bool searchById = false)
+    public List<SceneInteractableData> GetSceneInteractableData(List<int> idList, bool searchById = false)
     {
-        List<TerrainInteractableData> dataList = new List<TerrainInteractableData>();
+        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
 
-        foreach(Fixtures.TerrainInteractable terrainInteractable in Fixtures.terrainInteractableList)
+        foreach(Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
         {
-            if (searchById && !idList.Contains(terrainInteractable.id)) continue;
+            if (searchById && !idList.Contains(sceneInteractable.id)) continue;
 
-            var data = new TerrainInteractableData();
+            var data = new SceneInteractableData();
 
-            data.id = terrainInteractable.id;
+            data.id = sceneInteractable.id;
 
-            data.chapterId = terrainInteractable.chapterId;
-            data.objectiveId = terrainInteractable.objectiveId;
-            data.interactableId = terrainInteractable.interactableId;
-            data.interactionIndex = terrainInteractable.interactionIndex;
+            data.chapterId = sceneInteractable.chapterId;
+            data.objectiveId = sceneInteractable.objectiveId;
+            data.interactableId = sceneInteractable.interactableId;
+            data.interactionIndex = sceneInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -98,22 +98,22 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainInteractableData> GetChapterTerrainInteractableData(int chapterId, bool searchById = false)
+    public List<SceneInteractableData> GetChapterSceneInteractableData(int chapterId, bool searchById = false)
     {
-        List<TerrainInteractableData> dataList = new List<TerrainInteractableData>();
+        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
 
-        foreach (Fixtures.TerrainInteractable terrainInteractable in Fixtures.terrainInteractableList)
+        foreach (Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
         {
-            if (searchById && chapterId != terrainInteractable.chapterId) continue;
+            if (searchById && chapterId != sceneInteractable.chapterId) continue;
 
-            var data = new TerrainInteractableData();
+            var data = new SceneInteractableData();
 
-            data.id = terrainInteractable.id;
+            data.id = sceneInteractable.id;
             
-            data.chapterId = terrainInteractable.chapterId;
-            data.objectiveId = terrainInteractable.objectiveId;
-            data.interactableId = terrainInteractable.interactableId;
-            data.interactionIndex = terrainInteractable.interactionIndex;
+            data.chapterId = sceneInteractable.chapterId;
+            data.objectiveId = sceneInteractable.objectiveId;
+            data.interactableId = sceneInteractable.interactableId;
+            data.interactionIndex = sceneInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -153,7 +153,7 @@ public class DataManager
             data.id = phaseInteractable.id;
 
             data.phaseId = phaseInteractable.phaseId;
-            data.terrainInteractableId = phaseInteractable.terrainInteractableId;
+            data.sceneInteractableId = phaseInteractable.sceneInteractableId;
 
             dataList.Add(data);
         }
@@ -163,14 +163,22 @@ public class DataManager
 
     public List<TileSetData> GetTileSetData()
     {
+        return GetTileSetData(new Search.TileSet());
+    }
+
+    public List<TileSetData> GetTileSetData(Search.TileSet searchParameters)
+    {
         var dataList = new List<TileSetData>();
 
         foreach(Fixtures.TileSet tileSet in Fixtures.tileSetList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tileSet.id)) continue;
+
             var data = new TileSetData();
 
             data.id = tileSet.id;
             data.name = tileSet.name;
+            data.tileSize = tileSet.tileSize;
 
             dataList.Add(data);
         }
@@ -178,13 +186,13 @@ public class DataManager
         return dataList;
     }
 
-    public List<TileData> GetTileData(List<int> idList, bool searchById = false)
+    public List<TileData> GetTileData(Search.Tile searchParameters)
     {
         var dataList = new List<TileData>();
 
         foreach (Fixtures.Tile tile in Fixtures.tileList)
         {
-            if (searchById && !idList.Contains(tile.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.id)) continue;
 
             var data = new TileData();
 
@@ -198,18 +206,21 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainTileData> GetTerrainTileData(List<int> idList, bool searchById = false)
+    public List<TerrainTileData> GetTerrainTileData(Search.TerrainTile searchParameters)
     {
         var dataList = new List<TerrainTileData>();
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
-            if (searchById && !idList.Contains(terrainTile.id)) continue;
+            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
 
             var data = new TerrainTileData();
 
             data.id = terrainTile.id;
+            data.index = terrainTile.index;
+
             data.terrainId = terrainTile.terrainId;
+            data.tileId = terrainTile.tileId;
             
             dataList.Add(data);
         }
@@ -217,17 +228,19 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainData> GetTerrainData(List<int> idList, bool searchById = false)
+    public List<TerrainData> GetTerrainData(Search.Terrain searchParameters)
     {
         var dataList = new List<TerrainData>();
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
-            if (searchById && !idList.Contains(terrain.id)) continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
             var data = new TerrainData();
 
             data.id = terrain.id;
+            data.index = terrain.index;
+
             data.regionId = terrain.regionId;
             data.name = terrain.name;
 
@@ -239,21 +252,65 @@ public class DataManager
 
     public List<RegionData> GetRegionData()
     {
-        return GetRegionData(new List<int>());
+        return GetRegionData(new Search.Region());
     }
 
-    public List<RegionData> GetRegionData(List<int> idList, bool searchById = false)
+    public List<RegionData> GetRegionData(Search.Region searchParameters)
     {
         List<RegionData> dataList = new List<RegionData>();
 
         foreach (Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchById && !idList.Contains(region.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.id)) continue;
 
             var data = new RegionData();
-
+            
             data.id = region.id;
+
+            data.tileSetId = region.tileSetId;
+
+            data.regionSize = region.regionSize;
+            data.terrainSize = region.terrainSize;
+
             data.name = region.name;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<InteractionData> GetInteractionData(Search.Interaction searchParameters)
+    {
+        var dataList = new List<InteractionData>();
+
+        foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
+        {
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
+
+            var data = new InteractionData();
+
+            data.id = interaction.id;
+            data.regionId = interaction.regionId;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<SceneObjectData> GetSceneObjectData(Search.SceneObject searchParameters)
+    {
+        var dataList = new List<SceneObjectData>();
+
+        foreach (Fixtures.SceneObject sceneObject in Fixtures.sceneObjectList)
+        {
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(sceneObject.regionId)) continue;
+
+            var data = new SceneObjectData();
+
+            data.id = sceneObject.id;
+            data.regionId = sceneObject.regionId;
 
             dataList.Add(data);
         }
@@ -284,7 +341,7 @@ public class DataManager
         public string name;
     }
 
-    public class TerrainInteractableData : GeneralData
+    public class SceneInteractableData : GeneralData
     {
         public int chapterId;
         public int objectiveId;
@@ -300,28 +357,36 @@ public class DataManager
     public class PhaseInteractableData : GeneralData
     {
         public int phaseId;
-        public int terrainInteractableId;
+        public int sceneInteractableId;
     }
 
     public class TileSetData : GeneralData
     {
         public string name;
+        public float tileSize;
     }
 
     public class TileData : GeneralData
     {
         public int tileSetId;
+
         public string iconPath;
     }
 
     public class RegionData : GeneralData
     {
+        public int tileSetId;
+
+        public int regionSize;
+        public int terrainSize;
+
         public string name;
     }
 
     public class TerrainData : GeneralData
     {
         public int regionId;
+
         public string name;
     }
 
@@ -329,6 +394,16 @@ public class DataManager
     {
         public int terrainId;
         public int tileId;
+    }
+
+    public class InteractionData : GeneralData
+    {
+        public int regionId;
+    }
+
+    public class SceneObjectData : GeneralData
+    {
+        public int regionId;
     }
     #endregion
 }

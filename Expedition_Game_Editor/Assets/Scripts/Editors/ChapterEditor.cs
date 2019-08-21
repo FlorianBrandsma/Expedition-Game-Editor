@@ -7,7 +7,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
     private ChapterDataElement chapterData;
 
     public List<PartyMemberDataElement> partyMemberDataList;
-    public List<TerrainInteractableDataElement> terrainInteractableDataList;
+    public List<SceneInteractableDataElement> sceneInteractableDataList;
     public List<ChapterRegionDataElement> chapterRegionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -24,8 +24,9 @@ public class ChapterEditor : MonoBehaviour, IEditor
             var list = new List<IDataElement>();
 
             list.Add(chapterData);
+
             partyMemberDataList.ForEach(x => list.Add(x));
-            terrainInteractableDataList.ForEach(x => list.Add(x));
+            sceneInteractableDataList.ForEach(x => list.Add(x));
             chapterRegionDataList.ForEach(x => list.Add(x));
 
             return list;
@@ -40,7 +41,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         chapterData = (ChapterDataElement)Data.dataElement;
         partyMemberDataList.Clear();
-        terrainInteractableDataList.Clear();
+        sceneInteractableDataList.Clear();
         chapterRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
@@ -111,17 +112,17 @@ public class ChapterEditor : MonoBehaviour, IEditor
         var terrains = Fixtures.terrainList.Where(x => phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
         var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.id).Contains(x.terrainId)).Distinct().ToList();
         
-        //1. Remove all TERRAINOBJECTS of the selected (PHASE)REGIONS
-        var terrainObjects = Fixtures.terrainObjectList.Where(x => phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
-        Fixtures.terrainObjectList.RemoveAll(x => terrainObjects.Contains(x));
+        //1. Remove all SCENEOBJECTS of the selected (PHASE)REGIONS
+        var sceneObjects = Fixtures.sceneObjectList.Where(x => phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
+        Fixtures.sceneObjectList.RemoveAll(x => sceneObjects.Contains(x));
 
         //2. Remove all INTERACTIONS of the selected (PHASE)REGIONS where OBJECTIVEID equals 0
         var baseInteractions = Fixtures.interactionList.Where(x => x.objectiveId == 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
         Fixtures.interactionList.RemoveAll(x => baseInteractions.Contains(x));
 
-        //3. Remove all TERRAININTERACTABLES linked with INTERACTIONS from step 2
-        var terrainInteractables = Fixtures.terrainInteractableList.Where(x => baseInteractions.Select(y => y.terrainInteractableId).Contains(x.id)).Distinct().ToList();
-        Fixtures.terrainInteractableList.RemoveAll(x => terrainInteractables.Contains(x));
+        //3. Remove all SCENEINTERACTABLES linked with INTERACTIONS from step 2
+        var sceneInteractables = Fixtures.sceneInteractableList.Where(x => baseInteractions.Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
+        Fixtures.sceneInteractableList.RemoveAll(x => sceneInteractables.Contains(x));
 
         //4. Set (PHASE)REGION of all INTERACTIONS linked with selected (PHASE)REGIONS to 0 where OBJECTIVE ID does not equal 0
         var objectiveInteractions = Fixtures.interactionList.Where(x => x.objectiveId != 0 && phaseRegions.Select(y => y.id).Contains(x.regionId)).Distinct().ToList();
@@ -132,7 +133,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         Fixtures.terrainList.RemoveAll(x => terrains.Contains(x));
 
         //6. Create TERRAINS and TERRAINTILES for selected (PHASE)REGIONS based on those of the newly selected CHAPTERREGION's REGION
-        //7. Also create TERRAINOBJECTS, TERRAININTERACTABLES and INTERACTIONS for selected (PHASE)REGIONS based the same criteria as step 6
+        //7. Also create SCENEOBJECTS, SCENEINTERACTABLES and INTERACTIONS for selected (PHASE)REGIONS based the same criteria as step 6
         var regionSource = Fixtures.regionList.Where(x => x.id == chapterRegion.RegionId).FirstOrDefault();
 
         foreach(Fixtures.Region phaseRegion in phaseRegions)
@@ -143,22 +144,22 @@ public class ChapterEditor : MonoBehaviour, IEditor
             phaseRegion.regionSize = regionSource.regionSize;
             phaseRegion.terrainSize = regionSource.terrainSize;
 
-            var terrainInteractableSourceList = Fixtures.terrainInteractableList.Where(x => Fixtures.interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.terrainInteractableId).Contains(x.id)).Distinct().ToList();
+            var sceneInteractableSourceList = Fixtures.sceneInteractableList.Where(x => Fixtures.interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
 
-            foreach (Fixtures.TerrainInteractable terrainInteractableSource in terrainInteractableSourceList)
+            foreach (Fixtures.SceneInteractable sceneInteractableSource in sceneInteractableSourceList)
             {
-                var terrainInteractable = new Fixtures.TerrainInteractable();
+                var sceneInteractable = new Fixtures.SceneInteractable();
 
-                int terrainInteractableId = Fixtures.terrainInteractableList.Count > 0 ? (Fixtures.terrainInteractableList[Fixtures.terrainInteractableList.Count - 1].id + 1) : 1;
+                int sceneInteractableId = Fixtures.sceneInteractableList.Count > 0 ? (Fixtures.sceneInteractableList[Fixtures.sceneInteractableList.Count - 1].id + 1) : 1;
 
-                terrainInteractable.id = terrainInteractableId;
+                sceneInteractable.id = sceneInteractableId;
 
-                terrainInteractable.chapterId = terrainInteractableSource.chapterId;
-                terrainInteractable.objectiveId = terrainInteractableSource.objectiveId;
-                terrainInteractable.interactableId = terrainInteractableSource.interactableId;
-                terrainInteractable.interactionIndex = terrainInteractableSource.interactionIndex;
+                sceneInteractable.chapterId = sceneInteractableSource.chapterId;
+                sceneInteractable.objectiveId = sceneInteractableSource.objectiveId;
+                sceneInteractable.interactableId = sceneInteractableSource.interactableId;
+                sceneInteractable.interactionIndex = sceneInteractableSource.interactionIndex;
 
-                var interactionSourceList = Fixtures.interactionList.Where(x => x.terrainInteractableId == terrainInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
+                var interactionSourceList = Fixtures.interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
 
                 foreach (Fixtures.Interaction interactionSource in interactionSourceList)
                 {
@@ -167,7 +168,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     int interactionId = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].id + 1) : 1;
 
                     interaction.id = interactionId;
-                    interaction.terrainInteractableId = terrainInteractable.id;
+                    interaction.sceneInteractableId = sceneInteractable.id;
                     interaction.objectiveId = interactionSource.objectiveId;
                     interaction.regionId = phaseRegion.id;
 
@@ -189,38 +190,38 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     Fixtures.interactionList.Add(interaction);
                 }
 
-                Fixtures.terrainInteractableList.Add(terrainInteractable);
+                Fixtures.sceneInteractableList.Add(sceneInteractable);
             }
 
-            var terrainObjectSourceList = Fixtures.terrainObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
+            var sceneObjectSourceList = Fixtures.sceneObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
 
-            foreach (Fixtures.TerrainObject terrainObjectSource in terrainObjectSourceList)
+            foreach (Fixtures.SceneObject sceneObjectSource in sceneObjectSourceList)
             {
-                var terrainObject = new Fixtures.TerrainObject();
+                var sceneObject = new Fixtures.SceneObject();
 
-                int terrainObjectId = Fixtures.terrainObjectList.Count > 0 ? (Fixtures.terrainObjectList[Fixtures.terrainObjectList.Count - 1].id + 1) : 1;
+                int sceneObjectId = Fixtures.sceneObjectList.Count > 0 ? (Fixtures.sceneObjectList[Fixtures.sceneObjectList.Count - 1].id + 1) : 1;
 
-                terrainObject.id = terrainObjectId;
-                terrainObject.regionId = phaseRegion.id;
+                sceneObject.id = sceneObjectId;
+                sceneObject.regionId = phaseRegion.id;
 
-                terrainObject.index = terrainObjectSource.index;
-                terrainObject.objectGraphicId = terrainObjectSource.objectGraphicId;
+                sceneObject.index = sceneObjectSource.index;
+                sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
 
-                terrainObject.boundToTile = terrainObjectSource.boundToTile;
+                sceneObject.terrainTileId = sceneObjectSource.terrainTileId;
 
-                terrainObject.positionX = terrainObjectSource.positionX;
-                terrainObject.positionY = terrainObjectSource.positionY;
-                terrainObject.positionZ = terrainObjectSource.positionZ;
+                sceneObject.positionX = sceneObjectSource.positionX;
+                sceneObject.positionY = sceneObjectSource.positionY;
+                sceneObject.positionZ = sceneObjectSource.positionZ;
 
-                terrainObject.rotationX = terrainObjectSource.rotationX;
-                terrainObject.rotationY = terrainObjectSource.rotationY;
-                terrainObject.rotationZ = terrainObjectSource.rotationZ;
+                sceneObject.rotationX = sceneObjectSource.rotationX;
+                sceneObject.rotationY = sceneObjectSource.rotationY;
+                sceneObject.rotationZ = sceneObjectSource.rotationZ;
 
-                terrainObject.scaleMultiplier = terrainObjectSource.scaleMultiplier;
+                sceneObject.scaleMultiplier = sceneObjectSource.scaleMultiplier;
 
-                terrainObject.animation = terrainObjectSource.animation;
+                sceneObject.animation = sceneObjectSource.animation;
 
-                Fixtures.terrainObjectList.Add(terrainObject);
+                Fixtures.sceneObjectList.Add(sceneObject);
             }
 
             var terrainSourceList = Fixtures.terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();

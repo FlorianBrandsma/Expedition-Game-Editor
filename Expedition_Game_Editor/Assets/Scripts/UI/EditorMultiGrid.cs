@@ -44,7 +44,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
         switch (Element.data.dataController.DataType)
         {
-            case Enums.DataType.Terrain: SetTerrainInteractable(); break;
+            case Enums.DataType.Terrain: SetTerrain(); break;
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
 
@@ -61,7 +61,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             iconBase.texture = Resources.Load<Texture2D>(baseTilePath);
     }
 
-    private void SetTerrainInteractable()
+    private void SetTerrain()
     {
         var data = Element.data;
         var dataElement = (TerrainDataElement)data.dataElement;

@@ -35,7 +35,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Phase:              SetPhaseOptions();              break;
             case Enums.DataType.Quest:              SetQuestOptions();              break;
             case Enums.DataType.Objective:          SetObjectiveOptions();          break;
-            case Enums.DataType.TerrainInteractable:SetTerrainInteractableOptions();break;
+            case Enums.DataType.SceneInteractable:  SetSceneInteractableOptions();  break;
 
             default: Debug.Log("CASE MISSING: " + data.dataController.DataType); break;
         }
@@ -76,9 +76,9 @@ public class NavigationComponent : MonoBehaviour, IComponent
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetTerrainInteractableOptions()
+    private void SetSceneInteractableOptions()
     {
-        var dataElements = data.dataList.Cast<TerrainInteractableDataElement>().ToList();
+        var dataElements = data.dataList.Cast<SceneInteractableDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }

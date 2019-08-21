@@ -3,7 +3,7 @@ using System.Linq;
 
 public class InteractionCore : GeneralData
 {
-    private int terrainInteractableId;
+    private int sceneInteractableId;
     private int regionId;
 
     private string description;
@@ -78,10 +78,10 @@ public class InteractionCore : GeneralData
         }
     }
 
-    public int TerrainInteractableId
+    public int SceneInteractableId
     {
-        get { return terrainInteractableId; }
-        set { terrainInteractableId = value; }
+        get { return sceneInteractableId; }
+        set { sceneInteractableId = value; }
     }
 
     public int RegionId

@@ -46,6 +46,9 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
         DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
+        if(regionData.id == 0)
+            regionData.id = DataController.DataList.FirstOrDefault().Id;
+
         editButton.data = new SelectionElement.Data(DataController, regionData);
 
         editButton.GetComponentInChildren<Text>().text = interactionData.regionName != "" ? "Open " + interactionData.regionName : "Set Region";

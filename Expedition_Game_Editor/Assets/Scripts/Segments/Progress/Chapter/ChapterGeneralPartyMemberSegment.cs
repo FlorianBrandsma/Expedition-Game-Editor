@@ -58,7 +58,7 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 
         List<int> idList = new List<int>();
         chapterEditor.partyMemberDataList.ForEach(x => idList.Add(x.InteractableId));
-        chapterEditor.terrainInteractableDataList.ForEach(x => idList.Add(x.InteractableId));
+        chapterEditor.sceneInteractableDataList.ForEach(x => idList.Add(x.InteractableId));
 
         var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 

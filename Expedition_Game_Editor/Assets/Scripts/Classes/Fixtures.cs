@@ -22,11 +22,11 @@ static public class Fixtures
     static public int questsInPhase = 4;
     static public int objectivesInQuest = 3;
     static public int interactablesInObjective = 2;
-    static public int sideTerrainInteractables = 1;
+    static public int sideSceneInteractables = 1;
     static public int baseInteractions = 4;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
-    static public int baseTerrainObjects = 5;
+    static public int baseSceneObjects = 5;
 
     static public List<Icon> iconList = new List<Icon>();
     static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
@@ -46,8 +46,8 @@ static public class Fixtures
     static public List<Interaction> interactionList = new List<Interaction>();
 
     static public List<PartyMember> partyMemberList = new List<PartyMember>();
-    static public List<TerrainInteractable> terrainInteractableList = new List<TerrainInteractable>();
-    static public List<TerrainObject> terrainObjectList = new List<TerrainObject>();
+    static public List<SceneInteractable> sceneInteractableList = new List<SceneInteractable>();
+    static public List<SceneObject> sceneObjectList = new List<SceneObject>();
 
     public class Item : GeneralData
     {
@@ -68,12 +68,12 @@ static public class Fixtures
         public int interactableId;
     }
 
-    public class TerrainObject : GeneralData
+    public class SceneObject : GeneralData
     {
         public int objectGraphicId;
         public int regionId;
 
-        public bool boundToTile;
+        public int terrainTileId;
 
         public float positionX;
         public float positionY;
@@ -88,7 +88,7 @@ static public class Fixtures
         public int animation;
     }
 
-    public class TerrainInteractable : GeneralData
+    public class SceneInteractable : GeneralData
     {
         public int chapterId;
         public int objectiveId;
@@ -168,7 +168,7 @@ static public class Fixtures
     {
         public int phaseId;
         public int questId;
-        public int terrainInteractableId;
+        public int sceneInteractableId;
     }
 
     public class Quest : GeneralData
@@ -188,9 +188,11 @@ static public class Fixtures
     
     public class Interaction : GeneralData
     {
-        public int terrainInteractableId;
+        public int sceneInteractableId;
         public int objectiveId;
         public int regionId;
+
+        public int terrainTileId;
 
         public string description;
 
@@ -218,17 +220,17 @@ static public class Fixtures
         LoadRegions();
         LoadTerrains();
         LoadTerrainTiles();
-        LoadTerrainObjects();
+        LoadSceneObjects();
         LoadChapters();
         LoadChapterPartyMembers();
-        LoadChapterTerrainInteractables();
+        LoadChapterSceneInteractables();
         LoadChapterRegions();
         LoadPhases();
         LoadPhaseRegions();
         LoadQuests();
         LoadPhaseInteractables();
         LoadObjectives();
-        LoadObjectiveTerrainInteractables();
+        LoadObjectiveSceneInteractables();
         LoadInteractions();
     }
 
@@ -529,7 +531,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadTerrainObjects()
+    static public void LoadSceneObjects()
     {
         foreach (Region region in regionList)
         {
@@ -539,50 +541,50 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateTerrainObject(17, region.id, false, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneObject(17, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
 
             /*Rock*/
-            CreateTerrainObject(18, region.id, false, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
+            CreateSceneObject(18, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
 
             /*Cactus*/
-            CreateTerrainObject(19, region.id, false, new Vector3(0.7f, 0.8f, 0.9f), new Vector3(7, 8, 9));
+            CreateSceneObject(19, region.id, new Vector3(0.7f, 0.8f, 0.9f), new Vector3(7, 8, 9));
 
             /*Red warrior*/
-            CreateTerrainInteractable(1, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(1, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
 
             /*Ranger*/
-            CreateTerrainInteractable(4, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
+            CreateSceneInteractable(4, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
 
             /*Mage*/
-            CreateTerrainInteractable(5, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(5, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
         }
     }
 
-    static public void CreateTerrainInteractable(int interactableId, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateSceneInteractable(int interactableId, int regionId, Vector3 position, Vector3 rotation)
     {
-        var terrainInteractable = new TerrainInteractable();
+        var sceneInteractable = new SceneInteractable();
 
-        int id = terrainInteractableList.Count > 0 ? (terrainInteractableList[terrainInteractableList.Count - 1].id + 1) : 1;
+        int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
 
-        terrainInteractable.id = id;
-        terrainInteractable.interactableId = interactableId;
+        sceneInteractable.id = id;
+        sceneInteractable.interactableId = interactableId;
 
-        CreateInteraction(terrainInteractable, regionId, position, rotation);
+        CreateInteraction(sceneInteractable, regionId, position, rotation);
 
-        terrainInteractableList.Add(terrainInteractable);
+        sceneInteractableList.Add(sceneInteractable);
     }
 
-    static public void CreateInteraction(TerrainInteractable terrainInteractable, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateInteraction(SceneInteractable sceneInteractable, int regionId, Vector3 position, Vector3 rotation)
     {
         var interaction = new Interaction();
 
         int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
 
         interaction.id = id;
-        interaction.terrainInteractableId = terrainInteractable.id;
+        interaction.sceneInteractableId = sceneInteractable.id;
         interaction.regionId = regionId;
 
-        interaction.description = "Talk to {" + terrainInteractable.interactableId + "}";
+        interaction.description = "Talk to {" + sceneInteractable.interactableId + "}";
 
         interaction.positionX = position.x;
         interaction.positionY = position.y;
@@ -597,28 +599,29 @@ static public class Fixtures
         interactionList.Add(interaction);
     }
 
-    static public void CreateTerrainObject(int objectGraphicId, int regionId, bool boundToTile, Vector3 position, Vector3 rotation)
+    static public void CreateSceneObject(int objectGraphicId, int regionId, Vector3 position, Vector3 rotation)
     {
-        var terrainObject = new TerrainObject();
+        var sceneObject = new SceneObject();
 
-        int id = terrainObjectList.Count > 0 ? (terrainObjectList[terrainObjectList.Count - 1].id + 1) : 1;
+        int id = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].id + 1) : 1;
 
-        terrainObject.id = id;
-        terrainObject.objectGraphicId = objectGraphicId;
-        terrainObject.regionId = regionId;
-        terrainObject.boundToTile = boundToTile;
+        sceneObject.id = id;
+        sceneObject.objectGraphicId = objectGraphicId;
+        sceneObject.regionId = regionId;
         
-        terrainObject.positionX = position.x;
-        terrainObject.positionY = position.y;
-        terrainObject.positionZ = position.z;
+        sceneObject.positionX = position.x;
+        sceneObject.positionY = position.y;
+        sceneObject.positionZ = position.z;
 
-        terrainObject.rotationX = (int)rotation.x;
-        terrainObject.rotationY = (int)rotation.y;
-        terrainObject.rotationZ = (int)rotation.z;
+        //sceneObject.terrainTileId = terrainTileId;
 
-        terrainObject.scaleMultiplier = 1;
+        sceneObject.rotationX = (int)rotation.x;
+        sceneObject.rotationY = (int)rotation.y;
+        sceneObject.rotationZ = (int)rotation.z;
 
-        terrainObjectList.Add(terrainObject);
+        sceneObject.scaleMultiplier = 1;
+
+        sceneObjectList.Add(sceneObject);
     }
 
     static public void LoadChapters()
@@ -653,8 +656,8 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var terrainInteractableIds = terrainInteractableList.Where(x => x.chapterId == chapter.id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !terrainInteractableIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.id));
+            var sceneInteractableIds = sceneInteractableList.Where(x => x.chapterId == chapter.id).Select(x => x.interactableId).Distinct().ToList();
+            interactableList.Where(x => !sceneInteractableIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.id));
 
             for (int i = 0; i < partyMembersInChapter; i++)
             {
@@ -676,7 +679,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadChapterTerrainInteractables()
+    static public void LoadChapterSceneInteractables()
     {
         foreach(Chapter chapter in chapterList)
         {
@@ -687,9 +690,9 @@ static public class Fixtures
 
             for (int i = 0; i < worldInteractablesInChapter; i++)
             {
-                var chapterInteractable = new TerrainInteractable();
+                var chapterInteractable = new SceneInteractable();
 
-                int id = terrainInteractableList.Count > 0 ? (terrainInteractableList[terrainInteractableList.Count - 1].id + 1) : 1;
+                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
 
                 chapterInteractable.id = id;
                 chapterInteractable.chapterId = chapter.id;
@@ -700,7 +703,7 @@ static public class Fixtures
 
                 randomInteractables.RemoveAt(randomInteractable);
 
-                terrainInteractableList.Add(chapterInteractable);
+                sceneInteractableList.Add(chapterInteractable);
             }
         }
     }
@@ -798,22 +801,22 @@ static public class Fixtures
                 region.regionSize = regionSource.regionSize;
                 region.terrainSize = regionSource.terrainSize;
 
-                var terrainInteractableSourceList = terrainInteractableList.Where(x => interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.terrainInteractableId).Contains(x.id)).Distinct().ToList();
+                var sceneInteractableSourceList = sceneInteractableList.Where(x => interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
 
-                foreach (TerrainInteractable terrainInteractableSource in terrainInteractableSourceList)
+                foreach (SceneInteractable sceneInteractableSource in sceneInteractableSourceList)
                 {
-                    var terrainInteractable = new TerrainInteractable();
+                    var sceneInteractable = new SceneInteractable();
 
-                    int terrainInteractableId = terrainInteractableList.Count > 0 ? (terrainInteractableList[terrainInteractableList.Count - 1].id + 1) : 1;
+                    int sceneInteractableId = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
                     
-                    terrainInteractable.id = terrainInteractableId;
+                    sceneInteractable.id = sceneInteractableId;
 
-                    terrainInteractable.chapterId = terrainInteractableSource.chapterId;
-                    terrainInteractable.objectiveId = terrainInteractableSource.objectiveId;
-                    terrainInteractable.interactableId = terrainInteractableSource.interactableId;
-                    terrainInteractable.interactionIndex = terrainInteractableSource.interactionIndex;
+                    sceneInteractable.chapterId = sceneInteractableSource.chapterId;
+                    sceneInteractable.objectiveId = sceneInteractableSource.objectiveId;
+                    sceneInteractable.interactableId = sceneInteractableSource.interactableId;
+                    sceneInteractable.interactionIndex = sceneInteractableSource.interactionIndex;
 
-                    var interactionSourceList = interactionList.Where(x => x.terrainInteractableId == terrainInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
+                    var interactionSourceList = interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
 
                     foreach (Interaction interactionSource in interactionSourceList)
                     {
@@ -822,9 +825,11 @@ static public class Fixtures
                         int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
 
                         interaction.id = interactionId;
-                        interaction.terrainInteractableId = terrainInteractable.id;
+                        interaction.sceneInteractableId = sceneInteractable.id;
                         interaction.objectiveId = interactionSource.objectiveId;
                         interaction.regionId = region.id;
+
+                        interaction.terrainTileId = interactionSource.terrainTileId;
 
                         interaction.index = interactionSource.index;
                         interaction.description = interactionSource.description;
@@ -842,36 +847,36 @@ static public class Fixtures
                         interactionList.Add(interaction);
                     }
 
-                    terrainInteractableList.Add(terrainInteractable);
+                    sceneInteractableList.Add(sceneInteractable);
                 }
 
-                var terrainObjectSourceList = terrainObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
+                var sceneObjectSourceList = sceneObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
                 
-                foreach(TerrainObject terrainObjectSource in terrainObjectSourceList)
+                foreach(SceneObject sceneObjectSource in sceneObjectSourceList)
                 {
-                    var terrainObject = new TerrainObject();
+                    var sceneObject = new SceneObject();
 
-                    int terrainObjectId = terrainObjectList.Count > 0 ? (terrainObjectList[terrainObjectList.Count - 1].id + 1) : 1;
+                    int sceneObjectId = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].id + 1) : 1;
 
-                    terrainObject.id = terrainObjectId;
-                    terrainObject.regionId = region.id;
+                    sceneObject.id = sceneObjectId;
+                    sceneObject.regionId = region.id;
 
-                    terrainObject.boundToTile = terrainObjectSource.boundToTile;
+                    sceneObject.terrainTileId = sceneObjectSource.terrainTileId;
 
-                    terrainObject.positionX = terrainObjectSource.positionX;
-                    terrainObject.positionY = terrainObjectSource.positionY;
-                    terrainObject.positionZ = terrainObjectSource.positionZ;
+                    sceneObject.positionX = sceneObjectSource.positionX;
+                    sceneObject.positionY = sceneObjectSource.positionY;
+                    sceneObject.positionZ = sceneObjectSource.positionZ;
 
-                    terrainObject.rotationX = terrainObjectSource.rotationX;
-                    terrainObject.rotationY = terrainObjectSource.rotationY;
-                    terrainObject.rotationZ = terrainObjectSource.rotationZ;
+                    sceneObject.rotationX = sceneObjectSource.rotationX;
+                    sceneObject.rotationY = sceneObjectSource.rotationY;
+                    sceneObject.rotationZ = sceneObjectSource.rotationZ;
 
-                    terrainObject.scaleMultiplier = terrainObjectSource.scaleMultiplier;
+                    sceneObject.scaleMultiplier = sceneObjectSource.scaleMultiplier;
 
-                    terrainObject.index = terrainObjectSource.index;
-                    terrainObject.objectGraphicId = terrainObjectSource.objectGraphicId;
+                    sceneObject.index = sceneObjectSource.index;
+                    sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
 
-                    terrainObjectList.Add(terrainObject);
+                    sceneObjectList.Add(sceneObject);
                 }
 
                 var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
@@ -944,7 +949,7 @@ static public class Fixtures
         {
             foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.id).Distinct().ToList())
             {
-                var chapterInteractables = terrainInteractableList.Where(x => x.chapterId == chapter.id).Distinct().ToList();
+                var chapterInteractables = sceneInteractableList.Where(x => x.chapterId == chapter.id).Distinct().ToList();
                 var questIds = questList.Where(x => x.phaseId == phase.id).Select(x => x.id).Distinct().ToList();
 
                 for (int i = 0; i < chapterInteractables.Count; i++)
@@ -956,7 +961,7 @@ static public class Fixtures
                     phaseInteractable.id = id;
 
                     phaseInteractable.phaseId = phase.id;
-                    phaseInteractable.terrainInteractableId = chapterInteractables[i].id;
+                    phaseInteractable.sceneInteractableId = chapterInteractables[i].id;
 
                     int randomQuestId = Random.Range(0, questIds.Count);
 
@@ -992,7 +997,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadObjectiveTerrainInteractables()
+    static public void LoadObjectiveSceneInteractables()
     {
         foreach (Objective objective in objectiveList)
         {
@@ -1002,9 +1007,9 @@ static public class Fixtures
 
             for(int i = 0; i < interactablesInObjective; i++)
             {
-                var objectiveInteractable = new TerrainInteractable();
+                var objectiveInteractable = new SceneInteractable();
 
-                int id = terrainInteractableList.Count > 0 ? (terrainInteractableList[terrainInteractableList.Count - 1].id + 1) : 1;
+                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
 
                 objectiveInteractable.id = id;
                 objectiveInteractable.index = i;
@@ -1014,7 +1019,7 @@ static public class Fixtures
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
                 objectiveInteractable.interactableId = randomInteractables[randomInteractable];
 
-                terrainInteractableList.Add(objectiveInteractable);
+                sceneInteractableList.Add(objectiveInteractable);
             }
         }
     }
@@ -1023,13 +1028,13 @@ static public class Fixtures
     {
         foreach (Objective objective in objectiveList)
         {
-            var phaseInteractableTerrainInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.terrainInteractableId).Distinct().ToList();
-            var terrainInteractables = terrainInteractableList.Where(x => phaseInteractableTerrainInteractableIds.Contains(x.id) || x.objectiveId == objective.id).Distinct().ToList();
+            var phaseInteractableSceneInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.sceneInteractableId).Distinct().ToList();
+            var sceneInteractables = sceneInteractableList.Where(x => phaseInteractableSceneInteractableIds.Contains(x.id) || x.objectiveId == objective.id).Distinct().ToList();
 
             var phaseId = phaseList.Where(x => questList.Where(y => y.id == objective.questId).Select(y => y.phaseId).Contains(x.id)).Select(x => x.id).FirstOrDefault();
             var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();
 
-            foreach(TerrainInteractable terrainInteractable in terrainInteractables)
+            foreach(SceneInteractable sceneInteractable in sceneInteractables)
             {
                 for (int i = 0; i < baseInteractions; i++)
                 {
@@ -1041,7 +1046,7 @@ static public class Fixtures
                     interaction.index = i;
 
                     interaction.objectiveId = objective.id;
-                    interaction.terrainInteractableId = terrainInteractable.id;
+                    interaction.sceneInteractableId = sceneInteractable.id;
 
                     int randomRegion = Random.Range(0, regions.Count);
 

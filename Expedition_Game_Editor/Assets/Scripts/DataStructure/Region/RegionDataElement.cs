@@ -2,18 +2,14 @@
 using System;
 using System.Collections.Generic;
 
-
 [System.Serializable]
-public class RegionDataElement : RegionCore, IDataElement, ICloneable
+public class RegionDataElement : RegionCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
     public RegionDataElement() : base() { }
 
-    public Enums.RegionType type;
+    public SceneDataElement sceneDataElement;
 
-    public object Clone()
-    {
-        return MemberwiseClone();
-    }
+    public Enums.RegionType type;
 }

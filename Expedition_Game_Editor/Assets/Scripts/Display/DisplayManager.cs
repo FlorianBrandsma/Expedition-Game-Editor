@@ -11,6 +11,6 @@ public class DisplayManager
         PanelTile,
         MultiGrid,
         Object,
-        Region
+        Scene
     }
 }

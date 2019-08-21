@@ -5,23 +5,23 @@ public class PhaseInteractableCore : GeneralData
 {
     private int phaseId;
     private int questId;
-    private int terrainInteractableId;
+    private int sceneInteractableId;
 
     public int originalIndex;
     public int originalPhaseId;
     public int originalQuestId;
-    public int originalTerrainInteractableId;
+    public int originalSceneInteractableId;
 
     private bool changedIndex;
     private bool changedPhaseId;
     private bool changedQuestId;
-    private bool changedTerrainInteractableId;
+    private bool changedSceneInteractableId;
 
     public bool Changed
     {
         get
         {
-            return changedPhaseId || changedQuestId || changedTerrainInteractableId;
+            return changedPhaseId || changedQuestId || changedSceneInteractableId;
         }
     }
 
@@ -68,16 +68,16 @@ public class PhaseInteractableCore : GeneralData
         }
     }
 
-    public int TerrainInteractableId
+    public int SceneInteractableId
     {
-        get { return terrainInteractableId; }
+        get { return sceneInteractableId; }
         set
         {
-            if (value == terrainInteractableId) return;
+            if (value == sceneInteractableId) return;
 
-            changedTerrainInteractableId = (value != originalTerrainInteractableId);
+            changedSceneInteractableId = (value != originalSceneInteractableId);
 
-            terrainInteractableId = value;
+            sceneInteractableId = value;
         }
     }
 
@@ -98,7 +98,7 @@ public class PhaseInteractableCore : GeneralData
         {
             phaseElementData.questId = questId;
 
-            Fixtures.interactionList.Where(x => x.terrainInteractableId == phaseElementData.terrainInteractableId).Distinct().ToList().ForEach(x => Fixtures.interactionList.Remove(x));
+            Fixtures.interactionList.Where(x => x.sceneInteractableId == phaseElementData.sceneInteractableId).Distinct().ToList().ForEach(x => Fixtures.interactionList.Remove(x));
         }
     }
 
@@ -110,14 +110,14 @@ public class PhaseInteractableCore : GeneralData
     {
         originalPhaseId = phaseId;
         originalQuestId = questId;
-        originalTerrainInteractableId = terrainInteractableId;
+        originalSceneInteractableId = sceneInteractableId;
     }
 
     public void GetOriginalValues()
     {
         phaseId = originalPhaseId;
         questId = originalQuestId;
-        terrainInteractableId = originalTerrainInteractableId;
+        sceneInteractableId = originalSceneInteractableId;
     }
 
     public virtual void ClearChanges()
@@ -127,7 +127,7 @@ public class PhaseInteractableCore : GeneralData
         changedIndex = false;
         changedPhaseId = false;
         changedQuestId = false;
-        changedTerrainInteractableId = false;
+        changedSceneInteractableId = false;
     }
 
     public void Delete()

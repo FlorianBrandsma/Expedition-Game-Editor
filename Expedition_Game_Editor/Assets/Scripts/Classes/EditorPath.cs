@@ -66,21 +66,21 @@ public class EditorPath
 
                 break;
 
-            case Enums.DataType.TerrainInteractable:
+            case Enums.DataType.SceneInteractable:
 
                 //Don't stick with "Enter/Edit/Etc" restrictions
-                //Add Combine, Extend: somewhat global, so not like "TerrainInteractableExtend"
+                //Add Combine, Extend: somewhat global, so not like "SceneInteractableExtend"
 
                 //Add another path to root, to directly open Interaction without going through the path
                 //The way an asset-less Interaction opens the selection is kind of a happy accident, but something more intentional would be preferable
 
-                PathManager.TerrainInteractable terrainInteractable = new PathManager.TerrainInteractable(selection, route);
+                PathManager.SceneInteractable sceneInteractable = new PathManager.SceneInteractable(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = terrainInteractable.Enter();
+                    path = sceneInteractable.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
-                    path = terrainInteractable.Open();
+                    path = sceneInteractable.Open();
                 
                 break;
 
@@ -120,12 +120,12 @@ public class EditorPath
 
                 break;
 
-            case Enums.DataType.TerrainObject:
+            case Enums.DataType.SceneObject:
 
-                PathManager.TerrainObject terrainObject = new PathManager.TerrainObject(selection, route);
+                PathManager.SceneObject sceneObject = new PathManager.SceneObject(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = terrainObject.Enter();
+                    path = sceneObject.Enter();
 
                 break;
 

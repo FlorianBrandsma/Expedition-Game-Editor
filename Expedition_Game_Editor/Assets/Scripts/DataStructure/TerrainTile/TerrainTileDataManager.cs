@@ -73,7 +73,10 @@ public class TerrainTileDataManager
 
     internal void GetTileData()
     {
-        tileDataList = dataManager.GetTileData(terrainTileDataList.Select(x => x.tileId).Distinct().ToList(), true);
+        var tileSearchParameters = new Search.Tile();
+        tileSearchParameters.id = terrainTileDataList.Select(x => x.tileId).Distinct().ToList();
+
+        tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
     internal class TerrainTileData : GeneralData

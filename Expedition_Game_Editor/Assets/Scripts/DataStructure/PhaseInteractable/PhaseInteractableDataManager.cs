@@ -10,7 +10,7 @@ public class PhaseInteractableDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.TerrainInteractableData> terrainInteractableDataList;
+    private List<DataManager.SceneInteractableData> sceneInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
@@ -26,16 +26,16 @@ public class PhaseInteractableDataManager
 
         GetPhaseInteractableData(phaseInteractableSearchData);
 
-        GetTerrainInteractableData();
+        GetSceneInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from phaseInteractableData in phaseInteractableDataList
-                    join terrainInteractableData in terrainInteractableDataList on phaseInteractableData.terrainInteractableId equals terrainInteractableData.id
-                    join interactableData in interactableDataList on terrainInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+        var list = (from phaseInteractableData  in phaseInteractableDataList
+                    join sceneInteractableData  in sceneInteractableDataList    on phaseInteractableData.sceneInteractableId    equals sceneInteractableData.id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId         equals interactableData.id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.id
                     select new PhaseInteractableDataElement()
                     {
                         dataType = Enums.DataType.PhaseInteractable,
@@ -45,7 +45,7 @@ public class PhaseInteractableDataManager
 
                         PhaseId = phaseInteractableData.phaseId,
                         QuestId = phaseInteractableData.questId,
-                        TerrainInteractableId = phaseInteractableData.terrainInteractableId,
+                        SceneInteractableId = phaseInteractableData.sceneInteractableId,
 
                         elementStatus = GetElementStatus(phaseInteractableData),
                         interactableName = interactableData.name,
@@ -74,20 +74,20 @@ public class PhaseInteractableDataManager
 
             phaseInteractableData.phaseId = phaseInteractable.phaseId;
             phaseInteractableData.questId = phaseInteractable.questId;
-            phaseInteractableData.terrainInteractableId = phaseInteractable.terrainInteractableId;
+            phaseInteractableData.sceneInteractableId = phaseInteractable.sceneInteractableId;
 
             phaseInteractableDataList.Add(phaseInteractableData);
         }
     }
 
-    internal void GetTerrainInteractableData()
+    internal void GetSceneInteractableData()
     {
-        terrainInteractableDataList = dataManager.GetTerrainInteractableData(phaseInteractableDataList.Select(x => x.terrainInteractableId).Distinct().ToList(), true);
+        sceneInteractableDataList = dataManager.GetSceneInteractableData(phaseInteractableDataList.Select(x => x.sceneInteractableId).Distinct().ToList(), true);
     }
 
     internal void GetInteractableData()
     {
-        interactableDataList = dataManager.GetInteractableData(terrainInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
+        interactableDataList = dataManager.GetInteractableData(sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
     }
 
     internal void GetObjectGraphicData()
@@ -116,6 +116,6 @@ public class PhaseInteractableDataManager
     {
         public int questId;
         public int phaseId;
-        public int terrainInteractableId;
+        public int sceneInteractableId;
     }
 }

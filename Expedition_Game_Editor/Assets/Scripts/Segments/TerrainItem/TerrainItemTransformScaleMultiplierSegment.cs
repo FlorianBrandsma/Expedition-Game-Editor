@@ -40,10 +40,10 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
 
                     break;
 
-                case Enums.DataType.TerrainObject:
+                case Enums.DataType.SceneObject:
 
-                    var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
-                    terrainObjectData.ScaleMultiplier = value;
+                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+                    sceneObjectData.ScaleMultiplier = value;
 
                     break;
 
@@ -88,7 +88,7 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
-            case Enums.DataType.TerrainObject: InitializeTerrainObjectData(); break;
+            case Enums.DataType.SceneObject: InitializeSceneObjectData(); break;
 
             default: Debug.Log("CASE MISSING"); break;
         }
@@ -101,11 +101,11 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
         scaleMultiplier = interactionData.ScaleMultiplier;
     }
 
-    private void InitializeTerrainObjectData()
+    private void InitializeSceneObjectData()
     {
-        var terrainObjectData = (TerrainObjectDataElement)DataEditor.Data.dataElement;
+        var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
 
-        scaleMultiplier = terrainObjectData.ScaleMultiplier;
+        scaleMultiplier = sceneObjectData.ScaleMultiplier;
     }
 
     private void SetSearchParameters() { }

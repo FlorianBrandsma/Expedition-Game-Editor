@@ -8,5 +8,5 @@ public class SearchParameters
     public Enums.ElementType elementType;
     public bool autoUpdate;
 
-    public List<int> id     = new List<int>();
+    public List<int> id = new List<int>();
 }
