@@ -12,30 +12,35 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     private List<float> rowHeight       = new List<float>(); //Individual heights
     private List<float> rowOffsetMax    = new List<float>(); //Combined heights
 
-    private PanelProperties properties;
+    private ListProperties listProperties;
+    private PanelProperties panelProperties;
 
-    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
-
+    private ListManager listManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
+    
     public List<SelectionElement> ElementList { get; set; }
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
-        dataController = ListManager.listProperties.DataController;
+        listManager = (ListManager)DisplayManager;
+
+        dataController = DisplayManager.Display.DataController;
 
         ElementList = new List<SelectionElement>();
     }
 
     public void InitializeProperties()
     {
-        properties = ListManager.listProperties.GetComponent<PanelProperties>();
+        listProperties = (ListProperties)DisplayManager.Display;
+        panelProperties = (PanelProperties)DisplayManager.Display.Properties;
     }
 
     public void SetElementSize()
     {
-        ElementSize = new Vector2(  ListManager.listProperties.elementSize.x,
-                                    properties.constantHeight ? ListManager.listProperties.elementSize.y : 
-                                                                ListManager.listProperties.elementSize.y / properties.referenceArea.anchorMax.x);
+        ElementSize = new Vector2(  listProperties.elementSize.x,
+                                    panelProperties.constantHeight ?    listProperties.elementSize.y : 
+                                                                        listProperties.elementSize.y / panelProperties.referenceArea.anchorMax.x);
 
         SetList();
     }
@@ -52,7 +57,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         float positionSum = 0;
 
-        for (int i = 0; i < ListManager.listProperties.DataController.DataList.Count; i++)
+        for (int i = 0; i < dataController.DataList.Count; i++)
         {
             rowHeight.Add(ElementSize.y);
 
@@ -70,15 +75,15 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         generalDataList = list.Cast<GeneralData>().ToList();
         
-        string elementType = Enum.GetName(typeof(Enums.ElementType), properties.elementType);
+        string elementType = Enum.GetName(typeof(Enums.ElementType), panelProperties.elementType);
 
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, properties.elementType,
-                                                                            ListManager, ListManager.selectionType, 
-                                                                            ListManager.selectionProperty, ListManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, panelProperties.elementType,
+                                                                            DisplayManager, listManager.selectionType, 
+                                                                            listManager.selectionProperty, listManager.listParent);
 
             ElementList.Add(element);
             
@@ -96,9 +101,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void UpdateData()
     {
-        ResetData(dataController.DataList);
-
-        SelectionManager.SelectElements();
+        ResetData(dataController.DataList); 
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -117,7 +120,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
         element.transform.localPosition = new Vector2(element.transform.localPosition.x, 
-                                                     (ListManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
+                                                     (listManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
 
         rect.gameObject.SetActive(true);
 

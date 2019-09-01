@@ -41,13 +41,6 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index) { }
 
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
-    }
-
     public void OpenEditor()
     {
         SetEditor();
@@ -66,8 +59,6 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
     public void ApplyChanges()
     {
         DataElements.ForEach(x => x.Update());
-
-        //UpdateList();
 
         UpdateEditor();
     }

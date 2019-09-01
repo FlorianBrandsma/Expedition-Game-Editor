@@ -57,14 +57,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
             list[i].UpdateIndex();
         }
 
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
+        SelectionElementManager.UpdateElements(objectiveData, true);
     }
 
     public void OpenEditor()
@@ -86,7 +79,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
     {
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(objectiveData);
 
         UpdateEditor();
     }

@@ -3,6 +3,6 @@ using System.Collections;
 
 public interface IPoolable
 {
-    ObjectManager.PoolType PoolType { get; }
+    PoolManager.PoolType PoolType { get; }
     int Id { get; set; }
 }

@@ -7,19 +7,22 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 {
     private List<IPoolable> poolObjects = new List<IPoolable>();
 
-    private CameraManager cameraManager { get { return GetComponent<CameraManager>(); } }
-    private ObjectProperties properties;
+    private CameraManager cameraManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
+    private ObjectProperties objectProperties;
 
     private IDataController dataController;
 
     public void InitializeOrganizer()
     {
-        dataController = cameraManager.cameraProperties.DataController;
+        cameraManager = (CameraManager)DisplayManager;
+
+        dataController = DisplayManager.Display.DataController;
     }
 
     public void InitializeProperties()
     {
-        properties = cameraManager.cameraProperties.GetComponent<ObjectProperties>();
+        objectProperties = (ObjectProperties)DisplayManager.Display.Properties;
     }
 
     public void SetData()
@@ -38,7 +41,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
             ObjectGraphic prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
 
-            ObjectGraphic graphic = (ObjectGraphic)ObjectManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
+            ObjectGraphic graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
 
             poolObjects.Add(graphic);
 
@@ -67,7 +70,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     void SetGraphic(ObjectGraphic graphic)
     {
         graphic.transform.localPosition = new Vector2(  graphic.transform.localPosition.x, 
-                                                        properties.pivotPosition[(int)graphic.pivot]);
+                                                        objectProperties.pivotPosition[(int)graphic.pivot]);
 
         graphic.gameObject.SetActive(true);
     }
@@ -78,7 +81,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         {
             switch(poolObject.PoolType)
             {
-                case ObjectManager.PoolType.ObjectGraphic: ((ObjectGraphic)poolObject).gameObject.SetActive(false); break;
+                case PoolManager.PoolType.ObjectGraphic: ((ObjectGraphic)poolObject).gameObject.SetActive(false); break;
             }
         }
 

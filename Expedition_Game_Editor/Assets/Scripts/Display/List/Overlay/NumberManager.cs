@@ -7,26 +7,28 @@ using UnityEngine.EventSystems;
 
 public class NumberManager : MonoBehaviour, IOverlay
 {
-    static public List<Text> number_list = new List<Text>();
-    private List<Text> number_list_local = new List<Text>();
+    static public List<Text> numberList = new List<Text>();
+    private List<Text> numberListLocal = new List<Text>();
 
-    private RectTransform   list_parent;
+    private ListManager     listManager;
 
-    private RectTransform   horizontal_parent,
-                            vertical_parent;
+    private RectTransform   listParent;
 
-    OverlayManager          overlayManager;
+    private RectTransform   horizontalParent,
+                            verticalParent;
 
-    public void InitializeOverlay(ListManager listManager)
+    private OverlayManager  overlayManager { get { return GetComponent<OverlayManager>(); } }
+
+    public void InitializeOverlay(IDisplayManager displayManager)
     {
-        overlayManager = GetComponent<OverlayManager>();
+        listManager = (ListManager)displayManager;
 
-        list_parent = listManager.listParent;
+        listParent = listManager.listParent;
     }
 
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int listCount = overlayManager.listManager.listProperties.DataController.DataList.Count;
+        int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
 
         Vector2 listSize = list.GetListSize(listCount, false);
 
@@ -39,24 +41,24 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void SetOverlay()
     {
-        Vector2 list_size = overlayManager.listManager.listSize;
+        Vector2 listSize = listManager.listSize;
 
-        Vector2 base_size = new Vector2(list_parent.rect.width / list_size.x, list_parent.rect.height / list_size.y);
+        Vector2 baseSize = new Vector2(listParent.rect.width / listSize.x, listParent.rect.height / listSize.y);
 
         if(overlayManager.horizontal_min.gameObject.activeInHierarchy)
         {
-            horizontal_parent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().ScrollParent();
+            horizontalParent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().ScrollParent();
 
-            for (int x = 0; x < list_size.x; x++)
-                SetNumbers(overlayManager.horizontal_min, x, -((base_size.x * 0.5f) * (list_size.x - 1)) + (x * base_size.x));
+            for (int x = 0; x < listSize.x; x++)
+                SetNumbers(overlayManager.horizontal_min, x, -((baseSize.x * 0.5f) * (listSize.x - 1)) + (x * baseSize.x));
         }
 
         if(overlayManager.vertical_min.gameObject.activeInHierarchy)
         {
-            vertical_parent = overlayManager.vertical_min.GetComponent<OverlayBorder>().ScrollParent();
+            verticalParent = overlayManager.vertical_min.GetComponent<OverlayBorder>().ScrollParent();
 
-            for (int y = 0; y < list_size.y; y++)
-                SetNumbers(overlayManager.vertical_min, y, -(base_size.y * 0.5f) + (list_parent.sizeDelta.y / 2f) - (y * base_size.y));
+            for (int y = 0; y < listSize.y; y++)
+                SetNumbers(overlayManager.vertical_min, y, -(baseSize.y * 0.5f) + (listParent.sizeDelta.y / 2f) - (y * baseSize.y));
         }
 
         UpdateOverlay();
@@ -64,35 +66,35 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void UpdateOverlay()
     {
-        if (vertical_parent != null)
-            vertical_parent.transform.localPosition = new Vector2(0, list_parent.transform.localPosition.y );
+        if (verticalParent != null)
+            verticalParent.transform.localPosition = new Vector2(0, listParent.transform.localPosition.y );
 
-        if (horizontal_parent != null)
-            horizontal_parent.transform.localPosition = new Vector2(list_parent.transform.localPosition.x, 0);
+        if (horizontalParent != null)
+            horizontalParent.transform.localPosition = new Vector2(listParent.transform.localPosition.x, 0);
     }
 
     public void CloseOverlay()
     {
-        ResetText(number_list_local);
+        ResetText(numberListLocal);
 
         DestroyImmediate(this);
     }
 
-    public void SetNumbers(RectTransform number_parent, int index, float new_position)
+    public void SetNumbers(RectTransform numberParent, int index, float new_position)
     {
-        OverlayBorder overlayBorder = number_parent.GetComponent<OverlayBorder>();
+        OverlayBorder overlayBorder = numberParent.GetComponent<OverlayBorder>();
         
-        Text new_text = SpawnText(number_list);
-        number_list_local.Add(new_text);
+        Text newText = SpawnText(numberList);
+        numberListLocal.Add(newText);
 
-        new_text.text = (index + 1).ToString();
-        new_text.transform.SetParent(overlayBorder.scroll_parent, false);
+        newText.text = (index + 1).ToString();
+        newText.transform.SetParent(overlayBorder.scroll_parent, false);
 
         if (overlayBorder.vertical)
-            new_text.transform.localPosition = new Vector2(0, new_position);
+            newText.transform.localPosition = new Vector2(0, new_position);
         
         if(overlayBorder.horizontal)
-            new_text.transform.localPosition = new Vector2(new_position, 0);  
+            newText.transform.localPosition = new Vector2(new_position, 0);  
     }
 
     static public Text SpawnText(List<Text> list)
@@ -106,10 +108,10 @@ public class NumberManager : MonoBehaviour, IOverlay
             }
         }
 
-        Text new_text = Instantiate(Resources.Load<Text>("UI/Number"));
-        list.Add(new_text);
+        Text newText = Instantiate(Resources.Load<Text>("UI/Number"));
+        list.Add(newText);
 
-        return new_text;
+        return newText;
     }
 
     public void ResetText(List<Text> list)

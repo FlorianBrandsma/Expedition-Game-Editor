@@ -9,29 +9,34 @@ using System.Linq;
 
 public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ButtonProperties properties;
-
+    private ListProperties listProperties;
+    private ButtonProperties buttonProperties;
+    
     private IDataController dataController;
     private List<GeneralData> generalDataList;
 
-    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
+    private ListManager listManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
 
     public List<SelectionElement> ElementList { get; set; }
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
-        dataController = ListManager.listProperties.DataController;
+        listManager = (ListManager)DisplayManager;
+
+        dataController = DisplayManager.Display.DataController;
     }
 
     public void InitializeProperties()
     {
-        properties = ListManager.listProperties.GetComponent<ButtonProperties>();
+        listProperties = (ListProperties)DisplayManager.Display;
+        buttonProperties = (ButtonProperties)DisplayManager.Display.Properties;
     }
 
     public void SetElementSize()
     {
-        ElementSize = ListManager.listProperties.elementSize;
+        ElementSize = listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
@@ -52,8 +57,9 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.Button,
-                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.Button, 
+                                                                            DisplayManager, listManager.selectionType,
+                                                                            listManager.selectionProperty, listManager.listParent);
             ElementList.Add(element);
 
             data.SelectionElement = element;
@@ -71,8 +77,6 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
     public void UpdateData()
     {
         ResetData(dataController.DataList);
-
-        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -91,7 +95,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
-        rect.transform.localPosition = new Vector2(0, (ListManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
+        rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
 
         rect.gameObject.SetActive(true);
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 //    [UnityEngine.Serialization.FormerlySerializedAs("previous_name")]
 
@@ -24,7 +25,6 @@ public class EditorManager : MonoBehaviour
         foreach (EditorForm form in forms)
             form.InitializeForm();
     }
-
     private void Start()
     {
         LanguageManager.GetLanguage();

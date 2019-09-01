@@ -41,7 +41,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        properties = Element.ListManager.listProperties.GetComponent<PanelTileProperties>();
+        properties = (PanelTileProperties)Element.DisplayManager.Display.Properties;
     }
 
     private void InitializeIcon()
@@ -52,7 +52,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private void InitializeEdit()
     {
-        ElementChild.InitializeElement(Element.ListManager, ElementChild.selectionType, properties.childProperty);
+        ElementChild.InitializeElement(Element.DisplayManager, ElementChild.selectionType, properties.childProperty);
 
         ElementChild.gameObject.SetActive(true);
 

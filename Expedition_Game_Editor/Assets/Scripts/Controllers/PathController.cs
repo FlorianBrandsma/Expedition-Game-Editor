@@ -28,11 +28,6 @@ public class PathController : MonoBehaviour
 
     private PathController parentController;
 
-    public SelectionElement Origin
-    {
-        get { return route.path.origin.selectedElement; }
-    }
-
     public void InitializeDependencies(PathController parentController = null)
     {
         this.parentController = parentController;

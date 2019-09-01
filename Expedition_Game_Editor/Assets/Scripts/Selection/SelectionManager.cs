@@ -57,17 +57,17 @@ static public class SelectionManager
                 if (selectionElement.GeneralData().Equals(route.GeneralData()) &&
                     selectionElement.selectionGroup == route.selectionGroup)
                 {
-                    selectionElement.ActivateSelection();
-
-                    if (selectionElement.ListManager != null)
+                    if (selectionElement.DisplayManager != null)
                     {
-                        selectionElement.ListManager.selectedElement = selectionElement;
+                        selectionElement.DisplayManager.SelectedElement = selectionElement;
 
                         if (selectionElement.parent == null)
-                            selectionElement.ListManager.CorrectPosition(selectionElement);
+                            selectionElement.DisplayManager.CorrectPosition(selectionElement);
                         else
-                            selectionElement.ListManager.CorrectPosition(selectionElement.parent);
+                            selectionElement.DisplayManager.CorrectPosition(selectionElement.parent);
                     }
+
+                    selectionElement.ActivateSelection();
 
                     break;
                 }
@@ -93,8 +93,8 @@ static public class SelectionManager
         {
             if (selectionElement.GeneralData().Equals(route.GeneralData()))
             {
-                if (selectionElement.ListManager != null)
-                    selectionElement.ListManager.selectedElement = null;
+                if (selectionElement.DisplayManager != null)
+                    selectionElement.DisplayManager.SelectedElement = null;
 
                 selectionElement.CancelSelection();
 

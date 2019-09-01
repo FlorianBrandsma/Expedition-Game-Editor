@@ -7,34 +7,41 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 {
     private Vector2 listSize;
 
-    private PanelTileProperties properties;
+    private ListProperties listProperties;
+    private PanelTileProperties panelTileProperties;
+
     private bool horizontal, vertical;
 
     private IDataController dataController;
     private List<GeneralData> generalDataList;
 
-    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
+    private ListManager listManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
 
     public List<SelectionElement> ElementList { get; set; }
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
-        dataController = ListManager.listProperties.DataController;
+        listManager = (ListManager)DisplayManager;
+
+        dataController = DisplayManager.Display.DataController;
+
         ElementList = new List<SelectionElement>();
     }
 
     public void InitializeProperties()
     {
-        properties = ListManager.listProperties.GetComponent<PanelTileProperties>();
+        listProperties = (ListProperties)DisplayManager.Display;
+        panelTileProperties = (PanelTileProperties)DisplayManager.Display.Properties;
 
-        horizontal = ListManager.listProperties.horizontal;
-        vertical = ListManager.listProperties.vertical;
+        horizontal = listProperties.horizontal;
+        vertical = listProperties.vertical;
     }
 
     public void SetElementSize()
     {
-        ElementSize = ListManager.listProperties.elementSize;
+        ElementSize = listProperties.elementSize;
     }
 
     public Vector2 GetListSize(int element_count, bool exact)
@@ -55,7 +62,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
                                 vertical    ? 0                                                                                 : list_height * ElementSize.y);
 
         if (exact)
-            return new Vector2(new_size.x - ListManager.rectTransform.rect.width, new_size.y);
+            return new Vector2(new_size.x - listManager.RectTransform.rect.width, new_size.y);
         else
             return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
     }
@@ -64,7 +71,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int x = 0;
 
-        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < ListManager.rectTransform.rect.max.x)
+        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -74,7 +81,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < ListManager.rectTransform.rect.max.y)
+        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
             y++;
 
         return y - 1;
@@ -96,7 +103,8 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         foreach (IDataElement data in list)
         {
             SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.PanelTile,
-                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+                                                                            DisplayManager, listManager.selectionType, 
+                                                                            listManager.selectionProperty, listManager.listParent);
             ElementList.Add(element);
 
             data.SelectionElement = element;
@@ -114,8 +122,6 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     public void UpdateData()
     {
         ResetData(null);
-
-        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)

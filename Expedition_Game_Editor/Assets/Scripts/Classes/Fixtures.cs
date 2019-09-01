@@ -23,7 +23,7 @@ static public class Fixtures
     static public int objectivesInQuest = 3;
     static public int interactablesInObjective = 2;
     static public int sideSceneInteractables = 1;
-    static public int baseInteractions = 4;
+    static public int baseInteractions = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
     static public int baseSceneObjects = 5;
@@ -550,13 +550,13 @@ static public class Fixtures
             CreateSceneObject(19, region.id, new Vector3(0.7f, 0.8f, 0.9f), new Vector3(7, 8, 9));
 
             /*Red warrior*/
-            CreateSceneInteractable(1, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(1, region.id, new Vector3(0f, 50f, 0.3f), new Vector3(1, 2, 3));
 
             /*Ranger*/
-            CreateSceneInteractable(4, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
+            CreateSceneInteractable(4, region.id, new Vector3(50f, 100f, 0.6f), new Vector3(4, 5, 6));
 
             /*Mage*/
-            CreateSceneInteractable(5, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(5, region.id, new Vector3(450f, 450f, 0.3f), new Vector3(1, 2, 3));
         }
     }
 
@@ -590,6 +590,8 @@ static public class Fixtures
         interaction.positionY = position.y;
         interaction.positionZ = position.z;
 
+        interaction.terrainTileId = GetTerrainTile(interaction.regionId, interaction.positionX, interaction.positionY);
+
         interaction.rotationX = (int)rotation.x;
         interaction.rotationY = (int)rotation.y;
         interaction.rotationZ = (int)rotation.z;
@@ -613,7 +615,7 @@ static public class Fixtures
         sceneObject.positionY = position.y;
         sceneObject.positionZ = position.z;
 
-        //sceneObject.terrainTileId = terrainTileId;
+        sceneObject.terrainTileId = GetTerrainTile(sceneObject.regionId, sceneObject.positionX, sceneObject.positionY);
 
         sceneObject.rotationX = (int)rotation.x;
         sceneObject.rotationY = (int)rotation.y;
@@ -742,22 +744,6 @@ static public class Fixtures
 
     static public void LoadPhases()
     {
-        //for (int i = 0; i < phasesInChapter; i++)
-        //{
-        //    var phase = new Phase();
-
-        //    int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].id + 1) : 1;
-
-        //    phase.id = id;
-        //    phase.index = i;
-
-        //    phase.chapterId = 1;
-        //    phase.name = "Phase " + (i + 1);
-        //    phase.notes = "I belong to Chapter " + 1 + ". This is definitely a test";
-
-        //    phaseList.Add(phase);
-        //}
-
         foreach (Chapter chapter in chapterList)
         {
             for (int i = 0; i < phasesInChapter; i++)
@@ -1051,7 +1037,9 @@ static public class Fixtures
                     int randomRegion = Random.Range(0, regions.Count);
 
                     interaction.regionId = regions[randomRegion].id;
-                    
+
+                    interaction.terrainTileId = GetTerrainTile(interaction.regionId, interaction.positionX, interaction.positionY);
+
                     interaction.description = "Basically a task description. Property of objective" + objective.id;
 
                     interaction.scaleMultiplier = 1;
@@ -1060,5 +1048,38 @@ static public class Fixtures
                 }
             }
         }
+    }
+
+    static public int GetTerrainTile(int regionId, float posX, float posY)
+    {
+        var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
+        
+        var terrainSize = region.terrainSize * tileSet.tileSize;
+
+        var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
+                                             Mathf.Floor(posY / terrainSize));
+
+        var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
+
+        var terrainId = terrains.Where(x => x.index == terrainIndex).Select(x => x.id).FirstOrDefault();
+
+        var terrainTiles = terrainTileList.Where(x => x.terrainId == terrainId).Distinct().ToList();
+
+        var terrainPosition = new Vector2(terrainCoordinates.x * terrainSize,
+                                          terrainCoordinates.y * terrainSize);
+
+        var localPosition = new Vector2(posX - terrainPosition.x,
+                                        posY - terrainPosition.y);
+
+        var tileCoordinates = new Vector2(Mathf.Floor(localPosition.x / tileSet.tileSize),
+                                          Mathf.Floor(localPosition.y / tileSet.tileSize));
+
+        var tileIndex = (region.terrainSize * tileCoordinates.y) + tileCoordinates.x;
+
+        var terrainTileId = terrainTiles.Where(x => x.index == tileIndex).Select(x => x.id).FirstOrDefault();
+
+        return terrainTileId;
     }
 }

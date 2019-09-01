@@ -42,7 +42,7 @@ public class EditorPanel : MonoBehaviour, IElement
     
     public void InitializeElement()
     {
-        properties = Element.ListManager.listProperties.GetComponent<PanelProperties>();
+        properties = (PanelProperties)Element.DisplayManager.Display.Properties;
     }
 
     private void InitializeIcon()
@@ -53,7 +53,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void InitializeEdit()
     {
-        ElementChild.InitializeElement(Element.ListManager, ElementChild.selectionType, properties.childProperty);
+        ElementChild.InitializeElement(Element.DisplayManager, ElementChild.selectionType, properties.childProperty);
 
         ElementChild.gameObject.SetActive(true);
 

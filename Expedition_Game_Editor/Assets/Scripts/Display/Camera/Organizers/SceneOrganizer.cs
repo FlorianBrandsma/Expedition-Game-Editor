@@ -16,25 +16,20 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private Vector2 startPosition;
     private Vector2 positionTracker = new Vector2();
+    
+    private CameraManager cameraManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
+    private SceneProperties sceneProperties;
 
     private IDataController dataController;
-    
-    private SceneProperties properties;
 
     private CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
-    private CameraManager CameraManager { get { return GetComponent<CameraManager>(); } }
 
     public void InitializeOrganizer()
     {
-        dataController = CameraManager.cameraProperties.DataController;
+        cameraManager = (CameraManager)DisplayManager;
 
-        sceneData = (SceneDataElement)dataController.DataList.FirstOrDefault();
-
-        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * sceneData.tileSize, 
-                                    0, 
-                                    EditorManager.UI.localScale.z * sceneData.tileSize) * 3;
-
-        SetRegionSize();
+        dataController = cameraManager.Display.DataController;
     }
 
     private void SetRegionSize()
@@ -43,12 +38,20 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                                      sceneData.regionSize * sceneData.terrainSize * sceneData.tileSize);
 
         ScrollRect.content.sizeDelta = regionSize * 2;
-        CameraManager.content.sizeDelta = regionSize;
+        cameraManager.content.sizeDelta = regionSize;
     }
 
     public void InitializeProperties()
     {
-        properties = CameraManager.cameraProperties.GetComponent<SceneProperties>();
+        sceneProperties = (SceneProperties)DisplayManager.Display.Properties;
+        
+        sceneData = (SceneDataElement)dataController.DataList.FirstOrDefault();
+
+        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * sceneData.tileSize,
+                                    0,
+                                    EditorManager.UI.localScale.z * sceneData.tileSize) * 3;
+
+        SetRegionSize();
     }
 
     public void UpdateData()
@@ -81,7 +84,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData(List<IDataElement> list)
     {
-        planes = GeometryUtility.CalculateFrustumPlanes(CameraManager.cam);
+        planes = GeometryUtility.CalculateFrustumPlanes(cameraManager.cam);
 
         foreach (SceneDataElement.TerrainData terrainData in sceneData.terrainDataList)
         {
@@ -99,15 +102,15 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             var tilePosition = new Vector2( startPosition.x + (sceneData.tileSize * (terrainTileData.index % sceneData.terrainSize)),
                                             startPosition.y - (sceneData.tileSize * (Mathf.Floor(terrainTileData.index / sceneData.terrainSize))));
 
-            if (GeometryUtility.TestPlanesAABB(planes, new Bounds(CameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
+            if (GeometryUtility.TestPlanesAABB(planes, new Bounds(cameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
             {
                 Tile prefab = Resources.Load<Tile>("Objects/Tile/" + sceneData.tileSetName + "/" + terrainTileData.tileId);
 
-                Tile tile = (Tile)ObjectManager.SpawnObject(terrainTileData.tileId, prefab.PoolType, prefab);
+                Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.tileId, prefab.PoolType, prefab);
 
                 tileList.Add(tile);
 
-                tile.transform.SetParent(CameraManager.content.transform, false);
+                tile.transform.SetParent(cameraManager.content.transform, false);
 
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
 

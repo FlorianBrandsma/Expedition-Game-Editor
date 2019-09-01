@@ -39,17 +39,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
         SetEditor();
     }
 
-    public void UpdateIndex(int index)
-    {
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
-    }
+    public void UpdateIndex(int index) { }
 
     public void OpenEditor()
     {
@@ -70,7 +60,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
     {
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(terrainData);
 
         UpdateEditor();
     }

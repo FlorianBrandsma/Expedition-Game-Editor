@@ -24,7 +24,7 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool enablePositionCorrection;
 
     private IDataController dataController;
-
+    
     public IDataController DataController
     {
         get { return dataController; }
@@ -36,6 +36,8 @@ public class ListProperties : MonoBehaviour, IDisplay
                 OpenList();
         }
     }
+
+    public IProperties Properties { get { return GetComponent<IProperties>(); } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

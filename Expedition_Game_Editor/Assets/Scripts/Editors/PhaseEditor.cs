@@ -49,7 +49,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
         list.RemoveAt(phaseData.Index);
         list.Insert(index, phaseData);
 
-        PathController.Origin.ListManager.listProperties.DataController.DataList = list.Cast<IDataElement>().ToList();
+        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -57,14 +57,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
             list[i].UpdateIndex();
         }
 
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
+        SelectionElementManager.UpdateElements(phaseData, true);
     }
 
     public void OpenEditor()
@@ -86,7 +79,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
     {
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(phaseData);
 
         UpdateEditor();
     }

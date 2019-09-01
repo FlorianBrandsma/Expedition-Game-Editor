@@ -6,7 +6,7 @@ public class ObjectGraphic : MonoBehaviour, IPoolable
 {
     public ObjectProperties.Pivot pivot;
 
-    public ObjectManager.PoolType PoolType { get { return ObjectManager.PoolType.ObjectGraphic; } }
+    public PoolManager.PoolType PoolType { get { return PoolManager.PoolType.ObjectGraphic; } }
 
     public int Id { get; set; }
 }

@@ -22,6 +22,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
     #region Data Variables
 
     private float positionX, positionY, positionZ;
+    private int terrainTileId;
 
     #endregion
 
@@ -164,7 +165,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
         sceneDataElement = regionData.sceneDataElement;
 
-        Debug.Log(sceneDataElement.tileSize);
+        //Debug.Log(sceneDataElement.tileSize);
 
         switch (DataEditor.Data.dataController.DataType)
         {
@@ -182,6 +183,8 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         positionX = interactionData.PositionX;
         positionY = interactionData.PositionY;
         positionZ = interactionData.PositionZ;
+
+        terrainTileId = interactionData.TerrainTileId;
     }
 
     private void InitializeSceneObjectData()
@@ -191,6 +194,8 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         positionX = sceneObjectData.PositionX;
         positionY = sceneObjectData.PositionY;
         positionZ = sceneObjectData.PositionZ;
+
+        terrainTileId = sceneObjectData.TerrainTileId;
     }
 
     private void SetSearchParameters() { }
@@ -200,6 +205,8 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         xInputField.Value = PositionX;
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
+
+        bindToTile.Toggle.isOn = terrainTileId != 0;
 
         gameObject.SetActive(true);
     }

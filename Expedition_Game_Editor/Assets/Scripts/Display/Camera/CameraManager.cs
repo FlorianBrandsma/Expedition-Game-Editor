@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : MonoBehaviour, IDisplayManager
 {
     private IOrganizer organizer;
 
@@ -11,19 +11,20 @@ public class CameraManager : MonoBehaviour
 
     public OverlayManager overlayManager;
 
-    [HideInInspector]
-    public CameraProperties cameraProperties;
+    public IDisplay Display { get; set; }
+    //private CameraProperties cameraProperties;
 
+    public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
     public RectTransform graphicParent;
     public RectTransform displayRect;
 
-    public List<ObjectGraphic> graphicList = new List<ObjectGraphic>();
+    public SelectionElement SelectedElement { get; set; }
 
     public void InitializeCamera(CameraProperties cameraProperties)
     {
         transform.parent.gameObject.SetActive(true);
 
-        this.cameraProperties = cameraProperties;
+        Display = cameraProperties;
 
         switch (cameraProperties.displayType)
         {
@@ -69,7 +70,7 @@ public class CameraManager : MonoBehaviour
         transform.parent.gameObject.SetActive(true);
     }
 
-    public void UpdateCamera()
+    public void UpdateData()
     {
         organizer.UpdateData();
     }
@@ -78,6 +79,15 @@ public class CameraManager : MonoBehaviour
     {
         organizer.SetData();
     }
+
+    public void UpdateOverlay()
+    {
+        if (organizer == null) return;
+
+        overlayManager.UpdateOverlay();
+    }
+
+    public void CorrectPosition(SelectionElement element) { }
 
     public void ClearCamera()
     {

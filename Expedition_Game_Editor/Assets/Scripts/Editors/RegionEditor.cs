@@ -54,14 +54,7 @@ public class RegionEditor : MonoBehaviour, IEditor
             list[i].UpdateIndex();
         }
 
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
+        SelectionElementManager.UpdateElements(regionData, true);
     }
 
     public void OpenEditor()
@@ -89,7 +82,7 @@ public class RegionEditor : MonoBehaviour, IEditor
         
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(regionData);
 
         UpdateEditor();
     }

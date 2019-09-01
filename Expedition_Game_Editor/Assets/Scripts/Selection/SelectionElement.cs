@@ -14,6 +14,8 @@ public class SelectionElement : MonoBehaviour
         public IDataElement dataElement;
         public IEnumerable searchParameters;
 
+        public Data() { }
+
         public Data(IDataController dataController)
         {
             this.dataController = dataController;
@@ -34,7 +36,7 @@ public class SelectionElement : MonoBehaviour
         }
     }
 
-    public Data data;
+    public Data data = new Data();
     public Path path;
 
     public SegmentController segmentController;
@@ -79,7 +81,7 @@ public class SelectionElement : MonoBehaviour
 
     public IElement Element                 { get; set; }
     public IEditor DataEditor               { get; set; }
-    public ListManager ListManager          { get; set; }
+    public IDisplayManager DisplayManager   { get; set; }
 
     public IDataController dataController;
 
@@ -96,15 +98,16 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().InitializeElement();
     }
 
-    public void InitializeElement(ListManager listManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
         CancelSelection();
 
-        ListManager = listManager;
-        segmentController = listManager.listProperties.DataController.SegmentController;
+        DisplayManager = displayManager;
+
+        segmentController = DisplayManager.Display.DataController.SegmentController;
 
         //Can be overwritten
-        dataController = listManager.listProperties.DataController;
+        dataController = DisplayManager.Display.DataController;
 
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
@@ -123,6 +126,11 @@ public class SelectionElement : MonoBehaviour
 
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = dataController;
+    }
+
+    public void UpdateElement()
+    {
+        GetComponent<IElement>().SetElement();
     }
 
     public void SetOverlay(Enums.ElementStatus elementStatus)
@@ -155,8 +163,8 @@ public class SelectionElement : MonoBehaviour
 
     public void ActivateSelection()
     {
-        if (ListManager != null)
-            ListManager.selectedElement = this;
+        if (DisplayManager != null)
+            DisplayManager.SelectedElement = this;
 
         selected = true;
 
@@ -169,8 +177,8 @@ public class SelectionElement : MonoBehaviour
 
         selected = false;
 
-        if (ListManager != null)
-            ListManager.selectedElement = null;
+        if (DisplayManager != null)
+            DisplayManager.SelectedElement = null;
 
         glow.SetActive(false);
     }
@@ -195,7 +203,7 @@ public class SelectionElement : MonoBehaviour
 
                 SelectionManager.SelectSearch(dataElement);
 
-                if (ListManager == null)
+                if (DisplayManager == null)
                     ActivateSelection();
 
                 break;
@@ -243,6 +251,6 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData()
     {
-        return (GeneralData)data.dataElement;      
+        return (GeneralData)data.dataElement;
     }
 }

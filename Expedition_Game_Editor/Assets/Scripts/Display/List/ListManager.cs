@@ -6,20 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-public class ListManager : MonoBehaviour
+public class ListManager : MonoBehaviour, IDisplayManager
 {
     public IOrganizer organizer;
 
     public SelectionManager.Property  selectionProperty   { get; set; }
     public SelectionManager.Type      selectionType       { get; set; }
 
-    public ListProperties   listProperties  { get; set; }
-    public PathManager      pathManager     { get; set; }
+    public IDisplay         Display { get; set; }
+    private ListProperties  listProperties;
 
     public OverlayManager   overlayManager;
 
-    public ScrollRect       scrollRect      { get { return GetComponent<ScrollRect>(); } }
-    public RectTransform    rectTransform   { get { return GetComponent<RectTransform>(); } }
+    public ScrollRect       ScrollRect      { get { return GetComponent<ScrollRect>(); } }
+    public RectTransform    RectTransform   { get { return GetComponent<RectTransform>(); } }
     public RectTransform    listParent;
 
     private Vector3         listMin, 
@@ -29,7 +29,7 @@ public class ListManager : MonoBehaviour
     public RectTransform    ParentRect      { get { return transform.parent.GetComponent<RectTransform>(); } }
 
     public List<SelectionElement> elementList = new List<SelectionElement>();
-    public SelectionElement selectedElement { get; set; }
+    public SelectionElement SelectedElement { get; set; }
 
     public Route selectedRoute { get; set; }
 
@@ -40,7 +40,8 @@ public class ListManager : MonoBehaviour
     public void InitializeList(ListProperties listProperties)
     {
         if (GetComponent<IOrganizer>() != null) return;
-        
+
+        Display = listProperties;
         this.listProperties = listProperties;
         
         switch(listProperties.displayType)
@@ -65,8 +66,8 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        scrollRect.horizontal   = listProperties.horizontal;
-        scrollRect.vertical     = listProperties.vertical;
+        ScrollRect.horizontal   = listProperties.horizontal;
+        ScrollRect.vertical     = listProperties.vertical;
 
         selectionProperty       = listProperties.selectionProperty;
         selectionType           = listProperties.selectionType;
@@ -82,7 +83,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        var dataList = listProperties.DataController.DataList;
+        var dataList = Display.DataController.DataList;
 
         if (dataList.Count == 0) return;
 
@@ -101,17 +102,17 @@ public class ListManager : MonoBehaviour
 
         overlayManager.SetOverlay();
         
-        listMin = rectTransform.TransformPoint(new Vector2(rectTransform.rect.min.x, rectTransform.rect.min.y));
-        listMax = rectTransform.TransformPoint(new Vector2(rectTransform.rect.max.x, rectTransform.rect.max.y));
+        listMin = RectTransform.TransformPoint(new Vector2(RectTransform.rect.min.x, RectTransform.rect.min.y));
+        listMax = RectTransform.TransformPoint(new Vector2(RectTransform.rect.max.x, RectTransform.rect.max.y));
 
-        if (EditorManager.historyManager.returned || !listProperties.DataController.SegmentController.editorController.PathController.loaded)
+        if (EditorManager.historyManager.returned || !Display.DataController.SegmentController.editorController.PathController.loaded)
             ResetListPosition();
     }
 
     private void ResetListPosition()
     {
-        scrollRect.verticalNormalizedPosition = 1f;
-        scrollRect.horizontalNormalizedPosition = 0f;
+        ScrollRect.verticalNormalizedPosition = 1f;
+        ScrollRect.horizontalNormalizedPosition = 0f;
     }
 
     public void UpdateData()
@@ -128,7 +129,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        organizer.ResetData(listProperties.DataController.DataList);
+        organizer.ResetData(Display.DataController.DataList);
     }
 
     public void UpdateOverlay()
@@ -163,8 +164,8 @@ public class ListManager : MonoBehaviour
             elementMax.z > listMax.z ||
             elementMin.z < listMin.z)
         {
-            scrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
-            scrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
+            ScrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
+            ScrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
         }
     }
 
@@ -172,7 +173,7 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        if (listProperties.DataController.DataList.Count == 0) return;
+        if (Display.DataController.DataList.Count == 0) return;
         
         if (selectionType == SelectionManager.Type.Automatic)
         {
@@ -186,16 +187,16 @@ public class ListManager : MonoBehaviour
     {
         if (organizer == null) return;
 
-        scrollRect.horizontal = false;
-        scrollRect.vertical = false;
+        ScrollRect.horizontal = false;
+        ScrollRect.vertical = false;
 
         overlayManager.CloseOverlay();
         organizer.CloseOrganizer();
         
         elementList.Clear();
 
-        if (selectedElement != null)
-            selectedElement.CancelSelection();
+        if (SelectedElement != null)
+            SelectedElement.CancelSelection();
 
         transform.parent.gameObject.SetActive(false);
     }

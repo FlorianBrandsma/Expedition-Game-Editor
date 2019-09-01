@@ -11,27 +11,32 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
     private List<GeneralData> generalDataList;
 
+    private ListProperties listProperties;
     private MultiGridProperties multiGridProperties;
 
     int primaryDimension;
 
     private Vector2 secondaryElementSize;
 
-    private ListManager ListManager { get { return GetComponent<ListManager>(); } }
-
+    private ListManager listManager;
+    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
+    
     public List<SelectionElement> ElementList { get; set; }
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
+        listManager = (ListManager)DisplayManager;
+
         ElementList = new List<SelectionElement>();
     }
 
     public void InitializeProperties()
     {
-        multiGridProperties = ListManager.listProperties.GetComponent<MultiGridProperties>();
+        listProperties = (ListProperties)DisplayManager.Display;
+        multiGridProperties = (MultiGridProperties)DisplayManager.Display.Properties;
 
-        multiGridProperties.elementSize = ListManager.listProperties.elementSize;
+        multiGridProperties.elementSize = listProperties.elementSize;
 
         primaryDataController = multiGridProperties.PrimaryDataController;
         secondaryDataController = multiGridProperties.SecondaryDataController;
@@ -43,12 +48,12 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
         if(multiGridProperties.elementType == Enums.ElementType.CompactMultiGrid)
         {
-            ElementSize = new Vector2(  ListManager.listProperties.elementSize.x + multiGridProperties.margin, 
-                                        ListManager.listProperties.elementSize.y + multiGridProperties.margin);
+            ElementSize = new Vector2(  listProperties.elementSize.x + multiGridProperties.margin, 
+                                        listProperties.elementSize.y + multiGridProperties.margin);
         } else {
 
-            secondaryElementSize = new Vector2( ListManager.listProperties.elementSize.x,
-                                                ListManager.listProperties.elementSize.y);
+            secondaryElementSize = new Vector2( listProperties.elementSize.x,
+                                                listProperties.elementSize.y);
 
             ElementSize = new Vector2(  secondaryElementSize.x * (Mathf.Sqrt(secondaryDataController.DataList.Count) / primaryDimension) + multiGridProperties.margin,
                                         secondaryElementSize.y * (Mathf.Sqrt(secondaryDataController.DataList.Count) / primaryDimension) + multiGridProperties.margin);
@@ -62,7 +67,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
         if (exact)
         {
-            return new Vector2( primaryListSize.x - ListManager.rectTransform.rect.width, 
+            return new Vector2( primaryListSize.x - listManager.RectTransform.rect.width, 
                                 primaryListSize.y);
         } else {
             return new Vector2( primaryListSize.x / ElementSize.x, 
@@ -85,8 +90,9 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in primaryList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, multiGridProperties.elementType,
-                                                                            ListManager, ListManager.selectionType, ListManager.selectionProperty, ListManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, multiGridProperties.elementType, 
+                                                                            DisplayManager, listManager.selectionType, 
+                                                                            listManager.selectionProperty, listManager.listParent);
 
             ElementList.Add(element);
 
@@ -105,8 +111,6 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     public void UpdateData()
     {
         ResetData(primaryDataController.DataList);
-
-        SelectionManager.SelectElements();
     }
 
     public void ResetData(List<IDataElement> filter)
@@ -124,7 +128,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         rect.sizeDelta = ElementSize;
 
         rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (primaryDimension - 1)) + (index % primaryDimension * ElementSize.x),
-                                                     -(ElementSize.y * 0.5f) + (ListManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / primaryDimension) * ElementSize.y));
+                                                     -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / primaryDimension) * ElementSize.y));
 
         rect.gameObject.SetActive(true);
 

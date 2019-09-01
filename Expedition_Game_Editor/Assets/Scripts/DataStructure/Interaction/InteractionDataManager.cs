@@ -57,6 +57,8 @@ public class InteractionDataManager
                         RegionId = interactionData.regionId,
 
                         Description = interactionData.description,
+                        
+                        TerrainTileId = interactionData.terrainTileId,
 
                         PositionX = interactionData.positionX,
                         PositionY = interactionData.positionY,
@@ -100,6 +102,8 @@ public class InteractionDataManager
             interactionData.regionId = interaction.regionId;
 
             interactionData.description = interaction.description;
+
+            interactionData.terrainTileId = interaction.terrainTileId;
 
             interactionData.positionX = interaction.positionX;
             interactionData.positionY = interaction.positionY;
@@ -152,6 +156,8 @@ public class InteractionDataManager
         public int regionId;
 
         public string description;
+
+        public int terrainTileId;
 
         public float positionX;
         public float positionY;

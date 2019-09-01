@@ -8,6 +8,8 @@ public class InteractionCore : GeneralData
 
     private string description;
 
+    private int terrainTileId;
+
     private float positionX;
     private float positionY;
     private float positionZ;
@@ -21,8 +23,9 @@ public class InteractionCore : GeneralData
     private int animation;
 
 
-    public int originalIndex;
     public string originalDescription;
+
+    public int originalTerrainTileId;
 
     public float originalPositionX;
     public float originalPositionY;
@@ -40,6 +43,8 @@ public class InteractionCore : GeneralData
     private bool changedIndex;
     private bool changedDescription;
 
+    private bool changedTerrainTileId;
+
     private bool changedPositionX;
     private bool changedPositionY;
     private bool changedPositionZ;
@@ -56,8 +61,8 @@ public class InteractionCore : GeneralData
     {
         get
         {
-            return  changedDescription  || changedPositionX || changedPositionY         || changedPositionZ || changedRotationX || 
-                    changedRotationY    || changedRotationZ || changedScaleMultiplier   || changedAnimation;
+            return  changedDescription  || changedTerrainTileId || changedPositionX || changedPositionY         || changedPositionZ || 
+                    changedRotationX    || changedRotationY     || changedRotationZ || changedScaleMultiplier   || changedAnimation;
         }
     }
 
@@ -100,6 +105,19 @@ public class InteractionCore : GeneralData
             changedDescription = (value != originalDescription);
 
             description = value;
+        }
+    }
+
+    public int TerrainTileId
+    {
+        get { return terrainTileId; }
+        set
+        {
+            if (value == terrainTileId) return;
+
+            changedTerrainTileId = (value != originalTerrainTileId);
+
+            terrainTileId = value;
         }
     }
 
@@ -223,6 +241,9 @@ public class InteractionCore : GeneralData
         if (changedDescription)
             interactionData.description = description;
 
+        if (changedTerrainTileId)
+            interactionData.terrainTileId = terrainTileId;
+
         if (changedPositionX)
             interactionData.positionX = positionX;
 
@@ -266,6 +287,8 @@ public class InteractionCore : GeneralData
     {
         originalDescription = description;
 
+        originalTerrainTileId = terrainTileId;
+
         originalPositionX = positionX;
         originalPositionY = positionY;
         originalPositionZ = positionZ;
@@ -282,6 +305,8 @@ public class InteractionCore : GeneralData
     public void GetOriginalValues()
     {
         description = originalDescription;
+
+        terrainTileId = originalTerrainTileId;
 
         positionX = originalPositionX;
         positionY = originalPositionY;
@@ -303,6 +328,8 @@ public class InteractionCore : GeneralData
         changedIndex = false;
 
         changedDescription = false;
+
+        changedTerrainTileId = false;
 
         changedPositionX = false;
         changedPositionY = false;

@@ -41,13 +41,6 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index) { }
 
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
-    }
-
     public void OpenEditor()
     {
         SetEditor();

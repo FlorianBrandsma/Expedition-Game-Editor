@@ -34,7 +34,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
     public void InitializeElement()
     {
-        multiGridProperties = Element.ListManager.listProperties.GetComponent<MultiGridProperties>();
+        multiGridProperties = (MultiGridProperties)Element.DisplayManager.Display.Properties;
     }
 
     public void SetElement()
@@ -111,7 +111,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
         foreach (IDataElement data in list)
         {
             SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, multiGridProperties.innerElementType,
-                                                                            Element.ListManager, multiGridProperties.innerSelectionType, multiGridProperties.innerSelectionProperty, innerGrid);
+                                                                            Element.DisplayManager, multiGridProperties.innerSelectionType, multiGridProperties.innerSelectionProperty, innerGrid);
 
             element.parent = Element;
 

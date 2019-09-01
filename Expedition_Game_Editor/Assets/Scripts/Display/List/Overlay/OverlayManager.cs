@@ -6,20 +6,20 @@ using UnityEngine.EventSystems;
 
 public class OverlayManager : MonoBehaviour
 {
-    private RectTransform   main_list;
+    private RectTransform   mainList;
 
     public RectTransform    horizontal_min,
                             vertical_min,
                             horizontal_max,
                             vertical_max;
 
-    public ListManager      listManager { get; set; }
+    public IDisplayManager  DisplayManager { get; set; }
 
-    public void InitializeOverlay(ListManager new_listManager)
+    public void InitializeOverlay(IDisplayManager displayManager)
     {
-        listManager = new_listManager;
+        DisplayManager = displayManager;
 
-        main_list = listManager.rectTransform;
+        mainList = DisplayManager.RectTransform;
 
         horizontal_min.GetComponent<OverlayBorder>().Activate();
         horizontal_max.GetComponent<OverlayBorder>().Activate();
@@ -39,7 +39,7 @@ public class OverlayManager : MonoBehaviour
             gameObject.AddComponent<PagingManager>();
 
         foreach (IOverlay overlay in GetComponents<IOverlay>())
-            overlay.InitializeOverlay(listManager);
+            overlay.InitializeOverlay(DisplayManager);
     }
 
     public void ActivateOverlay(IOrganizer organizer, IList list)
@@ -80,16 +80,16 @@ public class OverlayManager : MonoBehaviour
     public void SetListSize()
     {
         if (horizontal_min.gameObject.activeInHierarchy)
-            main_list.offsetMax = new Vector2(main_list.offsetMin.x, -horizontal_min.rect.height);
+            mainList.offsetMax = new Vector2(mainList.offsetMin.x, -horizontal_min.rect.height);
 
         if (horizontal_max.gameObject.activeInHierarchy)
-            main_list.offsetMin = new Vector2(main_list.offsetMax.x, horizontal_max.rect.height);
+            mainList.offsetMin = new Vector2(mainList.offsetMax.x, horizontal_max.rect.height);
 
         if (vertical_min.gameObject.activeInHierarchy)
-            main_list.offsetMin = new Vector2(vertical_min.rect.width, main_list.offsetMin.y);
+            mainList.offsetMin = new Vector2(vertical_min.rect.width, mainList.offsetMin.y);
 
         if (vertical_max.gameObject.activeInHierarchy)
-            main_list.offsetMax = new Vector2(-vertical_max.rect.width, main_list.offsetMax.y);
+            mainList.offsetMax = new Vector2(-vertical_max.rect.width, mainList.offsetMax.y);
     }
 
     public void SetOverlay()
@@ -106,8 +106,8 @@ public class OverlayManager : MonoBehaviour
 
     public void CloseOverlay()
     {
-        main_list.offsetMin = Vector2.zero;
-        main_list.offsetMax = Vector2.zero;
+        mainList.offsetMin = Vector2.zero;
+        mainList.offsetMax = Vector2.zero;
 
         horizontal_min.GetComponent<OverlayBorder>().Deactivate();
         horizontal_max.GetComponent<OverlayBorder>().Deactivate();

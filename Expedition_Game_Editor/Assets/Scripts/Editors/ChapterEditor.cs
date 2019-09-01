@@ -67,14 +67,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
             list[i].UpdateIndex();
         }
 
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-
-        PathController.Origin.ListManager.UpdateData();
+        SelectionElementManager.UpdateElements(chapterData, true);
     }
 
     public void OpenEditor()
@@ -98,7 +91,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(chapterData);
 
         UpdateEditor();
 

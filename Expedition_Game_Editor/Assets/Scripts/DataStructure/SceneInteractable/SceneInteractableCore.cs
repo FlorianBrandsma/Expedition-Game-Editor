@@ -59,14 +59,17 @@ public class SceneInteractableCore : GeneralData
 
     }
 
-    public virtual void Update() { }
-
-    public void UpdateSearch()
+    public virtual void Update()
     {
         var sceneInteractableData = Fixtures.sceneInteractableList.Where(x => x.id == id).FirstOrDefault();
 
         if (changedInteractableId)
             sceneInteractableData.interactableId = interactableId;
+    }
+
+    public void UpdateSearch()
+    {
+        Update();
     }
 
     public void UpdateIndex() { }

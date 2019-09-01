@@ -7,42 +7,40 @@ using UnityEngine.EventSystems;
 
 public class SliderManager : MonoBehaviour, IOverlay
 {
-    static public List<Slider> horizontal_slider_list = new List<Slider>();
-    static public List<Slider> vertical_slider_list = new List<Slider>();
-    private List<Slider> slider_list_local = new List<Slider>();
+    static public List<Slider> horizontalSliderList = new List<Slider>();
+    static public List<Slider> verticalSliderList = new List<Slider>();
+    private List<Slider> sliderListLocal = new List<Slider>();
 
-    private Slider  horizontal_slider,
-                    vertical_slider;
+    private Slider  horizontalSlider,
+                    verticalSlider;
 
-    private RectTransform   main_list;
+    private RectTransform mainList;
 
-    OverlayManager          overlayManager;
+    private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
 
-    public void InitializeOverlay(ListManager manager)
+    public void InitializeOverlay(IDisplayManager displayManager)
     {
-        overlayManager = GetComponent<OverlayManager>();
-
-        main_list = manager.rectTransform;
+        mainList = displayManager.RectTransform;
     }
     
     public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        int list_count = overlayManager.listManager.listProperties.DataController.DataList.Count;
+        int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
         
-        Vector2 list_size = list.GetListSize(list_count, true);
+        Vector2 listSize = list.GetListSize(listCount, true);
 
-        bool horizontal = main_list.GetComponent<ScrollRect>().horizontal;
-        bool vertical = main_list.GetComponent<ScrollRect>().vertical;
+        bool horizontal = mainList.GetComponent<ScrollRect>().horizontal;
+        bool vertical = mainList.GetComponent<ScrollRect>().vertical;
 
         if(vertical)
         {
-            if (list_size.y > (main_list.rect.height) - (horizontal ? overlayManager.horizontal_max.rect.height : 0))
+            if (listSize.y > (mainList.rect.height) - (horizontal ? overlayManager.horizontal_max.rect.height : 0))
                 overlayManager.vertical_max.gameObject.SetActive(true);
         }
 
         if(horizontal)
         {
-            if ((list_size.x + main_list.rect.width) > (main_list.rect.width) - (vertical ? overlayManager.vertical_max.rect.width : 0))
+            if ((listSize.x + mainList.rect.width) > (mainList.rect.width) - (vertical ? overlayManager.vertical_max.rect.width : 0))
                 overlayManager.horizontal_max.gameObject.SetActive(true);
         } 
     }
@@ -51,24 +49,24 @@ public class SliderManager : MonoBehaviour, IOverlay
     {
         if (overlayManager.vertical_max.gameObject.activeInHierarchy)
         {
-            vertical_slider = SpawnVerticalSlider();
+            verticalSlider = SpawnVerticalSlider();
 
-            slider_list_local.Add(vertical_slider);
+            sliderListLocal.Add(verticalSlider);
 
-            vertical_slider.transform.SetParent(overlayManager.vertical_max, false);
+            verticalSlider.transform.SetParent(overlayManager.vertical_max, false);
 
-            vertical_slider.gameObject.SetActive(true);
+            verticalSlider.gameObject.SetActive(true);
         }
 
         if (overlayManager.horizontal_max.gameObject.activeInHierarchy)
         {
-            horizontal_slider = SpawnHorizontalSlider();
+            horizontalSlider = SpawnHorizontalSlider();
 
-            slider_list_local.Add(horizontal_slider);
+            sliderListLocal.Add(horizontalSlider);
 
-            horizontal_slider.transform.SetParent(overlayManager.horizontal_max, false);
+            horizontalSlider.transform.SetParent(overlayManager.horizontal_max, false);
 
-            horizontal_slider.gameObject.SetActive(true);
+            horizontalSlider.gameObject.SetActive(true);
         }
 
         UpdateOverlay();
@@ -76,10 +74,10 @@ public class SliderManager : MonoBehaviour, IOverlay
 
     public void UpdateOverlay()
     {
-        if (vertical_slider != null)
-            vertical_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
-        if (horizontal_slider != null)
-            horizontal_slider.value = Mathf.Clamp(main_list.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
+        if (verticalSlider != null)
+            verticalSlider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
+        if (horizontalSlider != null)
+            horizontalSlider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
     }
 
     public void CloseOverlay()
@@ -91,37 +89,37 @@ public class SliderManager : MonoBehaviour, IOverlay
 
     public Slider SpawnHorizontalSlider()
     {
-        foreach(Slider slider in horizontal_slider_list)
+        foreach(Slider slider in horizontalSliderList)
         {
             if (!slider.gameObject.activeInHierarchy)
                 return slider;      
         }
 
-        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Horizontal"));
+        Slider newSlider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Horizontal"));
 
-        horizontal_slider_list.Add(new_slider);
+        horizontalSliderList.Add(newSlider);
 
-        return new_slider;
+        return newSlider;
     }
 
     public Slider SpawnVerticalSlider()
     {
-        foreach (Slider slider in vertical_slider_list)
+        foreach (Slider slider in verticalSliderList)
         {
             if (!slider.gameObject.activeInHierarchy)
                 return slider;
         }
 
-        Slider new_slider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Vertical"));
+        Slider newSlider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Vertical"));
 
-        vertical_slider_list.Add(new_slider);
+        verticalSliderList.Add(newSlider);
 
-        return new_slider;
+        return newSlider;
     }
 
     public void ResetSliders()
     {
-        foreach (Slider slider in slider_list_local)
+        foreach (Slider slider in sliderListLocal)
             slider.gameObject.SetActive(false);
     }
 }

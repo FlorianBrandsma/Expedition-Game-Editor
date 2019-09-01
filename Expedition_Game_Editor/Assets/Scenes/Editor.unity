@@ -6144,7 +6144,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 226353017}
   m_Layer: 5
-  m_Name: Terrain (parent)
+  m_Name: Scene (parent)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10189,7 +10189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partyMemberDataList: []
-  terrainInteractableDataList: []
+  sceneInteractableDataList: []
   chapterRegionDataList: []
 --- !u!1 &401679383
 GameObject:
@@ -14533,7 +14533,7 @@ GameObject:
   - 114: {fileID: 645976606}
   - 114: {fileID: 645976605}
   m_Layer: 5
-  m_Name: TerrainItem_Header (segment)
+  m_Name: SceneItem_Header (segment)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17321,7 +17321,7 @@ GameObject:
   - 114: {fileID: 754277963}
   - 114: {fileID: 754277962}
   m_Layer: 5
-  m_Name: TerrainInteractable (controller)
+  m_Name: SceneInteractable (controller)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18174,7 +18174,7 @@ MonoBehaviour:
     id: 
     index: 
     objectiveId: 
-    terrainInteractableId: 
+    sceneInteractableId: 
     regionId: 
     requestType: 0
 --- !u!114 &783246985
@@ -21082,7 +21082,7 @@ GameObject:
   - 114: {fileID: 907463690}
   - 114: {fileID: 907463691}
   m_Layer: 5
-  m_Name: TerrainObjectSelection (controller-dataEditor)
+  m_Name: SceneObjectSelection (controller-dataEditor)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22473,7 +22473,7 @@ GameObject:
   - 114: {fileID: 959242520}
   - 114: {fileID: 959242519}
   m_Layer: 5
-  m_Name: TerrainInteractable (segment-dataController-listProperties-panel)
+  m_Name: SceneInteractable (segment-dataController-listProperties-panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24448,7 +24448,7 @@ GameObject:
   - 114: {fileID: 1050468120}
   - 114: {fileID: 1050468119}
   m_Layer: 5
-  m_Name: TerrainItem (parent-layout)
+  m_Name: SceneItem (parent-layout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29652,10 +29652,8 @@ MonoBehaviour:
   cam: {fileID: 180582706}
   content: {fileID: 1093493482}
   overlayManager: {fileID: 233668293}
-  cameraProperties: {fileID: 0}
   graphicParent: {fileID: 0}
   displayRect: {fileID: 97059932}
-  graphicList: []
 --- !u!114 &1246982542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29688,7 +29686,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246982541}
-        m_MethodName: UpdateCamera
+        m_MethodName: UpdateData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36731,10 +36729,8 @@ MonoBehaviour:
   cam: {fileID: 1311520404}
   content: {fileID: 1205496844}
   overlayManager: {fileID: 0}
-  cameraProperties: {fileID: 0}
   graphicParent: {fileID: 1205496844}
   displayRect: {fileID: 97059932}
-  graphicList: []
 --- !u!4 &1495156115 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000012265260558, guid: 45af9c5d5ccdf66419e990e042c22b66,
@@ -38281,7 +38277,7 @@ MonoBehaviour:
     id: 
     phaseId: 
     questId: 
-    terrainInteractableId: 
+    sceneInteractableId: 
     requestType: 0
 --- !u!114 &1553673206
 MonoBehaviour:
@@ -45093,7 +45089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be45bd8b5c0734e9bc26faeb098846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainInteractableDataList: []
+  sceneInteractableDataList: []
 --- !u!224 &1804515258 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000012771355508, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,

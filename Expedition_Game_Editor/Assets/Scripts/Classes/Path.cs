@@ -19,30 +19,26 @@ public class Path
 
     public int start;
 
-    public ListManager origin;
-
     public Path()
     {
         route   = new List<Route>();
         form    = null;
         type    = Type.New;
-        origin  = null;
     }
 
-    public Path(List<Route> route, EditorForm form, ListManager origin)
+    public Path(List<Route> route, EditorForm form)
     {
         this.route  = route;
         this.form   = form;
-        this.origin = origin;
 
         type    = Type.New;
     }
 
-    public Path(List<Route> route, EditorForm form, ListManager origin, int start)
+    public Path(List<Route> route, EditorForm form, int start)
     {
         this.route  = route;
         this.form   = form;
-        this.origin = origin;
+
         this.start  = start;
 
         type    = Type.New;
@@ -112,7 +108,6 @@ public class Path
             path.route.Add(route[i]);
 
         path.form = form;
-        path.origin = origin;
         path.start = start;
 
         path.type = type;

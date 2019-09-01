@@ -7,42 +7,39 @@ using UnityEngine.EventSystems;
 
 public class PagingManager : MonoBehaviour, IOverlay
 {
-    static public List<Button> button_list = new List<Button>();
-    private List<Button> button_list_local = new List<Button>();
+    static public List<Button> buttonList = new List<Button>();
+    private List<Button> buttonListLocal = new List<Button>();
 
-    private Color active_color      = Color.white;
-    private Color inactive_color    = Color.gray;
+    private Color activeColor   = Color.white;
+    private Color inactiveColor = Color.gray;
 
-    private int     element_total;
-    private int     page_limit;
-    private int     page_count;
-    private float   button_size;
+    private int     elementTotal;
+    private int     pageLimit;
+    private int     pageCount;
+    private float   buttonSize;
 
-    int             selected_page;
+    private int     selectedPage;
 
-    OverlayManager  overlayManager;
+    private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
 
-    IOrganizer organizer;
-    IList list;
+    private IOrganizer organizer;
+    private IList list;
 
-    public void InitializeOverlay(ListManager manager)
+    public void InitializeOverlay(IDisplayManager displayManager) { }
+
+    public void ActivateOverlay(IOrganizer organizer, IList list)
     {
-        overlayManager = GetComponent<OverlayManager>();    
-    }
+        this.organizer = organizer;
+        this.list = list;
 
-    public void ActivateOverlay(IOrganizer new_organizer, IList new_list)
-    {
-        organizer = new_organizer;
-        list = new_list;
+        int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
 
-        int list_count = overlayManager.listManager.listProperties.DataController.DataList.Count;
+        Vector2 listSize = this.list.GetListSize(listCount, false);
 
-        Vector2 list_size = list.GetListSize(list_count, false);
+        pageLimit =  (int)(listSize.x * listSize.y);
+        elementTotal = listCount;
 
-        page_limit =  (int)(list_size.x * list_size.y);
-        element_total = list_count;
-
-        page_count = Mathf.CeilToInt((float)element_total / page_limit);
+        pageCount = Mathf.CeilToInt((float)elementTotal / pageLimit);
 
         overlayManager.horizontal_max.gameObject.SetActive(true);        
     }
@@ -51,25 +48,25 @@ public class PagingManager : MonoBehaviour, IOverlay
     {
         if(overlayManager.horizontal_max.gameObject.activeInHierarchy)
         {
-            float max_size = overlayManager.horizontal_max.rect.height;
+            float maxSize = overlayManager.horizontal_max.rect.height;
 
-            button_size = (overlayManager.horizontal_max.rect.width / 2) / page_count;
+            buttonSize = (overlayManager.horizontal_max.rect.width / 2) / pageCount;
 
-            if (button_size > max_size)
-                button_size = max_size;
+            if (buttonSize > maxSize)
+                buttonSize = maxSize;
 
-            for (int i = 0; i < page_count; i++)
+            for (int i = 0; i < pageCount; i++)
             {
                 Button button = SpawnButton();
-                button_list_local.Add(button);
+                buttonListLocal.Add(button);
 
-                button.GetComponent<RectTransform>().sizeDelta = new Vector2(button_size, button_size);
+                button.GetComponent<RectTransform>().sizeDelta = new Vector2(buttonSize, buttonSize);
 
                 button.transform.SetParent(overlayManager.horizontal_max, false);
 
-                float offset = -(button_size * (page_count - 1));
+                float offset = -(buttonSize * (pageCount - 1));
 
-                button.transform.localPosition = new Vector2(offset + ((button_size * i) * 2), 0);
+                button.transform.localPosition = new Vector2(offset + ((buttonSize * i) * 2), 0);
 
                 int index = i;
 
@@ -84,29 +81,29 @@ public class PagingManager : MonoBehaviour, IOverlay
     void SelectPage(int page)
     {
         ResetSelection();
-        selected_page = page;
+        selectedPage = page;
 
-        button_list_local[selected_page].GetComponent<RawImage>().color = active_color;
+        buttonListLocal[selectedPage].GetComponent<RawImage>().color = activeColor;
 
         OpenPage();
     }
 
     void ResetSelection()
     {
-        button_list_local[selected_page].GetComponent<RawImage>().color = inactive_color;
+        buttonListLocal[selectedPage].GetComponent<RawImage>().color = inactiveColor;
     }
 
     void OpenPage()
     {
-        int start = selected_page * page_limit;
-        int count = page_limit;
+        int start = selectedPage * pageLimit;
+        int count = pageLimit;
 
-        int remainder = element_total - start;
+        int remainder = elementTotal - start;
 
         if (count > remainder)
             count = remainder;
 
-        var dataController = overlayManager.listManager.listProperties.DataController;
+        var dataController = overlayManager.DisplayManager.Display.DataController;
 
         organizer.ResetData(dataController.DataList.GetRange(start, count));
     }
@@ -125,25 +122,25 @@ public class PagingManager : MonoBehaviour, IOverlay
 
     public Button SpawnButton()
     {
-        foreach (Button button in button_list)
+        foreach (Button button in buttonList)
         {
             if (!button.gameObject.activeInHierarchy)
                 return button;
         }
 
-        Button new_button = Instantiate(Resources.Load<Button>("Editor/Overlay/Slideshow_Button"));
+        Button newButton = Instantiate(Resources.Load<Button>("Editor/Overlay/Slideshow_Button"));
 
-        button_list.Add(new_button);
+        buttonList.Add(newButton);
 
-        return new_button;
+        return newButton;
     }
 
     public void CloseButtons()
     {
-        foreach (Button button in button_list_local)
+        foreach (Button button in buttonListLocal)
         {
             button.onClick.RemoveAllListeners();
-            button.GetComponent<RawImage>().color = inactive_color;
+            button.GetComponent<RawImage>().color = inactiveColor;
             button.gameObject.SetActive(false);
         }   
     }

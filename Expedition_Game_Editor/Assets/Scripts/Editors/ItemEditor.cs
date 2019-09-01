@@ -54,14 +54,7 @@ public class ItemEditor : MonoBehaviour, IEditor
             list[i].UpdateIndex();
         }
 
-        UpdateList();
-    }
-
-    private void UpdateList()
-    {
-        if (PathController.Origin == null) return;
-        
-        PathController.Origin.ListManager.UpdateData();
+        SelectionElementManager.UpdateElements(itemData, true);
     }
 
     public void OpenEditor()
@@ -83,7 +76,7 @@ public class ItemEditor : MonoBehaviour, IEditor
     {
         DataElements.ForEach(x => x.Update());
 
-        UpdateList();
+        SelectionElementManager.UpdateElements(itemData);
 
         UpdateEditor();
     }
