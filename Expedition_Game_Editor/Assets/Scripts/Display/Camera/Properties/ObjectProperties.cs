@@ -23,5 +23,17 @@ public class ObjectProperties : MonoBehaviour, IProperties
     {
         return DisplayManager.Type.Object;
     }
+
+    public SelectionManager.Property SelectionProperty
+    {
+        get { return SelectionManager.Property.None; }
+        set { }
+    }
+
+    public SelectionManager.Type SelectionType
+    {
+        get { return SelectionManager.Type.None; }
+        set { }
+    }
     #endregion
 }

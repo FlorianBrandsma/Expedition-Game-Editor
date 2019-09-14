@@ -78,7 +78,11 @@ public class InteractableDataManager
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal void GetIconData()

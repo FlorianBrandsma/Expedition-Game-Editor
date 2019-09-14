@@ -24,7 +24,7 @@ public class PhaseSegment : MonoBehaviour, ISegment
 
         var searchParameters = new Search.Phase();
 
-        searchParameters.chapterId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Chapter).GeneralData().id };
+        searchParameters.chapterId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Chapter).GeneralData.id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }

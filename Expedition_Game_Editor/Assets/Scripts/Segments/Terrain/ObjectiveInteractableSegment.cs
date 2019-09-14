@@ -34,8 +34,8 @@ public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.SceneInteractable.RequestType.GetQuestAndObjectiveInteractables;
 
-        searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData().id };
-        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData().id };
+        searchParameters.questId     = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.id };
+        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData.id };
         
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }

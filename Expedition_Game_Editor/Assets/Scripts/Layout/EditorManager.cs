@@ -75,7 +75,7 @@ public class EditorManager : MonoBehaviour
         str += "\n";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].GeneralData().dataType + "-" + path.route[i].GeneralData().id + "/";
+            str += path.route[i].GeneralData.dataType + "-" + path.route[i].GeneralData.id + "/";
 
         return str;
     }

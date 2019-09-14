@@ -13,25 +13,18 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public class TerrainData : GeneralData
     {
-        public List<TerrainTileData> terrainTileDataList;
+        public int regionId;
+        public string name;
 
-        public List<InteractionData> interactionDataList;
-
-        public List<SceneObjectData> sceneObjectDataList;
-
-        public class TerrainTileData : GeneralData
+        public List<TerrainTileDataElement> terrainTileDataList;
+        public List<InteractionDataElement> interactionDataList;
+        public List<SceneObjectDataElement> sceneObjectDataList;
+        
+        public void SetOriginalValues()
         {
-            public int tileId;
-        }
-
-        public class InteractionData : GeneralData
-        {
-
-        }
-
-        public class SceneObjectData : GeneralData
-        {
-
+            terrainTileDataList.ForEach(x => x.SetOriginalValues());
+            interactionDataList.ForEach(x => x.SetOriginalValues());
+            sceneObjectDataList.ForEach(x => x.SetOriginalValues());
         }
     }
 
@@ -47,7 +40,10 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public void UpdateSearch() { }
 
-    public void SetOriginalValues() { }
+    public void SetOriginalValues()
+    {
+        terrainDataList.ForEach(x => x.SetOriginalValues());
+    }
 
     public void GetOriginalValues() { }
 

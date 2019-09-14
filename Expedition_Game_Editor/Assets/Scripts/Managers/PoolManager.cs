@@ -57,42 +57,17 @@ static public class PoolManager
 
             if(objectPool != null)
             {
-                switch(poolType)
-                {
-                    case PoolType.ObjectGraphic:
+                var poolable = objectPool.pool.Where(x => !x.IsActive).FirstOrDefault();
 
-                        var objectGraphic = objectPool.pool.Where(x => !((ObjectGraphic)x).gameObject.activeInHierarchy).FirstOrDefault();
-                        
-                        if (objectGraphic != null)
-                            return objectGraphic;
-
-                        break;
-
-                    case PoolType.Tile:
-
-                        var tile = objectPool.pool.Where(x => !((Tile)x).gameObject.activeInHierarchy).FirstOrDefault();
-
-                        if (tile != null)
-                            return tile;
-
-                        break;
-                }
+                if (poolable != null)
+                    return poolable;
             }
         }
 
-        IPoolable poolObject;
-
-        switch (poolType)
-        {
-            case PoolType.ObjectGraphic:    poolObject = Object.Instantiate((ObjectGraphic)prefab); break;
-            case PoolType.Tile:             poolObject = Object.Instantiate((Tile)prefab); break;
-
-            default: poolObject = null; break;
-        }
-        
+        var poolObject = prefab.Instantiate();
         poolObject.Id = id;
 
-        PoolManager.Add(poolObject);
+        Add(poolObject);
 
         return poolObject;
     }

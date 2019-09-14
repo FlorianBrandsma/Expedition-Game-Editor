@@ -27,7 +27,7 @@ public class ItemDataManager
         GetIconData();
 
         var list = (from itemData in itemDataList
-                    join objectGraphicData in objectGraphicDataList on itemData.objectId equals objectGraphicData.id
+                    join objectGraphicData in objectGraphicDataList on itemData.objectGraphicId equals objectGraphicData.id
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ItemDataElement()
                     {
@@ -37,7 +37,7 @@ public class ItemDataManager
                         index = itemData.index,
 
                         Type = itemData.type,
-                        ObjectGraphicId = itemData.objectId,
+                        ObjectGraphicId = itemData.objectGraphicId,
                         Name = itemData.name,
 
                         objectGraphicPath = objectGraphicData.path,
@@ -65,7 +65,7 @@ public class ItemDataManager
             itemData.index = item.index;
 
             itemData.type = item.type;
-            itemData.objectId = item.objectGraphicId;
+            itemData.objectGraphicId = item.objectGraphicId;
             itemData.name = item.name;
 
             itemDataList.Add(itemData);
@@ -74,7 +74,11 @@ public class ItemDataManager
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(itemDataList.Select(x => x.objectId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = itemDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal void GetIconData()
@@ -86,6 +90,6 @@ public class ItemDataManager
     {
         public int type;
         public string name;
-        public int objectId;
+        public int objectGraphicId;
     }
 }

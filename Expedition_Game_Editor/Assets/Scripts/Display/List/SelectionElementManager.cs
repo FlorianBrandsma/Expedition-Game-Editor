@@ -7,22 +7,27 @@ static public class SelectionElementManager
 {
     static public List<SelectionElement> elementPool = new List<SelectionElement>();
 
-    static public SelectionElement SpawnElement(SelectionElement elementPrefab, Enums.ElementType elementType, 
-                                                IDisplayManager displayManager, SelectionManager.Type selectionType, 
-                                                SelectionManager.Property selectionProperty, Transform parent)
+    static public SelectionElement SpawnElement(SelectionElement elementPrefab, Transform parent,
+                                                Enums.ElementType elementType, IDisplayManager displayManager, 
+                                                SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
-        foreach (SelectionElement element in elementPool)
+        foreach (SelectionElement element in elementPool.Where(x => x.elementType == elementType))
         {
-            if (!element.disableSpawn && !element.gameObject.activeInHierarchy && element.elementType == elementType)
+            //Debug.Log(element.gameObject.activeInHierarchy + ":" + element.elementType + ":" + elementType);
+
+            if (element.disableSpawn) continue;
+            if (element.gameObject.activeInHierarchy) continue;
+
+            if (!element.disableSpawn && !element.gameObject.activeInHierarchy)
             {
                 InitializeElement(element, displayManager, selectionType, selectionProperty, parent);
                 return element;
             }
         }
-
+        
         SelectionElement newElement = Object.Instantiate(elementPrefab);
         newElement.elementType = elementType;
-
+        
         InitializeElement(newElement, displayManager, selectionType, selectionProperty, parent);
 
         Add(newElement);
@@ -51,8 +56,8 @@ static public class SelectionElementManager
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
         var elementDataList = activeElements.Where(x => x.selectionGroup == Enums.SelectionGroup.Main &&                                                   
-                                                        x.GeneralData() != null)
-                                            .Where(x => x.GeneralData().Equals(generalData)).ToList();
+                                                        x.GeneralData != null)
+                                            .Where(x => x.GeneralData.Equals(generalData)).ToList();
 
         var managerList = elementDataList.Select(x => x.DisplayManager).Distinct().ToList();
 

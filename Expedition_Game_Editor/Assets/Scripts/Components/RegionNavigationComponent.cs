@@ -283,7 +283,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Phase();
 
-        searchParameters.chapterId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Chapter).GeneralData().id };
+        searchParameters.chapterId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Chapter).GeneralData.id };
 
         return searchParameters;
     }
@@ -292,7 +292,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Quest();
 
-        searchParameters.phaseId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Phase).GeneralData().id };
+        searchParameters.phaseId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Phase).GeneralData.id };
 
         return searchParameters;
     }
@@ -301,7 +301,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Objective();
 
-        searchParameters.questId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Quest).GeneralData().id };
+        searchParameters.questId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Quest).GeneralData.id };
 
         return searchParameters;
     }
@@ -317,8 +317,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         {
             searchParameters.requestType = Search.SceneInteractable.RequestType.GetQuestAndObjectiveInteractables;
 
-            searchParameters.questId = new List<int>() { questRoute.GeneralData().id };
-            searchParameters.objectiveId = new List<int>() { objectiveRoute.GeneralData().id };
+            searchParameters.questId = new List<int>() { questRoute.GeneralData.id };
+            searchParameters.objectiveId = new List<int>() { objectiveRoute.GeneralData.id };
 
         } else {
 
@@ -326,7 +326,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
             var regionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Region);
 
-            searchParameters.regionId = new List<int>() { regionRoute.GeneralData().id };
+            searchParameters.regionId = new List<int>() { regionRoute.GeneralData.id };
 
             searchParameters.questId = new List<int>() { 0 };
             searchParameters.objectiveId = new List<int>() { 0 };
@@ -339,10 +339,10 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Interaction();
 
-        searchParameters.sceneInteractableId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.SceneInteractable).GeneralData().id };
+        searchParameters.sceneInteractableId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.SceneInteractable).GeneralData.id };
 
         if(PathController.route.path.FindFirstRoute(Enums.DataType.Objective) != null)
-            searchParameters.objectiveId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData().id };
+            searchParameters.objectiveId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData.id };
 
         return searchParameters;
     }
@@ -353,7 +353,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         var phaseRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Phase);
 
-        int phaseId = phaseRoute != null ? phaseRoute.GeneralData().id : 0;
+        int phaseId = phaseRoute != null ? phaseRoute.GeneralData.id : 0;
 
         searchParameters.phaseId = new List<int>() { phaseId };
 

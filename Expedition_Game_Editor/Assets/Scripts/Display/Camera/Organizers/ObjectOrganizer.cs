@@ -40,7 +40,6 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             if (objectGraphicData.id == 1) continue;
 
             ObjectGraphic prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
-
             ObjectGraphic graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
 
             poolObjects.Add(graphic);
@@ -67,23 +66,35 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
-    void SetGraphic(ObjectGraphic graphic)
+    private void SetGraphic(ObjectGraphic objectGraphic)
     {
-        graphic.transform.localPosition = new Vector2(  graphic.transform.localPosition.x, 
-                                                        objectProperties.pivotPosition[(int)graphic.pivot]);
+        objectGraphic.transform.localPosition = new Vector2(objectGraphic.transform.localPosition.x, 
+                                                            objectProperties.pivotPosition[(int)objectGraphic.pivot]);
 
-        graphic.gameObject.SetActive(true);
+        objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
+        objectGraphic.transform.localScale = objectGraphic.previewScale;
+
+        //objectGraphic.transform.localEulerAngles = new Vector3(90, 0, 0);
+
+        //objectGraphic.transform.localScale = new Vector3(70, 70, 70);
+
+        objectGraphic.gameObject.SetActive(true);
+    }
+    
+    private void CloseGraphic(ObjectGraphic objectGraphic)
+    {
+        objectGraphic.transform.localPosition = new Vector3(0, 0, 0);
+
+        objectGraphic.transform.localEulerAngles = new Vector3(0, 0, 0);
+
+        objectGraphic.transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void ClearCamera()
     {
-        foreach (IPoolable poolObject in poolObjects)
-        {
-            switch(poolObject.PoolType)
-            {
-                case PoolManager.PoolType.ObjectGraphic: ((ObjectGraphic)poolObject).gameObject.SetActive(false); break;
-            }
-        }
+        poolObjects.ForEach(x => CloseGraphic((ObjectGraphic)x));
+
+        poolObjects.ForEach(x => x.ClosePoolable());
 
         poolObjects.Clear();
     }

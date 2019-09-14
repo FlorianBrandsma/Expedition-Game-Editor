@@ -6,13 +6,16 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 {
     private IOrganizer organizer;
 
+    public SelectionManager.Property    SelectionProperty   { get; set; }
+    public SelectionManager.Type        SelectionType       { get; set; }
+
     public Camera cam;
     public RectTransform content;
 
     public OverlayManager overlayManager;
 
     public IDisplay Display { get; set; }
-    //private CameraProperties cameraProperties;
+    private CameraProperties cameraProperties;
 
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
     public RectTransform graphicParent;
@@ -25,6 +28,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(true);
 
         Display = cameraProperties;
+        this.cameraProperties = cameraProperties;
 
         switch (cameraProperties.displayType)
         {

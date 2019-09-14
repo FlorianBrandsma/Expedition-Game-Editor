@@ -110,8 +110,11 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, multiGridProperties.innerElementType,
-                                                                            Element.DisplayManager, multiGridProperties.innerSelectionType, multiGridProperties.innerSelectionProperty, innerGrid);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, innerGrid,
+                                                                            multiGridProperties.innerElementType,
+                                                                            Element.DisplayManager, 
+                                                                            multiGridProperties.innerSelectionType, 
+                                                                            multiGridProperties.innerSelectionProperty);
 
             element.parent = Element;
 
@@ -136,7 +139,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
 
         rect.sizeDelta = multiGridProperties.elementSize;
 

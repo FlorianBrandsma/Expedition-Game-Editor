@@ -25,7 +25,8 @@ public class Enums
         Quest,
         Objective,
         Interaction,
-        PartyMember
+        PartyMember,
+        Scene
     }
 
     public enum DataCategory
@@ -76,7 +77,8 @@ public class Enums
         PanelTile,
         MultiGrid,
         CompactMultiGrid,
-        Button
+        Button,
+        SceneElement
     }
 
     public enum ElementStatus

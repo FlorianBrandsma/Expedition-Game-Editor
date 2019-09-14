@@ -90,9 +90,10 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in primaryList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, multiGridProperties.elementType, 
-                                                                            DisplayManager, listManager.selectionType, 
-                                                                            listManager.selectionProperty, listManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent,
+                                                                            multiGridProperties.elementType, DisplayManager, 
+                                                                            DisplayManager.Display.SelectionType,
+                                                                            DisplayManager.Display.SelectionProperty);
 
             ElementList.Add(element);
 
@@ -123,14 +124,14 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
 
         rect.sizeDelta = ElementSize;
 
         rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (primaryDimension - 1)) + (index % primaryDimension * ElementSize.x),
                                                      -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / primaryDimension) * ElementSize.y));
 
-        rect.gameObject.SetActive(true);
+        element.gameObject.SetActive(true);
 
         element.SetElement();
     }

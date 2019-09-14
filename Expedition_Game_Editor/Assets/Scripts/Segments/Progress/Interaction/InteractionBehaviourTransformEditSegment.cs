@@ -40,7 +40,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
         //To get all phase regions
         if (phaseRoute != null)
-            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData().id };
+            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.id };
         else
             searchParameters.phaseId = new List<int>() { 0 };
 

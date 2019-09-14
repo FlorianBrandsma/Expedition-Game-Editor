@@ -8,6 +8,8 @@ public class SceneObjectDataElement : SceneObjectCore, IDataElement
 
     public SceneObjectDataElement() : base() { }
 
+    public string objectGraphicPath;
+    
     public string objectGraphicName;
     public string objectGraphicIconPath;
 

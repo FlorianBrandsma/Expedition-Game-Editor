@@ -8,4 +8,7 @@ public interface IDisplay
 
     IProperties Properties { get; }
     IDataController DataController { get; set; }
+
+    SelectionManager.Property SelectionProperty { get; }
+    SelectionManager.Type SelectionType { get; }
 }

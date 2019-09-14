@@ -8,6 +8,9 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public CameraManager cameraManager;
 
+    public SelectionManager.Type selectionType;
+    public SelectionManager.Property selectionProperty;
+
     private IDataController dataController;
     public IDataController DataController
     {
@@ -20,6 +23,9 @@ public class CameraProperties : MonoBehaviour, IDisplay
     }
 
     public IProperties Properties { get { return GetComponent<IProperties>(); } }
+
+    public SelectionManager.Property SelectionProperty { get { return selectionProperty; } }
+    public SelectionManager.Type SelectionType { get { return selectionType; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

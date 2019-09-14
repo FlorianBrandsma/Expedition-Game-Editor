@@ -35,7 +35,7 @@ public class SceneObjectSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.SceneObject.RequestType.Custom;
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData().id };
+        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }

@@ -39,6 +39,9 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public IProperties Properties { get { return GetComponent<IProperties>(); } }
 
+    public SelectionManager.Property SelectionProperty { get { return selectionProperty; } }
+    public SelectionManager.Type SelectionType { get { return selectionType; }  }
+
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     private void OpenList()

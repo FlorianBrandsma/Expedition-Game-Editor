@@ -71,12 +71,20 @@ public class ChapterDataManager
 
     internal void GetInteractableData()
     {
-        interactableDataList = dataManager.GetInteractableData(chapterDataList.Select(x => x.interactableId).Distinct().ToList(), true);
+        var interactableSearchParameters = new Search.Interactable();
+
+        interactableSearchParameters.id = chapterDataList.Select(x => x.interactableId).Distinct().ToList();
+
+        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal class ChapterData : GeneralData

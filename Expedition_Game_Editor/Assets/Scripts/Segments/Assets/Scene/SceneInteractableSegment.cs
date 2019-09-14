@@ -35,7 +35,7 @@ public class SceneInteractableSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.SceneInteractable.RequestType.GetInteractablesFromInteractionRegion;
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData().id };
+        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.id };
         searchParameters.objectiveId = new List<int>() { 0 };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });

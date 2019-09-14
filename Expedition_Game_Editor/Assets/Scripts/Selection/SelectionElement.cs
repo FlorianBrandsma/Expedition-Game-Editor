@@ -61,20 +61,23 @@ public class SelectionElement : MonoBehaviour
     
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
 
+    public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
+
     public Color BackgroundColor
     {
         get
         {
             if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
                 return GetComponent<EditorTile>().icon.color;
-            else
+            else if (background != null)
                 return background.color;
+            else return Color.white;
         }
         set
         {
             if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
                 GetComponent<EditorTile>().icon.color = value;
-            else
+            else if (background != null)
                 background.color = value;
         }
     }
@@ -142,7 +145,9 @@ public class SelectionElement : MonoBehaviour
             case Enums.ElementStatus.Enabled:
 
                 BackgroundColor = enabledColor;
-                lockIcon.SetActive(false);
+
+                if(lockIcon != null)
+                    lockIcon.SetActive(false);
 
                 break;
 
@@ -155,7 +160,9 @@ public class SelectionElement : MonoBehaviour
             case Enums.ElementStatus.Locked:
 
                 BackgroundColor = disabledColor;
-                lockIcon.SetActive(true);
+
+                if (lockIcon != null)
+                    lockIcon.SetActive(true);
 
                 break;
         }
@@ -247,10 +254,5 @@ public class SelectionElement : MonoBehaviour
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 
         SetElement();
-    }
-
-    public GeneralData GeneralData()
-    {
-        return (GeneralData)data.dataElement;
     }
 }

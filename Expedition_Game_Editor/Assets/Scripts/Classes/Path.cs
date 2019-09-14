@@ -117,7 +117,7 @@ public class Path
 
     public Path TrimToLastType(Enums.DataType dataType)
     {
-        var index = route.FindLastIndex(x => x.GeneralData().dataType == dataType);
+        var index = route.FindLastIndex(x => x.GeneralData.dataType == dataType);
 
         return Trim(index + 1);
     }
@@ -126,7 +126,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().dataType == dataType)
+            if (r.GeneralData.dataType == dataType)
                 return r;
         }
         return null;
@@ -134,7 +134,7 @@ public class Path
 
     public Route FindLastRoute(Enums.DataType dataType)
     {
-        return route.FindLast(x => x.GeneralData().dataType == dataType);
+        return route.FindLast(x => x.GeneralData.dataType == dataType);
     }
 
     public Route GetLastRoute()
@@ -159,7 +159,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData().dataType == ((GeneralData)data.dataElement).dataType)
+            if (r.GeneralData.dataType == ((GeneralData)data.dataElement).dataType)
                 r.data = data;
         }
     }

@@ -8,6 +8,9 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public InteractionDataElement() : base() { }
 
+    public int objectGraphicId;
+    public string objectGraphicPath;
+
     public string regionName;
     public string objectGraphicIconPath;
 

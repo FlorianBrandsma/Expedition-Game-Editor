@@ -5,10 +5,10 @@ public class InteractionCore : GeneralData
 {
     private int sceneInteractableId;
     private int regionId;
+    private int terrainId;
+    private int terrainTileId;
 
     private string description;
-
-    private int terrainTileId;
 
     private float positionX;
     private float positionY;
@@ -21,11 +21,13 @@ public class InteractionCore : GeneralData
     private float scaleMultiplier;
 
     private int animation;
+    
 
+    public int originalRegionId;
+    public int originalTerrainId;
+    public int originalTerrainTileId;
 
     public string originalDescription;
-
-    public int originalTerrainTileId;
 
     public float originalPositionX;
     public float originalPositionY;
@@ -41,9 +43,12 @@ public class InteractionCore : GeneralData
 
 
     private bool changedIndex;
-    private bool changedDescription;
-
+    
+    private bool changedRegionId;
+    private bool changedTerrainId;
     private bool changedTerrainTileId;
+
+    private bool changedDescription;
 
     private bool changedPositionX;
     private bool changedPositionY;
@@ -61,8 +66,9 @@ public class InteractionCore : GeneralData
     {
         get
         {
-            return  changedDescription  || changedTerrainTileId || changedPositionX || changedPositionY         || changedPositionZ || 
-                    changedRotationX    || changedRotationY     || changedRotationZ || changedScaleMultiplier   || changedAnimation;
+            return  changedRegionId     || changedTerrainId || changedTerrainTileId     || changedDescription   || 
+                    changedPositionX    || changedPositionY || changedPositionZ         || changedRotationX     || 
+                    changedRotationY    || changedRotationZ || changedScaleMultiplier   || changedAnimation;
         }
     }
 
@@ -92,19 +98,26 @@ public class InteractionCore : GeneralData
     public int RegionId
     {
         get { return regionId; }
-        set { regionId = value; }
-    }
-
-    public string Description
-    {
-        get { return description; }
         set
         {
-            if (value == description) return;
+            if (value == regionId) return;
 
-            changedDescription = (value != originalDescription);
+            changedRegionId = (value != originalRegionId);
 
-            description = value;
+            regionId = value;
+        }
+    }
+
+    public int TerrainId
+    {
+        get { return terrainId; }
+        set
+        {
+            if (value == terrainId) return;
+
+            changedTerrainId = (value != originalTerrainId);
+
+            terrainId = value;
         }
     }
 
@@ -118,6 +131,19 @@ public class InteractionCore : GeneralData
             changedTerrainTileId = (value != originalTerrainTileId);
 
             terrainTileId = value;
+        }
+    }
+
+    public string Description
+    {
+        get { return description; }
+        set
+        {
+            if (value == description) return;
+
+            changedDescription = (value != originalDescription);
+
+            description = value;
         }
     }
 
@@ -238,11 +264,17 @@ public class InteractionCore : GeneralData
     {
         var interactionData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
 
-        if (changedDescription)
-            interactionData.description = description;
+        if (changedRegionId)
+            interactionData.regionId = regionId;
+
+        if (changedTerrainId)
+            interactionData.terrainId = terrainId;
 
         if (changedTerrainTileId)
             interactionData.terrainTileId = terrainTileId;
+
+        if (changedDescription)
+            interactionData.description = description;
 
         if (changedPositionX)
             interactionData.positionX = positionX;
@@ -285,9 +317,11 @@ public class InteractionCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalDescription = description;
-
+        originalRegionId = regionId;
+        originalTerrainId = terrainId;
         originalTerrainTileId = terrainTileId;
+
+        originalDescription = description;
 
         originalPositionX = positionX;
         originalPositionY = positionY;
@@ -304,9 +338,12 @@ public class InteractionCore : GeneralData
 
     public void GetOriginalValues()
     {
-        description = originalDescription;
 
+        regionId = originalRegionId;
+        terrainId = originalTerrainId;
         terrainTileId = originalTerrainTileId;
+
+        description = originalDescription;
 
         positionX = originalPositionX;
         positionY = originalPositionY;
@@ -326,10 +363,12 @@ public class InteractionCore : GeneralData
         GetOriginalValues();
 
         changedIndex = false;
+        
+        changedRegionId = false;
+        changedTerrainId = false;
+        changedTerrainTileId = false;
 
         changedDescription = false;
-
-        changedTerrainTileId = false;
 
         changedPositionX = false;
         changedPositionY = false;

@@ -72,7 +72,7 @@ static public class Fixtures
     {
         public int objectGraphicId;
         public int regionId;
-
+        public int terrainId;
         public int terrainTileId;
 
         public float positionX;
@@ -191,7 +191,7 @@ static public class Fixtures
         public int sceneInteractableId;
         public int objectiveId;
         public int regionId;
-
+        public int terrainId;
         public int terrainTileId;
 
         public string description;
@@ -541,22 +541,22 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateSceneObject(17, region.id, new Vector3(0.1f, 0.2f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneObject(16, region.id, new Vector3(245f, 215f, 0f), new Vector3(0, 0, 0));
 
             /*Rock*/
-            CreateSceneObject(18, region.id, new Vector3(0.4f, 0.5f, 0.6f), new Vector3(4, 5, 6));
+            CreateSceneObject(17, region.id, new Vector3(230f, 210f, 0f), new Vector3(0, 0, 180f));
 
             /*Cactus*/
-            CreateSceneObject(19, region.id, new Vector3(0.7f, 0.8f, 0.9f), new Vector3(7, 8, 9));
-
+            CreateSceneObject(18, region.id, new Vector3(247.5f, 210f, 0f), new Vector3(0, 0, 0));
+            //15,875‬
             /*Red warrior*/
-            CreateSceneInteractable(1, region.id, new Vector3(0f, 50f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(1, region.id, new Vector3(238.125f, 208.125f, 0.1f), new Vector3(0, 0, 0));
 
             /*Ranger*/
-            CreateSceneInteractable(4, region.id, new Vector3(50f, 100f, 0.6f), new Vector3(4, 5, 6));
+            CreateSceneInteractable(4, region.id, new Vector3(235.625f, 210.625f, 0.2f), new Vector3(0, 0, 125));
 
             /*Mage*/
-            CreateSceneInteractable(5, region.id, new Vector3(450f, 450f, 0.3f), new Vector3(1, 2, 3));
+            CreateSceneInteractable(5, region.id, new Vector3(240.625f, 210.625f, 0f), new Vector3(0, 0, 235));
         }
     }
 
@@ -590,7 +590,8 @@ static public class Fixtures
         interaction.positionY = position.y;
         interaction.positionZ = position.z;
 
-        interaction.terrainTileId = GetTerrainTile(interaction.regionId, interaction.positionX, interaction.positionY);
+        interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionY);
+        interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionY);
 
         interaction.rotationX = (int)rotation.x;
         interaction.rotationY = (int)rotation.y;
@@ -615,8 +616,9 @@ static public class Fixtures
         sceneObject.positionY = position.y;
         sceneObject.positionZ = position.z;
 
-        sceneObject.terrainTileId = GetTerrainTile(sceneObject.regionId, sceneObject.positionX, sceneObject.positionY);
-
+        sceneObject.terrainId = GetTerrain(sceneObject.regionId, sceneObject.positionX, sceneObject.positionY);
+        sceneObject.terrainTileId = GetTerrainTile(sceneObject.terrainId, sceneObject.positionX, sceneObject.positionY);
+        
         sceneObject.rotationX = (int)rotation.x;
         sceneObject.rotationY = (int)rotation.y;
         sceneObject.rotationZ = (int)rotation.z;
@@ -1037,8 +1039,8 @@ static public class Fixtures
                     int randomRegion = Random.Range(0, regions.Count);
 
                     interaction.regionId = regions[randomRegion].id;
-
-                    interaction.terrainTileId = GetTerrainTile(interaction.regionId, interaction.positionX, interaction.positionY);
+                    interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionY);
+                    interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionY);
 
                     interaction.description = "Basically a task description. Property of objective" + objective.id;
 
@@ -1050,12 +1052,12 @@ static public class Fixtures
         }
     }
 
-    static public int GetTerrainTile(int regionId, float posX, float posY)
+    static public int GetTerrain(int regionId, float posX, float posY)
     {
         var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
         var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
         var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
-        
+
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
         var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
@@ -1064,6 +1066,20 @@ static public class Fixtures
         var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
         var terrainId = terrains.Where(x => x.index == terrainIndex).Select(x => x.id).FirstOrDefault();
+
+        return terrainId;
+    }
+
+    static public int GetTerrainTile(int terrainId, float posX, float posY)
+    {
+        var terrain = terrainList.Where(x => x.id == terrainId).FirstOrDefault();
+        var region = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
+        
+        var terrainSize = region.terrainSize * tileSet.tileSize;
+
+        var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
+                                             Mathf.Floor(posY / terrainSize));
 
         var terrainTiles = terrainTileList.Where(x => x.terrainId == terrainId).Distinct().ToList();
 

@@ -27,13 +27,13 @@ public class DataManager
         return dataList;
     }
 
-    public List<ObjectGraphicData> GetObjectGraphicData(List<int> idList, bool searchById = false)
+    public List<ObjectGraphicData> GetObjectGraphicData(Search.ObjectGraphic searchParameters)
     {
         List<ObjectGraphicData> dataList = new List<ObjectGraphicData>();
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
-            if (searchById && !idList.Contains(objectGraphic.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
 
             var data = new ObjectGraphicData();
 
@@ -51,16 +51,16 @@ public class DataManager
 
     public List<InteractableData> GetInteractableData()
     {
-        return GetInteractableData(new List<int>());
+        return GetInteractableData(new Search.Interactable());
     }
 
-    public List<InteractableData> GetInteractableData(List<int> idList, bool searchById = false)
+    public List<InteractableData> GetInteractableData(Search.Interactable searchParameters)
     {
         List<InteractableData> dataList = new List<InteractableData>();
 
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchById && !idList.Contains(interactable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
 
             var data = new InteractableData();
             
@@ -75,13 +75,13 @@ public class DataManager
         return dataList;
     }
 
-    public List<SceneInteractableData> GetSceneInteractableData(List<int> idList, bool searchById = false)
+    public List<SceneInteractableData> GetSceneInteractableData(Search.SceneInteractable searchParameters)
     {
         List<SceneInteractableData> dataList = new List<SceneInteractableData>();
 
         foreach(Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
         {
-            if (searchById && !idList.Contains(sceneInteractable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.id)) continue;
 
             var data = new SceneInteractableData();
 
@@ -291,7 +291,24 @@ public class DataManager
             var data = new InteractionData();
 
             data.id = interaction.id;
+            data.sceneInteractableId = interaction.sceneInteractableId;
             data.regionId = interaction.regionId;
+            data.terrainId = interaction.terrainId;
+            data.terrainTileId = interaction.terrainTileId;
+
+            data.description = interaction.description;
+
+            data.positionX = interaction.positionX;
+            data.positionY = interaction.positionY;
+            data.positionZ = interaction.positionZ;
+
+            data.rotationX = interaction.rotationX;
+            data.rotationY = interaction.rotationY;
+            data.rotationZ = interaction.rotationZ;
+
+            data.scaleMultiplier = interaction.scaleMultiplier;
+
+            data.animation = interaction.animation;
 
             dataList.Add(data);
         }
@@ -310,7 +327,22 @@ public class DataManager
             var data = new SceneObjectData();
 
             data.id = sceneObject.id;
+            data.objectGraphicId = sceneObject.objectGraphicId;
             data.regionId = sceneObject.regionId;
+            data.terrainId = sceneObject.terrainId;
+            data.terrainTileId = sceneObject.terrainTileId;
+            
+            data.positionX = sceneObject.positionX;
+            data.positionY = sceneObject.positionY;
+            data.positionZ = sceneObject.positionZ;
+
+            data.rotationX = sceneObject.rotationX;
+            data.rotationY = sceneObject.rotationY;
+            data.rotationZ = sceneObject.rotationZ;
+
+            data.scaleMultiplier = sceneObject.scaleMultiplier;
+
+            data.animation = sceneObject.animation;
 
             dataList.Add(data);
         }
@@ -398,12 +430,44 @@ public class DataManager
 
     public class InteractionData : GeneralData
     {
+        public int sceneInteractableId;
         public int regionId;
+        public int terrainId;
+        public int terrainTileId;
+
+        public string description;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 
     public class SceneObjectData : GeneralData
     {
+        public int objectGraphicId;
         public int regionId;
+        public int terrainId;
+        public int terrainTileId;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
     #endregion
 }

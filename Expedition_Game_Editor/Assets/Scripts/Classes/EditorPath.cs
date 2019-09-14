@@ -16,7 +16,7 @@ public class EditorPath
             return;
         }
 
-        switch (selection.GeneralData().dataType)
+        switch (selection.GeneralData.dataType)
         {
             case Enums.DataType.Chapter:
 

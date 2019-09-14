@@ -81,9 +81,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, panelProperties.elementType,
-                                                                            DisplayManager, listManager.selectionType, 
-                                                                            listManager.selectionProperty, listManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent, 
+                                                                            panelProperties.elementType, DisplayManager,
+                                                                            DisplayManager.Display.SelectionType,
+                                                                            DisplayManager.Display.SelectionProperty);
 
             ElementList.Add(element);
             
@@ -115,14 +116,14 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
         element.transform.localPosition = new Vector2(element.transform.localPosition.x, 
                                                      (listManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
 
-        rect.gameObject.SetActive(true);
+        element.gameObject.SetActive(true);
 
         element.SetElement();
     }

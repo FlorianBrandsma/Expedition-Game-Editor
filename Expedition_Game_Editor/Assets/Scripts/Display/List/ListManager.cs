@@ -10,9 +10,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
 {
     public IOrganizer organizer;
 
-    public SelectionManager.Property  selectionProperty   { get; set; }
-    public SelectionManager.Type      selectionType       { get; set; }
-
     public IDisplay         Display { get; set; }
     private ListProperties  listProperties;
 
@@ -68,9 +65,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         ScrollRect.horizontal   = listProperties.horizontal;
         ScrollRect.vertical     = listProperties.vertical;
-
-        selectionProperty       = listProperties.selectionProperty;
-        selectionType           = listProperties.selectionType;
 
         organizer.InitializeProperties();
 
@@ -175,7 +169,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         if (Display.DataController.DataList.Count == 0) return;
         
-        if (selectionType == SelectionManager.Type.Automatic)
+        if (Display.SelectionType == SelectionManager.Type.Automatic)
         {
             SelectionElement element = List.ElementList.FirstOrDefault();
 

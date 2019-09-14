@@ -12,7 +12,7 @@ public class SceneController : MonoBehaviour, IDataController
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
-    public Enums.DataType DataType              { get { return Enums.DataType.Region; } }
+    public Enums.DataType DataType              { get { return Enums.DataType.Scene; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
     public List<IDataElement> DataList          { get; set; }
 

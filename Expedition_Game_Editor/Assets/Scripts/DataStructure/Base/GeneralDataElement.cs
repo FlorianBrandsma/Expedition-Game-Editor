@@ -23,7 +23,7 @@ public class GeneralDataElement : GeneralData, IDataElement
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
+    public void GetOriginalValues() { }
 
     public void ClearChanges() { }
 

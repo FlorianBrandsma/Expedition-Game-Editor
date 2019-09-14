@@ -74,6 +74,8 @@ public class Route
 
     public Enums.SelectionGroup selectionGroup;
 
+    public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
+
     public Route() { }
 
     public Route(Path path)
@@ -113,7 +115,7 @@ public class Route
         if (controller != route.controller)
             return false;
 
-        if (!GeneralData().Equals(route.GeneralData()))
+        if (!GeneralData.Equals(route.GeneralData))
             return false;
 
         return true;
@@ -122,10 +124,5 @@ public class Route
     public Route Copy()
     {
         return new Route(this);
-    }
-
-    public GeneralData GeneralData()
-    {
-        return (GeneralData)data.dataElement;
     }
 }

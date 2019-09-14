@@ -44,7 +44,7 @@ public class SceneObjectDataManager
 
                         ObjectGraphicId = sceneObjectData.objectGraphicId,
                         RegionId = sceneObjectData.regionId,
-
+                        TerrainId = sceneObjectData.terrainId,
                         TerrainTileId = sceneObjectData.terrainTileId,
 
                         PositionX = sceneObjectData.positionX,
@@ -84,7 +84,7 @@ public class SceneObjectDataManager
 
             sceneObjectData.objectGraphicId = sceneObject.objectGraphicId;
             sceneObjectData.regionId = sceneObject.regionId;
-
+            sceneObjectData.terrainId = sceneObject.terrainId;
             sceneObjectData.terrainTileId = sceneObject.terrainTileId;
 
             sceneObjectData.positionX = sceneObject.positionX;
@@ -105,7 +105,11 @@ public class SceneObjectDataManager
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(sceneObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = sceneObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal void GetIconData()
@@ -117,7 +121,7 @@ public class SceneObjectDataManager
     {
         public int objectGraphicId;
         public int regionId;
-
+        public int terrainId;
         public int terrainTileId;
 
         public float positionX;

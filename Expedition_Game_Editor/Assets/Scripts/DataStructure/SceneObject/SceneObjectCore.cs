@@ -5,7 +5,7 @@ public class SceneObjectCore : GeneralData
 {
     private int objectGraphicId;
     private int regionId;
-
+    private int terrainId;
     private int terrainTileId;
 
     private float positionX;
@@ -23,7 +23,7 @@ public class SceneObjectCore : GeneralData
 
     public int originalObjectGraphicId;
     public int originalRegionId;
-
+    public int originalTerrainId;
     public int originalTerrainTileId;
 
     public float originalPositionX;
@@ -41,7 +41,7 @@ public class SceneObjectCore : GeneralData
 
     private bool changedObjectGraphicId;
     private bool changedRegionId;
-
+    private bool changedTerrainId;
     private bool changedTerrainTileId;
 
     private bool changedPositionX;
@@ -60,9 +60,9 @@ public class SceneObjectCore : GeneralData
     {
         get
         {
-            return  changedObjectGraphicId  || changedRegionId  || changedTerrainTileId || changedPositionX || changedPositionY         ||
-                    changedPositionZ        || changedRotationX || changedRotationY     || changedRotationZ || changedScaleMultiplier   ||
-                    changedAnimation;
+            return  changedObjectGraphicId  || changedRegionId  || changedTerrainId || changedTerrainTileId || changedPositionX || 
+                    changedPositionY        || changedPositionZ || changedRotationX || changedRotationY || changedRotationZ || 
+                    changedScaleMultiplier  || changedAnimation;
         }
     }
 
@@ -93,6 +93,19 @@ public class SceneObjectCore : GeneralData
             changedRegionId = (value != originalRegionId);
 
             regionId = value;
+        }
+    }
+
+    public int TerrainId
+    {
+        get { return terrainId; }
+        set
+        {
+            if (value == terrainId) return;
+
+            changedTerrainTileId = (value != originalTerrainId);
+
+            terrainId = value;
         }
     }
 
@@ -228,6 +241,12 @@ public class SceneObjectCore : GeneralData
 
         var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.id == id).FirstOrDefault();
 
+        if (changedRegionId)
+            sceneObjectData.regionId = regionId;
+
+        if (changedTerrainId)
+            sceneObjectData.terrainId = terrainId;
+
         if (changedTerrainTileId)
             sceneObjectData.terrainTileId = terrainTileId;
 
@@ -268,7 +287,7 @@ public class SceneObjectCore : GeneralData
     {
         originalObjectGraphicId = objectGraphicId;
         originalRegionId = regionId;
-
+        originalTerrainId = terrainId;
         originalTerrainTileId = terrainTileId;
 
         originalPositionX = positionX;
@@ -288,7 +307,7 @@ public class SceneObjectCore : GeneralData
     {
         objectGraphicId = originalObjectGraphicId;
         regionId = originalRegionId;
-
+        terrainId = originalTerrainId;
         terrainTileId = originalTerrainTileId;
 
         positionX = originalPositionX;
@@ -310,7 +329,7 @@ public class SceneObjectCore : GeneralData
 
         changedObjectGraphicId = false;
         changedRegionId = false;
-
+        changedTerrainId = false;
         changedTerrainTileId = false;
 
         changedPositionX = false;

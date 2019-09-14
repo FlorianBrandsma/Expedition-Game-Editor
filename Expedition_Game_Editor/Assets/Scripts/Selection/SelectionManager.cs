@@ -54,7 +54,7 @@ static public class SelectionManager
             {
                 //Should a selection rely on a type, rather than a property, to pick an element?
                 //Mainly concerns elements with children that otherwise have the same data
-                if (selectionElement.GeneralData().Equals(route.GeneralData()) &&
+                if (selectionElement.GeneralData.Equals(route.GeneralData) &&
                     selectionElement.selectionGroup == route.selectionGroup)
                 {
                     if (selectionElement.DisplayManager != null)
@@ -91,7 +91,7 @@ static public class SelectionManager
     {
         foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy).Where(x => x.selected))
         {
-            if (selectionElement.GeneralData().Equals(route.GeneralData()))
+            if (selectionElement.GeneralData.Equals(route.GeneralData))
             {
                 if (selectionElement.DisplayManager != null)
                     selectionElement.DisplayManager.SelectedElement = null;

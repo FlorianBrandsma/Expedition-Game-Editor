@@ -82,17 +82,29 @@ public class PhaseInteractableDataManager
 
     internal void GetSceneInteractableData()
     {
-        sceneInteractableDataList = dataManager.GetSceneInteractableData(phaseInteractableDataList.Select(x => x.sceneInteractableId).Distinct().ToList(), true);
+        var sceneInteractableSearchParameters = new Search.SceneInteractable();
+
+        sceneInteractableSearchParameters.id = phaseInteractableDataList.Select(x => x.sceneInteractableId).Distinct().ToList();
+
+        sceneInteractableDataList = dataManager.GetSceneInteractableData(sceneInteractableSearchParameters);
     }
 
     internal void GetInteractableData()
     {
-        interactableDataList = dataManager.GetInteractableData(sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
+        var interactableSearchParameters = new Search.Interactable();
+
+        interactableSearchParameters.id = sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+
+        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal void GetIconData()

@@ -57,9 +57,10 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, Enums.ElementType.Button, 
-                                                                            DisplayManager, listManager.selectionType,
-                                                                            listManager.selectionProperty, listManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent,
+                                                                            Enums.ElementType.Button, DisplayManager, 
+                                                                            DisplayManager.Display.SelectionType,
+                                                                            DisplayManager.Display.SelectionProperty);
             ElementList.Add(element);
 
             data.SelectionElement = element;
@@ -89,7 +90,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
 
         rect.anchorMax = new Vector2(1, 1);
 
@@ -97,7 +98,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
 
-        rect.gameObject.SetActive(true);
+        element.gameObject.SetActive(true);
 
         element.SetElement();
     }

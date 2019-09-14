@@ -106,9 +106,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, tileProperties.elementType, 
-                                                                            DisplayManager, listManager.selectionType,
-                                                                            listManager.selectionProperty, listManager.listParent);
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent, 
+                                                                            tileProperties.elementType, DisplayManager, 
+                                                                            DisplayManager.Display.SelectionType,
+                                                                            DisplayManager.Display.SelectionProperty);
             ElementList.Add(element);
 
             data.SelectionElement = element;
@@ -138,14 +139,14 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData().id);
+        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
 
         rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
         
         rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (listSize.x - 1)) + (index % listSize.x * ElementSize.x),
                                                      -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / listSize.x) * ElementSize.y));
 
-        rect.gameObject.SetActive(true);
+        element.gameObject.SetActive(true);
 
         element.SetElement();
     }

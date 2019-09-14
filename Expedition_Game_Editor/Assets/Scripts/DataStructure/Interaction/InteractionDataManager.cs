@@ -34,13 +34,13 @@ public class InteractionDataManager
         GetIconData();
 
         GetRegionData();
-        
-        var list = (from interactionData    in interactionDataList
 
-                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.id
+        var list = (from interactionData in interactionDataList
+
+                    join sceneInteractableData in sceneInteractableDataList on interactionData.sceneInteractableId equals sceneInteractableData.id
+                    join interactableData in interactableDataList on sceneInteractableData.interactableId equals interactableData.id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.id into regionData
@@ -55,10 +55,10 @@ public class InteractionDataManager
 
                         SceneInteractableId = interactionData.sceneInteractableId,
                         RegionId = interactionData.regionId,
+                        TerrainId = interactionData.terrainId,
+                        TerrainTileId = interactionData.terrainTileId,
 
                         Description = interactionData.description,
-                        
-                        TerrainTileId = interactionData.terrainTileId,
 
                         PositionX = interactionData.positionX,
                         PositionY = interactionData.positionY,
@@ -100,10 +100,10 @@ public class InteractionDataManager
             interactionData.objectiveId = interaction.objectiveId;
             interactionData.sceneInteractableId = interaction.sceneInteractableId;
             interactionData.regionId = interaction.regionId;
-
-            interactionData.description = interaction.description;
-
+            interactionData.terrainId = interaction.terrainId;
             interactionData.terrainTileId = interaction.terrainTileId;
+            
+            interactionData.description = interaction.description;
 
             interactionData.positionX = interaction.positionX;
             interactionData.positionY = interaction.positionY;
@@ -123,17 +123,29 @@ public class InteractionDataManager
 
     internal void GetSceneInteractableData()
     {
-        sceneInteractableDataList = dataManager.GetSceneInteractableData(interactionDataList.Select(x => x.sceneInteractableId).Distinct().ToList(), true);
+        var sceneInteractableSearchParameters = new Search.SceneInteractable();
+
+        sceneInteractableSearchParameters.id = interactionDataList.Select(x => x.sceneInteractableId).Distinct().ToList();
+
+        sceneInteractableDataList = dataManager.GetSceneInteractableData(sceneInteractableSearchParameters);
     }
 
     internal void GetInteractableData()
     {
-        interactableDataList = dataManager.GetInteractableData(sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList(), true);
+        var interactableSearchParameters = new Search.Interactable();
+
+        interactableSearchParameters.id = sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+
+        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
 
     internal void GetObjectGraphicData()
     {
-        objectGraphicDataList = dataManager.GetObjectGraphicData(interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList(), true);
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
 
     internal void GetIconData()
@@ -154,10 +166,10 @@ public class InteractionDataManager
         public int objectiveId;
         public int sceneInteractableId;
         public int regionId;
+        public int terrainId;
+        public int terrainTileId;
 
         public string description;
-
-        public int terrainTileId;
 
         public float positionX;
         public float positionY;
