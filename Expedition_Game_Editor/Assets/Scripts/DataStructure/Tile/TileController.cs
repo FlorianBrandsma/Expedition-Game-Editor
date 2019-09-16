@@ -32,7 +32,7 @@ public class TileController : MonoBehaviour, IDataController
         return tileDataManager.GetTileDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
+    public void SetData(SelectionElement searchElement, IDataElement resultData) { }
 
     public void ToggleElement(IDataElement dataElement) { }
 }

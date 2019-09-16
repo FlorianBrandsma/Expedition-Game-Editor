@@ -32,25 +32,21 @@ public class TerrainTileController : MonoBehaviour, IDataController
         return terrainTileDataManager.GetTerrainTileDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
-        var searchElementData = (TerrainTileDataElement)searchElement.data.dataElement;
+        var terrainTileData = (TerrainTileDataElement)searchElement.data.dataElement;
 
-        var terrainTileDataElement = DataList.Cast<TerrainTileDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
-
-        switch (resultData.dataController.DataType)
+        switch (((GeneralData)resultData).dataType)
         {
             case Enums.DataType.Tile:
 
-                var resultElementData = (TileDataElement)resultData.dataElement;
+                var resultElementData = (TileDataElement)resultData;
 
-                terrainTileDataElement.TileId = resultElementData.id;
-                terrainTileDataElement.iconPath = resultElementData.icon;
+                terrainTileData.TileId = resultElementData.id;
+                terrainTileData.iconPath = resultElementData.icon;
                 
                 break;
         }
-
-        searchElement.data.dataElement = terrainTileDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

@@ -281,6 +281,12 @@ public class SceneObjectCore : GeneralData
 
         if (changedObjectGraphicId)
             sceneObjectData.objectGraphicId = objectGraphicId;
+
+        SetOriginalValues();
+
+        ClearChanges();
+
+        GetOriginalValues();
     }
 
     public virtual void SetOriginalValues()

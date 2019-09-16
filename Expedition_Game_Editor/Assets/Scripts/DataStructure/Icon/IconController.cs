@@ -32,25 +32,21 @@ public class IconController : MonoBehaviour, IDataController
         return iconDataManager.GetIconDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
-        var searchElementData = (IconDataElement)searchElement.data.dataElement;
+        var iconData = (IconDataElement)searchElement.data.dataElement;
 
-        var iconDataElement = DataList.Cast<IconDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
-
-        switch (resultData.dataController.DataType)
+        switch (((GeneralData)resultData).dataType)
         {
             case Enums.DataType.Icon:
 
-                var resultElementData = (IconDataElement)resultData.dataElement;
+                var resultElementData = (IconDataElement)resultData;
 
-                iconDataElement.id = resultElementData.id;
-                iconDataElement.Path = resultElementData.Path;
+                iconData.id = resultElementData.id;
+                iconData.Path = resultElementData.Path;
 
                 break;
         }
-
-        searchElement.data.dataElement = iconDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

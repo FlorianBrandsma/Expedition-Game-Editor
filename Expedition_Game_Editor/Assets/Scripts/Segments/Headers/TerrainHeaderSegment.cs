@@ -22,7 +22,12 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     #endregion
 
-    #region Data Methods
+    #region Methods
+
+    public void Awake()
+    {
+        SelectionElementManager.Add(selectionElement);
+    }
 
     public void UpdateName()
     {

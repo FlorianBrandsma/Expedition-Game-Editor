@@ -44,6 +44,12 @@ public class EditorPanelTile : MonoBehaviour, IElement
         properties = (PanelTileProperties)Element.DisplayManager.Display.Properties;
     }
 
+    public void InitializeChildElement()
+    {
+        if (properties.childProperty != SelectionManager.Property.None)
+            ChildButtonData = Element.data;
+    }
+
     private void InitializeIcon()
     {
         content.offsetMin = new Vector2(iconParent.rect.width, content.offsetMin.y);
@@ -67,9 +73,6 @@ public class EditorPanelTile : MonoBehaviour, IElement
             case Enums.DataType.SceneObject:      SetSceneObjectElement();      break;
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
-
-        if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = Element.data;
     }
 
     private void SetSceneInteractableElement()

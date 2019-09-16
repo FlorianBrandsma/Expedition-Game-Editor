@@ -37,7 +37,7 @@ public class PhaseController : MonoBehaviour, IDataController
         return phaseDataManager.GetPhaseDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
         CreatePhaseElements();
     }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISegment
+public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
     private SceneDataElement sceneDataElement;
 
@@ -39,15 +39,15 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.PositionX = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.PositionX = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.PositionX = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.PositionX = value);
 
                     break;
 
@@ -67,15 +67,15 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.PositionY = value;
-
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.PositionY = value);
+                    
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.PositionY = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.PositionY = value);
 
                     break;
 
@@ -95,15 +95,15 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.PositionZ = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.PositionZ = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.PositionZ = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.PositionZ = value);
 
                     break;
 
@@ -145,9 +145,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
     }
 
     public void ApplySegment() { }
-
-    public void CloseSegment() { }
-
+    
     public void InitializeSegment()
     {
         InitializeDependencies();
@@ -164,9 +162,7 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
     {
         var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
         sceneDataElement = regionData.sceneDataElement;
-
-        //Debug.Log(sceneDataElement.tileSize);
-
+        
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
@@ -209,6 +205,40 @@ public class TerrainItemTransformPositionCoordinateSegment : MonoBehaviour, ISeg
         bindToTile.Toggle.isOn = terrainTileId != 0;
 
         gameObject.SetActive(true);
+    }
+
+    public void CloseSegment()
+    {
+        ResetData();
+    }
+
+    private void ResetData()
+    {
+        switch (DataEditor.Data.dataController.DataType)
+        {
+            case Enums.DataType.Interaction: ResetInteractionData(); break;
+            case Enums.DataType.SceneObject: ResetSceneObjectData(); break;
+
+            default: Debug.Log("CASE MISSING"); break;
+        }
+    }
+
+    private void ResetInteractionData()
+    {
+        var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+        interactionData.ForEach(x => x.ClearChanges());
+    }
+
+    private void ResetSceneObjectData()
+    {
+        var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+        sceneObjectData.ForEach(x => x.ClearChanges());
+
+        //var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
+
+        //sceneObjectData.ClearChanges();
+
+        //sceneObjectData.SelectionElement.UpdateElement();
     }
 
     public void SetSearchResult(SelectionElement selectionElement) { }

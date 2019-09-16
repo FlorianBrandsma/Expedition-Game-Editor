@@ -210,9 +210,6 @@ public class SelectionElement : MonoBehaviour
 
                 SelectionManager.SelectSearch(dataElement);
 
-                if (DisplayManager == null)
-                    ActivateSelection();
-
                 break;
 
             case SelectionManager.Property.Set:
@@ -241,12 +238,12 @@ public class SelectionElement : MonoBehaviour
         }
     }
 
-    public void SetResult(Data elementData)
+    public void SetResult(IDataElement resultData)
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
-        dataController.SetData(this, elementData);
+        dataController.SetData(this, resultData);
 
         if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
             data.dataElement.UpdateSearch();

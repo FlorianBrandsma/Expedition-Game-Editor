@@ -111,11 +111,13 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             data.SelectionElement = element;
             element.data = new SelectionElement.Data(dataController, data);
 
+            element.GetComponent<EditorPanelTile>().InitializeChildElement();
+
             //Debugging
             GeneralData generalData = (GeneralData)data;
             element.name = generalData.DebugName + generalData.id;
             //
-
+            
             SetElement(element);
         }
     }

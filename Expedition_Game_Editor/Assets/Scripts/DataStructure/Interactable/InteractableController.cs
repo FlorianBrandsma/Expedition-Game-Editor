@@ -32,25 +32,21 @@ public class InteractableController : MonoBehaviour, IDataController
         return interactableDataManager.GetInteractableDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
-        var searchElementData = (InteractableDataElement)searchElement.data.dataElement;
+        var interactableData = (InteractableDataElement)searchElement.data.dataElement;
 
-        var interactableDataElement = DataList.Cast<InteractableDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
-
-        switch (resultData.dataController.DataType)
+        switch (((GeneralData)resultData).dataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData.dataElement;
+                var resultElementData = (InteractableDataElement)resultData;
 
-                interactableDataElement.id = resultElementData.id;
-                interactableDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
+                interactableData.id = resultElementData.id;
+                interactableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 
                 break;
         }
-
-        searchElement.data.dataElement = interactableDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

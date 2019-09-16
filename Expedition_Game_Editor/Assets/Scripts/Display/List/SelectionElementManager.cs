@@ -13,8 +13,6 @@ static public class SelectionElementManager
     {
         foreach (SelectionElement element in elementPool.Where(x => x.elementType == elementType))
         {
-            //Debug.Log(element.gameObject.activeInHierarchy + ":" + element.elementType + ":" + elementType);
-
             if (element.disableSpawn) continue;
             if (element.gameObject.activeInHierarchy) continue;
 
@@ -55,18 +53,35 @@ static public class SelectionElementManager
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
-        var elementDataList = activeElements.Where(x => x.selectionGroup == Enums.SelectionGroup.Main &&                                                   
-                                                        x.GeneralData != null)
-                                            .Where(x => x.GeneralData.Equals(generalData)).ToList();
+        var elementList = FindSelectionElements(activeElements, generalData);
 
-        var managerList = elementDataList.Select(x => x.DisplayManager).Distinct().ToList();
+        var managerList = elementList.Select(x => x.DisplayManager).Distinct().ToList();
 
         if (updateList)
             managerList.ForEach(x => x.UpdateData());
         else
-            elementDataList.ForEach(x => x.UpdateElement());
+            elementList.ForEach(x => x.UpdateElement());
 
         SelectionManager.SelectElements();
+    }
+    
+    static public List<IDataElement> FindDataElements(GeneralData generalData)
+    {
+        var dataElementList = FindSelectionElements(elementPool, generalData).Select(x => x.data.dataElement).ToList();
+
+        return dataElementList;
+    }
+
+    static public List<SelectionElement> FindSelectionElements(GeneralData generalData)
+    {
+        return FindSelectionElements(elementPool, generalData);
+    }
+
+    static public List<SelectionElement> FindSelectionElements(List<SelectionElement> selectionElements, GeneralData generalData)
+    {
+        return selectionElements.Where(x => x.selectionGroup == Enums.SelectionGroup.Main &&
+                                                        x.GeneralData != null)
+                                            .Where(x => x.GeneralData.Equals(generalData)).ToList();
     }
 
     static public void CloseElement(List<SelectionElement> elementList)

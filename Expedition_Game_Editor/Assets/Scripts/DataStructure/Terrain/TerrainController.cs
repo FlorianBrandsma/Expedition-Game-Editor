@@ -32,7 +32,7 @@ public class TerrainController : MonoBehaviour, IDataController
         return terrainDataManager.GetTerrainDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
+    public void SetData(SelectionElement searchElement, IDataElement resultData) { }
 
     public void ToggleElement(IDataElement dataElement) { }
 }

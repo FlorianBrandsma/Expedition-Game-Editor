@@ -70,7 +70,7 @@ public class SearchController : MonoBehaviour
 
     public void CloseController()
     {
-        DestroyImmediate((UnityEngine.Object)GetComponent<IProperties>());
-        DestroyImmediate((UnityEngine.Object)GetComponent<IDataController>());
+        DestroyImmediate((Object)GetComponent<IProperties>());
+        DestroyImmediate((Object)GetComponent<IDataController>());
     }
 }

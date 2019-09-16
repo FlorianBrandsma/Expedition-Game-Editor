@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegment
+public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
@@ -35,15 +35,15 @@ public class TerrainItemTransformScaleMultiplierSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.ScaleMultiplier = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.ScaleMultiplier = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.ScaleMultiplier = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.ScaleMultiplier = value);
 
                     break;
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
+public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController     { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                       { get; set; }
@@ -35,15 +35,15 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.RotationX = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.RotationX = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.RotationX = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.RotationX = value);
 
                     break;
 
@@ -63,15 +63,15 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.RotationY = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.RotationY = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.RotationY = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.RotationY = value);
 
                     break;
 
@@ -91,15 +91,15 @@ public class TerrainItemTransformRotationDegreeSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-                    interactionData.RotationZ = value;
+                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
+                    interactionData.ForEach(x => x.RotationZ = value);
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-                    sceneObjectData.RotationZ = value;
+                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectData.ForEach(x => x.RotationZ = value);
 
                     break;
 

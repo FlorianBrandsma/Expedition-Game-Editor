@@ -91,6 +91,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             data.SelectionElement = element;
             element.data = new SelectionElement.Data(dataController, data);
 
+            element.GetComponent<EditorPanel>().InitializeChildElement();
+
             //Debugging
             GeneralData generalData = (GeneralData)data;
             element.name = generalData.DebugName + generalData.id;

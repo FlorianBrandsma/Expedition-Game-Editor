@@ -39,8 +39,8 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
             if (objectGraphicData.id == 1) continue;
 
-            ObjectGraphic prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
-            ObjectGraphic graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
+            var prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
+            var graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
 
             poolObjects.Add(graphic);
 

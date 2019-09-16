@@ -7,9 +7,11 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public int regionSize;
     public int terrainSize;
+    public float tileSize;
 
     public string tileSetName;
-    public float tileSize;
+
+    public Vector2 startPosition;
 
     public class TerrainData : GeneralData
     {

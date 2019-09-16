@@ -32,7 +32,7 @@ public class ChapterController : MonoBehaviour, IDataController
         return chapterDataManager.GetChapterDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
+    public void SetData(SelectionElement searchElement, IDataElement resultDataElement) { }
 
     public void ToggleElement(IDataElement dataElement) { }
 }

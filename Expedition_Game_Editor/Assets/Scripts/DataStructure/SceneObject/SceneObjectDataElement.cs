@@ -15,7 +15,9 @@ public class SceneObjectDataElement : SceneObjectCore, IDataElement
 
     public string originalObjectGraphicName;
     public string originalObjectGraphicIconPath;
-    
+
+    public Vector2 startPosition;
+
     public override void Update()
     {
         if (!Changed) return;

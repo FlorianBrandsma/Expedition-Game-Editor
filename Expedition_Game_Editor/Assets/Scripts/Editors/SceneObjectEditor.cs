@@ -4,7 +4,7 @@ using System.Linq;
 
 public class SceneObjectEditor : MonoBehaviour, IEditor
 {
-    private SceneObjectDataElement sceneObjectData;
+    private List<SceneObjectDataElement> sceneObjectDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -16,8 +16,8 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
         get
         {
             var list = new List<IDataElement>();
-
-            list.Add(sceneObjectData);
+            
+            sceneObjectDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -29,13 +29,16 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        sceneObjectData = (SceneObjectDataElement)Data.dataElement;
-
+        var sceneObjectData = (SceneObjectDataElement)Data.dataElement;
+        sceneObjectDataList = SelectionElementManager.FindDataElements(sceneObjectData).Cast<SceneObjectDataElement>().ToList();
+        
         DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void UpdateEditor()
     {
+        DataElements.ForEach(x => x.SelectionElement.UpdateElement());
+
         SetEditor();
     }
 
@@ -70,6 +73,7 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public void CloseEditor()
     {
-
+        //DataElements.ForEach(x => x.SetOriginalValues());
+        //DataElements.ForEach(x => x.SelectionElement.SetElement());
     }
 }

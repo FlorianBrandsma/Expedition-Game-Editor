@@ -14,6 +14,8 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public string regionName;
     public string objectGraphicIconPath;
 
+    public Vector2 startPosition;
+
     public override void Update()
     {
         if (!Changed) return;

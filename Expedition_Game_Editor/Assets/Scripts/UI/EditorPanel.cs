@@ -45,6 +45,12 @@ public class EditorPanel : MonoBehaviour, IElement
         properties = (PanelProperties)Element.DisplayManager.Display.Properties;
     }
 
+    public void InitializeChildElement()
+    {
+        if (properties.childProperty != SelectionManager.Property.None)
+            ChildButtonData = Element.data;
+    }
+
     private void InitializeIcon()
     {
         content.offsetMin = new Vector2(iconParent.rect.width, content.offsetMin.y);
@@ -88,9 +94,6 @@ public class EditorPanel : MonoBehaviour, IElement
             else
                 descriptionText.rectTransform.offsetMax = new Vector2(descriptionText.rectTransform.offsetMax.x, -headerText.rectTransform.rect.height);
         }
-
-        if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = Element.data;
     }
 
     private void SetChapterElement()

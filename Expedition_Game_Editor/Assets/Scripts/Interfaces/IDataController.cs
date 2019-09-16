@@ -13,6 +13,6 @@ public interface IDataController
 
     void InitializeController();
     List<IDataElement> GetData(IEnumerable searchParameters);
-    void SetData(SelectionElement searchElement, SelectionElement.Data resultData);
+    void SetData(SelectionElement searchElement, IDataElement resultDataElement);
     void ToggleElement(IDataElement dataElement);
 }

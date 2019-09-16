@@ -338,7 +338,6 @@ public class InteractionCore : GeneralData
 
     public void GetOriginalValues()
     {
-
         regionId = originalRegionId;
         terrainId = originalTerrainId;
         terrainTileId = originalTerrainTileId;

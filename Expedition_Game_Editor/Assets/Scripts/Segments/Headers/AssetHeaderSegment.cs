@@ -89,6 +89,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Methods
+    public void Awake()
+    {
+        SelectionElementManager.Add(selectionElement);
+    }
+
     public void UpdateName()
     {
         Name = inputField.text;
@@ -111,7 +116,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         InitializeData();
 
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
-
+        
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }

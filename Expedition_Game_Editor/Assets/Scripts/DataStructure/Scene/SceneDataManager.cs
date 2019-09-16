@@ -7,6 +7,8 @@ public class SceneDataManager
 {
     private SceneController sceneController;
 
+    private SceneDataElement basicSceneData;
+
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.RegionData> regionDataList;
@@ -31,7 +33,7 @@ public class SceneDataManager
         GetRegionData(searchData);
         GetTileSetData();
         GetTerrainData();
-        GetTerrainTileData();
+        GetTerrainTileData();        
         GetInteractionData(searchData);
         GetSceneObjectData(searchData);
         
@@ -39,6 +41,10 @@ public class SceneDataManager
         GetInteractableData();
         GetObjectGraphicData();
 
+        basicSceneData = GetBasicSceneData();
+
+        var sceneStartPosition = GetSceneStartPosition();
+        
         var list = (from regionData in regionDataList
                     join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
                     select new SceneDataElement
@@ -53,6 +59,8 @@ public class SceneDataManager
 
                         tileSetName = tileSetData.name,
                         tileSize = tileSetData.tileSize,
+
+                        startPosition = sceneStartPosition,
 
                         terrainDataList = (from terrainData in terrainDataList
                                            select new SceneDataElement.TerrainData()
@@ -101,7 +109,9 @@ public class SceneDataManager
                                                                           Animation = interactionData.animation,
 
                                                                           objectGraphicId = objectGraphicData.id,
-                                                                          objectGraphicPath = objectGraphicData.path
+                                                                          objectGraphicPath = objectGraphicData.path,
+
+                                                                          startPosition = sceneStartPosition
 
                                                                       }).ToList(),
 
@@ -128,7 +138,9 @@ public class SceneDataManager
                                                                           Animation = sceneObjectData.animation,
 
                                                                           ObjectGraphicId = objectGraphicData.id,
-                                                                          objectGraphicPath = objectGraphicData.path
+                                                                          objectGraphicPath = objectGraphicData.path,
+
+                                                                          startPosition = sceneStartPosition
 
                                                                       }).ToList()
 
@@ -140,6 +152,29 @@ public class SceneDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
+    private SceneDataElement GetBasicSceneData()
+    {
+        var sceneData = (from regionData in regionDataList
+                         join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
+                         select new SceneDataElement
+                         {
+                             regionSize = regionData.regionSize,
+                             terrainSize = regionData.terrainSize,
+                             tileSize = tileSetData.tileSize
+
+                         }).FirstOrDefault();
+
+        return sceneData;
+    }
+
+    private Vector2 GetSceneStartPosition()
+    {
+        var sceneStartPosition = new Vector2(-(basicSceneData.regionSize * basicSceneData.terrainSize * basicSceneData.tileSize / 2),
+                                              (basicSceneData.regionSize * basicSceneData.terrainSize * basicSceneData.tileSize / 2));
+
+        return sceneStartPosition;
+    }
+
     internal void GetRegionData(Search.Scene searchData)
     {
         var searchParameters = new Search.Region();
@@ -148,7 +183,7 @@ public class SceneDataManager
         regionDataList = dataManager.GetRegionData(searchParameters);
     }
 
-    private void GetTileSetData()
+    internal void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
         tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();

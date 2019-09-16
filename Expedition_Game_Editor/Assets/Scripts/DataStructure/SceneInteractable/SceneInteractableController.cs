@@ -32,26 +32,22 @@ public class SceneInteractableController : MonoBehaviour, IDataController
         return sceneInteractableDataManager.GetSceneInteractableDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData)
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
-        var searchElementData = (SceneInteractableDataElement)searchElement.data.dataElement;
+        var sceneInteractableData = (SceneInteractableDataElement)searchElement.data.dataElement;
 
-        var sceneInteractableDataElement = DataList.Cast<SceneInteractableDataElement>().Where(x => x.id == searchElementData.id).FirstOrDefault();
-
-        switch (resultData.dataController.DataType)
+        switch (((GeneralData)resultData).dataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData.dataElement;
+                var resultElementData = (InteractableDataElement)resultData;
 
-                sceneInteractableDataElement.InteractableId = resultElementData.id;
-                sceneInteractableDataElement.interactableName = resultElementData.Name;
-                sceneInteractableDataElement.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
+                sceneInteractableData.InteractableId = resultElementData.id;
+                sceneInteractableData.interactableName = resultElementData.Name;
+                sceneInteractableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 
                 break;
         }
-
-        searchElement.data.dataElement = sceneInteractableDataElement;
     }
 
     public void ToggleElement(IDataElement dataElement) { }

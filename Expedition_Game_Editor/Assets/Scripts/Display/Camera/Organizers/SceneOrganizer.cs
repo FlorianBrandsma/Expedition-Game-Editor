@@ -65,8 +65,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             ScrollRect.content.localPosition.y >= positionTracker.y + sceneData.tileSize ||
             ScrollRect.content.localPosition.y <= positionTracker.y - sceneData.tileSize)
         {
-            //Debug.Log("Update");
-
             positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
 
             ClearOrganizer();
@@ -90,8 +88,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     {
         planes = GeometryUtility.CalculateFrustumPlanes(cameraManager.cam);
 
-        sceneStartPosition = new Vector2(-(sceneData.regionSize * sceneData.terrainSize * sceneData.tileSize / 2),
-                                          (sceneData.regionSize * sceneData.terrainSize * sceneData.tileSize / 2));
+        sceneStartPosition = sceneData.startPosition;
         
         foreach (SceneDataElement.TerrainData terrainData in sceneData.terrainDataList)
         {
@@ -105,8 +102,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
             //Set objects that are not bound to this terrain tile
             SetSceneElements(sceneObjectList);
-
-            //Debug.Log(terrainData.id + ":" + terrainData.sceneObjectDataList.Count + ":" + terrainData.interactionDataList.Count);
         }
     }
 
@@ -132,7 +127,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
                 var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
                 var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
-
+                
                 //Set interactions that are bound to this terrain tile
                 SetSceneElements(interactionList);
 
@@ -162,8 +157,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             data.SelectionElement = element;
             element.data = new SelectionElement.Data(dataController, data);
 
-            element.transform.localPosition = new Vector3(sceneStartPosition.x, sceneStartPosition.y, 0);
-
             //Debugging
             GeneralData generalData = (GeneralData)data;
             element.name = generalData.DebugName + generalData.id;
@@ -172,35 +165,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             SetElement(element);
         }
     }
-
-    //private void SetSceneObjects(List<SceneObjectDataElement> sceneObjectDataList)
-    //{
-    //    if (sceneObjectDataList.Count == 0) return;
-
-    //    SelectionElement elementPrefab = Resources.Load<SelectionElement>("Scene/EditorSceneElement");
-
-    //    foreach (IDataElement data in sceneObjectDataList)
-    //    {
-    //        SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, cameraManager.content,
-    //                                                                        Enums.ElementType.SceneElement, DisplayManager,
-    //                                                                        DisplayManager.Display.SelectionType,
-    //                                                                        DisplayManager.Display.SelectionProperty);
-
-    //        ElementList.Add(element);
-
-    //        data.SelectionElement = element;
-    //        element.data = new SelectionElement.Data(dataController, data);
-
-    //        element.transform.localPosition = new Vector3(sceneStartPosition.x, sceneStartPosition.y, 0);
-
-    //        //Debugging
-    //        GeneralData generalData = (GeneralData)data;
-    //        element.name = generalData.DebugName + generalData.id;
-    //        //
-
-    //        SetElement(element);
-    //    }
-    //}
 
     void SetElement(SelectionElement element)
     {

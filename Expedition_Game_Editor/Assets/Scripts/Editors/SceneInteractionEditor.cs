@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractionTransformEditor : MonoBehaviour, IEditor
+public class SceneInteractionEditor : MonoBehaviour, IEditor
 {
-    private InteractionDataElement interactionData;
+    //private List<InteractionDataElement> interactionDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -17,7 +17,12 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            list.Add(interactionData);
+            //Temporary solution
+            var interactionData = (InteractionDataElement)Data.dataElement;
+            var interactionDataList = SelectionElementManager.FindDataElements((InteractionDataElement)Data.dataElement).Cast<InteractionDataElement>().ToList();
+            //
+
+            interactionDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -29,13 +34,21 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
 
         Data = PathController.route.data;
 
-        interactionData = (InteractionDataElement)Data.dataElement;
+        var interactionData = (InteractionDataElement)Data.dataElement;
+
+        //This didn't have the correct interaction data. Doesn't update or re-initialize editor when changing interactions in the action bar
+        //The editor should be re-initialized when the selected interaction is changes
+
+        //interactionDataList = SelectionElementManager.FindDataElements(interactionData).Cast<InteractionDataElement>().ToList();
+        //interactionDataList.ForEach(x => Debug.Log(x.SelectionElement));
 
         DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void UpdateEditor()
     {
+        DataElements.ForEach(x => x.SelectionElement.UpdateElement());
+
         SetEditor();
     }
 
@@ -59,15 +72,13 @@ public class InteractionTransformEditor : MonoBehaviour, IEditor
     public void ApplyChanges()
     {
         DataElements.ForEach(x => x.Update());
-
-        //UpdateList();
-
+        
         UpdateEditor();
     }
 
     public void CancelEdit()
     {
-
+        
     }
 
     public void CloseEditor()

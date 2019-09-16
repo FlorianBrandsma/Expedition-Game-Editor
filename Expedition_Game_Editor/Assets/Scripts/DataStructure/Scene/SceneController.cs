@@ -32,7 +32,24 @@ public class SceneController : MonoBehaviour, IDataController
         return sceneDataManager.GetSceneDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
+    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    {
+        var sceneObjectData = (SceneObjectDataElement)searchElement.data.dataElement;
+
+        switch (((GeneralData)resultData).dataType)
+        {
+            case Enums.DataType.ObjectGraphic:
+
+                var resultElementData = (ObjectGraphicDataElement)resultData;
+
+                sceneObjectData.ObjectGraphicId = resultElementData.id;
+                sceneObjectData.objectGraphicName = resultElementData.Name;
+                sceneObjectData.objectGraphicIconPath = resultElementData.iconPath;
+                sceneObjectData.objectGraphicPath = resultElementData.Path;
+
+                break;
+        }
+    }
 
     public void ToggleElement(IDataElement dataElement) { }
 }

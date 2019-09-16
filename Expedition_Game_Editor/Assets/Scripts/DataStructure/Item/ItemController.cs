@@ -32,7 +32,7 @@ public class ItemController : MonoBehaviour, IDataController
         return itemDataManager.GetItemDataElements(searchParameters);
     }
 
-    public void SetData(SelectionElement searchElement, SelectionElement.Data resultData) { }
+    public void SetData(SelectionElement searchElement, IDataElement resultData) { }
 
     public void ToggleElement(IDataElement dataElement) { }
 }

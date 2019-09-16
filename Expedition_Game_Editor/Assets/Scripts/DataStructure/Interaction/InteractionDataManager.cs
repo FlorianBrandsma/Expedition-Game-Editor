@@ -35,12 +35,12 @@ public class InteractionDataManager
 
         GetRegionData();
 
-        var list = (from interactionData in interactionDataList
+        var list = (from interactionData        in interactionDataList
 
-                    join sceneInteractableData in sceneInteractableDataList on interactionData.sceneInteractableId equals sceneInteractableData.id
-                    join interactableData in interactableDataList on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.id into regionData
