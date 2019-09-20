@@ -1816,7 +1816,7 @@ Animation:
   m_Animations:
   - {fileID: 7400000, guid: 352847561def26b408d93c916db161f4, type: 3}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 1
 --- !u!114 &114000014238017966
@@ -1830,6 +1830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 1000013582943862}
   pivot: 3
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 70, y: 70, z: 70}

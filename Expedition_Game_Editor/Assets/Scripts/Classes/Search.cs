@@ -194,6 +194,9 @@ public class Search
     [System.Serializable]
     public class Scene : SearchParameters
     {
+        public List<int> regionId = new List<int>();
+        public List<int> objectiveId = new List<int>();
+
         public enum RequestType
         {
             Custom

@@ -16,15 +16,7 @@ public class SceneElementBehaviourAnimationSegment : MonoBehaviour, ISegment
 
     #endregion
 
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
+    public void ApplySegment() { }
 
     public void InitializeDependencies()
     {
@@ -47,6 +39,11 @@ public class SceneElementBehaviourAnimationSegment : MonoBehaviour, ISegment
     }
 
     public void OpenSegment() { }
+
+    public void CloseSegment()
+    {
+        DataEditor.DataElements.ForEach(x => x.ClearChanges());
+    }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

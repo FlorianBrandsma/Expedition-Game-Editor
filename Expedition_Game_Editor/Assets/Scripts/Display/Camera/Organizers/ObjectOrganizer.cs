@@ -74,19 +74,16 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
         objectGraphic.transform.localScale = objectGraphic.previewScale;
 
-        //objectGraphic.transform.localEulerAngles = new Vector3(90, 0, 0);
-
-        //objectGraphic.transform.localScale = new Vector3(70, 70, 70);
-
+        if(objectGraphic.mesh != null)
+            objectGraphic.mesh.GetComponent<Animation>().Play();
+        
         objectGraphic.gameObject.SetActive(true);
     }
     
     private void CloseGraphic(ObjectGraphic objectGraphic)
     {
         objectGraphic.transform.localPosition = new Vector3(0, 0, 0);
-
         objectGraphic.transform.localEulerAngles = new Vector3(0, 0, 0);
-
         objectGraphic.transform.localScale = new Vector3(1, 1, 1);
     }
 

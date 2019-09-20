@@ -137,86 +137,6 @@ public class ChapterEditor : MonoBehaviour, IEditor
             phaseRegion.regionSize = regionSource.regionSize;
             phaseRegion.terrainSize = regionSource.terrainSize;
 
-            var sceneInteractableSourceList = Fixtures.sceneInteractableList.Where(x => Fixtures.interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
-
-            foreach (Fixtures.SceneInteractable sceneInteractableSource in sceneInteractableSourceList)
-            {
-                var sceneInteractable = new Fixtures.SceneInteractable();
-
-                int sceneInteractableId = Fixtures.sceneInteractableList.Count > 0 ? (Fixtures.sceneInteractableList[Fixtures.sceneInteractableList.Count - 1].id + 1) : 1;
-
-                sceneInteractable.id = sceneInteractableId;
-
-                sceneInteractable.chapterId = sceneInteractableSource.chapterId;
-                sceneInteractable.objectiveId = sceneInteractableSource.objectiveId;
-                sceneInteractable.interactableId = sceneInteractableSource.interactableId;
-                sceneInteractable.interactionIndex = sceneInteractableSource.interactionIndex;
-
-                var interactionSourceList = Fixtures.interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
-
-                foreach (Fixtures.Interaction interactionSource in interactionSourceList)
-                {
-                    var interaction = new Fixtures.Interaction();
-
-                    int interactionId = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].id + 1) : 1;
-
-                    interaction.id = interactionId;
-                    interaction.sceneInteractableId = sceneInteractable.id;
-                    interaction.objectiveId = interactionSource.objectiveId;
-                    interaction.regionId = phaseRegion.id;
-
-                    interaction.index = interactionSource.index;
-                    interaction.description = interactionSource.description;
-
-                    interaction.positionX = interactionSource.positionX;
-                    interaction.positionY = interactionSource.positionY;
-                    interaction.positionZ = interactionSource.positionZ;
-
-                    interaction.rotationX = interactionSource.rotationX;
-                    interaction.rotationY = interactionSource.rotationY;
-                    interaction.rotationZ = interactionSource.rotationZ;
-
-                    interaction.scaleMultiplier = interactionSource.scaleMultiplier;
-
-                    interaction.animation = interactionSource.animation;
-
-                    Fixtures.interactionList.Add(interaction);
-                }
-
-                Fixtures.sceneInteractableList.Add(sceneInteractable);
-            }
-
-            var sceneObjectSourceList = Fixtures.sceneObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
-
-            foreach (Fixtures.SceneObject sceneObjectSource in sceneObjectSourceList)
-            {
-                var sceneObject = new Fixtures.SceneObject();
-
-                int sceneObjectId = Fixtures.sceneObjectList.Count > 0 ? (Fixtures.sceneObjectList[Fixtures.sceneObjectList.Count - 1].id + 1) : 1;
-
-                sceneObject.id = sceneObjectId;
-                sceneObject.regionId = phaseRegion.id;
-
-                sceneObject.index = sceneObjectSource.index;
-                sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
-
-                sceneObject.terrainTileId = sceneObjectSource.terrainTileId;
-
-                sceneObject.positionX = sceneObjectSource.positionX;
-                sceneObject.positionY = sceneObjectSource.positionY;
-                sceneObject.positionZ = sceneObjectSource.positionZ;
-
-                sceneObject.rotationX = sceneObjectSource.rotationX;
-                sceneObject.rotationY = sceneObjectSource.rotationY;
-                sceneObject.rotationZ = sceneObjectSource.rotationZ;
-
-                sceneObject.scaleMultiplier = sceneObjectSource.scaleMultiplier;
-
-                sceneObject.animation = sceneObjectSource.animation;
-
-                Fixtures.sceneObjectList.Add(sceneObject);
-            }
-
             var terrainSourceList = Fixtures.terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
 
             foreach (Fixtures.Terrain terrainSource in terrainSourceList)
@@ -252,6 +172,90 @@ public class ChapterEditor : MonoBehaviour, IEditor
                 }
 
                 Fixtures.terrainList.Add(terrain);
+            }
+
+            var sceneInteractableSourceList = Fixtures.sceneInteractableList.Where(x => Fixtures.interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
+
+            foreach (Fixtures.SceneInteractable sceneInteractableSource in sceneInteractableSourceList)
+            {
+                var sceneInteractable = new Fixtures.SceneInteractable();
+
+                int sceneInteractableId = Fixtures.sceneInteractableList.Count > 0 ? (Fixtures.sceneInteractableList[Fixtures.sceneInteractableList.Count - 1].id + 1) : 1;
+
+                sceneInteractable.id = sceneInteractableId;
+
+                sceneInteractable.chapterId = sceneInteractableSource.chapterId;
+                sceneInteractable.objectiveId = sceneInteractableSource.objectiveId;
+                sceneInteractable.interactableId = sceneInteractableSource.interactableId;
+                sceneInteractable.interactionIndex = sceneInteractableSource.interactionIndex;
+
+                var interactionSourceList = Fixtures.interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
+
+                foreach (Fixtures.Interaction interactionSource in interactionSourceList)
+                {
+                    var interaction = new Fixtures.Interaction();
+
+                    int interactionId = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].id + 1) : 1;
+
+                    interaction.id = interactionId;
+                    interaction.sceneInteractableId = sceneInteractable.id;
+                    interaction.objectiveId = interactionSource.objectiveId;
+                    interaction.regionId = phaseRegion.id;
+
+                    interaction.index = interactionSource.index;
+                    interaction.description = interactionSource.description;
+
+                    interaction.positionX = interactionSource.positionX;
+                    interaction.positionY = interactionSource.positionY;
+                    interaction.positionZ = interactionSource.positionZ;
+
+                    interaction.terrainId = Fixtures.GetTerrain(interaction.regionId, interaction.positionX, interaction.positionY);
+                    interaction.terrainTileId = Fixtures.GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionY);
+
+                    interaction.rotationX = interactionSource.rotationX;
+                    interaction.rotationY = interactionSource.rotationY;
+                    interaction.rotationZ = interactionSource.rotationZ;
+
+                    interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+
+                    interaction.animation = interactionSource.animation;
+
+                    Fixtures.interactionList.Add(interaction);
+                }
+
+                Fixtures.sceneInteractableList.Add(sceneInteractable);
+            }
+
+            var sceneObjectSourceList = Fixtures.sceneObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
+
+            foreach (Fixtures.SceneObject sceneObjectSource in sceneObjectSourceList)
+            {
+                var sceneObject = new Fixtures.SceneObject();
+
+                int sceneObjectId = Fixtures.sceneObjectList.Count > 0 ? (Fixtures.sceneObjectList[Fixtures.sceneObjectList.Count - 1].id + 1) : 1;
+
+                sceneObject.id = sceneObjectId;
+                sceneObject.regionId = phaseRegion.id;
+
+                sceneObject.index = sceneObjectSource.index;
+                sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
+                
+                sceneObject.positionX = sceneObjectSource.positionX;
+                sceneObject.positionY = sceneObjectSource.positionY;
+                sceneObject.positionZ = sceneObjectSource.positionZ;
+
+                sceneObject.terrainId = Fixtures.GetTerrain(sceneObject.regionId, sceneObject.positionX, sceneObject.positionY);
+                sceneObject.terrainTileId = Fixtures.GetTerrainTile(sceneObject.terrainId, sceneObject.positionX, sceneObject.positionY);
+
+                sceneObject.rotationX = sceneObjectSource.rotationX;
+                sceneObject.rotationY = sceneObjectSource.rotationY;
+                sceneObject.rotationZ = sceneObjectSource.rotationZ;
+
+                sceneObject.scaleMultiplier = sceneObjectSource.scaleMultiplier;
+
+                sceneObject.animation = sceneObjectSource.animation;
+
+                Fixtures.sceneObjectList.Add(sceneObject);
             }
         }
     }

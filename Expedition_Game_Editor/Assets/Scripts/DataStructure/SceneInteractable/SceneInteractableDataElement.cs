@@ -8,11 +8,30 @@ public class SceneInteractableDataElement : SceneInteractableCore, IDataElement
 
     public SceneInteractableDataElement() : base() { }
 
+    public int terrainTileId;
+
+    public int objectGraphicId;
+    public string objectGraphicPath;
+
     public string interactableName;
     public string objectGraphicIconPath;
 
     public string originalInteractableName;
     public string originalObjectGraphicIconPath;
+
+    public float positionX;
+    public float positionY;
+    public float positionZ;
+
+    public int rotationX;
+    public int rotationY;
+    public int rotationZ;
+
+    public float scaleMultiplier;
+
+    public int animation;
+
+    public Vector2 startPosition;
 
     public override void Update()
     {

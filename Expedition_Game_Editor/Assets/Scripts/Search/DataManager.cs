@@ -287,10 +287,12 @@ public class DataManager
         foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
         {
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
-
+            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
+            
             var data = new InteractionData();
 
             data.id = interaction.id;
+            data.objectiveId = interaction.objectiveId;
             data.sceneInteractableId = interaction.sceneInteractableId;
             data.regionId = interaction.regionId;
             data.terrainId = interaction.terrainId;
@@ -431,6 +433,7 @@ public class DataManager
     public class InteractionData : GeneralData
     {
         public int sceneInteractableId;
+        public int objectiveId;
         public int regionId;
         public int terrainId;
         public int terrainTileId;

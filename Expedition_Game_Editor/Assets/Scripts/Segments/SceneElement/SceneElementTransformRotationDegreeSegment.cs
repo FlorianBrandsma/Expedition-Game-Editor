@@ -131,9 +131,7 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
     }
 
     public void ApplySegment() { }
-
-    public void CloseSegment() { }
-
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.PathController.dataEditor;
@@ -184,6 +182,11 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
         zInputField.Value = RotationZ;
 
         gameObject.SetActive(true);
+    }
+
+    public void CloseSegment()
+    {
+        DataEditor.DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void SetSearchResult(SelectionElement selectionElement) { }

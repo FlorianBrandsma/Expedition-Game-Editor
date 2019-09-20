@@ -209,36 +209,7 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     public void CloseSegment()
     {
-        ResetData();
-    }
-
-    private void ResetData()
-    {
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Interaction: ResetInteractionData(); break;
-            case Enums.DataType.SceneObject: ResetSceneObjectData(); break;
-
-            default: Debug.Log("CASE MISSING"); break;
-        }
-    }
-
-    private void ResetInteractionData()
-    {
-        var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-        interactionData.ForEach(x => x.ClearChanges());
-    }
-
-    private void ResetSceneObjectData()
-    {
-        var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-        sceneObjectData.ForEach(x => x.ClearChanges());
-
-        //var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-
-        //sceneObjectData.ClearChanges();
-
-        //sceneObjectData.SelectionElement.UpdateElement();
+        DataEditor.DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void SetSearchResult(SelectionElement selectionElement) { }

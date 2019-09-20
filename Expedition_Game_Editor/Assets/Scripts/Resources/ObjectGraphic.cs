@@ -4,6 +4,7 @@ using System.Linq;
 
 public class ObjectGraphic : MonoBehaviour, IPoolable
 {
+    public GameObject mesh;
     public ObjectProperties.Pivot pivot;
 
     public Vector3 previewRotation;

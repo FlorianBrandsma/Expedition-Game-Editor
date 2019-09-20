@@ -94,8 +94,12 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             SetTerrain(terrainData);
 
+            var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0).Cast<IDataElement>().ToList();
             var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>().ToList();
             var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>().ToList();
+
+            //Set scene interactables that are not bound to this tile by their first interaction
+            SetSceneElements(sceneInteractableList);
 
             //Set interactions that are not bound to this terrain tile
             SetSceneElements(interactionList);
@@ -125,15 +129,19 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                 tile.transform.SetParent(cameraManager.content.transform, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
 
+                var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
                 var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
                 var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
-                
+
+                //Set scene interactables that are bound to this tile by their first interaction
+                SetSceneElements(sceneInteractableList);
+
                 //Set interactions that are bound to this terrain tile
                 SetSceneElements(interactionList);
 
                 //Set objects that are bound to this terrain tile
                 SetSceneElements(sceneObjectList);
-
+                
                 tile.gameObject.SetActive(true);
             }
         }

@@ -61,15 +61,7 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
         DataEditor.UpdateEditor();
     }
 
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
+    public void ApplySegment() { }
 
     public void InitializeSegment()
     {
@@ -115,6 +107,11 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
         inputField.Value = ScaleMultiplier;
 
         gameObject.SetActive(true);
+    }
+
+    public void CloseSegment()
+    {
+        DataEditor.DataElements.ForEach(x => x.ClearChanges());
     }
 
     public void SetSearchResult(SelectionElement selectionElement) { }

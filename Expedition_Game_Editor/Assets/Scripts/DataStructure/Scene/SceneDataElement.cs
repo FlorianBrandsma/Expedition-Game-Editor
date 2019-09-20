@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 public class SceneDataElement : GeneralData, IDataElement
 {
-    public List<TerrainData> terrainDataList;
-
     public int regionSize;
     public int terrainSize;
     public float tileSize;
@@ -13,18 +11,22 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public Vector2 startPosition;
 
+    public List<TerrainData> terrainDataList;
+
     public class TerrainData : GeneralData
     {
         public int regionId;
         public string name;
 
         public List<TerrainTileDataElement> terrainTileDataList;
+        public List<SceneInteractableDataElement> sceneInteractableDataList;
         public List<InteractionDataElement> interactionDataList;
         public List<SceneObjectDataElement> sceneObjectDataList;
         
         public void SetOriginalValues()
         {
             terrainTileDataList.ForEach(x => x.SetOriginalValues());
+            sceneInteractableDataList.ForEach(x => x.SetOriginalValues());
             interactionDataList.ForEach(x => x.SetOriginalValues());
             sceneObjectDataList.ForEach(x => x.SetOriginalValues());
         }

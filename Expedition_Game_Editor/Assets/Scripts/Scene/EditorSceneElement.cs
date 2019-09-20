@@ -19,11 +19,27 @@ public class EditorSceneElement : MonoBehaviour, IElement
         
         switch (Element.GeneralData.dataType)
         {
-            case Enums.DataType.Interaction:    SetInteractionElement();    break;
-            case Enums.DataType.SceneObject:    SetSceneObjectElement();    break;
+            case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;
+            case Enums.DataType.Interaction:        SetInteractionElement();        break;
+            case Enums.DataType.SceneObject:        SetSceneObjectElement();        break;
 
-            default: Debug.Log("CASE MISSING: " + Element.GeneralData.dataType); break;
+            default: Debug.Log("CASE MISSING: " + Element.GeneralData.dataType);    break;
         }
+    }
+
+    private void SetSceneInteractableElement()
+    {
+        var data = Element.data;
+        var dataElement = (SceneInteractableDataElement)data.dataElement;
+
+        var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab.PoolType, prefab);
+
+        transform.localPosition = new Vector3(dataElement.startPosition.x + dataElement.positionX, dataElement.startPosition.y - dataElement.positionY, -dataElement.positionZ);
+        transform.localEulerAngles = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
+        transform.localScale = new Vector3(1, 1, 1);
+
+        SetObjectGraphic();
     }
 
     private void SetInteractionElement()

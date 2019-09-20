@@ -34,12 +34,39 @@ public class SceneController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
+        switch (((GeneralData)searchElement.data.dataElement).dataType)
+        { 
+            case Enums.DataType.SceneInteractable:  SetSceneInteractableData(searchElement, resultData);    break;
+            case Enums.DataType.SceneObject:        SetSceneObjectData(searchElement, resultData);          break;
+        }
+    }
+
+    private void SetSceneInteractableData(SelectionElement searchElement, IDataElement resultData)
+    {
+        var sceneInteractableData = (SceneInteractableDataElement)searchElement.data.dataElement;
+
+        switch (((GeneralData)resultData).dataType)
+        {
+            case Enums.DataType.Interactable:
+
+                var resultElementData = (InteractableDataElement)resultData;
+
+                sceneInteractableData.objectGraphicId = resultElementData.id;
+                sceneInteractableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
+                sceneInteractableData.objectGraphicPath = resultElementData.objectGraphicPath;
+
+                break;
+        }
+    }
+
+    private void SetSceneObjectData(SelectionElement searchElement, IDataElement resultData)
+    {
         var sceneObjectData = (SceneObjectDataElement)searchElement.data.dataElement;
 
         switch (((GeneralData)resultData).dataType)
         {
             case Enums.DataType.ObjectGraphic:
-
+                
                 var resultElementData = (ObjectGraphicDataElement)resultData;
 
                 sceneObjectData.ObjectGraphicId = resultElementData.id;

@@ -23,12 +23,14 @@ public class SceneSegment : MonoBehaviour, ISegment
         if (SegmentController.editorController.PathController.loaded) return;
 
         var searchParameters = new Search.Scene();
-
+        
         var regionDataElement = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        searchParameters.regionId = new List<int>() { regionDataElement.Id };
+        
+        var objectiveRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Objective);
 
-        int regionId = regionDataElement.Id;
-
-        searchParameters.id = new List<int>() { regionId };
+        if (objectiveRoute == null)
+            searchParameters.objectiveId = new List<int>() { 0 };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
