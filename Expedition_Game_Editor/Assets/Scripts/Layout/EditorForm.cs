@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class EditorForm : MonoBehaviour
 {
@@ -37,38 +38,42 @@ public class EditorForm : MonoBehaviour
     }
 
     #region Path
-    public void InitializePath(Path path, bool reload = false)
+    public void InitializePath(Path path)
     {
-        OpenPath(path, reload);
+        OpenPath(path);
+        
         OpenLayout(path);
-        baseController.ForceLoadPath(path);
-
+        
         SetComponents(path);
 
         previousPath = activePath;
         activePath = path;
+
         active = true;
         closed = false;
 
         //Follows path, activates form components and adds last route to history
         baseController.FinalizePath(path);
 
-        //Auto select element
-        mainController.FinalizeController();
-
         ResetSiblingForm();
     }
 
-    public void OpenPath(Path path, bool reload)
+    public void OpenPath(Path path)
     {
         //Close the initialization of previous path
         ClosePath();
-
+        
         //Flesh out the path and determine the target controller
-        baseController.InitializePath(path, path.start, reload);
+        baseController.OpenPath(path, path.start);
 
-        //Save previous target to compare data with
-        SetPreviousPath();
+        //Activate sections with a target controller
+        ActivateSections();
+        
+        //Close editors of inactive sections
+        CloseSections();
+
+        //Initialize editors
+        InitializeSections();
         
         path.type = Path.Type.Loaded;
     }
@@ -107,6 +112,45 @@ public class EditorForm : MonoBehaviour
         OpenEditor();
     }
 
+    private void InitializeSections()
+    {
+        foreach(EditorSection editorSection in editorSections)
+        {
+            if (editorSection.targetController == null) continue;
+
+            editorSection.targetController.InitializeController();
+        }
+    }
+
+    private void ActivateSections()
+    {
+        foreach (EditorSection section in editorSections)
+        {
+            if (section.targetController == null) continue;
+
+            section.ActivateEditor();
+        }
+    }
+
+    private void CloseSections()
+    {
+        foreach (EditorSection editorSection in editorSections)
+        {
+            if (editorSection.dataEditor == null) continue;
+
+            //If section is inactive or the section's editor doesn't match the previous editor
+            if (!editorSection.active || !MatchPrevious(editorSection))
+                editorSection.CancelEdit();
+        }
+    }
+
+    private bool MatchPrevious(EditorSection editorSection)
+    {
+        if (editorSection.previousDataSource == null) return true;
+
+        return ((GeneralData)editorSection.previousDataSource).Equals((GeneralData)editorSection.dataEditor.Data.dataElement);
+    }
+
     private void CloseFormLayout()
     {
         if (closed) return;
@@ -141,16 +185,10 @@ public class EditorForm : MonoBehaviour
         }
     }
 
-    private void SetPreviousPath()
-    {
-        foreach (EditorSection section in editorSections)
-            section.SetPreviousPath();      
-    }
-
     public void ResetPath()
     {
         if (active)
-            InitializePath(activePath, true);
+            InitializePath(activePath);
     }
 
     #region Layout

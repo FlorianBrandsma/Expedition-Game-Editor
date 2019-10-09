@@ -14,7 +14,7 @@ public class PartyMemberDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(PartyMemberController partyMemberController)
+    public PartyMemberDataManager(PartyMemberController partyMemberController)
     {
         this.partyMemberController = partyMemberController;
     }
@@ -38,14 +38,14 @@ public class PartyMemberDataManager
         GetIconData();
 
         var list = (from partyMemberData in partyMemberDataList
-                    join interactableData in interactableDataList on partyMemberData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join interactableData in interactableDataList on partyMemberData.interactableId equals interactableData.Id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new PartyMemberDataElement()
                     {
                         dataType = Enums.DataType.PartyMember,
 
-                        id = partyMemberData.id,
+                        Id = partyMemberData.Id,
                         
                         ChapterId = partyMemberData.chapterId,
                         InteractableId = partyMemberData.interactableId,
@@ -53,7 +53,7 @@ public class PartyMemberDataManager
                         interactableName = interactableData.name,
                         objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.id).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -66,12 +66,12 @@ public class PartyMemberDataManager
 
         foreach (Fixtures.PartyMember partyMember in Fixtures.partyMemberList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(partyMember.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(partyMember.Id)) continue;
             if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(partyMember.chapterId)) continue;
 
             var partyMemberData = new PartyMemberData();
 
-            partyMemberData.id = partyMember.id;
+            partyMemberData.Id = partyMember.Id;
 
             partyMemberData.chapterId = partyMember.chapterId;
             partyMemberData.interactableId = partyMember.interactableId;

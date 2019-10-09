@@ -7,12 +7,10 @@ public class PhaseInteractableCore : GeneralData
     private int questId;
     private int sceneInteractableId;
 
-    public int originalIndex;
     public int originalPhaseId;
     public int originalQuestId;
     public int originalSceneInteractableId;
 
-    private bool changedIndex;
     private bool changedPhaseId;
     private bool changedQuestId;
     private bool changedSceneInteractableId;
@@ -26,21 +24,6 @@ public class PhaseInteractableCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int PhaseId
     {
@@ -85,14 +68,11 @@ public class PhaseInteractableCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var phaseElementData = Fixtures.phaseInteractableList.Where(x => x.id == id).FirstOrDefault();
+        var phaseElementData = Fixtures.phaseInteractableList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedQuestId)
         {
@@ -124,16 +104,12 @@ public class PhaseInteractableCore : GeneralData
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedPhaseId = false;
         changedQuestId = false;
         changedSceneInteractableId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

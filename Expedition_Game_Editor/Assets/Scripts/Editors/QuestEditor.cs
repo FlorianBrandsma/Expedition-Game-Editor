@@ -4,13 +4,24 @@ using System.Linq;
 
 public class QuestEditor : MonoBehaviour, IEditor
 {
-    private QuestDataElement questData;
+    public QuestDataElement QuestData { get { return (QuestDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
+
     public List<PhaseInteractableDataElement> questInteractableDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(QuestData); }
+    }
 
     public List<IDataElement> DataElements
     {
@@ -18,49 +29,20 @@ public class QuestEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            list.Add(questData);
+            DataList.ForEach(x => list.Add(x));
+
             questInteractableDataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-
-        Data = PathController.route.data;
-
-        questData = (QuestDataElement)Data.dataElement;
-        questInteractableDataList.Clear();
-
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void UpdateIndex(int index)
-    {
-        var list = Data.dataController.DataList.Cast<QuestDataElement>().ToList();
-
-        list.RemoveAt(questData.Index);
-        list.Insert(index, questData);
-
-        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            list[i].Index = i;
-            list[i].UpdateIndex();
-        }
-
-        SelectionElementManager.UpdateElements(questData, true);
-    }
-
-    public void OpenEditor()
     {
         SetEditor();
     }
@@ -77,20 +59,21 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.ForEach(x => x.Update());
-
-        SelectionElementManager.UpdateElements(questData);
+        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        {
+            x.Update();
+            x.SelectionElement.UpdateElement();
+        });
 
         UpdateEditor();
     }
 
     public void CancelEdit()
     {
+        DataElements.ForEach(x => x.ClearChanges());
 
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-
-    }
+    public void CloseEditor() { }
 }

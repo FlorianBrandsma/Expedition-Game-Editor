@@ -4,12 +4,22 @@ using System.Linq;
 
 public class SceneInteractionEditor : MonoBehaviour, IEditor
 {
-    //private List<InteractionDataElement> interactionDataList;
+    public InteractionDataElement InteractionData { get { return (InteractionDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(InteractionData); }
+    }
 
     public List<IDataElement> DataElements
     {
@@ -17,33 +27,18 @@ public class SceneInteractionEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            //Temporary solution
-            var interactionData = (InteractionDataElement)Data.dataElement;
-            var interactionDataList = SelectionElementManager.FindDataElements((InteractionDataElement)Data.dataElement).Cast<InteractionDataElement>().ToList();
-            //
-
-            interactionDataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-
-        Data = PathController.route.data;
-
-        var interactionData = (InteractionDataElement)Data.dataElement;
-
-        //This didn't have the correct interaction data. Doesn't update or re-initialize editor when changing interactions in the action bar
-        //The editor should be re-initialized when the selected interaction is changes
-
-        //interactionDataList = SelectionElementManager.FindDataElements(interactionData).Cast<InteractionDataElement>().ToList();
-        //interactionDataList.ForEach(x => Debug.Log(x.SelectionElement));
-
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
+
+    public void InitializeEditor() { }
 
     public void UpdateEditor()
     {
@@ -54,10 +49,7 @@ public class SceneInteractionEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index) { }
 
-    public void OpenEditor()
-    {
-        SetEditor();
-    }
+    public void OpenEditor() { }
 
     public void SetEditor()
     {
@@ -78,11 +70,10 @@ public class SceneInteractionEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        
+        DataElements.ForEach(x => x.ClearChanges());
+
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-
-    }
+    public void CloseEditor() { }
 }

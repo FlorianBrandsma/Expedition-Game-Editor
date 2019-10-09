@@ -5,22 +5,10 @@ using System.Linq;
 public class SceneObjectSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        //DataEditor = SegmentController.editorController.pathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -29,13 +17,13 @@ public class SceneObjectSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
         var searchParameters = new Search.SceneObject();
 
         searchParameters.requestType = Search.SceneObject.RequestType.Custom;
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.id };
+        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
@@ -45,6 +33,8 @@ public class SceneObjectSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

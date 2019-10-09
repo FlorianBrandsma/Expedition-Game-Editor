@@ -1,30 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class SceneItemHeaderSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    //private InteractionDataElement interactionData;
-
     public IEditor DataEditor { get; set; }
 
     #region UI
-
     public Button findButton;
     public Text idText;
-
     #endregion
 
     #region Data Variables
-
     private int id;
     private string objectGraphicIconPath;
-
     #endregion
 
-    #region Data Methods
+    #region Properties
+    #endregion
+
+    #region Methods
     public void UpdateDescription()
     {
         DataEditor.UpdateEditor();
@@ -32,21 +28,25 @@ public class SceneItemHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
-
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
     {
-        InitializeDependencies();
-
         InitializeData();
     }
 
     public void InitializeData()
     {
+        InitializeDependencies();
+
+        if (DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
@@ -58,7 +58,7 @@ public class SceneItemHeaderSegment : MonoBehaviour, ISegment
     {
         var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
 
-        id = interactionData.id;
+        id = interactionData.Id;
         objectGraphicIconPath = interactionData.objectGraphicIconPath;
     }
 
@@ -66,7 +66,7 @@ public class SceneItemHeaderSegment : MonoBehaviour, ISegment
     {
         var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
 
-        id = sceneObjectData.id;
+        id = sceneObjectData.Id;
         objectGraphicIconPath = sceneObjectData.objectGraphicIconPath;
     }
 
@@ -77,19 +77,11 @@ public class SceneItemHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void ApplySegment()
-    {
-
-    }
-
     public void CloseSegment()
     {
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
     #endregion
 }

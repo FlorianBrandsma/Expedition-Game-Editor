@@ -22,8 +22,6 @@ public class SceneInteractableCore : GeneralData
 
     #region Properties
 
-    public int Id { get { return id; } }
-
     public int ChapterId
     {
         get { return chapterId; }
@@ -54,14 +52,11 @@ public class SceneInteractableCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var sceneInteractableData = Fixtures.sceneInteractableList.Where(x => x.id == id).FirstOrDefault();
+        var sceneInteractableData = Fixtures.sceneInteractableList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedInteractableId)
             sceneInteractableData.interactableId = interactableId;
@@ -94,10 +89,7 @@ public class SceneInteractableCore : GeneralData
         changedInteractableId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

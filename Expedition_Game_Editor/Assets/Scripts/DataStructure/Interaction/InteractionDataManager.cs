@@ -17,7 +17,7 @@ public class InteractionDataManager
 
     private List<DataManager.RegionData> regionDataList;
 
-    public void InitializeManager(InteractionController interactionController)
+    public InteractionDataManager(InteractionController interactionController)
     {
         this.interactionController = interactionController;
     }
@@ -37,21 +37,20 @@ public class InteractionDataManager
 
         var list = (from interactionData        in interactionDataList
 
-                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.id
+                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.Id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
 
                     join leftJoin in (from regionData in regionDataList
-                                      select new { regionData }) on interactionData.regionId equals leftJoin.regionData.id into regionData
+                                      select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData
 
-                    from region in regionData.DefaultIfEmpty()
                     select new InteractionDataElement()
                     {
                         dataType = Enums.DataType.Interaction,
 
-                        id = interactionData.id,
-                        index = interactionData.index,
+                        Id = interactionData.Id,
+                        Index = interactionData.Index,
 
                         SceneInteractableId = interactionData.sceneInteractableId,
                         RegionId = interactionData.regionId,
@@ -72,7 +71,7 @@ public class InteractionDataManager
 
                         Animation = interactionData.animation,
 
-                        regionName  = region != null ? region.regionData.name   : "",
+                        regionName  = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
                         objectGraphicIconPath = iconData.path
 
                     }).OrderBy(x => x.Index).ToList();
@@ -88,14 +87,14 @@ public class InteractionDataManager
 
         foreach(Fixtures.Interaction interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
             if (searchParameters.sceneInteractableId.Count > 0 && !searchParameters.sceneInteractableId.Contains(interaction.sceneInteractableId)) continue;
 
             var interactionData = new InteractionData();
 
-            interactionData.id = interaction.id;
-            interactionData.index = interaction.index;
+            interactionData.Id = interaction.Id;
+            interactionData.Index = interaction.Index;
 
             interactionData.objectiveId = interaction.objectiveId;
             interactionData.sceneInteractableId = interaction.sceneInteractableId;
@@ -119,6 +118,7 @@ public class InteractionDataManager
 
             interactionDataList.Add(interactionData);
         }
+
     }
 
     internal void GetSceneInteractableData()

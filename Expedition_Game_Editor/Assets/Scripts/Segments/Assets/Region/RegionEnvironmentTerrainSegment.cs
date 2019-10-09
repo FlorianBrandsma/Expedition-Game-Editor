@@ -5,48 +5,39 @@ using System.Linq;
 
 public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement regionDataElement;
+    private RegionDataElement RegionDataElement { get { return (RegionDataElement)DataEditor.Data.dataElement; } }
 
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.TileSetData> tileSetList;
 
+    #region UI
     public Dropdown tileSetDropdown;
+    #endregion
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
+    
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
     {
-        InitializeData();
         InitializeDropdown();
     }
 
-    public void InitializeData()
-    {
-        regionDataElement = (RegionDataElement)DataEditor.Data.dataElement;
-    }
+    public void InitializeData() { }
 
     private void SetSearchParameters() { }
 
     public void OpenSegment()
     {
-        SetDropdown(regionDataElement.TileSetId);
+        SetDropdown(RegionDataElement.TileSetId);
     }
 
     private void InitializeDropdown()
@@ -59,17 +50,17 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         foreach (DataManager.TileSetData tileSetData in tileSetList)
             tileSetDropdown.options.Add(new Dropdown.OptionData(tileSetData.name));
 
-        int selectedIndex = tileSetList.FindIndex(x => x.id == regionDataElement.TileSetId);
+        int selectedIndex = tileSetList.FindIndex(x => x.Id == RegionDataElement.TileSetId);
 
         tileSetDropdown.value = selectedIndex;
         tileSetDropdown.captionText.text = tileSetDropdown.options[selectedIndex].text;
 
-        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].id); });
+        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].Id); });
     }
 
     public void SetDropdown(int tileSetId)
     {
-        regionDataElement.TileSetId = tileSetList[tileSetDropdown.value].id;
+        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].Id;
 
         DataEditor.UpdateEditor();
 
@@ -81,7 +72,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         var searchParameters = new Search.Tile();
 
         searchParameters.requestType = Search.Tile.RequestType.Custom;
-        searchParameters.tileSetId = new List<int>() { regionDataElement.TileSetId };
+        searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
@@ -93,6 +84,8 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

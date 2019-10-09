@@ -68,8 +68,6 @@ public class SceneObjectCore : GeneralData
 
     #region Properties
 
-    public int Id { get { return id; } }
-
     public int ObjectGraphicId
     {
         get { return objectGraphicId; }
@@ -237,9 +235,7 @@ public class SceneObjectCore : GeneralData
 
     public virtual void Update()
     {
-        if (!Changed) return;
-
-        var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.id == id).FirstOrDefault();
+        var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedRegionId)
             sceneObjectData.regionId = regionId;
@@ -277,7 +273,7 @@ public class SceneObjectCore : GeneralData
 
     public void UpdateSearch()
     {
-        var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.id == id).FirstOrDefault();
+        var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedObjectGraphicId)
             sceneObjectData.objectGraphicId = objectGraphicId;
@@ -288,6 +284,8 @@ public class SceneObjectCore : GeneralData
 
         GetOriginalValues();
     }
+
+    public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()
     {
@@ -351,10 +349,7 @@ public class SceneObjectCore : GeneralData
         changedAnimation = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

@@ -8,7 +8,7 @@ public class QuestDataManager
     private QuestController questController;
     private List<QuestData> questDataList;
 
-    public void InitializeManager(QuestController questController)
+    public QuestDataManager(QuestController questController)
     {
         this.questController = questController;
     }
@@ -24,8 +24,8 @@ public class QuestDataManager
                     {
                         dataType = Enums.DataType.Quest,
 
-                        id = questData.id,
-                        index = questData.index,
+                        Id = questData.Id,
+                        Index = questData.Index,
 
                         PhaseId = questData.phaseId,
                         Name = questData.name,
@@ -44,13 +44,13 @@ public class QuestDataManager
 
         foreach(Fixtures.Quest quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.Id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
 
             var questData = new QuestData();
 
-            questData.id = quest.id;
-            questData.index = quest.index;
+            questData.Id = quest.Id;
+            questData.Index = quest.Index;
 
             questData.phaseId = quest.phaseId;
             questData.name = quest.name;

@@ -9,6 +9,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
     public RectTransform iconParent;
     public RawImage icon;
     public RectTransform content;
+    public Image background;
 
     private string header;
     private string description;
@@ -18,6 +19,11 @@ public class EditorPanelTile : MonoBehaviour, IElement
 
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
     private SelectionElement ElementChild { get { return Element.child; } }
+
+    public Color ElementColor
+    {
+        set { background.color = value; }
+    }
 
     private Texture IconTexture
     {
@@ -80,7 +86,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         var data = Element.data;
         SceneInteractableDataElement dataElement = (SceneInteractableDataElement)data.dataElement;
 
-        idText.text = dataElement.id.ToString();
+        idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.interactableName;
 
         if (properties.icon)
@@ -92,7 +98,7 @@ public class EditorPanelTile : MonoBehaviour, IElement
         var data = Element.data;
         SceneObjectDataElement dataElement = (SceneObjectDataElement)data.dataElement;
 
-        idText.text = dataElement.id.ToString();
+        idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.objectGraphicName;
 
         if (properties.icon)

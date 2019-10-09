@@ -7,7 +7,7 @@ public class SceneController : MonoBehaviour, IDataController
 {
     public Search.Region searchParameters;
 
-    private SceneDataManager sceneDataManager   = new SceneDataManager();
+    private SceneDataManager sceneDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class SceneController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Region>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public SceneController()
     {
-        sceneDataManager.InitializeManager(this);
+        sceneDataManager = new SceneDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -51,7 +51,7 @@ public class SceneController : MonoBehaviour, IDataController
 
                 var resultElementData = (InteractableDataElement)resultData;
 
-                sceneInteractableData.objectGraphicId = resultElementData.id;
+                sceneInteractableData.objectGraphicId = resultElementData.Id;
                 sceneInteractableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
                 sceneInteractableData.objectGraphicPath = resultElementData.objectGraphicPath;
 
@@ -69,7 +69,7 @@ public class SceneController : MonoBehaviour, IDataController
                 
                 var resultElementData = (ObjectGraphicDataElement)resultData;
 
-                sceneObjectData.ObjectGraphicId = resultElementData.id;
+                sceneObjectData.ObjectGraphicId = resultElementData.Id;
                 sceneObjectData.objectGraphicName = resultElementData.Name;
                 sceneObjectData.objectGraphicIconPath = resultElementData.iconPath;
                 sceneObjectData.objectGraphicPath = resultElementData.Path;

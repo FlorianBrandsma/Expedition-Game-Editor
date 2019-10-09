@@ -12,7 +12,6 @@ public class ChapterCore : GeneralData
     public string originalName;
     public string originalNotes;
 
-    private bool changedIndex;
     private bool changedInteractableId;
     private bool changedName;
     private bool changedNotes;
@@ -26,21 +25,6 @@ public class ChapterCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int InteractableId
     {
@@ -85,14 +69,11 @@ public class ChapterCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-        
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
+        var chapterData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedInteractableId)
             chapterData.interactableId = interactableId;
@@ -108,14 +89,13 @@ public class ChapterCore : GeneralData
 
     public void UpdateIndex()
     {
-        var chapterData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
+        
+        var chapterData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
 
-        if (changedIndex)
-        {
-            chapterData.index = index;
+        chapterData.Index = Index;
 
-            changedIndex = false;
-        }
+        changedIndex = false;
     }
 
     public virtual void SetOriginalValues()
@@ -136,16 +116,12 @@ public class ChapterCore : GeneralData
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedInteractableId = false;
         changedName = false;
         changedNotes = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

@@ -4,12 +4,22 @@ using System.Linq;
 
 public class InteractableEditor : MonoBehaviour, IEditor
 {
-    private InteractableDataElement interactableData;
+    public InteractableDataElement InteractableData { get { return (InteractableDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(InteractableData); }
+    }
 
     public List<IDataElement> DataElements
     {
@@ -17,47 +27,18 @@ public class InteractableEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            list.Add(interactableData);
+            DataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-        
-        Data = PathController.route.data;
-
-        interactableData = (InteractableDataElement)Data.dataElement;
-
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void UpdateIndex(int index)
-    {
-        var list = Data.dataController.DataList.Cast<InteractableDataElement>().ToList();
-
-        list.RemoveAt(interactableData.Index);
-        list.Insert(index, interactableData);
-
-        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            list[i].Index = i;
-            list[i].UpdateIndex();
-        }
-
-        SelectionElementManager.UpdateElements(interactableData, true);
-    }
-
-    public void OpenEditor()
     {
         SetEditor();
     }
@@ -74,20 +55,21 @@ public class InteractableEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.ForEach(x => x.Update());
-
-        SelectionElementManager.UpdateElements(interactableData);
+        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        {
+            x.Update();
+            x.SelectionElement.UpdateElement();
+        });
 
         UpdateEditor();
     }
 
     public void CancelEdit()
     {
+        DataElements.ForEach(x => x.ClearChanges());
 
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-
-    }
+    public void CloseEditor() { }
 }

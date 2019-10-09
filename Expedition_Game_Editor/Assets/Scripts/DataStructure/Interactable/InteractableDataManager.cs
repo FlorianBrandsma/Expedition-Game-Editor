@@ -14,9 +14,9 @@ public class InteractableDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(InteractableController elementController)
+    public InteractableDataManager(InteractableController interactableController)
     {
-        this.interactableController = elementController;
+        this.interactableController = interactableController;
     }
 
     public List<IDataElement> GetInteractableDataElements(IEnumerable searchParameters)
@@ -34,14 +34,14 @@ public class InteractableDataManager
         GetIconData();
 
         var list = (from interactableData in interactableDataList
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new InteractableDataElement()
                     {
                         dataType = Enums.DataType.Interactable,
 
-                        id      = interactableData.id,
-                        index   = interactableData.index,
+                        Id      = interactableData.Id,
+                        Index   = interactableData.Index,
 
                         ObjectGraphicId = interactableData.objectGraphicId,
                         Name    = interactableData.name,
@@ -62,12 +62,12 @@ public class InteractableDataManager
         
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
 
             var interactableData = new InteractableData();
 
-            interactableData.id = interactable.id;
-            interactableData.index = interactable.index;
+            interactableData.Id = interactable.Id;
+            interactableData.Index = interactable.Index;
 
             interactableData.objectGraphicId = interactable.objectGraphicId;
             interactableData.name = interactable.name;

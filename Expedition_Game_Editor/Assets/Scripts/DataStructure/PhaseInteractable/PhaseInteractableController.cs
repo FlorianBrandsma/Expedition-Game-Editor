@@ -7,7 +7,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
 {
     public Search.PhaseInteractable searchParameters;
 
-    private PhaseInteractableDataManager phaseInteractableDataManager = new PhaseInteractableDataManager();
+    private PhaseInteractableDataManager phaseInteractableDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.PhaseInteractable>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public PhaseInteractableController()
     {
-        phaseInteractableDataManager.InitializeManager(this);
+        phaseInteractableDataManager = new PhaseInteractableDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -50,7 +50,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
 
             case Enums.ElementStatus.Disabled:
 
-                phaseInteractablesData.QuestId = questData.id;
+                phaseInteractablesData.QuestId = questData.Id;
                 phaseInteractablesData.elementStatus = Enums.ElementStatus.Enabled;
 
                 break;
@@ -58,6 +58,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
 
         SegmentController.Segment.DataEditor.UpdateEditor();
 
-        dataElement.SelectionElement.SetOverlay(phaseInteractablesData.elementStatus); 
+        dataElement.SelectionElement.elementStatus = phaseInteractablesData.elementStatus;
+        dataElement.SelectionElement.SetOverlay(); 
     }
 }

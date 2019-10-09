@@ -7,7 +7,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
 {
     public Search.Interactable searchParameters;
 
-    public PartyMemberDataManager partyMemberDataManager = new PartyMemberDataManager();
+    public PartyMemberDataManager partyMemberDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class PartyMemberController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Interactable>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public PartyMemberController()
     {
-        partyMemberDataManager.InitializeManager(this);
+        partyMemberDataManager = new PartyMemberDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -42,7 +42,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
 
                 var resultElementData = (InteractableDataElement)resultData;
 
-                partyMemberData.InteractableId = resultElementData.id;
+                partyMemberData.InteractableId = resultElementData.Id;
                 partyMemberData.interactableName = resultElementData.Name;
                 partyMemberData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
 

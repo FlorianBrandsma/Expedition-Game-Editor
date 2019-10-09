@@ -6,12 +6,10 @@ public class TerrainSegment : MonoBehaviour, ISegment
     private RegionDataElement regionData;
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
 
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    public IEditor DataEditor { get; set; }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -20,13 +18,13 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
         regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
 
         var searchParameters = new Search.Terrain();
 
-        searchParameters.regionId = new List<int>() { regionData.id };
+        searchParameters.regionId = new List<int>() { regionData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
@@ -37,7 +35,6 @@ public class TerrainSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void ApplySegment() { }
     public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }

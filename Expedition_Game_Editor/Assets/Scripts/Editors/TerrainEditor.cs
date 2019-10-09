@@ -4,12 +4,22 @@ using System.Linq;
 
 public class TerrainEditor : MonoBehaviour, IEditor
 {
-    private TerrainDataElement terrainData;
+    private TerrainDataElement TerrainData { get { return (TerrainDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(TerrainData); }
+    }
 
     public List<IDataElement> DataElements
     {
@@ -17,31 +27,18 @@ public class TerrainEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            list.Add(terrainData);
+            DataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-
-        Data = PathController.route.data;
-
-        terrainData = (TerrainDataElement)Data.dataElement;
-
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void UpdateIndex(int index) { }
-
-    public void OpenEditor()
     {
         SetEditor();
     }
@@ -58,20 +55,21 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.ForEach(x => x.Update());
-
-        SelectionElementManager.UpdateElements(terrainData);
+        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        {
+            x.Update();
+            x.SelectionElement.UpdateElement();
+        });
 
         UpdateEditor();
     }
 
     public void CancelEdit()
     {
+        DataElements.ForEach(x => x.ClearChanges());
 
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-
-    }
+    public void CloseEditor() { }
 }

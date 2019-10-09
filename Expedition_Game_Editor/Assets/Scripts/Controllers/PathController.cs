@@ -10,10 +10,6 @@ public class PathController : MonoBehaviour
     public int step         { get; set; }
     public int layoutStep   { get; set; }
 
-    public bool loaded      { get; set; }
-
-    public bool autoExtend;
-
     public HistoryElement   history;
 
     public EditorSection    editorSection;
@@ -21,7 +17,12 @@ public class PathController : MonoBehaviour
     private EditorController EditorController   { get { return GetComponent<EditorController>(); } }
 
     public IDataController  dataController      { get; set; }
-    public IEditor          dataEditor          { get; set; }
+
+    public IEditor DataEditor
+    {
+        get { return editorSection.dataEditor; }
+        set { editorSection.dataEditor = value; }
+    }
 
     public SubControllerManager subControllerManager;
     public PathController[] controllers;
@@ -43,7 +44,7 @@ public class PathController : MonoBehaviour
     }
 
     //Necessary steps to set up the correct path for the controller
-    public void InitializePath(Path mainPath, int step, bool reload, PathController parentController = null)
+    public void OpenPath(Path mainPath, int step, PathController parentController = null)
     {
         //This is an exception to ensure shared controllers have the correct values
         //One way to circumvent this is to simply get rid of shared controllers
@@ -62,19 +63,6 @@ public class PathController : MonoBehaviour
 
         route.path = path;
 
-        if (step > 0)
-        {
-            //Don't check this if force is true. Must load!
-            if (!reload)
-                loaded = IsLoaded();
-
-            //If this hasn't loaded, force load the next one
-            if (!loaded || reload)
-            {
-                reload = true;
-            }
-        }
-
         previousRoute = route;
         GetDataController();
         GetDataEditor();
@@ -90,22 +78,12 @@ public class PathController : MonoBehaviour
         InitializeComponents(mainPath);
         InitializeForm();
 
-        editorSection.targetPath = mainPath;
-
         if (EditorController != null)
-        {
             editorSection.targetController = EditorController;
-            editorSection.editorForm.mainController = EditorController;
 
-            EditorController.InitializeController();
-        }
-
-        if (dataEditor != null)
-            editorSection.dataEditor = dataEditor;
-        
         if (step < mainPath.route.Count)
         {
-            controllers[mainPath.route[step].controller].InitializePath(mainPath, step + 1, reload, this);
+            controllers[mainPath.route[step].controller].OpenPath(mainPath, step + 1, this);
         }
     }
 
@@ -124,10 +102,10 @@ public class PathController : MonoBehaviour
     {
         if (GetComponent<IEditor>() != null)
         {
-            dataEditor = GetComponent<IEditor>();
+            DataEditor = GetComponent<IEditor>();
         } else {
-            if (parentController != null && parentController.dataEditor != null)
-                dataEditor = parentController.dataEditor;
+            if (parentController != null && parentController.DataEditor != null)
+                DataEditor = parentController.DataEditor;
         }
     }
 
@@ -147,8 +125,20 @@ public class PathController : MonoBehaviour
         {
             controllers[path.route[step].controller].FinalizePath(path);
         } else {
+
+            SetPreviousEditor();
             SetHistory();
+
+            editorSection.targetController.FinalizeController();
         }
+    }
+
+    private void SetPreviousEditor()
+    {
+        if (editorSection.dataEditor == null) return;
+
+        editorSection.previousDataSource = editorSection.dataEditor.Data.dataElement;
+        editorSection.previousDataElements = editorSection.dataEditor.DataElements.ToList();
     }
 
     private void InitializeForm()
@@ -161,31 +151,6 @@ public class PathController : MonoBehaviour
     {
         foreach (FormComponent form in GetComponents<FormComponent>())
             form.SetForm();
-    }
-
-    public void ForceLoadPath(Path path)
-    {
-        loaded = true;
-        
-        if (step < path.route.Count)
-            controllers[path.route[step].controller].ForceLoadPath(path);    
-    }
-
-    public bool IsLoaded()
-    {
-        //If there is no previous controller then it definitely hasn't loaded yet
-        if (editorSection.previousTargetPath == null)
-            return false;
-
-        //If current step is longer than the previous route length, then it definitely hasn't been loaded yet
-        if (step > editorSection.previousTargetPath.route.Count)
-            return false;
-
-        if (previousRoute != null && !route.Equals(previousRoute))
-            return false;
-
-        //If false then everything afterwards must be false as well
-        return route.path.Equals(editorSection.previousTargetPath);
     }
 
     public bool GetComponents(Path path)
@@ -248,13 +213,8 @@ public class PathController : MonoBehaviour
         foreach (IComponent component in GetComponents<IComponent>())
             component.CloseComponent();
 
-        if (GetComponent<IEditor>() != null)
-            GetComponent<IEditor>().CloseEditor();
-
         if (step < path.route.Count)
             controllers[path.route[step].controller].ClosePath(path);
-
-        loaded = false;
     }
 
     public void CloseTabs(Path path)

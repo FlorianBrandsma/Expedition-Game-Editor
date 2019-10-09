@@ -8,7 +8,7 @@ public class PhaseDataManager
     private PhaseController phaseController;
     private List<PhaseData> phaseDataList;
 
-    public void InitializeManager(PhaseController phaseController)
+    public PhaseDataManager(PhaseController phaseController)
     {
         this.phaseController = phaseController;
     }
@@ -29,8 +29,8 @@ public class PhaseDataManager
                     {
                         dataType = Enums.DataType.Phase,
 
-                        id = phaseData.id,
-                        index = phaseData.index,
+                        Id = phaseData.Id,
+                        Index = phaseData.Index,
                         
                         Name = phaseData.name,
                         Notes = phaseData.notes
@@ -48,13 +48,13 @@ public class PhaseDataManager
 
         foreach(Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phase.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phase.Id)) continue;
             if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
 
             var phaseData = new PhaseData();
 
-            phaseData.id = phase.id;
-            phaseData.index = phase.index;
+            phaseData.Id = phase.Id;
+            phaseData.Index = phase.Index;
 
             phaseData.chapterId = phase.chapterId;
             phaseData.name = phase.name;

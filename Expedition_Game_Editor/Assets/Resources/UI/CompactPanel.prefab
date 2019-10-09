@@ -327,7 +327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -366,7 +366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -399,7 +399,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
-  background: {fileID: 0}
   disableSpawn: 1
   parent: {fileID: 114000012218608376}
   child: {fileID: 0}
@@ -426,7 +425,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 0.86274517, g: 0.86274517, b: 0.76470596, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
-  background: {fileID: 114000013446646226}
   disableSpawn: 0
   parent: {fileID: 0}
   child: {fileID: 114000011030441874}
@@ -691,6 +689,7 @@ MonoBehaviour:
   iconParent: {fileID: 224000013606383780}
   icon: {fileID: 114000010748202120}
   content: {fileID: 224000011588913382}
+  background: {fileID: 114000013446646226}
 --- !u!222 &222000010132172424
 CanvasRenderer:
   m_ObjectHideFlags: 1

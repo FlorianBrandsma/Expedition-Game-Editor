@@ -25,8 +25,6 @@ public class ObjectGraphicCore : GeneralData
 
     #region Properties
 
-    public int Id { get { return id; } }
-
     public string Name
     {
         get { return name; }
@@ -70,14 +68,13 @@ public class ObjectGraphicCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update() { }
 
     public void UpdateSearch() { }
+
+    public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()
     {
@@ -102,10 +99,7 @@ public class ObjectGraphicCore : GeneralData
         changedIconId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

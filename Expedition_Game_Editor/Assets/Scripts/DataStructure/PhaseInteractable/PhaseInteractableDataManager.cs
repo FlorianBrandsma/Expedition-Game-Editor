@@ -15,7 +15,7 @@ public class PhaseInteractableDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(PhaseInteractableController phaseInteractableController)
+    public PhaseInteractableDataManager(PhaseInteractableController phaseInteractableController)
     {
         this.phaseInteractableController = phaseInteractableController;
     }
@@ -32,16 +32,16 @@ public class PhaseInteractableDataManager
         GetIconData();
 
         var list = (from phaseInteractableData  in phaseInteractableDataList
-                    join sceneInteractableData  in sceneInteractableDataList    on phaseInteractableData.sceneInteractableId    equals sceneInteractableData.id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId         equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.id
+                    join sceneInteractableData  in sceneInteractableDataList    on phaseInteractableData.sceneInteractableId    equals sceneInteractableData.Id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId         equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.Id
                     select new PhaseInteractableDataElement()
                     {
                         dataType = Enums.DataType.PhaseInteractable,
 
-                        id = phaseInteractableData.id,
-                        index = phaseInteractableData.index,
+                        Id = phaseInteractableData.Id,
+                        Index = phaseInteractableData.Index,
 
                         PhaseId = phaseInteractableData.phaseId,
                         QuestId = phaseInteractableData.questId,
@@ -64,13 +64,13 @@ public class PhaseInteractableDataManager
 
         foreach(Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phaseInteractable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(phaseInteractable.Id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId)) continue;
 
             var phaseInteractableData = new PhaseInteractableData();
 
-            phaseInteractableData.id = phaseInteractable.id;
-            phaseInteractableData.index = phaseInteractable.index;
+            phaseInteractableData.Id = phaseInteractable.Id;
+            phaseInteractableData.Index = phaseInteractable.Index;
 
             phaseInteractableData.phaseId = phaseInteractable.phaseId;
             phaseInteractableData.questId = phaseInteractable.questId;
@@ -116,7 +116,7 @@ public class PhaseInteractableDataManager
     {
         var questData = (QuestDataElement)phaseInteractableController.SegmentController.editorController.PathController.route.data.dataElement;
 
-        if (phaseData.questId == questData.id)
+        if (phaseData.questId == questData.Id)
             return Enums.ElementStatus.Enabled;
         else if (phaseData.questId == 0)
             return Enums.ElementStatus.Disabled;

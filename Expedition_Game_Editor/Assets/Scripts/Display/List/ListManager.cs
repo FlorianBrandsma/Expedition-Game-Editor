@@ -99,7 +99,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         listMin = RectTransform.TransformPoint(new Vector2(RectTransform.rect.min.x, RectTransform.rect.min.y));
         listMax = RectTransform.TransformPoint(new Vector2(RectTransform.rect.max.x, RectTransform.rect.max.y));
 
-        if (EditorManager.historyManager.returned || !Display.DataController.SegmentController.editorController.PathController.loaded)
+        if (EditorManager.historyManager.returned || !Display.DataController.SegmentController.Loaded)
             ResetListPosition();
     }
 
@@ -195,8 +195,5 @@ public class ListManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(false);
     }
 
-    public void CloseOrganizer()
-    {
-        
-    }
+    public void CloseOrganizer() { }
 }

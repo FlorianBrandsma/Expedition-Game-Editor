@@ -6,10 +6,8 @@ public class ChapterRegionCore : GeneralData
     private int chapterId;
     private int regionId;
 
-    public int originalIndex;
     public int originalRegionId;
 
-    private bool changedIndex;
     private bool changedRegionId;
 
     public bool Changed
@@ -21,21 +19,6 @@ public class ChapterRegionCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int ChapterId
     {
@@ -60,42 +43,32 @@ public class ChapterRegionCore : GeneralData
 
     #region Methods
 
-    public void Create()
+    public void Create() { }
+
+    public virtual void Update()
     {
-
-    }
-
-    public void Update()
-    {
-        if (!Changed) return;
-
-        var regionData = Fixtures.chapterRegionList.Where(x => x.id == id).FirstOrDefault();
+        var regionData = Fixtures.chapterRegionList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedRegionId)
             regionData.regionId = regionId;
-
-        SetOriginalValues();
     }
 
     public void UpdateSearch() { }
 
     public void UpdateIndex()
     {
-        var regionData = Fixtures.chapterList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            regionData.index = index;
+        var regionData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
 
-            changedIndex = false;
-        }
+        regionData.Index = Index;
+
+        changedIndex = false; 
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalRegionId = regionId;
-
-        ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -103,18 +76,14 @@ public class ChapterRegionCore : GeneralData
         regionId = originalRegionId;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedRegionId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

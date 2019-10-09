@@ -1,32 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Linq;
 
 public class InteractionHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    private InteractionDataElement InteractionData { get { return (InteractionDataElement)DataEditor.Data.dataElement; } }
 
-    private InteractionDataElement interactionData;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
     #region UI
-
     public IndexSwitch indexSwitch;
     public SelectionElement selectionElement;
     public InputField inputField;
     public Text idText;
-
     #endregion
 
     #region Data Variables
-
     private int id;
     private int index;
     private string description;
     private string objectGraphicIcon;
-
     #endregion
 
     #region Data Properties
@@ -37,7 +31,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         {
             description = value;
 
-            interactionData.Description = value;
+            InteractionData.Description = value;
         }
     }
     #endregion
@@ -51,28 +45,29 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
-
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
     {
         InitializeData();
-
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }
 
     public void InitializeData()
     {
-        interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        if (DataEditor.Loaded) return;
 
-        id = interactionData.id;
-        index = interactionData.Index;
-        description = interactionData.Description;
-        objectGraphicIcon = interactionData.objectGraphicIconPath;
+        id = InteractionData.Id;
+        index = InteractionData.Index;
+        description = InteractionData.Description;
+        objectGraphicIcon = InteractionData.objectGraphicIconPath;
+
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }
 
     public void OpenSegment()
@@ -89,11 +84,6 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void ApplySegment()
-    {
-
-    }
-
     public void CloseSegment()
     {
         if (indexSwitch != null)
@@ -102,9 +92,6 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
     #endregion
 }

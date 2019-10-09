@@ -17,13 +17,18 @@ public class SceneDataManager
     private List<DataManager.TileSetData> tileSetDataList;
     private List<DataManager.TerrainData> terrainDataList;
     private List<DataManager.TerrainTileData> terrainTileDataList;
-    private List<DataManager.InteractionData> interactionDataList;
     private List<DataManager.SceneObjectData> sceneObjectDataList;
+    private List<DataManager.InteractionData> interactionDataList;
+    
     private List<DataManager.SceneInteractableData> sceneInteractableDataList;
+    private List<DataManager.PhaseInteractableData> phaseInteractableDataList = new List<DataManager.PhaseInteractableData>();
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
 
-    public void InitializeManager(SceneController sceneController)
+    private List<DataManager.ObjectiveData> objectiveDataList;
+    private List<DataManager.QuestData> questDataList;
+    
+    public SceneDataManager(SceneController sceneController)
     {
         this.sceneController = sceneController;
     }
@@ -45,19 +50,24 @@ public class SceneDataManager
         GetInteractableData();
         GetObjectGraphicData();
 
+        GetObjectiveData();
+        GetQuestData();
+
+        GetPhaseInteractableData();
+
         basicSceneData = GetBasicSceneData();
 
         var sceneStartPosition = GetSceneStartPosition();
         
         var list = (
             from regionData in regionDataList
-            join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
+            join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
             select new SceneDataElement
             {
                 dataType = Enums.DataType.Scene,
 
-                id = regionData.id,
-                index = regionData.index,
+                Id = regionData.Id,
+                Index = regionData.Index,
 
                 regionSize = regionData.regionSize,
                 terrainSize = regionData.terrainSize,
@@ -73,34 +83,34 @@ public class SceneDataManager
                 {
                     dataType = Enums.DataType.Terrain,
 
-                    id = terrainData.id,
-                    index = terrainData.index,
+                    Id = terrainData.Id,
+                    Index = terrainData.Index,
 
                     terrainTileDataList = (
                     from terrainTileData in terrainTileDataList
-                    where terrainTileData.terrainId == terrainData.id
+                    where terrainTileData.terrainId == terrainData.Id
                     select new TerrainTileDataElement()
                     {
                         dataType = Enums.DataType.TerrainTile,
 
-                        id = terrainTileData.id,
-                        index = terrainTileData.index,
+                        Id = terrainTileData.Id,
+                        Index = terrainTileData.Index,
 
                         TileId = terrainTileData.tileId
 
-                    }).OrderBy(x => x.index).ToList(),
+                    }).OrderBy(x => x.Index).ToList(),
 
                     sceneInteractableDataList = regionType != Enums.RegionType.Interaction ? (
-                    from sceneInteractableData in sceneInteractableDataList
-                    join interactionData in interactionDataList on sceneInteractableData.id equals interactionData.sceneInteractableId
-                    join interactableData in interactableDataList on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    where interactionData.terrainId == terrainData.id
+                    from sceneInteractableData  in sceneInteractableDataList
+                    join interactionData        in interactionDataList      on sceneInteractableData.Id             equals interactionData.sceneInteractableId
+                    join interactableData       in interactableDataList     on sceneInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    where interactionData.terrainId == terrainData.Id
                     select new SceneInteractableDataElement()
                     {
                         dataType = Enums.DataType.SceneInteractable,
 
-                        id = sceneInteractableData.id,
+                        Id = sceneInteractableData.Id,
                         terrainTileId = interactionData.terrainTileId,
 
                         positionX = interactionData.positionX,
@@ -115,7 +125,7 @@ public class SceneDataManager
 
                         animation = interactionData.animation,
 
-                        objectGraphicId = objectGraphicData.id,
+                        objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
                         startPosition = sceneStartPosition
@@ -124,15 +134,22 @@ public class SceneDataManager
 
                     interactionDataList = regionType == Enums.RegionType.Interaction ? (
                     from interactionData        in interactionDataList
-                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.id
-                    where interactionData.terrainId == terrainData.id
+                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.Id
+                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
+
+                    join leftJoin in (from objectiveData in objectiveDataList
+                                      select new { objectiveData }) on sceneInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
+
+                    join leftJoin in (from phaseInteractableData in phaseInteractableDataList
+                                      select new { phaseInteractableData }) on sceneInteractableData.Id equals leftJoin.phaseInteractableData.sceneInteractableId into phaseInteractableData
+
+                    where interactionData.terrainId == terrainData.Id
                     select new InteractionDataElement()
                     {
                         dataType = Enums.DataType.Interaction,
 
-                        id = interactionData.id,
+                        Id = interactionData.Id,
                         SceneInteractableId = interactionData.sceneInteractableId,
                         TerrainTileId = interactionData.terrainTileId,
 
@@ -148,7 +165,11 @@ public class SceneDataManager
 
                         Animation = interactionData.animation,
 
-                        objectGraphicId = objectGraphicData.id,
+                        objectiveId =   objectiveData.FirstOrDefault()          != null ? objectiveData.FirstOrDefault().objectiveData.Id : 0,
+                        questId =       objectiveData.FirstOrDefault()          != null ? objectiveData.FirstOrDefault().objectiveData.questId :
+                                        phaseInteractableData.FirstOrDefault()  != null ? phaseInteractableData.FirstOrDefault().phaseInteractableData.questId : 0,
+
+                        objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
                         startPosition = sceneStartPosition
@@ -157,13 +178,13 @@ public class SceneDataManager
                     
                     sceneObjectDataList = (
                     from sceneObjectData    in sceneObjectDataList
-                    join objectGraphicData  in objectGraphicDataList on sceneObjectData.objectGraphicId equals objectGraphicData.id
-                    where sceneObjectData.terrainId == terrainData.id
+                    join objectGraphicData  in objectGraphicDataList on sceneObjectData.objectGraphicId equals objectGraphicData.Id
+                    where sceneObjectData.terrainId == terrainData.Id
                     select new SceneObjectDataElement()
                     {
                         dataType = Enums.DataType.SceneObject,
 
-                        id = sceneObjectData.id,
+                        Id = sceneObjectData.Id,
                         TerrainTileId = sceneObjectData.terrainTileId,
 
                         PositionX = sceneObjectData.positionX,
@@ -178,14 +199,14 @@ public class SceneDataManager
 
                         Animation = sceneObjectData.animation,
 
-                        ObjectGraphicId = objectGraphicData.id,
+                        ObjectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
                         startPosition = sceneStartPosition
 
                     }).ToList()
 
-                }).OrderBy(x => x.index).ToList()
+                }).OrderBy(x => x.Index).ToList()
 
             }).ToList();
 
@@ -197,7 +218,7 @@ public class SceneDataManager
     private SceneDataElement GetBasicSceneData()
     {
         var sceneData = (from regionData in regionDataList
-                         join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
+                         join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
                          select new SceneDataElement
                          {
                              regionSize = regionData.regionSize,
@@ -236,7 +257,7 @@ public class SceneDataManager
     internal void GetTerrainData()
     {
         var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
         terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
     }
@@ -244,7 +265,7 @@ public class SceneDataManager
     internal void GetTerrainTileData()
     {
         var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.id).Distinct().ToList();
+        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
 
         terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
     }
@@ -258,7 +279,7 @@ public class SceneDataManager
         interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
 
         if(regionType != Enums.RegionType.Interaction)
-            interactionDataList = interactionDataList.OrderBy(x => x.index).GroupBy(x => x.sceneInteractableId).Select(x => x.FirstOrDefault()).ToList();
+            interactionDataList = interactionDataList.OrderBy(x => x.Index).GroupBy(x => x.sceneInteractableId).Select(x => x.FirstOrDefault()).ToList();
     }
 
     internal void GetSceneObjectData(Search.Scene searchData)
@@ -289,9 +310,32 @@ public class SceneDataManager
     internal void GetObjectGraphicData()
     {
         var objectGraphicSearchParameters = new Search.ObjectGraphic();
-
         objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList().Union(sceneObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
 
         objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+    }
+
+    internal void GetObjectiveData()
+    {
+        var objectiveSearchParameters = new Search.Objective();
+        objectiveSearchParameters.id = sceneInteractableDataList.Select(x => x.objectiveId).Distinct().ToList();
+
+        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
+    }
+
+    internal void GetQuestData()
+    {
+        var questSearchParameters = new Search.Quest();
+        questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
+
+        questDataList = dataManager.GetQuestData(questSearchParameters);
+    }
+
+    internal void GetPhaseInteractableData()
+    {
+        var phaseInteractableSearchParameters = new Search.PhaseInteractable();
+        phaseInteractableSearchParameters.sceneInteractableId = sceneInteractableDataList.Select(x => x.Id).Distinct().ToList();
+
+        phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
     }
 }

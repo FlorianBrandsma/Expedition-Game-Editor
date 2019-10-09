@@ -7,7 +7,7 @@ public class QuestController : MonoBehaviour, IDataController
 {
     public Search.Quest searchParameters;
 
-    private QuestDataManager questDataManager   = new QuestDataManager();
+    private QuestDataManager questDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class QuestController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Quest>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public QuestController()
     {
-        questDataManager.InitializeManager(this);
+        questDataManager = new QuestDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

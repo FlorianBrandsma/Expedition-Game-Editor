@@ -6,21 +6,8 @@ public class ChapterSegment : MonoBehaviour, ISegment
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -29,10 +16,10 @@ public class ChapterSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
-        
+        if (SegmentController.Loaded) return;
+
         var searchParameters = new Search.Chapter();
-        
+
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
 
@@ -41,6 +28,8 @@ public class ChapterSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

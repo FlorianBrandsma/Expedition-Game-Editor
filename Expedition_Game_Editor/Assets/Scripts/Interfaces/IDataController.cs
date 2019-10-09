@@ -11,7 +11,6 @@ public interface IDataController
     Enums.DataCategory DataCategory { get; }
     IEnumerable SearchParameters    { get; set; }
 
-    void InitializeController();
     List<IDataElement> GetData(IEnumerable searchParameters);
     void SetData(SelectionElement searchElement, IDataElement resultDataElement);
     void ToggleElement(IDataElement dataElement);

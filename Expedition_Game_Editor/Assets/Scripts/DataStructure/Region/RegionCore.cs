@@ -10,7 +10,6 @@ public class RegionCore : GeneralData
     private int regionSize;
     private int terrainSize;
 
-    public int originalIndex;
     public int originalChapterRegionId;
     public int originalPhaseId;
     public int originalTileSetId;
@@ -18,7 +17,6 @@ public class RegionCore : GeneralData
     public int originalRegionSize;
     public int originalTerrainSize;
 
-    private bool changedIndex;
     private bool changedChapterRegionId;
     private bool changedPhaseId;
     public bool changedTileSetId;
@@ -35,21 +33,6 @@ public class RegionCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int ChapterRegionId
     {
@@ -133,14 +116,11 @@ public class RegionCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
+    public void Create() { }
 
-    }
-
-    public void Update()
+    public virtual void Update()
     {
-        var regionData = Fixtures.regionList.Where(x => x.id == id).FirstOrDefault();
+        var regionData = Fixtures.regionList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedTileSetId)
             regionData.tileSetId = tileSetId;
@@ -153,22 +133,19 @@ public class RegionCore : GeneralData
 
         if (changedTerrainSize)
             regionData.terrainSize = terrainSize;
-
-        SetOriginalValues();
     }
 
     public void UpdateSearch() { }
 
     public void UpdateIndex()
     {
-        if (changedIndex)
-        {
-            //Debug.Log("Update index " + index);
-            changedIndex = false;
-        }
+        if (!changedIndex) return;
+        
+        //Debug.Log("Update index " + index);
+        changedIndex = false;
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalChapterRegionId = chapterRegionId;
         originalPhaseId = phaseId;
@@ -176,8 +153,6 @@ public class RegionCore : GeneralData
         originalName = name;
         originalRegionSize = regionSize;
         originalTerrainSize = terrainSize;
-
-        ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -190,11 +165,10 @@ public class RegionCore : GeneralData
         terrainSize = originalTerrainSize;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedChapterRegionId = false;
         changedPhaseId = false;
         changedTileSetId = false;
@@ -203,10 +177,7 @@ public class RegionCore : GeneralData
         changedTerrainSize = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

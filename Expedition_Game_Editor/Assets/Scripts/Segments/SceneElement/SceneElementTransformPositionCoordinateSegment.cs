@@ -5,29 +5,21 @@ using System.Linq;
 
 public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
-    private SceneDataElement sceneDataElement;
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    private SegmentController SegmentController     { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                       { get; set; }
-
-    private InteractableController ElementController{ get { return (InteractableController)SegmentController.DataController; } }
+    public IEditor DataEditor { get; set; }
 
     #region UI
-
     public EditorInputNumber xInputField, yInputField, zInputField;
     public EditorToggle bindToTile;
-
     #endregion
 
     #region Data Variables
-
     private float positionX, positionY, positionZ;
     private int terrainTileId;
-
     #endregion
 
-    #region Data Properties
-
+    #region Properties
     public float PositionX
     {
         get { return positionX; }
@@ -39,15 +31,21 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.PositionX = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.PositionX = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.PositionX = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.PositionX = value;
+                    });
 
                     break;
 
@@ -67,15 +65,21 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.PositionY = value);
-                    
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.PositionY = value;
+                    });
+
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.PositionY = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.PositionY = value;
+                    });
 
                     break;
 
@@ -95,15 +99,21 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.PositionZ = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    { 
+                        interactionData.PositionZ = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.PositionZ = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.PositionZ = value;
+                    });
 
                     break;
 
@@ -113,6 +123,7 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     }
     #endregion
 
+    #region Methods
     public void UpdatePositionX()
     {
         PositionX = xInputField.Value;
@@ -138,31 +149,28 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     {
         //Debug.Log(bindToTile.Toggle.isOn);
     }
+    #endregion
 
-    static public int GetTile()
-    {
-        return 0;
-    }
-
-    public void ApplySegment() { }
-    
-    public void InitializeSegment()
-    {
-        InitializeDependencies();
-
-        InitializeData();
-    }
-
+    #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
+    }
+
+    public void InitializeSegment()
+    {
+        InitializeData();
     }
 
     public void InitializeData()
     {
-        var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
-        sceneDataElement = regionData.sceneDataElement;
+        InitializeDependencies();
         
+        if (DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
@@ -207,10 +215,8 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         gameObject.SetActive(true);
     }
 
-    public void CloseSegment()
-    {
-        DataEditor.DataElements.ForEach(x => x.ClearChanges());
-    }
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
+    #endregion
 }

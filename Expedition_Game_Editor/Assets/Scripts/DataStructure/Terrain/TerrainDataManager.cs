@@ -12,7 +12,7 @@ public class TerrainDataManager
 
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(TerrainController terrainController)
+    public TerrainDataManager(TerrainController terrainController)
     {
         this.terrainController = terrainController;
     }
@@ -25,14 +25,14 @@ public class TerrainDataManager
         GetIconData();
 
         var list = (from terrainData in terrainDataList
-                    join iconData in iconDataList on terrainData.iconId equals iconData.id
+                    join iconData in iconDataList on terrainData.iconId equals iconData.Id
 
                     select new TerrainDataElement()
                     {
                         dataType = Enums.DataType.Terrain,
 
-                        id = terrainData.id,
-                        index = terrainData.index,
+                        Id = terrainData.Id,
+                        Index = terrainData.Index,
 
                         RegionId = terrainData.regionId,
                         IconId = terrainData.iconId,
@@ -56,20 +56,20 @@ public class TerrainDataManager
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
-            var region = Fixtures.regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+            var region = Fixtures.regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
 
-            var tileList = Fixtures.terrainTileList.Where(x => x.terrainId == terrain.id).Distinct().ToList();
+            var tileList = Fixtures.terrainTileList.Where(x => x.terrainId == terrain.Id).Distinct().ToList();
             var mostCommonTileId = tileList.GroupBy(x => x.tileId).OrderByDescending(x => x.Count()).Select(x => x.Key).FirstOrDefault();
 
-            var baseTile = Fixtures.tileList.Where(x => x.id == mostCommonTileId).Distinct().FirstOrDefault();
+            var baseTile = Fixtures.tileList.Where(x => x.Id == mostCommonTileId).Distinct().FirstOrDefault();
 
             var terrainData = new TerrainData();
 
-            terrainData.id = terrain.id;
-            terrainData.index = terrain.index;
+            terrainData.Id = terrain.Id;
+            terrainData.Index = terrain.Index;
 
             terrainData.regionId = terrain.regionId;
             terrainData.iconId = terrain.iconId;

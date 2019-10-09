@@ -53,7 +53,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000014080708896}
-  - 95: {fileID: 95000013471737020}
   m_Layer: 10
   m_Name: Rocks
   m_TagString: Untagged
@@ -338,23 +337,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011304019558}
   m_Mesh: {fileID: 4300004, guid: 952cf2d8366e2124399e818e149f376e, type: 3}
---- !u!95 &95000013471737020
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011662793220}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 952cf2d8366e2124399e818e149f376e, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000012471215262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -366,6 +348,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 1000011662793220}
+  mesh:
+  - {fileID: 1000012353372696}
+  - {fileID: 1000010475606282}
+  - {fileID: 1000011304019558}
+  - {fileID: 1000012141023474}
   pivot: 3
   previewRotation: {x: 60, y: 0, z: 0}
   previewScale: {x: 40, y: 40, z: 40}

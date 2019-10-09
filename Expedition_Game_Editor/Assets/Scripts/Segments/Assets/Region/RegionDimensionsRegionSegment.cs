@@ -1,47 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement regionDataElement;
+    private RegionDataElement RegionDataElement { get { return (RegionDataElement)DataEditor.Data.dataElement; } }
 
     #region UI
-
     public EditorInputNumber sizeInputNumber;
     public Text heightText;
-
     #endregion
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                   { get; set; }
+
+    public IEditor DataEditor { get; set; }
 
     public void UpdateSize()
     {
-        regionDataElement.RegionSize = (int)sizeInputNumber.Value;
-
-        heightText.text = regionDataElement.RegionSize.ToString();
+        var regionDataList = DataEditor.DataList.Cast<RegionDataElement>().ToList();
+        regionDataList.ForEach(regionData =>
+        {
+            regionData.RegionSize = (int)sizeInputNumber.Value;
+            heightText.text = regionData.RegionSize.ToString();
+        });
 
         DataEditor.UpdateEditor();
     }
-
-    public void ApplySegment() { }
-
-    public void CloseSegment() { }
-
+    
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
-    public void InitializeData()
-    {
-        regionDataElement = (RegionDataElement)DataEditor.Data.dataElement;
-    }
+    public void InitializeData() { }
 
     private void SetSearchParameters() { }
 
@@ -49,10 +44,11 @@ public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
     {
         SegmentController.EnableSegment(false);
 
-        sizeInputNumber.Value = regionDataElement.RegionSize;
-
-        heightText.text = regionDataElement.RegionSize.ToString();
+        sizeInputNumber.Value = RegionDataElement.RegionSize;
+        heightText.text = RegionDataElement.RegionSize.ToString();
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

@@ -13,7 +13,7 @@ public class ChapterDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.InteractableData> interactableDataList;
 
-    public void InitializeManager(ChapterController chapterController)
+    public ChapterDataManager(ChapterController chapterController)
     {
         this.chapterController = chapterController;
     }
@@ -28,14 +28,14 @@ public class ChapterDataManager
         GetObjectGraphicData();
 
         var list = (from chapterData in chapterDataList
-                    join interactableData in interactableDataList on chapterData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
+                    join interactableData in interactableDataList on chapterData.interactableId equals interactableData.Id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
                     select new ChapterDataElement()
                     {
                         dataType = Enums.DataType.Chapter,
 
-                        id = chapterData.id,
-                        index = chapterData.index,
+                        Id = chapterData.Id,
+                        Index = chapterData.Index,
                         
                         InteractableId = chapterData.interactableId,
                         Name = chapterData.name,
@@ -54,12 +54,12 @@ public class ChapterDataManager
 
         foreach(Fixtures.Chapter chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.id)) return;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) return;
 
             var chapterData = new ChapterData();
             
-            chapterData.id = chapter.id;
-            chapterData.index = chapter.index;
+            chapterData.Id = chapter.Id;
+            chapterData.Index = chapter.Index;
 
             chapterData.interactableId = chapter.interactableId;
             chapterData.name = chapter.name;

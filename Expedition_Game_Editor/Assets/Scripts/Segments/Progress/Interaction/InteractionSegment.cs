@@ -1,26 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class InteractionSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -29,7 +16,7 @@ public class InteractionSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
         var searchParameters = new Search.Interaction();
 
@@ -37,11 +24,11 @@ public class InteractionSegment : MonoBehaviour, ISegment
         if(SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
         {
             var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.dataElement;
-            searchParameters.objectiveId = new List<int>() { objectiveData.id };
+            searchParameters.objectiveId = new List<int>() { objectiveData.Id };
         }
 
         var sceneInteractableData = (SceneInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.SceneInteractable).data.dataElement;
-        searchParameters.sceneInteractableId = new List<int>() { sceneInteractableData.id };
+        searchParameters.sceneInteractableId = new List<int>() { sceneInteractableData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
@@ -51,6 +38,8 @@ public class InteractionSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

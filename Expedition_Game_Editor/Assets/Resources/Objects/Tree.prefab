@@ -89,7 +89,6 @@ GameObject:
   - 4: {fileID: 4000014243204370}
   - 33: {fileID: 33000010037121538}
   - 23: {fileID: 23000012513555158}
-  - 95: {fileID: 95000013321016226}
   m_Layer: 10
   m_Name: Tree
   m_TagString: Untagged
@@ -711,23 +710,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010278465056}
   m_Mesh: {fileID: 4300014, guid: b4f4a23c9b52c214b873c2278981d5f8, type: 3}
---- !u!95 &95000013321016226
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011876916316}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b4f4a23c9b52c214b873c2278981d5f8, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000013228671164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -739,6 +721,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 1000011876916316}
+  mesh:
+  - {fileID: 1000011876916316}
+  - {fileID: 1000013183351152}
+  - {fileID: 1000011899661754}
+  - {fileID: 1000010598935594}
+  - {fileID: 1000013781572840}
+  - {fileID: 1000012961577236}
+  - {fileID: 1000010278465056}
+  - {fileID: 1000011422228668}
+  - {fileID: 1000013558385648}
+  - {fileID: 1000010038728138}
   pivot: 3
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 50, y: 50, z: 50}

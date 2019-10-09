@@ -22,8 +22,6 @@ public class PartyMemberCore : GeneralData
 
     #region Properties
 
-    public int Id { get { return id; } }
-
     public int ChapterId
     {
         get { return chapterId; }
@@ -54,14 +52,11 @@ public class PartyMemberCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var partyElementData = Fixtures.partyMemberList.Where(x => x.id == id).FirstOrDefault();
+        var partyElementData = Fixtures.partyMemberList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedInteractableId)
             partyElementData.interactableId = interactableId;
@@ -91,10 +86,7 @@ public class PartyMemberCore : GeneralData
         changedInteractableId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

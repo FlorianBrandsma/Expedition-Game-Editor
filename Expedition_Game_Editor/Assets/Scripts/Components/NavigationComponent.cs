@@ -40,7 +40,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
             default: Debug.Log("CASE MISSING: " + data.dataController.DataType); break;
         }
 
-        int selectedIndex = data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.id == PathController.route.GeneralData.id);
+        int selectedIndex = data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == PathController.route.GeneralData.Id);
 
         dropdown.value = selectedIndex;
         dropdown.captionText.text = dropdown.options[selectedIndex].text;

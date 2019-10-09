@@ -8,7 +8,7 @@ public class SegmentPlaceholder : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
     }
 
     public void InitializeSegment()

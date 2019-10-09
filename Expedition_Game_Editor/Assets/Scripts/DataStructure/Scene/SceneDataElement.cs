@@ -36,13 +36,13 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public SelectionElement SelectionElement { get; set; }
 
-    public int Id { get; set; }
-
     public bool Changed { get; set; }
 
     public void Update() { }
 
     public void UpdateSearch() { }
+
+    public void UpdateIndex() { }
 
     public void SetOriginalValues()
     {

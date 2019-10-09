@@ -6,24 +6,18 @@ using System.Linq;
 public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
-    private InteractableController ElementController { get { return (InteractableController)SegmentController.DataController; } }
-
     #region UI
-
     public EditorInputNumber inputField;
-
     #endregion
 
     #region Data Variables
-
     private float scaleMultiplier;
-
     #endregion
 
-    #region Data Properties
-
+    #region Properties
     public float ScaleMultiplier
     {
         get { return scaleMultiplier; }
@@ -35,15 +29,21 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.ScaleMultiplier = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.ScaleMultiplier = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.ScaleMultiplier = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.ScaleMultiplier = value;
+                    });
 
                     break;
 
@@ -51,32 +51,37 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
             }
         }
     }
-
     #endregion
 
+    #region Methods
     public void UpdateScaleMultiplier()
     {
         ScaleMultiplier = inputField.Value;
 
         DataEditor.UpdateEditor();
     }
+    #endregion
 
-    public void ApplySegment() { }
+    #region Segment
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
+    }
 
     public void InitializeSegment()
     {
-        InitializeDependencies();
-
         InitializeData();
     }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
-
+    
     public void InitializeData()
     {
+        InitializeDependencies();
+
+        if (DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
@@ -105,14 +110,10 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
     public void OpenSegment()
     {
         inputField.Value = ScaleMultiplier;
-
-        gameObject.SetActive(true);
     }
 
-    public void CloseSegment()
-    {
-        DataEditor.DataElements.ForEach(x => x.ClearChanges());
-    }
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
+    #endregion
 }

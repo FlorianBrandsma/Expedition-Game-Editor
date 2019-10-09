@@ -5,12 +5,10 @@ public class InteractableCore : GeneralData
 {
     private int objectGraphicId;
     private string name;
-    
-    public int originalIndex;
+
     public int originalObjectGraphicId;
     public string originalName;
 
-    private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
 
@@ -23,21 +21,6 @@ public class InteractableCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public string Name
     {
@@ -69,14 +52,11 @@ public class InteractableCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var interactableData = Fixtures.interactableList.Where(x => x.id == id).FirstOrDefault();
+        var interactableData = Fixtures.interactableList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedName)
             interactableData.name = name;
@@ -89,14 +69,13 @@ public class InteractableCore : GeneralData
 
     public void UpdateIndex()
     {
-        var interactableData = Fixtures.interactableList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            interactableData.index = index;
+        var interactableData = Fixtures.interactableList.Where(x => x.Id == Id).FirstOrDefault();
 
-            changedIndex = false;
-        }
+        interactableData.Index = Index;
+
+        changedIndex = false;
     }
 
     public virtual void SetOriginalValues()
@@ -115,15 +94,11 @@ public class InteractableCore : GeneralData
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedObjectGraphicId = false;
         changedName = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

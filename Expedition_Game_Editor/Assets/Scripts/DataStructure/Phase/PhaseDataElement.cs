@@ -8,14 +8,9 @@ public class PhaseDataElement : PhaseCore, IDataElement
 
     public PhaseDataElement() : base() { }
 
-    public override void Create()
-    {
-        base.Create();
-    }
-
     public override void Update()
     {
-        if (!base.Changed) return;
+        if (!Changed) return;
 
         base.Update();
 
@@ -29,10 +24,7 @@ public class PhaseDataElement : PhaseCore, IDataElement
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        
-    }
+    public new void GetOriginalValues() { }
 
     public override void ClearChanges()
     {

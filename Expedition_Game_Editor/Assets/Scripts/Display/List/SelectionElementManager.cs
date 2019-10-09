@@ -67,14 +67,17 @@ static public class SelectionElementManager
     
     static public List<IDataElement> FindDataElements(GeneralData generalData)
     {
-        var dataElementList = FindSelectionElements(elementPool, generalData).Select(x => x.data.dataElement).ToList();
+        var dataElementList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), generalData)
+                                                   .Select(x => x.data.dataElement).Distinct().ToList();
 
         return dataElementList;
     }
 
     static public List<SelectionElement> FindSelectionElements(GeneralData generalData)
     {
-        return FindSelectionElements(elementPool, generalData);
+        var elementList = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
+
+        return FindSelectionElements(elementList, generalData);
     }
 
     static public List<SelectionElement> FindSelectionElements(List<SelectionElement> selectionElements, GeneralData generalData)
@@ -94,7 +97,6 @@ static public class SelectionElementManager
             if (element.elementStatus != Enums.ElementStatus.Enabled)
             {
                 element.elementStatus = Enums.ElementStatus.Enabled;
-                element.background.color = element.enabledColor;
                 element.lockIcon.SetActive(false);
             }
 

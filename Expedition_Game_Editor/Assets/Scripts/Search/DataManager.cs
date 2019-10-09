@@ -12,11 +12,11 @@ public class DataManager
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
-            if (searchById && !idList.Contains(icon.id)) continue;
+            if (searchById && !idList.Contains(icon.Id)) continue;
 
             var data = new IconData();
 
-            data.id = icon.id;
+            data.Id = icon.Id;
 
             data.category = icon.category;
             data.path = icon.path;
@@ -33,11 +33,11 @@ public class DataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.Id)) continue;
 
             var data = new ObjectGraphicData();
 
-            data.id = objectGraphic.id;
+            data.Id = objectGraphic.Id;
             
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
@@ -60,11 +60,11 @@ public class DataManager
 
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
 
             var data = new InteractableData();
             
-            data.id = interactable.id;
+            data.Id = interactable.Id;
 
             data.objectGraphicId = interactable.objectGraphicId;
             data.name = interactable.name;
@@ -74,30 +74,7 @@ public class DataManager
 
         return dataList;
     }
-
-    public List<SceneInteractableData> GetSceneInteractableData(Search.SceneInteractable searchParameters)
-    {
-        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
-
-        foreach(Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
-        {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.id)) continue;
-
-            var data = new SceneInteractableData();
-
-            data.id = sceneInteractable.id;
-
-            data.chapterId = sceneInteractable.chapterId;
-            data.objectiveId = sceneInteractable.objectiveId;
-            data.interactableId = sceneInteractable.interactableId;
-            data.interactionIndex = sceneInteractable.interactionIndex;
-
-            dataList.Add(data);
-        }
-
-        return dataList;
-    }
-
+    
     public List<SceneInteractableData> GetChapterSceneInteractableData(int chapterId, bool searchById = false)
     {
         List<SceneInteractableData> dataList = new List<SceneInteractableData>();
@@ -108,8 +85,8 @@ public class DataManager
 
             var data = new SceneInteractableData();
 
-            data.id = sceneInteractable.id;
-            
+            data.Id = sceneInteractable.Id;
+
             data.chapterId = sceneInteractable.chapterId;
             data.objectiveId = sceneInteractable.objectiveId;
             data.interactableId = sceneInteractable.interactableId;
@@ -125,13 +102,13 @@ public class DataManager
     {
         List<PhaseData> dataList = new List<PhaseData>();
 
-        foreach(Fixtures.Phase phase in Fixtures.phaseList)
+        foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
             if (searchById && chapterId != phase.chapterId) continue;
 
             var data = new PhaseData();
 
-            data.id = phase.id;
+            data.Id = phase.Id;
             data.chapterId = phase.chapterId;
 
             dataList.Add(data);
@@ -140,19 +117,21 @@ public class DataManager
         return dataList;
     }
 
-    public List<PhaseInteractableData> GetPhaseInteractableData(List<int> idList, bool searchById = false)
+    public List<PhaseInteractableData> GetPhaseInteractableData(Search.PhaseInteractable searchParameters)
     {
         List<PhaseInteractableData> dataList = new List<PhaseInteractableData>();
 
-        foreach(Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
+        foreach (Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
-            if (searchById && !idList.Contains(phaseInteractable.phaseId)) continue;
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId)) continue;
+            if (searchParameters.sceneInteractableId.Count > 0 && !searchParameters.sceneInteractableId.Contains(phaseInteractable.sceneInteractableId)) continue;
 
             var data = new PhaseInteractableData();
 
-            data.id = phaseInteractable.id;
+            data.Id = phaseInteractable.Id;
 
             data.phaseId = phaseInteractable.phaseId;
+            data.questId = phaseInteractable.questId;
             data.sceneInteractableId = phaseInteractable.sceneInteractableId;
 
             dataList.Add(data);
@@ -161,24 +140,19 @@ public class DataManager
         return dataList;
     }
 
-    public List<TileSetData> GetTileSetData()
+    public List<QuestData> GetQuestData(Search.Quest searchParameters)
     {
-        return GetTileSetData(new Search.TileSet());
-    }
+        var dataList = new List<QuestData>();
 
-    public List<TileSetData> GetTileSetData(Search.TileSet searchParameters)
-    {
-        var dataList = new List<TileSetData>();
-
-        foreach(Fixtures.TileSet tileSet in Fixtures.tileSetList)
+        foreach (Fixtures.Quest quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tileSet.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.Id)) continue;
 
-            var data = new TileSetData();
+            var data = new QuestData();
 
-            data.id = tileSet.id;
-            data.name = tileSet.name;
-            data.tileSize = tileSet.tileSize;
+            data.Id = quest.Id;
+
+            data.phaseId = quest.phaseId;
 
             dataList.Add(data);
         }
@@ -186,19 +160,19 @@ public class DataManager
         return dataList;
     }
 
-    public List<TileData> GetTileData(Search.Tile searchParameters)
+    public List<ObjectiveData> GetObjectiveData(Search.Objective searchParameters)
     {
-        var dataList = new List<TileData>();
+        var dataList = new List<ObjectiveData>();
 
-        foreach (Fixtures.Tile tile in Fixtures.tileList)
+        foreach (Fixtures.Objective objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;
 
-            var data = new TileData();
+            var data = new ObjectiveData();
 
-            data.id = tile.id;
-            data.tileSetId = tile.tileSetId;
-            data.iconPath = tile.iconPath;
+            data.Id = objective.Id;
+
+            data.questId = objective.questId;
 
             dataList.Add(data);
         }
@@ -206,73 +180,22 @@ public class DataManager
         return dataList;
     }
 
-    public List<TerrainTileData> GetTerrainTileData(Search.TerrainTile searchParameters)
+    public List<SceneInteractableData> GetSceneInteractableData(Search.SceneInteractable searchParameters)
     {
-        var dataList = new List<TerrainTileData>();
+        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
 
-        foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
+        foreach (Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
         {
-            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.Id)) continue;
 
-            var data = new TerrainTileData();
+            var data = new SceneInteractableData();
 
-            data.id = terrainTile.id;
-            data.index = terrainTile.index;
+            data.Id = sceneInteractable.Id;
 
-            data.terrainId = terrainTile.terrainId;
-            data.tileId = terrainTile.tileId;
-            
-            dataList.Add(data);
-        }
-
-        return dataList;
-    }
-
-    public List<TerrainData> GetTerrainData(Search.Terrain searchParameters)
-    {
-        var dataList = new List<TerrainData>();
-
-        foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
-        {
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
-
-            var data = new TerrainData();
-
-            data.id = terrain.id;
-            data.index = terrain.index;
-
-            data.regionId = terrain.regionId;
-            data.name = terrain.name;
-
-            dataList.Add(data);
-        }
-
-        return dataList;
-    }
-
-    public List<RegionData> GetRegionData()
-    {
-        return GetRegionData(new Search.Region());
-    }
-
-    public List<RegionData> GetRegionData(Search.Region searchParameters)
-    {
-        List<RegionData> dataList = new List<RegionData>();
-
-        foreach (Fixtures.Region region in Fixtures.regionList)
-        {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.id)) continue;
-
-            var data = new RegionData();
-            
-            data.id = region.id;
-
-            data.tileSetId = region.tileSetId;
-
-            data.regionSize = region.regionSize;
-            data.terrainSize = region.terrainSize;
-
-            data.name = region.name;
+            data.chapterId = sceneInteractable.chapterId;
+            data.objectiveId = sceneInteractable.objectiveId;
+            data.interactableId = sceneInteractable.interactableId;
+            data.interactionIndex = sceneInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -288,10 +211,10 @@ public class DataManager
         {
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
-            
+
             var data = new InteractionData();
 
-            data.id = interaction.id;
+            data.Id = interaction.Id;
             data.objectiveId = interaction.objectiveId;
             data.sceneInteractableId = interaction.sceneInteractableId;
             data.regionId = interaction.regionId;
@@ -317,6 +240,127 @@ public class DataManager
 
         return dataList;
     }
+    
+    public List<TileSetData> GetTileSetData()
+    {
+        return GetTileSetData(new Search.TileSet());
+    }
+
+    public List<TileSetData> GetTileSetData(Search.TileSet searchParameters)
+    {
+        var dataList = new List<TileSetData>();
+
+        foreach(Fixtures.TileSet tileSet in Fixtures.tileSetList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tileSet.Id)) continue;
+
+            var data = new TileSetData();
+
+            data.Id = tileSet.Id;
+            data.name = tileSet.name;
+            data.tileSize = tileSet.tileSize;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TileData> GetTileData(Search.Tile searchParameters)
+    {
+        var dataList = new List<TileData>();
+
+        foreach (Fixtures.Tile tile in Fixtures.tileList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.Id)) continue;
+
+            var data = new TileData();
+
+            data.Id = tile.Id;
+            data.tileSetId = tile.tileSetId;
+            data.iconPath = tile.iconPath;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TerrainTileData> GetTerrainTileData(Search.TerrainTile searchParameters)
+    {
+        var dataList = new List<TerrainTileData>();
+
+        foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
+        {
+            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
+
+            var data = new TerrainTileData();
+
+            data.Id = terrainTile.Id;
+            data.Index = terrainTile.Index;
+
+            data.terrainId = terrainTile.terrainId;
+            data.tileId = terrainTile.tileId;
+            
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TerrainData> GetTerrainData(Search.Terrain searchParameters)
+    {
+        var dataList = new List<TerrainData>();
+
+        foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
+        {
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
+
+            var data = new TerrainData();
+
+            data.Id = terrain.Id;
+            data.Index = terrain.Index;
+
+            data.regionId = terrain.regionId;
+            data.name = terrain.name;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<RegionData> GetRegionData()
+    {
+        return GetRegionData(new Search.Region());
+    }
+
+    public List<RegionData> GetRegionData(Search.Region searchParameters)
+    {
+        List<RegionData> dataList = new List<RegionData>();
+
+        foreach (Fixtures.Region region in Fixtures.regionList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.Id)) continue;
+
+            var data = new RegionData();
+            
+            data.Id = region.Id;
+
+            data.tileSetId = region.tileSetId;
+
+            data.regionSize = region.regionSize;
+            data.terrainSize = region.terrainSize;
+
+            data.name = region.name;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    
 
     public List<SceneObjectData> GetSceneObjectData(Search.SceneObject searchParameters)
     {
@@ -328,7 +372,7 @@ public class DataManager
 
             var data = new SceneObjectData();
 
-            data.id = sceneObject.id;
+            data.Id = sceneObject.Id;
             data.objectGraphicId = sceneObject.objectGraphicId;
             data.regionId = sceneObject.regionId;
             data.terrainId = sceneObject.terrainId;
@@ -374,6 +418,28 @@ public class DataManager
         public int objectGraphicId;
         public string name;
     }
+    
+    public class PhaseData : GeneralData
+    {
+        public int chapterId;
+    }
+
+    public class PhaseInteractableData : GeneralData
+    {
+        public int phaseId;
+        public int questId;
+        public int sceneInteractableId;
+    }
+
+    public class QuestData : GeneralData
+    {
+        public int phaseId;
+    }
+
+    public class ObjectiveData : GeneralData
+    {
+        public int questId;
+    }
 
     public class SceneInteractableData : GeneralData
     {
@@ -383,15 +449,27 @@ public class DataManager
         public int interactionIndex;
     }
 
-    public class PhaseData : GeneralData
+    public class InteractionData : GeneralData
     {
-        public int chapterId;
-    }
-
-    public class PhaseInteractableData : GeneralData
-    {
-        public int phaseId;
         public int sceneInteractableId;
+        public int objectiveId;
+        public int regionId;
+        public int terrainId;
+        public int terrainTileId;
+
+        public string description;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int animation;
     }
 
     public class TileSetData : GeneralData
@@ -429,30 +507,7 @@ public class DataManager
         public int terrainId;
         public int tileId;
     }
-
-    public class InteractionData : GeneralData
-    {
-        public int sceneInteractableId;
-        public int objectiveId;
-        public int regionId;
-        public int terrainId;
-        public int terrainTileId;
-
-        public string description;
-
-        public float positionX;
-        public float positionY;
-        public float positionZ;
-
-        public int rotationX;
-        public int rotationY;
-        public int rotationZ;
-
-        public float scaleMultiplier;
-
-        public int animation;
-    }
-
+    
     public class SceneObjectData : GeneralData
     {
         public int objectGraphicId;

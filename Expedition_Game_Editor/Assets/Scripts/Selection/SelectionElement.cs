@@ -49,8 +49,7 @@ public class SelectionElement : MonoBehaviour
     public Enums.ElementStatus elementStatus;
     public Color enabledColor;
     public Color disabledColor;
-    public Image background;
-
+    
     public bool disableSpawn;
     public SelectionElement parent;
     public SelectionElement child;
@@ -62,27 +61,8 @@ public class SelectionElement : MonoBehaviour
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
 
     public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
-
-    public Color BackgroundColor
-    {
-        get
-        {
-            if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
-                return GetComponent<EditorTile>().icon.color;
-            else if (background != null)
-                return background.color;
-            else return Color.white;
-        }
-        set
-        {
-            if (elementType == Enums.ElementType.Tile || elementType == Enums.ElementType.CompactTile)
-                GetComponent<EditorTile>().icon.color = value;
-            else if (background != null)
-                background.color = value;
-        }
-    }
-
-    public IElement Element                 { get; set; }
+    
+    public IElement Element                 { get { return GetComponent<IElement>(); } }
     public IEditor DataEditor               { get; set; }
     public IDisplayManager DisplayManager   { get; set; }
 
@@ -90,7 +70,7 @@ public class SelectionElement : MonoBehaviour
 
     public void InitializeElement(IDataController dataController)
     {
-        DataEditor = segmentController.editorController.PathController.dataEditor;
+        DataEditor = segmentController.editorController.PathController.DataEditor;
 
         this.dataController = dataController;
 
@@ -125,7 +105,7 @@ public class SelectionElement : MonoBehaviour
     {
         GetComponent<IElement>().SetElement();
 
-        SetOverlay(elementStatus);
+        SetOverlay();
 
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = dataController;
@@ -136,7 +116,7 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().SetElement();
     }
 
-    public void SetOverlay(Enums.ElementStatus elementStatus)
+    public void SetOverlay()
     {
         if (selectionGroup == Enums.SelectionGroup.Child) return;
 
@@ -144,7 +124,7 @@ public class SelectionElement : MonoBehaviour
         {
             case Enums.ElementStatus.Enabled:
 
-                BackgroundColor = enabledColor;
+                Element.ElementColor = enabledColor;
 
                 if(lockIcon != null)
                     lockIcon.SetActive(false);
@@ -153,18 +133,22 @@ public class SelectionElement : MonoBehaviour
 
             case Enums.ElementStatus.Disabled:
 
-                BackgroundColor = disabledColor;
+                Element.ElementColor = disabledColor;
 
                 break;
 
             case Enums.ElementStatus.Locked:
 
-                BackgroundColor = disabledColor;
+                Element.ElementColor = disabledColor;
 
                 if (lockIcon != null)
                     lockIcon.SetActive(true);
 
                 break;
+
+            case Enums.ElementStatus.Hidden: break;
+            case Enums.ElementStatus.Related: break;
+            case Enums.ElementStatus.Unrelated: break;
         }
     }
 

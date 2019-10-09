@@ -10,6 +10,8 @@ public class EditorButton : MonoBehaviour, IElement
     public Text label;
     public RawImage icon;
 
+    public Color ElementColor { set { } }
+
     public void InitializeElement()
     {
         //properties = element.ListManager.listProperties.GetComponent<ButtonProperties>();

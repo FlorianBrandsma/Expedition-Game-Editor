@@ -7,7 +7,7 @@ public class IconController : MonoBehaviour, IDataController
 {
     public Search.Icon searchParameters;
 
-    private IconDataManager iconDataManager = new IconDataManager();
+    private IconDataManager iconDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class IconController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Icon>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public IconController()
     {
-        iconDataManager.InitializeManager(this);
+        iconDataManager = new IconDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -42,7 +42,7 @@ public class IconController : MonoBehaviour, IDataController
 
                 var resultElementData = (IconDataElement)resultData;
 
-                iconData.id = resultElementData.id;
+                iconData.Id = resultElementData.Id;
                 iconData.Path = resultElementData.Path;
 
                 break;

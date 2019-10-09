@@ -10,6 +10,7 @@ public class EditorPanel : MonoBehaviour, IElement
     public RectTransform iconParent;
     public RawImage icon;
     public RectTransform content;
+    public Image background;
 
     private string header;
     private string description;
@@ -19,6 +20,11 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private SelectionElement Element    { get { return GetComponent<SelectionElement>(); } }
     private SelectionElement ElementChild { get { return Element.child; } }
+
+    public Color ElementColor
+    {
+        set { background.color = value; }
+    }
 
     private Texture IconTexture
     {
@@ -112,7 +118,7 @@ public class EditorPanel : MonoBehaviour, IElement
             description         = dataElement.originalNotes;
         }
 
-        idText.text             = dataElement.id.ToString();
+        idText.text             = dataElement.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -124,7 +130,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
         header = dataElement.name;
 
-        idText.text = dataElement.id.ToString();
+        idText.text = dataElement.Id.ToString();
         headerText.text = header;
     }
 
@@ -144,7 +150,7 @@ public class EditorPanel : MonoBehaviour, IElement
             description         = dataElement.originalNotes;
         }
 
-        idText.text             = dataElement.id.ToString();
+        idText.text             = dataElement.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -167,7 +173,7 @@ public class EditorPanel : MonoBehaviour, IElement
 
         Element.elementStatus = dataElement.elementStatus;
 
-        idText.text = dataElement.id.ToString();
+        idText.text = dataElement.Id.ToString();
         headerText.text = header;
 
         if (properties.icon)
@@ -190,7 +196,7 @@ public class EditorPanel : MonoBehaviour, IElement
             description         = dataElement.originalNotes;
         }
 
-        idText.text             = dataElement.id.ToString();
+        idText.text             = dataElement.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -211,7 +217,7 @@ public class EditorPanel : MonoBehaviour, IElement
             description         = dataElement.originalNotes;
         }
 
-        idText.text             = dataElement.id.ToString();
+        idText.text             = dataElement.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -224,7 +230,7 @@ public class EditorPanel : MonoBehaviour, IElement
         header      = dataElement.interactableName;
         iconPath    = dataElement.objectGraphicIconPath;
 
-        idText.text     = dataElement.id.ToString();
+        idText.text     = dataElement.Id.ToString();
         headerText.text = header;
 
         if (properties.icon)
@@ -239,7 +245,7 @@ public class EditorPanel : MonoBehaviour, IElement
         header = dataElement.interactableName;
         iconPath = dataElement.objectGraphicIconPath;
 
-        idText.text = dataElement.id.ToString();
+        idText.text = dataElement.Id.ToString();
         headerText.text = header;
         
         if (properties.icon)
@@ -260,7 +266,7 @@ public class EditorPanel : MonoBehaviour, IElement
             description         = dataElement.originalDescription;
         }
 
-        idText.text             = dataElement.id.ToString();
+        idText.text             = dataElement.Id.ToString();
         descriptionText.text    = description;
     }
 
@@ -278,7 +284,7 @@ public class EditorPanel : MonoBehaviour, IElement
             header      = dataElement.originalName;
         }
 
-        idText.text     = dataElement.id.ToString();
+        idText.text     = dataElement.Id.ToString();
         headerText.text = header;
     }
 
@@ -298,7 +304,7 @@ public class EditorPanel : MonoBehaviour, IElement
             iconPath    = dataElement.originalIconPath;
         }
 
-        idText.text     = dataElement.id.ToString();
+        idText.text     = dataElement.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -319,7 +325,7 @@ public class EditorPanel : MonoBehaviour, IElement
             iconPath    = dataElement.originalObjectGraphicIconPath;
         }
 
-        idText.text     = dataElement.id.ToString();
+        idText.text     = dataElement.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -340,7 +346,7 @@ public class EditorPanel : MonoBehaviour, IElement
             iconPath    = dataElement.originalObjectGraphicIconPath;
         }
 
-        idText.text     = dataElement.id.ToString();
+        idText.text     = dataElement.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }

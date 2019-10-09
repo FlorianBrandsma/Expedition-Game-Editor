@@ -6,11 +6,9 @@ public class PhaseCore : GeneralData
     private string name;
     private string notes;
 
-    public int originalIndex;
     public string originalName;
     public string originalNotes;
 
-    private bool changedIndex;
     private bool changedName;
     private bool changedNotes;
 
@@ -23,21 +21,6 @@ public class PhaseCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public string Name
     {
@@ -69,14 +52,11 @@ public class PhaseCore : GeneralData
 
     #region Methods
 
-    public virtual void Create()
-    {
-
-    }
+    public virtual void Create() { }
 
     public virtual void Update()
     {
-        var phaseData = Fixtures.phaseList.Where(x => x.id == id).FirstOrDefault();
+        var phaseData = Fixtures.phaseList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedName)
             phaseData.name = name;
@@ -90,14 +70,13 @@ public class PhaseCore : GeneralData
 
     public void UpdateIndex()
     {
-        var phaseData = Fixtures.phaseList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            phaseData.index = index;
+        var phaseData = Fixtures.phaseList.Where(x => x.Id == Id).FirstOrDefault();
 
-            changedIndex = false;
-        }
+        phaseData.Index = Index;
+
+        changedIndex = false;
     }
 
     public virtual void SetOriginalValues()
@@ -116,15 +95,11 @@ public class PhaseCore : GeneralData
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedName = false;
         changedNotes = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

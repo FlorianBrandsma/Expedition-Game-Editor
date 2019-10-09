@@ -1,24 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GeneralNotesSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
     #region UI
-
     public InputField inputField;
-
     #endregion
 
     #region Data Variables
-
     private int id;
     private int index;
     private string notes;
     private string icon;
-
     #endregion
 
     #region Data Properties
@@ -33,29 +31,41 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Chapter:
 
-                    var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
-                    chapterData.Notes = value;
+                    var chapterDataList = DataEditor.DataList.Cast<ChapterDataElement>().ToList();
+                    chapterDataList.ForEach(chapterData =>
+                    {
+                        chapterData.Notes = value;
+                    });
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
-                    phaseData.Notes = value;
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.Notes = value;
+                    });
 
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questData = (QuestDataElement)DataEditor.Data.dataElement;
-                    questData.Notes = value;
+                    var questDataList = DataEditor.DataList.Cast<QuestDataElement>().ToList();
+                    questDataList.ForEach(questData =>
+                    {
+                        questData.Notes = value;
+                    });
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
-                    objectiveData.Notes = value;
+                    var objectiveDataList = DataEditor.DataList.Cast<ObjectiveDataElement>().ToList();
+                    objectiveDataList.ForEach(objectiveData =>
+                    {
+                        objectiveData.Notes = value;
+                    });
 
                     break;
 
@@ -74,21 +84,22 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
-
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if(!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeDependencies();
-
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
+        InitializeDependencies();
+
+        if(DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Chapter:    InitializeChapterData();    break;
@@ -130,23 +141,10 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         inputField.text = notes;
-
-        gameObject.SetActive(true);
     }
 
-    public void ApplySegment()
-    {
+    public void CloseSegment() { }
 
-    }
-
-    public void CloseSegment()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
     #endregion
 }

@@ -5,10 +5,10 @@ using System.Linq;
 
 public class SegmentController : MonoBehaviour
 {
+    public bool Loaded { get { return editorController.PathController.editorSection.Loaded; } }
+
     public GameObject dataControllerParent;
-
-    public bool loadOnce;
-
+    
     public bool enableToggle;
 
     public EditorToggle editorToggle;
@@ -17,15 +17,11 @@ public class SegmentController : MonoBehaviour
     public Text header;
 
     public SegmentController[] segmentGroup;
-    public SegmentController siblingSegment;
 
     public EditorElement[] editorElements;
 
     [HideInInspector]
     public EditorController editorController;
-
-    [HideInInspector]
-    public bool loaded;
 
     public Path Path { get { return editorController.PathController.route.path; } }
 
@@ -90,20 +86,18 @@ public class SegmentController : MonoBehaviour
     {
         //Necessary for shared segments
         this.editorController = editorController;
-
-        if (DataController != null)
-            DataController.InitializeController();
-
+        
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();
         
         if (GetComponent<ISegment>() != null)
             GetComponent<ISegment>().InitializeSegment();
+    }
 
-        if (siblingSegment != null)
-            siblingSegment.Segment.InitializeData();
-
-        loaded = true;
+    public void InitializeDataController()
+    {
+        //if (DataController != null)
+        //    DataController.InitializeController();
     }
 
     public void OpenSegment()
@@ -119,9 +113,6 @@ public class SegmentController : MonoBehaviour
 
         if (Display != null)
             Display.CloseDisplay();
-
-        if (!loadOnce)
-            loaded = false;
     }
 
     public bool AutoSelectElement()

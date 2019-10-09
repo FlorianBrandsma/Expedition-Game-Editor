@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012192094824}
-  - 95: {fileID: 95000011516727058}
   m_Layer: 10
   m_Name: Pool
   m_TagString: Untagged
@@ -204,23 +203,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012852405742}
   m_Mesh: {fileID: 4300002, guid: 79beb415190074b46bd834a5bd7825e5, type: 3}
---- !u!95 &95000011516727058
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011423429718}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 79beb415190074b46bd834a5bd7825e5, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000012815132534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,6 +214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 1000011423429718}
+  mesh:
+  - {fileID: 1000013840501536}
+  - {fileID: 1000012852405742}
   pivot: 3
   previewRotation: {x: 60, y: 0, z: 0}
   previewScale: {x: 70, y: 70, z: 70}

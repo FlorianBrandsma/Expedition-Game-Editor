@@ -4,22 +4,10 @@ using System.Collections;
 public class SearchResultSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -42,6 +30,8 @@ public class SearchResultSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

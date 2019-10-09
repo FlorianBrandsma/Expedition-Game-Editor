@@ -11,7 +11,7 @@ public class ChapterRegionDataManager
 
     private DataManager dataManager = new DataManager();
 
-    public void InitializeManager(ChapterRegionController chapterRegionController)
+    public ChapterRegionDataManager(ChapterRegionController chapterRegionController)
     {
         this.chapterRegionController = chapterRegionController;
     }
@@ -25,13 +25,13 @@ public class ChapterRegionDataManager
         GetRegionData();
 
         var list = (from chapterRegionData in chapterRegionDataList
-                    join regionData in regionDataList on chapterRegionData.regionId equals regionData.id
+                    join regionData in regionDataList on chapterRegionData.regionId equals regionData.Id
                     select new ChapterRegionDataElement()
                     {
                         dataType = Enums.DataType.ChapterRegion,
 
-                        id = chapterRegionData.id,
-                        Index = chapterRegionData.index,
+                        Id = chapterRegionData.Id,
+                        Index = chapterRegionData.Index,
 
                         ChapterId = chapterRegionData.chapterId,
                         RegionId = chapterRegionData.regionId,
@@ -51,13 +51,13 @@ public class ChapterRegionDataManager
 
         foreach(Fixtures.ChapterRegion chapterRegion in Fixtures.chapterRegionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterRegion.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterRegion.Id)) continue;
             if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
 
             var chapterRegionData = new ChapterRegionData();
 
-            chapterRegionData.id = chapterRegion.id;
-            chapterRegionData.index = chapterRegion.id;
+            chapterRegionData.Id = chapterRegion.Id;
+            chapterRegionData.Index = chapterRegion.Id;
             
             chapterRegionData.chapterId = chapterRegion.chapterId;
             chapterRegionData.regionId = chapterRegion.regionId;

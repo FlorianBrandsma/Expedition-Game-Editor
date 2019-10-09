@@ -473,6 +473,8 @@ public class PathManager
         return newPath;
     }
 
+    //There might be a problem where the original path, for checking loading, is changed
+    //together with the new (temp) path
     static public Path ReloadPath(Path path, Route.Data data)
     {
         Path tempPath = new Path(true);

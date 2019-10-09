@@ -7,7 +7,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 {
     public Search.Region searchParameters;
 
-    private ChapterRegionDataManager chapterRegionDataManager = new ChapterRegionDataManager();
+    private ChapterRegionDataManager chapterRegionDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class ChapterRegionController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Region>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public ChapterRegionController()
     {
-        chapterRegionDataManager.InitializeManager(this);
+        chapterRegionDataManager = new ChapterRegionDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -42,7 +42,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 
                 var resultElementData = (RegionDataElement)resultData;
 
-                chapterRegionData.RegionId = resultElementData.id;
+                chapterRegionData.RegionId = resultElementData.Id;
                 chapterRegionData.name = resultElementData.Name;
 
                 break;

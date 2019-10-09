@@ -8,7 +8,7 @@ public class IconDataManager
     private IconController iconController;
     private List<IconData> iconDataList;
 
-    public void InitializeManager(IconController iconController)
+    public IconDataManager(IconController iconController)
     {
         this.iconController = iconController;
     }
@@ -24,8 +24,8 @@ public class IconDataManager
                     {
                         dataType = Enums.DataType.Icon,
 
-                        id = iconData.id,
-                        index = iconData.index,
+                        Id = iconData.Id,
+                        Index = iconData.Index,
 
                         Path = iconData.path,
                         baseIconPath = ""
@@ -43,13 +43,13 @@ public class IconDataManager
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.Id)) continue;
             if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.category)) continue;
 
             var iconData = new IconData();
 
-            iconData.id = icon.id;
-            iconData.index = icon.index;
+            iconData.Id = icon.Id;
+            iconData.Index = icon.Index;
 
             iconData.path = icon.path;
 

@@ -14,7 +14,7 @@ public class SceneInteractableDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(SceneInteractableController sceneInteractableController)
+    public SceneInteractableDataManager(SceneInteractableController sceneInteractableController)
     {
         this.sceneInteractableController = sceneInteractableController;
     }
@@ -48,14 +48,14 @@ public class SceneInteractableDataManager
         GetIconData();
 
         var list = (from sceneInteractableData in sceneInteractableDataList
-                    join interactableData in interactableDataList on sceneInteractableData.interactableId equals interactableData.id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join interactableData in interactableDataList on sceneInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new SceneInteractableDataElement()
                     {
                         dataType = Enums.DataType.SceneInteractable,
 
-                        id = sceneInteractableData.id,
+                        Id = sceneInteractableData.Id,
                         
                         ChapterId = sceneInteractableData.chapterId,
                         InteractableId = sceneInteractableData.interactableId,
@@ -63,7 +63,7 @@ public class SceneInteractableDataManager
                         interactableName = interactableData.name,
                         objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.id).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -76,13 +76,13 @@ public class SceneInteractableDataManager
 
         foreach (Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.Id)) continue;
             if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(sceneInteractable.chapterId)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(sceneInteractable.objectiveId)) continue;
 
             var sceneInteractableData = new SceneInteractableData();
 
-            sceneInteractableData.id = sceneInteractable.id;
+            sceneInteractableData.Id = sceneInteractable.Id;
 
             sceneInteractableData.chapterId = sceneInteractable.chapterId;
             sceneInteractableData.objectiveId = sceneInteractable.objectiveId;
@@ -99,15 +99,15 @@ public class SceneInteractableDataManager
         List<int> sceneInteractableIds = new List<int>();
 
         Fixtures.phaseInteractableList.Where(x => searchParameters.questId.Contains(x.questId)).Distinct().ToList().ForEach(x => sceneInteractableIds.Add(x.sceneInteractableId));
-        Fixtures.sceneInteractableList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => sceneInteractableIds.Add(x.id));
+        Fixtures.sceneInteractableList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => sceneInteractableIds.Add(x.Id));
 
-        var sceneInteractables = Fixtures.sceneInteractableList.Where(x => sceneInteractableIds.Contains(x.id)).Distinct().ToList();
+        var sceneInteractables = Fixtures.sceneInteractableList.Where(x => sceneInteractableIds.Contains(x.Id)).Distinct().ToList();
 
         foreach (Fixtures.SceneInteractable sceneInteractable in sceneInteractables)
         {
             var sceneInteractableData = new SceneInteractableData();
 
-            sceneInteractableData.id = sceneInteractable.id;
+            sceneInteractableData.Id = sceneInteractable.Id;
 
             sceneInteractableData.chapterId = sceneInteractable.chapterId;
             sceneInteractableData.objectiveId = sceneInteractable.objectiveId;
@@ -124,13 +124,13 @@ public class SceneInteractableDataManager
         List<int> sceneInteractableIds = Fixtures.interactionList.Where(x => searchParameters.regionId.Contains(x.regionId) &&
                                                                              searchParameters.objectiveId.Contains(x.objectiveId)).Select(x => x.sceneInteractableId).Distinct().ToList();
 
-        var sceneInteractables = Fixtures.sceneInteractableList.Where(x => sceneInteractableIds.Contains(x.id)).Distinct().ToList();
+        var sceneInteractables = Fixtures.sceneInteractableList.Where(x => sceneInteractableIds.Contains(x.Id)).Distinct().ToList();
 
         foreach(Fixtures.SceneInteractable sceneInteractable in sceneInteractables)
         {
             var sceneInteractableData = new SceneInteractableData();
 
-            sceneInteractableData.id = sceneInteractable.id;
+            sceneInteractableData.Id = sceneInteractable.Id;
 
             sceneInteractableData.chapterId = sceneInteractable.chapterId;
             sceneInteractableData.objectiveId = sceneInteractable.objectiveId;

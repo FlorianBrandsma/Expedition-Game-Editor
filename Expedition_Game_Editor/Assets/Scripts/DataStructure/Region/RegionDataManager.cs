@@ -12,7 +12,7 @@ public class RegionDataManager
 
     private List<DataManager.TileSetData> tileSetDataList;
 
-    public void InitializeManager(RegionController regionController)
+    public RegionDataManager(RegionController regionController)
     {
         this.regionController = regionController;
     }
@@ -25,13 +25,13 @@ public class RegionDataManager
         GetTileSetData();
 
         var list = (from regionData in regionDataList
-                    join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
+                    join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
                     select new RegionDataElement()
                     {
                         dataType = Enums.DataType.Region,
 
-                        id = regionData.id,
-                        index = regionData.index,
+                        Id = regionData.Id,
+                        Index = regionData.Index,
 
                         ChapterRegionId = regionData.chapterRegionId,
                         PhaseId = regionData.phaseId,
@@ -42,7 +42,7 @@ public class RegionDataManager
 
                         type = regionController.regionType
 
-                    }).OrderBy(x => x.index).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -53,17 +53,15 @@ public class RegionDataManager
     {
         regionDataList = new List<RegionData>();
 
-        int index = 0;
-        
         foreach(Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.Id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(region.phaseId)) continue;
 
             var regionData = new RegionData();
 
-            regionData.id = region.id;
-            regionData.index = region.index;
+            regionData.Id = region.Id;
+            regionData.Index = region.Index;
 
             regionData.chapterRegionId = region.chapterRegionId;
             regionData.phaseId = region.phaseId;
@@ -73,8 +71,6 @@ public class RegionDataManager
             regionData.terrainSize = region.terrainSize;
 
             regionDataList.Add(regionData);
-
-            index++;
         }
     }
 

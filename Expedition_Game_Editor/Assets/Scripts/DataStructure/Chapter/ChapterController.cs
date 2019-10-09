@@ -7,7 +7,7 @@ public class ChapterController : MonoBehaviour, IDataController
 {
     public Search.Chapter searchParameters;
 
-    private ChapterDataManager chapterDataManager = new ChapterDataManager();
+    private ChapterDataManager chapterDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class ChapterController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Chapter>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public ChapterController()
     {
-        chapterDataManager.InitializeManager(this);
+        chapterDataManager = new ChapterDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

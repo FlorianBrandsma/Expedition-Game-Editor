@@ -5,22 +5,10 @@ using System.Linq;
 public class SceneInteractableSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        //DataEditor = SegmentController.editorController.pathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -29,13 +17,13 @@ public class SceneInteractableSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
         var searchParameters = new Search.SceneInteractable();
 
         searchParameters.requestType = Search.SceneInteractable.RequestType.GetInteractablesFromInteractionRegion;
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.id };
+        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
         searchParameters.objectiveId = new List<int>() { 0 };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
@@ -46,6 +34,8 @@ public class SceneInteractableSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

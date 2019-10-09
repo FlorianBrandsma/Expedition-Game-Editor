@@ -8,12 +8,10 @@ public class ObjectiveCore : GeneralData
     private string journal;
     private string notes;
 
-    public int originalIndex;
     public string originalName;
     public string originalJournal;
     public string originalNotes;
 
-    private bool changedIndex;
     private bool changedName;
     private bool changedJournal;
     private bool changedNotes;
@@ -27,21 +25,6 @@ public class ObjectiveCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int QuestId
     {
@@ -92,16 +75,11 @@ public class ObjectiveCore : GeneralData
 
     #region Methods
 
-    public void Create()
+    public void Create() { }
+
+    public virtual void Update()
     {
-
-    }
-
-    public void Update()
-    {
-        if (!Changed) return;
-
-        var objectiveData = Fixtures.objectiveList.Where(x => x.id == id).FirstOrDefault();
+        var objectiveData = Fixtures.objectiveList.Where(x => x.Id == Id).FirstOrDefault();
 
         if(changedName)
             objectiveData.name = name;
@@ -111,31 +89,26 @@ public class ObjectiveCore : GeneralData
 
         if (changedNotes)
             objectiveData.notes = notes;
-        
-        SetOriginalValues();
     }
 
     public void UpdateSearch() { }
 
     public void UpdateIndex()
     {
-        var objectiveData = Fixtures.objectiveList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            objectiveData.index = index;
+        var objectiveData = Fixtures.objectiveList.Where(x => x.Id == Id).FirstOrDefault();
 
-            changedIndex = false;
-        }
+        objectiveData.Index = Index;
+
+        changedIndex = false;
     }
 
-    public void SetOriginalValues()
+    public virtual void SetOriginalValues()
     {
         originalName = name;
         originalJournal = journal;
         originalNotes = notes;
-
-        ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -145,20 +118,16 @@ public class ObjectiveCore : GeneralData
         notes = originalNotes;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedName = false;
         changedJournal = false;
         changedNotes = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

@@ -95,7 +95,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.id;
+            element.name = generalData.DebugName + generalData.Id;
             //
 
             SetElement(element);
@@ -118,7 +118,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
+        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 

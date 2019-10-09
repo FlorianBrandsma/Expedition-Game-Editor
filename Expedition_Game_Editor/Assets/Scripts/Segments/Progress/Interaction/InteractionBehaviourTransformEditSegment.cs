@@ -6,27 +6,22 @@ using System.Linq;
 
 public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 {
-    private InteractionDataElement interactionData;
+    private InteractionDataElement InteractionData { get { return (InteractionDataElement)DataEditor.Data.dataElement; } }
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    private IDataController DataController { get { return GetComponent<IDataController>(); } }
+
     public IEditor DataEditor { get; set; }
 
     #region UI
-
     public SelectionElement editButton;
-
     #endregion
 
     #region Data Methods
-
     private void InitializeEditButton()
     {
-        interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
-
         var regionData = new RegionDataElement();
 
-        regionData.id = interactionData.RegionId;
+        regionData.Id = InteractionData.RegionId;
         regionData.dataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
 
@@ -40,27 +35,28 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 
         //To get all phase regions
         if (phaseRoute != null)
-            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.id };
+            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.Id };
         else
             searchParameters.phaseId = new List<int>() { 0 };
 
-        DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
-        if(regionData.id == 0)
-            regionData.id = DataController.DataList.FirstOrDefault().Id;
+        if(regionData.Id == 0)
+            regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;
 
-        editButton.data = new SelectionElement.Data(DataController, regionData);
+        editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
 
-        editButton.GetComponentInChildren<Text>().text = interactionData.regionName != "" ? "Open " + interactionData.regionName : "Set Region";
+        editButton.GetComponentInChildren<Text>().text = InteractionData.regionName != "" ? "Open " + InteractionData.regionName : "Set Region";
     }
 
     #endregion
 
     #region Segment
-
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
@@ -69,30 +65,12 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
         InitializeEditButton();
     }
 
-    public void InitializeData()
-    {
-        
-    }
+    public void InitializeData() { }
 
-    public void OpenSegment()
-    {
-        gameObject.SetActive(true);
-    }
+    public void OpenSegment() { }
 
-    public void ApplySegment()
-    {
-        
-    }
+    public void CloseSegment() { }
 
-    public void CloseSegment()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
-
+    public void SetSearchResult(SelectionElement selectionElement) { }
     #endregion
 }

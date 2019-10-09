@@ -15,7 +15,7 @@ public class ButtonActionManager : MonoBehaviour
             apply_button.onClick.AddListener(delegate { section.ApplyChanges(); });
         
         if(close_button != null)
-            close_button.onClick.AddListener(delegate { section.CancelEdit(); });    
+            close_button.onClick.AddListener(delegate { section.CloseEditor(); });    
     }
 
     public void SetButtons(bool changed)

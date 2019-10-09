@@ -7,7 +7,7 @@ public class TerrainController : MonoBehaviour, IDataController
 {
     public Search.Terrain searchParameters;
 
-    private TerrainDataManager terrainDataManager = new TerrainDataManager();
+    private TerrainDataManager terrainDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class TerrainController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Terrain>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public TerrainController()
     {
-        terrainDataManager.InitializeManager(this);
+        terrainDataManager = new TerrainDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

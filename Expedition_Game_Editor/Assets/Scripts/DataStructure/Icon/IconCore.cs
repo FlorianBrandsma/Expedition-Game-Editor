@@ -5,10 +5,8 @@ public class IconCore : GeneralData
 {
     private string path;
 
-    public int originalIndex;
     public string originalPath;
 
-    private bool changedIndex;
     private bool changedPath;
 
     public bool Changed
@@ -20,21 +18,6 @@ public class IconCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public string Path
     {
@@ -53,25 +36,17 @@ public class IconCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
+    public void Create() { }
 
-    }
-
-    public void Update()
-    {
-        if (!Changed) return;
-
-        SetOriginalValues();
-    }
+    public virtual void Update() { }
 
     public void UpdateSearch() { }
 
-    public void SetOriginalValues()
+    public void UpdateIndex() { }
+
+    public virtual void SetOriginalValues()
     {
         originalPath = path;
-
-        ClearChanges();
     }
 
     public void GetOriginalValues()
@@ -79,18 +54,14 @@ public class IconCore : GeneralData
         path = originalPath;
     }
 
-    public void ClearChanges()
+    public virtual void ClearChanges()
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedPath = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

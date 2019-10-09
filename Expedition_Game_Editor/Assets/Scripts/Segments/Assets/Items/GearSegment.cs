@@ -4,22 +4,10 @@ using System.Collections.Generic;
 public class GearSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -28,15 +16,13 @@ public class GearSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
-        if (!SegmentController.loaded && !SegmentController.editorController.PathController.loaded)
-        {
-            var searchParameters = new Search.Item();
-            searchParameters.type = new List<int>() { (int)Enums.ItemType.Gear };
+        var searchParameters = new Search.Item();
 
-            SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
-        }
+        searchParameters.type = new List<int>() { (int)Enums.ItemType.Gear };
+
+        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });  
     }
 
     public void OpenSegment()
@@ -45,8 +31,7 @@ public class GearSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
+    public void CloseSegment() { }
 
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

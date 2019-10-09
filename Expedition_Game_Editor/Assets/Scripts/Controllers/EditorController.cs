@@ -20,6 +20,10 @@ public class EditorController : MonoBehaviour
     {
         InitializeEditor();
         InitializeSegments();
+
+        if (PathController.DataEditor == null) return;
+
+        PathController.DataEditor.Loaded = true;
     }
 
     public void FinalizeController()
@@ -32,8 +36,14 @@ public class EditorController : MonoBehaviour
 
     private void InitializeEditor()
     {
-        if (PathController.dataEditor != null)
-            PathController.dataEditor.InitializeEditor();
+        if (PathController.DataEditor != null)
+        {
+            PathController.DataEditor.EditorSegments.ForEach(x => 
+            {
+                x.InitializeDataController();
+                x.Segment.InitializeData();
+            });
+        }
     }
 
     public void CloseEditor() { }

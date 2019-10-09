@@ -21,16 +21,35 @@ public class EditorSection : MonoBehaviour
     public EditorController targetController;
 
     [HideInInspector]
+    public EditorController previousTargetController;
+
+    [HideInInspector]
     public LayoutDependency targetLayout;
 
-    [HideInInspector]
-    public Path targetPath;
+    public bool Loaded
+    {
+        get
+        {
+            if (targetController.PathController.route.path.type == Path.Type.Reload)
+                return false;
 
-    [HideInInspector]
-    public Path previousTargetPath;
-    
+            if (targetController != previousTargetController)
+                return false;
+            
+            if(previousTargetController != null)
+                return targetController.PathController.route.GeneralData.Equals(previousTargetController.PathController.route.GeneralData);
+            
+            return false;
+        }
+    }
+
     public IEditor dataEditor;
 
+    //Previous data editor
+    public IDataElement previousDataSource;
+    public List<IDataElement> previousDataElements;
+    //
+    
     public ButtonActionManager buttonActionManager;
 
     public void InitializeSection(EditorForm editorForm)
@@ -39,11 +58,6 @@ public class EditorSection : MonoBehaviour
 
         if (buttonActionManager != null)
             buttonActionManager.InitializeButtons(this);
-    }
-
-    public void SetPreviousPath()
-    {
-        previousTargetPath = targetPath;
     }
 
     public void InitializeLayout()
@@ -61,6 +75,11 @@ public class EditorSection : MonoBehaviour
         targetLayout.SetLayout(); 
     }
 
+    public void ActivateEditor()
+    {
+        active = true;
+    }
+
     public void OpenEditor()
     {
         if (targetController == null) return;
@@ -70,8 +89,6 @@ public class EditorSection : MonoBehaviour
         displayTargetController.OpenSegments();
 
         SetActionButtons();
-
-        active = true;
     }
 
     public void SetActionButtons()
@@ -89,8 +106,9 @@ public class EditorSection : MonoBehaviour
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
+        previousTargetController = targetController;
+
         targetController = null;
-        targetPath = null;
 
         active = false;
     }
@@ -98,6 +116,8 @@ public class EditorSection : MonoBehaviour
     public void CloseLayout()
     {
         if (targetLayout == null) return;
+
+        previousTargetController = displayTargetController;
 
         displayTargetController.CloseSegments();
 
@@ -113,6 +133,21 @@ public class EditorSection : MonoBehaviour
     }
 
     public void CancelEdit()
+    {
+        if(dataEditor.Loaded)
+            dataEditor.CancelEdit();
+        
+        if (previousDataElements != null)
+        {
+            previousDataElements.ForEach(x => x.ClearChanges());
+            previousDataElements.Where(x => x.SelectionElement != null && x.SelectionElement.gameObject.activeInHierarchy).ToList()
+                                .ForEach(x => x.SelectionElement.UpdateElement());
+        }
+        
+        if (!active) dataEditor = null;
+    }
+
+    public void CloseEditor()
     {
         EditorManager.editorManager.PreviousEditor();
     }

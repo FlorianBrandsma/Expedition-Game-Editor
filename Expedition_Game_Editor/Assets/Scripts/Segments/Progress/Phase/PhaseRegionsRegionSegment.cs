@@ -4,49 +4,36 @@ using System.Linq;
 
 public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 {
+    private PhaseEditor PhaseEditor { get { return (PhaseEditor)DataEditor; } }
+
     private DataManager dataManager = new DataManager();
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
+    
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
-        var phaseEditor = (PhaseEditor)DataEditor;
-
-        if (phaseEditor.regionDataList.Count > 0) return;
-
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        if (DataEditor.Loaded) return;
 
         var searchParameters = new Search.Region();
 
         searchParameters.requestType = Search.Region.RequestType.Custom;
-        searchParameters.phaseId = new List<int>() { phaseData.id };
+        searchParameters.phaseId = new List<int>() { PhaseEditor.PhaseData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionDataElement>().ToList();
-
-        phaseRegionList.ForEach(x => phaseEditor.regionDataList.Add(x));
+        phaseRegionList.ForEach(x => PhaseEditor.regionDataList.Add(x));
     }
 
     private void SetSearchParameters() { }
@@ -57,8 +44,7 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
+    public void CloseSegment() { }
 
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

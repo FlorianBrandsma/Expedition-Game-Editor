@@ -6,17 +6,15 @@ using System.Linq;
 public class TerrainTileSegment : MonoBehaviour, ISegment
 {
     private RegionDataElement regionData;
-
+    
     private TerrainController TerrainController { get { return GetComponent<TerrainController>(); } }
     private TerrainTileController TerrainTileController { get { return GetComponent<TerrainTileController>(); } }
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -25,7 +23,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
         
         regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
 
@@ -37,7 +35,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     {
         var searchParameters = new Search.Terrain();
 
-        searchParameters.regionId = new List<int>() { regionData.id };
+        searchParameters.regionId = new List<int>() { regionData.Id };
 
         TerrainController.DataList = TerrainController.GetData(new[] { searchParameters });
     }
@@ -46,7 +44,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     {
         var searchParameters = new Search.TerrainTile();
 
-        searchParameters.regionId = new List<int>() { regionData.id };
+        searchParameters.regionId = new List<int>() { regionData.Id };
 
         TerrainTileController.DataList = TerrainTileController.GetData(new[] { searchParameters });
     }
@@ -56,8 +54,6 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = TerrainController;
     }
-
-    public void ApplySegment() { }
 
     public void CloseSegment() { }
 

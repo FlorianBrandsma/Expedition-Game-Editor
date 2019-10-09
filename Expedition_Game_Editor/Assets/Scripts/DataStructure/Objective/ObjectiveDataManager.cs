@@ -8,7 +8,7 @@ public class ObjectiveDataManager
     private ObjectiveController objectiveController;
     private List<ObjectiveData> objectiveDataList;
 
-    public void InitializeManager(ObjectiveController objectiveController)
+    public ObjectiveDataManager(ObjectiveController objectiveController)
     {
         this.objectiveController = objectiveController;
     }
@@ -24,8 +24,8 @@ public class ObjectiveDataManager
                     {
                         dataType = Enums.DataType.Objective,
 
-                        id = objectiveData.id,
-                        index = objectiveData.index,
+                        Id = objectiveData.Id,
+                        Index = objectiveData.Index,
 
                         QuestId = objectiveData.questId,
                         Name = objectiveData.name,
@@ -45,13 +45,13 @@ public class ObjectiveDataManager
         
         foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;
             if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
 
             var objectiveData = new ObjectiveData();
             
-            objectiveData.id = objective.id;
-            objectiveData.index = objective.index;
+            objectiveData.Id = objective.Id;
+            objectiveData.Index = objective.Index;
 
             objectiveData.questId = objective.questId;
             objectiveData.name = objective.name;

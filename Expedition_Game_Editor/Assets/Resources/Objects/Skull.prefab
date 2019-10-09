@@ -53,7 +53,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000010465497854}
-  - 95: {fileID: 95000012148231856}
   m_Layer: 10
   m_Name: Skull
   m_TagString: Untagged
@@ -271,23 +270,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010549352318}
   m_Mesh: {fileID: 4300002, guid: c74f422e47883514cbb2ef0fb6f62677, type: 3}
---- !u!95 &95000012148231856
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012939494006}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: c74f422e47883514cbb2ef0fb6f62677, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000010340586680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,6 +281,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 1000012939494006}
+  mesh:
+  - {fileID: 1000011618562582}
+  - {fileID: 1000012958440802}
+  - {fileID: 1000010549352318}
   pivot: 3
   previewRotation: {x: 75, y: 0, z: 0}
   previewScale: {x: 50, y: 50, z: 50}

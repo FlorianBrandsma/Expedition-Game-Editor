@@ -6,24 +6,19 @@ using System.Linq;
 
 public class TerrainHeaderSegment : MonoBehaviour, ISegment
 {
+    private TerrainDataElement TerrainData { get { return (TerrainDataElement)DataEditor.Data.dataElement; } }
+
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    private TerrainDataElement terrainData;
-
-    public EditorTile IconTile { get { return GetComponent<EditorTile>(); } }
 
     public IEditor DataEditor { get; set; }
     
     #region UI
-
     public SelectionElement selectionElement;
     public InputField inputField;
     public Text idText;
-
     #endregion
 
     #region Methods
-
     public void Awake()
     {
         SelectionElementManager.Add(selectionElement);
@@ -31,53 +26,55 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void UpdateName()
     {
-        terrainData.Name = inputField.text;
+        var terrainDataList = DataEditor.DataList.Cast<TerrainDataElement>().ToList();
+        terrainDataList.ForEach(terrainData =>
+        {
+            terrainData.Name = inputField.text;
+        });
+
         DataEditor.UpdateEditor();
     }
 
     private void UpdateIcon(IconDataElement iconDataElement)
     {
-        terrainData.IconId = iconDataElement.id;
-        terrainData.iconPath = iconDataElement.Path;
-        
+        var terrainDataList = DataEditor.DataList.Cast<TerrainDataElement>().ToList();
+        terrainDataList.ForEach(terrainData =>
+        {
+            terrainData.IconId = iconDataElement.Id;
+            terrainData.iconPath = iconDataElement.Path;
+        });
+
         DataEditor.UpdateEditor();
     }
 
     #endregion
 
     #region Segment
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
+    }
 
     public void InitializeSegment()
     {
-        InitializeDependencies();
-
-        InitializeData();
-
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
-
-    public void InitializeData()
-    {
-        terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
-    }
+    
+    public void InitializeData() { }
 
     public void OpenSegment()
     {
-        idText.text = terrainData.id.ToString();
-
-        inputField.text = terrainData.Name;
+        idText.text = TerrainData.Id.ToString();
+        inputField.text = TerrainData.Name;
 
         var iconDataElement = new IconDataElement();
 
-        iconDataElement.id = terrainData.IconId;
-        iconDataElement.Path = terrainData.iconPath;
+        iconDataElement.Id = TerrainData.IconId;
+        iconDataElement.Path = TerrainData.iconPath;
 
-        iconDataElement.baseIconPath = terrainData.baseTilePath;
+        iconDataElement.baseIconPath = TerrainData.baseTilePath;
 
         iconDataElement.SelectionElement = selectionElement;
 
@@ -93,11 +90,6 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         selectionElement.SetElement();
 
         gameObject.SetActive(true);
-    }
-
-    public void ApplySegment()
-    {
-
     }
 
     public void CloseSegment()

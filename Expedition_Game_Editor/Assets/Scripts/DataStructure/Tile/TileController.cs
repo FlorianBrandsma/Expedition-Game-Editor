@@ -7,7 +7,7 @@ public class TileController : MonoBehaviour, IDataController
 {
     public Search.Tile searchParameters;
 
-    private TileDataManager tileDataManager = new TileDataManager();
+    private TileDataManager tileDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class TileController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Tile>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public TileController()
     {
-        tileDataManager.InitializeManager(this);
+        tileDataManager = new TileDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

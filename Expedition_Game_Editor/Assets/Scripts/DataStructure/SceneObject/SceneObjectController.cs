@@ -7,7 +7,7 @@ public class SceneObjectController : MonoBehaviour, IDataController
 {
     public Search.ObjectGraphic searchParameters;
 
-    public SceneObjectDataManager sceneObjectDataManager = new SceneObjectDataManager();
+    public SceneObjectDataManager sceneObjectDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class SceneObjectController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.ObjectGraphic>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public SceneObjectController()
     {
-        sceneObjectDataManager.InitializeManager(this);
+        sceneObjectDataManager = new SceneObjectDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
@@ -42,7 +42,7 @@ public class SceneObjectController : MonoBehaviour, IDataController
 
                 var resultElementData = (ObjectGraphicDataElement)resultData;
 
-                sceneObjectData.ObjectGraphicId = resultElementData.id;
+                sceneObjectData.ObjectGraphicId = resultElementData.Id;
                 sceneObjectData.objectGraphicName = resultElementData.Name;
                 sceneObjectData.objectGraphicIconPath = resultElementData.iconPath;
                 sceneObjectData.objectGraphicPath = resultElementData.Path;

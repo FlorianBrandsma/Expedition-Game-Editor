@@ -32,6 +32,8 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
 
+    public Color ElementColor { set { } }
+
     public void InitializeElement()
     {
         multiGridProperties = (MultiGridProperties)Element.DisplayManager.Display.Properties;
@@ -83,14 +85,14 @@ public class EditorMultiGrid : MonoBehaviour, IElement
                 iconPath = dataElement.originalIconPath; 
         }
 
-        id = dataElement.id;
+        id = dataElement.Id;
         header = dataElement.Name;
         baseTilePath = dataElement.baseTilePath;
     }
 
     private void SetTerrainTileData(TerrainDataElement terrainData)
     {
-        dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileDataElement>().Where(x => x.TerrainId == terrainData.id).Distinct().Cast<IDataElement>().ToList();
+        dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileDataElement>().Where(x => x.TerrainId == terrainData.Id).Distinct().Cast<IDataElement>().ToList();
 
         var searchParameters = multiGridProperties.SecondaryDataController.SearchParameters.Cast<Search.Tile>().FirstOrDefault();
         searchParameters.elementType = Enums.ElementType.CompactTile;
@@ -128,7 +130,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.id;
+            element.name = generalData.DebugName + generalData.Id;
             //
 
             SetElement(element);
@@ -139,7 +141,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
+        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = multiGridProperties.elementSize;
 

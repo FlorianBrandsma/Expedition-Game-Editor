@@ -4,26 +4,19 @@ using System.Linq;
 
 public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 {
+    private QuestEditor QuestEditor { get { return (QuestEditor)DataEditor; } }
+
     private DataManager dataManager = new DataManager();
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    private InteractableController ElementController { get { return (InteractableController)SegmentController.DataController; } }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
+    
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
@@ -33,35 +26,20 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        var questEditor = (QuestEditor)DataEditor;
-
-        if (questEditor.questInteractableDataList.Count > 0) return;
-
-        var questData = (QuestDataElement)DataEditor.Data.dataElement;
+        if (DataEditor.Loaded) return;
 
         var searchParameters = new Search.PhaseInteractable();
 
         searchParameters.requestType = Search.PhaseInteractable.RequestType.Custom;
-        searchParameters.phaseId = new List<int>() { questData.PhaseId };
+        searchParameters.phaseId = new List<int>() { QuestEditor.QuestData.PhaseId };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
-
-        questInteractableList.ForEach(x => questEditor.questInteractableDataList.Add(x));
+        questInteractableList.ForEach(x => QuestEditor.questInteractableDataList.Add(x));
     }
 
-    private void SetSearchParameters()
-    {
-        //QuestDataElement questData = DataEditor.Data.ElementData.Cast<QuestDataElement>().FirstOrDefault();
-        //var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Element>().FirstOrDefault();
-
-        ////Out of all the elements, select only those that are not in this list
-        //var idList = SegmentController.DataController.DataList.Cast<QuestElementDataElement>().Select(x => x.ElementId).ToList();
-        //var list = dataManager.GetElementData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
-
-        //searchParameters.id = list;
-    }
+    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {
@@ -71,10 +49,10 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
+    public void CloseSegment() { }
+
     public void SetSearchResult(SelectionElement selectionElement)
     {
-        var questData = (QuestDataElement)DataEditor.Data.dataElement;
-
         DataEditor.UpdateEditor();
 
         SetSearchParameters();

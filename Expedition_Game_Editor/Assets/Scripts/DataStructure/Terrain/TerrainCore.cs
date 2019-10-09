@@ -7,12 +7,10 @@ public class TerrainCore : GeneralData
     private int iconId;
     private string name;
 
-    public int originalIndex;
     public int originalRegionId;
     public int originalIconId;
     public string originalName;
 
-    private bool changedIndex;
     private bool changedRegionId;
     private bool changedIconId;
     private bool changedName;
@@ -26,21 +24,6 @@ public class TerrainCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int RegionId
     {
@@ -85,14 +68,11 @@ public class TerrainCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var terrainData = Fixtures.terrainList.Where(x => x.id == id).FirstOrDefault();
+        var terrainData = Fixtures.terrainList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedIconId)
             terrainData.iconId = iconId;
@@ -125,10 +105,7 @@ public class TerrainCore : GeneralData
         changedName = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

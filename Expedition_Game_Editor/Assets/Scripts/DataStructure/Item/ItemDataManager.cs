@@ -13,7 +13,7 @@ public class ItemDataManager
 
     private DataManager dataManager = new DataManager();
 
-    public void InitializeManager(ItemController itemController)
+    public ItemDataManager(ItemController itemController)
     {
         this.itemController = itemController;
     }
@@ -27,14 +27,14 @@ public class ItemDataManager
         GetIconData();
 
         var list = (from itemData in itemDataList
-                    join objectGraphicData in objectGraphicDataList on itemData.objectGraphicId equals objectGraphicData.id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join objectGraphicData in objectGraphicDataList on itemData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new ItemDataElement()
                     {
                         dataType = Enums.DataType.Item,
 
-                        id = itemData.id,
-                        index = itemData.index,
+                        Id = itemData.Id,
+                        Index = itemData.Index,
 
                         Type = itemData.type,
                         ObjectGraphicId = itemData.objectGraphicId,
@@ -56,13 +56,13 @@ public class ItemDataManager
 
         foreach(Fixtures.Item item in Fixtures.itemList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(item.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(item.Id)) continue;
             if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
 
             var itemData = new ItemData();
 
-            itemData.id = item.id;
-            itemData.index = item.index;
+            itemData.Id = item.Id;
+            itemData.Index = item.Index;
 
             itemData.type = item.type;
             itemData.objectGraphicId = item.objectGraphicId;

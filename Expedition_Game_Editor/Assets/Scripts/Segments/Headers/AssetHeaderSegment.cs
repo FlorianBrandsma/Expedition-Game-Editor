@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class AssetHeaderSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
     #region UI
@@ -36,15 +37,21 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    var itemData    = (ItemDataElement)DataEditor.Data.dataElement;
-                    itemData.Name   = value;
+                    var itemDataList = DataEditor.DataList.Cast<ItemDataElement>().ToList();
+                    itemDataList.ForEach(itemData =>
+                    {
+                        itemData.Name = value;
+                    });
 
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData     = (InteractableDataElement)DataEditor.Data.dataElement;
-                    interactableData.Name    = value;
+                    var interactableDataList = DataEditor.DataList.Cast<InteractableDataElement>().ToList();
+                    interactableDataList.ForEach(interactableData =>
+                    {
+                        interactableData.Name = value;
+                    });
 
                     break;
             }
@@ -55,7 +62,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         set
         {
-            objectGraphicId    = value.id;
+            objectGraphicId    = value.Id;
             objectGraphicPath  = value.Path;
             objectGraphicIconPath  = value.iconPath;
 
@@ -63,19 +70,25 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    var itemData                = (ItemDataElement)DataEditor.Data.dataElement;
-                    itemData.ObjectGraphicId    = value.id;
-                    itemData.objectGraphicPath  = value.Path;
-                    itemData.objectGraphicIconPath  = value.iconPath;
-
+                    var itemDataList = DataEditor.DataList.Cast<ItemDataElement>().ToList();
+                    itemDataList.ForEach(itemData => 
+                    {
+                        itemData.ObjectGraphicId = value.Id;
+                        itemData.objectGraphicPath = value.Path;
+                        itemData.objectGraphicIconPath = value.iconPath;
+                    });
+                    
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData                 = (InteractableDataElement)DataEditor.Data.dataElement;
-                    interactableData.ObjectGraphicId     = value.id;
-                    interactableData.objectGraphicPath   = value.Path;
-                    interactableData.objectGraphicIconPath   = value.iconPath;
+                    var interactableDataList = DataEditor.DataList.Cast<InteractableDataElement>().ToList();
+                    interactableDataList.ForEach(interactableData =>
+                    {
+                        interactableData.ObjectGraphicId = value.Id;
+                        interactableData.objectGraphicPath = value.Path;
+                        interactableData.objectGraphicIconPath = value.iconPath;
+                    });
 
                     break;
             }
@@ -108,38 +121,42 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Segment
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
+    }
 
     public void InitializeSegment()
     {
-        InitializeDependencies();
-
         InitializeData();
 
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
-        
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
-
+    
     public void InitializeData()
     {
+        InitializeDependencies();
+
+        if (DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Item:           InitializeItemData();           break;
             case Enums.DataType.Interactable:   InitializeInteractableData();   break;
         }
+
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
     }
 
     private void InitializeItemData()
     {
         var itemData        = (ItemDataElement)DataEditor.Data.dataElement;
 
-        id                  = itemData.id;
+        id                  = itemData.Id;
         index               = itemData.Index;
         assetName           = itemData.Name;
 
@@ -152,9 +169,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractableData()
     {
-        var interactableData     = (InteractableDataElement)DataEditor.Data.dataElement;
+        var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
 
-        id                  = interactableData.id;
+        id                  = interactableData.Id;
         index               = interactableData.Index;
         assetName           = interactableData.Name;
 
@@ -176,7 +193,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         var objectGraphicDataElement    = new ObjectGraphicDataElement();
 
-        objectGraphicDataElement.id     = objectGraphicId;
+        objectGraphicDataElement.Id     = objectGraphicId;
         objectGraphicDataElement.Path   = objectGraphicPath;
         objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
@@ -188,11 +205,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         selectionElement.SetElement();
 
         gameObject.SetActive(true);
-    }
-
-    public void ApplySegment()
-    {
-
     }
 
     public void CloseSegment()
@@ -218,6 +230,5 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             default: Debug.Log("CASE MISSING"); break;
         }
     }
-
     #endregion
 }

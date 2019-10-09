@@ -64,7 +64,6 @@ public class SearchController : MonoBehaviour
             default:                            dataController = null; Debug.Log("CASE MISSING:" + dataType);           break;
         }
 
-        dataController.InitializeController();
         dataController.SearchParameters = data.searchParameters;
     }
 

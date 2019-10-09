@@ -41,13 +41,13 @@ public class EditorManager : MonoBehaviour
             PreviousEditor();
     }
 
-    public void InitializePath(Path path, bool returning = false, bool reload = false)
+    public void InitializePath(Path path, bool returning = false)
     {
         historyManager.returned = returning;
 
         SelectionManager.CancelGetSelection();
 
-        path.form.InitializePath(path, reload);
+        path.form.InitializePath(path);
 
         SelectionManager.SelectElements();
     }
@@ -75,7 +75,7 @@ public class EditorManager : MonoBehaviour
         str += "\n";
 
         for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].GeneralData.dataType + "-" + path.route[i].GeneralData.id + "/";
+            str += path.route[i].GeneralData.dataType + "-" + path.route[i].GeneralData.Id + "/";
 
         return str;
     }

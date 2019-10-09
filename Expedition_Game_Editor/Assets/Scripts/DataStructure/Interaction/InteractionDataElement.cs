@@ -8,6 +8,9 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public InteractionDataElement() : base() { }
 
+    public int questId;
+    public int objectiveId;
+
     public int objectGraphicId;
     public string objectGraphicPath;
 

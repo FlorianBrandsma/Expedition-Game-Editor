@@ -118,6 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 1000010628735380}
+  mesh:
+  - {fileID: 1000010628735380}
   pivot: 2
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 70, y: 70, z: 70}

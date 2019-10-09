@@ -12,7 +12,7 @@ public class TerrainTileDataManager
 
     private List<DataManager.TileData> tileDataList;
 
-    public void InitializeManager(TerrainTileController terrainTileController)
+    public TerrainTileDataManager(TerrainTileController terrainTileController)
     {
         this.terrainTileController = terrainTileController;
     }
@@ -25,13 +25,13 @@ public class TerrainTileDataManager
         GetTileData();
 
         var list = (from terrainTileData in terrainTileDataList
-                    join tileData in tileDataList on terrainTileData.tileId equals tileData.id
+                    join tileData in tileDataList on terrainTileData.tileId equals tileData.Id
                     select new TerrainTileDataElement()
                     {
                         dataType = Enums.DataType.TerrainTile,
 
-                        id = terrainTileData.id,
-                        index = terrainTileData.index,
+                        Id = terrainTileData.Id,
+                        Index = terrainTileData.Index,
 
                         TerrainId = terrainTileData.terrainId,
                         TileId = terrainTileData.tileId,
@@ -51,18 +51,18 @@ public class TerrainTileDataManager
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.Id)) continue;
             if (searchParameters.regionId.Count > 0)
             {
-                var terrain = Fixtures.terrainList.Where(x => x.id == terrainTile.terrainId).FirstOrDefault();
+                var terrain = Fixtures.terrainList.Where(x => x.Id == terrainTile.terrainId).FirstOrDefault();
 
                 if(!searchParameters.regionId.Contains(terrain.regionId)) continue;
             }
 
             var terrainTileData = new TerrainTileData();
 
-            terrainTileData.id = terrainTile.id;
-            terrainTileData.index = terrainTile.index;
+            terrainTileData.Id = terrainTile.Id;
+            terrainTileData.Index = terrainTile.Index;
 
             terrainTileData.terrainId = terrainTile.terrainId;
             terrainTileData.tileId = terrainTile.tileId;

@@ -1750,6 +1750,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce6baff9f7899643b55869314229725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments:
+  - {fileID: 226968967}
+  - {fileID: 537698597}
   regionDataList: []
 --- !u!1 &60888134
 GameObject:
@@ -3287,7 +3290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 952472124}
   segmentName: Terrain
@@ -3297,7 +3299,6 @@ MonoBehaviour:
   editorElements:
   - {fileID: 135347209}
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &123624108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4416,7 +4417,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 1
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -4425,7 +4425,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &157412616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6044,7 +6043,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 153970158}
   segmentName: Regions
@@ -6053,7 +6051,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &226968968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6193,6 +6190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f935566382df86143a0d597b07196d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
   questInteractableDataList: []
 --- !u!1 &233668291
 GameObject:
@@ -6916,6 +6914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09196c56e12120d40a086b0f388d74b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &265026729
 GameObject:
   m_ObjectHideFlags: 0
@@ -7061,7 +7060,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 1
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -7070,7 +7068,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &267928741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10012,6 +10009,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca2f63b97421ec4aad4e5c1db4dd348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments:
+  - {fileID: 1674728137}
+  - {fileID: 1158307203}
+  - {fileID: 1117863451}
+  - {fileID: 537698597}
   partyMemberDataList: []
   sceneInteractableDataList: []
   chapterRegionDataList: []
@@ -12158,7 +12160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 1257196728}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -12167,7 +12168,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &527584521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13559,7 +13559,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
-  background: {fileID: 0}
   disableSpawn: 1
   parent: {fileID: 0}
   child: {fileID: 0}
@@ -14409,7 +14408,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -14418,7 +14416,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!1001 &651028458
 Prefab:
   m_ObjectHideFlags: 0
@@ -15902,7 +15899,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 214173466}
   segmentName: Interactables
@@ -15911,7 +15907,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &686303416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17329,7 +17324,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -17338,7 +17332,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &762467505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17856,7 +17849,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 1
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -17865,7 +17857,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &779831816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17970,7 +17961,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -17979,7 +17969,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &783246984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18332,7 +18321,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 809998677}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -18341,7 +18329,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &795438776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19309,7 +19296,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -19318,7 +19304,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &848345539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19524,6 +19509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86d3428a50718548b057eb4b04a566a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &853257310
 GameObject:
   m_ObjectHideFlags: 0
@@ -20722,7 +20708,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -20731,7 +20716,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &899072711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20957,6 +20941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ff49f75a1fbd243a6347309d140473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &908652694
 GameObject:
   m_ObjectHideFlags: 0
@@ -22371,7 +22356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -22380,7 +22364,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &959242522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25306,6 +25289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2873e1b5c22874ab3d2fb747e789a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1001 &1089539641
 Prefab:
   m_ObjectHideFlags: 0
@@ -26153,7 +26137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 1580393937}
   segmentName: Regions
@@ -26162,7 +26145,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1117863452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27343,16 +27325,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 423150525}
   segmentName: Interactables
   header: {fileID: 1240155048}
   segmentGroup: []
-  siblingSegment: {fileID: 1674728137}
+  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1158307204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28484,6 +28464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a389e7a4b86877e4ea56d6ce2b0d4dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &1226603123
 GameObject:
   m_ObjectHideFlags: 0
@@ -29315,6 +29296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd58bce32dd05441be96121b2fec5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &1246982537
 GameObject:
   m_ObjectHideFlags: 0
@@ -29846,7 +29828,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
-  background: {fileID: 0}
   disableSpawn: 1
   parent: {fileID: 0}
   child: {fileID: 0}
@@ -30621,7 +30602,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 1105893786}
   segmentName: Result
@@ -30630,7 +30610,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1270903439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32935,7 +32914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 1
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -32944,7 +32922,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1338035986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33226,7 +33203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -33235,7 +33211,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!1 &1358024922
 GameObject:
   m_ObjectHideFlags: 0
@@ -36915,7 +36890,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -36924,7 +36898,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1511168228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37892,7 +37865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 1799468507}
   segmentName: Edit
@@ -37901,7 +37873,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!1 &1553673200
 GameObject:
   m_ObjectHideFlags: 0
@@ -37981,7 +37952,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 1522126382}
   segmentName: Interactables
@@ -37990,7 +37960,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1553673204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41677,16 +41646,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 2102175943}
   segmentName: Members
   header: {fileID: 1521687042}
   segmentGroup: []
-  siblingSegment: {fileID: 1158307203}
+  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1674728138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41924,6 +41891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff49b981388ee54f862f394219a26ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
 --- !u!1 &1682946508
 GameObject:
   m_ObjectHideFlags: 0
@@ -44012,7 +43980,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 2135834310}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -44021,7 +43988,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1791099887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44723,6 +44689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be45bd8b5c0734e9bc26faeb098846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorSegments: []
   sceneInteractableDataList: []
 --- !u!224 &1804515258 stripped
 RectTransform:
@@ -45420,7 +45387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -45429,7 +45395,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1849985780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46492,7 +46457,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -46501,7 +46465,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1902833974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46831,7 +46794,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 1
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -46840,7 +46802,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &1919670064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47831,7 +47792,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -47840,7 +47800,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!224 &1965906595 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000011456036948, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -49108,7 +49067,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -49117,7 +49075,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &2016447748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50365,7 +50322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataControllerParent: {fileID: 0}
-  loadOnce: 0
   enableToggle: 0
   editorToggle: {fileID: 0}
   segmentName: 
@@ -50374,7 +50330,6 @@ MonoBehaviour:
   siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
-  loaded: 0
 --- !u!114 &2077475959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51889,7 +51844,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
-  background: {fileID: 0}
   disableSpawn: 1
   parent: {fileID: 0}
   child: {fileID: 0}

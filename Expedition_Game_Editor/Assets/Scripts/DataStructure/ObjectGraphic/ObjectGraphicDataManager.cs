@@ -12,7 +12,7 @@ public class ObjectGraphicDataManager
 
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(ObjectGraphicController objectGraphicController)
+    public ObjectGraphicDataManager(ObjectGraphicController objectGraphicController)
     {
         this.objectGraphicController = objectGraphicController;
     }
@@ -25,12 +25,12 @@ public class ObjectGraphicDataManager
         GetIconData();
 
         var list = (from objectGraphicData in objectGraphicDataList
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new ObjectGraphicDataElement()
                     {
                         dataType = Enums.DataType.ObjectGraphic,
 
-                        id = objectGraphicData.id,
+                        Id = objectGraphicData.Id,
                         
                         Name = objectGraphicData.name,
                         Path = objectGraphicData.path,
@@ -38,7 +38,7 @@ public class ObjectGraphicDataManager
                         iconPath = iconData.path,
                         category = iconData.category
 
-                    }).OrderByDescending(x => x.id == 1).ThenBy(x => x.category).ThenBy(x => x.Name).ToList();
+                    }).OrderByDescending(x => x.Id == 1).ThenBy(x => x.category).ThenBy(x => x.Name).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -51,11 +51,11 @@ public class ObjectGraphicDataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.Id)) continue;
 
             var objectGraphicData = new ObjectGraphicData();
 
-            objectGraphicData.id = objectGraphic.id;
+            objectGraphicData.Id = objectGraphic.Id;
 
             objectGraphicData.name = objectGraphic.name;
             objectGraphicData.path = objectGraphic.path;

@@ -7,7 +7,7 @@ public class ObjectiveController : MonoBehaviour, IDataController
 {
     public Search.Objective searchParameters;
 
-    private ObjectiveDataManager objectiveDataManager = new ObjectiveDataManager();
+    private ObjectiveDataManager objectiveDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class ObjectiveController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Objective>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public ObjectiveController()
     {
-        objectiveDataManager.InitializeManager(this);
+        objectiveDataManager = new ObjectiveDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

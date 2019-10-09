@@ -265,9 +265,9 @@ static public class Fixtures
     {
         var icon = new Icon();
 
-        int id = iconList.Count > 0 ? (iconList[iconList.Count - 1].id + 1) : 1;
+        int id = iconList.Count > 0 ? (iconList[iconList.Count - 1].Id + 1) : 1;
 
-        icon.id = id;
+        icon.Id = id;
         icon.category = (int)category;
         icon.path = path;
 
@@ -308,9 +308,9 @@ static public class Fixtures
     {
         var objectGraphic = new ObjectGraphic();
 
-        int id = objectGraphicList.Count > 0 ? (objectGraphicList[objectGraphicList.Count - 1].id + 1) : 1;
+        int id = objectGraphicList.Count > 0 ? (objectGraphicList[objectGraphicList.Count - 1].Id + 1) : 1;
 
-        objectGraphic.id = id;
+        objectGraphic.Id = id;
         objectGraphic.iconId = iconId;
         objectGraphic.name = name;
         objectGraphic.path = "Objects/" + name;
@@ -330,9 +330,9 @@ static public class Fixtures
     {
         var tileSet = new TileSet();
 
-        int id = tileSetList.Count > 0 ? (tileSetList[tileSetList.Count - 1].id + 1) : 1;
+        int id = tileSetList.Count > 0 ? (tileSetList[tileSetList.Count - 1].Id + 1) : 1;
 
-        tileSet.id = id;
+        tileSet.Id = id;
         tileSet.name = name;
         tileSet.tileSize = 31.75f;
 
@@ -349,10 +349,10 @@ static public class Fixtures
             {
                 var tile = new Tile();
 
-                int id = tileList.Count > 0 ? (tileList[tileList.Count - 1].id + 1) : 1;
+                int id = tileList.Count > 0 ? (tileList[tileList.Count - 1].Id + 1) : 1;
 
-                tile.id = id;
-                tile.tileSetId = tileSet.id;
+                tile.Id = id;
+                tile.tileSetId = tileSet.Id;
                 tile.iconPath = "Textures/Tiles/" + tileSet.name + "/" + i;
 
                 tileList.Add(tile);
@@ -377,12 +377,12 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
-            item.id = id;
+            item.Id = id;
 
             item.type = (int)Enums.ItemType.Supplies;
-            item.index = index;
+            item.Index = index;
 
             item.objectGraphicId = 1;
             item.name = "Item " + id;
@@ -403,12 +403,12 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
-            item.id = id;
+            item.Id = id;
 
             item.type = (int)Enums.ItemType.Gear;
-            item.index = index;
+            item.Index = index;
 
             item.objectGraphicId = gearList[i];
             item.name = "Item " + id;
@@ -427,12 +427,12 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
-            item.id = id;
+            item.Id = id;
 
             item.type = (int)Enums.ItemType.Spoils;
-            item.index = index;
+            item.Index = index;
 
             item.objectGraphicId = 1;
             item.name = "Item " + id;
@@ -453,8 +453,8 @@ static public class Fixtures
 
             int id = (i + 1);
 
-            interactable.id = id;
-            interactable.index = i;
+            interactable.Id = id;
+            interactable.Index = i;
 
             interactable.objectGraphicId = objectList[i];
             interactable.name = "Interactable " + id;
@@ -469,10 +469,10 @@ static public class Fixtures
         {
             var region = new Region();
 
-            int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
+            int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
 
-            region.id = id;
-            region.index = i;
+            region.Id = id;
+            region.Index = i;
 
             region.chapterRegionId = 0;
             region.phaseId = 0;
@@ -493,12 +493,12 @@ static public class Fixtures
             {
                 var terrain = new Terrain();
 
-                int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
+                int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
 
-                terrain.id = id;
-                terrain.index = i;
+                terrain.Id = id;
+                terrain.Index = i;
 
-                terrain.regionId = region.id;
+                terrain.regionId = region.Id;
                 terrain.iconId = 1;
                 terrain.name = "Terrain " + (i + 1);
 
@@ -511,20 +511,20 @@ static public class Fixtures
     {
         foreach(Terrain terrain in terrainList)
         {
-            var regionData = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+            var regionData = regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
             var tileData = tileList.Where(x => x.tileSetId == regionData.tileSetId).ToList();
 
             for (int i = 0; i < (regionData.terrainSize * regionData.terrainSize); i++)
             {
                 var terrainTile = new TerrainTile();
 
-                int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
+                int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
 
-                terrainTile.id = id;
-                terrainTile.index = i;
+                terrainTile.Id = id;
+                terrainTile.Index = i;
 
-                terrainTile.terrainId = terrain.id;
-                terrainTile.tileId = tileData.FirstOrDefault().id;
+                terrainTile.terrainId = terrain.Id;
+                terrainTile.tileId = tileData.FirstOrDefault().Id;
 
                 terrainTileList.Add(terrainTile);
             }
@@ -535,28 +535,28 @@ static public class Fixtures
     {
         foreach (Region region in regionList)
         {
-            var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
+            var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
             var middleTerrain = terrains[terrains.Count / 2];
-            var terrainTiles = terrainTileList.Where(x => x.terrainId == (middleTerrain.id)).Distinct().ToList();
+            var terrainTiles = terrainTileList.Where(x => x.terrainId == (middleTerrain.Id)).Distinct().ToList();
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateSceneObject(16, region.id, new Vector3(245f, 215f, 0f), new Vector3(0, 0, 0));
+            CreateSceneObject(16, region.Id, new Vector3(245f, 215f, 0f), new Vector3(0, 0, 0));
 
             /*Rock*/
-            CreateSceneObject(17, region.id, new Vector3(230f, 210f, 0f), new Vector3(0, 0, 180f));
+            CreateSceneObject(17, region.Id, new Vector3(230f, 210f, 0f), new Vector3(0, 0, 180f));
 
             /*Cactus*/
-            CreateSceneObject(18, region.id, new Vector3(247.5f, 210f, 0f), new Vector3(0, 0, 0));
+            CreateSceneObject(18, region.Id, new Vector3(247.5f, 210f, 0f), new Vector3(0, 0, 0));
             //15,875‬
             /*Red warrior*/
-            CreateSceneInteractable(1, region.id, new Vector3(238.125f, 208.125f, 0.1f), new Vector3(0, 0, 0));
+            CreateSceneInteractable(1, region.Id, new Vector3(238.125f, 208.125f, 0.1f), new Vector3(0, 0, 0));
 
             /*Ranger*/
-            CreateSceneInteractable(4, region.id, new Vector3(235.625f, 210.625f, 0.2f), new Vector3(0, 0, 125));
+            CreateSceneInteractable(4, region.Id, new Vector3(235.625f, 210.625f, 0.2f), new Vector3(0, 0, 125));
 
             /*Mage*/
-            CreateSceneInteractable(5, region.id, new Vector3(240.625f, 210.625f, 0f), new Vector3(0, 0, 235));
+            CreateSceneInteractable(5, region.Id, new Vector3(240.625f, 210.625f, 0f), new Vector3(0, 0, 235));
         }
     }
 
@@ -564,9 +564,9 @@ static public class Fixtures
     {
         var sceneInteractable = new SceneInteractable();
 
-        int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
+        int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].Id + 1) : 1;
 
-        sceneInteractable.id = id;
+        sceneInteractable.Id = id;
         sceneInteractable.interactableId = interactableId;
 
         CreateInteraction(sceneInteractable, regionId, position, rotation);
@@ -580,10 +580,10 @@ static public class Fixtures
     {
         var interaction = new Interaction();
 
-        int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
+        int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
 
-        interaction.id = id;
-        interaction.sceneInteractableId = sceneInteractable.id;
+        interaction.Id = id;
+        interaction.sceneInteractableId = sceneInteractable.Id;
         interaction.regionId = regionId;
 
         interaction.description = "Talk to {" + sceneInteractable.interactableId + "}";
@@ -608,9 +608,9 @@ static public class Fixtures
     {
         var sceneObject = new SceneObject();
 
-        int id = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].id + 1) : 1;
+        int id = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].Id + 1) : 1;
 
-        sceneObject.id = id;
+        sceneObject.Id = id;
         sceneObject.objectGraphicId = objectGraphicId;
         sceneObject.regionId = regionId;
         
@@ -634,7 +634,7 @@ static public class Fixtures
     {
         List<int> randomInteractables = new List<int>();
 
-        interactableList.ForEach(x => randomInteractables.Add(x.id));
+        interactableList.ForEach(x => randomInteractables.Add(x.Id));
 
         for (int i = 0; i < chapters; i++)
         {
@@ -642,8 +642,8 @@ static public class Fixtures
 
             int id = (i + 1);
 
-            chapter.id = id;
-            chapter.index = i;
+            chapter.Id = id;
+            chapter.Index = i;
 
             int randomInteractable = Random.Range(0, randomInteractables.Count);
 
@@ -662,17 +662,17 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var sceneInteractableIds = sceneInteractableList.Where(x => x.chapterId == chapter.id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !sceneInteractableIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.id));
+            var sceneInteractableIds = sceneInteractableList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
+            interactableList.Where(x => !sceneInteractableIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
 
             for (int i = 0; i < partyMembersInChapter; i++)
             {
                 var partyMember = new PartyMember();
 
-                int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].id + 1) : 1;
+                int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].Id + 1) : 1;
 
-                partyMember.id = id;
-                partyMember.chapterId = chapter.id;
+                partyMember.Id = id;
+                partyMember.chapterId = chapter.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
 
@@ -691,17 +691,17 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var partyMemberIds = partyMemberList.Where(x => x.chapterId == chapter.id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !partyMemberIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.id));
+            var partyMemberIds = partyMemberList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
+            interactableList.Where(x => !partyMemberIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
 
             for (int i = 0; i < worldInteractablesInChapter; i++)
             {
                 var chapterInteractable = new SceneInteractable();
 
-                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
+                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].Id + 1) : 1;
 
-                chapterInteractable.id = id;
-                chapterInteractable.chapterId = chapter.id;
+                chapterInteractable.Id = id;
+                chapterInteractable.chapterId = chapter.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
 
@@ -720,7 +720,7 @@ static public class Fixtures
         {
             List<int> randomRegions = new List<int>();
 
-            regionList.ForEach(x => randomRegions.Add(x.id));
+            regionList.ForEach(x => randomRegions.Add(x.Id));
 
             //int randomRegionAmount = Random.Range(1, regionList.Count + 1);
 
@@ -728,12 +728,12 @@ static public class Fixtures
             {
                 var chapterRegion = new ChapterRegion();
 
-                int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].id + 1) : 1;
+                int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].Id + 1) : 1;
 
-                chapterRegion.id = id;
-                chapterRegion.index = i;
+                chapterRegion.Id = id;
+                chapterRegion.Index = i;
 
-                chapterRegion.chapterId = chapter.id;
+                chapterRegion.chapterId = chapter.Id;
 
                 int randomRegion = Random.Range(0, randomRegions.Count);
 
@@ -754,14 +754,14 @@ static public class Fixtures
             {
                 var phase = new Phase();
 
-                int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].id + 1) : 1;
+                int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].Id + 1) : 1;
 
-                phase.id = id;
-                phase.index = i;
+                phase.Id = id;
+                phase.Index = i;
 
-                phase.chapterId = chapter.id;
+                phase.chapterId = chapter.Id;
                 phase.name = "Phase " + (i + 1);
-                phase.notes = "I belong to Chapter " + chapter.id + ". This is definitely a test";
+                phase.notes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
 
                 phaseList.Add(phase);
             }
@@ -774,17 +774,17 @@ static public class Fixtures
         {
             foreach(ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
             {
-                var regionSource = regionList.Where(x => x.id == chapterRegion.regionId).FirstOrDefault();
+                var regionSource = regionList.Where(x => x.Id == chapterRegion.regionId).FirstOrDefault();
 
                 var region = new Region();
 
-                int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
+                int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
 
-                region.id = regionId;
-                region.phaseId = phase.id;
-                region.chapterRegionId = chapterRegion.id;
+                region.Id = regionId;
+                region.phaseId = phase.Id;
+                region.chapterRegionId = chapterRegion.Id;
 
-                region.index = chapterRegion.index;
+                region.Index = chapterRegion.Index;
                 region.tileSetId = regionSource.tileSetId;
 
                 region.name = regionSource.name;
@@ -793,36 +793,36 @@ static public class Fixtures
 
                 regionList.Add(region);
 
-                var sceneInteractableSourceList = sceneInteractableList.Where(x => interactionList.Where(y => y.regionId == regionSource.id).Select(y => y.sceneInteractableId).Contains(x.id)).Distinct().ToList();
+                var sceneInteractableSourceList = sceneInteractableList.Where(x => interactionList.Where(y => y.regionId == regionSource.Id).Select(y => y.sceneInteractableId).Contains(x.Id)).Distinct().ToList();
                 
-                var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
+                var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
                 foreach (Terrain terrainSource in terrainSourceList)
                 {
                     var terrain = new Terrain();
 
-                    int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
+                    int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
 
-                    terrain.id = terrainId;
-                    terrain.regionId = region.id;
+                    terrain.Id = terrainId;
+                    terrain.regionId = region.Id;
 
-                    terrain.index = terrainSource.index;
+                    terrain.Index = terrainSource.Index;
 
                     terrain.iconId = terrainSource.iconId;
                     terrain.name = terrainSource.name;
                     
-                    var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.id).OrderBy(x => x.index).Distinct().ToList();
+                    var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
                     foreach(TerrainTile terrainTileSource in terrainTileSourceList)
                     {
                         var terrainTile = new TerrainTile();
                         
-                        int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
+                        int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
 
-                        terrainTile.id = terrainTileId;
-                        terrainTile.terrainId = terrain.id;
+                        terrainTile.Id = terrainTileId;
+                        terrainTile.terrainId = terrain.Id;
 
-                        terrainTile.index = terrainTileSource.index;
+                        terrainTile.Index = terrainTileSource.Index;
 
                         terrainTile.tileId = terrainTileSource.tileId;
                         
@@ -836,29 +836,29 @@ static public class Fixtures
                 {
                     var sceneInteractable = new SceneInteractable();
 
-                    int sceneInteractableId = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
+                    int sceneInteractableId = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].Id + 1) : 1;
 
-                    sceneInteractable.id = sceneInteractableId;
+                    sceneInteractable.Id = sceneInteractableId;
 
                     sceneInteractable.chapterId = sceneInteractableSource.chapterId;
                     sceneInteractable.objectiveId = sceneInteractableSource.objectiveId;
                     sceneInteractable.interactableId = sceneInteractableSource.interactableId;
                     sceneInteractable.interactionIndex = sceneInteractableSource.interactionIndex;
 
-                    var interactionSourceList = interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
+                    var interactionSourceList = interactionList.Where(x => x.sceneInteractableId == sceneInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
                     foreach (Interaction interactionSource in interactionSourceList)
                     {
                         var interaction = new Interaction();
 
-                        int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
+                        int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
 
-                        interaction.id = interactionId;
-                        interaction.sceneInteractableId = sceneInteractable.id;
+                        interaction.Id = interactionId;
+                        interaction.sceneInteractableId = sceneInteractable.Id;
                         interaction.objectiveId = interactionSource.objectiveId;
-                        interaction.regionId = region.id;
+                        interaction.regionId = region.Id;
 
-                        interaction.index = interactionSource.index;
+                        interaction.Index = interactionSource.Index;
                         interaction.description = interactionSource.description;
 
                         interaction.positionX = interactionSource.positionX;
@@ -880,16 +880,16 @@ static public class Fixtures
                     sceneInteractableList.Add(sceneInteractable);
                 }
 
-                var sceneObjectSourceList = sceneObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
+                var sceneObjectSourceList = sceneObjectList.Where(x => x.regionId == regionSource.Id).Distinct().ToList();
 
                 foreach (SceneObject sceneObjectSource in sceneObjectSourceList)
                 {
                     var sceneObject = new SceneObject();
 
-                    int sceneObjectId = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].id + 1) : 1;
+                    int sceneObjectId = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].Id + 1) : 1;
 
-                    sceneObject.id = sceneObjectId;
-                    sceneObject.regionId = region.id;
+                    sceneObject.Id = sceneObjectId;
+                    sceneObject.regionId = region.Id;
 
                     sceneObject.positionX = sceneObjectSource.positionX;
                     sceneObject.positionY = sceneObjectSource.positionY;
@@ -904,7 +904,7 @@ static public class Fixtures
 
                     sceneObject.scaleMultiplier = sceneObjectSource.scaleMultiplier;
 
-                    sceneObject.index = sceneObjectSource.index;
+                    sceneObject.Index = sceneObjectSource.Index;
                     sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
 
                     sceneObjectList.Add(sceneObject);
@@ -921,14 +921,14 @@ static public class Fixtures
             {
                 var quest = new Quest();
 
-                int id = questList.Count > 0 ? (questList[questList.Count - 1].id + 1) : 1;
+                int id = questList.Count > 0 ? (questList[questList.Count - 1].Id + 1) : 1;
 
-                quest.id = id;
-                quest.index = i;
+                quest.Id = id;
+                quest.Index = i;
 
-                quest.phaseId = phase.id;
+                quest.phaseId = phase.Id;
                 quest.name = "Quest " + (i + 1);
-                quest.notes = "I belong to Phase " + phase.id + ". This is definitely a test";
+                quest.notes = "I belong to Phase " + phase.Id + ". This is definitely a test";
 
                 questList.Add(quest);
             }
@@ -939,21 +939,21 @@ static public class Fixtures
     {
         foreach (Chapter chapter in chapterList)
         {
-            foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.id).Distinct().ToList())
+            foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.Id).Distinct().ToList())
             {
-                var chapterInteractables = sceneInteractableList.Where(x => x.chapterId == chapter.id).Distinct().ToList();
-                var questIds = questList.Where(x => x.phaseId == phase.id).Select(x => x.id).Distinct().ToList();
+                var chapterInteractables = sceneInteractableList.Where(x => x.chapterId == chapter.Id).Distinct().ToList();
+                var questIds = questList.Where(x => x.phaseId == phase.Id).Select(x => x.Id).Distinct().ToList();
 
                 for (int i = 0; i < chapterInteractables.Count; i++)
                 {
                     var phaseInteractable = new PhaseInteractable();
 
-                    int id = phaseInteractableList.Count > 0 ? (phaseInteractableList[phaseInteractableList.Count - 1].id + 1) : 1;
+                    int id = phaseInteractableList.Count > 0 ? (phaseInteractableList[phaseInteractableList.Count - 1].Id + 1) : 1;
 
-                    phaseInteractable.id = id;
+                    phaseInteractable.Id = id;
 
-                    phaseInteractable.phaseId = phase.id;
-                    phaseInteractable.sceneInteractableId = chapterInteractables[i].id;
+                    phaseInteractable.phaseId = phase.Id;
+                    phaseInteractable.sceneInteractableId = chapterInteractables[i].Id;
 
                     int randomQuestId = Random.Range(0, questIds.Count);
 
@@ -975,14 +975,14 @@ static public class Fixtures
             {
                 var objective = new Objective();
 
-                int id = objectiveList.Count > 0 ? (objectiveList[objectiveList.Count - 1].id + 1) : 1;
+                int id = objectiveList.Count > 0 ? (objectiveList[objectiveList.Count - 1].Id + 1) : 1;
 
-                objective.id = id;
-                objective.index = i;
+                objective.Id = id;
+                objective.Index = i;
 
-                objective.questId = quest.id;
+                objective.questId = quest.Id;
                 objective.name = "Objective " + (i + 1);
-                objective.notes = "I belong to Quest " + quest.id + ". This is definitely a test";
+                objective.notes = "I belong to Quest " + quest.Id + ". This is definitely a test";
 
                 objectiveList.Add(objective);
             }
@@ -995,18 +995,18 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            interactableList.ForEach(x => randomInteractables.Add(x.id));
+            interactableList.ForEach(x => randomInteractables.Add(x.Id));
 
             for(int i = 0; i < interactablesInObjective; i++)
             {
                 var objectiveInteractable = new SceneInteractable();
 
-                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].id + 1) : 1;
+                int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].Id + 1) : 1;
 
-                objectiveInteractable.id = id;
-                objectiveInteractable.index = i;
+                objectiveInteractable.Id = id;
+                objectiveInteractable.Index = i;
 
-                objectiveInteractable.objectiveId = objective.id;
+                objectiveInteractable.objectiveId = objective.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
                 objectiveInteractable.interactableId = randomInteractables[randomInteractable];
@@ -1021,9 +1021,9 @@ static public class Fixtures
         foreach (Objective objective in objectiveList)
         {
             var phaseInteractableSceneInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.sceneInteractableId).Distinct().ToList();
-            var sceneInteractables = sceneInteractableList.Where(x => phaseInteractableSceneInteractableIds.Contains(x.id) || x.objectiveId == objective.id).Distinct().ToList();
+            var sceneInteractables = sceneInteractableList.Where(x => phaseInteractableSceneInteractableIds.Contains(x.Id) || x.objectiveId == objective.Id).Distinct().ToList();
 
-            var phaseId = phaseList.Where(x => questList.Where(y => y.id == objective.questId).Select(y => y.phaseId).Contains(x.id)).Select(x => x.id).FirstOrDefault();
+            var phaseId = phaseList.Where(x => questList.Where(y => y.Id == objective.questId).Select(y => y.phaseId).Contains(x.Id)).Select(x => x.Id).FirstOrDefault();
             var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();
 
             foreach(SceneInteractable sceneInteractable in sceneInteractables)
@@ -1032,21 +1032,21 @@ static public class Fixtures
                 {
                     var interaction = new Interaction();
 
-                    int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
+                    int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
 
-                    interaction.id = id;
-                    interaction.index = i;
+                    interaction.Id = id;
+                    interaction.Index = i;
 
-                    interaction.objectiveId = objective.id;
-                    interaction.sceneInteractableId = sceneInteractable.id;
+                    interaction.objectiveId = objective.Id;
+                    interaction.sceneInteractableId = sceneInteractable.Id;
 
                     int randomRegion = Random.Range(0, regions.Count);
 
-                    interaction.regionId = regions[randomRegion].id;
+                    interaction.regionId = regions[randomRegion].Id;
 
                     var regionSize = GetRegionSize(interaction.regionId);
 
-                    interaction.description = "Basically a task description. Property of objective" + objective.id;
+                    interaction.description = "Basically a task description. Property of objective" + objective.Id;
 
                     interaction.positionX = Random.Range(0, (regionSize - 1));
                     interaction.positionY = Random.Range(0, (regionSize - 1));
@@ -1065,9 +1065,9 @@ static public class Fixtures
 
     static public float GetRegionSize(int regionId)
     {
-        var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
+        var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
 
         var regionSize = region.regionSize * region.terrainSize * tileSet.tileSize;
 
@@ -1076,9 +1076,9 @@ static public class Fixtures
 
     static public int GetTerrain(int regionId, float posX, float posY)
     {
-        var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
+        var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
 
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
@@ -1087,16 +1087,16 @@ static public class Fixtures
 
         var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainId = terrains.Where(x => x.index == terrainIndex).Select(x => x.id).FirstOrDefault();
+        var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
 
         return terrainId;
     }
 
     static public int GetTerrainTile(int terrainId, float posX, float posY)
     {
-        var terrain = terrainList.Where(x => x.id == terrainId).FirstOrDefault();
-        var region = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
+        var terrain = terrainList.Where(x => x.Id == terrainId).FirstOrDefault();
+        var region = regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
         
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
@@ -1116,7 +1116,7 @@ static public class Fixtures
 
         var tileIndex = (region.terrainSize * tileCoordinates.y) + tileCoordinates.x;
 
-        var terrainTileId = terrainTiles.Where(x => x.index == tileIndex).Select(x => x.id).FirstOrDefault();
+        var terrainTileId = terrainTiles.Where(x => x.Index == tileIndex).Select(x => x.Id).FirstOrDefault();
 
         return terrainTileId;
     }

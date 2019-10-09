@@ -4,63 +4,47 @@ using System.Linq;
 
 public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 {
+    private ChapterEditor ChapterEditor { get { return (ChapterEditor)DataEditor; } }
+
     private DataManager dataManager = new DataManager();
 
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    private InteractableController ElementController { get { return (InteractableController)SegmentController.DataController; } }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
+    
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
-        var chapterEditor = (ChapterEditor)DataEditor;
-
-        if (chapterEditor.partyMemberDataList.Count > 0) return;
-
-        var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
+        if (DataEditor.Loaded) return;
 
         var searchParameters = new Search.PartyMember();
 
         searchParameters.requestType = Search.PartyMember.RequestType.Custom;
-        searchParameters.chapterId = new List<int>() { chapterData.id };
+        searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
 
         var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberDataElement>().ToList();
-        partyMemberList.ForEach(x => chapterEditor.partyMemberDataList.Add(x));
+        partyMemberList.ForEach(x => ChapterEditor.partyMemberDataList.Add(x));
     }
 
     private void SetSearchParameters()
     {
-        var chapterEditor = (ChapterEditor)DataEditor;
-
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Interactable>().FirstOrDefault();
 
-        List<int> idList = new List<int>();
-        chapterEditor.partyMemberDataList.ForEach(x => idList.Add(x.InteractableId));
-        chapterEditor.sceneInteractableDataList.ForEach(x => idList.Add(x.InteractableId));
+        var idList = ChapterEditor.partyMemberDataList.Select(x => x.InteractableId).Union(
+                     ChapterEditor.sceneInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
 
-        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        //Find interactables where id is not in the list
+        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
 
         searchParameters.id = list;
     }
@@ -72,6 +56,8 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement)
     {

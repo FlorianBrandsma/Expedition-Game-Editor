@@ -6,11 +6,9 @@ public class TerrainTileCore : GeneralData
     private int terrainId;
     private int tileId;
 
-    public int originalIndex;
     public int originalTerrainId;
     public int originalTileId;
 
-    private bool changedIndex;
     private bool changedTerrainId;
     private bool changedTileId;
 
@@ -23,21 +21,6 @@ public class TerrainTileCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int TerrainId
     {
@@ -69,14 +52,11 @@ public class TerrainTileCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var terrainTileData = Fixtures.terrainTileList.Where(x => x.id == id).FirstOrDefault();
+        var terrainTileData = Fixtures.terrainTileList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedTerrainId)
             terrainTileData.terrainId = terrainId;
@@ -109,10 +89,7 @@ public class TerrainTileCore : GeneralData
         changedTileId = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

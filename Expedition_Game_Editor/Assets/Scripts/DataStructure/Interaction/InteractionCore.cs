@@ -42,8 +42,6 @@ public class InteractionCore : GeneralData
     public int originalAnimation;
 
 
-    private bool changedIndex;
-    
     private bool changedRegionId;
     private bool changedTerrainId;
     private bool changedTerrainTileId;
@@ -73,21 +71,6 @@ public class InteractionCore : GeneralData
     }
 
     #region Properties
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
-    }
 
     public int SceneInteractableId
     {
@@ -255,14 +238,11 @@ public class InteractionCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var interactionData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
+        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedRegionId)
             interactionData.regionId = regionId;
@@ -305,14 +285,13 @@ public class InteractionCore : GeneralData
 
     public void UpdateIndex()
     {
-        var interactionData = Fixtures.interactionList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            interactionData.index = index;
+        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
 
-            changedIndex = false;
-        }
+        interactionData.Index = Index;
+
+        changedIndex = false;
     }
 
     public virtual void SetOriginalValues()
@@ -360,8 +339,6 @@ public class InteractionCore : GeneralData
     public virtual void ClearChanges()
     {
         GetOriginalValues();
-
-        changedIndex = false;
         
         changedRegionId = false;
         changedTerrainId = false;
@@ -382,10 +359,7 @@ public class InteractionCore : GeneralData
         changedAnimation = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }

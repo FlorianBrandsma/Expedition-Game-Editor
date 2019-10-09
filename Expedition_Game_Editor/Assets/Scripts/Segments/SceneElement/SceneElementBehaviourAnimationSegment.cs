@@ -6,44 +6,38 @@ using System.Linq;
 public class SceneElementBehaviourAnimationSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
 
-    private InteractableController ElementController { get { return (InteractableController)SegmentController.DataController; } }
-
     #region UI
-
     public Dropdown dropdown;
-
     #endregion
 
-    public void ApplySegment() { }
+    #region Data Variables
+    #endregion
 
+    #region Properties
+    #endregion
+
+    #region Methods
+    #endregion
+
+    #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
-    public void InitializeData()
-    {
-        
-    }
+    public void InitializeData() { }
 
-    private void SetSearchParameters()
-    {
-        
-    }
+    private void SetSearchParameters() { }
 
     public void OpenSegment() { }
 
-    public void CloseSegment()
-    {
-        DataEditor.DataElements.ForEach(x => x.ClearChanges());
-    }
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
+    #endregion
 }

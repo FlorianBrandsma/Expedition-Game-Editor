@@ -1916,7 +1916,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 1000010448941352}
+  model: {fileID: 1000010448941352}
+  mesh:
+  - {fileID: 1000013077868026}
+  - {fileID: 1000013111644232}
+  - {fileID: 1000013811519408}
   pivot: 3
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 70, y: 70, z: 70}
@@ -1933,7 +1937,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c1d08837fb4feea4c80a61549151efe4, type: 2}
+  - {fileID: 2100000, guid: 32c4c085aaf16fd4f8e780400be0087b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

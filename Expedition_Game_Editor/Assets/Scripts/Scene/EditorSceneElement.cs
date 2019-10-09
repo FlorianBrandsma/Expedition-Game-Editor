@@ -1,12 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class EditorSceneElement : MonoBehaviour, IElement
 {
     private ObjectGraphic objectGraphic;
 
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
-    
+
+    public Color ElementColor
+    {
+        set
+        {
+            foreach(GameObject mesh in objectGraphic.mesh)
+            {
+                mesh.GetComponent<Renderer>().material.color = value;
+            }
+        }
+    }
+
     public void InitializeElement()
     {
         //properties = (PanelProperties)Element.DisplayManager.Display.Properties;

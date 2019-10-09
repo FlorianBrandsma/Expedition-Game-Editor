@@ -85,6 +85,9 @@ public class Enums
     {
         Enabled,
         Disabled,
-        Locked
+        Locked,
+        Hidden,
+        Related, 
+        Unrelated
     }
 }

@@ -4,14 +4,24 @@ using System.Linq;
 
 public class PhaseEditor : MonoBehaviour, IEditor
 {
-    private PhaseDataElement phaseData;
+    public PhaseDataElement PhaseData { get { return (PhaseDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
 
     public List<RegionDataElement> regionDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(PhaseData); }
+    }
 
     public List<IDataElement> DataElements
     {
@@ -19,48 +29,18 @@ public class PhaseEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            list.Add(phaseData);
+            DataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-
-        Data = PathController.route.data;
-
-        phaseData = (PhaseDataElement)Data.dataElement;
-        regionDataList.Clear();
-
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void UpdateIndex(int index)
-    {
-        var list = Data.dataController.DataList.Cast<PhaseDataElement>().ToList();
-
-        list.RemoveAt(phaseData.Index);
-        list.Insert(index, phaseData);
-
-        Data.dataController.DataList = list.Cast<IDataElement>().ToList();
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            list[i].Index = i;
-            list[i].UpdateIndex();
-        }
-
-        SelectionElementManager.UpdateElements(phaseData, true);
-    }
-
-    public void OpenEditor()
     {
         SetEditor();
     }
@@ -77,20 +57,21 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.ForEach(x => x.Update());
-
-        SelectionElementManager.UpdateElements(phaseData);
+        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        {
+            x.Update();
+            x.SelectionElement.UpdateElement();
+        });
 
         UpdateEditor();
     }
 
     public void CancelEdit()
     {
-        EditorManager.editorManager.PreviousEditor();
+        DataElements.ForEach(x => x.ClearChanges());
+
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-
-    }
+    public void CloseEditor() { }
 }

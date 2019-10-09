@@ -5,25 +5,19 @@ using System.Linq;
 
 public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController     { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                       { get; set; }
+    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
-    private InteractableController ElementController{ get { return (InteractableController)SegmentController.DataController; } }
+    public IEditor DataEditor { get; set; }
 
     #region UI
-
     public EditorInputNumber xInputField, yInputField, zInputField;
-
     #endregion
 
     #region Data Variables
-
     private int rotationX, rotationY, rotationZ;
-
     #endregion
 
     #region Data Properties
-
     public int RotationX
     {
         get { return rotationX; }
@@ -35,15 +29,21 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.RotationX = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.RotationX = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.RotationX = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.RotationX = value;
+                    });
 
                     break;
 
@@ -63,15 +63,21 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.RotationY = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.RotationY = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.RotationY = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.RotationY = value;
+                    });
 
                     break;
 
@@ -91,15 +97,21 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionData = DataEditor.DataElements.Cast<InteractionDataElement>().ToList();
-                    interactionData.ForEach(x => x.RotationZ = value);
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.RotationZ = value;
+                    });
 
                     break;
 
                 case Enums.DataType.SceneObject:
 
-                    var sceneObjectData = DataEditor.DataElements.Cast<SceneObjectDataElement>().ToList();
-                    sceneObjectData.ForEach(x => x.RotationZ = value);
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.RotationZ = value;
+                    });
 
                     break;
 
@@ -109,6 +121,7 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
     }
     #endregion
 
+    #region Methods
     public void UpdateRotationX()
     {
         RotationX = (int)xInputField.Value;
@@ -129,23 +142,28 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
         DataEditor.UpdateEditor();
     }
+    #endregion
 
-    public void ApplySegment() { }
-    
+    #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
+        DataEditor = SegmentController.editorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
     {
-        InitializeDependencies();
-
         InitializeData();
     }
 
     public void InitializeData()
     {
+        InitializeDependencies();
+
+        if (DataEditor.Loaded) return;
+
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
@@ -184,10 +202,8 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
         gameObject.SetActive(true);
     }
 
-    public void CloseSegment()
-    {
-        DataEditor.DataElements.ForEach(x => x.ClearChanges());
-    }
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
+    #endregion
 }

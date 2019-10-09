@@ -7,7 +7,7 @@ public class ItemController : MonoBehaviour, IDataController
 {
     public Search.Item searchParameters;
 
-    private ItemDataManager itemDataManager     = new ItemDataManager();
+    private ItemDataManager itemDataManager;
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -22,9 +22,9 @@ public class ItemController : MonoBehaviour, IDataController
         set { searchParameters = value.Cast<Search.Item>().FirstOrDefault(); }
     }
 
-    public void InitializeController()
+    public ItemController()
     {
-        itemDataManager.InitializeManager(this);
+        itemDataManager = new ItemDataManager(this);
     }
 
     public List<IDataElement> GetData(IEnumerable searchParameters)

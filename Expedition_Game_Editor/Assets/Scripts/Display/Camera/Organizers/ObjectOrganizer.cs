@@ -37,10 +37,10 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         {
             var objectGraphicData = (ObjectGraphicDataElement)data;
 
-            if (objectGraphicData.id == 1) continue;
+            if (objectGraphicData.Id == 1) continue;
 
             var prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
-            var graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.id, prefab.PoolType, prefab);
+            var graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.Id, prefab.PoolType, prefab);
 
             poolObjects.Add(graphic);
 
@@ -48,7 +48,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            graphic.name = generalData.DebugName + generalData.id;
+            graphic.name = generalData.DebugName + generalData.Id;
             //
 
             SetGraphic(graphic);
@@ -74,8 +74,8 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
         objectGraphic.transform.localScale = objectGraphic.previewScale;
 
-        if(objectGraphic.mesh != null)
-            objectGraphic.mesh.GetComponent<Animation>().Play();
+        if(objectGraphic.model.GetComponent<Animation>() != null)
+            objectGraphic.model.GetComponent<Animation>().Play();
         
         objectGraphic.gameObject.SetActive(true);
     }

@@ -10,10 +10,9 @@ public class TileDataManager
 
     private DataManager dataManager = new DataManager();
 
-    //private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public void InitializeManager(TileController tileController)
+    public TileDataManager(TileController tileController)
     {
         this.tileController = tileController;
     }
@@ -30,8 +29,8 @@ public class TileDataManager
                     {
                         dataType = Enums.DataType.Tile,
 
-                        id = tileData.id,
-                        index = tileData.index,
+                        Id = tileData.Id,
+                        Index = tileData.Index,
 
                         icon = tileData.iconPath
                         
@@ -48,13 +47,13 @@ public class TileDataManager
 
         foreach (Fixtures.Tile tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.Id)) continue;
             if (searchParameters.tileSetId.Count > 0 && !searchParameters.tileSetId.Contains(tile.tileSetId)) continue;
 
             var tileData = new TileData();
 
-            tileData.id = tile.id;
-            tileData.index = tile.index;
+            tileData.Id = tile.Id;
+            tileData.Index = tile.Index;
 
             tileData.tileSetId = tile.tileSetId;
             tileData.iconPath = tile.iconPath;

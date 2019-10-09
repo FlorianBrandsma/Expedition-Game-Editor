@@ -4,22 +4,10 @@ using System.Collections.Generic;
 public class ObjectiveSegment : MonoBehaviour, ISegment
 {
     private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+
     public IEditor DataEditor { get; set; }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.editorController.PathController.dataEditor;
-    }
+    
+    public void InitializeDependencies() { }
 
     public void InitializeSegment()
     {
@@ -28,11 +16,11 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
 
     public void InitializeData()
     {
-        if (SegmentController.editorController.PathController.loaded) return;
+        if (SegmentController.Loaded) return;
 
         var searchParameters = new Search.Objective();
 
-        searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.id };
+        searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.Id };
 
         SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
     }
@@ -42,6 +30,8 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
+    public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
 }

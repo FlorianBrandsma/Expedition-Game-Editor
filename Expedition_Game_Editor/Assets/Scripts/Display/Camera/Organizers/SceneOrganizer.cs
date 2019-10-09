@@ -7,10 +7,11 @@ using System.Linq;
 public class SceneOrganizer : MonoBehaviour, IOrganizer
 {
     private List<Tile> tileList = new List<Tile>();
-    Vector3 tileBoundSize;
+    private Vector3 tileBoundSize;
+    
+    private Plane[] planes;
 
-    Plane[] planes;
-    private List<Bounds> boundTest = new List<Bounds>();
+    private InteractionDataElement interactionData;
 
     private SceneDataElement sceneData;
 
@@ -81,10 +82,21 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
+        GetSelectedInteraction(dataController.SegmentController.Path);
+
         SetData(dataController.DataList);
     }
 
-    public void SetData(List<IDataElement> list)
+    private void GetSelectedInteraction(Path path)
+    {
+        var interactionRoute = path.FindLastRoute(Enums.DataType.Interaction);
+
+        if (interactionRoute == null) return;
+
+        interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == interactionRoute.GeneralData.Id)).FirstOrDefault();
+    }
+
+    private void SetData(List<IDataElement> list)
     {
         planes = GeometryUtility.CalculateFrustumPlanes(cameraManager.cam);
 
@@ -111,13 +123,13 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private void SetTerrain(SceneDataElement.TerrainData terrainData)
     {
-        var terrainStartPosition = new Vector2( (sceneStartPosition.x + sceneData.tileSize / 2) + ((terrainData.index % sceneData.regionSize) * (sceneData.terrainSize * sceneData.tileSize)),
-                                                (sceneStartPosition.y - sceneData.tileSize / 2) - (Mathf.Floor(terrainData.index / sceneData.regionSize) * (sceneData.terrainSize * sceneData.tileSize)));
+        var terrainStartPosition = new Vector2( (sceneStartPosition.x + sceneData.tileSize / 2) + ((terrainData.Index % sceneData.regionSize) * (sceneData.terrainSize * sceneData.tileSize)),
+                                                (sceneStartPosition.y - sceneData.tileSize / 2) - (Mathf.Floor(terrainData.Index / sceneData.regionSize) * (sceneData.terrainSize * sceneData.tileSize)));
 
         foreach (TerrainTileDataElement terrainTileData in terrainData.terrainTileDataList)
         {
-            var tilePosition = new Vector2( terrainStartPosition.x + (sceneData.tileSize * (terrainTileData.index % sceneData.terrainSize)),
-                                            terrainStartPosition.y - (sceneData.tileSize * (Mathf.Floor(terrainTileData.index / sceneData.terrainSize))));
+            var tilePosition = new Vector2( terrainStartPosition.x + (sceneData.tileSize * (terrainTileData.Index % sceneData.terrainSize)),
+                                            terrainStartPosition.y - (sceneData.tileSize * (Mathf.Floor(terrainTileData.Index / sceneData.terrainSize))));
 
             if (GeometryUtility.TestPlanesAABB(planes, new Bounds(cameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
             {
@@ -129,9 +141,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                 tile.transform.SetParent(cameraManager.content.transform, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
 
-                var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
-                var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
-                var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.id).Cast<IDataElement>().ToList();
+                var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
+                var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
+                var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
 
                 //Set scene interactables that are bound to this tile by their first interaction
                 SetSceneElements(sceneInteractableList);
@@ -167,20 +179,89 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.id;
+            element.name = generalData.DebugName + generalData.Id;
             //
-            
+
+            SetStatus(element);
             SetElement(element);
         }
     }
 
-    void SetElement(SelectionElement element)
+    private void SetStatus(SelectionElement element)
     {
-        element.gameObject.SetActive(true);
+        switch (element.GeneralData.dataType)
+        {
+            case Enums.DataType.SceneInteractable: /*SetSceneInteractableStatus();*/ break;
+            case Enums.DataType.Interaction: SetInteractionStatus(element); break;
+            case Enums.DataType.SceneObject: /*SetSceneObjectStatus();*/ break;
 
-        element.SetElement();
+            default: Debug.Log("CASE MISSING: " + element.GeneralData.dataType); break;
+        }
     }
 
+    private void SetInteractionStatus(SelectionElement element)
+    {
+        if (interactionData == null) return;
+
+        var data = element.data;
+        var dataElement = (InteractionDataElement)data.dataElement;
+
+        /*
+        Debug.Log(  interactionData.Id + "/" + dataElement.id + ":" + 
+                    interactionData.SceneInteractableId + "/" + dataElement.SceneInteractableId + ":" +
+                    interactionData.questId + "/" + dataElement.questId + ":" +
+                    interactionData.objectiveId + "/" + dataElement.objectiveId);
+        */
+
+        //Hidden: Interactions belonging to the same interactable and selected objective
+        if (dataElement.Id != interactionData.Id && 
+            dataElement.SceneInteractableId == interactionData.SceneInteractableId && 
+            dataElement.objectiveId == interactionData.objectiveId)
+        {
+            element.elementStatus = Enums.ElementStatus.Hidden;
+            return;
+        }
+
+        //Locked: Interactions that aren't selected and don't belong to a quest, only when an interaction with a quest is selected
+        if (dataElement.Id != interactionData.Id && 
+            interactionData.questId != 0 && dataElement.questId == 0)
+        {
+            element.elementStatus = Enums.ElementStatus.Locked;
+            return;
+        }
+
+        //Enabled: Interactions belonging to a different interactable, but same objective
+        if (dataElement.SceneInteractableId != interactionData.SceneInteractableId && 
+            dataElement.objectiveId == interactionData.objectiveId)
+        {
+            element.elementStatus = Enums.ElementStatus.Enabled;
+            return;
+        }
+
+        //Related: Interactions belonging to a different interactable, different objective but same quest
+        if (dataElement.SceneInteractableId != interactionData.SceneInteractableId && 
+            dataElement.questId == interactionData.questId)
+        {
+            element.elementStatus = Enums.ElementStatus.Related;
+            return;
+        }
+
+        //Unrelated: Interactions belonging to a different quest
+        if (dataElement.questId > 0 && 
+            dataElement.questId != interactionData.questId)
+        {
+            element.elementStatus = Enums.ElementStatus.Unrelated;
+            return;
+        } 
+    }
+
+    private void SetElement(SelectionElement element)
+    {
+        element.gameObject.SetActive(true);
+        
+        element.SetElement();
+    }
+    
     public void ResetData(List<IDataElement> filter)
     {
         CloseOrganizer();

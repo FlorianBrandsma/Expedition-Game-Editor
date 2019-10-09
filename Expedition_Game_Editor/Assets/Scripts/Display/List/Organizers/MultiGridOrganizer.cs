@@ -124,7 +124,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.id == element.GeneralData.id);
+        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = ElementSize;
 

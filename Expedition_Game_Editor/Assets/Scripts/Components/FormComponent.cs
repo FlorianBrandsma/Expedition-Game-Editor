@@ -56,7 +56,7 @@ public class FormComponent : MonoBehaviour, IComponent
             } else {
 
                 //Set to true so the list will reset when selection is closed
-                EditorManager.editorManager.InitializePath(editorForm.activePath, true, pathController.loaded);
+                EditorManager.editorManager.InitializePath(editorForm.activePath, true);
             }
 
             if (openOnce)

@@ -13,6 +13,8 @@ public class EditorTile : MonoBehaviour, IElement
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
     private TileProperties properties;
 
+    public Color ElementColor { set { } }
+
     public void InitializeElement()
     {
         //properties = element.ListManager.listProperties.GetComponent<TileProperties>();

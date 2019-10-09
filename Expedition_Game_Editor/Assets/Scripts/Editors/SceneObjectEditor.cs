@@ -4,36 +4,41 @@ using System.Linq;
 
 public class SceneObjectEditor : MonoBehaviour, IEditor
 {
-    private List<SceneObjectDataElement> sceneObjectDataList;
+    public SceneObjectDataElement SceneObjectData { get { return (SceneObjectDataElement)Data.dataElement; } }
+
+    private List<IDataElement> dataList = new List<IDataElement>();
+
+    private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    public bool Loaded { get { return PathController.loaded; } }
-    public Route.Data Data { get; set; }
+    public bool Loaded { get; set; }
+
+    public Route.Data Data { get { return PathController.route.data; } }
+
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(SceneObjectData); }
+    }
 
     public List<IDataElement> DataElements
     {
         get
         {
             var list = new List<IDataElement>();
-            
-            sceneObjectDataList.ForEach(x => list.Add(x));
+
+            DataList.ForEach(x => list.Add(x));
 
             return list;
         }
     }
 
-    public void InitializeEditor()
+    public List<SegmentController> EditorSegments
     {
-        if (Loaded) return;
-
-        Data = PathController.route.data;
-
-        var sceneObjectData = (SceneObjectDataElement)Data.dataElement;
-        sceneObjectDataList = SelectionElementManager.FindDataElements(sceneObjectData).Cast<SceneObjectDataElement>().ToList();
-        
-        DataElements.ForEach(x => x.ClearChanges());
+        get { return editorSegments; }
     }
+
+    public void InitializeEditor() { }
 
     public void UpdateEditor()
     {
@@ -44,10 +49,7 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public void UpdateIndex(int index) { }
 
-    public void OpenEditor()
-    {
-        SetEditor();
-    }
+    public void OpenEditor() { }
 
     public void SetEditor()
     {
@@ -68,12 +70,10 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
+        DataElements.ForEach(x => x.ClearChanges());
 
+        Loaded = false;
     }
 
-    public void CloseEditor()
-    {
-        //DataElements.ForEach(x => x.SetOriginalValues());
-        //DataElements.ForEach(x => x.SelectionElement.SetElement());
-    }
+    public void CloseEditor() { }
 }

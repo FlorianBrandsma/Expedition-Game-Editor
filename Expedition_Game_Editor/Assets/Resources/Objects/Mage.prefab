@@ -1830,7 +1830,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 1000013582943862}
+  model: {fileID: 1000013582943862}
+  mesh:
+  - {fileID: 1000013238507618}
+  - {fileID: 1000010558142218}
+  - {fileID: 1000011968035982}
   pivot: 3
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 70, y: 70, z: 70}

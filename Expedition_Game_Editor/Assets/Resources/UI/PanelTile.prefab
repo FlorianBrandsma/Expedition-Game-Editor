@@ -293,7 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -439,7 +439,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
-  background: {fileID: 0}
   disableSpawn: 1
   parent: {fileID: 114000012075590546}
   child: {fileID: 0}
@@ -462,6 +461,7 @@ MonoBehaviour:
   iconParent: {fileID: 224000013483825538}
   icon: {fileID: 114000010463004436}
   content: {fileID: 224000013432897796}
+  background: {fileID: 114000012930379786}
 --- !u!114 &114000010994388990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -563,7 +563,6 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 0.8627451, g: 0.8627451, b: 0.7647059, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
-  background: {fileID: 114000012930379786}
   disableSpawn: 0
   parent: {fileID: 0}
   child: {fileID: 114000010806134910}
@@ -677,7 +676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

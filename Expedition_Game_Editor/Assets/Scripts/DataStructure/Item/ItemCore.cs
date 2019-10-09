@@ -7,11 +7,9 @@ public class ItemCore : GeneralData
     private int objectGraphicId;
     private string name;
 
-    public int originalIndex;
     public int originalObjectGraphicId;
     public string originalName;
 
-    private bool changedIndex;
     private bool changedObjectGraphicId;
     private bool changedName;
 
@@ -29,21 +27,6 @@ public class ItemCore : GeneralData
     {
         get { return type; }
         set { type = value; }
-    }
-
-    public int Id { get { return id; } }
-
-    public int Index
-    {
-        get { return index; }
-        set
-        {
-            if (value == index) return;
-
-            changedIndex = true;
-
-            index = value;
-        }
     }
 
     public int ObjectGraphicId
@@ -76,14 +59,11 @@ public class ItemCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
-        var itemData = Fixtures.itemList.Where(x => x.id == id).FirstOrDefault();
+        var itemData = Fixtures.itemList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedObjectGraphicId)
             itemData.objectGraphicId = objectGraphicId;
@@ -96,14 +76,13 @@ public class ItemCore : GeneralData
 
     public void UpdateIndex()
     {
-        var itemData = Fixtures.itemList.Where(x => x.id == id).FirstOrDefault();
+        if (!changedIndex) return;
 
-        if (changedIndex)
-        {
-            itemData.index = index;
+        var itemData = Fixtures.itemList.Where(x => x.Id == Id).FirstOrDefault();
+        
+        itemData.Index = Index;
 
-            changedIndex = false;
-        }
+        changedIndex = false;
     }
 
     public virtual void SetOriginalValues()
@@ -122,15 +101,11 @@ public class ItemCore : GeneralData
     {
         GetOriginalValues();
 
-        changedIndex = false;
         changedObjectGraphicId = false;
         changedName = false;
     }
 
-    public void Delete()
-    {
-
-    }
+    public void Delete() { }
 
     #endregion
 }
