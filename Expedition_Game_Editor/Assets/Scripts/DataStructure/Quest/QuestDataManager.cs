@@ -22,7 +22,7 @@ public class QuestDataManager
         var list = (from questData in questDataList
                     select new QuestDataElement()
                     {
-                        dataType = Enums.DataType.Quest,
+                        DataType = Enums.DataType.Quest,
 
                         Id = questData.Id,
                         Index = questData.Index,

@@ -6,8 +6,6 @@ public class InteractionEditor : MonoBehaviour, IEditor
 {
     public InteractionDataElement InteractionData { get { return (InteractionDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -18,7 +16,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(InteractionData); }
+        get { return SelectionElementManager.FindDataElements(InteractionData).Concat(new[] { InteractionData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -55,10 +53,17 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        InteractionData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(InteractionData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
 
         UpdateEditor();

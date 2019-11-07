@@ -27,6 +27,8 @@ public class PhaseInteractableDataElement : PhaseInteractableCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalInteractableName = interactableName;

@@ -33,8 +33,6 @@ public class HistoryManager
 
     private List<HistoryElement> history = new List<HistoryElement>();
 
-    public bool returned { get; set; }
-
     public void AddHistory(HistoryElement element)
     {
         if (history.Count > 0 && element.group == history[history.Count - 1].group)
@@ -49,14 +47,14 @@ public class HistoryManager
     {
         if(history.Count > 1)
         {
-            CloseForm(history[history.Count - 1].path.form);
-
             var historyForm = history[history.Count - 1].path.form;
-
+            
             history.RemoveAt(history.Count - 1);
 
             if(historyForm == history[history.Count - 1].path.form)
                 InitializePath();
+            else
+                CloseForm(historyForm);
         }
     }
 
@@ -67,6 +65,8 @@ public class HistoryManager
 
     public void InitializePath()
     {
-        EditorManager.editorManager.InitializePath(history[history.Count - 1].path, true);
+        EditorManager.loadType = Enums.LoadType.Reload;
+
+        EditorManager.editorManager.InitializePath(history[history.Count - 1].path);
     }
 }

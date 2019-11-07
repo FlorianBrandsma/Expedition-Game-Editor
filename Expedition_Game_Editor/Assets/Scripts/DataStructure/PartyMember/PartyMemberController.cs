@@ -36,7 +36,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
     {
         var partyMemberData = (PartyMemberDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Interactable:
 

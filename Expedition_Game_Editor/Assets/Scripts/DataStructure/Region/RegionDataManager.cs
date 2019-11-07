@@ -28,7 +28,7 @@ public class RegionDataManager
                     join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
                     select new RegionDataElement()
                     {
-                        dataType = Enums.DataType.Region,
+                        DataType = Enums.DataType.Region,
 
                         Id = regionData.Id,
                         Index = regionData.Index,

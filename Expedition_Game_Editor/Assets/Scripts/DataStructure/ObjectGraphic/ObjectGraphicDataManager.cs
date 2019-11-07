@@ -28,7 +28,7 @@ public class ObjectGraphicDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new ObjectGraphicDataElement()
                     {
-                        dataType = Enums.DataType.ObjectGraphic,
+                        DataType = Enums.DataType.ObjectGraphic,
 
                         Id = objectGraphicData.Id,
                         

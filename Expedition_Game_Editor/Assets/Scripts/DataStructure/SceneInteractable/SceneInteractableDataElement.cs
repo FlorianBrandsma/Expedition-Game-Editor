@@ -44,6 +44,8 @@ public class SceneInteractableDataElement : SceneInteractableCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalInteractableName = interactableName;

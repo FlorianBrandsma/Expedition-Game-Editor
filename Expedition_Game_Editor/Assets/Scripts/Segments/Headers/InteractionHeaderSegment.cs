@@ -67,7 +67,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         objectGraphicIcon = InteractionData.objectGraphicIconPath;
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, index);
     }
 
     public void OpenSegment()

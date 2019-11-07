@@ -28,7 +28,7 @@ public class TerrainTileDataManager
                     join tileData in tileDataList on terrainTileData.tileId equals tileData.Id
                     select new TerrainTileDataElement()
                     {
-                        dataType = Enums.DataType.TerrainTile,
+                        DataType = Enums.DataType.TerrainTile,
 
                         Id = terrainTileData.Id,
                         Index = terrainTileData.Index,

@@ -43,8 +43,5 @@ public class SceneSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-        selectionElement.data.dataElement.Update();
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

@@ -22,7 +22,7 @@ public class IconDataManager
         var list = (from iconData in iconDataList
                     select new IconDataElement()
                     {
-                        dataType = Enums.DataType.Icon,
+                        DataType = Enums.DataType.Icon,
 
                         Id = iconData.Id,
                         Index = iconData.Index,

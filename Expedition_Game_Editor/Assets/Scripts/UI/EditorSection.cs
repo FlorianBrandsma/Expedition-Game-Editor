@@ -24,20 +24,26 @@ public class EditorSection : MonoBehaviour
     public EditorController previousTargetController;
 
     [HideInInspector]
-    public LayoutDependency targetLayout;
+    public GeneralData previousTargetControllerData;
+
+    [HideInInspector]
+    public LayoutDependency targetView;
 
     public bool Loaded
     {
         get
         {
-            if (targetController.PathController.route.path.type == Path.Type.Reload)
+            if (!editorForm.loaded)
                 return false;
-
+            
+            if (EditorManager.loadType == Enums.LoadType.Reload)
+                return false;
+            
             if (targetController != previousTargetController)
                 return false;
             
-            if(previousTargetController != null)
-                return targetController.PathController.route.GeneralData.Equals(previousTargetController.PathController.route.GeneralData);
+            if(previousTargetControllerData != null)
+                return targetController.PathController.route.GeneralData.Equals(previousTargetControllerData);
             
             return false;
         }
@@ -62,20 +68,20 @@ public class EditorSection : MonoBehaviour
 
     public void InitializeLayout()
     {
-        if (targetLayout == null) return;
+        if (targetView == null) return;
 
-        targetLayout.InitializeLayout();       
+        targetView.InitializeDependency();       
     }
 
     public void SetLayout()
     {
-        if (targetLayout == null) return;
+        if (targetView == null) return;
 
         //Adjust size of dependency content based on active headers and footers
-        targetLayout.SetLayout(); 
+        targetView.SetDependency(); 
     }
 
-    public void ActivateEditor()
+    public void Activate()
     {
         active = true;
     }
@@ -107,23 +113,31 @@ public class EditorSection : MonoBehaviour
             buttonActionManager.CloseButtons();
 
         previousTargetController = targetController;
-
+        previousTargetControllerData = targetController.PathController.route.GeneralData.Copy();
+        
         targetController = null;
 
         active = false;
     }
 
-    public void CloseLayout()
+    public void CloseLayoutDependencies()
     {
-        if (targetLayout == null) return;
+        if (targetView == null) return;
+        
+        targetView.CloseDependency();
+        
+        targetView = null;
+    }
+
+    public void CloseEditorSegments()
+    {
+        if (displayTargetController == null) return;
 
         previousTargetController = displayTargetController;
+        
+        previousTargetControllerData = displayTargetController.PathController.route.GeneralData.Copy();
 
         displayTargetController.CloseSegments();
-
-        targetLayout.CloseLayout();
-
-        targetLayout = null;
     }
 
     public void ApplyChanges()

@@ -30,6 +30,8 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         ClearChanges();

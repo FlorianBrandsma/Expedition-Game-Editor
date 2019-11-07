@@ -36,7 +36,7 @@ public class SceneInteractableController : MonoBehaviour, IDataController
     {
         var sceneInteractableData = (SceneInteractableDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Interactable:
 

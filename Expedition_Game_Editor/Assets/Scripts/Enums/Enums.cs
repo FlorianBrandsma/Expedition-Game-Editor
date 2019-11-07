@@ -90,4 +90,10 @@ public class Enums
         Related, 
         Unrelated
     }
+
+    public enum LoadType
+    {
+        Normal,
+        Reload
+    }
 }

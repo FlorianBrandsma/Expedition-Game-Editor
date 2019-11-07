@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using System.Linq;
 
 public class IndexSwitch : MonoBehaviour
 {
+    private IDataElement dataElement;
+
     private ISegment segment;
 
     public Button minus_button;
@@ -14,12 +17,18 @@ public class IndexSwitch : MonoBehaviour
     private int index;
     private int indexLimit;
 
-    public void InitializeSwitch(ISegment segment, int index, int indexLimit)
+    private List<IDataElement> dataList;
+
+    public void InitializeSwitch(ISegment segment, int index)
     {
         this.segment = segment;
 
         this.index = index;
-        this.indexLimit = indexLimit;
+
+        dataElement = segment.DataEditor.Data.dataElement;
+        dataList = segment.DataEditor.Data.dataController.DataList.ToList();
+
+        indexLimit = dataList.Count - 1;
 
         SetSwitch();
     }
@@ -50,25 +59,20 @@ public class IndexSwitch : MonoBehaviour
     private void UpdateIndex()
     {
         var dataEditor = segment.DataEditor;
-
-        dataEditor.DataList.ForEach(data =>
-        {
-            var list = data.SelectionElement.dataController.DataList;
-
-            list.RemoveAt(data.Index);
-            list.Insert(index, data);
-
-            dataEditor.Data.dataController.DataList = list.Cast<IDataElement>().ToList();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Index = i;
-                list[i].UpdateIndex();
-            }
-
-            SelectionElementManager.UpdateElements((GeneralData)data, true);
-        });
         
+        dataList.RemoveAt(dataElement.Index);
+        dataList.Insert(index, dataElement);
+
+        dataEditor.Data.dataController.DataList = dataList;
+
+        for (int i = 0; i < dataList.Count; i++)
+        {
+            dataList[i].Index = i;
+            dataList[i].UpdateIndex();
+        }
+
+        SelectionElementManager.UpdateElements((GeneralData)dataElement, true);
+
         SetIndex();
     }
 

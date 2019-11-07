@@ -28,7 +28,7 @@ public class ChapterRegionDataManager
                     join regionData in regionDataList on chapterRegionData.regionId equals regionData.Id
                     select new ChapterRegionDataElement()
                     {
-                        dataType = Enums.DataType.ChapterRegion,
+                        DataType = Enums.DataType.ChapterRegion,
 
                         Id = chapterRegionData.Id,
                         Index = chapterRegionData.Index,

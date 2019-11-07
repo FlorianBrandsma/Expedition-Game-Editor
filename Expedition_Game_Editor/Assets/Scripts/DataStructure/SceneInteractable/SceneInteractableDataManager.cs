@@ -53,7 +53,7 @@ public class SceneInteractableDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new SceneInteractableDataElement()
                     {
-                        dataType = Enums.DataType.SceneInteractable,
+                        DataType = Enums.DataType.SceneInteractable,
 
                         Id = sceneInteractableData.Id,
                         

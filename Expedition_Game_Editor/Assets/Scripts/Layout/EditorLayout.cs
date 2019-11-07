@@ -3,23 +3,18 @@ using System.Collections;
 
 public class EditorLayout : MonoBehaviour
 {
-    public LayoutManager layoutManager;
+    public LayoutSection layoutSection;
 
     public Vector2  anchor_min,
                     anchor_max;
 
     public void InitializeLayout()
     {
-        layoutManager.InitializeLayout(anchor_min, anchor_max, LayoutManager.Anchor.None);
-    }
-
-    public void SetLayout()
-    {
-        layoutManager.SetLayout();
+        layoutSection.InitializeLayout(anchor_min, anchor_max);
     }
 
     public void CloseLayout()
     {
-        layoutManager.CloseLayout();
+        layoutSection.CloseSection();
     }
 }

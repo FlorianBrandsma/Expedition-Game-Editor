@@ -9,19 +9,13 @@ public class GeneralDataElement : GeneralData, IDataElement
 
     public GeneralDataElement() : base() { }
 
-    public void Update()
-    {
-        SetOriginalValues();
-    }
+    public void Update() { }
 
     public void UpdateSearch() { }
 
     public void UpdateIndex() { }
 
-    public void SetOriginalValues()
-    {
-        ClearChanges();
-    }
+    public void SetOriginalValues() { }
 
     public void GetOriginalValues() { }
 

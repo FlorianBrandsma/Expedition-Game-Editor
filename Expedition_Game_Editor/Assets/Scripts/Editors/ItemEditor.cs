@@ -6,8 +6,6 @@ public class ItemEditor : MonoBehaviour, IEditor
 {
     public ItemDataElement ItemData { get { return (ItemDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -16,10 +14,7 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
-    {
-        get { return SelectionElementManager.FindDataElements(ItemData); }
-    }
+    public List<IDataElement> DataList { get { return SelectionElementManager.FindDataElements(ItemData).Concat(new[] { ItemData }).ToList(); } }
 
     public List<IDataElement> DataElements
     {
@@ -55,12 +50,19 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x => 
+        ItemData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(ItemData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
-        
+
         UpdateEditor();
     }
 

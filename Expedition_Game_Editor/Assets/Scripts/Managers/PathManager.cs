@@ -457,7 +457,7 @@ public class PathManager
 
     static public Path ReloadPath(Path path, Route new_route)
     {
-        Path newPath = new Path(true);
+        Path newPath = new Path();
 
         newPath.form = path.form;
 
@@ -468,7 +468,7 @@ public class PathManager
 
         newPath.start = path.start;
 
-        newPath.type = Path.Type.Reload;
+        EditorManager.loadType = Enums.LoadType.Reload;
 
         return newPath;
     }
@@ -477,7 +477,7 @@ public class PathManager
     //together with the new (temp) path
     static public Path ReloadPath(Path path, Route.Data data)
     {
-        Path tempPath = new Path(true);
+        Path tempPath = new Path();
 
         tempPath.form = path.form;
 
@@ -488,14 +488,14 @@ public class PathManager
 
         tempPath.start = path.start;
 
-        tempPath.type = Path.Type.Reload;
+        EditorManager.loadType = Enums.LoadType.Reload;
 
         return tempPath;
     }
 
     static public Path ReloadPath(Path path, Route.Data data, int step)
     {
-        Path newPath = new Path(true);
+        Path newPath = new Path();
 
         newPath.form = path.form;
 
@@ -506,7 +506,7 @@ public class PathManager
 
         newPath.start = path.start;
 
-        newPath.type = Path.Type.Reload;
+        EditorManager.loadType = Enums.LoadType.Reload;
 
         return newPath;
     }

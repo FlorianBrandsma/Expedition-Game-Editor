@@ -5,7 +5,7 @@ public class LayoutDependency : MonoBehaviour
 {
     public LayoutDependency layoutDependency;
 
-    public void InitializeLayout()
+    public void InitializeDependency()
     {
         if(!gameObject.activeInHierarchy)
         {
@@ -15,27 +15,30 @@ public class LayoutDependency : MonoBehaviour
             gameObject.SetActive(true);
 
             if (layoutDependency != null)
-                layoutDependency.InitializeLayout();
+                layoutDependency.InitializeDependency();
         }
     }
 
-    public void SetLayout()
+    public void SetDependency()
     {
-        if (GetComponent<LayoutManager>() != null)
-            GetComponent<LayoutManager>().SetLayout();
+        if (GetComponent<LayoutContent>() != null)
+            GetComponent<LayoutContent>().SetContent();
 
         if (layoutDependency != null)
-            layoutDependency.SetLayout();
+            layoutDependency.SetDependency();
     }
 
-    public void CloseLayout()
+    public void CloseDependency()
     {
         gameObject.SetActive(false);
 
-        if (GetComponent<LayoutManager>() != null)
-            GetComponent<LayoutManager>().CloseLayout();
+        if (GetComponent<LayoutContent>() != null)
+            GetComponent<LayoutContent>().CloseContent();
+
+        if (GetComponent<LayoutSection>() != null)
+            GetComponent<LayoutSection>().CloseSection();
 
         if (layoutDependency != null)
-            layoutDependency.CloseLayout();
+            layoutDependency.CloseDependency();
     }
 }

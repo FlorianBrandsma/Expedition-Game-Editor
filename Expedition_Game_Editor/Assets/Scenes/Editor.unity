@@ -563,7 +563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -1217,7 +1216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -1234,7 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &33534897
@@ -1730,7 +1728,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 6
   editorSection: {fileID: 1685155425}
@@ -1750,9 +1747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce6baff9f7899643b55869314229725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments:
-  - {fileID: 226968967}
-  - {fileID: 537698597}
   regionDataList: []
 --- !u!1 &60888134
 GameObject:
@@ -1967,7 +1961,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -2058,7 +2051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -2138,7 +2130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -2167,7 +2158,7 @@ GameObject:
   - 114: {fileID: 80706164}
   - 114: {fileID: 80706163}
   m_Layer: 5
-  m_Name: Content_C (content-div)
+  m_Name: Content_C (layoutContent)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2201,12 +2192,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 80706161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b7cda2188c8e1a4983aa29051629974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
   header: {fileID: 2120790633}
   content: {fileID: 294505872}
   footer: {fileID: 0}
@@ -2396,11 +2384,10 @@ GameObject:
   m_Component:
   - 224: {fileID: 97059932}
   - 114: {fileID: 97059933}
-  - 114: {fileID: 97059936}
   - 114: {fileID: 97059935}
   - 114: {fileID: 97059934}
   m_Layer: 5
-  m_Name: Section_A (A-section-layout-layoutManager)
+  m_Name: Section_A (A-editorSection-layout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2448,7 +2435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1069878632}
+  layoutSection: {fileID: 1069878632}
   anchor_min: {x: 0, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &97059935
@@ -2466,25 +2453,9 @@ MonoBehaviour:
   editorForm: {fileID: 0}
   displayTargetController: {fileID: 0}
   targetController: {fileID: 0}
-  targetLayout: {fileID: 0}
+  previousTargetController: {fileID: 0}
+  targetView: {fileID: 0}
   buttonActionManager: {fileID: 0}
---- !u!114 &97059936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 97059931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent_rect: {fileID: 1069878631}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
-  header: {fileID: 0}
-  content: {fileID: 2132140415}
-  footer: {fileID: 0}
 --- !u!114 &102348012 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000012628092190, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -2965,7 +2936,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -3295,7 +3265,6 @@ MonoBehaviour:
   segmentName: Terrain
   header: {fileID: 1733334818}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements:
   - {fileID: 135347209}
   editorController: {fileID: 0}
@@ -3511,7 +3480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -3528,7 +3496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &133627477
@@ -3830,7 +3798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -4422,7 +4389,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &157412616
@@ -4736,7 +4702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -5198,7 +5163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.6, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!1001 &212524471
@@ -5802,7 +5767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -5931,8 +5895,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 2082631208}
-  - {fileID: 1374861248}
+  - {fileID: 1762460841}
   - {fileID: 1322216628}
   - {fileID: 1597805922}
   m_Father: {fileID: 0}
@@ -5958,6 +5921,11 @@ MonoBehaviour:
   - {fileID: 1250721019}
   - {fileID: 1374861249}
   - {fileID: 778174905}
+  layers:
+  - {fileID: 1322216632}
+  - {fileID: 1762460843}
+  - {fileID: 995570910}
+  - {fileID: 1250721020}
 --- !u!1 &226353016
 GameObject:
   m_ObjectHideFlags: 0
@@ -6048,7 +6016,6 @@ MonoBehaviour:
   segmentName: Regions
   header: {fileID: 292242725}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &226968968
@@ -6171,7 +6138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 8
   editorSection: {fileID: 1685155425}
@@ -6190,7 +6156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f935566382df86143a0d597b07196d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
   questInteractableDataList: []
 --- !u!1 &233668291
 GameObject:
@@ -6478,7 +6443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -6554,7 +6518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -6634,7 +6597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -6716,7 +6678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -6895,7 +6856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -6914,7 +6874,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09196c56e12120d40a086b0f388d74b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &265026729
 GameObject:
   m_ObjectHideFlags: 0
@@ -7065,7 +7024,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &267928741
@@ -7555,10 +7513,9 @@ MonoBehaviour:
   component:
     anchor: 2
     width: 30
+  activeInPath: 0
   constant: 1
   autoOpen: 1
-  autoClose: 0
-  openOnce: 1
   editorForm: {fileID: 1374861249}
   openIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
   closeIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
@@ -7573,7 +7530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -7595,10 +7551,9 @@ MonoBehaviour:
   component:
     anchor: 1
     width: 30
+  activeInPath: 0
   constant: 0
   autoOpen: 0
-  autoClose: 1
-  openOnce: 0
   editorForm: {fileID: 778174905}
   openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
   closeIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
@@ -8513,7 +8468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -8692,7 +8646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 6
   editorSection: {fileID: 97059935}
@@ -8961,7 +8914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!224 &356802787 stripped
@@ -9031,7 +8984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -9275,7 +9227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -9884,7 +9835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &396249309
@@ -9942,7 +9893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -9989,7 +9939,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 4
   editorSection: {fileID: 1685155425}
@@ -10009,11 +9958,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca2f63b97421ec4aad4e5c1db4dd348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments:
-  - {fileID: 1674728137}
-  - {fileID: 1158307203}
-  - {fileID: 1117863451}
-  - {fileID: 537698597}
   partyMemberDataList: []
   sceneInteractableDataList: []
   chapterRegionDataList: []
@@ -10057,7 +10001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!224 &401679386
@@ -10413,7 +10357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -11621,7 +11564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -11898,7 +11840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -12165,7 +12106,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &527584521
@@ -12266,7 +12206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -12547,7 +12486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -12604,7 +12542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -12781,7 +12718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 794742818}
@@ -13050,7 +12986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -14413,7 +14348,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!1001 &651028458
@@ -14989,7 +14923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -15772,7 +15705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -15904,7 +15836,6 @@ MonoBehaviour:
   segmentName: Interactables
   header: {fileID: 2011115488}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &686303416
@@ -16408,7 +16339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -16695,7 +16625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -16769,7 +16698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -17210,7 +17138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 10
   editorSection: {fileID: 97059935}
@@ -17329,7 +17256,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &762467505
@@ -17670,7 +17596,7 @@ GameObject:
   - 114: {fileID: 778174902}
   - 114: {fileID: 778174905}
   m_Layer: 5
-  m_Name: Form_D (form-layoutManager)
+  m_Name: Form_D (form-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17689,10 +17615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 1322216628}
   sibling_layout: {fileID: 0}
-  sibling_anchor: 0
-  header: {fileID: 0}
-  content: {fileID: 794742813}
-  footer: {fileID: 0}
+  anchor: 0
 --- !u!224 &778174904
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17723,12 +17646,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  loaded: 0
+  activeInPath: 0
   formComponent: {fileID: 0}
-  mainController: {fileID: 0}
   baseController: {fileID: 1545383490}
-  mainForm: 0
-  siblingForm: {fileID: 0}
   editorSections:
   - {fileID: 794742818}
 --- !u!114 &778174906
@@ -17854,7 +17775,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &779831816
@@ -17966,7 +17886,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &783246984
@@ -18090,7 +18009,8 @@ MonoBehaviour:
   editorForm: {fileID: 0}
   displayTargetController: {fileID: 0}
   targetController: {fileID: 0}
-  targetLayout: {fileID: 0}
+  previousTargetController: {fileID: 0}
+  targetView: {fileID: 0}
   buttonActionManager: {fileID: 674952438}
 --- !u!114 &794742820
 MonoBehaviour:
@@ -18326,7 +18246,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &795438776
@@ -18482,7 +18401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -18979,7 +18897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -19063,7 +18980,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -19301,7 +19217,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &848345539
@@ -19489,7 +19404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -19509,7 +19423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86d3428a50718548b057eb4b04a566a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &853257310
 GameObject:
   m_ObjectHideFlags: 0
@@ -19877,7 +19790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1699825211}
@@ -20351,7 +20263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -20455,7 +20366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -20563,7 +20473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -20713,7 +20622,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &899072711
@@ -20922,7 +20830,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -20941,7 +20848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ff49f75a1fbd243a6347309d140473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &908652694
 GameObject:
   m_ObjectHideFlags: 0
@@ -21302,7 +21208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -21512,7 +21417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 8
   editorSection: {fileID: 97059935}
@@ -21851,7 +21755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -22361,7 +22264,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &959242522
@@ -22872,7 +22774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -23117,7 +23018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -23133,8 +23033,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 995570909}
+  - 114: {fileID: 995570910}
   m_Layer: 5
-  m_Name: Content (content-parent)
+  m_Name: Content (layer-C)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23160,6 +23061,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &995570910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 995570908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 332b58362fd245f42811cb2bb8c421cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutSections:
+  - {fileID: 1069878632}
+  - {fileID: 1685155424}
 --- !u!1001 &996487870
 Prefab:
   m_ObjectHideFlags: 0
@@ -23312,7 +23227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -23788,7 +23702,6 @@ GameObject:
   - 224: {fileID: 1028744927}
   - 222: {fileID: 1028744930}
   - 114: {fileID: 1028744929}
-  - 114: {fileID: 1028744928}
   m_Layer: 5
   m_Name: Main (background-content)
   m_TagString: Untagged
@@ -23817,18 +23730,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1028744928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1028744926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4d7cd6bba86b7847ad8ecea467b7586, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layoutDependency: {fileID: 0}
 --- !u!114 &1028744929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24221,7 +24122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -24289,7 +24189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.75, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &1050468120
@@ -24666,7 +24566,7 @@ GameObject:
   - 114: {fileID: 1069878634}
   - 114: {fileID: 1069878632}
   m_Layer: 5
-  m_Name: Section_A_Parent (parent-layoutManager)
+  m_Name: Section_A_Parent (layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24705,11 +24605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 995570909}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
-  header: {fileID: 0}
-  content: {fileID: 97059932}
-  footer: {fileID: 0}
+  sibling_layout: {fileID: 1685155424}
+  anchor: 3
 --- !u!114 &1069878634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25268,7 +25165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -25289,7 +25185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2873e1b5c22874ab3d2fb747e789a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1001 &1089539641
 Prefab:
   m_ObjectHideFlags: 0
@@ -25454,7 +25349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -25848,7 +25742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -26142,7 +26035,6 @@ MonoBehaviour:
   segmentName: Regions
   header: {fileID: 1052570349}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1117863452
@@ -26913,10 +26805,10 @@ GameObject:
   m_Component:
   - 224: {fileID: 1144933476}
   - 114: {fileID: 1144933478}
-  - 114: {fileID: 1144933477}
   - 114: {fileID: 1144933479}
+  - 114: {fileID: 1144933477}
   m_Layer: 5
-  m_Name: Content_A (content-div)
+  m_Name: Content_A (layoutContent-layout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26951,12 +26843,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1144933475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b7cda2188c8e1a4983aa29051629974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
   header: {fileID: 1590588648}
   content: {fileID: 1561864135}
   footer: {fileID: 972290269}
@@ -26983,7 +26872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1374861250}
+  layoutSection: {fileID: 1374861250}
   anchor_min: {x: 0.75, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!224 &1151132981 stripped
@@ -27330,7 +27219,6 @@ MonoBehaviour:
   segmentName: Interactables
   header: {fileID: 1240155048}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1158307204
@@ -27749,7 +27637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -28416,7 +28303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -28464,7 +28350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a389e7a4b86877e4ea56d6ce2b0d4dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &1226603123
 GameObject:
   m_ObjectHideFlags: 0
@@ -28476,7 +28361,7 @@ GameObject:
   - 114: {fileID: 1226603125}
   - 114: {fileID: 1226603128}
   m_Layer: 5
-  m_Name: Task
+  m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28506,7 +28391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -28698,7 +28582,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -29245,7 +29128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -29296,7 +29178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd58bce32dd05441be96121b2fec5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &1246982537
 GameObject:
   m_ObjectHideFlags: 0
@@ -29580,10 +29461,11 @@ GameObject:
   m_Component:
   - 224: {fileID: 1250721018}
   - 114: {fileID: 1250721021}
+  - 114: {fileID: 1250721020}
   - 114: {fileID: 1250721022}
   - 114: {fileID: 1250721019}
   m_Layer: 5
-  m_Name: Form_B (form-layoutManager)
+  m_Name: Form_B (form-layer-D)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29619,14 +29501,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  loaded: 0
+  activeInPath: 0
   formComponent: {fileID: 0}
-  mainController: {fileID: 0}
   baseController: {fileID: 565238295}
-  mainForm: 0
-  siblingForm: {fileID: 0}
   editorSections:
   - {fileID: 1699825211}
+--- !u!114 &1250721020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1250721017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 332b58362fd245f42811cb2bb8c421cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutSections:
+  - {fileID: 1250721022}
 --- !u!114 &1250721021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29651,11 +29544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 1069878631}
-  sibling_layout: {fileID: 97059936}
-  sibling_anchor: 1
-  header: {fileID: 0}
-  content: {fileID: 1250721018}
-  footer: {fileID: 0}
+  sibling_layout: {fileID: 0}
+  anchor: 0
 --- !u!1001 &1255639394
 Prefab:
   m_ObjectHideFlags: 0
@@ -30607,7 +30497,6 @@ MonoBehaviour:
   segmentName: Result
   header: {fileID: 312806387}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1270903439
@@ -30833,7 +30722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -32212,8 +32100,9 @@ GameObject:
   - 222: {fileID: 1322216631}
   - 114: {fileID: 1322216630}
   - 114: {fileID: 1322216629}
+  - 114: {fileID: 1322216632}
   m_Layer: 5
-  m_Name: Foreground
+  m_Name: Foreground (layer-A)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32232,7 +32121,7 @@ RectTransform:
   m_Children:
   - {fileID: 778174904}
   m_Father: {fileID: 223280777}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -32282,6 +32171,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1322216627}
+--- !u!114 &1322216632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1322216627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 332b58362fd245f42811cb2bb8c421cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutSections:
+  - {fileID: 778174902}
 --- !u!1 &1322450493
 GameObject:
   m_ObjectHideFlags: 0
@@ -32745,7 +32647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -32919,7 +32820,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1338035986
@@ -32997,7 +32897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -33208,7 +33107,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!1 &1358024922
@@ -33251,7 +33149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -33507,7 +33404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -33543,7 +33439,7 @@ GameObject:
   - 114: {fileID: 1367463359}
   - 114: {fileID: 1367463360}
   m_Layer: 5
-  m_Name: Section_A (C-content-div)
+  m_Name: Section_A (C-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33583,10 +33479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 1374861248}
   sibling_layout: {fileID: 0}
-  sibling_anchor: 0
-  header: {fileID: 0}
-  content: {fileID: 1144933476}
-  footer: {fileID: 0}
+  anchor: 0
 --- !u!114 &1367463360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33602,7 +33495,8 @@ MonoBehaviour:
   editorForm: {fileID: 0}
   displayTargetController: {fileID: 0}
   targetController: {fileID: 0}
-  targetLayout: {fileID: 0}
+  previousTargetController: {fileID: 0}
+  targetView: {fileID: 0}
   buttonActionManager: {fileID: 0}
 --- !u!114 &1367463361
 MonoBehaviour:
@@ -33729,7 +33623,6 @@ GameObject:
   m_Component:
   - 224: {fileID: 1370025755}
   - 114: {fileID: 1370025758}
-  - 114: {fileID: 1370025757}
   m_Layer: 5
   m_Name: Search_Content
   m_TagString: Untagged
@@ -33756,23 +33649,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1370025757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1370025754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
-  header: {fileID: 0}
-  content: {fileID: 265026730}
-  footer: {fileID: 0}
 --- !u!114 &1370025758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34429,7 +34305,7 @@ GameObject:
   - 114: {fileID: 1374861250}
   - 114: {fileID: 1374861249}
   m_Layer: 5
-  m_Name: Form_C (form-layoutManager)
+  m_Name: Form_C (form-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34442,15 +34318,15 @@ RectTransform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1374861247}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1367463358}
-  m_Father: {fileID: 223280777}
+  m_Father: {fileID: 1762460841}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0.75, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -34466,12 +34342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  loaded: 0
+  activeInPath: 0
   formComponent: {fileID: 0}
-  mainController: {fileID: 0}
   baseController: {fileID: 886924297}
-  mainForm: 0
-  siblingForm: {fileID: 2082631209}
   editorSections:
   - {fileID: 1367463360}
 --- !u!114 &1374861250
@@ -34486,11 +34360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 223280777}
-  sibling_layout: {fileID: 2082631210}
-  sibling_anchor: 3
-  header: {fileID: 0}
-  content: {fileID: 1367463358}
-  footer: {fileID: 0}
+  sibling_layout: {fileID: 0}
+  anchor: 4
 --- !u!114 &1374861251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35558,8 +35429,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -360, y: 0}
-  m_SizeDelta: {x: -720, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1438823881
 GameObject:
@@ -35985,7 +35856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -36309,7 +36179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -36381,7 +36250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -36622,7 +36490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 1685155425}
@@ -36785,7 +36652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -36895,7 +36761,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1511168228
@@ -36992,7 +36857,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -37059,7 +36923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -37356,7 +37219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -37452,7 +37314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -37804,7 +37665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 18
   editorSection: {fileID: 794742818}
@@ -37870,7 +37730,6 @@ MonoBehaviour:
   segmentName: Edit
   header: {fileID: 2010836689}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!1 &1553673200
@@ -37957,7 +37816,6 @@ MonoBehaviour:
   segmentName: Interactables
   header: {fileID: 1361342036}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1553673204
@@ -38072,7 +37930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -38137,7 +37994,7 @@ GameObject:
   - 114: {fileID: 1561864137}
   - 114: {fileID: 1561864136}
   m_Layer: 5
-  m_Name: Content_B (content-div)
+  m_Name: Content_B (layoutContent)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38172,12 +38029,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1561864134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7460d3f4de326944da63d761674390c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b7cda2188c8e1a4983aa29051629974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent_rect: {fileID: 0}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
   header: {fileID: 81672998}
   content: {fileID: 80706162}
   footer: {fileID: 0}
@@ -38638,7 +38492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.6, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &1566016565
@@ -39301,7 +39155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1367463360}
@@ -40039,7 +39892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 223280777}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15, y: -15}
@@ -40263,7 +40116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -40615,7 +40467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -41072,7 +40923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -41585,7 +41435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -41651,7 +41500,6 @@ MonoBehaviour:
   segmentName: Members
   header: {fileID: 1521687042}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1674728138
@@ -41872,7 +41720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -41891,7 +41738,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff49b981388ee54f862f394219a26ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
 --- !u!1 &1682946508
 GameObject:
   m_ObjectHideFlags: 0
@@ -41936,7 +41782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 18
   editorSection: {fileID: 794742818}
@@ -41953,7 +41798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 778174902}
+  layoutSection: {fileID: 778174902}
   anchor_min: {x: 0.3, y: 0}
   anchor_max: {x: 0.7, y: 1}
 --- !u!114 &1682946512
@@ -42003,7 +41848,7 @@ GameObject:
   - 114: {fileID: 1685155424}
   - 114: {fileID: 1685155425}
   m_Layer: 5
-  m_Name: Section_B (A-section-layoutManager)
+  m_Name: Section_B (A-editorSection-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42025,7 +41870,7 @@ RectTransform:
   - {fileID: 1982244823}
   m_Father: {fileID: 995570909}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0.75, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 0, y: -30}
@@ -42042,11 +41887,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 995570909}
-  sibling_layout: {fileID: 1069878632}
-  sibling_anchor: 3
-  header: {fileID: 0}
-  content: {fileID: 1982244823}
-  footer: {fileID: 0}
+  sibling_layout: {fileID: 0}
+  anchor: 4
 --- !u!114 &1685155425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42062,7 +41904,8 @@ MonoBehaviour:
   editorForm: {fileID: 0}
   displayTargetController: {fileID: 0}
   targetController: {fileID: 0}
-  targetLayout: {fileID: 0}
+  previousTargetController: {fileID: 0}
+  targetView: {fileID: 0}
   buttonActionManager: {fileID: 674646147}
 --- !u!114 &1685155426
 MonoBehaviour:
@@ -42145,7 +41988,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -42439,7 +42281,8 @@ MonoBehaviour:
   editorForm: {fileID: 0}
   displayTargetController: {fileID: 0}
   targetController: {fileID: 0}
-  targetLayout: {fileID: 0}
+  previousTargetController: {fileID: 0}
+  targetView: {fileID: 0}
   buttonActionManager: {fileID: 0}
 --- !u!114 &1699825212
 MonoBehaviour:
@@ -42452,7 +42295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1250721022}
+  layoutSection: {fileID: 1250721022}
   anchor_min: {x: 0, y: 0}
   anchor_max: {x: 1, y: 0.3}
 --- !u!114 &1699825213
@@ -42572,7 +42415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -42773,7 +42615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 1
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -42794,10 +42635,9 @@ MonoBehaviour:
   component:
     anchor: 1
     width: 30
+  activeInPath: 0
   constant: 1
   autoOpen: 1
-  autoClose: 1
-  openOnce: 0
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
   closeIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
@@ -43064,7 +42904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}
@@ -43128,7 +42967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 3
   editorSection: {fileID: 97059935}
@@ -43423,6 +43261,56 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1757018591}
+--- !u!1 &1762460840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1762460841}
+  - 114: {fileID: 1762460843}
+  m_Layer: 5
+  m_Name: Main (layer-B)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1762460841
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1762460840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 2082631208}
+  - {fileID: 1374861248}
+  m_Father: {fileID: 223280777}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1762460843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1762460840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 332b58362fd245f42811cb2bb8c421cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutSections:
+  - {fileID: 2082631210}
+  - {fileID: 1374861250}
 --- !u!1 &1764319300
 GameObject:
   m_ObjectHideFlags: 0
@@ -43985,7 +43873,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1791099887
@@ -44669,7 +44556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 10
   editorSection: {fileID: 1685155425}
@@ -44689,7 +44575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be45bd8b5c0734e9bc26faeb098846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorSegments: []
   sceneInteractableDataList: []
 --- !u!224 &1804515258 stripped
 RectTransform:
@@ -45333,7 +45218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 97059935}
@@ -45392,7 +45276,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1849985780
@@ -45479,7 +45362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 1
   editorSection: {fileID: 97059935}
@@ -46077,7 +45959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -46462,7 +46343,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1902833974
@@ -46526,7 +46406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -46799,7 +46678,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &1919670064
@@ -47797,7 +47675,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!224 &1965906595 stripped
@@ -48337,7 +48214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &1986235835
@@ -48516,7 +48393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -48841,7 +48717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 0
   editorSection: {fileID: 1685155425}
@@ -49072,7 +48947,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &2016447748
@@ -49139,7 +49013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b048c50a942767f47a8f4237033c15bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutManager: {fileID: 1685155424}
+  layoutSection: {fileID: 1685155424}
   anchor_min: {x: 0.65, y: 0}
   anchor_max: {x: 1, y: 1}
 --- !u!114 &2017041844
@@ -49210,7 +49084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 4
   editorSection: {fileID: 97059935}
@@ -50327,7 +50200,6 @@ MonoBehaviour:
   segmentName: 
   header: {fileID: 0}
   segmentGroup: []
-  siblingSegment: {fileID: 0}
   editorElements: []
   editorController: {fileID: 0}
 --- !u!114 &2077475959
@@ -50401,9 +50273,10 @@ GameObject:
   - 224: {fileID: 2082631208}
   - 114: {fileID: 2082631212}
   - 114: {fileID: 2082631210}
+  - 114: {fileID: 2082631211}
   - 114: {fileID: 2082631209}
   m_Layer: 5
-  m_Name: Form_A (form-layoutManager)
+  m_Name: Form_A (form-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50417,13 +50290,13 @@ RectTransform:
   m_GameObject: {fileID: 2082631207}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.0000004, z: 1.0000004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2048452172}
   - {fileID: 995570909}
   - {fileID: 1559060554}
-  m_Father: {fileID: 223280777}
+  m_Father: {fileID: 1762460841}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -50441,12 +50314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  loaded: 0
+  activeInPath: 0
   formComponent: {fileID: 0}
-  mainController: {fileID: 0}
   baseController: {fileID: 281672007}
-  mainForm: 1
-  siblingForm: {fileID: 1250721019}
   editorSections:
   - {fileID: 97059935}
   - {fileID: 1685155425}
@@ -50462,8 +50333,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent_rect: {fileID: 223280777}
-  sibling_layout: {fileID: 0}
-  sibling_anchor: 0
+  sibling_layout: {fileID: 1374861250}
+  anchor: 3
+--- !u!114 &2082631211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2082631207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7cda2188c8e1a4983aa29051629974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   header: {fileID: 0}
   content: {fileID: 995570909}
   footer: {fileID: 1559060554}
@@ -50562,7 +50444,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 13
   editorSection: {fileID: 97059935}
@@ -51077,7 +50958,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 17
   editorSection: {fileID: 1685155425}
@@ -51208,7 +51088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26cc6e5f2df4394f9ac4cff4ce16282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoExtend: 0
   history:
     group: 15
   editorSection: {fileID: 97059935}

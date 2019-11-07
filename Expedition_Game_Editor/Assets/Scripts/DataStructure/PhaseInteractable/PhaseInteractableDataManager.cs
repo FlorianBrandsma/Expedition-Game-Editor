@@ -38,7 +38,7 @@ public class PhaseInteractableDataManager
                     join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.Id
                     select new PhaseInteractableDataElement()
                     {
-                        dataType = Enums.DataType.PhaseInteractable,
+                        DataType = Enums.DataType.PhaseInteractable,
 
                         Id = phaseInteractableData.Id,
                         Index = phaseInteractableData.Index,

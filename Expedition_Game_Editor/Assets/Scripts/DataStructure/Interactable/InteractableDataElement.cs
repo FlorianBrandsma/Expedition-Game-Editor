@@ -25,6 +25,8 @@ public class InteractableDataElement : InteractableCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalObjectGraphicPath = objectGraphicPath;

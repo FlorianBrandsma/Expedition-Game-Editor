@@ -9,6 +9,9 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public SelectionManager.Property    SelectionProperty   { get; set; }
     public SelectionManager.Type        SelectionType       { get; set; }
 
+    private Vector3 tileBoundSize;
+    private Plane[] planes;
+
     public Camera cam;
     public RectTransform content;
 
@@ -91,7 +94,22 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(SelectionElement element) { }
+    public void CorrectPosition(SelectionElement element)
+    {
+        planes = GeometryUtility.CalculateFrustumPlanes(cam);
+
+        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * 1,
+                                    0,
+                                    EditorManager.UI.localScale.z * 1);
+
+        Debug.Log(content.TransformPoint(element.transform.position));
+
+        if (GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(element.transform.position), tileBoundSize)))
+        {
+            Debug.Log("Correct camera position " + element);
+        }
+            
+    }
 
     public void ClearCamera()
     {

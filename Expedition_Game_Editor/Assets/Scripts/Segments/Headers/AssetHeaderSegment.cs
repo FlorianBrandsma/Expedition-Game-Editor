@@ -105,6 +105,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public void Awake()
     {
         SelectionElementManager.Add(selectionElement);
+        SelectionElementManager.dataElementPool.Add(selectionElement.data.dataElement);
     }
 
     public void UpdateName()
@@ -132,7 +133,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         InitializeData();
-
+        
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
     
@@ -149,7 +150,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         }
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeItemData()

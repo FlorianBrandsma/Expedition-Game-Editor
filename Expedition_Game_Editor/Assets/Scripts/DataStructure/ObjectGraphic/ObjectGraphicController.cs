@@ -36,7 +36,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
     {
         var objectGraphicData = (ObjectGraphicDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.ObjectGraphic:
 

@@ -6,8 +6,6 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 {
     public ObjectiveDataElement ObjectiveData { get { return (ObjectiveDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     public List<SceneInteractableDataElement> sceneInteractableDataList;
@@ -20,7 +18,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ObjectiveData); }
+        get { return SelectionElementManager.FindDataElements(ObjectiveData).Concat(new[] { ObjectiveData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -59,10 +57,17 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        ObjectiveData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(ObjectiveData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
 
         UpdateEditor();

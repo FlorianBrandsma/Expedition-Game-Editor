@@ -128,7 +128,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
         }
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index, DataEditor.Data.dataController.DataList.Count - 1);
+            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeChapterData()

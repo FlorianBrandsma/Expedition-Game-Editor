@@ -181,7 +181,7 @@ public class SelectionElement : MonoBehaviour
         if (selected) return;
 
         EditorPath editorPath = new EditorPath(this, new Route(this));
-
+        
         switch (selectionProperty)
         {
             case SelectionManager.Property.None: break;

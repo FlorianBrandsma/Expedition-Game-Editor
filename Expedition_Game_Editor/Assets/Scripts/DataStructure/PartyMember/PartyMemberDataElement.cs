@@ -25,6 +25,8 @@ public class PartyMemberDataElement : PartyMemberCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalInteractableName = interactableName;

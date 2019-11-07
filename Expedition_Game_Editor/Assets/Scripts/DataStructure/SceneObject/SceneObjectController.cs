@@ -36,7 +36,7 @@ public class SceneObjectController : MonoBehaviour, IDataController
     {
         var sceneObjectData = (SceneObjectDataElement)searchElement.data.dataElement;
         
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.ObjectGraphic:
 

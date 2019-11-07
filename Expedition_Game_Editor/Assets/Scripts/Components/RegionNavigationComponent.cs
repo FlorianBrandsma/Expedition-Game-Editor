@@ -247,12 +247,12 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         //Replace routes as multiple routes of type "Region" exist outside of the componentData
         path.ReplaceAllRoutes(componentDataList[index].data);
-        path.type = Path.Type.Reload;
+        EditorManager.loadType = Enums.LoadType.Reload;
 
         for (int i = (index+1); i < componentDataList.Count; i++)
             GetData(componentDataList[i].data.dataController);
 
-        EditorManager.editorManager.InitializePath(PathController.route.path);
+        EditorManager.editorManager.ResetEditor(PathController.route.path);
     }
 
     private void GetData(IDataController dataController)

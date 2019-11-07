@@ -43,7 +43,7 @@ public class PartyMemberDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new PartyMemberDataElement()
                     {
-                        dataType = Enums.DataType.PartyMember,
+                        DataType = Enums.DataType.PartyMember,
 
                         Id = partyMemberData.Id,
                         

@@ -6,18 +6,14 @@ public class FormComponent : MonoBehaviour, IComponent
 {
     public EditorComponent component;
 
-    private bool open;
-    private bool initialized;
-    private bool locked;
+    [HideInInspector]
+    public bool activeInPath;
+
     private bool closedManually;
 
-    private PathController pathController;
+    private PathController PathController { get { return GetComponent<PathController>(); } }
 
-    //Don't reset form when opening
-    public bool constant;
     public bool autoOpen;
-    public bool autoClose;
-    public bool openOnce;
 
     public EditorForm editorForm;
 
@@ -28,49 +24,36 @@ public class FormComponent : MonoBehaviour, IComponent
 
     EditorButton Button { get { return button.GetComponent<EditorButton>(); } }
 
-    public void InitializeComponent(Path path) {  }
-
-    public void SetComponent(Path path) { InitializeButton(); }
-
-    public void InitializeForm(PathController pathController)
+    public void InitializeComponent(Path path)
     {
-        this.pathController = pathController;
+        editorForm.formComponent = this;
+
+        activeInPath = true;
+    }
+
+    public void SetComponent(Path path)
+    {
+        InitializeButton();
     }
 
     public void SetForm()
     {
-        editorForm.formComponent = this;
-
-        //If the component was manually closed, don't open it here
-        if (constant && closedManually) return;
+        if (closedManually) return;
 
         if (autoOpen)
         {
-            if (locked) return;
-
-            if (!initialized)
-            {
-                EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());
-
-                initialized = true;
-            } else {
-
-                //Set to true so the list will reset when selection is closed
-                EditorManager.editorManager.InitializePath(editorForm.activePath, true);
-            }
-
-            if (openOnce)
-                locked = true;
+            if (!editorForm.activeInPath )
+                EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());     
         }
-
+        
         closedManually = false;
-
-        SetIcon(true);
     }
 
     private void InitializeButton()
     {
         button = ComponentManager.componentManager.AddFormButton(component);
+
+        button.GetComponent<EditorButton>().icon.texture = editorForm.activeInPath ? openIcon : closeIcon;
 
         button.onClick.AddListener(delegate { Interact(); });
     }
@@ -79,36 +62,29 @@ public class FormComponent : MonoBehaviour, IComponent
     {
         if (editorForm.gameObject.activeInHierarchy)
         {
-            CloseForm();
             closedManually = true;
+            CloseForm();
         } else {
-            OpenForm();
+
             closedManually = false;
+            OpenForm();
         }      
     }
 
     public void OpenForm()
     {
-        Path path = (constant ? editorForm.activePath : new PathManager.Form(editorForm).Initialize());
+        Path path = (new PathManager.Form(editorForm).Initialize());
 
-        EditorManager.editorManager.InitializePath(path); 
+        EditorManager.editorManager.InitializePath(path);
     }
 
-    private void CloseForm()
+    public void CloseForm()
     {
-        SelectionManager.CancelGetSelection();
-
         editorForm.CloseForm();
-    }
-
-    public void SetIcon(bool active)
-    {
-        button.GetComponent<EditorButton>().icon.texture = active ? openIcon : closeIcon;
     }
 
     public void CloseComponent()
     {
-        if(autoClose)
-            CloseForm();
+        activeInPath = false;
     }
 }

@@ -29,13 +29,13 @@ public class EditorSceneElement : MonoBehaviour, IElement
         if (objectGraphic != null)
             objectGraphic.gameObject.SetActive(false);
         
-        switch (Element.GeneralData.dataType)
+        switch (Element.GeneralData.DataType)
         {
             case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;
             case Enums.DataType.Interaction:        SetInteractionElement();        break;
             case Enums.DataType.SceneObject:        SetSceneObjectElement();        break;
 
-            default: Debug.Log("CASE MISSING: " + Element.GeneralData.dataType);    break;
+            default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType);    break;
         }
     }
 

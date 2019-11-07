@@ -94,12 +94,6 @@ public class SegmentController : MonoBehaviour
             GetComponent<ISegment>().InitializeSegment();
     }
 
-    public void InitializeDataController()
-    {
-        //if (DataController != null)
-        //    DataController.InitializeController();
-    }
-
     public void OpenSegment()
     {
         if (GetComponent<ISegment>() != null)

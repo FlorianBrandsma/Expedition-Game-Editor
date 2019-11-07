@@ -7,7 +7,6 @@ using System;
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
     private IDataController dataController;
-    private List<GeneralData> generalDataList;
 
     private List<float> rowHeight       = new List<float>(); //Individual heights
     private List<float> rowOffsetMax    = new List<float>(); //Combined heights
@@ -73,8 +72,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData(List<IDataElement> list)
     {
-        generalDataList = list.Cast<GeneralData>().ToList();
-        
         string elementType = Enum.GetName(typeof(Enums.ElementType), panelProperties.elementType);
 
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
@@ -118,7 +115,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = dataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 

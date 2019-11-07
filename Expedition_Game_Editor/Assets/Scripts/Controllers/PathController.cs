@@ -76,7 +76,6 @@ public class PathController : MonoBehaviour
         }
 
         InitializeComponents(mainPath);
-        InitializeForm();
 
         if (EditorController != null)
             editorSection.targetController = EditorController;
@@ -119,13 +118,11 @@ public class PathController : MonoBehaviour
     {
         route.path.type = Path.Type.Loaded;
 
-        SetForm();
-
         if (step < path.route.Count)
         {
             controllers[path.route[step].controller].FinalizePath(path);
         } else {
-
+            
             SetPreviousEditor();
             SetHistory();
 
@@ -139,18 +136,6 @@ public class PathController : MonoBehaviour
 
         editorSection.previousDataSource = editorSection.dataEditor.Data.dataElement;
         editorSection.previousDataElements = editorSection.dataEditor.DataElements.ToList();
-    }
-
-    private void InitializeForm()
-    {
-        foreach (FormComponent form in GetComponents<FormComponent>())
-            form.InitializeForm(this);
-    }
-
-    private void SetForm()
-    {
-        foreach (FormComponent form in GetComponents<FormComponent>())
-            form.SetForm();
     }
 
     public bool GetComponents(Path path)
@@ -200,7 +185,7 @@ public class PathController : MonoBehaviour
         this.layoutStep = step;
 
         if (GetComponent<LayoutDependency>() != null)
-            editorSection.targetLayout = GetComponent<LayoutDependency>();
+            editorSection.targetView = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].GetTargetLayout(path, layoutStep);

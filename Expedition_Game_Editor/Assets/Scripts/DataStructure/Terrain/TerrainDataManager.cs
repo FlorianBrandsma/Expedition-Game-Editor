@@ -29,7 +29,7 @@ public class TerrainDataManager
 
                     select new TerrainDataElement()
                     {
-                        dataType = Enums.DataType.Terrain,
+                        DataType = Enums.DataType.Terrain,
 
                         Id = terrainData.Id,
                         Index = terrainData.Index,

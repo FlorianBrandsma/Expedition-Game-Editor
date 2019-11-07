@@ -31,48 +31,78 @@ static public class SelectionManager
 
         foreach (EditorForm form in EditorManager.editorManager.forms)
         {
-            if (!form.active) continue;
+            if (!form.activeInPath) continue;
 
             foreach (EditorSection section in form.editorSections)
             {
                 if (!section.active) continue;
 
+                //For each section, add the target controller's route to a list so
+                //that it can be used for finding the elements that should be selected
                 routeList.Add(section.targetController.PathController.route);
             }
         }
 
-        SelectElement(routeList);
+        //CORRECT POSITION BEFORE SELECTING ELEMENT
+
+        //SelectElement(routeList);
     }
 
-    static public void SelectElement(List<Route> routeList)
+    static public List<Route> GetRouteList()
     {
-        foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy))
+        List<Route> routeList = new List<Route>();
+
+        foreach (EditorForm form in EditorManager.editorManager.forms)
         {
-            if (selectionElement.selectionProperty == Property.Set) continue;
-
-            foreach (Route route in routeList)
+            foreach (EditorSection section in form.editorSections)
             {
-                //Should a selection rely on a type, rather than a property, to pick an element?
-                //Mainly concerns elements with children that otherwise have the same data
-                if (selectionElement.GeneralData.Equals(route.GeneralData) &&
-                    selectionElement.selectionGroup == route.selectionGroup)
-                {
-                    if (selectionElement.DisplayManager != null)
-                    {
-                        selectionElement.DisplayManager.SelectedElement = selectionElement;
+                if (!section.active) continue;
 
-                        if (selectionElement.parent == null)
-                            selectionElement.DisplayManager.CorrectPosition(selectionElement);
-                        else
-                            selectionElement.DisplayManager.CorrectPosition(selectionElement.parent);
-                    }
-
-                    selectionElement.ActivateSelection();
-
-                    break;
-                }
+                //For each section, add the target controller's route to a list so
+                //that it can be used for finding the elements that should be selected
+                routeList.Add(section.targetController.PathController.route);
             }
         }
+
+        return routeList;
+    }
+    
+    static public void SelectElement(List<Route> routeList)
+    {
+        //Debug.Log(routeList.Count);
+
+        //foreach (IDataElement dataElement in SelectionElementManager.dataElementPool)
+        //{
+        //    var selectionElement = dataElement.SelectionElement;
+
+        //    foreach (Route route in routeList)
+        //    {
+        //        //Debug.Log(route.GeneralData.DataType + ", " + route.GeneralData.Id + ", " + route.selectionGroup);
+
+        //        if (((GeneralData)dataElement).Equals(route.GeneralData) /*&&
+        //            selectionElement.selectionGroup == route.selectionGroup*/ )
+        //        {
+        //            if (selectionElement.DisplayManager != null)
+        //            {
+        //                selectionElement.DisplayManager.SelectedElement = selectionElement;
+
+        //                if (selectionElement.parent == null)
+        //                    selectionElement.DisplayManager.CorrectPosition(selectionElement);
+        //                else
+        //                    selectionElement.DisplayManager.CorrectPosition(selectionElement.parent);
+        //            }
+        //            Debug.Log(route.GeneralData.DataType + ", " + route.GeneralData.Id + ", " + route.selectionGroup);
+        //            //Debug.Log(dataElement.DataType + ", " + dataElement.Id  + ", " + selectionElement.selectionGroup);
+
+        //            if (route.selectionGroup == Enums.SelectionGroup.Main)
+        //                selectionElement.ActivateSelection();
+        //            else
+        //                selectionElement.child.ActivateSelection();
+
+        //            break;
+        //        }
+        //    }
+        //}
     }
 
     static public void SelectSearch(IDataElement selectedDataElement)

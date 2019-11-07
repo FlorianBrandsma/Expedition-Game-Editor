@@ -189,13 +189,13 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private void SetStatus(SelectionElement element)
     {
-        switch (element.GeneralData.dataType)
+        switch (element.GeneralData.DataType)
         {
             case Enums.DataType.SceneInteractable: /*SetSceneInteractableStatus();*/ break;
             case Enums.DataType.Interaction: SetInteractionStatus(element); break;
             case Enums.DataType.SceneObject: /*SetSceneObjectStatus();*/ break;
 
-            default: Debug.Log("CASE MISSING: " + element.GeneralData.dataType); break;
+            default: Debug.Log("CASE MISSING: " + element.GeneralData.DataType); break;
         }
     }
 

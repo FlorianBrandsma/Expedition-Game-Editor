@@ -36,7 +36,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
     {
         var terrainTileData = (TerrainTileDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Tile:
 

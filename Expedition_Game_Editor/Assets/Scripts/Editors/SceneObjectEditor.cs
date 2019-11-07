@@ -6,8 +6,6 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 {
     public SceneObjectDataElement SceneObjectData { get { return (SceneObjectDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -18,7 +16,7 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(SceneObjectData); }
+        get { return SelectionElementManager.FindDataElements(SceneObjectData).Concat(new[] { SceneObjectData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -63,7 +61,18 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.ForEach(x => x.Update());
+        SceneObjectData.Update();
+
+        DataElements.ForEach(x =>
+        {
+            if (((GeneralData)x).Equals(SceneObjectData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
+        });
 
         UpdateEditor();
     }

@@ -32,7 +32,7 @@ public class ChapterDataManager
                     join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
                     select new ChapterDataElement()
                     {
-                        dataType = Enums.DataType.Chapter,
+                        DataType = Enums.DataType.Chapter,
 
                         Id = chapterData.Id,
                         Index = chapterData.Index,

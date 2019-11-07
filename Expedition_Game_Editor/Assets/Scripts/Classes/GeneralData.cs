@@ -5,11 +5,16 @@ using System.Collections;
 public class GeneralData
 {
     public Enums.DataType dataType;
-
     private int id;
     private int index;
 
     public bool changedIndex;
+
+    public Enums.DataType DataType
+    {
+        get { return dataType; }
+        set { dataType = value; }
+    }
 
     public int Id
     {
@@ -30,27 +35,27 @@ public class GeneralData
         }
     }
     
-    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), dataType); } }
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     public GeneralData()
     {
-        dataType = Enums.DataType.None;
+        DataType = Enums.DataType.None;
 
         Id = 0;
         Index = 0;
     }
 
-    public GeneralData(Enums.DataType dataType, int id, int index)
+    public GeneralData(Enums.DataType dataType, int Id, int index)
     {
-        this.dataType = dataType;
+        this.DataType = dataType;
 
-        this.Id = id;
+        this.Id = Id;
         Index = index;
     }
 
     public bool Equals(GeneralData data)
     {
-        if (dataType != data.dataType)
+        if (DataType != data.DataType)
             return false;
 
         if (Id != data.Id)
@@ -61,6 +66,6 @@ public class GeneralData
 
     public GeneralData Copy()
     {
-        return new GeneralData(dataType, Id, Index);
+        return new GeneralData(DataType, Id, Index);
     }
 }

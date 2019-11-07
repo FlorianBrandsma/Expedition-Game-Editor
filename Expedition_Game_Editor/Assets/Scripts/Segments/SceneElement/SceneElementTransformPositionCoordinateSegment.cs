@@ -128,12 +128,16 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     {
         PositionX = xInputField.Value;
 
+        UpdateTile();
+
         DataEditor.UpdateEditor();
     }
 
     public void UpdatePositionY()
     {
         PositionY = yInputField.Value;
+
+        UpdateTile();
 
         DataEditor.UpdateEditor();
     }

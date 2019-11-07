@@ -47,7 +47,7 @@ public class InteractionDataManager
 
                     select new InteractionDataElement()
                     {
-                        dataType = Enums.DataType.Interaction,
+                        DataType = Enums.DataType.Interaction,
 
                         Id = interactionData.Id,
                         Index = interactionData.Index,

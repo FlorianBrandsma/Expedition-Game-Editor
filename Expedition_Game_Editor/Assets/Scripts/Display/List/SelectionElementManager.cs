@@ -7,6 +7,8 @@ static public class SelectionElementManager
 {
     static public List<SelectionElement> elementPool = new List<SelectionElement>();
 
+    static public List<IDataElement> dataElementPool = new List<IDataElement>();
+
     static public SelectionElement SpawnElement(SelectionElement elementPrefab, Transform parent,
                                                 Enums.ElementType elementType, IDisplayManager displayManager, 
                                                 SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)

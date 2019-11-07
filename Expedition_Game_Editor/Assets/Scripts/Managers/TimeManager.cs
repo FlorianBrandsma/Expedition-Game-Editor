@@ -19,7 +19,7 @@ public class TimeManager : MonoBehaviour
     static public void SetTime(int new_time)
     {
         active_time = (Time)new_time;
-
+        
         EditorManager.editorManager.ResetEditor();
     }
 }

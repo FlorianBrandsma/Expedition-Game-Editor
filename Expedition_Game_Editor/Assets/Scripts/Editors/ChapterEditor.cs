@@ -6,8 +6,6 @@ public class ChapterEditor : MonoBehaviour, IEditor
 {
     public ChapterDataElement ChapterData { get { return (ChapterDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     public List<PartyMemberDataElement> partyMemberDataList;
@@ -22,7 +20,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ChapterData); }
+        get { return SelectionElementManager.FindDataElements(ChapterData).Concat(new[] { ChapterData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -64,11 +62,18 @@ public class ChapterEditor : MonoBehaviour, IEditor
     public void ApplyChanges()
     {
         chapterRegionDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
-        
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+
+        ChapterData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(ChapterData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if(x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
         
         UpdateEditor();
@@ -247,7 +252,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         chapterRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());
-
+        
         Loaded = false;
     }
 

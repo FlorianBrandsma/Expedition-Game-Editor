@@ -24,6 +24,8 @@ public class ItemDataElement : ItemCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalObjectGraphicPath = objectGraphicPath;

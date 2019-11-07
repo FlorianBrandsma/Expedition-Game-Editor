@@ -22,7 +22,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
         var regionData = new RegionDataElement();
 
         regionData.Id = InteractionData.RegionId;
-        regionData.dataType = Enums.DataType.Region;
+        regionData.DataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
 
         editButton.path = SegmentController.editorController.PathController.route.path;

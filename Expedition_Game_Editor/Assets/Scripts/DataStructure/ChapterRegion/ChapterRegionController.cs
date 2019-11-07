@@ -36,7 +36,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
     {
         var chapterRegionData = (ChapterRegionDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Region:
 

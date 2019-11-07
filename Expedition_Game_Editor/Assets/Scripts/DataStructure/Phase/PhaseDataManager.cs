@@ -27,7 +27,7 @@ public class PhaseDataManager
         var list = (from phaseData in phaseDataList
                     select new PhaseDataElement()
                     {
-                        dataType = Enums.DataType.Phase,
+                        DataType = Enums.DataType.Phase,
 
                         Id = phaseData.Id,
                         Index = phaseData.Index,

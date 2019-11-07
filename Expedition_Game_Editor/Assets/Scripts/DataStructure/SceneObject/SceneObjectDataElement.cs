@@ -27,8 +27,18 @@ public class SceneObjectDataElement : SceneObjectCore, IDataElement
         SetOriginalValues();
     }
 
+    public override void UpdateSearch()
+    {
+        base.UpdateSearch();
+        
+        originalObjectGraphicName = objectGraphicName;
+        originalObjectGraphicIconPath = objectGraphicIconPath;
+    }
+
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalObjectGraphicName = objectGraphicName;

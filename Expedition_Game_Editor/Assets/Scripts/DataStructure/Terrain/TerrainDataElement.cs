@@ -26,6 +26,8 @@ public class TerrainDataElement : TerrainCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalIconPath = iconPath;

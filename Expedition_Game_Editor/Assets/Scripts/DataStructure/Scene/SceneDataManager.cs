@@ -64,7 +64,7 @@ public class SceneDataManager
             join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
             select new SceneDataElement
             {
-                dataType = Enums.DataType.Scene,
+                DataType = Enums.DataType.Scene,
 
                 Id = regionData.Id,
                 Index = regionData.Index,
@@ -81,7 +81,7 @@ public class SceneDataManager
                 from terrainData in terrainDataList
                 select new SceneDataElement.TerrainData()
                 {
-                    dataType = Enums.DataType.Terrain,
+                    DataType = Enums.DataType.Terrain,
 
                     Id = terrainData.Id,
                     Index = terrainData.Index,
@@ -91,7 +91,7 @@ public class SceneDataManager
                     where terrainTileData.terrainId == terrainData.Id
                     select new TerrainTileDataElement()
                     {
-                        dataType = Enums.DataType.TerrainTile,
+                        DataType = Enums.DataType.TerrainTile,
 
                         Id = terrainTileData.Id,
                         Index = terrainTileData.Index,
@@ -108,7 +108,7 @@ public class SceneDataManager
                     where interactionData.terrainId == terrainData.Id
                     select new SceneInteractableDataElement()
                     {
-                        dataType = Enums.DataType.SceneInteractable,
+                        DataType = Enums.DataType.SceneInteractable,
 
                         Id = sceneInteractableData.Id,
                         terrainTileId = interactionData.terrainTileId,
@@ -147,7 +147,7 @@ public class SceneDataManager
                     where interactionData.terrainId == terrainData.Id
                     select new InteractionDataElement()
                     {
-                        dataType = Enums.DataType.Interaction,
+                        DataType = Enums.DataType.Interaction,
 
                         Id = interactionData.Id,
                         SceneInteractableId = interactionData.sceneInteractableId,
@@ -182,7 +182,7 @@ public class SceneDataManager
                     where sceneObjectData.terrainId == terrainData.Id
                     select new SceneObjectDataElement()
                     {
-                        dataType = Enums.DataType.SceneObject,
+                        DataType = Enums.DataType.SceneObject,
 
                         Id = sceneObjectData.Id,
                         TerrainTileId = sceneObjectData.terrainTileId,

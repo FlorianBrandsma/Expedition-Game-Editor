@@ -9,8 +9,7 @@ public class Path
     {
         New,
         Previous,
-        Loaded,
-        Reload
+        Loaded
     }
 
     public List<Route> route;
@@ -23,15 +22,12 @@ public class Path
     {
         route   = new List<Route>();
         form    = null;
-        type    = Type.New;
     }
 
     public Path(List<Route> route, EditorForm form)
     {
         this.route  = route;
         this.form   = form;
-
-        type    = Type.New;
     }
 
     public Path(List<Route> route, EditorForm form, int start)
@@ -40,22 +36,14 @@ public class Path
         this.form   = form;
 
         this.start  = start;
-
-        type    = Type.New;
-    }
-
-    public Path(bool new_loaded)
-    {
-        route   = new List<Route>();
-        form    = null;
-
-        type    = Type.New;
     }
 
     #region Equals
 
     public bool Equals(Path path)
     {
+        if (route.Count != path.route.Count) return false;
+
         for(int i = 0; i < route.Count; i++)
         {
             if (!route[i].Equals(path.route[i]))
@@ -117,7 +105,7 @@ public class Path
 
     public Path TrimToLastType(Enums.DataType dataType)
     {
-        var index = route.FindLastIndex(x => x.GeneralData.dataType == dataType);
+        var index = route.FindLastIndex(x => x.GeneralData.DataType == dataType);
 
         return Trim(index + 1);
     }
@@ -126,7 +114,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData.dataType == dataType)
+            if (r.GeneralData.DataType == dataType)
                 return r;
         }
         return null;
@@ -134,7 +122,7 @@ public class Path
 
     public Route FindLastRoute(Enums.DataType dataType)
     {
-        return route.FindLast(x => x.GeneralData.dataType == dataType);
+        return route.FindLast(x => x.GeneralData.DataType == dataType);
     }
 
     public Route GetLastRoute()
@@ -159,7 +147,7 @@ public class Path
     {
         foreach(Route r in route)
         {
-            if (r.GeneralData.dataType == ((GeneralData)data.dataElement).dataType)
+            if (r.GeneralData.DataType == ((GeneralData)data.dataElement).DataType)
                 r.data = data;
         }
     }

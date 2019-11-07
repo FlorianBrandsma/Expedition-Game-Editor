@@ -24,6 +24,8 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         originalIconPath = iconPath;

@@ -6,8 +6,6 @@ public class TerrainEditor : MonoBehaviour, IEditor
 {
     private TerrainDataElement TerrainData { get { return (TerrainDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -18,7 +16,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(TerrainData); }
+        get { return SelectionElementManager.FindDataElements(TerrainData).Concat(new[] { TerrainData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -55,10 +53,17 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        TerrainData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(TerrainData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
 
         UpdateEditor();

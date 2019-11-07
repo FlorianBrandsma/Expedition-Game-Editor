@@ -60,8 +60,9 @@ public class SceneObjectCore : GeneralData
     {
         get
         {
-            return  changedObjectGraphicId  || changedRegionId  || changedTerrainId || changedTerrainTileId || changedPositionX || 
-                    changedPositionY        || changedPositionZ || changedRotationX || changedRotationY || changedRotationZ || 
+            return  changedRegionId         || changedTerrainId || changedTerrainTileId || 
+                    changedPositionX        || changedPositionY || changedPositionZ     || 
+                    changedRotationX        || changedRotationY || changedRotationZ     || 
                     changedScaleMultiplier  || changedAnimation;
         }
     }
@@ -228,10 +229,7 @@ public class SceneObjectCore : GeneralData
 
     #region Methods
 
-    public void Create()
-    {
-
-    }
+    public void Create() { }
 
     public virtual void Update()
     {
@@ -271,25 +269,22 @@ public class SceneObjectCore : GeneralData
             sceneObjectData.animation = animation;
     }
 
-    public void UpdateSearch()
+    public virtual void UpdateSearch()
     {
         var sceneObjectData = Fixtures.sceneObjectList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedObjectGraphicId)
             sceneObjectData.objectGraphicId = objectGraphicId;
 
-        SetOriginalValues();
+        originalObjectGraphicId = objectGraphicId;
 
-        ClearChanges();
-
-        GetOriginalValues();
+        changedObjectGraphicId = false;
     }
-
+    
     public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()
     {
-        originalObjectGraphicId = objectGraphicId;
         originalRegionId = regionId;
         originalTerrainId = terrainId;
         originalTerrainTileId = terrainTileId;
@@ -309,7 +304,6 @@ public class SceneObjectCore : GeneralData
 
     public void GetOriginalValues()
     {
-        objectGraphicId = originalObjectGraphicId;
         regionId = originalRegionId;
         terrainId = originalTerrainId;
         terrainTileId = originalTerrainTileId;
@@ -331,7 +325,6 @@ public class SceneObjectCore : GeneralData
     {
         GetOriginalValues();
 
-        changedObjectGraphicId = false;
         changedRegionId = false;
         changedTerrainId = false;
         changedTerrainTileId = false;

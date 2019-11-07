@@ -34,7 +34,7 @@ public class SceneController : MonoBehaviour, IDataController
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
-        switch (((GeneralData)searchElement.data.dataElement).dataType)
+        switch (((GeneralData)searchElement.data.dataElement).DataType)
         { 
             case Enums.DataType.SceneInteractable:  SetSceneInteractableData(searchElement, resultData);    break;
             case Enums.DataType.SceneObject:        SetSceneObjectData(searchElement, resultData);          break;
@@ -45,13 +45,13 @@ public class SceneController : MonoBehaviour, IDataController
     {
         var sceneInteractableData = (SceneInteractableDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Interactable:
 
                 var resultElementData = (InteractableDataElement)resultData;
 
-                sceneInteractableData.objectGraphicId = resultElementData.Id;
+                sceneInteractableData.objectGraphicId = resultElementData.ObjectGraphicId;
                 sceneInteractableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
                 sceneInteractableData.objectGraphicPath = resultElementData.objectGraphicPath;
 
@@ -63,7 +63,7 @@ public class SceneController : MonoBehaviour, IDataController
     {
         var sceneObjectData = (SceneObjectDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.ObjectGraphic:
                 

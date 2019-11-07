@@ -81,6 +81,8 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         if (dataList.Count == 0) return;
 
+        SelectionElementManager.dataElementPool = SelectionElementManager.dataElementPool.Concat(dataList).ToList();
+
         List.SetElementSize();
 
         overlayManager.ActivateOverlay(organizer, List);
@@ -98,8 +100,8 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         listMin = RectTransform.TransformPoint(new Vector2(RectTransform.rect.min.x, RectTransform.rect.min.y));
         listMax = RectTransform.TransformPoint(new Vector2(RectTransform.rect.max.x, RectTransform.rect.max.y));
-
-        if (EditorManager.historyManager.returned || !Display.DataController.SegmentController.Loaded)
+        
+        if (EditorManager.loadType == Enums.LoadType.Reload || !Display.DataController.SegmentController.Loaded)
             ResetListPosition();
     }
 
@@ -117,13 +119,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
     private void SetData()
     {
         organizer.SetData();
-    }
-
-    public void ResetData()
-    {
-        if (organizer == null) return;
-
-        organizer.ResetData(Display.DataController.DataList);
     }
 
     public void UpdateOverlay()
@@ -166,7 +161,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public void AutoSelectElement()
     {
         if (organizer == null) return;
-
+        
         if (Display.DataController.DataList.Count == 0) return;
         
         if (Display.SelectionType == SelectionManager.Type.Automatic)
@@ -180,6 +175,11 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public void CloseList()
     {
         if (organizer == null) return;
+
+        Display.DataController.DataList.ForEach(x =>
+        {
+            SelectionElementManager.dataElementPool.RemoveAll(y => ((GeneralData)x).Equals((GeneralData)y));
+        });
 
         ScrollRect.horizontal = false;
         ScrollRect.vertical = false;

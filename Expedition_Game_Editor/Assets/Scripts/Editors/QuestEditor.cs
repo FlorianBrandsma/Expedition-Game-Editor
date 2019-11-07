@@ -6,8 +6,6 @@ public class QuestEditor : MonoBehaviour, IEditor
 {
     public QuestDataElement QuestData { get { return (QuestDataElement)Data.dataElement; } }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
-
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     public List<PhaseInteractableDataElement> questInteractableDataList;
@@ -20,7 +18,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(QuestData); }
+        get { return SelectionElementManager.FindDataElements(QuestData).Concat(new[] { QuestData }).ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -59,10 +57,17 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x =>
+        QuestData.Update();
+
+        DataElements.ForEach(x =>
         {
-            x.Update();
-            x.SelectionElement.UpdateElement();
+            if (((GeneralData)x).Equals(QuestData))
+                x.SetOriginalValues();
+            else
+                x.Update();
+
+            if (x.SelectionElement != null)
+                x.SelectionElement.UpdateElement();
         });
 
         UpdateEditor();

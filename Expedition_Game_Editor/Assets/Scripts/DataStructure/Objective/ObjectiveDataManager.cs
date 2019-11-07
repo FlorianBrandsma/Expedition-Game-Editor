@@ -22,7 +22,7 @@ public class ObjectiveDataManager
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveDataElement()
                     {
-                        dataType = Enums.DataType.Objective,
+                        DataType = Enums.DataType.Objective,
 
                         Id = objectiveData.Id,
                         Index = objectiveData.Index,

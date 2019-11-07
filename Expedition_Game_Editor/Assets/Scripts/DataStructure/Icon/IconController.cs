@@ -36,7 +36,7 @@ public class IconController : MonoBehaviour, IDataController
     {
         var iconData = (IconDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).dataType)
+        switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Icon:
 

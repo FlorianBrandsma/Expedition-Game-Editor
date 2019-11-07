@@ -22,6 +22,8 @@ public class TileDataElement : TileCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         ClearChanges();

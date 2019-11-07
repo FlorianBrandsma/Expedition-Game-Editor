@@ -21,6 +21,8 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
     public override void SetOriginalValues()
     {
+        if (!Changed) return;
+
         base.SetOriginalValues();
 
         ClearChanges();
