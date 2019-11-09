@@ -101,7 +101,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         listMin = RectTransform.TransformPoint(new Vector2(RectTransform.rect.min.x, RectTransform.rect.min.y));
         listMax = RectTransform.TransformPoint(new Vector2(RectTransform.rect.max.x, RectTransform.rect.max.y));
         
-        if (EditorManager.loadType == Enums.LoadType.Reload || !Display.DataController.SegmentController.Loaded)
+        if (EditorManager.loadType == Enums.LoadType.Return || !Display.DataController.SegmentController.Loaded)
             ResetListPosition();
     }
 
@@ -175,11 +175,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public void CloseList()
     {
         if (organizer == null) return;
-
-        Display.DataController.DataList.ForEach(x =>
-        {
-            SelectionElementManager.dataElementPool.RemoveAll(y => ((GeneralData)x).Equals((GeneralData)y));
-        });
 
         ScrollRect.horizontal = false;
         ScrollRect.vertical = false;

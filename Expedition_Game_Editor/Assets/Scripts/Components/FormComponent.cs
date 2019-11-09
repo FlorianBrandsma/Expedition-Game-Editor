@@ -11,18 +11,12 @@ public class FormComponent : MonoBehaviour, IComponent
 
     private bool closedManually;
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
-
     public bool autoOpen;
 
     public EditorForm editorForm;
 
     public Texture2D openIcon;
     public Texture2D closeIcon;
-
-    private Button button;
-
-    EditorButton Button { get { return button.GetComponent<EditorButton>(); } }
 
     public void InitializeComponent(Path path)
     {
@@ -51,7 +45,7 @@ public class FormComponent : MonoBehaviour, IComponent
 
     private void InitializeButton()
     {
-        button = ComponentManager.componentManager.AddFormButton(component);
+        var button = ComponentManager.componentManager.AddFormButton(component);
 
         button.GetComponent<EditorButton>().icon.texture = editorForm.activeInPath ? openIcon : closeIcon;
 
@@ -63,7 +57,7 @@ public class FormComponent : MonoBehaviour, IComponent
         if (editorForm.gameObject.activeInHierarchy)
         {
             closedManually = true;
-            CloseForm();
+            editorForm.CloseForm();
         } else {
 
             closedManually = false;
@@ -76,11 +70,6 @@ public class FormComponent : MonoBehaviour, IComponent
         Path path = (new PathManager.Form(editorForm).Initialize());
 
         EditorManager.editorManager.InitializePath(path);
-    }
-
-    public void CloseForm()
-    {
-        editorForm.CloseForm();
     }
 
     public void CloseComponent()

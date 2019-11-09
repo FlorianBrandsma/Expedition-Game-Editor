@@ -82,6 +82,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
+        Debug.Log("set scene");
+
         GetSelectedInteraction(dataController.SegmentController.Path);
 
         SetData(dataController.DataList);

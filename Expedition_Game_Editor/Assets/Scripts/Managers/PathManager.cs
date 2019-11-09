@@ -461,8 +461,7 @@ public class PathManager
 
         newPath.form = path.form;
 
-        foreach (Route route in path.route)
-            newPath.Add(route);
+        path.route.ForEach(x => newPath.Add(x.Copy()));
 
         newPath.route[newPath.route.Count - 1] = new_route;
 
@@ -473,24 +472,21 @@ public class PathManager
         return newPath;
     }
 
-    //There might be a problem where the original path, for checking loading, is changed
-    //together with the new (temp) path
     static public Path ReloadPath(Path path, Route.Data data)
     {
-        Path tempPath = new Path();
+        var newPath = new Path();
 
-        tempPath.form = path.form;
+        newPath.form = path.form;
 
-        foreach (Route route in path.route)
-            tempPath.Add(route);
+        path.route.ForEach(x => newPath.Add(x.Copy()));
 
-        tempPath.route.Last().data = data;
+        newPath.route.Last().data = data;
 
-        tempPath.start = path.start;
+        newPath.start = path.start;
 
         EditorManager.loadType = Enums.LoadType.Reload;
 
-        return tempPath;
+        return newPath;
     }
 
     static public Path ReloadPath(Path path, Route.Data data, int step)
@@ -499,8 +495,7 @@ public class PathManager
 
         newPath.form = path.form;
 
-        foreach (Route route in path.route)
-            newPath.Add(route);
+        path.route.ForEach(x => newPath.Add(x.Copy()));
 
         newPath.route[step].data = data;
 

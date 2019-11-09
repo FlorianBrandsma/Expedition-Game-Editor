@@ -4,7 +4,7 @@ using System.Collections;
 
 public class GeneralData
 {
-    public Enums.DataType dataType;
+    private Enums.DataType dataType;
     private int id;
     private int index;
 

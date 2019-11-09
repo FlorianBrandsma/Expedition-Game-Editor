@@ -94,6 +94,7 @@ public class Enums
     public enum LoadType
     {
         Normal,
-        Reload
+        Reload,
+        Return
     }
 }

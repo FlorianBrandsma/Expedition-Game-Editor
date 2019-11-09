@@ -21,7 +21,6 @@ public class Path
     public Path()
     {
         route   = new List<Route>();
-        form    = null;
     }
 
     public Path(List<Route> route, EditorForm form)
@@ -37,23 +36,6 @@ public class Path
 
         this.start  = start;
     }
-
-    #region Equals
-
-    public bool Equals(Path path)
-    {
-        if (route.Count != path.route.Count) return false;
-
-        for(int i = 0; i < route.Count; i++)
-        {
-            if (!route[i].Equals(path.route[i]))
-                return false;
-        }
-
-        return true;
-    }
-
-    #endregion
 
     #region Add
 
@@ -117,6 +99,7 @@ public class Path
             if (r.GeneralData.DataType == dataType)
                 return r;
         }
+
         return null;
     }
 

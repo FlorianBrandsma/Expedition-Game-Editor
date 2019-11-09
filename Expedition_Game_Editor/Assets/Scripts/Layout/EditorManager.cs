@@ -86,7 +86,7 @@ public class EditorManager : MonoBehaviour
             if (formComponent.activeInPath)
                 formComponent.SetForm();
             else
-                formComponent.CloseForm();                
+                formComponent.editorForm.CloseForm();                
         });
     }
     

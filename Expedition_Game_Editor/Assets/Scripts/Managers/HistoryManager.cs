@@ -51,7 +51,9 @@ public class HistoryManager
             
             history.RemoveAt(history.Count - 1);
 
-            if(historyForm == history[history.Count - 1].path.form)
+            var newHistoryForm = history[history.Count - 1].path.form;
+
+            if (historyForm == newHistoryForm)
                 InitializePath();
             else
                 CloseForm(historyForm);
@@ -65,7 +67,7 @@ public class HistoryManager
 
     public void InitializePath()
     {
-        EditorManager.loadType = Enums.LoadType.Reload;
+        EditorManager.loadType = Enums.LoadType.Return;
 
         EditorManager.editorManager.InitializePath(history[history.Count - 1].path);
     }

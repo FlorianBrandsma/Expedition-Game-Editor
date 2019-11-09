@@ -48,24 +48,24 @@ static public class SelectionManager
         //SelectElement(routeList);
     }
 
-    static public List<Route> GetRouteList()
-    {
-        List<Route> routeList = new List<Route>();
+    //static public List<Route> GetRouteList()
+    //{
+    //    List<Route> routeList = new List<Route>();
 
-        foreach (EditorForm form in EditorManager.editorManager.forms)
-        {
-            foreach (EditorSection section in form.editorSections)
-            {
-                if (!section.active) continue;
+    //    foreach (EditorForm form in EditorManager.editorManager.forms)
+    //    {
+    //        foreach (EditorSection section in form.editorSections)
+    //        {
+    //            if (!section.active) continue;
 
-                //For each section, add the target controller's route to a list so
-                //that it can be used for finding the elements that should be selected
-                routeList.Add(section.targetController.PathController.route);
-            }
-        }
+    //            //For each section, add the target controller's route to a list so
+    //            //that it can be used for finding the elements that should be selected
+    //            routeList.Add(section.targetController.PathController.route);
+    //        }
+    //    }
 
-        return routeList;
-    }
+    //    return routeList;
+    //}
     
     static public void SelectElement(List<Route> routeList)
     {
