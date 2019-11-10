@@ -4,12 +4,18 @@ using System.Collections;
 
 public class GeneralData
 {
+    private Enums.SelectionStatus selectionStatus;
     private Enums.DataType dataType;
     private int id;
     private int index;
 
     public bool changedIndex;
 
+    public Enums.SelectionStatus SelectionStatus
+    {
+        get { return selectionStatus; }
+        set { selectionStatus = value; }
+    }
     public Enums.DataType DataType
     {
         get { return dataType; }
@@ -37,19 +43,12 @@ public class GeneralData
     
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
-    public GeneralData()
+    public GeneralData() { }
+
+    public GeneralData(Enums.DataType dataType, int id, int index)
     {
-        DataType = Enums.DataType.None;
-
-        Id = 0;
-        Index = 0;
-    }
-
-    public GeneralData(Enums.DataType dataType, int Id, int index)
-    {
-        this.DataType = dataType;
-
-        this.Id = Id;
+        DataType = dataType;
+        Id = id;
         Index = index;
     }
 

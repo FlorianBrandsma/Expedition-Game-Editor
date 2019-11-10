@@ -23,7 +23,8 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.PathController.DataEditor;
 
-        DataEditor.EditorSegments.Add(SegmentController);
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()

@@ -8,7 +8,7 @@ public class ItemController : MonoBehaviour, IDataController
     public Search.Item searchParameters;
 
     private ItemDataManager itemDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

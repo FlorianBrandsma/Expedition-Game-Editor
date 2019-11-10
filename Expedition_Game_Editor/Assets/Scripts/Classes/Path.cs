@@ -43,7 +43,7 @@ public class Path
     {
         //Use last used step as base
         if (route.Count > 0)
-            Add(0, route.LastOrDefault().data, route.LastOrDefault().selectionGroup);
+            Add(0, route.LastOrDefault().data, route.LastOrDefault().selectionStatus);
          else
             Add(new Route(this));
     }
@@ -51,12 +51,12 @@ public class Path
     public void Add(int index)
     {
         if (route.Count > 0)
-            Add(index, route.LastOrDefault().data, route.LastOrDefault().selectionGroup);
+            Add(index, route.LastOrDefault().data, route.LastOrDefault().selectionStatus);
         else
-            Add(index, new Route.Data(), Enums.SelectionGroup.Main);
+            Add(index, new Route.Data(), Enums.SelectionStatus.Main);
     }
 
-    public void Add(int controller, Route.Data data, Enums.SelectionGroup selectionGroup)
+    public void Add(int controller, Route.Data data, Enums.SelectionStatus selectionGroup)
     {
         route.Add(new Route(controller, data, selectionGroup));
 

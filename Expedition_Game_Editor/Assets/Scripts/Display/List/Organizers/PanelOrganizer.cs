@@ -25,14 +25,19 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         listManager = (ListManager)DisplayManager;
 
         dataController = DisplayManager.Display.DataController;
-
+        
         ElementList = new List<SelectionElement>();
     }
-
+    
     public void InitializeProperties()
     {
         listProperties = (ListProperties)DisplayManager.Display;
         panelProperties = (PanelProperties)DisplayManager.Display.Properties;
+    }
+
+    public void SelectData()
+    {
+        SelectionManager.SelectData(dataController.DataList);
     }
 
     public void SetElementSize()
@@ -69,7 +74,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         SetData(dataController.DataList);
     }
-
+    
     public void SetData(List<IDataElement> list)
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), panelProperties.elementType);
@@ -106,7 +111,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ResetData(List<IDataElement> filter)
     {
-        CloseList();
+        ClearOrganizer();
 
         SetData(filter);
     }
@@ -127,16 +132,21 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         element.SetElement();
     }
 
-    public void CloseList()
+    public void ClearOrganizer()
     {
         SelectionElementManager.CloseElement(ElementList);
     }
 
-    public void ClearOrganizer() { }
+    private void CancelSelection()
+    {
+        SelectionManager.CancelSelection(dataController.DataList);
+    }
 
     public void CloseOrganizer()
     {
-        CloseList();
+        ClearOrganizer();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

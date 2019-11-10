@@ -25,13 +25,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public Vector2          listSize        { get; set; }
     public RectTransform    ParentRect      { get { return transform.parent.GetComponent<RectTransform>(); } }
 
-    public List<SelectionElement> elementList = new List<SelectionElement>();
-    public SelectionElement SelectedElement { get; set; }
-
-    public Route selectedRoute { get; set; }
-
-    public SegmentController segmentController;
-
     private IList List { get { return GetComponent<IList>(); } }
 
     public void InitializeList(ListProperties listProperties)
@@ -73,6 +66,11 @@ public class ListManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(true);
     }
 
+    public void SelectData()
+    {
+        organizer.SelectData();
+    }
+
     public void SetList()
     {
         if (organizer == null) return;
@@ -80,9 +78,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         var dataList = Display.DataController.DataList;
 
         if (dataList.Count == 0) return;
-
-        SelectionElementManager.dataElementPool = SelectionElementManager.dataElementPool.Concat(dataList).ToList();
-
+        
         List.SetElementSize();
 
         overlayManager.ActivateOverlay(organizer, List);
@@ -178,15 +174,10 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         ScrollRect.horizontal = false;
         ScrollRect.vertical = false;
-
+        
         overlayManager.CloseOverlay();
         organizer.CloseOrganizer();
         
-        elementList.Clear();
-
-        if (SelectedElement != null)
-            SelectedElement.CancelSelection();
-
         transform.parent.gameObject.SetActive(false);
     }
 

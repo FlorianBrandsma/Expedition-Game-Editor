@@ -18,8 +18,8 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private PanelProperties properties;
 
-    private SelectionElement Element    { get { return GetComponent<SelectionElement>(); } }
-    private SelectionElement ElementChild { get { return Element.child; } }
+    private SelectionElement Element        { get { return GetComponent<SelectionElement>(); } }
+    private SelectionElement ElementChild   { get { return Element.child; } }
 
     public Color ElementColor
     {

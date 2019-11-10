@@ -6,9 +6,7 @@ using System.Linq;
 static public class SelectionElementManager
 {
     static public List<SelectionElement> elementPool = new List<SelectionElement>();
-
-    static public List<IDataElement> dataElementPool = new List<IDataElement>();
-
+    
     static public SelectionElement SpawnElement(SelectionElement elementPrefab, Transform parent,
                                                 Enums.ElementType elementType, IDisplayManager displayManager, 
                                                 SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
@@ -63,8 +61,6 @@ static public class SelectionElementManager
             managerList.ForEach(x => x.UpdateData());
         else
             elementList.ForEach(x => x.UpdateElement());
-
-        SelectionManager.SelectElements();
     }
     
     static public List<IDataElement> FindDataElements(GeneralData generalData)
@@ -84,7 +80,7 @@ static public class SelectionElementManager
 
     static public List<SelectionElement> FindSelectionElements(List<SelectionElement> selectionElements, GeneralData generalData)
     {
-        return selectionElements.Where(x => x.selectionGroup == Enums.SelectionGroup.Main &&
+        return selectionElements.Where(x => x.selectionStatus == Enums.SelectionStatus.Main &&
                                                         x.GeneralData != null)
                                             .Where(x => x.GeneralData.Equals(generalData)).ToList();
     }
@@ -93,6 +89,7 @@ static public class SelectionElementManager
     {
         foreach (SelectionElement element in elementList)
         {
+            element.CloseElement();
             element.GetComponent<IElement>().CloseElement();
             element.GetComponent<Button>().onClick.RemoveAllListeners();
 

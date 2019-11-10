@@ -8,7 +8,7 @@ public class TileController : MonoBehaviour, IDataController
     public Search.Tile searchParameters;
 
     private TileDataManager tileDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

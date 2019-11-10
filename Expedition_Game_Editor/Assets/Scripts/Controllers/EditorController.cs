@@ -37,7 +37,7 @@ public class EditorController : MonoBehaviour
     private void InitializeEditor()
     {
         if (PathController.DataEditor == null) return;
-        
+
         PathController.DataEditor.EditorSegments.ForEach(x => 
         {
             x.Segment.InitializeData();

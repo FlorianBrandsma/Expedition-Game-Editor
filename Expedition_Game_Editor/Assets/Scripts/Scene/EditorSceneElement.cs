@@ -19,16 +19,13 @@ public class EditorSceneElement : MonoBehaviour, IElement
         }
     }
 
-    public void InitializeElement()
-    {
-        //properties = (PanelProperties)Element.DisplayManager.Display.Properties;
-    }
+    public void InitializeElement() { }
 
     public void SetElement()
     {
         if (objectGraphic != null)
             objectGraphic.gameObject.SetActive(false);
-        
+
         switch (Element.GeneralData.DataType)
         {
             case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;

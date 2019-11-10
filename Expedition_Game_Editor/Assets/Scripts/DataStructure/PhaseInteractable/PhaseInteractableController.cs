@@ -8,7 +8,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
     public Search.PhaseInteractable searchParameters;
 
     private PhaseInteractableDataManager phaseInteractableDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
@@ -59,6 +59,6 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
         SegmentController.Segment.DataEditor.UpdateEditor();
 
         dataElement.SelectionElement.elementStatus = phaseInteractablesData.elementStatus;
-        dataElement.SelectionElement.SetOverlay(); 
+        dataElement.SelectionElement.SetStatus(); 
     }
 }

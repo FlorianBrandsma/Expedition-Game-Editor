@@ -50,8 +50,6 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     private void SetChapterOptions()
     {
-        Debug.Log("Set chapter options");
-
         var dataElements = data.dataList.Cast<ChapterDataElement>().ToList();
 
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
@@ -87,7 +85,6 @@ public class NavigationComponent : MonoBehaviour, IComponent
 
     public void InitializePath(Path path, Route.Data data)
     {
-        Debug.Log("Bug here");
         EditorManager.editorManager.InitializePath(PathManager.ReloadPath(path, data));
     }
 

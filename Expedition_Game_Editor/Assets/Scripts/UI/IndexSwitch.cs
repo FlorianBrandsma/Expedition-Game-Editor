@@ -26,7 +26,7 @@ public class IndexSwitch : MonoBehaviour
         this.index = index;
 
         dataElement = segment.DataEditor.Data.dataElement;
-        dataList = segment.DataEditor.Data.dataController.DataList.ToList();
+        dataList = segment.DataEditor.Data.dataController.DataList;
 
         indexLimit = dataList.Count - 1;
 

@@ -10,7 +10,7 @@ public class RegionController : MonoBehaviour, IDataController
     public Search.Region searchParameters;
 
     private RegionDataManager regionDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

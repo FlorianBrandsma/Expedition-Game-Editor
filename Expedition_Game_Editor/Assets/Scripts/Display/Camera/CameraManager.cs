@@ -24,8 +24,6 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public RectTransform graphicParent;
     public RectTransform displayRect;
 
-    public SelectionElement SelectedElement { get; set; }
-
     public void InitializeCamera(CameraProperties cameraProperties)
     {
         transform.parent.gameObject.SetActive(true);
@@ -61,6 +59,11 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         organizer.InitializeProperties();
 
         transform.parent.gameObject.SetActive(true);
+    }
+
+    public void SelectData()
+    {
+        organizer.SelectData();
     }
 
     public void SetCamera()

@@ -41,7 +41,7 @@ public class SelectionElement : MonoBehaviour
 
     public SegmentController segmentController;
     public GameObject displayParent;
-    public Enums.SelectionGroup selectionGroup;
+    public Enums.SelectionStatus selectionStatus;
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
     public Enums.ElementType elementType;
@@ -75,16 +75,12 @@ public class SelectionElement : MonoBehaviour
         this.dataController = dataController;
 
         data = new Data(GetComponent<IDataController>());
-
-        CancelSelection();
-
+        
         GetComponent<IElement>().InitializeElement();
     }
 
     public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
-        CancelSelection();
-
         DisplayManager = displayManager;
 
         segmentController = DisplayManager.Display.DataController.SegmentController;
@@ -107,6 +103,9 @@ public class SelectionElement : MonoBehaviour
 
         SetOverlay();
 
+        if (child != null)
+            child.SetOverlay();
+        
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = dataController;
     }
@@ -118,19 +117,27 @@ public class SelectionElement : MonoBehaviour
 
     public void SetOverlay()
     {
-        if (selectionGroup == Enums.SelectionGroup.Child) return;
+        if (data.dataElement == null) return;
+
+        SetSelection();
+        SetStatus();
+    }
+
+    private void SetSelection()
+    {
+        if (selectionStatus == Enums.SelectionStatus.None) return;
+
+        if (selectionStatus == data.dataElement.SelectionStatus || data.dataElement.SelectionStatus == Enums.SelectionStatus.Both)
+            glow.SetActive(true);
+    }
+
+    public void SetStatus()
+    {
+        if (selectionStatus == Enums.SelectionStatus.Child) return;
 
         switch (elementStatus)
         {
-            case Enums.ElementStatus.Enabled:
-
-                Element.ElementColor = enabledColor;
-
-                if(lockIcon != null)
-                    lockIcon.SetActive(false);
-
-                break;
-
+            case Enums.ElementStatus.Enabled: break;
             case Enums.ElementStatus.Disabled:
 
                 Element.ElementColor = disabledColor;
@@ -150,28 +157,6 @@ public class SelectionElement : MonoBehaviour
             case Enums.ElementStatus.Related: break;
             case Enums.ElementStatus.Unrelated: break;
         }
-    }
-
-    public void ActivateSelection()
-    {
-        if (DisplayManager != null)
-            DisplayManager.SelectedElement = this;
-
-        selected = true;
-
-        glow.SetActive(true);
-    }
-
-    public void CancelSelection()
-    {
-        if (!selected) return;
-
-        selected = false;
-
-        if (DisplayManager != null)
-            DisplayManager.SelectedElement = null;
-
-        glow.SetActive(false);
     }
 
     public void SelectElement()
@@ -235,5 +220,34 @@ public class SelectionElement : MonoBehaviour
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
 
         SetElement();
+    }
+
+    public void CloseElement()
+    {
+        if (data.dataElement == null) return;
+
+        if (child != null)
+            child.CloseElement();
+        
+        Element.ElementColor = enabledColor;
+
+        if (glow != null)
+            glow.SetActive(false);
+
+        if (lockIcon != null)
+            lockIcon.SetActive(false);
+    }
+
+    public void CancelSelection()
+    {
+        if (data.dataElement == null) return;
+
+        data.dataElement.SelectionStatus = Enums.SelectionStatus.None;
+
+        if (glow != null)
+            glow.SetActive(false);
+
+        if (child != null)
+            child.CancelSelection();
     }
 }

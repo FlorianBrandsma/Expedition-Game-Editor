@@ -861,6 +861,11 @@ Prefab:
       propertyPath: segmentController
       value: 
       objectReference: {fileID: 246598023}
+    - target: {fileID: 114000011852793538, guid: e459c8c821901e5479d8bd2715d2a2d4,
+        type: 2}
+      propertyPath: selectionStatus
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
   m_IsPrefabParent: 0
@@ -7514,7 +7519,6 @@ MonoBehaviour:
     anchor: 2
     width: 30
   activeInPath: 0
-  constant: 1
   autoOpen: 1
   editorForm: {fileID: 1374861249}
   openIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
@@ -7552,7 +7556,6 @@ MonoBehaviour:
     anchor: 1
     width: 30
   activeInPath: 0
-  constant: 0
   autoOpen: 0
   editorForm: {fileID: 778174905}
   openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
@@ -13487,7 +13490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 1849985779}
   displayParent: {fileID: 0}
-  selectionGroup: 0
+  selectionStatus: 0
   selectionType: 0
   selectionProperty: 0
   elementType: 2
@@ -29711,7 +29714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 527584520}
   displayParent: {fileID: 0}
-  selectionGroup: 0
+  selectionStatus: 1
   selectionType: 1
   selectionProperty: 1
   elementType: 2
@@ -35325,6 +35328,11 @@ Prefab:
       propertyPath: segmentController
       value: 
       objectReference: {fileID: 1552122646}
+    - target: {fileID: 114000011852793538, guid: e459c8c821901e5479d8bd2715d2a2d4,
+        type: 2}
+      propertyPath: selectionStatus
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e459c8c821901e5479d8bd2715d2a2d4, type: 2}
   m_IsPrefabParent: 0
@@ -42636,7 +42644,6 @@ MonoBehaviour:
     anchor: 1
     width: 30
   activeInPath: 0
-  constant: 1
   autoOpen: 1
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
@@ -42680,8 +42687,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlayManager: {fileID: 233668293}
   listParent: {fileID: 103099787}
-  elementList: []
-  segmentController: {fileID: 0}
 --- !u!1 &1733334816
 GameObject:
   m_ObjectHideFlags: 0
@@ -51716,7 +51721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 1791099886}
   displayParent: {fileID: 1791099885}
-  selectionGroup: 0
+  selectionStatus: 1
   selectionType: 1
   selectionProperty: 1
   elementType: 2

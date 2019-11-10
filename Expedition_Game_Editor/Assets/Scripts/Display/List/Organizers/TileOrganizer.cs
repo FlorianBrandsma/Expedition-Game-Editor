@@ -40,55 +40,11 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         vertical = listProperties.vertical;
     }
 
-    public void SetElementSize()
+    public void SelectData()
     {
-        ElementSize = listProperties.elementSize;
+        SelectionManager.SelectData(dataController.DataList);
     }
-
-    public Vector2 GetListSize(int elementCount, bool exact)
-    {
-        Vector2 gridSize;
-
-        if(horizontal && vertical)
-        {
-            gridSize = new Vector2( horizontal  ? tileProperties.GridSize.x * ElementSize.x : ElementSize.x,
-                                    vertical    ? tileProperties.GridSize.y * ElementSize.y : ElementSize.y);
-        } else {
-
-            int listWidth  = GetListWidth(elementCount);
-            int listHeight = GetListHeight(elementCount);
-
-            //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
-            gridSize = new Vector2( horizontal  ? 0                                                              : listWidth  * ElementSize.x,
-                                    vertical    ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y)  : listHeight * ElementSize.y);
-        }
-
-        if (exact)
-            return new Vector2(gridSize.x - listManager.RectTransform.rect.width, gridSize.y);
-        else
-            return new Vector2(gridSize.x / ElementSize.x, gridSize.y / ElementSize.y);
-    }
-
-    public int GetListWidth(int elementCount)
-    {
-        int x = 0;
-
-        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
-            x++;
-
-        return x - 1;
-    }
-
-    public int GetListHeight(int elementCount)
-    {
-        int y = 0;
-
-        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
-            y++;
-
-        return y - 1;
-    }
-
+    
     public void SetData()
     {
         SetData(dataController.DataList);
@@ -122,6 +78,57 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
             SetElement(element);
         }
+    }
+
+    public void SetElementSize()
+    {
+        ElementSize = listProperties.elementSize;
+    }
+
+    public Vector2 GetListSize(int elementCount, bool exact)
+    {
+        Vector2 gridSize;
+
+        if (horizontal && vertical)
+        {
+            gridSize = new Vector2(horizontal ? tileProperties.GridSize.x * ElementSize.x : ElementSize.x,
+                                    vertical ? tileProperties.GridSize.y * ElementSize.y : ElementSize.y);
+        }
+        else
+        {
+
+            int listWidth = GetListWidth(elementCount);
+            int listHeight = GetListHeight(elementCount);
+
+            //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
+            gridSize = new Vector2(horizontal ? 0 : listWidth * ElementSize.x,
+                                    vertical ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y) : listHeight * ElementSize.y);
+        }
+
+        if (exact)
+            return new Vector2(gridSize.x - listManager.RectTransform.rect.width, gridSize.y);
+        else
+            return new Vector2(gridSize.x / ElementSize.x, gridSize.y / ElementSize.y);
+    }
+
+    public int GetListWidth(int elementCount)
+    {
+        int x = 0;
+
+        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
+            x++;
+
+        return x - 1;
+    }
+
+    public int GetListHeight(int elementCount)
+    {
+        int y = 0;
+
+        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
+            y++;
+
+        return y - 1;
     }
 
     public void UpdateData()
@@ -158,9 +165,16 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer() { }
 
+    private void CancelSelection()
+    {
+        SelectionManager.CancelSelection(dataController.DataList);
+    }
+
     public void CloseOrganizer()
     {
         CloseList();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

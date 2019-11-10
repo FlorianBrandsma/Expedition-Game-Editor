@@ -42,6 +42,15 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         secondaryDataController = multiGridProperties.SecondaryDataController;
     }
 
+    public void SelectData()
+    {
+        if(primaryDataController != null)
+            SelectionManager.SelectData(primaryDataController.DataList);
+        
+        if(secondaryDataController != null)
+            SelectionManager.SelectData(secondaryDataController.DataList);
+    }
+
     public void SetElementSize()
     {
         primaryDimension = (int)Mathf.Sqrt(primaryDataController.DataList.Count);
@@ -143,9 +152,20 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer() { }
 
+    private void CancelSelection()
+    {
+        if (primaryDataController != null)
+            SelectionManager.CancelSelection(primaryDataController.DataList);
+
+        if (secondaryDataController != null)
+            SelectionManager.CancelSelection(secondaryDataController.DataList);
+    }
+
     public void CloseOrganizer()
     {
         CloseList();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

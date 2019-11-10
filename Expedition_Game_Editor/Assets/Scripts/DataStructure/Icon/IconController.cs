@@ -8,7 +8,7 @@ public class IconController : MonoBehaviour, IDataController
     public Search.Icon searchParameters;
 
     private IconDataManager iconDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

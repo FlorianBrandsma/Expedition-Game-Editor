@@ -12,6 +12,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private Plane[] planes;
 
     private InteractionDataElement interactionData;
+    private List<IDataElement> dataList;
 
     private SceneDataElement sceneData;
 
@@ -24,7 +25,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private IDataController dataController;
 
-    public List<SelectionElement> ElementList { get; set; }
+    public List<SelectionElement> elementList = new List<SelectionElement>();
 
     private CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
 
@@ -34,7 +35,27 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
         dataController = cameraManager.Display.DataController;
 
-        ElementList = new List<SelectionElement>();
+        sceneData = (SceneDataElement)dataController.DataList.FirstOrDefault();
+    }
+    
+    public void InitializeProperties()
+    {
+        sceneProperties = (SceneProperties)DisplayManager.Display.Properties;
+        
+        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * sceneData.tileSize,
+                                    0,
+                                    EditorManager.UI.localScale.z * sceneData.tileSize) * 3;
+
+        SetRegionSize();
+    }
+
+    public void SelectData()
+    {
+        dataList =  sceneData.terrainDataList.SelectMany(x => x.sceneInteractableDataList).Cast<IDataElement>().Concat(
+                    sceneData.terrainDataList.SelectMany(x => x.interactionDataList).Cast<IDataElement>()).Concat(
+                    sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList).Cast<IDataElement>()).ToList();
+
+        SelectionManager.SelectData(dataList);
     }
 
     private void SetRegionSize()
@@ -44,19 +65,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
         ScrollRect.content.sizeDelta = regionSize * 2;
         cameraManager.content.sizeDelta = regionSize;
-    }
-
-    public void InitializeProperties()
-    {
-        sceneProperties = (SceneProperties)DisplayManager.Display.Properties;
-        
-        sceneData = (SceneDataElement)dataController.DataList.FirstOrDefault();
-
-        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * sceneData.tileSize,
-                                    0,
-                                    EditorManager.UI.localScale.z * sceneData.tileSize) * 3;
-
-        SetRegionSize();
     }
 
     public void UpdateData()
@@ -82,10 +90,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
-        Debug.Log("set scene");
-
         GetSelectedInteraction(dataController.SegmentController.Path);
-
+        
         SetData(dataController.DataList);
     }
 
@@ -97,7 +103,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
         interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == interactionRoute.GeneralData.Id)).FirstOrDefault();
     }
-
+    
     private void SetData(List<IDataElement> list)
     {
         planes = GeometryUtility.CalculateFrustumPlanes(cameraManager.cam);
@@ -164,7 +170,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private void SetSceneElements(List<IDataElement> dataList)
     {
         if (dataList.Count == 0) return;
-
+        
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("Scene/EditorSceneElement");
 
         foreach(IDataElement data in dataList)
@@ -174,7 +180,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
 
-            ElementList.Add(element);
+            elementList.Add(element);
 
             data.SelectionElement = element;
             element.data = new SelectionElement.Data(dataController, data);
@@ -200,11 +206,11 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             default: Debug.Log("CASE MISSING: " + element.GeneralData.DataType); break;
         }
     }
-
+    
     private void SetInteractionStatus(SelectionElement element)
     {
         if (interactionData == null) return;
-
+        
         var data = element.data;
         var dataElement = (InteractionDataElement)data.dataElement;
 
@@ -214,7 +220,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                     interactionData.questId + "/" + dataElement.questId + ":" +
                     interactionData.objectiveId + "/" + dataElement.objectiveId);
         */
-
+        
         //Hidden: Interactions belonging to the same interactable and selected objective
         if (dataElement.Id != interactionData.Id && 
             dataElement.SceneInteractableId == interactionData.SceneInteractableId && 
@@ -273,14 +279,21 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     public void ClearOrganizer()
     {
         tileList.ForEach(x => x.ClosePoolable());
-        SelectionElementManager.CloseElement(ElementList);
+        SelectionElementManager.CloseElement(elementList);
 
         tileList.Clear();
+    }
+
+    private void CancelSelection()
+    {
+        SelectionManager.CancelSelection(dataList);
     }
 
     public void CloseOrganizer()
     {
         ClearOrganizer();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

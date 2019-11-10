@@ -52,6 +52,9 @@ public class EditorManager : MonoBehaviour
         //Set up data along the path
         path.form.OpenPath(path);
 
+        //Get target routes for selecting elements
+        SelectionManager.GetRouteList();
+
         //Deload inactive forms
         DeloadForms();
 
@@ -100,7 +103,7 @@ public class EditorManager : MonoBehaviour
     {
         //Activate layers, set anchors based on initialized values
         layers.ForEach(x => x.SetLayout());
-
+        
         forms.ForEach(x => x.CloseEditor());
         forms.ForEach(x => x.OpenEditor());
     }

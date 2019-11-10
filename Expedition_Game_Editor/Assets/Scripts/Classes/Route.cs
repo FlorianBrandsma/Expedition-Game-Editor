@@ -72,7 +72,7 @@ public class Route
     public Data data;
     public Path path;
 
-    public Enums.SelectionGroup selectionGroup;
+    public Enums.SelectionStatus selectionStatus;
 
     public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
 
@@ -90,7 +90,7 @@ public class Route
         controller = route.controller;
         data = new Data(route.data);
 
-        selectionGroup = route.selectionGroup;
+        selectionStatus = route.selectionStatus;
 
         path = route.path;
     }
@@ -99,15 +99,15 @@ public class Route
     {
         data = new Data(selectionElement.data);
         path = selectionElement.path;
-        selectionGroup = selectionElement.selectionGroup;
+        selectionStatus = selectionElement.selectionStatus;
     }
 
-    public Route(int controller, Data data, Enums.SelectionGroup selectionGroup)
+    public Route(int controller, Data data, Enums.SelectionStatus selectionStatus)
     {
         this.controller = controller;
         this.data = new Data(data);
 
-        this.selectionGroup = selectionGroup;
+        this.selectionStatus = selectionStatus;
     }
 
     public bool Equals(Route route)

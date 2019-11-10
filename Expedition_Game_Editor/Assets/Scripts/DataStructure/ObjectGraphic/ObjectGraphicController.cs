@@ -8,7 +8,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
     public Search.ObjectGraphic searchParameters;
 
     private ObjectGraphicDataManager objectGraphicDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

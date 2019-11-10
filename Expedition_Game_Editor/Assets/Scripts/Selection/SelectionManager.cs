@@ -23,16 +23,16 @@ static public class SelectionManager
         Toggle
     }
 
+    static public List<Route> routeList = new List<Route>();
+
     static public IDataElement getDataElement;
 
-    static public void SelectElements()
+    static public void GetRouteList()
     {
-        List<Route> routeList = new List<Route>();
+        routeList.Clear();
 
         foreach (EditorForm form in EditorManager.editorManager.forms)
         {
-            if (!form.activeInPath) continue;
-
             foreach (EditorSection section in form.editorSections)
             {
                 if (!section.active) continue;
@@ -42,67 +42,25 @@ static public class SelectionManager
                 routeList.Add(section.targetController.PathController.route);
             }
         }
-
-        //CORRECT POSITION BEFORE SELECTING ELEMENT
-
-        //SelectElement(routeList);
     }
 
-    //static public List<Route> GetRouteList()
-    //{
-    //    List<Route> routeList = new List<Route>();
-
-    //    foreach (EditorForm form in EditorManager.editorManager.forms)
-    //    {
-    //        foreach (EditorSection section in form.editorSections)
-    //        {
-    //            if (!section.active) continue;
-
-    //            //For each section, add the target controller's route to a list so
-    //            //that it can be used for finding the elements that should be selected
-    //            routeList.Add(section.targetController.PathController.route);
-    //        }
-    //    }
-
-    //    return routeList;
-    //}
-    
-    static public void SelectElement(List<Route> routeList)
+    static public void SelectData(List<IDataElement> dataList)
     {
-        //Debug.Log(routeList.Count);
+        if (dataList.Count == 0) return;
 
-        //foreach (IDataElement dataElement in SelectionElementManager.dataElementPool)
-        //{
-        //    var selectionElement = dataElement.SelectionElement;
-
-        //    foreach (Route route in routeList)
-        //    {
-        //        //Debug.Log(route.GeneralData.DataType + ", " + route.GeneralData.Id + ", " + route.selectionGroup);
-
-        //        if (((GeneralData)dataElement).Equals(route.GeneralData) /*&&
-        //            selectionElement.selectionGroup == route.selectionGroup*/ )
-        //        {
-        //            if (selectionElement.DisplayManager != null)
-        //            {
-        //                selectionElement.DisplayManager.SelectedElement = selectionElement;
-
-        //                if (selectionElement.parent == null)
-        //                    selectionElement.DisplayManager.CorrectPosition(selectionElement);
-        //                else
-        //                    selectionElement.DisplayManager.CorrectPosition(selectionElement.parent);
-        //            }
-        //            Debug.Log(route.GeneralData.DataType + ", " + route.GeneralData.Id + ", " + route.selectionGroup);
-        //            //Debug.Log(dataElement.DataType + ", " + dataElement.Id  + ", " + selectionElement.selectionGroup);
-
-        //            if (route.selectionGroup == Enums.SelectionGroup.Main)
-        //                selectionElement.ActivateSelection();
-        //            else
-        //                selectionElement.child.ActivateSelection();
-
-        //            break;
-        //        }
-        //    }
-        //}
+        foreach (GeneralData dataElement in dataList)
+        {
+            foreach (Route route in routeList)
+            {
+                if (dataElement.Equals(route.GeneralData))
+                {
+                    if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
+                        dataElement.SelectionStatus = route.selectionStatus;
+                    else
+                        dataElement.SelectionStatus = Enums.SelectionStatus.Both;
+                }
+            }
+        }
     }
 
     static public void SelectSearch(IDataElement selectedDataElement)
@@ -118,31 +76,27 @@ static public class SelectionManager
 
         dataElementList.ForEach(x => x.SelectionElement.SetResult(setDataElement));
     }
-
-    static public void CancelSelection(Route route)
-    {
-        foreach (SelectionElement selectionElement in SelectionElementManager.elementPool.Where(x => x.gameObject.activeInHierarchy).Where(x => x.selected))
-        {
-            if (selectionElement.GeneralData.Equals(route.GeneralData))
-            {
-                if (selectionElement.DisplayManager != null)
-                    selectionElement.DisplayManager.SelectedElement = null;
-
-                selectionElement.CancelSelection();
-
-                return;
-            }          
-        }              
-    }
-
+    
     static public void CancelGetSelection()
     {
         if (getDataElement == null) return;
 
-        getDataElement.SelectionElement.CancelSelection();
+        CancelSelection(new List<IDataElement>() { getDataElement });
+
         getDataElement = null;
 
         //Return to previous path in form
         EditorManager.editorManager.InitializePath(EditorManager.editorManager.forms[2].previousPath);  
+    }
+
+    static public void CancelSelection(List<IDataElement> dataList)
+    {
+        dataList.ForEach(x => 
+        {
+            if(x.SelectionElement != null)
+                x.SelectionElement.CancelSelection();
+            else
+                x.SelectionStatus = Enums.SelectionStatus.None;
+        });
     }
 }

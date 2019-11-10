@@ -39,54 +39,11 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         vertical = listProperties.vertical;
     }
 
-    public void SetElementSize()
+    public void SelectData()
     {
-        ElementSize = listProperties.elementSize;
+        SelectionManager.SelectData(dataController.DataList);
     }
-
-    public Vector2 GetListSize(int element_count, bool exact)
-    {
-        Vector2 new_size;
-
-        int list_width = GetListWidth();
-        int list_height = GetListHeight();
-
-        if (list_width > element_count)
-            list_width = element_count;
-
-        if (list_height > element_count)
-            list_height = element_count;
-
-        //No cases where a PanelTile only has a vertical slider. Calculation will be added if or when necessary
-        new_size = new Vector2( horizontal  ? ((element_count + (element_count % list_height)) * ElementSize.x) / list_height  : list_width  * ElementSize.y,
-                                vertical    ? 0                                                                                 : list_height * ElementSize.y);
-
-        if (exact)
-            return new Vector2(new_size.x - listManager.RectTransform.rect.width, new_size.y);
-        else
-            return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
-    }
-
-    public int GetListWidth()
-    {
-        int x = 0;
-
-        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
-            x++;
-
-        return x - 1;
-    }
-
-    public int GetListHeight()
-    {
-        int y = 0;
-
-        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
-            y++;
-
-        return y - 1;
-    }
-
+    
     public void SetData()
     {
         SetData(dataController.DataList);
@@ -120,6 +77,54 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             
             SetElement(element);
         }
+    }
+
+    public void SetElementSize()
+    {
+        ElementSize = listProperties.elementSize;
+    }
+
+    public Vector2 GetListSize(int element_count, bool exact)
+    {
+        Vector2 new_size;
+
+        int list_width = GetListWidth();
+        int list_height = GetListHeight();
+
+        if (list_width > element_count)
+            list_width = element_count;
+
+        if (list_height > element_count)
+            list_height = element_count;
+
+        //No cases where a PanelTile only has a vertical slider. Calculation will be added if or when necessary
+        new_size = new Vector2(horizontal ? ((element_count + (element_count % list_height)) * ElementSize.x) / list_height : list_width * ElementSize.y,
+                                vertical ? 0 : list_height * ElementSize.y);
+
+        if (exact)
+            return new Vector2(new_size.x - listManager.RectTransform.rect.width, new_size.y);
+        else
+            return new Vector2(new_size.x / ElementSize.x, new_size.y / ElementSize.y);
+    }
+
+    public int GetListWidth()
+    {
+        int x = 0;
+
+        while (-(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
+            x++;
+
+        return x - 1;
+    }
+
+    public int GetListHeight()
+    {
+        int y = 0;
+
+        while (-(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
+            y++;
+
+        return y - 1;
     }
 
     public void UpdateData()
@@ -161,9 +166,16 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer() { }
 
+    private void CancelSelection()
+    {
+        SelectionManager.CancelSelection(dataController.DataList);
+    }
+
     public void CloseOrganizer()
     {
         CloseList();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

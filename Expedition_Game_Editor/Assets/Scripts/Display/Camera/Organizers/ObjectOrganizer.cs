@@ -25,6 +25,8 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         objectProperties = (ObjectProperties)DisplayManager.Display.Properties;
     }
 
+    public void SelectData() { }
+
     public void SetData()
     {
         if(dataController != null)

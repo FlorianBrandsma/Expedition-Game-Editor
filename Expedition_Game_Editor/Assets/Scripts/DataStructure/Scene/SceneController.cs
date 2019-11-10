@@ -8,7 +8,7 @@ public class SceneController : MonoBehaviour, IDataController
     public Search.Region searchParameters;
 
     private SceneDataManager sceneDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

@@ -23,6 +23,7 @@ static public class Fixtures
     static public int objectivesInQuest = 3;
     static public int interactablesInObjective = 2;
     static public int sideSceneInteractables = 1;
+    static public int interactionsInSceneInteractables = 3;
     static public int baseInteractions = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
@@ -569,20 +570,23 @@ static public class Fixtures
         sceneInteractable.Id = id;
         sceneInteractable.interactableId = interactableId;
 
-        CreateInteraction(sceneInteractable, regionId, position, rotation);
-        CreateInteraction(sceneInteractable, regionId, position, rotation);
-        CreateInteraction(sceneInteractable, regionId, position, rotation);
-
+        for(int index = 0; index < interactionsInSceneInteractables; index++)
+        {
+            CreateInteraction(sceneInteractable, index, regionId, position, rotation);
+        }
+        
         sceneInteractableList.Add(sceneInteractable);
     }
 
-    static public void CreateInteraction(SceneInteractable sceneInteractable, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateInteraction(SceneInteractable sceneInteractable, int index, int regionId, Vector3 position, Vector3 rotation)
     {
         var interaction = new Interaction();
 
         int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
-
+        
         interaction.Id = id;
+        interaction.Index = index;
+
         interaction.sceneInteractableId = sceneInteractable.Id;
         interaction.regionId = regionId;
 

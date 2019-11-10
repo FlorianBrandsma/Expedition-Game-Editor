@@ -62,10 +62,12 @@ public class Enums
         Interaction
     }
 
-    public enum SelectionGroup
+    public enum SelectionStatus
     {
+        None,
         Main,
-        Child
+        Child,
+        Both
     }
 
     public enum ElementType

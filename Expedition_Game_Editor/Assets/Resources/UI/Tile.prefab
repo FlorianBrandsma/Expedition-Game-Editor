@@ -110,14 +110,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionGroup: 0
+  selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
   elementType: 2
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
-  background: {fileID: 0}
   disableSpawn: 0
   parent: {fileID: 0}
   child: {fileID: 0}

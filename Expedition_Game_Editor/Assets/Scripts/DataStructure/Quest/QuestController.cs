@@ -8,7 +8,7 @@ public class QuestController : MonoBehaviour, IDataController
     public Search.Quest searchParameters;
 
     private QuestDataManager questDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

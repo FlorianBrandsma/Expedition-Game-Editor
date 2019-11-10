@@ -2,7 +2,6 @@
 
 public interface IDisplay
 {
-    void SetDisplay();
     void ClearDisplay();
     void CloseDisplay();
 

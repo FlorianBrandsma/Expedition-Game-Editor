@@ -193,8 +193,6 @@ public class PathController : MonoBehaviour
 
     public void ClosePath(Path path)
     {
-        SelectionManager.CancelSelection(route);
-
         foreach (IComponent component in GetComponents<IComponent>())
             component.CloseComponent();
 

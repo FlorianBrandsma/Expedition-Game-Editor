@@ -34,16 +34,11 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         buttonProperties = (ButtonProperties)DisplayManager.Display.Properties;
     }
 
-    public void SetElementSize()
+    public void SelectData()
     {
-        ElementSize = listProperties.elementSize;
+        SelectionManager.SelectData(dataController.DataList);
     }
-
-    public Vector2 GetListSize(int element_count, bool exact)
-    {
-        return new Vector2(0, ElementSize.y * element_count);
-    }
-
+    
     public void SetData()
     {
         SetData(dataController.DataList);
@@ -73,6 +68,16 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
             SetElement(element);
         }
+    }
+
+    public void SetElementSize()
+    {
+        ElementSize = listProperties.elementSize;
+    }
+
+    public Vector2 GetListSize(int element_count, bool exact)
+    {
+        return new Vector2(0, ElementSize.y * element_count);
     }
 
     public void UpdateData()
@@ -110,9 +115,16 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer() { }
 
+    private void CancelSelection()
+    {
+        SelectionManager.CancelSelection(dataController.DataList);
+    }
+
     public void CloseOrganizer()
     {
         CloseList();
+
+        CancelSelection();
 
         DestroyImmediate(this);
     }

@@ -8,7 +8,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
     public Search.Interactable searchParameters;
 
     public PartyMemberDataManager partyMemberDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

@@ -701,7 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionGroup: 1
+  selectionStatus: 2
   selectionType: 1
   selectionProperty: 0
   elementType: 0
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionGroup: 0
+  selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
   elementType: 0

@@ -8,7 +8,7 @@ public class InteractableController : MonoBehaviour, IDataController
     public Search.Interactable searchParameters;
 
     private InteractableDataManager interactableDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

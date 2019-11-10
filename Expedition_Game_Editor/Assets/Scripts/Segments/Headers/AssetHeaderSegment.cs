@@ -105,7 +105,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public void Awake()
     {
         SelectionElementManager.Add(selectionElement);
-        SelectionElementManager.dataElementPool.Add(selectionElement.data.dataElement);
     }
 
     public void UpdateName()
@@ -132,8 +131,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        InitializeData();
-        
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
     
@@ -194,14 +191,16 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         var objectGraphicDataElement    = new ObjectGraphicDataElement();
 
-        objectGraphicDataElement.Id     = objectGraphicId;
-        objectGraphicDataElement.Path   = objectGraphicPath;
+        objectGraphicDataElement.Id         = objectGraphicId;
+        objectGraphicDataElement.Path       = objectGraphicPath;
         objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
         objectGraphicDataElement.SelectionElement = selectionElement;
 
         selectionElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
         selectionElement.data.dataElement = objectGraphicDataElement;
+
+        SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         selectionElement.SetElement();
 

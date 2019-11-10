@@ -8,7 +8,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
     public Search.Region searchParameters;
 
     private ChapterRegionDataManager chapterRegionDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

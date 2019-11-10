@@ -8,7 +8,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
     public Search.Tile searchParameters;
 
     private TerrainTileDataManager terrainTileDataManager;
-
+    
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

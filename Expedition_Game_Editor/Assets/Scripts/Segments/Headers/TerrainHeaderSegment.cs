@@ -54,7 +54,8 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     {
         DataEditor = SegmentController.editorController.PathController.DataEditor;
 
-        DataEditor.EditorSegments.Add(SegmentController);
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
     public void InitializeSegment()
@@ -71,15 +72,16 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         var iconDataElement = new IconDataElement();
 
-        iconDataElement.Id = TerrainData.IconId;
-        iconDataElement.Path = TerrainData.iconPath;
-
-        iconDataElement.baseIconPath = TerrainData.baseTilePath;
+        iconDataElement.Id              = TerrainData.IconId;
+        iconDataElement.Path            = TerrainData.iconPath;
+        iconDataElement.baseIconPath    = TerrainData.baseTilePath;
 
         iconDataElement.SelectionElement = selectionElement;
 
         selectionElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
         selectionElement.data.dataElement = iconDataElement;
+
+        SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Icon>().FirstOrDefault();
 
