@@ -152,7 +152,8 @@ namespace UnityEngine.UI
         private Vector2 m_Velocity;
         public Vector2 velocity { get { return m_Velocity; } set { m_Velocity = value; } }
 
-        private bool m_Dragging;
+        [HideInInspector]
+        public bool m_Dragging;
 
         private Vector2 m_PrevPosition = Vector2.zero;
         private Bounds m_PrevContentBounds;

@@ -11,6 +11,8 @@ public class CameraProperties : MonoBehaviour, IDisplay
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
 
+    public bool enableScroll;
+
     private IDataController dataController;
     public IDataController DataController
     {

@@ -44,20 +44,23 @@ static public class SelectionManager
         }
     }
 
-    static public void SelectData(List<IDataElement> dataList)
+    static public void SelectData(List<IDataElement> dataList, IDisplayManager displayManager = null)
     {
         if (dataList.Count == 0) return;
-
-        foreach (GeneralData dataElement in dataList)
+        
+        foreach (IDataElement dataElement in dataList)
         {
             foreach (Route route in routeList)
             {
-                if (dataElement.Equals(route.GeneralData))
+                if (((GeneralData)dataElement).Equals(route.GeneralData))
                 {
                     if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
                         dataElement.SelectionStatus = route.selectionStatus;
                     else
                         dataElement.SelectionStatus = Enums.SelectionStatus.Both;
+
+                    if(displayManager != null)
+                        displayManager.CorrectPosition(dataElement);                 
                 }
             }
         }

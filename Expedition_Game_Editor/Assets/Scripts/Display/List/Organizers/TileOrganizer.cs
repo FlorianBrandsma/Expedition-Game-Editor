@@ -6,70 +6,60 @@ using System;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private Vector2 listSize;
+    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+    
+    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private TileProperties TileProperties   { get { return (TileProperties)DisplayManager.Display.Properties; } }
 
-    private ListProperties listProperties;
-    private TileProperties tileProperties;
-
-    private bool horizontal, vertical;
-
-    private IDataController dataController;
-    private List<GeneralData> generalDataList;
-
-    private ListManager listManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
-
+    private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
+    
     public List<SelectionElement> ElementList { get; set; }
-    public Vector2 ElementSize { get; set; }
+
+    public Vector2 ElementSize { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
-        listManager = (ListManager)DisplayManager;
-
-        dataController = DisplayManager.Display.DataController;
-
         ElementList = new List<SelectionElement>();
-    }
-
-    public void InitializeProperties()
-    {
-        listProperties = (ListProperties)DisplayManager.Display;
-        tileProperties = (TileProperties)DisplayManager.Display.Properties;
-
-        horizontal = listProperties.horizontal;
-        vertical = listProperties.vertical;
     }
 
     public void SelectData()
     {
-        SelectionManager.SelectData(dataController.DataList);
+        SelectionManager.SelectData(DataController.DataList, DisplayManager);
     }
     
     public void SetData()
     {
-        SetData(dataController.DataList);
+        SetData(DataController.DataList);
+    }
+
+    public void UpdateData()
+    {
+        ResetData(DataController.DataList);
+    }
+
+    public void ResetData(List<IDataElement> filter)
+    {
+        ClearOrganizer();
+        SetData(filter);
     }
 
     public void SetData(List<IDataElement> list)
     {
-        generalDataList = list.Cast<GeneralData>().ToList();
-
-        string elementType = Enum.GetName(typeof(Enums.ElementType), tileProperties.elementType);
+        string elementType = Enum.GetName(typeof(Enums.ElementType), TileProperties.elementType);
 
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
-
-        listSize = GetListSize(list.Count, false);
-
+        
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent, 
-                                                                            tileProperties.elementType, DisplayManager, 
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
+                                                                            TileProperties.elementType, DisplayManager, 
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
             ElementList.Add(element);
 
             data.SelectionElement = element;
-            element.data = new SelectionElement.Data(dataController, data);
+            element.data = new SelectionElement.Data(DataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -80,33 +70,49 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public void SetElementSize()
+    private void SetElement(SelectionElement element)
     {
-        ElementSize = listProperties.elementSize;
+        RectTransform rect = element.GetComponent<RectTransform>();
+
+        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+
+        rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
+
+        rect.transform.localPosition = GetElementPosition(index);
+
+        element.gameObject.SetActive(true);
+
+        element.SetElement();
+    }
+
+    public Vector2 GetElementPosition(int index)
+    {
+        var position = new Vector2(-((ElementSize.x * 0.5f) * (ListManager.listSize.x - 1)) + (index % ListManager.listSize.x * ElementSize.x),
+                                    -(ElementSize.y * 0.5f) + (ListManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / ListManager.listSize.x) * ElementSize.y));
+
+        return position;
     }
 
     public Vector2 GetListSize(int elementCount, bool exact)
     {
         Vector2 gridSize;
 
-        if (horizontal && vertical)
+        if (ListProperties.horizontal && ListProperties.vertical)
         {
-            gridSize = new Vector2(horizontal ? tileProperties.GridSize.x * ElementSize.x : ElementSize.x,
-                                    vertical ? tileProperties.GridSize.y * ElementSize.y : ElementSize.y);
-        }
-        else
-        {
+            gridSize = new Vector2( ListProperties.horizontal   ? TileProperties.GridSize.x * ElementSize.x : ElementSize.x,
+                                    ListProperties.vertical     ? TileProperties.GridSize.y * ElementSize.y : ElementSize.y);
+        } else {
 
             int listWidth = GetListWidth(elementCount);
             int listHeight = GetListHeight(elementCount);
 
             //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
-            gridSize = new Vector2(horizontal ? 0 : listWidth * ElementSize.x,
-                                    vertical ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y) : listHeight * ElementSize.y);
+            gridSize = new Vector2( ListProperties.horizontal   ? 0                                                             : listWidth * ElementSize.x,
+                                    ListProperties.vertical     ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y) : listHeight * ElementSize.y);
         }
 
         if (exact)
-            return new Vector2(gridSize.x - listManager.RectTransform.rect.width, gridSize.y);
+            return new Vector2(gridSize.x - ListManager.RectTransform.rect.width, gridSize.y);
         else
             return new Vector2(gridSize.x / ElementSize.x, gridSize.y / ElementSize.y);
     }
@@ -115,7 +121,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int x = 0;
 
-        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < listManager.RectTransform.rect.max.x)
+        while (x <= elementCount && -(x * ElementSize.x / 2f) + (x * ElementSize.x) < ListManager.RectTransform.rect.max.x)
             x++;
 
         return x - 1;
@@ -125,54 +131,25 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         int y = 0;
 
-        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < listManager.RectTransform.rect.max.y)
+        while (y <= elementCount && -(y * ElementSize.y / 2f) + (y * ElementSize.y) < ListManager.RectTransform.rect.max.y)
             y++;
 
         return y - 1;
     }
-
-    public void UpdateData()
-    {
-        ResetData(dataController.DataList);
-    }
-
-    public void ResetData(List<IDataElement> filter)
-    {
-        CloseList();
-        SetData(filter);
-    }
-
-    void SetElement(SelectionElement element)
-    {
-        RectTransform rect = element.GetComponent<RectTransform>();
-
-        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
-        rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
-        
-        rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (listSize.x - 1)) + (index % listSize.x * ElementSize.x),
-                                                     -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / listSize.x) * ElementSize.y));
-
-        element.gameObject.SetActive(true);
-
-        element.SetElement();
-    }
-
-    public void CloseList()
+    
+    public void ClearOrganizer()
     {
         SelectionElementManager.CloseElement(ElementList);
     }
 
-    public void ClearOrganizer() { }
-
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(dataController.DataList);
+        SelectionManager.CancelSelection(DataController.DataList);
     }
 
     public void CloseOrganizer()
     {
-        CloseList();
+        ClearOrganizer();
 
         CancelSelection();
 

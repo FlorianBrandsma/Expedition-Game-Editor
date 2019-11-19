@@ -36,9 +36,9 @@ public class EditorSection : MonoBehaviour
             if (!editorForm.loaded)
                 return false;
             
-            if (EditorManager.loadType == Enums.LoadType.Reload)
+            if (EditorManager.loadType == Enums.LoadType.Reload || EditorManager.loadType == Enums.LoadType.Return)
                 return false;
-            
+
             if (targetController != previousTargetController)
                 return false;
             

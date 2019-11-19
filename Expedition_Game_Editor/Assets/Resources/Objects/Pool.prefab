@@ -69,6 +69,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011211536152}
   - 114: {fileID: 114000012815132534}
+  - 65: {fileID: 65000013988555664}
   m_Layer: 10
   m_Name: Pool
   m_TagString: Untagged
@@ -203,6 +204,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012852405742}
   m_Mesh: {fileID: 4300002, guid: 79beb415190074b46bd834a5bd7825e5, type: 3}
+--- !u!65 &65000013988555664
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014119687512}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.75, y: 2.5, z: 0.75}
+  m_Center: {x: -0.1, y: 0.15, z: -0.25}
 --- !u!114 &114000012815132534
 MonoBehaviour:
   m_ObjectHideFlags: 1

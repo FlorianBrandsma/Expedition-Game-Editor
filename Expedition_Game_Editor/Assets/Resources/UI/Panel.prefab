@@ -458,7 +458,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114000012849546894}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114000014068437212}
+        m_MethodName: InvokeSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114000011675165816
@@ -526,7 +537,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114000013330573602}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114000013981185266}
+        m_MethodName: InvokeSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114000012283882648
@@ -713,7 +735,11 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 1000013419032810}
   lockIcon: {fileID: 0}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &114000014068437212
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -739,7 +765,11 @@ MonoBehaviour:
   child: {fileID: 114000013981185266}
   glow: {fileID: 1000011839947422}
   lockIcon: {fileID: 1000012670962318}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!222 &222000010491782038
 CanvasRenderer:
   m_ObjectHideFlags: 1

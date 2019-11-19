@@ -36,8 +36,8 @@ public class FormComponent : MonoBehaviour, IComponent
 
         if (autoOpen)
         {
-            if (!editorForm.activeInPath )
-                EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());     
+            if (!editorForm.activeInPath)
+                EditorManager.editorManager.InitializePath(new PathManager.Form(editorForm).Initialize());
         }
         
         closedManually = false;

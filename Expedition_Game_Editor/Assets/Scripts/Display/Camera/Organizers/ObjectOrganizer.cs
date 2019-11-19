@@ -7,30 +7,22 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 {
     private List<IPoolable> poolObjects = new List<IPoolable>();
 
-    private CameraManager cameraManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
-    private ObjectProperties objectProperties;
+    private IDisplayManager DisplayManager      { get { return GetComponent<IDisplayManager>(); } }
+    private CameraManager CameraManager         { get { return (CameraManager)DisplayManager; } }
 
-    private IDataController dataController;
+    private CameraProperties CameraProperties   { get { return (CameraProperties)DisplayManager.Display; } }
+    private ObjectProperties ObjectProperties   { get { return (ObjectProperties)DisplayManager.Display.Properties; } }
 
-    public void InitializeOrganizer()
-    {
-        cameraManager = (CameraManager)DisplayManager;
+    private IDataController DataController      { get { return DisplayManager.Display.DataController; } }
 
-        dataController = DisplayManager.Display.DataController;
-    }
-
-    public void InitializeProperties()
-    {
-        objectProperties = (ObjectProperties)DisplayManager.Display.Properties;
-    }
+    public void InitializeOrganizer() { }
 
     public void SelectData() { }
 
     public void SetData()
     {
-        if(dataController != null)
-            SetData(dataController.DataList);
+        if(DataController != null)
+            SetData(DataController.DataList);
     }
 
     public void SetData(List<IDataElement> list)
@@ -46,7 +38,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
             poolObjects.Add(graphic);
 
-            graphic.transform.SetParent(cameraManager.content, false);
+            graphic.transform.SetParent(CameraManager.content, false);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -71,7 +63,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     private void SetGraphic(ObjectGraphic objectGraphic)
     {
         objectGraphic.transform.localPosition = new Vector2(objectGraphic.transform.localPosition.x, 
-                                                            objectProperties.pivotPosition[(int)objectGraphic.pivot]);
+                                                            ObjectProperties.pivotPosition[(int)objectGraphic.pivot]);
 
         objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
         objectGraphic.transform.localScale = objectGraphic.previewScale;

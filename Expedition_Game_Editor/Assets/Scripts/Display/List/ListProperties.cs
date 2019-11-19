@@ -61,7 +61,6 @@ public class ListProperties : MonoBehaviour, IDisplay
     public void SetDisplay()
     {
         listManager.SetProperties();
-        listManager.SelectData();
         listManager.SetList();  
     }
 

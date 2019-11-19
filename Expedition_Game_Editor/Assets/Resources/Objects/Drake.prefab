@@ -65,6 +65,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013272985582}
   - 114: {fileID: 114000013436077714}
+  - 65: {fileID: 65000010778968244}
   m_Layer: 10
   m_Name: Drake
   m_TagString: Untagged
@@ -2527,6 +2528,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011940017520}
   m_Mesh: {fileID: 4300004, guid: 5b6ec979269d6774fb54e8dca50ddfcb, type: 3}
+--- !u!65 &65000010778968244
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010305433706}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 3, z: 2}
+  m_Center: {x: 0, y: -1, z: -2}
 --- !u!111 &111000010404741946
 Animation:
   m_ObjectHideFlags: 1

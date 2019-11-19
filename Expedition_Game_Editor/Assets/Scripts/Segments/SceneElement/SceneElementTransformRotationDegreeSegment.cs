@@ -153,10 +153,7 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
@@ -169,7 +166,7 @@ public class SceneElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             case Enums.DataType.Interaction: InitializeInteractionData(); break;
             case Enums.DataType.SceneObject: InitializeSceneObjectData(); break;
 
-            default: Debug.Log("CASE MISSING"); break;
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
     }
 

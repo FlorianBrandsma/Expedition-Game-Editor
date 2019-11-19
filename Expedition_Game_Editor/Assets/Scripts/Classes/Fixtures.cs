@@ -542,22 +542,22 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateSceneObject(16, region.Id, new Vector3(245f, 215f, 0f), new Vector3(0, 0, 0));
+            CreateSceneObject(16, 0, region.Id, new Vector3(245f, 236.5f, -0.2f), new Vector3(5, 0, 25));
 
             /*Rock*/
-            CreateSceneObject(17, region.Id, new Vector3(230f, 210f, 0f), new Vector3(0, 0, 180f));
+            CreateSceneObject(17, 1, region.Id, new Vector3(230f, 241.75f, 0f), new Vector3(0, 0, 180f));
 
             /*Cactus*/
-            CreateSceneObject(18, region.Id, new Vector3(247.5f, 210f, 0f), new Vector3(0, 0, 0));
-            //15,875‬
+            CreateSceneObject(18, 2, region.Id, new Vector3(246.5f, 236.75f, 0f), new Vector3(0, 0, 0));
+
             /*Red warrior*/
-            CreateSceneInteractable(1, region.Id, new Vector3(238.125f, 208.125f, 0.1f), new Vector3(0, 0, 0));
+            CreateSceneInteractable(1, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
 
             /*Ranger*/
-            CreateSceneInteractable(4, region.Id, new Vector3(235.625f, 210.625f, 0.2f), new Vector3(0, 0, 125));
+            CreateSceneInteractable(4, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
 
             /*Mage*/
-            CreateSceneInteractable(5, region.Id, new Vector3(240.625f, 210.625f, 0f), new Vector3(0, 0, 235));
+            CreateSceneInteractable(5, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
         }
     }
 
@@ -608,13 +608,15 @@ static public class Fixtures
         interactionList.Add(interaction);
     }
 
-    static public void CreateSceneObject(int objectGraphicId, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateSceneObject(int objectGraphicId, int index, int regionId, Vector3 position, Vector3 rotation)
     {
         var sceneObject = new SceneObject();
 
         int id = sceneObjectList.Count > 0 ? (sceneObjectList[sceneObjectList.Count - 1].Id + 1) : 1;
 
         sceneObject.Id = id;
+        sceneObject.Index = index;
+
         sceneObject.objectGraphicId = objectGraphicId;
         sceneObject.regionId = regionId;
         
@@ -676,6 +678,8 @@ static public class Fixtures
                 int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].Id + 1) : 1;
 
                 partyMember.Id = id;
+                partyMember.Index = i;
+
                 partyMember.chapterId = chapter.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
@@ -705,6 +709,8 @@ static public class Fixtures
                 int id = sceneInteractableList.Count > 0 ? (sceneInteractableList[sceneInteractableList.Count - 1].Id + 1) : 1;
 
                 chapterInteractable.Id = id;
+                chapterInteractable.Index = i;
+
                 chapterInteractable.chapterId = chapter.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);

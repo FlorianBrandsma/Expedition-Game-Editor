@@ -94,6 +94,9 @@ public class EditorPath
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = interaction.Edit();
 
+                if (selection.selectionProperty == SelectionManager.Property.Open)
+                    path = interaction.Open();
+
                 break;
 
             case Enums.DataType.Region:
@@ -123,9 +126,9 @@ public class EditorPath
             case Enums.DataType.SceneObject:
 
                 PathManager.SceneObject sceneObject = new PathManager.SceneObject(selection, route);
-
-                if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = sceneObject.Enter();
+                
+                if (selection.selectionProperty == SelectionManager.Property.Open)
+                    path = sceneObject.Open();
 
                 break;
 

@@ -186,6 +186,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013122310766}
   - 114: {fileID: 114000012599619866}
+  - 65: {fileID: 65000010683393358}
   m_Layer: 10
   m_Name: Blue Warrior
   m_TagString: Untagged
@@ -1890,6 +1891,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013077868026}
   m_Mesh: {fileID: 4300004, guid: b7c3fa1fe65883b4eab047926fb2edfd, type: 3}
+--- !u!65 &65000010683393358
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010700673656}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 3.5}
+  m_Center: {x: 0, y: 0, z: -1.75}
 --- !u!111 &111000013402820830
 Animation:
   m_ObjectHideFlags: 1

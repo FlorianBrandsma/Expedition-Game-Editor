@@ -41,6 +41,7 @@ public class SceneObjectDataManager
                         DataType = Enums.DataType.SceneObject,
 
                         Id = sceneObjectData.Id,
+                        Index = sceneObjectData.Index,
 
                         ObjectGraphicId = sceneObjectData.objectGraphicId,
                         RegionId = sceneObjectData.regionId,
@@ -62,7 +63,7 @@ public class SceneObjectDataManager
                         objectGraphicName = objectGraphicData.name,
                         objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.Id).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -81,6 +82,7 @@ public class SceneObjectDataManager
             var sceneObjectData = new SceneObjectData();
 
             sceneObjectData.Id = sceneObject.Id;
+            sceneObjectData.Index = sceneObject.Index;
 
             sceneObjectData.objectGraphicId = sceneObject.objectGraphicId;
             sceneObjectData.regionId = sceneObject.regionId;

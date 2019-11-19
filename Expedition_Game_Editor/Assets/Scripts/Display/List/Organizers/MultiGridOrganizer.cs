@@ -6,108 +6,72 @@ using System;
 
 public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private IDataController primaryDataController;
-    private IDataController secondaryDataController;
-
-    private List<GeneralData> generalDataList;
-
-    private ListProperties listProperties;
-    private MultiGridProperties multiGridProperties;
-
-    int primaryDimension;
+    private int primaryDimension;
 
     private Vector2 secondaryElementSize;
-
-    private ListManager listManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
     
+    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+
+    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private MultiGridProperties MultiGridProperties { get { return (MultiGridProperties)DisplayManager.Display.Properties; } }
+
+    private IDataController PrimaryDataController   { get { return MultiGridProperties.PrimaryDataController; } }
+    private IDataController SecondaryDataController { get { return MultiGridProperties.SecondaryDataController; } }
+
     public List<SelectionElement> ElementList { get; set; }
+
     public Vector2 ElementSize { get; set; }
 
     public void InitializeOrganizer()
     {
-        listManager = (ListManager)DisplayManager;
-
         ElementList = new List<SelectionElement>();
-    }
 
-    public void InitializeProperties()
-    {
-        listProperties = (ListProperties)DisplayManager.Display;
-        multiGridProperties = (MultiGridProperties)DisplayManager.Display.Properties;
-
-        multiGridProperties.elementSize = listProperties.elementSize;
-
-        primaryDataController = multiGridProperties.PrimaryDataController;
-        secondaryDataController = multiGridProperties.SecondaryDataController;
+        SetElementSize();
     }
 
     public void SelectData()
     {
-        if(primaryDataController != null)
-            SelectionManager.SelectData(primaryDataController.DataList);
+        if(PrimaryDataController != null)
+            SelectionManager.SelectData(PrimaryDataController.DataList, DisplayManager);
         
-        if(secondaryDataController != null)
-            SelectionManager.SelectData(secondaryDataController.DataList);
+        if(SecondaryDataController != null)
+            SelectionManager.SelectData(SecondaryDataController.DataList, DisplayManager);
     }
 
-    public void SetElementSize()
+    public void UpdateData()
     {
-        primaryDimension = (int)Mathf.Sqrt(primaryDataController.DataList.Count);
-
-        if(multiGridProperties.elementType == Enums.ElementType.CompactMultiGrid)
-        {
-            ElementSize = new Vector2(  listProperties.elementSize.x + multiGridProperties.margin, 
-                                        listProperties.elementSize.y + multiGridProperties.margin);
-        } else {
-
-            secondaryElementSize = new Vector2( listProperties.elementSize.x,
-                                                listProperties.elementSize.y);
-
-            ElementSize = new Vector2(  secondaryElementSize.x * (Mathf.Sqrt(secondaryDataController.DataList.Count) / primaryDimension) + multiGridProperties.margin,
-                                        secondaryElementSize.y * (Mathf.Sqrt(secondaryDataController.DataList.Count) / primaryDimension) + multiGridProperties.margin);
-        }
+        ResetData(PrimaryDataController.DataList);
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public void ResetData(List<IDataElement> filter)
     {
-        Vector2 primaryListSize = new Vector2(  (Mathf.Sqrt(elementCount) * ElementSize.x), 
-                                                (Mathf.Sqrt(elementCount) * ElementSize.y));
-
-        if (exact)
-        {
-            return new Vector2( primaryListSize.x - listManager.RectTransform.rect.width, 
-                                primaryListSize.y);
-        } else {
-            return new Vector2( primaryListSize.x / ElementSize.x, 
-                                primaryListSize.y / ElementSize.y);
-        }   
+        ClearOrganizer();
+        SetData(filter);
     }
 
     public void SetData()
     {
-        SetData(primaryDataController.DataList);
+        SetData(PrimaryDataController.DataList);
     }
 
     public void SetData(List<IDataElement> primaryList)
     {
-        generalDataList = primaryList.Cast<GeneralData>().ToList();
-
-        string elementType = Enum.GetName(typeof(Enums.ElementType), multiGridProperties.elementType);
+        string elementType = Enum.GetName(typeof(Enums.ElementType), MultiGridProperties.elementType);
 
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
 
         foreach (IDataElement data in primaryList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent,
-                                                                            multiGridProperties.elementType, DisplayManager, 
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
+                                                                            MultiGridProperties.elementType, DisplayManager, 
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
 
             ElementList.Add(element);
 
             data.SelectionElement = element;
-            element.data = new SelectionElement.Data(primaryDataController, data);
+            element.data = new SelectionElement.Data(PrimaryDataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -118,52 +82,83 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public void UpdateData()
-    {
-        ResetData(primaryDataController.DataList);
-    }
-
-    public void ResetData(List<IDataElement> filter)
-    {
-        CloseList();
-        SetData(filter);
-    }
-
-    void SetElement(SelectionElement element)
+    private void SetElement(SelectionElement element)
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = PrimaryDataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = ElementSize;
 
-        rect.transform.localPosition = new Vector2( -((ElementSize.x * 0.5f) * (primaryDimension - 1)) + (index % primaryDimension * ElementSize.x),
-                                                     -(ElementSize.y * 0.5f) + (listManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / primaryDimension) * ElementSize.y));
+        rect.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
 
         element.SetElement();
     }
 
-    public void CloseList()
+    public Vector2 GetElementPosition(int index)
+    {
+        var position = new Vector2(-((ElementSize.x * 0.5f) * (primaryDimension - 1)) + (index % primaryDimension * ElementSize.x),
+                                    -(ElementSize.y * 0.5f) + (ListManager.listParent.sizeDelta.y / 2f) - (Mathf.Floor(index / primaryDimension) * ElementSize.y));
+
+        return position;
+    }
+
+    private void SetElementSize()
+    {
+        MultiGridProperties.elementSize = ListProperties.elementSize;
+
+        primaryDimension = (int)Mathf.Sqrt(PrimaryDataController.DataList.Count);
+
+        if (MultiGridProperties.elementType == Enums.ElementType.CompactMultiGrid)
+        {
+            ElementSize = new Vector2(  ListProperties.elementSize.x + MultiGridProperties.margin,
+                                        ListProperties.elementSize.y + MultiGridProperties.margin);
+        } else {
+
+            secondaryElementSize = new Vector2( ListProperties.elementSize.x,
+                                                ListProperties.elementSize.y);
+
+            ElementSize = new Vector2(  secondaryElementSize.x * (Mathf.Sqrt(SecondaryDataController.DataList.Count) / primaryDimension) + MultiGridProperties.margin,
+                                        secondaryElementSize.y * (Mathf.Sqrt(SecondaryDataController.DataList.Count) / primaryDimension) + MultiGridProperties.margin);
+        }
+    }
+
+    public Vector2 GetListSize(int elementCount, bool exact)
+    {
+        Vector2 primaryListSize = new Vector2(  (Mathf.Sqrt(elementCount) * ElementSize.x),
+                                                (Mathf.Sqrt(elementCount) * ElementSize.y));
+
+        if (exact)
+        {
+            return new Vector2( primaryListSize.x - ListManager.RectTransform.rect.width,
+                                primaryListSize.y);
+        }
+        else
+        {
+            return new Vector2( primaryListSize.x / ElementSize.x,
+                                primaryListSize.y / ElementSize.y);
+        }
+    }
+    
+    public void ClearOrganizer()
     {
         SelectionElementManager.CloseElement(ElementList);
     }
 
-    public void ClearOrganizer() { }
-
     private void CancelSelection()
     {
-        if (primaryDataController != null)
-            SelectionManager.CancelSelection(primaryDataController.DataList);
+        if (PrimaryDataController != null)
+            SelectionManager.CancelSelection(PrimaryDataController.DataList);
 
-        if (secondaryDataController != null)
-            SelectionManager.CancelSelection(secondaryDataController.DataList);
+        if (SecondaryDataController != null)
+            SelectionManager.CancelSelection(SecondaryDataController.DataList);
     }
 
     public void CloseOrganizer()
     {
-        CloseList();
+        ClearOrganizer();
 
         CancelSelection();
 

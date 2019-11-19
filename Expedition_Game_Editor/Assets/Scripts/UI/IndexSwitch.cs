@@ -71,7 +71,7 @@ public class IndexSwitch : MonoBehaviour
             dataList[i].UpdateIndex();
         }
 
-        SelectionElementManager.UpdateElements((GeneralData)dataElement, true);
+        SelectionElementManager.UpdateElements(dataElement, true);
 
         SetIndex();
     }

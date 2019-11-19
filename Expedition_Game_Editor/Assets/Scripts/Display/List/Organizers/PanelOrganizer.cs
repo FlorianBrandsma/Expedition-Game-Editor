@@ -6,92 +6,70 @@ using System;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private IDataController dataController;
+    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+    
+    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private PanelProperties PanelProperties { get { return (PanelProperties)DisplayManager.Display.Properties; } }
 
-    private List<float> rowHeight       = new List<float>(); //Individual heights
-    private List<float> rowOffsetMax    = new List<float>(); //Combined heights
-
-    private ListProperties listProperties;
-    private PanelProperties panelProperties;
-
-    private ListManager listManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
+    private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
     
     public List<SelectionElement> ElementList { get; set; }
-    public Vector2 ElementSize { get; set; }
+
+    public Vector2 ElementSize
+    {
+        get
+        {
+            return new Vector2( ListManager.RectTransform.rect.width,
+                                PanelProperties.constantHeight ? ListProperties.elementSize.y :
+                                                                 ListProperties.elementSize.y / PanelProperties.referenceArea.anchorMax.x);
+        }
+    }
 
     public void InitializeOrganizer()
     {
-        listManager = (ListManager)DisplayManager;
-
-        dataController = DisplayManager.Display.DataController;
-        
         ElementList = new List<SelectionElement>();
-    }
-    
-    public void InitializeProperties()
-    {
-        listProperties = (ListProperties)DisplayManager.Display;
-        panelProperties = (PanelProperties)DisplayManager.Display.Properties;
     }
 
     public void SelectData()
     {
-        SelectionManager.SelectData(dataController.DataList);
+        SelectionManager.SelectData(DataController.DataList, DisplayManager);
     }
 
-    public void SetElementSize()
+    public void UpdateData()
     {
-        ElementSize = new Vector2(  listProperties.elementSize.x,
-                                    panelProperties.constantHeight ?    listProperties.elementSize.y : 
-                                                                        listProperties.elementSize.y / panelProperties.referenceArea.anchorMax.x);
-
-        SetList();
+        ResetData(DataController.DataList);
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public void ResetData(List<IDataElement> filter)
     {
-        if (exact)
-            return new Vector2(0, rowHeight.Sum());
-        else
-            return new Vector2(0, elementCount);
-    }
+        ClearOrganizer();
 
-    public void SetList()
-    {
-        float positionSum = 0;
-
-        for (int i = 0; i < dataController.DataList.Count; i++)
-        {
-            rowHeight.Add(ElementSize.y);
-
-            positionSum += ElementSize.y;
-            rowOffsetMax.Add(positionSum - ElementSize.y);
-        }
+        SetData(filter);
     }
 
     public void SetData()
     {
-        SetData(dataController.DataList);
+        SetData(DataController.DataList);
     }
     
     public void SetData(List<IDataElement> list)
     {
-        string elementType = Enum.GetName(typeof(Enums.ElementType), panelProperties.elementType);
+        string elementType = Enum.GetName(typeof(Enums.ElementType), PanelProperties.elementType);
 
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent, 
-                                                                            panelProperties.elementType, DisplayManager,
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
+                                                                            PanelProperties.elementType, DisplayManager,
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
 
             ElementList.Add(element);
             
             data.SelectionElement = element;
-            element.data = new SelectionElement.Data(dataController, data);
+            element.data = new SelectionElement.Data(DataController, data);
 
             element.GetComponent<EditorPanel>().InitializeChildElement();
 
@@ -103,33 +81,35 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             SetElement(element);
         }
     }
-
-    public void UpdateData()
-    {
-        ResetData(dataController.DataList); 
-    }
-
-    public void ResetData(List<IDataElement> filter)
-    {
-        ClearOrganizer();
-
-        SetData(filter);
-    }
-
-    void SetElement(SelectionElement element)
+    
+    private void SetElement(SelectionElement element)
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = dataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
-        element.transform.localPosition = new Vector2(element.transform.localPosition.x, 
-                                                     (listManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
+        element.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
 
         element.SetElement();
+    }
+
+    public Vector2 GetElementPosition(int index)
+    {
+        var position = new Vector2(0, (ListManager.listParent.sizeDelta.y / 2) + (-ElementSize.y * index) - (ElementSize.y / 2));
+
+        return position;
+    }
+
+    public Vector2 GetListSize(int elementCount, bool exact)
+    {
+        if (exact)
+            return new Vector2(0, DataController.DataList.Count * ElementSize.y);
+        else
+            return new Vector2(0, elementCount);
     }
 
     public void ClearOrganizer()
@@ -139,7 +119,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(dataController.DataList);
+        SelectionManager.CancelSelection(DataController.DataList);
     }
 
     public void CloseOrganizer()

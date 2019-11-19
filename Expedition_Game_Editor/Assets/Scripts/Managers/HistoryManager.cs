@@ -69,6 +69,6 @@ public class HistoryManager
     {
         EditorManager.loadType = Enums.LoadType.Return;
 
-        EditorManager.editorManager.InitializePath(history[history.Count - 1].path);
+        EditorManager.editorManager.ResetEditor(history[history.Count - 1].path);
     }
 }

@@ -18,33 +18,54 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private Vector2 sceneStartPosition;
     private Vector2 positionTracker = new Vector2();
-    
-    private CameraManager cameraManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
-    private SceneProperties sceneProperties;
 
-    private IDataController dataController;
+    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
+    private CameraManager CameraManager     { get { return (CameraManager)DisplayManager; } }
+    
+    private CameraProperties CameraProperties { get { return (CameraProperties)DisplayManager.Display; } }
+    private SceneProperties SceneProperties { get { return (SceneProperties)DisplayManager.Display.Properties; } }
+
+    private IDataController DataController  { get { return CameraManager.Display.DataController; } }
+    private GenericDataController sceneInteractableController = new GenericDataController(Enums.DataType.SceneInteractable);
+    private GenericDataController interactionController = new GenericDataController(Enums.DataType.Interaction);
+    private GenericDataController sceneObjectController = new GenericDataController(Enums.DataType.SceneObject);
 
     public List<SelectionElement> elementList = new List<SelectionElement>();
 
     private CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
 
+    private bool allowSelection = true;
+
+    void Update()
+    {
+        var ray = CameraManager.cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (ScrollRect.m_Dragging)
+            allowSelection = false;
+        
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (allowSelection && Physics.Raycast(ray, out hit) && hit.collider.GetComponent<ObjectGraphic>() != null)
+            {
+                var selectionElement = hit.collider.GetComponent<ObjectGraphic>().selectionElement;
+
+                selectionElement.InvokeSelection();
+            }
+
+            allowSelection = true;
+        }
+    }
+
     public void InitializeOrganizer()
     {
-        cameraManager = (CameraManager)DisplayManager;
+        sceneData = (SceneDataElement)DataController.DataList.FirstOrDefault();
 
-        dataController = cameraManager.Display.DataController;
+        GetSelectedInteraction(DataController.SegmentController.Path);
 
-        sceneData = (SceneDataElement)dataController.DataList.FirstOrDefault();
-    }
-    
-    public void InitializeProperties()
-    {
-        sceneProperties = (SceneProperties)DisplayManager.Display.Properties;
-        
-        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * sceneData.tileSize,
-                                    0,
-                                    EditorManager.UI.localScale.z * sceneData.tileSize) * 3;
+        tileBoundSize = new Vector3(sceneData.tileSize, 0, sceneData.tileSize) * 3;
+
+        CameraManager.cam.transform.localPosition = new Vector3(0, 10 - (sceneData.tileSize * 0.75f), -10);
 
         SetRegionSize();
     }
@@ -55,7 +76,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                     sceneData.terrainDataList.SelectMany(x => x.interactionDataList).Cast<IDataElement>()).Concat(
                     sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList).Cast<IDataElement>()).ToList();
 
-        SelectionManager.SelectData(dataList);
+        SelectionManager.SelectData(dataList, DisplayManager);
     }
 
     private void SetRegionSize()
@@ -64,7 +85,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                                      sceneData.regionSize * sceneData.terrainSize * sceneData.tileSize);
 
         ScrollRect.content.sizeDelta = regionSize * 2;
-        cameraManager.content.sizeDelta = regionSize;
+        CameraManager.content.sizeDelta = regionSize;
     }
 
     public void UpdateData()
@@ -78,6 +99,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
             ClearOrganizer();
 
+            sceneInteractableController.DataList.Clear();
+            interactionController.DataList.Clear();
+            sceneObjectController.DataList.Clear();
+
             SetData();
         }
     }
@@ -90,9 +115,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
-        GetSelectedInteraction(dataController.SegmentController.Path);
-        
-        SetData(dataController.DataList);
+        SetData(DataController.DataList);
     }
 
     private void GetSelectedInteraction(Path path)
@@ -106,7 +129,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     
     private void SetData(List<IDataElement> list)
     {
-        planes = GeometryUtility.CalculateFrustumPlanes(cameraManager.cam);
+        planes = GeometryUtility.CalculateFrustumPlanes(CameraManager.cam);
 
         sceneStartPosition = sceneData.startPosition;
         
@@ -114,19 +137,19 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             SetTerrain(terrainData);
 
-            var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0).Cast<IDataElement>().ToList();
-            var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>().ToList();
-            var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>().ToList();
-
-            //Set scene interactables that are not bound to this tile by their first interaction
-            SetSceneElements(sceneInteractableList);
-
-            //Set interactions that are not bound to this terrain tile
-            SetSceneElements(interactionList);
-
-            //Set objects that are not bound to this terrain tile
-            SetSceneElements(sceneObjectList);
+            sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0).Cast<IDataElement>());
+            interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
+            sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
         }
+
+        //Set scene interactables that are bound to this tile by their first interaction
+        SetSceneElements(sceneInteractableController);
+
+        //Set interactions that are bound to this terrain tile
+        SetSceneElements(interactionController);
+
+        //Set objects that are bound to this terrain tile
+        SetSceneElements(sceneObjectController);
     }
 
     private void SetTerrain(SceneDataElement.TerrainData terrainData)
@@ -138,55 +161,47 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             var tilePosition = new Vector2( terrainStartPosition.x + (sceneData.tileSize * (terrainTileData.Index % sceneData.terrainSize)),
                                             terrainStartPosition.y - (sceneData.tileSize * (Mathf.Floor(terrainTileData.Index / sceneData.terrainSize))));
-
-            if (GeometryUtility.TestPlanesAABB(planes, new Bounds(cameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
+            
+            if (GeometryUtility.TestPlanesAABB(planes, new Bounds(CameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
             {
                 Tile prefab = Resources.Load<Tile>("Objects/Tile/" + sceneData.tileSetName + "/" + terrainTileData.TileId);
 
                 Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.TileId, prefab.PoolType, prefab);
                 tileList.Add(tile);
 
-                tile.transform.SetParent(cameraManager.content.transform, false);
+                tile.transform.SetParent(CameraManager.content.transform, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
 
-                var sceneInteractableList = terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
-                var interactionList = terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
-                var sceneObjectList = terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>().ToList();
-
-                //Set scene interactables that are bound to this tile by their first interaction
-                SetSceneElements(sceneInteractableList);
-
-                //Set interactions that are bound to this terrain tile
-                SetSceneElements(interactionList);
-
-                //Set objects that are bound to this terrain tile
-                SetSceneElements(sceneObjectList);
+                sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).Cast<IDataElement>());
+                interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
+                sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
                 
                 tile.gameObject.SetActive(true);
             }
         }
     }
 
-    private void SetSceneElements(List<IDataElement> dataList)
+    private void SetSceneElements(IDataController dataController)
     {
-        if (dataList.Count == 0) return;
+        if (dataController.DataList.Count == 0) return;
         
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("Scene/EditorSceneElement");
-
-        foreach(IDataElement data in dataList)
+        
+        foreach(IDataElement dataElement in dataController.DataList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, cameraManager.content,
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, CameraManager.content,
                                                                             Enums.ElementType.SceneElement, DisplayManager, 
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
 
             elementList.Add(element);
 
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(dataController, data);
+            dataElement.SelectionElement = element;
+            element.dataController = dataController;
+            element.data = new SelectionElement.Data(dataController, dataElement);
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
+            GeneralData generalData = (GeneralData)dataElement;
             element.name = generalData.DebugName + generalData.Id;
             //
 
@@ -201,7 +216,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             case Enums.DataType.SceneInteractable: /*SetSceneInteractableStatus();*/ break;
             case Enums.DataType.Interaction: SetInteractionStatus(element); break;
-            case Enums.DataType.SceneObject: /*SetSceneObjectStatus();*/ break;
+            case Enums.DataType.SceneObject: SetSceneObjectStatus(element); break;
 
             default: Debug.Log("CASE MISSING: " + element.GeneralData.DataType); break;
         }
@@ -210,9 +225,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private void SetInteractionStatus(SelectionElement element)
     {
         if (interactionData == null) return;
-        
-        var data = element.data;
-        var dataElement = (InteractionDataElement)data.dataElement;
+
+        var dataElement = (InteractionDataElement)element.data.dataElement;
 
         /*
         Debug.Log(  interactionData.Id + "/" + dataElement.id + ":" + 
@@ -261,6 +275,15 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             element.elementStatus = Enums.ElementStatus.Unrelated;
             return;
         } 
+    }
+
+    private void SetSceneObjectStatus(SelectionElement element)
+    {
+        if (sceneData.regionType == Enums.RegionType.Interaction)
+        {
+            element.elementStatus = Enums.ElementStatus.Locked;
+            return;
+        }
     }
 
     private void SetElement(SelectionElement element)

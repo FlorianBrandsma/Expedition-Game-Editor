@@ -444,7 +444,11 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 1000012955252618}
   lockIcon: {fileID: 0}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &114000010882500348
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -540,7 +544,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114000010625544118}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114000010806134910}
+        m_MethodName: InvokeSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114000012075590546
@@ -568,7 +583,11 @@ MonoBehaviour:
   child: {fileID: 114000010806134910}
   glow: {fileID: 1000010226280764}
   lockIcon: {fileID: 1000012395848936}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &114000012930379786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -634,7 +653,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114000012930379786}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114000012075590546}
+        m_MethodName: InvokeSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114000013119853530

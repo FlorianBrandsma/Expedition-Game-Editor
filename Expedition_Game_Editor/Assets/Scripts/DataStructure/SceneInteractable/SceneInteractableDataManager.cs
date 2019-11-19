@@ -43,6 +43,8 @@ public class SceneInteractableDataManager
 
         if (sceneInteractableDataList.Count == 0) return new List<IDataElement>();
 
+        DataManager.SetIndex(sceneInteractableDataList.Cast<GeneralData>().ToList());
+
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
@@ -56,6 +58,7 @@ public class SceneInteractableDataManager
                         DataType = Enums.DataType.SceneInteractable,
 
                         Id = sceneInteractableData.Id,
+                        Index = sceneInteractableData.Index,
                         
                         ChapterId = sceneInteractableData.chapterId,
                         InteractableId = sceneInteractableData.interactableId,
@@ -63,7 +66,7 @@ public class SceneInteractableDataManager
                         interactableName = interactableData.name,
                         objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.Id).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

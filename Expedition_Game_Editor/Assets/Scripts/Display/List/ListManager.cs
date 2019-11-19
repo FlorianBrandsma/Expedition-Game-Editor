@@ -19,9 +19,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public RectTransform    RectTransform   { get { return GetComponent<RectTransform>(); } }
     public RectTransform    listParent;
 
-    private Vector3         listMin, 
-                            listMax;
-
     public Vector2          listSize        { get; set; }
     public RectTransform    ParentRect      { get { return transform.parent.GetComponent<RectTransform>(); } }
 
@@ -59,8 +56,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
         ScrollRect.horizontal   = listProperties.horizontal;
         ScrollRect.vertical     = listProperties.vertical;
 
-        organizer.InitializeProperties();
-
         overlayManager.SetOverlayProperties(listProperties);
 
         transform.parent.gameObject.SetActive(true);
@@ -79,8 +74,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         if (dataList.Count == 0) return;
         
-        List.SetElementSize();
-
         overlayManager.ActivateOverlay(organizer, List);
 
         overlayManager.SetOverlaySize();
@@ -89,15 +82,15 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         listSize = List.GetListSize(dataList.Count, false);
 
+        //Select data after the list has been resized, so that the position may be properly corrected
+        organizer.SelectData();
+        
         if (!listProperties.enablePaging)
             SetData();
 
         overlayManager.SetOverlay();
-        
-        listMin = RectTransform.TransformPoint(new Vector2(RectTransform.rect.min.x, RectTransform.rect.min.y));
-        listMax = RectTransform.TransformPoint(new Vector2(RectTransform.rect.max.x, RectTransform.rect.max.y));
-        
-        if (EditorManager.loadType == Enums.LoadType.Return || !Display.DataController.SegmentController.Loaded)
+
+        if (!Display.DataController.SegmentController.Loaded)
             ResetListPosition();
     }
 
@@ -124,33 +117,40 @@ public class ListManager : MonoBehaviour, IDisplayManager
         overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(SelectionElement element)
+    public void CorrectPosition(IDataElement dataElement)
     {
         if (!listProperties.enablePositionCorrection) return;
 
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
 
-        Vector3 inverseElementPoint = transform.InverseTransformPoint(element.transform.position) * positionOffset;
+        var elementPosition = List.GetElementPosition(dataElement.Index);
 
-        Vector3 intermediateMin = new Vector3(inverseElementPoint.x - element.RectTransform.rect.max.x, 
-                                              inverseElementPoint.y - element.RectTransform.rect.max.y, 
-                                              inverseElementPoint.z);
+        var localElementPosition = new Vector2(elementPosition.x + listParent.localPosition.x,
+                                               elementPosition.y + listParent.localPosition.y) * positionOffset;
 
-        Vector3 intermediateMax = new Vector3(inverseElementPoint.x + element.RectTransform.rect.max.x, 
-                                              inverseElementPoint.y + element.RectTransform.rect.max.y, 
-                                              inverseElementPoint.z);
+        var elementMin = new Vector2(localElementPosition.x - List.ElementSize.x / 2,
+                                     localElementPosition.y - List.ElementSize.y / 2);
 
-        Vector3 elementMin = transform.TransformPoint(intermediateMin);
-        Vector3 elementMax = transform.TransformPoint(intermediateMax);
+        var elementMax = new Vector2(localElementPosition.x + List.ElementSize.x / 2,
+                                     localElementPosition.y + List.ElementSize.y / 2);
 
-        if (elementMax.x > listMax.x ||
-            elementMin.x < listMin.x ||
-            elementMax.z > listMax.z ||
-            elementMin.z < listMin.z)
+        if (elementMax.x > RectTransform.rect.max.x ||
+            elementMin.x < RectTransform.rect.min.x ||
+            elementMax.y > RectTransform.rect.max.y ||
+            elementMin.y < RectTransform.rect.min.y)
         {
-            ScrollRect.horizontalNormalizedPosition = ((element.transform.localPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
-            ScrollRect.verticalNormalizedPosition = (element.transform.localPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
+            //if(elementMax.x > RectTransform.rect.max.x)
+            //    Debug.Log("1:CORRECT POSITION");
+            //if (elementMin.x < RectTransform.rect.min.x)
+            //    Debug.Log("2:CORRECT POSITION");
+            //if (elementMax.y > RectTransform.rect.max.y)
+            //    Debug.Log("3:CORRECT POSITION");
+            //if (elementMin.y < RectTransform.rect.min.y)
+            //    Debug.Log("4:CORRECT POSITION");
+
+            ScrollRect.horizontalNormalizedPosition = ((elementPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
+            ScrollRect.verticalNormalizedPosition   = (elementPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
         }
     }
 
@@ -164,7 +164,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         {
             SelectionElement element = List.ElementList.FirstOrDefault();
 
-            element.GetComponent<Button>().onClick.Invoke();
+            element.InvokeSelection();
         }
     }
 

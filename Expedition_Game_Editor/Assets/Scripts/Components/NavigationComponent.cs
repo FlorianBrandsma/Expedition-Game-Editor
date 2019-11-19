@@ -79,7 +79,7 @@ public class NavigationComponent : MonoBehaviour, IComponent
     private void SetSceneInteractableOptions()
     {
         var dataElements = data.dataList.Cast<SceneInteractableDataElement>().ToList();
-
+        
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 

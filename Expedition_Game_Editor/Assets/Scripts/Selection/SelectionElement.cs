@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ public class SelectionElement : MonoBehaviour
             this.dataController = dataController;
             dataElement = new GeneralDataElement();
         }
-
+        
         public Data(IDataController dataController, IDataElement dataElement)
         {
             this.dataController = dataController;
@@ -56,9 +57,8 @@ public class SelectionElement : MonoBehaviour
     public GameObject glow;
     public GameObject lockIcon;
 
-    public bool selected;
-    
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
+    public Button Button { get { return GetComponent<Button>(); } }
 
     public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
     
@@ -67,6 +67,8 @@ public class SelectionElement : MonoBehaviour
     public IDisplayManager DisplayManager   { get; set; }
 
     public IDataController dataController;
+
+    public UnityEvent OnSelection = new UnityEvent();
 
     public void InitializeElement(IDataController dataController)
     {
@@ -94,7 +96,9 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().InitializeElement();
 
         if (selectionType != SelectionManager.Type.None)
-            GetComponent<Button>().onClick.AddListener(delegate { SelectElement(); });  
+        {
+            OnSelection.AddListener(delegate { SelectElement(); });
+        }
     }
 
     public void SetElement()
@@ -137,7 +141,12 @@ public class SelectionElement : MonoBehaviour
 
         switch (elementStatus)
         {
-            case Enums.ElementStatus.Enabled: break;
+            case Enums.ElementStatus.Enabled:
+
+                Element.ElementColor = enabledColor;
+
+                break;
+
             case Enums.ElementStatus.Disabled:
 
                 Element.ElementColor = disabledColor;
@@ -159,14 +168,19 @@ public class SelectionElement : MonoBehaviour
         }
     }
 
-    public void SelectElement()
+    public void InvokeSelection()
+    {
+        if (elementStatus == Enums.ElementStatus.Locked) return;
+
+        OnSelection.Invoke();
+    }
+
+    private void SelectElement()
     {
         if (selectionType == SelectionManager.Type.None) return;
-
-        if (selected) return;
-
-        EditorPath editorPath = new EditorPath(this, new Route(this));
         
+        EditorPath editorPath = new EditorPath(this, new Route(this));
+
         switch (selectionProperty)
         {
             case SelectionManager.Property.None: break;

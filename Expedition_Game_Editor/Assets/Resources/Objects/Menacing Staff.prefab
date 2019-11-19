@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013129815032}
   - 114: {fileID: 114000012183421166}
+  - 65: {fileID: 65000010677343308}
   m_Layer: 10
   m_Name: Menacing Staff
   m_TagString: Untagged
@@ -107,6 +108,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012071888334}
   m_Mesh: {fileID: 4300000, guid: 883d21f35afe2414b85d292067d12bcf, type: 3}
+--- !u!65 &65000010677343308
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010550758746}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 0.3, z: 2.3}
+  m_Center: {x: -0.4, y: 0, z: 0.15}
 --- !u!114 &114000012183421166
 MonoBehaviour:
   m_ObjectHideFlags: 1

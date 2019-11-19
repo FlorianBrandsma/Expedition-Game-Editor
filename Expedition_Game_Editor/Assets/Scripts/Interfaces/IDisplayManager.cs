@@ -7,5 +7,5 @@ public interface IDisplayManager
     IDisplay Display { get; }
 
     void UpdateData();
-    void CorrectPosition(SelectionElement selectionElement);
+    void CorrectPosition(IDataElement data);
 }

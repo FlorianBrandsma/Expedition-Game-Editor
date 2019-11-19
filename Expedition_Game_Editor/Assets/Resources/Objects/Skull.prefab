@@ -86,6 +86,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000014165820280}
   - 114: {fileID: 114000010340586680}
+  - 65: {fileID: 65000011445158988}
   m_Layer: 10
   m_Name: Skull
   m_TagString: Untagged
@@ -270,6 +271,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010549352318}
   m_Mesh: {fileID: 4300002, guid: c74f422e47883514cbb2ef0fb6f62677, type: 3}
+--- !u!65 &65000011445158988
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014035183400}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.25, y: 4.5, z: 1.5}
+  m_Center: {x: 0, y: -1.25, z: -0.5}
 --- !u!114 &114000010340586680
 MonoBehaviour:
   m_ObjectHideFlags: 1

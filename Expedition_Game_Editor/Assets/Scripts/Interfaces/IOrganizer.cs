@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public interface IOrganizer
 {
     void InitializeOrganizer();
-    void InitializeProperties();
     void SelectData();
     void UpdateData();
     void SetData();

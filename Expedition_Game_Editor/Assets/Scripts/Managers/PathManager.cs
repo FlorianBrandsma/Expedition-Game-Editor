@@ -58,6 +58,7 @@ public class PathManager
 
         int enter   = 0;
         int edit    = 1;
+        int open    = 0;
 
         EditorForm form  = EditorManager.editorManager.forms[0];
 
@@ -80,6 +81,13 @@ public class PathManager
             route.controller = edit;
 
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+        }
+
+        public Path Open()
+        {
+            route.controller = open;
+
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
         }
     }
     #endregion
@@ -351,7 +359,7 @@ public class PathManager
             this.route = route;
         }
 
-        public Path Enter()
+        public Path Open()
         {
             List<int> source = new List<int>() { 1 };
 

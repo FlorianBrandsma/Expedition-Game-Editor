@@ -46,6 +46,7 @@ public class PartyMemberDataManager
                         DataType = Enums.DataType.PartyMember,
 
                         Id = partyMemberData.Id,
+                        Index = partyMemberData.Index,
                         
                         ChapterId = partyMemberData.chapterId,
                         InteractableId = partyMemberData.interactableId,
@@ -53,7 +54,7 @@ public class PartyMemberDataManager
                         interactableName = interactableData.name,
                         objectGraphicIconPath = iconData.path
 
-                    }).OrderBy(x => x.Id).ToList();
+                    }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -72,6 +73,7 @@ public class PartyMemberDataManager
             var partyMemberData = new PartyMemberData();
 
             partyMemberData.Id = partyMember.Id;
+            partyMemberData.Index = partyMember.Index;
 
             partyMemberData.chapterId = partyMember.chapterId;
             partyMemberData.interactableId = partyMember.interactableId;

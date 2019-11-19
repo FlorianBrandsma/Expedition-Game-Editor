@@ -5,12 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class NavigationData
-{
-    Enums.DataType dataType;
-    public List<int> idList = new List<int>();
-}
-
 public class RegionNavigationComponent : MonoBehaviour, IComponent
 {
     //On startup, get the data of all relevant routes in the path, based on the data types
@@ -74,11 +68,13 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 //This will be fixed when the temporary solution is replaced by automatically selecting the selection element
                 //where the data matches the current selection data. Whenever navigation selection is changed, the selection element
                 //must be selected from the same starting point, thereby triggering the editor to load.
-                
-                var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
-                interactionRoute.controller = 0;
 
-                path.Add(interactionRoute);
+                //Debug.Log("Add interaction");
+
+                //var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
+                //interactionRoute.controller = 0;
+
+                //path.Add(interactionRoute);
             }
         }  
     }
@@ -385,9 +381,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         }
 
         var data = PathController.route.path.FindLastRoute(componentData.data.dataController.DataType).data;
-
+        
         int selectedIndex = componentData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == ((GeneralData)data.dataElement).Id);
-
+        
         dropdown.value = selectedIndex;
 
         dropdown.captionText.text = dropdown.options[dropdown.value].text; 

@@ -4868,7 +4868,7 @@ Camera:
     width: 1
     height: 0.855
   near clip plane: 0.01
-  far clip plane: 2
+  far clip plane: 50
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -7899,7 +7899,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 309943308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 200, y: 250, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -12395,7 +12395,7 @@ Camera:
   far clip plane: 15
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 240
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -13311,7 +13311,7 @@ Canvas:
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 2072329127}
-  m_PlaneDistance: 10
+  m_PlaneDistance: 200
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -13502,7 +13502,11 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 389357975}
   lockIcon: {fileID: 957461501}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!224 &596637401
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20607,7 +20611,8 @@ MonoBehaviour:
   displayType: 0
   cameraManager: {fileID: 1246982541}
   selectionType: 1
-  selectionProperty: 3
+  selectionProperty: 5
+  enableScroll: 1
 --- !u!114 &899072710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28342,6 +28347,7 @@ MonoBehaviour:
   cameraManager: {fileID: 1494783355}
   selectionType: 0
   selectionProperty: 0
+  enableScroll: 0
 --- !u!114 &1215727548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29266,7 +29272,7 @@ MonoBehaviour:
   cam: {fileID: 180582706}
   content: {fileID: 1093493482}
   overlayManager: {fileID: 233668293}
-  graphicParent: {fileID: 0}
+  cameraParent: {fileID: 912358544}
   displayRect: {fileID: 97059932}
 --- !u!114 &1246982542
 MonoBehaviour:
@@ -29726,7 +29732,11 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 164812091}
   lockIcon: {fileID: 655134287}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!224 &1257196730
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31850,7 +31860,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1311520402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: -480}
+  m_LocalPosition: {x: 0, y: 0, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children:
@@ -31874,10 +31884,10 @@ Camera:
     width: 1
     height: 0.855
   near clip plane: 0.3
-  far clip plane: 15
+  far clip plane: 300
   field of view: 45
   orthographic: 1
-  orthographic size: 4.25
+  orthographic size: 205
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -36328,7 +36338,7 @@ MonoBehaviour:
   cam: {fileID: 1311520404}
   content: {fileID: 1205496844}
   overlayManager: {fileID: 0}
-  graphicParent: {fileID: 1205496844}
+  cameraParent: {fileID: 0}
   displayRect: {fileID: 97059932}
 --- !u!1001 &1496482455
 Prefab:
@@ -43945,6 +43955,7 @@ MonoBehaviour:
   cameraManager: {fileID: 1494783355}
   selectionType: 0
   selectionProperty: 0
+  enableScroll: 0
 --- !u!1001 &1791104939
 Prefab:
   m_ObjectHideFlags: 0
@@ -47624,7 +47635,7 @@ MonoBehaviour:
   displayType: 0
   listManager: {fileID: 567593180}
   selectionType: 1
-  selectionProperty: 4
+  selectionProperty: 5
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
@@ -49505,8 +49516,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2041070320}
   m_LocalRotation: {x: 0.23737235, y: 0.24623595, z: -0.85878515, w: 0.38145822}
-  m_LocalPosition: {x: 100, y: 202.50005, z: 480}
-  m_LocalScale: {x: 48, y: 48, z: 47.99995}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 50, y: 200, z: 67.9}
   m_Children: []
   m_Father: {fileID: 1311520403}
@@ -49878,11 +49889,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 12
+  near clip plane: 0
+  far clip plane: 200.1
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 240
   m_Depth: -2
   m_CullingMask:
     serializedVersion: 2
@@ -49903,7 +49914,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2072329123}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children:
@@ -51733,7 +51744,11 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 1603210582}
   lockIcon: {fileID: 947968235}
-  selected: 0
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &2135834314
 MonoBehaviour:
   m_ObjectHideFlags: 0

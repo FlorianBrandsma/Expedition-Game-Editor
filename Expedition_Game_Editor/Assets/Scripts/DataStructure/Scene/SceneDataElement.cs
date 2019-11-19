@@ -4,6 +4,8 @@ using System.Linq;
 
 public class SceneDataElement : GeneralData, IDataElement
 {
+    public Enums.RegionType regionType;
+
     public int regionSize;
     public int terrainSize;
     public float tileSize;

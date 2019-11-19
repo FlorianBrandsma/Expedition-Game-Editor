@@ -5,7 +5,7 @@ using System.Linq;
 public class EditorSceneElement : MonoBehaviour, IElement
 {
     private ObjectGraphic objectGraphic;
-
+    
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
 
     public Color ElementColor
@@ -18,7 +18,7 @@ public class EditorSceneElement : MonoBehaviour, IElement
             }
         }
     }
-
+    
     public void InitializeElement() { }
 
     public void SetElement()
@@ -83,14 +83,11 @@ public class EditorSceneElement : MonoBehaviour, IElement
 
     private void SetObjectGraphic()
     {
+        objectGraphic.selectionElement = Element;
+
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);
-    }
-
-    public void Test()
-    {
-        Debug.Log("Test");
     }
 
     public void CloseElement()

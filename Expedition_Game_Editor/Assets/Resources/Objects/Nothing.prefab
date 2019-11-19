@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011674654966}
   - 33: {fileID: 33000012854181870}
-  - 65: {fileID: 65000014036735630}
   - 23: {fileID: 23000013042540742}
   m_Layer: 10
   m_Name: Cube
@@ -38,6 +37,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010965297332}
   - 114: {fileID: 114000014067213826}
+  - 65: {fileID: 65000014215340736}
   m_Layer: 10
   m_Name: Nothing
   m_TagString: Untagged
@@ -67,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 1000012541824940}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010965297332}
@@ -108,12 +108,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012541824940}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65000014036735630
+--- !u!65 &65000014215340736
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012541824940}
+  m_GameObject: {fileID: 1000013598080314}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

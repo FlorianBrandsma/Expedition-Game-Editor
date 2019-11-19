@@ -337,6 +337,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013373647830}
   - 114: {fileID: 114000014238017966}
+  - 65: {fileID: 65000012491289376}
   m_Layer: 10
   m_Name: Mage
   m_TagString: Untagged
@@ -1804,6 +1805,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013238507618}
   m_Mesh: {fileID: 4300002, guid: 352847561def26b408d93c916db161f4, type: 3}
+--- !u!65 &65000012491289376
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011498477230}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 3.3}
+  m_Center: {x: 0, y: 0, z: -1.65}
 --- !u!111 &111000010767916940
 Animation:
   m_ObjectHideFlags: 1

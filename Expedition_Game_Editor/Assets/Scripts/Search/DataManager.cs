@@ -4,6 +4,20 @@ using System.Collections.Generic;
 
 public class DataManager
 {
+    #region Methods
+
+    static public void SetIndex(List<GeneralData> dataList)
+    {
+        for (int index = 0; index < dataList.Count; index++)
+        {
+            var data = dataList[index];
+
+            data.Index = index;
+        }
+    }
+
+    #endregion
+
     #region Functions
 
     public List<IconData> GetIconData(List<int> idList, bool searchById = false)

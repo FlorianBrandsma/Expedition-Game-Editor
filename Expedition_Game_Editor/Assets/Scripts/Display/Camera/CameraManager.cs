@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,9 +10,6 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public SelectionManager.Property    SelectionProperty   { get; set; }
     public SelectionManager.Type        SelectionType       { get; set; }
 
-    private Vector3 tileBoundSize;
-    private Plane[] planes;
-
     public Camera cam;
     public RectTransform content;
 
@@ -20,8 +18,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public IDisplay Display { get; set; }
     private CameraProperties cameraProperties;
 
+    public CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
-    public RectTransform graphicParent;
+    public RectTransform cameraParent;
+
     public RectTransform displayRect;
 
     public void InitializeCamera(CameraProperties cameraProperties)
@@ -50,13 +50,14 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         //SelectionManager.lists.Add(this);
 
         //SetProperties();
+
+        if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && EditorManager.loadType == Enums.LoadType.Normal)
+            ResetListPosition();
     }
 
     public void SetProperties()
     {
         if (organizer == null) return;
-
-        organizer.InitializeProperties();
 
         transform.parent.gameObject.SetActive(true);
     }
@@ -76,8 +77,11 @@ public class CameraManager : MonoBehaviour, IDisplayManager
                             new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
 
         SetData();
+    }
 
-        transform.parent.gameObject.SetActive(true);
+    private void ResetListPosition()
+    {
+        cameraParent.transform.localPosition = new Vector3(0, 0, cameraParent.transform.localPosition.z);
     }
 
     public void UpdateData()
@@ -97,21 +101,41 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(SelectionElement element)
+    public void CorrectPosition(IDataElement dataElement)
     {
-        planes = GeometryUtility.CalculateFrustumPlanes(cam);
+        var planes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-        tileBoundSize = new Vector3(EditorManager.UI.localScale.x * 1,
-                                    0,
-                                    EditorManager.UI.localScale.z * 1);
+        var elementBoundSize = new Vector3(1, 1, 1);
 
-        Debug.Log(content.TransformPoint(element.transform.position));
-
-        if (GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(element.transform.position), tileBoundSize)))
+        var elementPosition = Vector3.zero;
+        
+        switch(dataElement.DataType)
         {
-            Debug.Log("Correct camera position " + element);
+            case Enums.DataType.Interaction:
+
+                var interactionData = (InteractionDataElement)dataElement;
+
+                elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
+
+                break;
+
+            case Enums.DataType.SceneObject:
+
+                var sceneObjectData = (SceneObjectDataElement)dataElement;
+
+                elementPosition = new Vector3(sceneObjectData.PositionX, sceneObjectData.PositionY, sceneObjectData.PositionZ);
+
+                break;
         }
-            
+
+        var startPos = new Vector3(-content.rect.width / 2, content.rect.height / 2, 0);
+        var localPosition = new Vector3(startPos.x + elementPosition.x , startPos.y - elementPosition.y, -elementPosition.z);
+
+        if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
+        {
+            cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);
+            organizer.UpdateData();
+        }  
     }
 
     public void ClearCamera()

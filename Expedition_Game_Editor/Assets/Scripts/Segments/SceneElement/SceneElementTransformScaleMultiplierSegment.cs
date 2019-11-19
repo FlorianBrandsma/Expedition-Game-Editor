@@ -71,10 +71,7 @@ public class SceneElementTransformScaleMultiplierSegment : MonoBehaviour, ISegme
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
+    public void InitializeSegment() { }
     
     public void InitializeData()
     {

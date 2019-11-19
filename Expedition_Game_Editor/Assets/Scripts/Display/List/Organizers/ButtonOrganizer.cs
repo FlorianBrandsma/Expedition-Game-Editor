@@ -1,65 +1,63 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System;
 
 public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private ListProperties listProperties;
-    private ButtonProperties buttonProperties;
+    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+
+    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private ButtonProperties ButtonProperties { get { return (ButtonProperties)DisplayManager.Display.Properties; } }
     
-    private IDataController dataController;
-    private List<GeneralData> generalDataList;
-
-    private ListManager listManager;
-    private IDisplayManager DisplayManager { get { return GetComponent<IDisplayManager>(); } }
-
+    private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
+    
     public List<SelectionElement> ElementList { get; set; }
-    public Vector2 ElementSize { get; set; }
+
+    public Vector2 ElementSize { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
-        listManager = (ListManager)DisplayManager;
-
-        dataController = DisplayManager.Display.DataController;
-    }
-
-    public void InitializeProperties()
-    {
-        listProperties = (ListProperties)DisplayManager.Display;
-        buttonProperties = (ButtonProperties)DisplayManager.Display.Properties;
+        ElementList = new List<SelectionElement>();
     }
 
     public void SelectData()
     {
-        SelectionManager.SelectData(dataController.DataList);
+        SelectionManager.SelectData(DataController.DataList, DisplayManager);
     }
     
     public void SetData()
     {
-        SetData(dataController.DataList);
+        SetData(DataController.DataList);
+    }
+
+    public void UpdateData()
+    {
+        ResetData(DataController.DataList);
+    }
+
+    public void ResetData(List<IDataElement> filter)
+    {
+        ClearOrganizer();
+        SetData(filter);
     }
 
     public void SetData(List<IDataElement> list)
     {
-        generalDataList = list.Cast<GeneralData>().ToList();
-
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/Button");
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, listManager.listParent,
+            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
                                                                             Enums.ElementType.Button, DisplayManager, 
                                                                             DisplayManager.Display.SelectionType,
                                                                             DisplayManager.Display.SelectionProperty);
             ElementList.Add(element);
 
             data.SelectionElement = element;
-            element.data = new SelectionElement.Data(dataController, data);
+            element.data = new SelectionElement.Data(DataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
@@ -70,59 +68,48 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public void SetElementSize()
-    {
-        ElementSize = listProperties.elementSize;
-    }
-
-    public Vector2 GetListSize(int element_count, bool exact)
-    {
-        return new Vector2(0, ElementSize.y * element_count);
-    }
-
-    public void UpdateData()
-    {
-        ResetData(dataController.DataList);
-    }
-
-    public void ResetData(List<IDataElement> filter)
-    {
-        CloseList();
-        SetData(filter);
-    }
-
-    void SetElement(SelectionElement element)
+    private void SetElement(SelectionElement element)
     {
         RectTransform rect = element.GetComponent<RectTransform>();
 
-        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
 
         rect.anchorMax = new Vector2(1, 1);
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
-        rect.transform.localPosition = new Vector2(0, (listManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
+        rect.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
 
         element.SetElement();
     }
 
-    public void CloseList()
+    public Vector2 GetElementPosition(int index)
+    {
+        var position = new Vector2(0, (ListManager.listParent.sizeDelta.y / 2) - (ElementSize.y * index) - (ElementSize.y * 0.5f));
+
+        return position;
+    }
+
+    public Vector2 GetListSize(int element_count, bool exact)
+    {
+        return new Vector2(0, ElementSize.y * element_count);
+    }
+    
+    public void ClearOrganizer()
     {
         SelectionElementManager.CloseElement(ElementList);
     }
 
-    public void ClearOrganizer() { }
-
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(dataController.DataList);
+        SelectionManager.CancelSelection(DataController.DataList);
     }
 
     public void CloseOrganizer()
     {
-        CloseList();
+        ClearOrganizer();
 
         CancelSelection();
 

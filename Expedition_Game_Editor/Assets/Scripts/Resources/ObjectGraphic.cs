@@ -4,6 +4,8 @@ using System.Linq;
 
 public class ObjectGraphic : MonoBehaviour, IPoolable
 {
+    public SelectionElement selectionElement;
+
     public GameObject model;
     public GameObject[] mesh;
     public ObjectProperties.Pivot pivot;

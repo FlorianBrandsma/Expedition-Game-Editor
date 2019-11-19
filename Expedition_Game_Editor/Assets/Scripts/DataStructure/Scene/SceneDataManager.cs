@@ -58,7 +58,7 @@ public class SceneDataManager
         basicSceneData = GetBasicSceneData();
 
         var sceneStartPosition = GetSceneStartPosition();
-        
+
         var list = (
             from regionData in regionDataList
             join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
@@ -69,6 +69,7 @@ public class SceneDataManager
                 Id = regionData.Id,
                 Index = regionData.Index,
 
+                regionType = regionType,
                 regionSize = regionData.regionSize,
                 terrainSize = regionData.terrainSize,
 
@@ -112,6 +113,8 @@ public class SceneDataManager
 
                         Id = sceneInteractableData.Id,
                         terrainTileId = interactionData.terrainTileId,
+
+                        interactableName = interactableData.name,
 
                         positionX = interactionData.positionX,
                         positionY = interactionData.positionY,

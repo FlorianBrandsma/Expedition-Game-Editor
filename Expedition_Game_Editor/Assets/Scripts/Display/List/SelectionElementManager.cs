@@ -49,18 +49,19 @@ static public class SelectionElementManager
         element.transform.SetParent(parent, false);
     }
 
-    static public void UpdateElements(GeneralData generalData, bool updateList = false)
+    static public void UpdateElements(IDataElement dataElement, bool updateList = false)
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
-        var elementList = FindSelectionElements(activeElements, generalData);
+        var elementList = FindSelectionElements(activeElements, (GeneralData)dataElement);
 
         var managerList = elementList.Select(x => x.DisplayManager).Distinct().ToList();
 
-        if (updateList)
-            managerList.ForEach(x => x.UpdateData());
-        else
-            elementList.ForEach(x => x.UpdateElement());
+        managerList.ForEach(x =>
+        {
+            x.UpdateData();
+            x.CorrectPosition(dataElement);
+        });
     }
     
     static public List<IDataElement> FindDataElements(GeneralData generalData)
@@ -91,7 +92,7 @@ static public class SelectionElementManager
         {
             element.CloseElement();
             element.GetComponent<IElement>().CloseElement();
-            element.GetComponent<Button>().onClick.RemoveAllListeners();
+            element.OnSelection.RemoveAllListeners();
 
             if (element.elementStatus != Enums.ElementStatus.Enabled)
             {
@@ -102,7 +103,7 @@ static public class SelectionElementManager
             if (element.child != null)
             {
                 element.child.gameObject.SetActive(false);
-                element.child.GetComponent<Button>().onClick.RemoveAllListeners();
+                element.child.OnSelection.RemoveAllListeners();
             }
 
             element.gameObject.SetActive(false);
