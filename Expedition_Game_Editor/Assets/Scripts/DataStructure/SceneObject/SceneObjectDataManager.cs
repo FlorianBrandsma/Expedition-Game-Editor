@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SceneObjectDataManager
+public class SceneObjectDataManager : IDataManager
 {
-    private SceneObjectController sceneObjectController;
+    public IDataController DataController { get; set; }
 
     private List<SceneObjectData> sceneObjectDataList;
 
@@ -14,12 +14,12 @@ public class SceneObjectDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public SceneObjectDataManager(SceneObjectController sceneObjectController)
+    public SceneObjectDataManager(IDataController dataController)
     {
-        this.sceneObjectController = sceneObjectController;
+        DataController = dataController;
     }
 
-    public List<IDataElement> GetSceneObjectDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var sceneObjectSearchData = searchParameters.Cast<Search.SceneObject>().FirstOrDefault();
 

@@ -3,6 +3,7 @@ using System.Linq;
 
 public class PhaseCore : GeneralData
 {
+    private int chapterId;
     private string name;
     private string notes;
 
@@ -21,6 +22,12 @@ public class PhaseCore : GeneralData
     }
 
     #region Properties
+
+    public int ChapterId
+    {
+        get { return chapterId; }
+        set { chapterId = value; }
+    }
 
     public string Name
     {

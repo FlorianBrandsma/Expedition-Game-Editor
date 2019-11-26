@@ -44,4 +44,13 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new ObjectGraphicDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

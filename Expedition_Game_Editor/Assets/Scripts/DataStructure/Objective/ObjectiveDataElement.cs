@@ -34,4 +34,13 @@ public class ObjectiveDataElement : ObjectiveCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new ObjectiveDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

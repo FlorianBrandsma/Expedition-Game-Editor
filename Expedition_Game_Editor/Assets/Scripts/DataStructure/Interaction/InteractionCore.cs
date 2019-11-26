@@ -361,5 +361,48 @@ public class InteractionCore : GeneralData
 
     public void Delete() { }
 
+    public void CopyCore(InteractionDataElement dataElement)
+    {
+        CopyGeneralData(dataElement);
+
+        dataElement.sceneInteractableId = sceneInteractableId;
+        dataElement.regionId = regionId;
+        dataElement.terrainId = terrainId;
+        dataElement.terrainTileId = terrainTileId;
+
+        dataElement.description = description;
+
+        dataElement.positionX = positionX;
+        dataElement.positionY = positionY;
+        dataElement.positionZ = positionZ;
+
+        dataElement.rotationX = rotationX;
+        dataElement.rotationY = rotationY;
+        dataElement.rotationZ = rotationZ;
+
+        dataElement.scaleMultiplier = scaleMultiplier;
+
+        dataElement.animation = animation;
+
+
+        dataElement.originalRegionId = originalRegionId;
+        dataElement.originalTerrainId = originalTerrainId;
+        dataElement.originalTerrainTileId = originalTerrainTileId;
+
+        dataElement.originalDescription = originalDescription;
+
+        dataElement.originalPositionX = originalPositionX;
+        dataElement.originalPositionY = originalPositionY;
+        dataElement.originalPositionZ = originalPositionZ;
+
+        dataElement.originalRotationX = originalRotationX;
+        dataElement.originalRotationY = originalRotationY;
+        dataElement.originalRotationZ = originalRotationZ;
+
+        dataElement.originalScaleMultiplier = originalScaleMultiplier;
+
+        dataElement.originalAnimation = originalAnimation;
+
+    }
     #endregion
 }

@@ -47,7 +47,7 @@ static public class SelectionManager
     static public void SelectData(List<IDataElement> dataList, IDisplayManager displayManager = null)
     {
         if (dataList.Count == 0) return;
-        
+
         foreach (IDataElement dataElement in dataList)
         {
             foreach (Route route in routeList)

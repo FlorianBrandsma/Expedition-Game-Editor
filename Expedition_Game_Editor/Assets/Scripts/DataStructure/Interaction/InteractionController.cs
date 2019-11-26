@@ -29,7 +29,7 @@ public class InteractionController : MonoBehaviour, IDataController
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        return interactionDataManager.GetInteractionDataElements(searchParameters);
+        return interactionDataManager.GetDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

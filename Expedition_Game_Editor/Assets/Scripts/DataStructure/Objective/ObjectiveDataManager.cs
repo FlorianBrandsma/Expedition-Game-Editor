@@ -16,9 +16,9 @@ public class ObjectiveDataManager
     public List<IDataElement> GetObjectiveDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Objective>().FirstOrDefault();
-
+        
         GetObjectiveData(objectiveSearchData);
-
+        
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveDataElement()
                     {
@@ -42,7 +42,7 @@ public class ObjectiveDataManager
     public void GetObjectiveData(Search.Objective searchParameters)
     {
         objectiveDataList = new List<ObjectiveData>();
-        
+
         foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;

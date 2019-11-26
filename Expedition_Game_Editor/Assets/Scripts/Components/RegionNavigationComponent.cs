@@ -16,11 +16,12 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         public Route.Data data;
         public List<int> idFilter = new List<int>();
-
+        
         public ComponentData(Route.Data data)
         {
-            this.data = data;
-        }   
+            this.data = new Route.Data(data);
+            this.data.dataElement = data.dataElement.Copy();
+        }
     }
 
     private Enums.RegionType regionType;
@@ -42,15 +43,12 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         structureList = path.route.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation).Select(x => x.data.dataController.DataType).Distinct().ToList();
 
         regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
-        
+
         InitializeData();
 
+        //The region route only gets added at the end when the component is initialized
         if (path.route.Count < (PathController.route.path.route.Count + 1))
         {
-            //The region route gets added at the end when the component is initialized.
-            //It tries to add another route every time it gets opened, causing the selection to appear.
-            //This attempt gets blocked by using the max_length variable
-
             int index = (int)RegionDisplayManager.activeDisplay;
 
             regionRoute.controller = index;
@@ -62,19 +60,13 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             {
                 path.Add(regionRoute);
 
-            } else /*TEMPORARY*/ {
+            } else {
 
-                //Temporary solution currently results in a couple of bugs as a result of the scene interaction editor not loading.
-                //This will be fixed when the temporary solution is replaced by automatically selecting the selection element
-                //where the data matches the current selection data. Whenever navigation selection is changed, the selection element
-                //must be selected from the same starting point, thereby triggering the editor to load.
+                //Adds the selected interaction to the path
+                var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
+                interactionRoute.controller = 0;
 
-                //Debug.Log("Add interaction");
-
-                //var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
-                //interactionRoute.controller = 0;
-
-                //path.Add(interactionRoute);
+                path.Add(interactionRoute);
             }
         }  
     }
@@ -83,7 +75,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         if (PathController.route.path.type == Path.Type.New)
         {
-            var regionDataElement = (RegionDataElement)regionRoute.data.dataElement;
+            var regionDataElement = (RegionDataElement)regionRoute.data.dataList.FirstOrDefault();
             regionType = regionDataElement.type;
 
             if (regionType == Enums.RegionType.Interaction)
@@ -94,15 +86,71 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         InitializeStructureData();
     }
+    
+    private void InitializeStructureData()
+    {
+        componentDataList.Clear();
 
-    //Remove all dead ends from data
+        structureList.ForEach(x => 
+        {
+            var data = PathController.route.path.FindLastRoute(x).data;
+
+            componentDataList.Add(new ComponentData(data));
+        });
+
+        FilterData();
+
+        for (int i = componentDataList.Count - 1; i >= 0; i--)
+        {
+            var componentData = componentDataList[i];
+            var dataType = componentData.data.dataController.DataType;
+
+            var route = PathController.route.path.FindLastRoute(dataType);
+            var mainRoute = PathController.editorSection.editorForm.activePath.FindLastRoute(dataType);
+
+            if (route.GeneralData.Id != mainRoute.GeneralData.Id)
+                componentData.data.dataElement = mainRoute.data.dataElement.Copy();
+
+            if (!componentData.data.dataList.Select(y => y.Id).ToList().Contains(componentData.data.dataElement.Id))
+                ResetData(componentData);
+            else
+                SelectOption(componentData);
+        }
+    }
+
+    private void ResetData(ComponentData componentData)
+    {
+        if(componentData.data.dataController.DataType == Enums.DataType.Interaction)
+            GetInteractionDependencies(componentData.data.dataElement);
+   
+        GetData(componentData.data.dataController);
+    }
+
+    private void GetInteractionDependencies(IDataElement dataElement)
+    {
+        var data = (InteractionDataElement)dataElement;
+        
+        var sceneInteractableComponent = FindComponentByDataType(Enums.DataType.SceneInteractable);
+        sceneInteractableComponent.data.dataElement.Id = data.SceneInteractableId;
+
+        var questComponent = FindComponentByDataType(Enums.DataType.Quest);
+
+        if (questComponent != null)
+            questComponent.data.dataElement.Id = data.questId;
+
+        var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
+        
+        if (objectiveComponent != null)
+            objectiveComponent.data.dataElement.Id = data.objectiveId;
+    }
+
     #region Data Filter
-
+    //Remove all dead ends from data
     private void FilterData()
     {
         if (structureList.Contains(Enums.DataType.SceneInteractable))
         {
-            var sceneInteractableData = Fixtures.sceneInteractableList;//.Where(x => x.objectiveId != 0 || x.chapterId != 0).Distinct().ToList();
+            var sceneInteractableData = Fixtures.sceneInteractableList;
             var sceneInteractableComponent = FindComponentByDataType(Enums.DataType.SceneInteractable);
             sceneInteractableComponent.idFilter = sceneInteractableData.Select(x => x.Id).Distinct().ToList();
         }
@@ -116,7 +164,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 var interactionData = Fixtures.interactionList.Where(x => sceneInteractableData.Contains(x.sceneInteractableId)).Distinct().ToList();
                 var interactionComponent = FindComponentByDataType(Enums.DataType.Interaction);
                 interactionComponent.idFilter = interactionData.Select(x => x.Id).Distinct().ToList();
-            }  
+            }
         }
 
         if (structureList.Contains(Enums.DataType.Objective))
@@ -129,7 +177,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 var objectiveData = Fixtures.objectiveList.Where(x => interactionData.Select(y => y.objectiveId).Contains(x.Id)).Distinct().ToList();
                 var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
                 objectiveComponent.idFilter = objectiveData.Select(x => x.Id).Distinct().ToList();
-            }   
+            }
         }
 
         if (structureList.Contains(Enums.DataType.Quest))
@@ -142,7 +190,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 var questData = Fixtures.questList.Where(x => objectiveData.Select(y => y.questId).Contains(x.Id)).Distinct().ToList();
                 var questComponent = FindComponentByDataType(Enums.DataType.Quest);
                 questComponent.idFilter = questData.Select(x => x.Id).Distinct().ToList();
-            }   
+            }
         }
 
         if (structureList.Contains(Enums.DataType.Phase))
@@ -166,9 +214,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             }
         }
 
-        if(structureList.Contains(Enums.DataType.Chapter))
+        if (structureList.Contains(Enums.DataType.Chapter))
         {
-            if(structureList.Contains(Enums.DataType.Phase))
+            if (structureList.Contains(Enums.DataType.Phase))
             {
                 var idList = FindComponentByDataType(Enums.DataType.Phase).idFilter;
                 var phaseData = Fixtures.phaseList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
@@ -179,7 +227,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             }
         }
 
-        if(structureList.Contains(Enums.DataType.Region))
+        if (structureList.Contains(Enums.DataType.Region))
         {
             if (structureList.Contains(Enums.DataType.Phase))
             {
@@ -194,38 +242,19 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 var regionComponent = FindComponentByDataType(Enums.DataType.Region);
                 var regionData = Fixtures.regionList.Where(x => x.phaseId == 0).Distinct().ToList();
                 regionComponent.idFilter = regionData.Select(x => x.Id).Distinct().ToList();
-            }  
+            }
         }
     }
-
     #endregion
-
-    private void InitializeStructureData()
-    {
-        componentDataList.Clear();
-
-        foreach (Enums.DataType structure in structureList)
-        {
-            var data = PathController.route.path.FindLastRoute(structure).data;
-            componentDataList.Add(new ComponentData(data));
-        }
-
-        FilterData();
-    }
 
     public void SetComponent(Path path)
     {
-        foreach (Enums.DataType structure in structureList)
-        {
-            SetDropdown(structure);
-        }
+        componentDataList.ForEach(x => SetDropdown(x));
     }
 
-    private void SetDropdown(Enums.DataType dataType)
+    private void SetDropdown(ComponentData componentData)
     {
         Dropdown dropdown = ComponentManager.componentManager.AddDropdown(component);
-
-        var componentData = FindComponentByDataType(dataType);
 
         SetOptions(dropdown, componentData);
         
@@ -234,15 +263,13 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             InitializePath(componentData.data.dataList[dropdown.value], componentDataList.IndexOf(componentData));
         });
     }
-
+    
     private void InitializePath(IDataElement dataElement, int index)
     {
         componentDataList[index].data.dataElement = dataElement;
 
         var path = PathController.route.path;
 
-        //Replace routes as multiple routes of type "Region" exist outside of the componentData
-        path.ReplaceAllRoutes(componentDataList[index].data);
         EditorManager.loadType = Enums.LoadType.Reload;
 
         for (int i = (index+1); i < componentDataList.Count; i++)
@@ -250,7 +277,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         EditorManager.editorManager.ResetEditor(PathController.route.path);
     }
-
+    
     private void GetData(IDataController dataController)
     {
         SearchParameters searchParameters = null;
@@ -269,15 +296,13 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
         searchParameters.id = FindComponentByDataType(dataController.DataType).idFilter;
 
         var componentData = FindComponentByDataType(dataController.DataType);
-        
+
         componentData.data.dataList = dataController.GetData(new[] { searchParameters });
-        componentData.data.dataElement = componentData.data.dataList.FirstOrDefault();
 
-        PathController.route.path.ReplaceAllRoutes(componentData.data);
+        SelectOption(componentData);
     }
-
-    #region Data
-
+    
+    #region Get Data
     private SearchParameters GetChapterData()
     {
         var searchParameters = new Search.Chapter();
@@ -288,7 +313,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Phase();
 
-        searchParameters.chapterId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Chapter).GeneralData.Id };
+        searchParameters.chapterId = new List<int>() { FindComponentByDataType(Enums.DataType.Chapter).data.dataElement.Id };
 
         return searchParameters;
     }
@@ -297,7 +322,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Quest();
 
-        searchParameters.phaseId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Phase).GeneralData.Id };
+        searchParameters.phaseId = new List<int>() { FindComponentByDataType(Enums.DataType.Phase).data.dataElement.Id };
 
         return searchParameters;
     }
@@ -306,7 +331,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Objective();
 
-        searchParameters.questId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Quest).GeneralData.Id };
+        searchParameters.questId = new List<int>() { FindComponentByDataType(Enums.DataType.Quest).data.dataElement.Id };
 
         return searchParameters;
     }
@@ -315,23 +340,23 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.SceneInteractable();
 
-        var questRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Quest);
-        var objectiveRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Objective);
+        var questComponent = FindComponentByDataType(Enums.DataType.Quest);
+        var objectiveComponent = FindComponentByDataType(Enums.DataType.Objective);
 
-        if(questRoute != null && objectiveRoute != null)
+        if (questComponent != null && objectiveComponent != null)
         {
             searchParameters.requestType = Search.SceneInteractable.RequestType.GetQuestAndObjectiveInteractables;
 
-            searchParameters.questId = new List<int>() { questRoute.GeneralData.Id };
-            searchParameters.objectiveId = new List<int>() { objectiveRoute.GeneralData.Id };
+            searchParameters.questId = new List<int>() { questComponent.data.dataElement.Id };
+            searchParameters.objectiveId = new List<int>() { objectiveComponent.data.dataElement.Id };
 
         } else {
 
             searchParameters.requestType = Search.SceneInteractable.RequestType.GetInteractablesFromInteractionRegion;
 
-            var regionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Region);
+            var regionRoute = FindComponentByDataType(Enums.DataType.Region);
 
-            searchParameters.regionId = new List<int>() { regionRoute.GeneralData.Id };
+            searchParameters.regionId = new List<int>() { regionRoute.data.dataElement.Id };
 
             searchParameters.questId = new List<int>() { 0 };
             searchParameters.objectiveId = new List<int>() { 0 };
@@ -344,10 +369,10 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Interaction();
 
-        searchParameters.sceneInteractableId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.SceneInteractable).GeneralData.Id };
+        searchParameters.sceneInteractableId = new List<int>() { FindComponentByDataType(Enums.DataType.SceneInteractable).data.dataElement.Id };
 
-        if(PathController.route.path.FindFirstRoute(Enums.DataType.Objective) != null)
-            searchParameters.objectiveId = new List<int>() { PathController.route.path.FindFirstRoute(Enums.DataType.Objective).GeneralData.Id };
+        if (FindComponentByDataType(Enums.DataType.Objective) != null)
+            searchParameters.objectiveId = new List<int>() { FindComponentByDataType(Enums.DataType.Objective).data.dataElement.Id };
 
         return searchParameters;
     }
@@ -356,15 +381,13 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var searchParameters = new Search.Region();
 
-        var phaseRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Phase);
-
-        int phaseId = phaseRoute != null ? phaseRoute.GeneralData.Id : 0;
+        var phaseComponent = FindComponentByDataType(Enums.DataType.Phase);
+        int phaseId = phaseComponent != null ? phaseComponent.data.dataElement.Id : 0;
 
         searchParameters.phaseId = new List<int>() { phaseId };
 
         return searchParameters;
     }
-
     #endregion
     
     private void SetOptions(Dropdown dropdown, ComponentData componentData)
@@ -380,9 +403,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             case Enums.DataType.Region:             SetRegionOptions            (dropdown, componentData); break;
         }
 
-        var data = PathController.route.path.FindLastRoute(componentData.data.dataController.DataType).data;
+        var data = FindComponentByDataType(componentData.data.dataController.DataType).data;
         
-        int selectedIndex = componentData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == ((GeneralData)data.dataElement).Id);
+        int selectedIndex = componentData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == data.dataElement.Id);
         
         dropdown.value = selectedIndex;
 
@@ -390,7 +413,6 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     }
 
     #region Dropdown options
-
     private void SetChapterOptions(Dropdown dropdown, ComponentData componentData)
     {
         var dataElements = componentData.data.dataList.Cast<ChapterDataElement>().ToList();
@@ -437,14 +459,17 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         var dataElements = componentData.data.dataList.Cast<RegionDataElement>().ToList();
 
-        dataElements.ForEach(x => {
-
-            dropdown.options.Add(new Dropdown.OptionData(x.Name));
-            x.type = regionType;
-        });
+        dataElements.ForEach(x =>  dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
-
     #endregion
+
+    private void SelectOption(ComponentData componentData)
+    {
+        if (!componentData.data.dataList.Select(y => y.Id).ToList().Contains(componentData.data.dataElement.Id))
+            componentData.data.dataElement = componentData.data.dataList.First();
+
+        PathController.route.path.ReplaceAllRoutes(componentData.data);
+    }
 
     private ComponentData FindComponentByDataType(Enums.DataType dataType)
     {

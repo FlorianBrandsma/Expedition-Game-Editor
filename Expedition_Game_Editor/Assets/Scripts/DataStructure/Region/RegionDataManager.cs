@@ -40,7 +40,7 @@ public class RegionDataManager
                         RegionSize = regionData.regionSize,
                         TerrainSize = regionData.terrainSize,
 
-                        type = regionController.regionType
+                        type = searchRegion.regionType
 
                     }).OrderBy(x => x.Index).ToList();
 

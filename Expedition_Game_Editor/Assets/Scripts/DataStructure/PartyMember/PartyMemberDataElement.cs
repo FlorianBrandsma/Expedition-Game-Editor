@@ -47,4 +47,13 @@ public class PartyMemberDataElement : PartyMemberCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new PartyMemberDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

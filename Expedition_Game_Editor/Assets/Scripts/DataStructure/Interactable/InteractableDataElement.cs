@@ -47,4 +47,13 @@ public class InteractableDataElement : InteractableCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new InteractableDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

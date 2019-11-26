@@ -29,7 +29,7 @@ public class SceneObjectController : MonoBehaviour, IDataController
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        return sceneObjectDataManager.GetSceneObjectDataElements(searchParameters);
+        return sceneObjectDataManager.GetDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

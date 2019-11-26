@@ -66,4 +66,40 @@ public class SceneInteractableDataElement : SceneInteractableCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new SceneInteractableDataElement();
+        
+        dataElement.SelectionElement = SelectionElement;
+
+        dataElement.terrainTileId = terrainTileId;
+
+        dataElement.objectGraphicId = objectGraphicId;
+        dataElement.objectGraphicPath = objectGraphicPath;
+
+        dataElement.interactableName = interactableName;
+        dataElement.objectGraphicIconPath = objectGraphicIconPath;
+
+        dataElement.originalInteractableName = originalInteractableName;
+        dataElement.originalObjectGraphicIconPath = originalObjectGraphicIconPath;
+
+        dataElement.positionX = positionX;
+        dataElement.positionY = positionY;
+        dataElement.positionZ = positionZ;
+
+        dataElement.rotationX = rotationX;
+        dataElement.rotationY = rotationY;
+        dataElement.rotationZ = rotationZ;
+
+        dataElement.scaleMultiplier = scaleMultiplier;
+
+        dataElement.animation = animation;
+
+        dataElement.startPosition = startPosition;
+
+        CopyCore(dataElement);
+
+        return dataElement;
+    }
 }

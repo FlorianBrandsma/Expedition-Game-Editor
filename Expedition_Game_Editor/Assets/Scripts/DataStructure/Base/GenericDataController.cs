@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GenericDataController : IDataController
 {
+    public IDataManager dataManager;
+
     private List<IDataElement> dataList = new List<IDataElement>();
 
     public SegmentController SegmentController { get; set; }
@@ -20,17 +22,24 @@ public class GenericDataController : IDataController
 
     public IEnumerable SearchParameters { get; set; }
 
+    public GenericDataController(Enums.DataType dataType)
+    {
+        DataType = dataType;
+
+        switch(DataType)
+        {
+            case Enums.DataType.SceneInteractable:  dataManager = new SceneInteractableDataManager(this);   break;
+            case Enums.DataType.Interaction:        dataManager = new InteractionDataManager(this);         break;
+            case Enums.DataType.SceneObject:        dataManager = new SceneObjectDataManager(this);         break;
+        }
+    }
+
     public List<IDataElement> GetData(IEnumerable searchParameters)
     {
-        return null;
+        return dataManager.GetDataElements(searchParameters);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultDataElement) { }
 
     public void ToggleElement(IDataElement dataElement) { }
-
-    public GenericDataController(Enums.DataType dataType)
-    {
-        DataType = dataType;
-    }
 }

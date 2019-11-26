@@ -91,5 +91,15 @@ public class SceneInteractableCore : GeneralData
 
     public void Delete() { }
 
+    public void CopyCore(SceneInteractableDataElement dataElement)
+    {
+        CopyGeneralData(dataElement);
+        
+        dataElement.ChapterId = ChapterId;
+        dataElement.InteractableId = InteractableId;
+
+        dataElement.originalChapterId = originalChapterId;
+        dataElement.originalInteractableId = originalInteractableId;
+    }
     #endregion
 }

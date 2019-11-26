@@ -233,6 +233,8 @@ static public class Fixtures
         LoadObjectives();
         LoadObjectiveSceneInteractables();
         LoadInteractions();
+
+        Query();
     }
 
     #region Icons
@@ -1130,4 +1132,6 @@ static public class Fixtures
 
         return terrainTileId;
     }
+
+    static private void Query() { }
 }

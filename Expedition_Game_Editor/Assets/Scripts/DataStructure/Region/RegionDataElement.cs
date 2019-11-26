@@ -39,4 +39,13 @@ public class RegionDataElement : RegionCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new RegionDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

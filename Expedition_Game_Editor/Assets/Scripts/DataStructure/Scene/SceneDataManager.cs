@@ -35,7 +35,7 @@ public class SceneDataManager
 
     public List<IDataElement> GetSceneDataElements(IEnumerable searchParameters)
     {
-        regionType = ((RegionDataElement)sceneController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement).type;
+        regionType = ((RegionDataElement)sceneController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataList.FirstOrDefault()).type;
 
         var searchData = searchParameters.Cast<Search.Scene>().FirstOrDefault();
 
@@ -167,9 +167,9 @@ public class SceneDataManager
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
-
-                        objectiveId =   objectiveData.FirstOrDefault()          != null ? objectiveData.FirstOrDefault().objectiveData.Id : 0,
-                        questId =       objectiveData.FirstOrDefault()          != null ? objectiveData.FirstOrDefault().objectiveData.questId :
+                        
+                        objectiveId =   interactionData.objectiveId,
+                        questId     =   objectiveData.FirstOrDefault()          != null ? objectiveData.FirstOrDefault().objectiveData.questId :
                                         phaseInteractableData.FirstOrDefault()  != null ? phaseInteractableData.FirstOrDefault().phaseInteractableData.questId : 0,
 
                         objectGraphicId = objectGraphicData.Id,
@@ -321,7 +321,7 @@ public class SceneDataManager
     internal void GetObjectiveData()
     {
         var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = sceneInteractableDataList.Select(x => x.objectiveId).Distinct().ToList();
+        objectiveSearchParameters.id = sceneInteractableDataList.Select(x => x.objectiveId).Union(interactionDataList.Select(x => x.objectiveId)).Distinct().ToList();
 
         objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
     }

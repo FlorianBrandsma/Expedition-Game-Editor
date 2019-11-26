@@ -36,4 +36,13 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new ChapterDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

@@ -45,4 +45,26 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new InteractionDataElement();
+        
+        dataElement.SelectionElement = SelectionElement;
+
+        dataElement.questId = questId;
+        dataElement.objectiveId = objectiveId;
+
+        dataElement.objectGraphicId = objectGraphicId;
+        dataElement.objectGraphicPath = objectGraphicPath;
+
+        dataElement.regionName = regionName;
+        dataElement.objectGraphicIconPath = objectGraphicIconPath;
+
+        dataElement.startPosition = startPosition;
+
+        CopyCore(dataElement);
+
+        return dataElement;
+    }
 }

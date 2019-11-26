@@ -122,7 +122,7 @@ public class PathController : MonoBehaviour
         {
             controllers[path.route[step].controller].FinalizePath(path);
         } else {
-            
+
             SetPreviousEditor();
             SetHistory();
 

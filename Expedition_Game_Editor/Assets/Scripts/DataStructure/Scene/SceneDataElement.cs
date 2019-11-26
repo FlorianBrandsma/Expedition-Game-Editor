@@ -56,5 +56,14 @@ public class SceneDataElement : GeneralData, IDataElement
 
     public void ClearChanges() { }
 
+    public IDataElement Copy()
+    {
+        var dataElement = new SceneDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
+
     #endregion
 }

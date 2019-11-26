@@ -43,4 +43,13 @@ public class TerrainTileDataElement : TerrainTileCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new TerrainTileDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

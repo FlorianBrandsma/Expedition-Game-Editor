@@ -72,7 +72,7 @@ Transform:
   m_GameObject: {fileID: 1000012490063732}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.0000002}
-  m_LocalScale: {x: 0.99999994, y: 1.0000002, z: 1.0000002}
+  m_LocalScale: {x: 1, y: 1, z: 1.0000002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011070767522}
@@ -226,7 +226,6 @@ MonoBehaviour:
   child: {fileID: 0}
   glow: {fileID: 1000012080641882}
   lockIcon: {fileID: 1000012490063732}
-  selected: 0
   OnSelection:
     m_PersistentCalls:
       m_Calls: []

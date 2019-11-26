@@ -37,4 +37,13 @@ public class TileDataElement : TileCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new TileDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

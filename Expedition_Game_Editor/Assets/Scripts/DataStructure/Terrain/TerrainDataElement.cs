@@ -46,4 +46,13 @@ public class TerrainDataElement : TerrainCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new TerrainDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

@@ -45,13 +45,6 @@ public class GeneralData
 
     public GeneralData() { }
 
-    public GeneralData(Enums.DataType dataType, int id, int index)
-    {
-        DataType = dataType;
-        Id = id;
-        Index = index;
-    }
-
     public bool Equals(GeneralData data)
     {
         if (DataType != data.DataType)
@@ -63,8 +56,11 @@ public class GeneralData
         return true;
     }
 
-    public GeneralData Copy()
+    public void CopyGeneralData(IDataElement dataElement)
     {
-        return new GeneralData(DataType, Id, Index);
+        dataElement.SelectionStatus = SelectionStatus;
+        dataElement.DataType = DataType;
+        dataElement.Id = Id;
+        dataElement.Index = Index;
     }
 }

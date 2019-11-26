@@ -35,6 +35,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
 
     private bool allowSelection = true;
+    private bool dataSet;
 
     void Update()
     {
@@ -48,6 +49,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             if (allowSelection && Physics.Raycast(ray, out hit) && hit.collider.GetComponent<ObjectGraphic>() != null)
             {
+                if (GameObject.Find("Dropdown List") != null) return;
+                
                 var selectionElement = hit.collider.GetComponent<ObjectGraphic>().selectionElement;
 
                 selectionElement.InvokeSelection();
@@ -59,6 +62,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void InitializeOrganizer()
     {
+        InitializeControllers();
+
         sceneData = (SceneDataElement)DataController.DataList.FirstOrDefault();
 
         GetSelectedInteraction(DataController.SegmentController.Path);
@@ -68,6 +73,12 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         CameraManager.cam.transform.localPosition = new Vector3(0, 10 - (sceneData.tileSize * 0.75f), -10);
 
         SetRegionSize();
+    }
+
+    private void InitializeControllers()
+    {
+        sceneInteractableController.DataCategory = Enums.DataCategory.Navigation;
+        interactionController.DataCategory = Enums.DataCategory.Navigation;
     }
 
     public void SelectData()
@@ -102,8 +113,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             sceneInteractableController.DataList.Clear();
             interactionController.DataList.Clear();
             sceneObjectController.DataList.Clear();
-
+            
             SetData();
+
+            dataSet = true;
         }
     }
 
@@ -129,6 +142,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     
     private void SetData(List<IDataElement> list)
     {
+        if (dataSet) return;
+
         planes = GeometryUtility.CalculateFrustumPlanes(CameraManager.cam);
 
         sceneStartPosition = sceneData.startPosition;
@@ -301,6 +316,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     
     public void ClearOrganizer()
     {
+        dataSet = false;
+
         tileList.ForEach(x => x.ClosePoolable());
         SelectionElementManager.CloseElement(elementList);
 

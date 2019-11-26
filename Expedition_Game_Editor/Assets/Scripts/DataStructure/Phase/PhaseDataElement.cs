@@ -34,4 +34,13 @@ public class PhaseDataElement : PhaseCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new PhaseDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

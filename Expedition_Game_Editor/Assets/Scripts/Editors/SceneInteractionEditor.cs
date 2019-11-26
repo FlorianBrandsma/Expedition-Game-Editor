@@ -40,7 +40,7 @@ public class SceneInteractionEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        DataElements.ForEach(x => x.SelectionElement.UpdateElement());
+        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x => x.SelectionElement.UpdateElement());
 
         SetEditor();
     }

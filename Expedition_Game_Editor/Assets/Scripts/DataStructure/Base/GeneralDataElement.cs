@@ -22,4 +22,13 @@ public class GeneralDataElement : GeneralData, IDataElement
     public void ClearChanges() { }
 
     public bool Changed { get { return false; } }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new GeneralDataElement();
+
+        CopyGeneralData(dataElement);
+        
+        return dataElement;
+    }
 }

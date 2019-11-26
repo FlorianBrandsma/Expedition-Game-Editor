@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractionDataManager
+public class InteractionDataManager : IDataManager
 {
-    private InteractionController interactionController;
+    public IDataController DataController { get; set; }
     private List<InteractionData> interactionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -17,12 +17,12 @@ public class InteractionDataManager
 
     private List<DataManager.RegionData> regionDataList;
 
-    public InteractionDataManager(InteractionController interactionController)
+    public InteractionDataManager(IDataController dataController)
     {
-        this.interactionController = interactionController;
+        DataController = dataController;
     }
 
-    public List<IDataElement> GetInteractionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Interaction>().FirstOrDefault();
 
@@ -118,7 +118,6 @@ public class InteractionDataManager
 
             interactionDataList.Add(interactionData);
         }
-
     }
 
     internal void GetSceneInteractableData()

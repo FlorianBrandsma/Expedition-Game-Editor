@@ -46,4 +46,13 @@ public class ItemDataElement : ItemCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new ItemDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

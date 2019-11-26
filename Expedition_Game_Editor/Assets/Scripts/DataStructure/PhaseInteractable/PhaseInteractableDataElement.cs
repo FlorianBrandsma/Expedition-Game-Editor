@@ -49,4 +49,13 @@ public class PhaseInteractableDataElement : PhaseInteractableCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new PhaseInteractableDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SceneInteractableDataManager
+public class SceneInteractableDataManager : IDataManager
 {
-    private SceneInteractableController sceneInteractableController;
+    public IDataController DataController { get; set; }
     private List<SceneInteractableData> sceneInteractableDataList = new List<SceneInteractableData>();
 
     private DataManager dataManager = new DataManager();
@@ -14,12 +14,12 @@ public class SceneInteractableDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
-    public SceneInteractableDataManager(SceneInteractableController sceneInteractableController)
+    public SceneInteractableDataManager(IDataController dataController)
     {
-        this.sceneInteractableController = sceneInteractableController;
+        DataController = dataController;
     }
 
-    public List<IDataElement> GetSceneInteractableDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var sceneInteractableSearchData = searchParameters.Cast<Search.SceneInteractable>().FirstOrDefault();
 
@@ -103,9 +103,9 @@ public class SceneInteractableDataManager
 
         Fixtures.phaseInteractableList.Where(x => searchParameters.questId.Contains(x.questId)).Distinct().ToList().ForEach(x => sceneInteractableIds.Add(x.sceneInteractableId));
         Fixtures.sceneInteractableList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => sceneInteractableIds.Add(x.Id));
-
+        
         var sceneInteractables = Fixtures.sceneInteractableList.Where(x => sceneInteractableIds.Contains(x.Id)).Distinct().ToList();
-
+        
         foreach (Fixtures.SceneInteractable sceneInteractable in sceneInteractables)
         {
             var sceneInteractableData = new SceneInteractableData();

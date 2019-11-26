@@ -131,7 +131,9 @@ public class Path
         foreach(Route r in route)
         {
             if (r.GeneralData.DataType == ((GeneralData)data.dataElement).DataType)
+            {
                 r.data = data;
+            }               
         }
     }
 }

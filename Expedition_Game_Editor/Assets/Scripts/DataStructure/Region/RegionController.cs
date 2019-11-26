@@ -31,6 +31,8 @@ public class RegionController : MonoBehaviour, IDataController
 
     public List<IDataElement> GetData(IEnumerable searchParameters)
     {
+        searchParameters.Cast<Search.Region>().FirstOrDefault().regionType = regionType;
+
         return regionDataManager.GetRegionDataElements(searchParameters);
     }
 

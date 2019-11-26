@@ -59,4 +59,13 @@ public class SceneObjectDataElement : SceneObjectCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new SceneObjectDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

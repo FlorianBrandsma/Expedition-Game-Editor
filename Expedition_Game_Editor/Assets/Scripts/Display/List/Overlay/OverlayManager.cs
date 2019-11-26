@@ -79,14 +79,8 @@ public class OverlayManager : MonoBehaviour
 
     public void SetListSize()
     {
-        if (horizontal_min.gameObject.activeInHierarchy)
-            mainList.offsetMax = new Vector2(mainList.offsetMin.x, -horizontal_min.rect.height);
-
         if (horizontal_max.gameObject.activeInHierarchy)
             mainList.offsetMin = new Vector2(mainList.offsetMax.x, horizontal_max.rect.height);
-
-        if (vertical_min.gameObject.activeInHierarchy)
-            mainList.offsetMin = new Vector2(vertical_min.rect.width, mainList.offsetMin.y);
 
         if (vertical_max.gameObject.activeInHierarchy)
             mainList.offsetMax = new Vector2(-vertical_max.rect.width, mainList.offsetMax.y);

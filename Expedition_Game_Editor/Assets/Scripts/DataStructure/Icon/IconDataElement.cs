@@ -36,4 +36,13 @@ public class IconDataElement : IconCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new IconDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }

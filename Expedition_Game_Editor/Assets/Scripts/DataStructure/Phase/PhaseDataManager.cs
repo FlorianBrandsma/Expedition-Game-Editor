@@ -31,7 +31,9 @@ public class PhaseDataManager
 
                         Id = phaseData.Id,
                         Index = phaseData.Index,
-                        
+
+                        ChapterId = phaseData.chapterId,
+
                         Name = phaseData.name,
                         Notes = phaseData.notes
 

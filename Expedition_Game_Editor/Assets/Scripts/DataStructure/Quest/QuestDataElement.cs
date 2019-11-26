@@ -34,4 +34,13 @@ public class QuestDataElement : QuestCore, IDataElement
 
         GetOriginalValues();
     }
+
+    public IDataElement Copy()
+    {
+        var dataElement = new QuestDataElement();
+
+        CopyGeneralData(dataElement);
+
+        return dataElement;
+    }
 }
