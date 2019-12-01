@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 public class EditorController : MonoBehaviour
 {
@@ -22,10 +22,10 @@ public class EditorController : MonoBehaviour
         InitializeSegments();
 
         if (PathController.DataEditor == null) return;
-
+        
         PathController.DataEditor.Loaded = true;
     }
-
+    
     public void FinalizeController()
     {
         foreach(SegmentController segment in segments)
@@ -38,10 +38,24 @@ public class EditorController : MonoBehaviour
     {
         if (PathController.DataEditor == null) return;
 
+        ResetEditorData();
+
         PathController.DataEditor.EditorSegments.ForEach(x => 
         {
             x.Segment.InitializeData();
         });
+    }
+
+    public void ResetEditorData()
+    {
+        if (EditorManager.loadType == Enums.LoadType.Normal) return;
+        
+        var data = PathController.DataEditor.Data;
+
+        var dataElement = data.dataController.DataList.Where(x => x.Id == data.dataElement.Id).FirstOrDefault();
+
+        if (dataElement != null)
+            data.dataElement = dataElement;
     }
 
     public void CloseEditor() { }

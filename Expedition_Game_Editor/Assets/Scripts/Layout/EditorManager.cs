@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -130,6 +131,20 @@ public class EditorManager : MonoBehaviour
         forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => InitializePath(form.activePath));
 
         loadType = Enums.LoadType.Normal;
+    }
+
+    static public List<IDataElement> GetData(IDataController dataController, IEnumerable searchParameters)
+    {
+        var dataList = dataController.DataManager.GetDataElements(searchParameters);
+
+        var pathController = dataController.SegmentController.editorController.PathController;
+
+        var mainForm = pathController.editorSection.editorForm;
+        mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
+
+        //editorManager.forms.Where(x => x != mainForm).ToList().ForEach(x => x.activePath.ReplaceDataLists(0, dataController.DataType, dataList));
+
+        return dataList;
     }
 
     static public string PathString(Path path)

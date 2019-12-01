@@ -4,7 +4,7 @@ using System.Linq;
 
 public class DefaultHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -105,7 +105,11 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index);
+    }
 
     public void InitializeData()
     {
@@ -123,9 +127,6 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             case Enums.DataType.Terrain:    InitializeTerrainData();    break;
             default: Debug.Log("CASE MISSING"); break;
         }
-
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeChapterData()

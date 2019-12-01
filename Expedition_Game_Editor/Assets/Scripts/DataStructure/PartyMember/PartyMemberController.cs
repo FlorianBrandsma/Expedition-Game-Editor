@@ -7,7 +7,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
 {
     public Search.Interactable searchParameters;
 
-    public PartyMemberDataManager partyMemberDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
 
     public PartyMemberController()
     {
-        partyMemberDataManager = new PartyMemberDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return partyMemberDataManager.GetPartyMemberDataElements(searchParameters);
+        DataManager = new PartyMemberDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

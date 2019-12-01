@@ -5,7 +5,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
 {
     private InteractionDataElement InteractionData { get { return (InteractionDataElement)DataEditor.Data.dataElement; } }
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -53,7 +53,11 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, InteractionData.Index);
+    }
 
     public void InitializeData()
     {
@@ -62,10 +66,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         id = InteractionData.Id;
         index = InteractionData.Index;
         description = InteractionData.Description;
-        objectGraphicIcon = InteractionData.objectGraphicIconPath;
-
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
+        objectGraphicIcon = InteractionData.objectGraphicIconPath; 
     }
 
     public void OpenSegment()

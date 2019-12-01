@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PhaseDataManager
+public class PhaseDataManager : IDataManager
 {
-    private PhaseController phaseController;
+    public IDataController DataController { get; set; }
     private List<PhaseData> phaseDataList;
 
     public PhaseDataManager(PhaseController phaseController)
     {
-        this.phaseController = phaseController;
+        DataController = phaseController;
     }
 
-    public List<IDataElement> GetPhaseDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var phaseSearchData = searchParameters.Cast<Search.Phase>().FirstOrDefault();
 

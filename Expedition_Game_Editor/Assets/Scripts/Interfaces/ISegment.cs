@@ -1,5 +1,7 @@
 ﻿public interface ISegment
 {
+    SegmentController SegmentController { get; }
+
     IEditor DataEditor { get; }
     void InitializeDependencies();
     void InitializeSegment();

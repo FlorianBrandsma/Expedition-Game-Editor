@@ -7,7 +7,7 @@ public class IconController : MonoBehaviour, IDataController
 {
     public Search.Icon searchParameters;
 
-    private IconDataManager iconDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class IconController : MonoBehaviour, IDataController
 
     public IconController()
     {
-        iconDataManager = new IconDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return iconDataManager.GetIconDataElements(searchParameters);
+        DataManager = new IconDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

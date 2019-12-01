@@ -18,7 +18,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(QuestData).Concat(new[] { QuestData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(QuestData).Concat(new[] { QuestData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

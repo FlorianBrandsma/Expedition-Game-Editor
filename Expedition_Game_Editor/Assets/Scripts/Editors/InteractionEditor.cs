@@ -16,7 +16,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(InteractionData).Concat(new[] { InteractionData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(InteractionData).Concat(new[] { InteractionData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

@@ -12,7 +12,6 @@ public class EditorPanelTile : MonoBehaviour, IElement
     public Image background;
 
     private string header;
-    private string description;
     private string iconPath;
 
     private PanelTileProperties properties;

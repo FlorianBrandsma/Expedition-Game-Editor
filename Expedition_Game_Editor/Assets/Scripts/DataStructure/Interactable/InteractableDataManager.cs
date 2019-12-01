@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractableDataManager
+public class InteractableDataManager : IDataManager
 {
-    private InteractableController interactableController;
+    public IDataController DataController { get; set; }
 
     private List<InteractableData> interactableDataList;
 
@@ -16,10 +16,10 @@ public class InteractableDataManager
 
     public InteractableDataManager(InteractableController interactableController)
     {
-        this.interactableController = interactableController;
+        DataController = interactableController;
     }
 
-    public List<IDataElement> GetInteractableDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var interactableSearchData = searchParameters.Cast<Search.Interactable>().FirstOrDefault();
 

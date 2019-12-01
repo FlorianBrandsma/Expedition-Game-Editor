@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterDataManager
+public class ChapterDataManager : IDataManager
 {
-    private ChapterController chapterController;
+    public IDataController DataController { get; set; }
     private List<ChapterData> chapterDataList;
 
     private DataManager dataManager = new DataManager();
@@ -15,10 +15,10 @@ public class ChapterDataManager
 
     public ChapterDataManager(ChapterController chapterController)
     {
-        this.chapterController = chapterController;
+        DataController = chapterController;
     }
 
-    public List<IDataElement> GetChapterDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var chapterSearchData = searchParameters.Cast<Search.Chapter>().FirstOrDefault();
 
@@ -44,7 +44,7 @@ public class ChapterDataManager
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
-
+        
         return list.Cast<IDataElement>().ToList();
     }
 

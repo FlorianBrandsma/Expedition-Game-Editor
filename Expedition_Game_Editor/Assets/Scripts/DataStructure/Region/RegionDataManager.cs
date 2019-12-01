@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class RegionDataManager
+public class RegionDataManager : IDataManager
 {
-    private RegionController regionController;
+    public IDataController DataController { get; set; }
     private List<RegionData> regionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -14,11 +14,13 @@ public class RegionDataManager
 
     public RegionDataManager(RegionController regionController)
     {
-        this.regionController = regionController;
+        DataController = regionController;
     }
 
-    public List<IDataElement> GetRegionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
+        var regionController = (RegionController)DataController;
+
         var searchRegion = searchParameters.Cast<Search.Region>().FirstOrDefault();
 
         GetRegionData(searchRegion);
@@ -40,7 +42,7 @@ public class RegionDataManager
                         RegionSize = regionData.regionSize,
                         TerrainSize = regionData.terrainSize,
 
-                        type = searchRegion.regionType
+                        type = regionController.regionType
 
                     }).OrderBy(x => x.Index).ToList();
 

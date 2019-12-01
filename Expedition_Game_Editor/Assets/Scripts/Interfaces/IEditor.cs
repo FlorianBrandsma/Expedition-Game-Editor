@@ -9,6 +9,7 @@ public interface IEditor
     List<IDataElement> DataElements { get; }
     List<SegmentController> EditorSegments { get; }
     bool Changed();
+
     void UpdateEditor();
     void ApplyChanges();
     void CancelEdit();

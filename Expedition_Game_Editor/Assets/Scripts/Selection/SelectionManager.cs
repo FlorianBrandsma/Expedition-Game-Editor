@@ -54,12 +54,13 @@ static public class SelectionManager
             {
                 if (((GeneralData)dataElement).Equals(route.GeneralData))
                 {
+
                     if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
                         dataElement.SelectionStatus = route.selectionStatus;
                     else
                         dataElement.SelectionStatus = Enums.SelectionStatus.Both;
 
-                    if(displayManager != null)
+                    if (displayManager != null)
                         displayManager.CorrectPosition(dataElement);                 
                 }
             }

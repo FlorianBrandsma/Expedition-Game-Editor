@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class AssetHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -131,6 +131,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index);
+
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
     
@@ -145,9 +148,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             case Enums.DataType.Item:           InitializeItemData();           break;
             case Enums.DataType.Interactable:   InitializeInteractableData();   break;
         }
-
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeItemData()

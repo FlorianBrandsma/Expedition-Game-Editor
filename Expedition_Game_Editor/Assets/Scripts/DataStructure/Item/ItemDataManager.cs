@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ItemDataManager
+public class ItemDataManager : IDataManager
 {
-    private ItemController itemController;
+    public IDataController DataController { get; set; }
     private List<ItemData> itemDataList;
 
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
@@ -15,10 +15,10 @@ public class ItemDataManager
 
     public ItemDataManager(ItemController itemController)
     {
-        this.itemController = itemController;
+        DataController = itemController;
     }
 
-    public List<IDataElement> GetItemDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var searchItem = searchParameters.Cast<Search.Item>().FirstOrDefault();
 

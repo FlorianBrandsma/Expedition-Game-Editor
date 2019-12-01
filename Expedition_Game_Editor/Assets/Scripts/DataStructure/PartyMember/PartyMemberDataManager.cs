@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PartyMemberDataManager
+public class PartyMemberDataManager : IDataManager
 {
-    private PartyMemberController partyMemberController;
+    public IDataController DataController { get; set; }
     private List<PartyMemberData> partyMemberDataList = new List<PartyMemberData>();
 
     private DataManager dataManager = new DataManager();
@@ -16,10 +16,10 @@ public class PartyMemberDataManager
 
     public PartyMemberDataManager(PartyMemberController partyMemberController)
     {
-        this.partyMemberController = partyMemberController;
+        DataController = partyMemberController;
     }
 
-    public List<IDataElement> GetPartyMemberDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var partyMemberSearchData = searchParameters.Cast<Search.PartyMember>().FirstOrDefault();
 

@@ -8,7 +8,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
 {
     private InteractionDataElement InteractionData { get { return (InteractionDataElement)DataEditor.Data.dataElement; } }
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -39,7 +39,7 @@ public class InteractionBehaviourTransformEditSegment : MonoBehaviour, ISegment
         else
             searchParameters.phaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
 
         if(regionData.Id == 0)
             regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;

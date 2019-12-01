@@ -140,8 +140,11 @@ public class RegionCore : GeneralData
     public void UpdateIndex()
     {
         if (!changedIndex) return;
-        
-        //Debug.Log("Update index " + index);
+
+        var regionData = Fixtures.regionList.Where(x => x.Id == Id).FirstOrDefault();
+
+        regionData.Index = Index;
+
         changedIndex = false;
     }
 

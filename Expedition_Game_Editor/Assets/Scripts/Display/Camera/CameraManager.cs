@@ -126,6 +126,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
                 elementPosition = new Vector3(sceneObjectData.PositionX, sceneObjectData.PositionY, sceneObjectData.PositionZ);
 
                 break;
+
+            default: return;
         }
 
         var startPos = new Vector3(-content.rect.width / 2, content.rect.height / 2, 0);

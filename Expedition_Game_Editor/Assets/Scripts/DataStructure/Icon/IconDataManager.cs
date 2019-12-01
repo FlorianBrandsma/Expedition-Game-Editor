@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class IconDataManager
+public class IconDataManager : IDataManager
 {
-    private IconController iconController;
+    public IDataController DataController { get; set; }
     private List<IconData> iconDataList;
 
     public IconDataManager(IconController iconController)
     {
-        this.iconController = iconController;
+        DataController = iconController;
     }
 
-    public List<IDataElement> GetIconDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var iconSearchData = searchParameters.Cast<Search.Icon>().FirstOrDefault();
 

@@ -41,12 +41,12 @@ public class EditorSceneElement : MonoBehaviour, IElement
         var data = Element.data;
         var dataElement = (SceneInteractableDataElement)data.dataElement;
 
-        var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab.PoolType, prefab);
+        var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab.PoolType, prefab);
 
-        transform.localPosition = new Vector3(dataElement.startPosition.x + dataElement.positionX, dataElement.startPosition.y - dataElement.positionY, -dataElement.positionZ);
-        transform.localEulerAngles = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.positionX, dataElement.startPosition.y - dataElement.positionY, -dataElement.positionZ);
+        transform.localEulerAngles  = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
+        transform.localScale        = new Vector3(1, 1, 1);
 
         SetObjectGraphic();
     }
@@ -73,7 +73,7 @@ public class EditorSceneElement : MonoBehaviour, IElement
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab.PoolType, prefab);
-        
+
         transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.PositionX, dataElement.startPosition.y - dataElement.PositionY, -dataElement.PositionZ);
         transform.localEulerAngles  = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
         transform.localScale        = new Vector3(1, 1, 1);

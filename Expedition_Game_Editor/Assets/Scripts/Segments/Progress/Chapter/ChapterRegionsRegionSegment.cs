@@ -8,7 +8,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
     private DataManager dataManager = new DataManager();
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -31,7 +31,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.ChapterRegion.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
 
         var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionDataElement>().ToList();
         chapterRegionList.ForEach(x => ChapterEditor.chapterRegionDataList.Add(x));

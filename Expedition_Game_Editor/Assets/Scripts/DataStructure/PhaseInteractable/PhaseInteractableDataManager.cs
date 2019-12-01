@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PhaseInteractableDataManager
+public class PhaseInteractableDataManager : IDataManager
 {
-    private PhaseInteractableController phaseInteractableController;
+    public IDataController DataController { get; set; }
     private List<PhaseInteractableData> phaseInteractableDataList;
 
     private DataManager dataManager = new DataManager();
@@ -17,10 +17,10 @@ public class PhaseInteractableDataManager
 
     public PhaseInteractableDataManager(PhaseInteractableController phaseInteractableController)
     {
-        this.phaseInteractableController = phaseInteractableController;
+        DataController = phaseInteractableController;
     }
 
-    public List<IDataElement> GetQuestInteractableDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var phaseInteractableSearchData = searchParameters.Cast<Search.PhaseInteractable>().FirstOrDefault();
 
@@ -114,7 +114,7 @@ public class PhaseInteractableDataManager
 
     Enums.ElementStatus GetElementStatus(PhaseInteractableData phaseData)
     {
-        var questData = (QuestDataElement)phaseInteractableController.SegmentController.editorController.PathController.route.data.dataElement;
+        var questData = (QuestDataElement)DataController.SegmentController.editorController.PathController.route.data.dataElement;
 
         if (phaseData.questId == questData.Id)
             return Enums.ElementStatus.Enabled;

@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveDataManager
+public class ObjectiveDataManager : IDataManager
 {
-    private ObjectiveController objectiveController;
+    public IDataController DataController { get; set; }
     private List<ObjectiveData> objectiveDataList;
 
     public ObjectiveDataManager(ObjectiveController objectiveController)
     {
-        this.objectiveController = objectiveController;
+        DataController = objectiveController;
     }
 
-    public List<IDataElement> GetObjectiveDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Objective>().FirstOrDefault();
         

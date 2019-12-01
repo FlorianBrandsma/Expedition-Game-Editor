@@ -208,8 +208,6 @@ public class Search
     [System.Serializable]
     public class Region : SearchParameters
     {
-        public Enums.RegionType regionType;
-
         public List<int> index = new List<int>();
         public List<int> phaseId = new List<int>();
         public List<string> name = new List<string>();

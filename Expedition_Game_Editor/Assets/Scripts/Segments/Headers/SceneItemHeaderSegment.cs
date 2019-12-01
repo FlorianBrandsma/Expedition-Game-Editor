@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class SceneItemHeaderSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 

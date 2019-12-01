@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SearchResultSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -20,7 +20,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
         
         var searchParameters = SegmentController.editorController.PathController.route.data.searchParameters;
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(searchParameters);
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchParameters);
     }
 
     public void OpenSegment()

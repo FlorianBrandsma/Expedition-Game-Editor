@@ -10,7 +10,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     private TerrainController TerrainController { get { return GetComponent<TerrainController>(); } }
     private TerrainTileController TerrainTileController { get { return GetComponent<TerrainTileController>(); } }
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -37,7 +37,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainController.DataList = TerrainController.GetData(new[] { searchParameters });
+        TerrainController.DataList = EditorManager.GetData(TerrainController, new[] { searchParameters });
     }
 
     private void GetTerrainTileData()
@@ -46,7 +46,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainTileController.DataList = TerrainTileController.GetData(new[] { searchParameters });
+        TerrainTileController.DataList = EditorManager.GetData(TerrainTileController, new[] { searchParameters });
     }
 
     public void OpenSegment()

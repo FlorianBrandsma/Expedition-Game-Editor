@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public interface IDataController
 {
+    IDataManager DataManager { get; set; }
     SegmentController SegmentController { get; }
 
     List<IDataElement> DataList     { get; set; }
@@ -11,7 +12,6 @@ public interface IDataController
     Enums.DataCategory DataCategory { get; }
     IEnumerable SearchParameters    { get; set; }
 
-    List<IDataElement> GetData(IEnumerable searchParameters);
     void SetData(SelectionElement searchElement, IDataElement resultDataElement);
     void ToggleElement(IDataElement dataElement);
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ChapterSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -17,10 +17,10 @@ public class ChapterSegment : MonoBehaviour, ISegment
     public void InitializeData()
     {
         if (SegmentController.Loaded) return;
-
+        
         var searchParameters = new Search.Chapter();
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
     }
 
     public void OpenSegment()

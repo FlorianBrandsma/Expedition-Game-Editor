@@ -9,7 +9,7 @@ public class RegionController : MonoBehaviour, IDataController
 
     public Search.Region searchParameters;
 
-    private RegionDataManager regionDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -26,14 +26,7 @@ public class RegionController : MonoBehaviour, IDataController
 
     public RegionController()
     {
-        regionDataManager = new RegionDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        searchParameters.Cast<Search.Region>().FirstOrDefault().regionType = regionType;
-
-        return regionDataManager.GetRegionDataElements(searchParameters);
+        DataManager = new RegionDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

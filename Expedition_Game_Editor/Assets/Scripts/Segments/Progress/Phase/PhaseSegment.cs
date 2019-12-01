@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PhaseSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -22,7 +22,7 @@ public class PhaseSegment : MonoBehaviour, ISegment
 
         searchParameters.chapterId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Chapter).GeneralData.Id };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
     }
 
     public void OpenSegment()

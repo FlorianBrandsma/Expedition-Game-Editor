@@ -25,9 +25,11 @@ public class IndexSwitch : MonoBehaviour
 
         this.index = index;
 
+        var dataEditor = segment.DataEditor;
+
         dataElement = segment.DataEditor.Data.dataElement;
         dataList = segment.DataEditor.Data.dataController.DataList;
-
+        
         indexLimit = dataList.Count - 1;
 
         SetSwitch();
@@ -70,9 +72,12 @@ public class IndexSwitch : MonoBehaviour
             dataList[i].Index = i;
             dataList[i].UpdateIndex();
         }
+        
+        if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
+            dataElement.SelectionStatus = segment.SegmentController.editorController.PathController.route.selectionStatus;
 
         SelectionElementManager.UpdateElements(dataElement, true);
-
+        
         SetIndex();
     }
 

@@ -8,7 +8,7 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
 
     private DataManager dataManager = new DataManager();
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -33,8 +33,8 @@ public class ChapterGeneralWorldInteractableSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.SceneInteractable.RequestType.Custom;
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
-        
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+
         var chapterInteractableList = SegmentController.DataController.DataList.Cast<SceneInteractableDataElement>().ToList();
         chapterInteractableList.ForEach(x => ChapterEditor.sceneInteractableDataList.Add(x));
     }

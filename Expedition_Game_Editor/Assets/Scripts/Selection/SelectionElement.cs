@@ -132,7 +132,7 @@ public class SelectionElement : MonoBehaviour
         if (selectionStatus == Enums.SelectionStatus.None) return;
 
         if (selectionStatus == data.dataElement.SelectionStatus || data.dataElement.SelectionStatus == Enums.SelectionStatus.Both)
-            glow.SetActive(true);
+            glow.SetActive(true);  
     }
 
     public void SetStatus()
@@ -180,7 +180,7 @@ public class SelectionElement : MonoBehaviour
         if (selectionType == SelectionManager.Type.None) return;
         
         EditorPath editorPath = new EditorPath(this, new Route(this));
-
+        
         switch (selectionProperty)
         {
             case SelectionManager.Property.None: break;
@@ -225,14 +225,17 @@ public class SelectionElement : MonoBehaviour
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
-
+        
         dataController.SetData(this, resultData);
-
-        if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
-            data.dataElement.UpdateSearch();
+        
+        if(dataController.SearchParameters != null)
+        {
+            if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
+                data.dataElement.UpdateSearch();
+        }
 
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
-
+        
         SetElement();
     }
 

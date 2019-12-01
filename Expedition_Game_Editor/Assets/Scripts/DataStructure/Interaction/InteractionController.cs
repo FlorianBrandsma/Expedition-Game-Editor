@@ -7,7 +7,7 @@ public class InteractionController : MonoBehaviour, IDataController
 {
     public Search.Interaction searchParameters;
 
-    private InteractionDataManager interactionDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class InteractionController : MonoBehaviour, IDataController
 
     public InteractionController()
     {
-        interactionDataManager = new InteractionDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return interactionDataManager.GetDataElements(searchParameters);
+        DataManager = new InteractionDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

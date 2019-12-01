@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SceneDataManager
+public class SceneDataManager : IDataManager
 {
-    private SceneController sceneController;
+    public IDataController DataController { get; set; }
 
     private SceneDataElement basicSceneData;
 
@@ -30,12 +30,12 @@ public class SceneDataManager
     
     public SceneDataManager(SceneController sceneController)
     {
-        this.sceneController = sceneController;
+        DataController = sceneController;
     }
 
-    public List<IDataElement> GetSceneDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
-        regionType = ((RegionDataElement)sceneController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataList.FirstOrDefault()).type;
+        regionType = ((RegionController)DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataController).regionType;
 
         var searchData = searchParameters.Cast<Search.Scene>().FirstOrDefault();
 
@@ -153,8 +153,12 @@ public class SceneDataManager
                         DataType = Enums.DataType.Interaction,
 
                         Id = interactionData.Id,
+                        Index = interactionData.Index,
+
                         SceneInteractableId = interactionData.sceneInteractableId,
                         TerrainTileId = interactionData.terrainTileId,
+
+                        Description = interactionData.description,
 
                         PositionX = interactionData.positionX,
                         PositionY = interactionData.positionY,
@@ -177,7 +181,7 @@ public class SceneDataManager
 
                         startPosition = sceneStartPosition
 
-                    }).ToList() : new List<InteractionDataElement>(),
+                    }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
                     
                     sceneObjectDataList = (
                     from sceneObjectData    in sceneObjectDataList

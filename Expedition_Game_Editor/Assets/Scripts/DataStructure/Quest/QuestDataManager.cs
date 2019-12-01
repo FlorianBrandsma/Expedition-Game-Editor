@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestDataManager
+public class QuestDataManager : IDataManager
 {
-    private QuestController questController;
+    public IDataController DataController { get; set; }
     private List<QuestData> questDataList;
 
     public QuestDataManager(QuestController questController)
     {
-        this.questController = questController;
+        DataController = questController;
     }
 
-    public List<IDataElement> GetQuestDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var questSearchData = searchParameters.Cast<Search.Quest>().FirstOrDefault();
 

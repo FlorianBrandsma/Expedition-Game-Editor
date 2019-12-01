@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TileDataManager
+public class TileDataManager : IDataManager
 {
-    private TileController tileController;
+    public IDataController DataController { get; set; }
     private List<TileData> tileDataList;
 
     private DataManager dataManager = new DataManager();
@@ -14,10 +14,10 @@ public class TileDataManager
 
     public TileDataManager(TileController tileController)
     {
-        this.tileController = tileController;
+        DataController = tileController;
     }
 
-    public List<IDataElement> GetTileDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var tileSearchData = searchParameters.Cast<Search.Tile>().FirstOrDefault();
 

@@ -18,7 +18,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(PhaseData).Concat(new[] { PhaseData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(PhaseData).Concat(new[] { PhaseData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

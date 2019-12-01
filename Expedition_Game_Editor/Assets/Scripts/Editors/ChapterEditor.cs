@@ -20,7 +20,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ChapterData).Concat(new[] { ChapterData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(ChapterData).Concat(new[] { ChapterData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

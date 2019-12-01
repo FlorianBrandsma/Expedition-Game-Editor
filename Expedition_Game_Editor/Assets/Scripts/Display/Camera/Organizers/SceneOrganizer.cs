@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class SceneOrganizer : MonoBehaviour, IOrganizer
 {
@@ -26,9 +27,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private SceneProperties SceneProperties { get { return (SceneProperties)DisplayManager.Display.Properties; } }
 
     private IDataController DataController  { get { return CameraManager.Display.DataController; } }
-    private GenericDataController sceneInteractableController = new GenericDataController(Enums.DataType.SceneInteractable);
-    private GenericDataController interactionController = new GenericDataController(Enums.DataType.Interaction);
-    private GenericDataController sceneObjectController = new GenericDataController(Enums.DataType.SceneObject);
+    private DataController sceneInteractableController = new DataController(Enums.DataType.SceneInteractable);
+    private DataController interactionController = new DataController(Enums.DataType.Interaction);
+    private DataController sceneObjectController = new DataController(Enums.DataType.SceneObject);
 
     public List<SelectionElement> elementList = new List<SelectionElement>();
 
@@ -47,6 +48,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         
         if (Input.GetMouseButtonUp(0))
         {
+            //Selecting through UI elements is blocked, unless it's the element that's required to scroll the camera
+            if (EventSystem.current.IsPointerOverGameObject() && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
+                return;
+            
             if (allowSelection && Physics.Raycast(ray, out hit) && hit.collider.GetComponent<ObjectGraphic>() != null)
             {
                 if (GameObject.Find("Dropdown List") != null) return;
@@ -77,6 +82,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     private void InitializeControllers()
     {
+        sceneInteractableController.SegmentController = DataController.SegmentController;
+        interactionController.SegmentController = DataController.SegmentController;
+        sceneObjectController.SegmentController = DataController.SegmentController;
+
         sceneInteractableController.DataCategory = Enums.DataCategory.Navigation;
         interactionController.DataCategory = Enums.DataCategory.Navigation;
     }
@@ -157,14 +166,33 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
         }
 
+        //Extract interactions that will be obtained by the region navigation dropdown
+        if (interactionData != null)
+            ExtractInteractions();
+
         //Set scene interactables that are bound to this tile by their first interaction
         SetSceneElements(sceneInteractableController);
-
+        
         //Set interactions that are bound to this terrain tile
         SetSceneElements(interactionController);
 
         //Set objects that are bound to this terrain tile
         SetSceneElements(sceneObjectController);
+    }
+
+    private void ExtractInteractions()
+    {
+        var interactionList = sceneData.terrainDataList.SelectMany(x => x.interactionDataList
+                                                       .Where(y => y.objectiveId == interactionData.objectiveId && y.SceneInteractableId == interactionData.SceneInteractableId))
+                                                       .OrderBy(x => x.Index).Cast<IDataElement>().ToList();
+
+        interactionController.DataList.RemoveAll(x => interactionList.Contains(x));
+
+        var dataElement = interactionList.Where(x => x.Id == interactionData.Id).FirstOrDefault();
+
+        DataController.SegmentController.Path.ReplaceDataLists(0, Enums.DataType.Interaction, interactionList, dataElement);
+
+        SetSceneElements(DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Interaction).data.dataController);
     }
 
     private void SetTerrain(SceneDataElement.TerrainData terrainData)
@@ -201,8 +229,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         if (dataController.DataList.Count == 0) return;
         
         SelectionElement elementPrefab = Resources.Load<SelectionElement>("Scene/EditorSceneElement");
-        
-        foreach(IDataElement dataElement in dataController.DataList)
+
+        foreach (IDataElement dataElement in dataController.DataList)
         {
             SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, CameraManager.content,
                                                                             Enums.ElementType.SceneElement, DisplayManager, 
@@ -214,7 +242,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             dataElement.SelectionElement = element;
             element.dataController = dataController;
             element.data = new SelectionElement.Data(dataController, dataElement);
-
+            
             //Debugging
             GeneralData generalData = (GeneralData)dataElement;
             element.name = generalData.DebugName + generalData.Id;

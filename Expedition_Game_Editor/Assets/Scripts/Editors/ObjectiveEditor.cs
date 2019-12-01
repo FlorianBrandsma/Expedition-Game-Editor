@@ -18,7 +18,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ObjectiveData).Concat(new[] { ObjectiveData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(ObjectiveData).Concat(new[] { ObjectiveData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

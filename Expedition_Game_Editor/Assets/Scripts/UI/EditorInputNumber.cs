@@ -15,6 +15,7 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
     public Text valueUnitText;
 
     public bool enableLimit;
+    public bool invertOnOverextension;
     public float min, max;
 
     public Image Image { get { return GetComponent<Image>(); } }
@@ -82,10 +83,9 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
         if (enableLimit)
         {
             if (float.Parse(inputField.text) < min)
-                inputField.text = min.ToString();
-
+                inputField.text = invertOnOverextension ? max.ToString() : min.ToString();
             if (float.Parse(inputField.text) > max)
-                inputField.text = max.ToString();
+                inputField.text = invertOnOverextension ? min.ToString() : max.ToString();
         }
 
         inputValue = float.Parse(inputField.text);

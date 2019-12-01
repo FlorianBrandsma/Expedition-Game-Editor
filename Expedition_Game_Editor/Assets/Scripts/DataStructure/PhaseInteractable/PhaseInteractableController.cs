@@ -7,7 +7,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
 {
     public Search.PhaseInteractable searchParameters;
 
-    private PhaseInteractableDataManager phaseInteractableDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class PhaseInteractableController : MonoBehaviour, IDataController
 
     public PhaseInteractableController()
     {
-        phaseInteractableDataManager = new PhaseInteractableDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return phaseInteractableDataManager.GetQuestInteractableDataElements(searchParameters);
+        DataManager = new PhaseInteractableDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

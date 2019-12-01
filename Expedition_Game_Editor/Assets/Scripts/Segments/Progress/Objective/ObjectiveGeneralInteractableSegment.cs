@@ -8,7 +8,7 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 
     private DataManager dataManager = new DataManager();
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -31,7 +31,7 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.SceneInteractable.RequestType.Custom;
         searchParameters.objectiveId = new List<int>() { ObjectiveEditor.ObjectiveData.Id };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
 
         var sceneInteractableList = SegmentController.DataController.DataList.Cast<SceneInteractableDataElement>().ToList();
         sceneInteractableList.ForEach(x => ObjectiveEditor.sceneInteractableDataList.Add(x));

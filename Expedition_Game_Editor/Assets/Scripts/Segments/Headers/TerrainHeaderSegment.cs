@@ -8,7 +8,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 {
     private TerrainDataElement TerrainData { get { return (TerrainDataElement)DataEditor.Data.dataElement; } }
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     

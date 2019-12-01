@@ -7,7 +7,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 {
     public Search.Region searchParameters;
 
-    private ChapterRegionDataManager chapterRegionDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 
     public ChapterRegionController()
     {
-        chapterRegionDataManager = new ChapterRegionDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return chapterRegionDataManager.GetChapterRegionDataElements(searchParameters);
+        DataManager = new ChapterRegionDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

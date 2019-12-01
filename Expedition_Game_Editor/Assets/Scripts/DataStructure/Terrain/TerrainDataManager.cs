@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainDataManager
+public class TerrainDataManager : IDataManager
 {
-    private TerrainController terrainController;
+    public IDataController DataController { get; set; }
     private List<TerrainData> terrainDataList;
 
     private DataManager dataManager = new DataManager();
@@ -14,10 +14,10 @@ public class TerrainDataManager
 
     public TerrainDataManager(TerrainController terrainController)
     {
-        this.terrainController = terrainController;
+        DataController = terrainController;
     }
 
-    public List<IDataElement> GetTerrainDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var objectiveSearchData = searchParameters.Cast<Search.Terrain>().FirstOrDefault();
 

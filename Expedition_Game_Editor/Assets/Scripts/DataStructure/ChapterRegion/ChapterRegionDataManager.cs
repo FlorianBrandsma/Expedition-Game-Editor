@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterRegionDataManager
+public class ChapterRegionDataManager : IDataManager
 {
-    private ChapterRegionController chapterRegionController;
+    public IDataController DataController { get; set; }
     private List<ChapterRegionData> chapterRegionDataList;
     private List<DataManager.RegionData> regionDataList;
 
@@ -13,10 +13,10 @@ public class ChapterRegionDataManager
 
     public ChapterRegionDataManager(ChapterRegionController chapterRegionController)
     {
-        this.chapterRegionController = chapterRegionController;
+        DataController = chapterRegionController;
     }
 
-    public List<IDataElement> GetChapterRegionDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var chapterRegionSearchData = searchParameters.Cast<Search.ChapterRegion>().FirstOrDefault();
 

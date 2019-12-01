@@ -229,6 +229,8 @@ public class DataManager
             var data = new InteractionData();
 
             data.Id = interaction.Id;
+            data.Index = interaction.Index;
+
             data.objectiveId = interaction.objectiveId;
             data.sceneInteractableId = interaction.sceneInteractableId;
             data.regionId = interaction.regionId;

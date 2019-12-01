@@ -7,7 +7,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
 {
     public Search.ObjectGraphic searchParameters;
 
-    private ObjectGraphicDataManager objectGraphicDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
 
     public ObjectGraphicController()
     {
-        objectGraphicDataManager = new ObjectGraphicDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return objectGraphicDataManager.GetObjectGraphicDataElements(searchParameters);
+        DataManager = new ObjectGraphicDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

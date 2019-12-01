@@ -126,14 +126,27 @@ public class Path
         return newRoute;
     }
 
-    public void ReplaceAllRoutes(Route.Data data)
+    public void ReplaceAllData(Route.Data data)
     {
-        foreach(Route r in route)
+        route.ForEach(r => 
         {
             if (r.GeneralData.DataType == ((GeneralData)data.dataElement).DataType)
-            {
                 r.data = data;
-            }               
+        });
+    }
+    
+    public void ReplaceDataLists(int start, Enums.DataType dataType, List<IDataElement> dataList, IDataElement dataElement = null)
+    {
+        for(int i = start; i < route.Count; i++)
+        {
+            if (route[i].GeneralData.DataType == dataType)
+            {
+                route[i].data.dataList = dataList;
+                route[i].data.dataController.DataList = dataList;
+                
+                if (dataElement != null)
+                    route[i].data.dataElement = dataElement;
+            }
         }
     }
 }

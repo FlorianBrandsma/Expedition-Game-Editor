@@ -14,7 +14,10 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList { get { return SelectionElementManager.FindDataElements(ItemData).Concat(new[] { ItemData }).ToList(); } }
+    public List<IDataElement> DataList
+    {
+        get { return SelectionElementManager.FindDataElements(ItemData).Concat(new[] { ItemData }).Distinct().ToList(); }
+    }
 
     public List<IDataElement> DataElements
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class RegionSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -22,7 +22,7 @@ public class RegionSegment : MonoBehaviour, ISegment
 
         searchParameters.phaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
     }
 
     public void OpenSegment()

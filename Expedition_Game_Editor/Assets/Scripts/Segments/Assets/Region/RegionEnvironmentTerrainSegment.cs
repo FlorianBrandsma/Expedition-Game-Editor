@@ -15,7 +15,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
     public Dropdown tileSetDropdown;
     #endregion
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -75,7 +75,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         searchParameters.requestType = Search.Tile.RequestType.Custom;
         searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
     }
 
     private void SetDisplay()

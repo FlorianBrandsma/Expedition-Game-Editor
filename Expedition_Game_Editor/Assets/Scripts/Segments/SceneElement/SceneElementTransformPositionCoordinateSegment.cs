@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 
@@ -33,7 +33,7 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                     var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
                     interactionDataList.ForEach(interactionData =>
-                    {
+                    {      
                         interactionData.PositionX = value;
                     });
 
@@ -164,7 +164,17 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        var sceneDataElement = regionData.sceneDataElement;
+
+        var regionSize = new Vector2(sceneDataElement.regionSize * sceneDataElement.terrainSize * sceneDataElement.tileSize,
+                                     sceneDataElement.regionSize * sceneDataElement.terrainSize * sceneDataElement.tileSize);
+
+        xInputField.max = regionSize.x;
+        yInputField.max = regionSize.y;
+    }
 
     public void InitializeData()
     {

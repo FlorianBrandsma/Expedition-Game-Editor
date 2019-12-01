@@ -16,7 +16,7 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(RegionData).Concat(new[] { RegionData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(RegionData).Concat(new[] { RegionData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

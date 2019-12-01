@@ -357,10 +357,15 @@ public class EditorPanel : MonoBehaviour, IElement
         content.offsetMax = new Vector2(-10, content.offsetMax.y);
 
         headerText.text = string.Empty;
+        header = string.Empty;
+
         idText.text = string.Empty;
 
         if (descriptionText != null)
+        {
             descriptionText.text = string.Empty;
+            description = string.Empty;
+        }
 
         if (properties.icon)
             iconParent.gameObject.SetActive(false);

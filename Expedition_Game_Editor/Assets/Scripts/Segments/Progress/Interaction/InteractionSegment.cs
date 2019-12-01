@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class InteractionSegment : MonoBehaviour, ISegment
 {
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
     
@@ -30,7 +30,7 @@ public class InteractionSegment : MonoBehaviour, ISegment
         var sceneInteractableData = (SceneInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.SceneInteractable).data.dataElement;
         searchParameters.sceneInteractableId = new List<int>() { sceneInteractableData.Id };
 
-        SegmentController.DataController.DataList = SegmentController.DataController.GetData(new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
     }
 
     public void OpenSegment()

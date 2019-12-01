@@ -65,7 +65,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
                 //Adds the selected interaction to the path
                 var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
                 interactionRoute.controller = 0;
-
+                
                 path.Add(interactionRoute);
             }
         }  
@@ -73,6 +73,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
     private void InitializeData()
     {
+        InitializeStructureData();
+
         if (PathController.route.path.type == Path.Type.New)
         {
             var regionDataElement = (RegionDataElement)regionRoute.data.dataList.FirstOrDefault();
@@ -83,8 +85,6 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             else
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
         }
-
-        InitializeStructureData();
     }
     
     private void InitializeStructureData()
@@ -109,8 +109,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             var mainRoute = PathController.editorSection.editorForm.activePath.FindLastRoute(dataType);
 
             if (route.GeneralData.Id != mainRoute.GeneralData.Id)
-                componentData.data.dataElement = mainRoute.data.dataElement.Copy();
-
+                componentData.data.dataElement = mainRoute.data.dataElement;
+            
             if (!componentData.data.dataList.Select(y => y.Id).ToList().Contains(componentData.data.dataElement.Id))
                 ResetData(componentData);
             else
@@ -272,7 +272,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         EditorManager.loadType = Enums.LoadType.Reload;
 
-        for (int i = (index+1); i < componentDataList.Count; i++)
+        for (int i = (index + 1); i < componentDataList.Count; i++)
             GetData(componentDataList[i].data.dataController);
 
         EditorManager.editorManager.ResetEditor(PathController.route.path);
@@ -297,7 +297,7 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
 
         var componentData = FindComponentByDataType(dataController.DataType);
 
-        componentData.data.dataList = dataController.GetData(new[] { searchParameters });
+        componentData.data.dataList = EditorManager.GetData(dataController, new[] { searchParameters });
 
         SelectOption(componentData);
     }
@@ -467,8 +467,8 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
     {
         if (!componentData.data.dataList.Select(y => y.Id).ToList().Contains(componentData.data.dataElement.Id))
             componentData.data.dataElement = componentData.data.dataList.First();
-
-        PathController.route.path.ReplaceAllRoutes(componentData.data);
+        
+        PathController.route.path.ReplaceAllData(componentData.data);
     }
 
     private ComponentData FindComponentByDataType(Enums.DataType dataType)

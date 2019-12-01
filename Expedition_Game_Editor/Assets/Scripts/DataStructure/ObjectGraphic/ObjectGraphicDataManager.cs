@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectGraphicDataManager
+public class ObjectGraphicDataManager : IDataManager
 {
-    private ObjectGraphicController objectGraphicController;
+    public IDataController DataController { get; set; }
     private List<ObjectGraphicData> objectGraphicDataList;
 
     private DataManager dataManager = new DataManager();
@@ -14,10 +14,10 @@ public class ObjectGraphicDataManager
 
     public ObjectGraphicDataManager(ObjectGraphicController objectGraphicController)
     {
-        this.objectGraphicController = objectGraphicController;
+        this.DataController = objectGraphicController;
     }
 
-    public List<IDataElement> GetObjectGraphicDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
         var objectGraphicSearchData = searchParameters.Cast<Search.ObjectGraphic>().FirstOrDefault();
 

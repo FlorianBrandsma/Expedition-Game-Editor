@@ -11,7 +11,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
     public Text heightText;
     #endregion
 
-    private SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
 

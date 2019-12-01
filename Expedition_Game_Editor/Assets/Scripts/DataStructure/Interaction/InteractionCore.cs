@@ -243,7 +243,7 @@ public class InteractionCore : GeneralData
     public virtual void Update()
     {
         var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
-
+        
         if (changedRegionId)
             interactionData.regionId = regionId;
 

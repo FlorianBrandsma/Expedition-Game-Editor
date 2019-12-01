@@ -106,10 +106,7 @@ public class EditorForm : MonoBehaviour
 
     public void CloseEditor()
     {
-        if (!gameObject.activeInHierarchy) return;
-
-        //Closes segments
-        CloseSectionEditors();
+        CloseSectionEditorSegments();
 
         CloseComponents();
     }
@@ -161,8 +158,6 @@ public class EditorForm : MonoBehaviour
 
     private void CloseView()
     {
-        if (activeViewPath.route.Count == 0) return;
-        
         CloseSectionDependencies();
         
         baseController.CloseTabs(activeViewPath);
@@ -234,7 +229,7 @@ public class EditorForm : MonoBehaviour
             section.OpenEditor();
     }
 
-    private void CloseSectionEditors()
+    private void CloseSectionEditorSegments()
     {
         foreach (EditorSection section in editorSections)
             section.CloseEditorSegments();

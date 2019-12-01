@@ -16,7 +16,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(TerrainData).Concat(new[] { TerrainData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(TerrainData).Concat(new[] { TerrainData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements

@@ -7,7 +7,7 @@ public class QuestController : MonoBehaviour, IDataController
 {
     public Search.Quest searchParameters;
 
-    private QuestDataManager questDataManager;
+    public IDataManager DataManager { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -24,12 +24,7 @@ public class QuestController : MonoBehaviour, IDataController
 
     public QuestController()
     {
-        questDataManager = new QuestDataManager(this);
-    }
-
-    public List<IDataElement> GetData(IEnumerable searchParameters)
-    {
-        return questDataManager.GetQuestDataElements(searchParameters);
+        DataManager = new QuestDataManager(this);
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

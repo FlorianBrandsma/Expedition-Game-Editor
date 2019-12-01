@@ -16,7 +16,7 @@ public class SceneObjectEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(SceneObjectData).Concat(new[] { SceneObjectData }).ToList(); }
+        get { return SelectionElementManager.FindDataElements(SceneObjectData).Concat(new[] { SceneObjectData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements
