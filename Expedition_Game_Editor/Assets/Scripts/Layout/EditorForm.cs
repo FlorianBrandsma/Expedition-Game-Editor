@@ -86,7 +86,7 @@ public class EditorForm : MonoBehaviour
 
         //Activate dependencies and initialize layout anchors
         InitializeSectionLayout();
-        
+
         //Follows path and activates tabs where indicated
         baseController.SetSubControllers(activeViewPath);
         

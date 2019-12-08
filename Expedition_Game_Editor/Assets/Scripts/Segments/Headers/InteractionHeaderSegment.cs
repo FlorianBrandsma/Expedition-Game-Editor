@@ -11,7 +11,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
 
     #region UI
     public IndexSwitch indexSwitch;
-    public SelectionElement selectionElement;
+    public RawImage icon;
     public InputField inputField;
     public Text idText;
     #endregion
@@ -53,11 +53,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, InteractionData.Index);
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
@@ -66,7 +62,10 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
         id = InteractionData.Id;
         index = InteractionData.Index;
         description = InteractionData.Description;
-        objectGraphicIcon = InteractionData.objectGraphicIconPath; 
+        objectGraphicIcon = InteractionData.objectGraphicIconPath;
+
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, InteractionData.Index);
     }
 
     public void OpenSegment()
@@ -78,7 +77,7 @@ public class InteractionHeaderSegment : MonoBehaviour, ISegment
 
         inputField.text = description;
 
-        selectionElement.GetComponent<EditorTile>().icon.texture = Resources.Load<Texture2D>(objectGraphicIcon);
+        icon.texture = Resources.Load<Texture2D>(objectGraphicIcon);
 
         gameObject.SetActive(true);
     }

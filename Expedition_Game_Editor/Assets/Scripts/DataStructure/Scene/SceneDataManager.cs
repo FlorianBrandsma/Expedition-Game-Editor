@@ -24,6 +24,7 @@ public class SceneDataManager : IDataManager
     private List<DataManager.PhaseInteractableData> phaseInteractableDataList = new List<DataManager.PhaseInteractableData>();
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
 
     private List<DataManager.ObjectiveData> objectiveDataList;
     private List<DataManager.QuestData> questDataList;
@@ -49,6 +50,7 @@ public class SceneDataManager : IDataManager
         GetSceneInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
+        GetIconData();
 
         GetObjectiveData();
         GetQuestData();
@@ -87,6 +89,8 @@ public class SceneDataManager : IDataManager
                     Id = terrainData.Id,
                     Index = terrainData.Index,
 
+                    name = terrainData.name,
+
                     terrainTileDataList = (
                     from terrainTileData in terrainTileDataList
                     where terrainTileData.terrainId == terrainData.Id
@@ -106,6 +110,7 @@ public class SceneDataManager : IDataManager
                     join interactionData        in interactionDataList      on sceneInteractableData.Id             equals interactionData.sceneInteractableId
                     join interactableData       in interactableDataList     on sceneInteractableData.interactableId equals interactableData.Id
                     join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
                     where interactionData.terrainId == terrainData.Id
                     select new SceneInteractableDataElement()
                     {
@@ -124,12 +129,18 @@ public class SceneDataManager : IDataManager
                         rotationY = interactionData.rotationY,
                         rotationZ = interactionData.rotationZ,
 
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth,
+
                         scaleMultiplier = interactionData.scaleMultiplier,
 
                         animation = interactionData.animation,
 
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
+                        
+                        objectGraphicIconPath = iconData.path,
 
                         startPosition = sceneStartPosition
 
@@ -140,6 +151,7 @@ public class SceneDataManager : IDataManager
                     join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.Id
                     join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.Id
                     join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
 
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on sceneInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
@@ -156,6 +168,7 @@ public class SceneDataManager : IDataManager
                         Index = interactionData.Index,
 
                         SceneInteractableId = interactionData.sceneInteractableId,
+                        TerrainId = interactionData.terrainId,
                         TerrainTileId = interactionData.terrainTileId,
 
                         Description = interactionData.description,
@@ -167,7 +180,7 @@ public class SceneDataManager : IDataManager
                         RotationX = interactionData.rotationX,
                         RotationY = interactionData.rotationY,
                         RotationZ = interactionData.rotationZ,
-
+                        
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
@@ -179,19 +192,27 @@ public class SceneDataManager : IDataManager
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth,
+
                         startPosition = sceneStartPosition
 
                     }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
                     
                     sceneObjectDataList = (
                     from sceneObjectData    in sceneObjectDataList
-                    join objectGraphicData  in objectGraphicDataList on sceneObjectData.objectGraphicId equals objectGraphicData.Id
+                    join objectGraphicData  in objectGraphicDataList    on sceneObjectData.objectGraphicId  equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     where sceneObjectData.terrainId == terrainData.Id
                     select new SceneObjectDataElement()
                     {
                         DataType = Enums.DataType.SceneObject,
 
                         Id = sceneObjectData.Id,
+                        TerrainId = sceneObjectData.terrainId,
                         TerrainTileId = sceneObjectData.terrainTileId,
 
                         PositionX = sceneObjectData.positionX,
@@ -208,6 +229,13 @@ public class SceneDataManager : IDataManager
 
                         ObjectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
+
+                        objectGraphicName = objectGraphicData.name,
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth,
 
                         startPosition = sceneStartPosition
 
@@ -320,6 +348,14 @@ public class SceneDataManager : IDataManager
         objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList().Union(sceneObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
 
         objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+    }
+
+    internal void GetIconData()
+    {
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal void GetObjectiveData()

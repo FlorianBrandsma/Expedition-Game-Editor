@@ -7,12 +7,14 @@ using UnityEngine.EventSystems;
 
 public class SceneOrganizer : MonoBehaviour, IOrganizer
 {
-    private List<Tile> tileList = new List<Tile>();
+    static public List<Tile> tileList = new List<Tile>();
     private Vector3 tileBoundSize;
     
     private Plane[] planes;
 
+    public SceneDataElement.TerrainData activeTerrainData;
     private InteractionDataElement interactionData;
+    private SceneObjectDataElement sceneObjectData = new SceneObjectDataElement();
     private List<IDataElement> dataList;
 
     private SceneDataElement sceneData;
@@ -48,8 +50,13 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         
         if (Input.GetMouseButtonUp(0))
         {
+            var fingerId = -1;
+
+            if (Input.touchCount > 0)
+                fingerId = Input.GetTouch(0).fingerId;
+
             //Selecting through UI elements is blocked, unless it's the element that's required to scroll the camera
-            if (EventSystem.current.IsPointerOverGameObject() && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
+            if (EventSystem.current.IsPointerOverGameObject(fingerId) && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
                 return;
             
             if (allowSelection && Physics.Raycast(ray, out hit) && hit.collider.GetComponent<ObjectGraphic>() != null)
@@ -72,12 +79,31 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         sceneData = (SceneDataElement)DataController.DataList.FirstOrDefault();
 
         GetSelectedInteraction(DataController.SegmentController.Path);
-
+        GetSelectedSceneObject(DataController.SegmentController.MainPath);
+        
         tileBoundSize = new Vector3(sceneData.tileSize, 0, sceneData.tileSize) * 3;
 
         CameraManager.cam.transform.localPosition = new Vector3(0, 10 - (sceneData.tileSize * 0.75f), -10);
 
         SetRegionSize();
+    }
+
+    private void GetSelectedInteraction(Path path)
+    {
+        var interactionRoute = path.FindLastRoute(Enums.DataType.Interaction);
+
+        if (interactionRoute == null) return;
+
+        interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == interactionRoute.GeneralData.Id)).FirstOrDefault();
+    }
+
+    private void GetSelectedSceneObject(Path path)
+    {
+        var sceneObjectRoute = path.FindLastRoute(Enums.DataType.SceneObject);
+
+        if (sceneObjectRoute == null) return;
+
+        sceneObjectData = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => y.Id == sceneObjectRoute.GeneralData.Id)).FirstOrDefault();
     }
 
     private void InitializeControllers()
@@ -116,7 +142,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             ScrollRect.content.localPosition.y <= positionTracker.y - sceneData.tileSize)
         {
             positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
-
+            
             ClearOrganizer();
 
             sceneInteractableController.DataList.Clear();
@@ -124,7 +150,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             sceneObjectController.DataList.Clear();
             
             SetData();
-
+            
             dataSet = true;
         }
     }
@@ -137,22 +163,32 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
+        FixLostInteractions();
+        FixLostSceneObjects();
+
         SetData(DataController.DataList);
     }
 
-    private void GetSelectedInteraction(Path path)
+    private void FixLostInteractions()
     {
-        var interactionRoute = path.FindLastRoute(Enums.DataType.Interaction);
+        var lostInteractions = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.TerrainId != x.Id)).ToList();
 
-        if (interactionRoute == null) return;
+        sceneData.terrainDataList.ForEach(x => x.interactionDataList.RemoveAll(y => lostInteractions.Select(z => z.TerrainId).Contains(y.TerrainId)));
+        sceneData.terrainDataList.ForEach(x => x.interactionDataList.AddRange(lostInteractions.Where(y => y.TerrainId == x.Id)));
+    }
 
-        interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == interactionRoute.GeneralData.Id)).FirstOrDefault();
+    private void FixLostSceneObjects()
+    {
+        var lostSceneObjects = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => y.TerrainId != 0 && y.TerrainId != x.Id)).ToList();
+
+        sceneData.terrainDataList.ForEach(x => x.sceneObjectDataList.RemoveAll(y => lostSceneObjects.Select(z => z.TerrainId).Contains(y.TerrainId)));
+        sceneData.terrainDataList.ForEach(x => x.sceneObjectDataList.AddRange(lostSceneObjects.Where(y => y.TerrainId == x.Id)));
     }
     
     private void SetData(List<IDataElement> list)
     {
         if (dataSet) return;
-
+        
         planes = GeometryUtility.CalculateFrustumPlanes(CameraManager.cam);
 
         sceneStartPosition = sceneData.startPosition;
@@ -163,10 +199,11 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
             sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0).Cast<IDataElement>());
             interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
-            sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
+            sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0 || x.Id == sceneObjectData.Id).Cast<IDataElement>());
         }
 
-        //Extract interactions that will be obtained by the region navigation dropdown
+        //Extract interactions that will be obtained by the region navigation dropdown.
+        //Also maintains selection focus
         if (interactionData != null)
             ExtractInteractions();
 
@@ -178,6 +215,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
         //Set objects that are bound to this terrain tile
         SetSceneElements(sceneObjectController);
+
+        GetActiveTerrain();
     }
 
     private void ExtractInteractions()
@@ -214,11 +253,11 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
                 tile.transform.SetParent(CameraManager.content.transform, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
-
+                
                 sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).Cast<IDataElement>());
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
-                sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
-                
+                sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && x.Id != sceneObjectData.Id).Cast<IDataElement>());
+
                 tile.gameObject.SetActive(true);
             }
         }
@@ -329,11 +368,28 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
+    private void InitializeStatusIconOverlay(SelectionElement element)
+    {
+        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconManager>();
+
+        if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
+            element.glow = statusIconManager.StatusIcon(CameraManager, element, StatusIconManager.StatusIconType.Selection);
+
+        if (element.elementStatus == Enums.ElementStatus.Locked)
+            element.lockIcon = statusIconManager.StatusIcon(CameraManager, element, StatusIconManager.StatusIconType.Lock);
+    }
+
     private void SetElement(SelectionElement element)
     {
         element.gameObject.SetActive(true);
         
         element.SetElement();
+
+        InitializeStatusIconOverlay(element);
+
+        element.SetOverlay();
+
+        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconManager>();
     }
     
     public void ResetData(List<IDataElement> filter)
@@ -347,8 +403,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         dataSet = false;
 
         tileList.ForEach(x => x.ClosePoolable());
-        SelectionElementManager.CloseElement(elementList);
 
+        SelectionElementManager.CloseElement(elementList);
+        
         tileList.Clear();
     }
 
@@ -357,12 +414,44 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         SelectionManager.CancelSelection(dataList);
     }
 
+    private void GetActiveTerrain()
+    {
+        var localCameraPosition = new Vector2(ScrollRect.content.localPosition.x - sceneStartPosition.x, sceneStartPosition.y - ScrollRect.content.localPosition.y);
+
+        if (localCameraPosition.x < 0)
+            localCameraPosition = new Vector2(1, localCameraPosition.y);
+        if (localCameraPosition.x > RegionSize())
+            localCameraPosition = new Vector2(RegionSize() - 1, localCameraPosition.y);
+        if (localCameraPosition.y < 0)
+            localCameraPosition = new Vector2(localCameraPosition.x, 1);
+        if (localCameraPosition.y > RegionSize())
+            localCameraPosition = new Vector2(localCameraPosition.x, RegionSize() - 1);
+        
+        activeTerrainData = GetTerrain(localCameraPosition.x, localCameraPosition.y);
+    }
+
+    private SceneDataElement.TerrainData GetTerrain(float posX, float posY)
+    {
+        var terrainSize = sceneData.terrainSize * sceneData.tileSize;
+
+        var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
+                                             Mathf.Floor(posY / terrainSize));
+
+        var terrainIndex = (sceneData.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
+
+        return sceneData.terrainDataList.Where(x => x.Index == terrainIndex).FirstOrDefault();
+    }
+
+    private float RegionSize()
+    {
+        return sceneData.regionSize * sceneData.terrainSize * sceneData.tileSize;
+    }
+
     public void CloseOrganizer()
     {
         ClearOrganizer();
-
         CancelSelection();
 
         DestroyImmediate(this);
-    }
+    } 
 }

@@ -16,6 +16,7 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     #region Data Variables
     private float positionX, positionY, positionZ;
+    private int terrainId;
     private int terrainTileId;
     #endregion
 
@@ -121,6 +122,42 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             }
         }
     }
+
+    public int TerrainTileId
+    {
+        get { return terrainTileId; }
+        set
+        {
+            terrainTileId = value;
+
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Interaction:
+
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    interactionDataList.ForEach(interactionData =>
+                    {
+                        interactionData.TerrainId = terrainId;
+                        interactionData.TerrainTileId = value;
+                    });
+
+                    break;
+
+                case Enums.DataType.SceneObject:
+
+                    var sceneObjectDataList = DataEditor.DataList.Cast<SceneObjectDataElement>().ToList();
+                    sceneObjectDataList.ForEach(sceneObjectData =>
+                    {
+                        sceneObjectData.TerrainId = terrainId;
+                        sceneObjectData.TerrainTileId = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING"); break;
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -151,7 +188,19 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     public void UpdateTile()
     {
-        //Debug.Log(bindToTile.Toggle.isOn);
+        if(bindToTile.Toggle.isOn)
+        {
+            var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).GeneralData.Id;
+
+            terrainId = Fixtures.GetTerrain(regionId, positionX, positionY);
+            TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionY);
+
+        } else {
+            terrainId = 0;
+            TerrainTileId = 0;
+        }
+
+        DataEditor.UpdateEditor();
     }
     #endregion
 
@@ -205,7 +254,7 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     private void InitializeSceneObjectData()
     {
         var sceneObjectData = (SceneObjectDataElement)DataEditor.Data.dataElement;
-
+        
         positionX = sceneObjectData.PositionX;
         positionY = sceneObjectData.PositionY;
         positionZ = sceneObjectData.PositionZ;
@@ -222,6 +271,10 @@ public class SceneElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         zInputField.Value = PositionZ;
 
         bindToTile.Toggle.isOn = terrainTileId != 0;
+
+        //Binding to tile is meant to render large objects that span multiple terrains.
+        //If necessary, modifications could be made to better support this feature for interacions
+        bindToTile.EnableElement(DataEditor.Data.dataElement.DataType == Enums.DataType.SceneObject);
 
         gameObject.SetActive(true);
     }

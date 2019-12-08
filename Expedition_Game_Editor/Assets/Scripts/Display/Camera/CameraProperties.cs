@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class CameraProperties : MonoBehaviour, IDisplay
 {
+    public Enums.DisplayType DisplayType { get { return Enums.DisplayType.Camera; } }
+
     [HideInInspector]
-    public DisplayManager.Type displayType;
+    public DisplayManager.Type elementType;
 
     public CameraManager cameraManager;
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
 
+    public bool timeBasedLighting;
     public bool enableScroll;
+    public bool enableStatusIcons;
+    public bool enableTerrainInfo;
 
     private IDataController dataController;
     public IDataController DataController
@@ -40,7 +44,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     private void InitializeProperties()
     {
-        displayType = GetComponent<IProperties>().Type();
+        elementType = GetComponent<IProperties>().Type();
 
         cameraManager.InitializeCamera(this);
     }

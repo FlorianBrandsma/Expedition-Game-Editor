@@ -109,7 +109,10 @@ public class PhaseInteractableDataManager : IDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     Enums.ElementStatus GetElementStatus(PhaseInteractableData phaseData)

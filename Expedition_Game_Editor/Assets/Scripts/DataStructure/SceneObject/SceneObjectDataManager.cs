@@ -33,9 +33,9 @@ public class SceneObjectDataManager : IDataManager
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from sceneObjectData in sceneObjectDataList
-                    join objectGraphicData in objectGraphicDataList on sceneObjectData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from sceneObjectData    in sceneObjectDataList
+                    join objectGraphicData  in objectGraphicDataList    on sceneObjectData.objectGraphicId  equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     select new SceneObjectDataElement()
                     {
                         DataType = Enums.DataType.SceneObject,
@@ -61,7 +61,11 @@ public class SceneObjectDataManager : IDataManager
                         Animation = sceneObjectData.animation,
 
                         objectGraphicName = objectGraphicData.name,
-                        objectGraphicIconPath = iconData.path
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -116,7 +120,10 @@ public class SceneObjectDataManager : IDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal class SceneObjectData : GeneralData

@@ -24,6 +24,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public RectTransform displayRect;
 
+    public Light directionalLight;
+
+    public bool enableFog;
+
     public void InitializeCamera(CameraProperties cameraProperties)
     {
         transform.parent.gameObject.SetActive(true);
@@ -31,7 +35,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         Display = cameraProperties;
         this.cameraProperties = cameraProperties;
 
-        switch (cameraProperties.displayType)
+        switch (cameraProperties.elementType)
         {
             case DisplayManager.Type.None:      organizer = null; break;
             case DisplayManager.Type.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
@@ -43,21 +47,21 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         organizer.InitializeOrganizer();
 
-        //organizer.GetData();
-
-        //overlayManager.InitializeOverlay(this);
-
-        //SelectionManager.lists.Add(this);
-
-        //SetProperties();
+        if(overlayManager != null)
+            overlayManager.InitializeOverlay(this);
 
         if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && EditorManager.loadType == Enums.LoadType.Normal)
             ResetListPosition();
+
+        RenderSettings.fog = enableFog;
     }
 
     public void SetProperties()
     {
         if (organizer == null) return;
+
+        if(overlayManager != null)
+            overlayManager.SetOverlayProperties(cameraProperties);
 
         transform.parent.gameObject.SetActive(true);
     }
@@ -71,12 +75,23 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     {
         if (organizer == null) return;
 
+        if(overlayManager != null)
+            overlayManager.ActivateOverlay(organizer);
+
         float leftBorder = (30 / EditorManager.UI.rect.width);
 
         cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
                             new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
 
         SetData();
+
+        if (overlayManager != null)
+            overlayManager.SetOverlay();
+
+        if (cameraProperties.timeBasedLighting)
+            EditorManager.editorManager.TimeManager.SetCameraLight(directionalLight);
+        else
+            EditorManager.editorManager.TimeManager.ResetLighting(directionalLight);
     }
 
     private void ResetListPosition()
@@ -87,6 +102,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public void UpdateData()
     {
         organizer.UpdateData();
+
+        UpdateOverlay();
     }
 
     private void SetData()
@@ -98,7 +115,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     {
         if (organizer == null) return;
 
-        overlayManager.UpdateOverlay();
+        if (overlayManager != null)
+            overlayManager.UpdateOverlay();
     }
 
     public void CorrectPosition(IDataElement dataElement)
@@ -152,6 +170,9 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         if (organizer == null) return;
 
         ClearCamera();
+
+        if (overlayManager != null)
+            overlayManager.CloseOverlay();
 
         organizer.CloseOrganizer();
 

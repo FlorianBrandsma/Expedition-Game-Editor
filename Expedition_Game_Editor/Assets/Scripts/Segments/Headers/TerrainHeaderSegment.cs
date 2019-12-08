@@ -91,6 +91,8 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         selectionElement.SetElement();
 
+        selectionElement.SetOverlay();
+
         gameObject.SetActive(true);
     }
 

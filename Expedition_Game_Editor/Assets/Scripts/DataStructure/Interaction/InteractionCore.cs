@@ -249,7 +249,7 @@ public class InteractionCore : GeneralData
 
         if (changedTerrainId)
             interactionData.terrainId = terrainId;
-
+        
         if (changedTerrainTileId)
             interactionData.terrainTileId = terrainTileId;
 

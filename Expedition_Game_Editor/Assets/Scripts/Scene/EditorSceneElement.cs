@@ -12,9 +12,17 @@ public class EditorSceneElement : MonoBehaviour, IElement
     {
         set
         {
+            if (objectGraphic == null) return;
+
             foreach(GameObject mesh in objectGraphic.mesh)
             {
-                mesh.GetComponent<Renderer>().material.color = value;
+                var renderer = mesh.GetComponent<Renderer>();
+                renderer.material.color = value;
+
+                if (value.a == 0)
+                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                else
+                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             }
         }
     }
@@ -61,7 +69,7 @@ public class EditorSceneElement : MonoBehaviour, IElement
         
         transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.PositionX, dataElement.startPosition.y - dataElement.PositionY, -dataElement.PositionZ);
         transform.localEulerAngles  = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
-        transform.localScale        = new Vector3(1, 1, 1);
+        transform.localScale        = new Vector3(1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier);
 
         SetObjectGraphic();
     }
@@ -76,7 +84,7 @@ public class EditorSceneElement : MonoBehaviour, IElement
 
         transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.PositionX, dataElement.startPosition.y - dataElement.PositionY, -dataElement.PositionZ);
         transform.localEulerAngles  = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
-        transform.localScale        = new Vector3(1, 1, 1);
+        transform.localScale        = new Vector3(1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier);
 
         SetObjectGraphic();
     }
@@ -92,6 +100,8 @@ public class EditorSceneElement : MonoBehaviour, IElement
 
     public void CloseElement()
     {
+        if (objectGraphic == null) return;
+
         objectGraphic.gameObject.SetActive(false);
         objectGraphic = null;
     }

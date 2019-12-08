@@ -151,6 +151,8 @@ public class EditorMultiGrid : MonoBehaviour, IElement
         rect.gameObject.SetActive(true);
 
         element.SetElement();
+
+        element.SetOverlay();
     }
 
     public void CloseElement()

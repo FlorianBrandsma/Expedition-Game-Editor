@@ -11,7 +11,8 @@ public class OverlayManager : MonoBehaviour
     public RectTransform    horizontal_min,
                             vertical_min,
                             horizontal_max,
-                            vertical_max;
+                            vertical_max,
+                            content;
 
     public IDisplayManager  DisplayManager { get; set; }
 
@@ -27,8 +28,22 @@ public class OverlayManager : MonoBehaviour
         vertical_max.GetComponent<OverlayBorder>().Activate();
     }
 
-    public void SetOverlayProperties(ListProperties listProperties)
+    public void SetOverlayProperties(IDisplay displayProperties)
     {
+        switch(displayProperties.DisplayType)
+        {
+            case Enums.DisplayType.List:    SetListOverlayProperties(displayProperties);    break;
+            case Enums.DisplayType.Camera:  SetCameraOverlayProperties(displayProperties);  break;
+        }
+        
+        foreach (IOverlay overlay in GetComponents<IOverlay>())
+            overlay.InitializeOverlay(DisplayManager);
+    }
+
+    private void SetListOverlayProperties(IDisplay displayProperties)
+    {
+        var listProperties = (ListProperties)displayProperties;
+
         if (listProperties.enableNumbers)
             gameObject.AddComponent<NumberManager>();
 
@@ -37,15 +52,23 @@ public class OverlayManager : MonoBehaviour
 
         if (listProperties.enablePaging)
             gameObject.AddComponent<PagingManager>();
-
-        foreach (IOverlay overlay in GetComponents<IOverlay>())
-            overlay.InitializeOverlay(DisplayManager);
     }
 
-    public void ActivateOverlay(IOrganizer organizer, IList list)
+    private void SetCameraOverlayProperties(IDisplay displayProperties)
+    {
+        var cameraProperties = (CameraProperties)displayProperties;
+
+        if (cameraProperties.enableStatusIcons)
+            gameObject.AddComponent<StatusIconManager>();
+
+        if (cameraProperties.enableTerrainInfo)
+            gameObject.AddComponent<TerrainInfoManager>();
+    }
+
+    public void ActivateOverlay(IOrganizer organizer)
     {
         foreach (IOverlay overlay in GetComponents<IOverlay>())
-            overlay.ActivateOverlay(organizer, list);
+            overlay.ActivateOverlay(organizer);
     }
 
     public void SetOverlaySize()

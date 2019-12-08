@@ -87,7 +87,10 @@ public class InteractableDataManager : IDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal class InteractableData : GeneralData

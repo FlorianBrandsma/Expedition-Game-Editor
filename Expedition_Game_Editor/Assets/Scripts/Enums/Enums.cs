@@ -62,6 +62,12 @@ public class Enums
         Interaction
     }
 
+    public enum DisplayType
+    {
+        List,
+        Camera
+    }
+
     public enum SelectionStatus
     {
         None,

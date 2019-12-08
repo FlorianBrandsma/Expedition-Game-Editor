@@ -13,10 +13,12 @@ public class EditorManager : MonoBehaviour
 
     public List<EditorForm> forms;
     public List<EditorLayer> layers;
-
+    
     static public HistoryManager historyManager = new HistoryManager();
 
     static public Enums.LoadType loadType;
+
+    public TimeManager TimeManager { get { return GetComponent<TimeManager>(); } }
 
     private void Awake()
     {
@@ -64,7 +66,7 @@ public class EditorManager : MonoBehaviour
 
         //Opening view only needs to initialize editors, so lists can be set
         ResetView();
-
+        
         //Performed at the end so it doesn't interfere with the current (de)activation process
         InitializeSecondaryPaths(path);
     }
@@ -104,7 +106,7 @@ public class EditorManager : MonoBehaviour
     {
         //Activate layers, set anchors based on initialized values
         layers.ForEach(x => x.SetLayout());
-        
+
         forms.ForEach(x => x.CloseEditor());
         forms.ForEach(x => x.OpenEditor());
     }

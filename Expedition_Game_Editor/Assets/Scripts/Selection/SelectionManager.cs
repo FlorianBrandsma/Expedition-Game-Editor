@@ -75,10 +75,10 @@ static public class SelectionManager
     static public void SelectSet(IDataElement setDataElement)
     {
         var dataElementList = SelectionElementManager.FindDataElements((GeneralData)getDataElement);
-        
-        CancelGetSelection();
 
         dataElementList.ForEach(x => x.SelectionElement.SetResult(setDataElement));
+
+        CancelGetSelection();
     }
     
     static public void CancelGetSelection()

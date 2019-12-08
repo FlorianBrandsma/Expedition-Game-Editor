@@ -11,7 +11,6 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
     public int category;
 
     public string iconPath;
-    public string originalIconPath;
 
     public override void Update()
     {
@@ -28,15 +27,11 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
         base.SetOriginalValues();
 
-        originalIconPath = iconPath;
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        iconPath = originalIconPath;
-    }
+    public new void GetOriginalValues() { }
 
     public override void ClearChanges()
     {

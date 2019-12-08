@@ -7,61 +7,48 @@ public class ObjectGraphicCore : GeneralData
     private string name;
     private string path;
 
-    public int originalIconId;
-    public string originalName;
-    public string originalPath;
+    private float height;
+    private float width;
+    private float depth;
 
-    private bool changedIconId;
-    private bool changedName;
-    private bool changedPath;
-    
-    public bool Changed
-    {
-        get
-        {
-            return changedName || changedPath || changedIconId;
-        }
-    }
+    public bool Changed { get { return false; } }
 
     #region Properties
+
+    public int IconId
+    {
+        get { return iconId; }
+        set { iconId = value; }
+    }
 
     public string Name
     {
         get { return name; }
-        set
-        {
-            if (value == name) return;
-
-            changedName = (value != originalName);
-
-            name = value;
-        }
+        set { name = value; }
     }
 
     public string Path
     {
         get { return path; }
-        set
-        {
-            if (value == path) return;
-
-            changedPath = (value != originalPath);
-
-            path = value;
-        }
+        set { path = value; }
     }
 
-    public int IconId
+    public float Height
     {
-        get { return iconId; }
-        set
-        {
-            if (value == iconId) return;
+        get { return height; }
+        set { height = value; }
+    }
 
-            changedIconId = (value != originalIconId);
+    public float Width
+    {
+        get { return width; }
+        set { width = value; }
+    }
 
-            iconId = value;
-        }
+    public float Depth
+    {
+        get { return depth; }
+        set { depth = value; }
     }
 
     #endregion
@@ -76,27 +63,13 @@ public class ObjectGraphicCore : GeneralData
 
     public void UpdateIndex() { }
 
-    public virtual void SetOriginalValues()
-    {
-        originalName = name;
-        originalPath = path;
-        originalIconId = iconId;
-    }
+    public virtual void SetOriginalValues() { }
 
-    public void GetOriginalValues()
-    {
-        name = originalName;
-        path = originalPath;
-        iconId = originalIconId;
-    }
+    public void GetOriginalValues() { }
 
     public virtual void ClearChanges()
     {
         GetOriginalValues();
-
-        changedName = false;
-        changedPath = false;
-        changedIconId = false;
     }
 
     public void Delete() { }

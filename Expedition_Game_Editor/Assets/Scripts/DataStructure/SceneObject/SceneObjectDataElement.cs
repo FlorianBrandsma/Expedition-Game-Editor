@@ -13,10 +13,14 @@ public class SceneObjectDataElement : SceneObjectCore, IDataElement
     public string objectGraphicName;
     public string objectGraphicIconPath;
 
+    public float height;
+    public float width;
+    public float depth;
+    
+    public Vector2 startPosition;
+
     public string originalObjectGraphicName;
     public string originalObjectGraphicIconPath;
-
-    public Vector2 startPosition;
 
     public override void Update()
     {

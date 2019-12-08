@@ -80,6 +80,10 @@ public class DataController : IDataController
                 sceneObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
                 sceneObjectData.objectGraphicPath = objectGraphicData.Path;
 
+                sceneObjectData.height = objectGraphicData.Height;
+                sceneObjectData.width = objectGraphicData.Width;
+                sceneObjectData.depth = objectGraphicData.Depth;
+
                 break;
         }
     }

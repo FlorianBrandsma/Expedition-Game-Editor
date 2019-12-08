@@ -113,7 +113,7 @@ public class EditorSection : MonoBehaviour
             buttonActionManager.CloseButtons();
 
         previousTargetController = targetController;
-        previousTargetControllerData = (GeneralData)targetController.PathController.route.data.dataElement.Copy();
+        previousTargetControllerData = (GeneralData)targetController.PathController.route.data.dataElement;//.Copy();
         
         targetController = null;
 
@@ -134,7 +134,7 @@ public class EditorSection : MonoBehaviour
         if (displayTargetController == null) return;
 
         previousTargetController = displayTargetController;
-        previousTargetControllerData = (GeneralData)displayTargetController.PathController.route.data.dataElement.Copy();
+        previousTargetControllerData = (GeneralData)displayTargetController.PathController.route.data.dataElement;//.Copy();
 
         displayTargetController.CloseSegments();
     }

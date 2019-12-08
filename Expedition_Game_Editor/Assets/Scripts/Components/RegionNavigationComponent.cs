@@ -63,9 +63,9 @@ public class RegionNavigationComponent : MonoBehaviour, IComponent
             } else {
 
                 //Adds the selected interaction to the path
-                var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
+                var interactionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Interaction);
                 interactionRoute.controller = 0;
-                
+
                 path.Add(interactionRoute);
             }
         }  

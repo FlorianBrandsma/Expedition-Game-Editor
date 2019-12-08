@@ -20,13 +20,13 @@ public class DataManager
 
     #region Functions
 
-    public List<IconData> GetIconData(List<int> idList, bool searchById = false)
+    public List<IconData> GetIconData(Search.Icon searchParameters)
     {
         List<IconData> dataList = new List<IconData>();
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
-            if (searchById && !idList.Contains(icon.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.Id)) continue;
 
             var data = new IconData();
 
@@ -52,10 +52,15 @@ public class DataManager
             var data = new ObjectGraphicData();
 
             data.Id = objectGraphic.Id;
-            
+
+            data.iconId = objectGraphic.iconId;
+
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
-            data.iconId = objectGraphic.iconId;
+            
+            data.height = objectGraphic.height;
+            data.width = objectGraphic.width;
+            data.depth = objectGraphic.depth;
 
             dataList.Add(data);
         }
@@ -250,7 +255,7 @@ public class DataManager
             data.scaleMultiplier = interaction.scaleMultiplier;
 
             data.animation = interaction.animation;
-
+            
             dataList.Add(data);
         }
 
@@ -375,9 +380,7 @@ public class DataManager
 
         return dataList;
     }
-
     
-
     public List<SceneObjectData> GetSceneObjectData(Search.SceneObject searchParameters)
     {
         var dataList = new List<SceneObjectData>();
@@ -405,7 +408,7 @@ public class DataManager
             data.scaleMultiplier = sceneObject.scaleMultiplier;
 
             data.animation = sceneObject.animation;
-
+            
             dataList.Add(data);
         }
 
@@ -427,6 +430,9 @@ public class DataManager
         public int iconId;
         public string name;
         public string path;
+        public float height;
+        public float width;
+        public float depth;
     }
 
     public class InteractableData : GeneralData

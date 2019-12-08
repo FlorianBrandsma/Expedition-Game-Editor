@@ -292,18 +292,10 @@ public class EditorPanel : MonoBehaviour, IElement
     {
         var data = Element.data;
         var dataElement = (ObjectGraphicDataElement)data.dataElement;
-
-        if (Element.selectionProperty == SelectionManager.Property.Get)
-        {
-            header      = dataElement.Name;
-            iconPath    = dataElement.iconPath;
-
-        } else {
-
-            header      = dataElement.originalName;
-            iconPath    = dataElement.originalIconPath;
-        }
-
+        
+        header      = dataElement.Name;
+        iconPath    = dataElement.iconPath;
+        
         idText.text     = dataElement.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);

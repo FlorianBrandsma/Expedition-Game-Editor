@@ -23,10 +23,11 @@ public class SliderManager : MonoBehaviour, IOverlay
         mainList = displayManager.RectTransform;
     }
     
-    public void ActivateOverlay(IOrganizer organizer, IList list)
+    public void ActivateOverlay(IOrganizer organizer)
     {
         int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
-        
+        var list = (IList)organizer;
+
         Vector2 listSize = list.GetListSize(listCount, true);
 
         bool horizontal = mainList.GetComponent<ScrollRect>().horizontal;

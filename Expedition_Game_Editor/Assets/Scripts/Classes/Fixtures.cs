@@ -101,7 +101,10 @@ static public class Fixtures
     {
         public int iconId;
         public string name;
-        public string path;   
+        public string path;
+        public float height;
+        public float width;
+        public float depth;
     }
 
     public class Icon : GeneralData
@@ -285,29 +288,31 @@ static public class Fixtures
 
     static public void LoadObjectGraphics()
     {
-        /*01*/CreateObjectGraphic("Nothing",        1);
-        /*02*/CreateObjectGraphic("Polearm",        2);
-        /*03*/CreateObjectGraphic("Mighty Polearm", 3);
-        /*04*/CreateObjectGraphic("Shortbow",       4);
-        /*05*/CreateObjectGraphic("Longbow",        5);
-        /*06*/CreateObjectGraphic("Crossbow",       6);
-        /*07*/CreateObjectGraphic("Strong Crossbow",7);
-        /*08*/CreateObjectGraphic("Staff",          8);
-        /*09*/CreateObjectGraphic("Menacing Staff", 9);
-        /*10*/CreateObjectGraphic("Red Warrior",    10);
-        /*11*/CreateObjectGraphic("Blue Warrior",   11);
-        /*12*/CreateObjectGraphic("Green Warrior",  12);
-        /*13*/CreateObjectGraphic("Ranger",         13);
-        /*14*/CreateObjectGraphic("Mage",           14);
-        /*15*/CreateObjectGraphic("Drake",          15);
-        /*16*/CreateObjectGraphic("Skull",          17);
-        /*17*/CreateObjectGraphic("Rock",           18);
-        /*18*/CreateObjectGraphic("Cactus",         19);
-        /*19*/CreateObjectGraphic("Tree",           20);
-        /*20*/CreateObjectGraphic("Pool",           21);
+        //Note: size values are not realistic until models have been made with these values in mind
+
+        /*01*/CreateObjectGraphic("Nothing",        1,  new Vector3(1,      1,      1));
+        /*02*/CreateObjectGraphic("Polearm",        2,  new Vector3(0.5f,   0.15f,  4));
+        /*03*/CreateObjectGraphic("Mighty Polearm", 3,  new Vector3(0.65f,  0.15f,  4));
+        /*04*/CreateObjectGraphic("Shortbow",       4,  new Vector3(0.5f,   0.1f,   2.75f));
+        /*05*/CreateObjectGraphic("Longbow",        5,  new Vector3(1,      0.25f,  3.5f));
+        /*06*/CreateObjectGraphic("Crossbow",       6,  new Vector3(1,      0.35f,  1.25f));
+        /*07*/CreateObjectGraphic("Strong Crossbow",7,  new Vector3(1.35f,  0.35f,  1.25f));
+        /*08*/CreateObjectGraphic("Staff",          8,  new Vector3(0.55f,  0.25f,  2.5f));
+        /*09*/CreateObjectGraphic("Menacing Staff", 9,  new Vector3(1.5f,   0.3f,   2.3f));
+        /*10*/CreateObjectGraphic("Red Warrior",    10, new Vector3(1,      1,      3.5f));
+        /*11*/CreateObjectGraphic("Blue Warrior",   11, new Vector3(1,      1,      3.5f));
+        /*12*/CreateObjectGraphic("Green Warrior",  12, new Vector3(1,      1,      3.5f));
+        /*13*/CreateObjectGraphic("Ranger",         13, new Vector3(1,      1,      3.3f));
+        /*14*/CreateObjectGraphic("Mage",           14, new Vector3(1,      1,      3.3f));
+        /*15*/CreateObjectGraphic("Drake",          15, new Vector3(1.5f,   3,      2));
+        /*16*/CreateObjectGraphic("Skull",          17, new Vector3(1.25f,  4.5f,   1.5f));
+        /*17*/CreateObjectGraphic("Rock",           18, new Vector3(4,      3,      2));
+        /*18*/CreateObjectGraphic("Cactus",         19, new Vector3(1,      1,      4));
+        /*19*/CreateObjectGraphic("Tree",           20, new Vector3(1,      1,      4));
+        /*20*/CreateObjectGraphic("Pool",           21, new Vector3(2.75f,  2.5f,   0.75f));
     }
 
-    static public void CreateObjectGraphic(string name, int iconId)
+    static public void CreateObjectGraphic(string name, int iconId, Vector3 size)
     {
         var objectGraphic = new ObjectGraphic();
 
@@ -317,6 +322,9 @@ static public class Fixtures
         objectGraphic.iconId = iconId;
         objectGraphic.name = name;
         objectGraphic.path = "Objects/" + name;
+        objectGraphic.height = size.z;
+        objectGraphic.width = size.x;
+        objectGraphic.depth = size.y;
 
         objectGraphicList.Add(objectGraphic);
     }
@@ -918,7 +926,7 @@ static public class Fixtures
 
                     sceneObject.Index = sceneObjectSource.Index;
                     sceneObject.objectGraphicId = sceneObjectSource.objectGraphicId;
-
+                    
                     sceneObjectList.Add(sceneObject);
                 }
             }

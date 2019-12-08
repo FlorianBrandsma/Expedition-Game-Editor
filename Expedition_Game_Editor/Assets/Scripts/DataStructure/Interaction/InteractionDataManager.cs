@@ -71,8 +71,14 @@ public class InteractionDataManager : IDataManager
 
                         Animation = interactionData.animation,
 
+                        objectGraphicId = objectGraphicData.Id,
+
                         regionName  = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
-                        objectGraphicIconPath = iconData.path
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -149,7 +155,10 @@ public class InteractionDataManager : IDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal void GetRegionData()

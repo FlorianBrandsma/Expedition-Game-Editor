@@ -27,10 +27,10 @@ public class PagingManager : MonoBehaviour, IOverlay
 
     public void InitializeOverlay(IDisplayManager displayManager) { }
 
-    public void ActivateOverlay(IOrganizer organizer, IList list)
+    public void ActivateOverlay(IOrganizer organizer)
     {
         this.organizer = organizer;
-        this.list = list;
+        list = (IList)organizer;
 
         int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
 

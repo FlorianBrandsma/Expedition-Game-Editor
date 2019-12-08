@@ -17,6 +17,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public string regionName;
     public string objectGraphicIconPath;
 
+    public float height;
+    public float width;
+    public float depth;
+
     public Vector2 startPosition;
 
     public override void Update()
@@ -60,6 +64,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
         dataElement.regionName = regionName;
         dataElement.objectGraphicIconPath = objectGraphicIconPath;
+
+        dataElement.height = height;
+        dataElement.width = width;
+        dataElement.depth = depth;
 
         dataElement.startPosition = startPosition;
 

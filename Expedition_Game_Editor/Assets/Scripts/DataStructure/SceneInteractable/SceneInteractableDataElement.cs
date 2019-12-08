@@ -27,6 +27,10 @@ public class SceneInteractableDataElement : SceneInteractableCore, IDataElement
     public int rotationY;
     public int rotationZ;
 
+    public float height;
+    public float width;
+    public float depth;
+
     public float scaleMultiplier;
 
     public int animation;
@@ -91,6 +95,10 @@ public class SceneInteractableDataElement : SceneInteractableCore, IDataElement
         dataElement.rotationX = rotationX;
         dataElement.rotationY = rotationY;
         dataElement.rotationZ = rotationZ;
+
+        dataElement.height = height;
+        dataElement.width = width;
+        dataElement.depth = depth;
 
         dataElement.scaleMultiplier = scaleMultiplier;
 

@@ -102,7 +102,7 @@ public class SceneObjectCore : GeneralData
         {
             if (value == terrainId) return;
 
-            changedTerrainTileId = (value != originalTerrainId);
+            changedTerrainId = (value != originalTerrainId);
 
             terrainId = value;
         }
@@ -114,7 +114,7 @@ public class SceneObjectCore : GeneralData
         set
         {
             if (value == terrainTileId) return;
-
+            
             changedTerrainTileId = (value != originalTerrainTileId);
 
             terrainTileId = value;
@@ -240,7 +240,7 @@ public class SceneObjectCore : GeneralData
 
         if (changedTerrainId)
             sceneObjectData.terrainId = terrainId;
-
+        
         if (changedTerrainTileId)
             sceneObjectData.terrainTileId = terrainTileId;
 

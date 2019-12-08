@@ -50,6 +50,9 @@ public class SelectionElement : MonoBehaviour
     public Enums.ElementStatus elementStatus;
     public Color enabledColor;
     public Color disabledColor;
+    public Color relatedColor;
+    public Color unrelatedColor;
+    public Color hiddenColor;
     
     public bool disableSpawn;
     public SelectionElement parent;
@@ -104,11 +107,6 @@ public class SelectionElement : MonoBehaviour
     public void SetElement()
     {
         GetComponent<IElement>().SetElement();
-
-        SetOverlay();
-
-        if (child != null)
-            child.SetOverlay();
         
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = dataController;
@@ -117,11 +115,22 @@ public class SelectionElement : MonoBehaviour
     public void UpdateElement()
     {
         GetComponent<IElement>().SetElement();
+
+        UpdateStatusIcon();
+    }
+
+    private void UpdateStatusIcon()
+    {
+        if (glow.GetComponent<EditorStatusIcon>() != null)
+            glow.GetComponent<EditorStatusIcon>().UpdatePosition();
     }
 
     public void SetOverlay()
     {
         if (data.dataElement == null) return;
+        
+        if (child != null)
+            child.SetOverlay();
 
         SetSelection();
         SetStatus();
@@ -162,9 +171,23 @@ public class SelectionElement : MonoBehaviour
 
                 break;
 
-            case Enums.ElementStatus.Hidden: break;
-            case Enums.ElementStatus.Related: break;
-            case Enums.ElementStatus.Unrelated: break;
+            case Enums.ElementStatus.Hidden:
+
+                OnSelection.RemoveAllListeners();
+                Element.ElementColor = hiddenColor;
+
+                break;
+
+            case Enums.ElementStatus.Related:
+
+                Element.ElementColor = relatedColor;
+
+                break;
+            case Enums.ElementStatus.Unrelated:
+
+                Element.ElementColor = unrelatedColor;
+
+                break;
         }
     }
 
@@ -225,7 +248,7 @@ public class SelectionElement : MonoBehaviour
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
-        
+
         dataController.SetData(this, resultData);
         
         if(dataController.SearchParameters != null)
@@ -237,6 +260,8 @@ public class SelectionElement : MonoBehaviour
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
         
         SetElement();
+
+        SetOverlay();
     }
 
     public void CloseElement()

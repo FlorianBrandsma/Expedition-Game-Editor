@@ -31,10 +31,16 @@ public class ObjectGraphicDataManager : IDataManager
                         DataType = Enums.DataType.ObjectGraphic,
 
                         Id = objectGraphicData.Id,
+
+                        IconId = objectGraphicData.iconId,
                         
                         Name = objectGraphicData.name,
                         Path = objectGraphicData.path,
-                        IconId = objectGraphicData.iconId,
+
+                        Height = objectGraphicData.height,
+                        Width = objectGraphicData.width,
+                        Depth = objectGraphicData.depth,
+
                         iconPath = iconData.path,
                         category = iconData.category
 
@@ -61,13 +67,20 @@ public class ObjectGraphicDataManager : IDataManager
             objectGraphicData.path = objectGraphic.path;
             objectGraphicData.iconId = objectGraphic.iconId;
 
+            objectGraphicData.height = objectGraphic.height;
+            objectGraphicData.width = objectGraphic.width;
+            objectGraphicData.depth = objectGraphic.depth;
+
             objectGraphicDataList.Add(objectGraphicData);
         }
     }
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal class ObjectGraphicData : GeneralData
@@ -75,5 +88,8 @@ public class ObjectGraphicDataManager : IDataManager
         public int iconId;
         public string name;
         public string path;
+        public float height;
+        public float width;
+        public float depth;
     }
 }

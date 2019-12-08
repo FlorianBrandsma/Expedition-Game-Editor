@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class NumberManager : MonoBehaviour, IOverlay
 {
@@ -26,9 +23,11 @@ public class NumberManager : MonoBehaviour, IOverlay
         listParent = listManager.listParent;
     }
 
-    public void ActivateOverlay(IOrganizer organizer, IList list)
+    public void ActivateOverlay(IOrganizer organizer)
     {
         int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
+
+        var list = (IList)organizer;
 
         Vector2 listSize = list.GetListSize(listCount, false);
 
@@ -73,17 +72,10 @@ public class NumberManager : MonoBehaviour, IOverlay
             horizontalParent.transform.localPosition = new Vector2(listParent.transform.localPosition.x, 0);
     }
 
-    public void CloseOverlay()
-    {
-        ResetText(numberListLocal);
-
-        DestroyImmediate(this);
-    }
-
     public void SetNumbers(RectTransform numberParent, int index, float new_position)
     {
         OverlayBorder overlayBorder = numberParent.GetComponent<OverlayBorder>();
-        
+
         Text newText = SpawnText(numberList);
         numberListLocal.Add(newText);
 
@@ -92,14 +84,14 @@ public class NumberManager : MonoBehaviour, IOverlay
 
         if (overlayBorder.vertical)
             newText.transform.localPosition = new Vector2(0, new_position);
-        
-        if(overlayBorder.horizontal)
-            newText.transform.localPosition = new Vector2(new_position, 0);  
+
+        if (overlayBorder.horizontal)
+            newText.transform.localPosition = new Vector2(new_position, 0);
     }
 
-    static public Text SpawnText(List<Text> list)
+    private Text SpawnText(List<Text> list)
     {
-        foreach(Text element in list)
+        foreach (Text element in list)
         {
             if (!element.gameObject.activeInHierarchy)
             {
@@ -116,7 +108,14 @@ public class NumberManager : MonoBehaviour, IOverlay
 
     public void ResetText(List<Text> list)
     {
-        foreach(Text element in list)
-            element.gameObject.SetActive(false);   
+        foreach (Text element in list)
+            element.gameObject.SetActive(false);
+    }
+
+    public void CloseOverlay()
+    {
+        ResetText(numberListLocal);
+
+        DestroyImmediate(this);
     }
 }

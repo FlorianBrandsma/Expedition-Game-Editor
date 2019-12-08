@@ -131,9 +131,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
-
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
     }
     
@@ -148,6 +145,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             case Enums.DataType.Item:           InitializeItemData();           break;
             case Enums.DataType.Interactable:   InitializeInteractableData();   break;
         }
+
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeItemData()
@@ -203,6 +203,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         selectionElement.SetElement();
+
+        selectionElement.SetOverlay();
 
         gameObject.SetActive(true);
     }

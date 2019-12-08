@@ -64,7 +64,11 @@ public class SceneInteractableDataManager : IDataManager
                         InteractableId = sceneInteractableData.interactableId,
 
                         interactableName = interactableData.name,
-                        objectGraphicIconPath = iconData.path
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -163,7 +167,10 @@ public class SceneInteractableDataManager : IDataManager
 
     internal void GetIconData()
     {
-        iconDataList = dataManager.GetIconData(objectGraphicDataList.Select(x => x.iconId).Distinct().ToList(), true);
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
     internal class SceneInteractableData : GeneralData

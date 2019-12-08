@@ -25,8 +25,6 @@ public class IndexSwitch : MonoBehaviour
 
         this.index = index;
 
-        var dataEditor = segment.DataEditor;
-
         dataElement = segment.DataEditor.Data.dataElement;
         dataList = segment.DataEditor.Data.dataController.DataList;
         
@@ -60,12 +58,11 @@ public class IndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-        var dataEditor = segment.DataEditor;
-        
+
         dataList.RemoveAt(dataElement.Index);
         dataList.Insert(index, dataElement);
 
-        dataEditor.Data.dataController.DataList = dataList;
+        segment.DataEditor.Data.dataController.DataList = dataList;
 
         for (int i = 0; i < dataList.Count; i++)
         {

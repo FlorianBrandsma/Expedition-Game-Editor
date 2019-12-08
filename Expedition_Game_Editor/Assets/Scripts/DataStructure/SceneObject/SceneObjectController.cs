@@ -42,6 +42,10 @@ public class SceneObjectController : MonoBehaviour, IDataController
                 sceneObjectData.objectGraphicIconPath = resultElementData.iconPath;
                 sceneObjectData.objectGraphicPath = resultElementData.Path;
 
+                sceneObjectData.height = resultElementData.Height;
+                sceneObjectData.width = resultElementData.Width;
+                sceneObjectData.depth = resultElementData.Depth;
+
                 break;
         }
     }

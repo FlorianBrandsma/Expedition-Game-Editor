@@ -13,25 +13,25 @@ public class TimeComponent : MonoBehaviour, IComponent
 
     Dropdown dropdown;
 
-    public void InitializeComponent(Path new_path)
+    public void InitializeComponent(Path path)
     {
-
+        EditorManager.editorManager.TimeManager.SetLighting();
     }
 
-    public void SetComponent(Path new_path)
+    public void SetComponent(Path path)
     {
         dropdown = ComponentManager.componentManager.AddDropdown(component);
 
-        dropdown.captionText.text = Enum.GetName(typeof(TimeManager.Time), TimeManager.active_time);
+        dropdown.captionText.text = Enum.GetName(typeof(TimeManager.Time), TimeManager.activeTime);
 
         foreach (var time in Enum.GetValues(typeof(TimeManager.Time)))
         {
             dropdown.options.Add(new Dropdown.OptionData(time.ToString()));
         }
 
-        dropdown.value = (int)TimeManager.active_time;
+        dropdown.value = (int)TimeManager.activeTime;
 
-        dropdown.onValueChanged.AddListener(delegate { TimeManager.SetTime(dropdown.value); });
+        dropdown.onValueChanged.AddListener(delegate { EditorManager.editorManager.TimeManager.SetTime((TimeManager.Time)dropdown.value); });
 
         SetImportComponent();
     }
@@ -42,7 +42,7 @@ public class TimeComponent : MonoBehaviour, IComponent
 
         button.onClick.RemoveAllListeners();
 
-        int import_time = (TimeManager.active_time == 0 ? 1 : 0);
+        int import_time = (TimeManager.activeTime == 0 ? 1 : 0);
 
         button.GetComponentInChildren<Text>().text = "Import " + Enum.GetName(typeof(TimeManager.Time), import_time);
     }

@@ -2566,10 +2566,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionElement: {fileID: 0}
   model: {fileID: 1000013231248294}
   mesh:
   - {fileID: 1000012207643262}
   - {fileID: 1000011225585672}
+  - {fileID: 1000011940017520}
   pivot: 3
   previewRotation: {x: 90, y: 0, z: 0}
   previewScale: {x: 50, y: 50, z: 50}

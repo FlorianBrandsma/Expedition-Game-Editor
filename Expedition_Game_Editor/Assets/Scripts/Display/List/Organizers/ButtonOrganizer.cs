@@ -83,6 +83,8 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         element.gameObject.SetActive(true);
 
         element.SetElement();
+
+        element.SetOverlay();
     }
 
     public Vector2 GetElementPosition(int index)

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 public class ListProperties : MonoBehaviour, IDisplay
 {
+    public Enums.DisplayType DisplayType { get { return Enums.DisplayType.List; } }
+
     [HideInInspector]
-    public DisplayManager.Type displayType;
+    public DisplayManager.Type elementType;
 
     public ListManager listManager;
 
@@ -53,7 +55,7 @@ public class ListProperties : MonoBehaviour, IDisplay
     private void InitializeProperties()
     {
         if (GetComponent<IProperties>() != null)
-            displayType = GetComponent<IProperties>().Type();
+            elementType = GetComponent<IProperties>().Type();
 
         listManager.InitializeList(this);
     }

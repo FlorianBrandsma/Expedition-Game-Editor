@@ -105,11 +105,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
-    }
+    public void InitializeSegment() { }
 
     public void InitializeData()
     {
@@ -127,6 +123,9 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             case Enums.DataType.Terrain:    InitializeTerrainData();    break;
             default: Debug.Log("CASE MISSING"); break;
         }
+
+        if (indexSwitch != null)
+            indexSwitch.InitializeSwitch(this, index);
     }
 
     private void InitializeChapterData()

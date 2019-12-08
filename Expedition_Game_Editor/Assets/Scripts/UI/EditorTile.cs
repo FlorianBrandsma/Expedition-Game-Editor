@@ -103,11 +103,8 @@ public class EditorTile : MonoBehaviour, IElement
     private void SetObjectGraphicElement()
     {
         var dataElement = (ObjectGraphicDataElement)Element.data.dataElement;
-
-        if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.iconPath;
-        else
-            iconPath = dataElement.originalIconPath;
+        
+        iconPath = dataElement.iconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

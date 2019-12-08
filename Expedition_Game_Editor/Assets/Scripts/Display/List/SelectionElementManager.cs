@@ -16,11 +16,8 @@ static public class SelectionElementManager
             if (element.disableSpawn) continue;
             if (element.gameObject.activeInHierarchy) continue;
 
-            if (!element.disableSpawn && !element.gameObject.activeInHierarchy)
-            {
-                InitializeElement(element, displayManager, selectionType, selectionProperty, parent);
-                return element;
-            }
+            InitializeElement(element, displayManager, selectionType, selectionProperty, parent);
+            return element;
         }
         
         SelectionElement newElement = Object.Instantiate(elementPrefab);
@@ -38,8 +35,7 @@ static public class SelectionElementManager
 
     static public void Add(SelectionElement selectionElement)
     {
-        if(selectionElement.selectionType != SelectionManager.Type.None)
-            elementPool.Add(selectionElement);
+        elementPool.Add(selectionElement);
     }
 
     static public void InitializeElement(SelectionElement element, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, Transform parent)
@@ -93,13 +89,15 @@ static public class SelectionElementManager
             element.CloseElement();
             element.GetComponent<IElement>().CloseElement();
             element.OnSelection.RemoveAllListeners();
-
+            
             if (element.elementStatus != Enums.ElementStatus.Enabled)
             {
                 element.elementStatus = Enums.ElementStatus.Enabled;
-                element.lockIcon.SetActive(false);
-            }
 
+                if(element.elementStatus == Enums.ElementStatus.Locked)
+                    element.lockIcon.SetActive(false);
+            }
+            
             if (element.child != null)
             {
                 element.child.gameObject.SetActive(false);

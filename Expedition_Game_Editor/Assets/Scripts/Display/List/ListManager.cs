@@ -31,7 +31,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         Display = listProperties;
         this.listProperties = listProperties;
         
-        switch(listProperties.displayType)
+        switch(listProperties.elementType)
         {
             case DisplayManager.Type.None:      organizer = null;                                           break;
             case DisplayManager.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
@@ -39,7 +39,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
             case DisplayManager.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
             case DisplayManager.Type.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
             case DisplayManager.Type.MultiGrid: organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
-            default: Debug.Log("CASE MISSING: " + listProperties.displayType);                              break;
+            default: Debug.Log("CASE MISSING: " + listProperties.elementType);                              break;
         }
 
         if (organizer == null) return;
@@ -74,7 +74,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         if (dataList.Count == 0) return;
         
-        overlayManager.ActivateOverlay(organizer, List);
+        overlayManager.ActivateOverlay(organizer);
 
         overlayManager.SetOverlaySize();
 
@@ -180,6 +180,4 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         transform.parent.gameObject.SetActive(false);
     }
-
-    public void CloseOrganizer() { }
 }
