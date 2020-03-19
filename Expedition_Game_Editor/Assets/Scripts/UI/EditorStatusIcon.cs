@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class EditorStatusIcon : MonoBehaviour
 {
+    public StatusIconManager statusIconManager;
+
     public StatusIconManager.StatusIconType statusIconType;
 
 	public Camera cam;
@@ -11,7 +13,6 @@ public class EditorStatusIcon : MonoBehaviour
     public Transform target;
     public Vector3 screenPos;
     public RectTransform parentRect;
-    float multiplier;
 
     #region Data Variables
     private float height, width, depth;
@@ -24,8 +25,6 @@ public class EditorStatusIcon : MonoBehaviour
 	public void UpdatePosition()
 	{
         InitializeData();
-
-        multiplier = (((parentRect.rect.width / (float)Screen.width)) * 2f) / ((parentRect.rect.width / EditorManager.UI.rect.width) * 2);
         
         switch (statusIconType)
         {
@@ -73,10 +72,10 @@ public class EditorStatusIcon : MonoBehaviour
 
     private void UpdateSelectionPosition()
     {
-        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, target.position.y + height, cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * multiplier;
-        
-        var heightCap = (parentRect.rect.height / 2 - RectTransform.rect.height);
-        var widthCap  = (parentRect.rect.width  / 2 - RectTransform.rect.width);
+        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, target.position.y + height, cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
+
+        var widthCap = statusIconManager.WidthCap;
+        var heightCap = statusIconManager.HeightCap;
         
         transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 
@@ -95,7 +94,7 @@ public class EditorStatusIcon : MonoBehaviour
 
     private void UpdateLockPosition()
     {
-        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, target.position.y + (height / 2), cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * multiplier;
+        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, target.position.y + (height / 2), cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
 
         transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
     }

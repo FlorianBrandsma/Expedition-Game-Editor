@@ -56,7 +56,7 @@ LightmapSettings:
     serializedVersion: 4
     m_Resolution: 2
     m_BakeResolution: 40
-    m_TextureWidth: 1024
+    m_TextureWidth: 64
     m_TextureHeight: 1024
     m_AO: 0
     m_AOMaxDistance: 1
@@ -1252,116 +1252,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutDependency: {fileID: 0}
---- !u!1001 &35370239
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1145896436}
-    m_Modifications:
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000013857254380, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 180582706}
-    - target: {fileID: 114000013857254380, guid: e876c21beb52d21498aecce91c91a551,
-        type: 2}
-      propertyPath: parentRect
-      value: 
-      objectReference: {fileID: 2132140415}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: e876c21beb52d21498aecce91c91a551, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &41445482
 Prefab:
   m_ObjectHideFlags: 0
@@ -4990,9 +4880,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.0825
-    width: 1
-    height: 0.855
+    y: 0.085
+    width: 0
+    height: 0.8525
   near clip plane: 0.01
   far clip plane: 50
   field of view: 60
@@ -6206,8 +6096,8 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 0.50102246
-      value: 0.00000011920929
+    - time: 0.5
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -9144,11 +9034,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 72841477}
   m_Script: {fileID: 853051423, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
---- !u!224 &349066058 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224000010336057296, guid: e876c21beb52d21498aecce91c91a551,
-    type: 2}
-  m_PrefabInternal: {fileID: 35370239}
 --- !u!224 &352492145 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000012151473904, guid: 1280af98e3595384ba80db985c15c225,
@@ -27311,8 +27196,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 349066058}
+  m_Children: []
   m_Father: {fileID: 1539706318}
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
@@ -29713,6 +29597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 180582706}
   content: {fileID: 1093493482}
+  overlayParent: {fileID: 1145896436}
   overlayManager: {fileID: 233668293}
   cameraParent: {fileID: 912358544}
   displayRect: {fileID: 97059932}
@@ -36864,6 +36749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1311520404}
   content: {fileID: 1205496844}
+  overlayParent: {fileID: 0}
   overlayManager: {fileID: 0}
   cameraParent: {fileID: 0}
   displayRect: {fileID: 97059932}
@@ -47852,7 +47738,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1926055398}
   m_Layer: 5
-  m_Name: Progress (parent)
+  m_Name: Stages (parent)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -22,7 +22,7 @@ public class EditorController : MonoBehaviour
         InitializeSegments();
 
         if (PathController.DataEditor == null) return;
-        
+
         PathController.DataEditor.Loaded = true;
     }
     

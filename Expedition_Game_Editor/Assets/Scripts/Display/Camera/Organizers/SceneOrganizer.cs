@@ -14,6 +14,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
     public SceneDataElement.TerrainData activeTerrainData;
     private InteractionDataElement interactionData;
+    private SceneInteractableDataElement sceneInteractableData = new SceneInteractableDataElement();
     private SceneObjectDataElement sceneObjectData = new SceneObjectDataElement();
     private List<IDataElement> dataList;
 
@@ -77,9 +78,16 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         InitializeControllers();
 
         sceneData = (SceneDataElement)DataController.DataList.FirstOrDefault();
+        
+        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.Interaction);
 
-        GetSelectedInteraction(DataController.SegmentController.Path);
-        GetSelectedSceneObject(DataController.SegmentController.MainPath);
+        //Only get other data if no interaction was selected. Technically both could be selected,
+        //but this is never necessary and so the scene object won't stay active
+        if(interactionData == null)
+        {
+            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.SceneInteractable);
+            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.SceneObject);
+        }
         
         tileBoundSize = new Vector3(sceneData.tileSize, 0, sceneData.tileSize) * 3;
 
@@ -88,22 +96,34 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         SetRegionSize();
     }
 
-    private void GetSelectedInteraction(Path path)
+    private void GetSelectedElement(Path path, Enums.DataType dataType)
     {
-        var interactionRoute = path.FindLastRoute(Enums.DataType.Interaction);
+        //Get selected elements from all paths
+        var paths = EditorManager.editorManager.forms.Select(x => x.activePath).ToList();
+        var route = paths.Select(x => x.FindLastRoute(dataType)).Where(x => x != null).FirstOrDefault();
+        
+        if (route == null) return;
 
-        if (interactionRoute == null) return;
+        switch (dataType)
+        {
+            case Enums.DataType.SceneInteractable:
 
-        interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == interactionRoute.GeneralData.Id)).FirstOrDefault();
-    }
+                sceneInteractableData = sceneData.terrainDataList.SelectMany(x => x.sceneInteractableDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
 
-    private void GetSelectedSceneObject(Path path)
-    {
-        var sceneObjectRoute = path.FindLastRoute(Enums.DataType.SceneObject);
+                break;
 
-        if (sceneObjectRoute == null) return;
+            case Enums.DataType.Interaction:
+                
+                interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
 
-        sceneObjectData = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => y.Id == sceneObjectRoute.GeneralData.Id)).FirstOrDefault();
+                break;
+
+            case Enums.DataType.SceneObject:
+
+                sceneObjectData = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
+
+                break;
+        }
     }
 
     private void InitializeControllers()
@@ -148,9 +168,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             sceneInteractableController.DataList.Clear();
             interactionController.DataList.Clear();
             sceneObjectController.DataList.Clear();
-            
+
             SetData();
-            
+
             dataSet = true;
         }
     }
@@ -196,9 +216,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         foreach (SceneDataElement.TerrainData terrainData in sceneData.terrainDataList)
         {
             SetTerrain(terrainData);
-
-            sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0).Cast<IDataElement>());
+            
             interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
+            sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0 || x.Id == sceneInteractableData.Id).Cast<IDataElement>());
             sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0 || x.Id == sceneObjectData.Id).Cast<IDataElement>());
         }
 
@@ -254,8 +274,8 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                 tile.transform.SetParent(CameraManager.content.transform, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
                 
-                sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).Cast<IDataElement>());
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
+                sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id && x.Id != sceneInteractableData.Id).Cast<IDataElement>());
                 sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && x.Id != sceneObjectData.Id).Cast<IDataElement>());
 
                 tile.gameObject.SetActive(true);
@@ -356,7 +376,9 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         {
             element.elementStatus = Enums.ElementStatus.Unrelated;
             return;
-        } 
+        }
+
+        // ???: Same interactable belonging to a different objective (shouldn't be visible?)
     }
 
     private void SetSceneObjectStatus(SelectionElement element)
@@ -373,10 +395,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconManager>();
 
         if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
-            element.glow = statusIconManager.StatusIcon(CameraManager, element, StatusIconManager.StatusIconType.Selection);
+            element.glow = statusIconManager.StatusIcon(element, StatusIconManager.StatusIconType.Selection);
 
         if (element.elementStatus == Enums.ElementStatus.Locked)
-            element.lockIcon = statusIconManager.StatusIcon(CameraManager, element, StatusIconManager.StatusIconType.Lock);
+            element.lockIcon = statusIconManager.StatusIcon(element, StatusIconManager.StatusIconType.Lock);
     }
 
     private void SetElement(SelectionElement element)
@@ -388,8 +410,6 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
         InitializeStatusIconOverlay(element);
 
         element.SetOverlay();
-
-        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconManager>();
     }
     
     public void ResetData(List<IDataElement> filter)

@@ -27,7 +27,7 @@ static public class Fixtures
     static public int baseInteractions = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
-    static public int baseSceneObjects = 5;
+    static public int objectsInScene = 3;
 
     static public List<Icon> iconList = new List<Icon>();
     static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
@@ -568,6 +568,13 @@ static public class Fixtures
 
             /*Mage*/
             CreateSceneInteractable(5, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
+
+            var regionSize = GetRegionSize(region.Id);
+
+            for (int i = 3; i < objectsInScene; i++)
+            {
+                CreateSceneObject(Random.Range(16, 21), i, region.Id, new Vector3(Random.Range(0, (regionSize - 1)), Random.Range(0, (regionSize - 1)), 0f), new Vector3(0, 0, Random.Range(0, 359)));
+            }
         }
     }
 

@@ -9,13 +9,27 @@ public class StatusIconManager : MonoBehaviour, IOverlay
         Lock
     }
 
-    public Texture selectTexture;
-    public Texture lockTexture;
-    
     static public List<EditorStatusIcon> statusIconList = new List<EditorStatusIcon>();
 
+    public Texture selectTexture;
+    public Texture lockTexture;
+
+    private Vector2 iconSize = new Vector2(35, 35);
+
+    private CameraManager cameraManager;
+    
+    public float Multiplier { get; set; }
+    public float WidthCap { get; set; }
+    public float HeightCap  { get; set; }
+    
     public void InitializeOverlay(IDisplayManager displayManager)
     {
+        cameraManager = (CameraManager)displayManager;
+
+        Multiplier  = (((cameraManager.displayRect.rect.width / Screen.width)) * 2f) / ((cameraManager.displayRect.rect.width / EditorManager.UI.rect.width) * 2);
+        WidthCap    = (cameraManager.displayRect.rect.width / 2 - iconSize.x);
+        HeightCap   = (cameraManager.displayRect.rect.height / 2 - iconSize.y);
+        
         selectTexture   = Resources.Load<Texture>("Textures/Icons/Status/SelectIcon");
         lockTexture     = Resources.Load<Texture>("Textures/Icons/Status/LockIcon");
     }
@@ -32,14 +46,18 @@ public class StatusIconManager : MonoBehaviour, IOverlay
         statusIconList.ForEach(x => x.UpdatePosition());
     }
 
-    public GameObject StatusIcon(CameraManager cameraManager, SelectionElement target, StatusIconType statusIconType)
+    public GameObject StatusIcon(SelectionElement target, StatusIconType statusIconType)
     {
-        var statusIcon = SpawnStatusIcon(cameraManager.content);
+        var statusIcon = SpawnStatusIcon(cameraManager.overlayParent);
         
         statusIcon.cam = cameraManager.cam;
         statusIcon.targetDataElement = target.data.dataElement;
         statusIcon.target = target.transform;
         statusIcon.parentRect = cameraManager.displayRect;
+
+        statusIcon.RectTransform.sizeDelta = new Vector2(iconSize.x, iconSize.y);
+
+        statusIcon.statusIconManager = this;
 
         statusIcon.statusIconType = statusIconType;
 
@@ -82,7 +100,7 @@ public class StatusIconManager : MonoBehaviour, IOverlay
 
         newStatusIcon.transform.SetParent(parentRect);
         newStatusIcon.transform.localEulerAngles = Vector3.zero;
-
+        
         return newStatusIcon;
     }
 

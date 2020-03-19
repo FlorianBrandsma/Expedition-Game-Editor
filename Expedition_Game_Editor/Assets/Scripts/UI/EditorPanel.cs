@@ -352,7 +352,7 @@ public class EditorPanel : MonoBehaviour, IElement
         header = string.Empty;
 
         idText.text = string.Empty;
-
+        
         if (descriptionText != null)
         {
             descriptionText.text = string.Empty;

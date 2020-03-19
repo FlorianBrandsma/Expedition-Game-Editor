@@ -151,8 +151,11 @@ public class EditorForm : MonoBehaviour
 
     private bool MatchPrevious(EditorSection editorSection)
     {
-        if (editorSection.previousDataSource == null) return true;
+        if (editorSection.previousEditor == null) return true;
 
+        if (editorSection.previousEditor != editorSection.dataEditor)
+            return false;
+        
         return ((GeneralData)editorSection.previousDataSource).Equals((GeneralData)editorSection.dataEditor.Data.dataElement);
     }
 

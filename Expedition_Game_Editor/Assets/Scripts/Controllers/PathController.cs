@@ -134,6 +134,7 @@ public class PathController : MonoBehaviour
     {
         if (editorSection.dataEditor == null) return;
 
+        editorSection.previousEditor = editorSection.dataEditor;
         editorSection.previousDataSource = editorSection.dataEditor.Data.dataElement;
         editorSection.previousDataElements = editorSection.dataEditor.DataElements.ToList();
     }

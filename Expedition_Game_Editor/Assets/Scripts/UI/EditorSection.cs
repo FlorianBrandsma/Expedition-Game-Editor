@@ -52,6 +52,7 @@ public class EditorSection : MonoBehaviour
     public IEditor dataEditor;
 
     //Previous data editor
+    public IEditor previousEditor;
     public IDataElement previousDataSource;
     public List<IDataElement> previousDataElements;
     //

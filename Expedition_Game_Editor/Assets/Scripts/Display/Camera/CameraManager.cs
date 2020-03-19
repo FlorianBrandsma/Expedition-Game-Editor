@@ -12,6 +12,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public Camera cam;
     public RectTransform content;
+    public RectTransform overlayParent;
 
     public OverlayManager overlayManager;
 
@@ -137,6 +138,14 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 break;
 
+            case Enums.DataType.SceneInteractable:
+
+                var sceneInteractableData = (SceneInteractableDataElement)dataElement;
+
+                elementPosition = new Vector3(sceneInteractableData.positionX, sceneInteractableData.positionY, sceneInteractableData.positionZ);
+                
+                break;
+
             case Enums.DataType.SceneObject:
 
                 var sceneObjectData = (SceneObjectDataElement)dataElement;
@@ -155,7 +164,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         {
             cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);
             organizer.UpdateData();
-        }  
+        }
     }
 
     public void ClearCamera()

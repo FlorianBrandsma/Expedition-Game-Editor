@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &114000013847368354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusIconType: 0
   cam: {fileID: 0}
-  targetPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 0}
   screenPos: {x: 0, y: 0, z: 0}
   parentRect: {fileID: 0}
 --- !u!222 &222000011793801788
