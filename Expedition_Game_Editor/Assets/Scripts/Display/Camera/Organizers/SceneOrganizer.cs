@@ -13,9 +13,11 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     private Plane[] planes;
 
     public SceneDataElement.TerrainData activeTerrainData;
+
     private InteractionDataElement interactionData;
-    private SceneInteractableDataElement sceneInteractableData = new SceneInteractableDataElement();
-    private SceneObjectDataElement sceneObjectData = new SceneObjectDataElement();
+    private List<SceneInteractableDataElement> sceneInteractableData = new List<SceneInteractableDataElement>();
+    private List<SceneObjectDataElement> sceneObjectData = new List<SceneObjectDataElement>();
+
     private List<IDataElement> dataList;
 
     private SceneDataElement sceneData;
@@ -83,7 +85,7 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
 
         //Only get other data if no interaction was selected. Technically both could be selected,
         //but this is never necessary and so the scene object won't stay active
-        if(interactionData == null)
+        if (interactionData == null)
         {
             GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.SceneInteractable);
             GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.SceneObject);
@@ -100,27 +102,27 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
     {
         //Get selected elements from all paths
         var paths = EditorManager.editorManager.forms.Select(x => x.activePath).ToList();
-        var route = paths.Select(x => x.FindLastRoute(dataType)).Where(x => x != null).FirstOrDefault();
+        var routes = paths.Select(x => x.FindLastRoute(dataType)).Where(x => x != null).ToList();
         
-        if (route == null) return;
+        if (routes == null) return;
 
         switch (dataType)
         {
             case Enums.DataType.SceneInteractable:
 
-                sceneInteractableData = sceneData.terrainDataList.SelectMany(x => x.sceneInteractableDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
+                sceneInteractableData = sceneData.terrainDataList.SelectMany(x => x.sceneInteractableDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
 
                 break;
 
             case Enums.DataType.Interaction:
                 
-                interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
+                interactionData = sceneData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).FirstOrDefault();
 
                 break;
 
             case Enums.DataType.SceneObject:
 
-                sceneObjectData = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => y.Id == route.GeneralData.Id)).FirstOrDefault();
+                sceneObjectData = sceneData.terrainDataList.SelectMany(x => x.sceneObjectDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
 
                 break;
         }
@@ -218,8 +220,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
             SetTerrain(terrainData);
             
             interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
-            sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0 || x.Id == sceneInteractableData.Id).Cast<IDataElement>());
-            sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0 || x.Id == sceneObjectData.Id).Cast<IDataElement>());
+
+            sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == 0 || sceneInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+
+            sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == 0 || sceneObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
         }
 
         //Extract interactions that will be obtained by the region navigation dropdown.
@@ -275,8 +279,10 @@ public class SceneOrganizer : MonoBehaviour, IOrganizer
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
                 
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
-                sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id && x.Id != sceneInteractableData.Id).Cast<IDataElement>());
-                sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && x.Id != sceneObjectData.Id).Cast<IDataElement>());
+
+                sceneInteractableController.DataList.AddRange(terrainData.sceneInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id && !sceneInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+
+                sceneObjectController.DataList.AddRange(terrainData.sceneObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && !sceneObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
                 tile.gameObject.SetActive(true);
             }
