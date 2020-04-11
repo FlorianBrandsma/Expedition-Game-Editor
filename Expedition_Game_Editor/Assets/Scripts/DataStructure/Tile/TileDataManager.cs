@@ -27,8 +27,6 @@ public class TileDataManager : IDataManager
 
                     select new TileDataElement()
                     {
-                        DataType = Enums.DataType.Tile,
-
                         Id = tileData.Id,
                         Index = tileData.Index,
 

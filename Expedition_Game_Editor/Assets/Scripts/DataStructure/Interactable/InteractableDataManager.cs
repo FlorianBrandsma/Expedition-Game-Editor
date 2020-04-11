@@ -38,8 +38,6 @@ public class InteractableDataManager : IDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new InteractableDataElement()
                     {
-                        DataType = Enums.DataType.Interactable,
-
                         Id      = interactableData.Id,
                         Index   = interactableData.Index,
 

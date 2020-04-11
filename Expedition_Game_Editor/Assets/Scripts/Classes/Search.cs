@@ -133,7 +133,7 @@ public class Search
     {
         public List<int> phaseId = new List<int>();
         public List<int> questId = new List<int>();
-        public List<int> sceneInteractableId = new List<int>();
+        public List<int> worldInteractableId = new List<int>();
 
         public enum RequestType
         {
@@ -176,11 +176,23 @@ public class Search
     }
 
     [System.Serializable]
-    public class Interaction : SearchParameters
+    public class Task : SearchParameters
     {
         public List<int> index = new List<int>();
         public List<int> objectiveId = new List<int>();
-        public List<int> sceneInteractableId = new List<int>();
+        public List<int> worldInteractableId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+    }
+
+    [System.Serializable]
+    public class Interaction : SearchParameters
+    {
+        public List<int> index = new List<int>();
+        public List<int> taskId = new List<int>();
         public List<int> regionId = new List<int>();
 
         public enum RequestType
@@ -192,7 +204,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class Scene : SearchParameters
+    public class World : SearchParameters
     {
         public List<int> regionId = new List<int>();
         public List<int> objectiveId = new List<int>();
@@ -211,6 +223,19 @@ public class Search
         public List<int> index = new List<int>();
         public List<int> phaseId = new List<int>();
         public List<string> name = new List<string>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    [System.Serializable]
+    public class Atmosphere : SearchParameters
+    {
+        public List<int> terrainId = new List<int>();
 
         public enum RequestType
         {
@@ -252,7 +277,7 @@ public class Search
     }
 
     [System.Serializable]
-    public class SceneObject : SearchParameters
+    public class WorldObject : SearchParameters
     {
         public List<int> regionId = new List<int>();
 
@@ -264,7 +289,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class SceneInteractable : SearchParameters
+    public class WorldInteractable : SearchParameters
     {
         public List<int> regionId = new List<int>();
         public List<int> chapterId = new List<int>();

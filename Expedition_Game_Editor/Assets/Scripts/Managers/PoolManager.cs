@@ -7,7 +7,7 @@ static public class PoolManager
 {
     public enum PoolType
     {
-        SceneInteractable,
+        WorldInteractable,
         ObjectGraphic,
         Tile
     }

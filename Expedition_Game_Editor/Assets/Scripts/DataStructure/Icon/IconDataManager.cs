@@ -22,8 +22,6 @@ public class IconDataManager : IDataManager
         var list = (from iconData in iconDataList
                     select new IconDataElement()
                     {
-                        DataType = Enums.DataType.Icon,
-
                         Id = iconData.Id,
                         Index = iconData.Index,
 

@@ -8,7 +8,6 @@ public class SearchController : MonoBehaviour
     private Route.Data data;
 
     public RectTransform referenceArea;
-    public bool enableIcon;
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -22,46 +21,47 @@ public class SearchController : MonoBehaviour
         
         var searchParameters = data.searchParameters.Cast<SearchParameters>().FirstOrDefault();
 
-        InitializeListProperties(searchParameters.elementType);
-        InitializeDataController(searchParameters.dataType);
+        InitializeListProperties(searchParameters);
+        InitializeDataController(searchParameters);
     }
 
-    private void InitializeListProperties(Enums.ElementType elementType)
+    private void InitializeListProperties(SearchParameters searchParameters)
     {
-        switch(elementType)
+        switch(searchParameters.elementType)
         {
             case Enums.ElementType.Panel: case Enums.ElementType.CompactPanel:
 
                 PanelProperties panelProperties = gameObject.AddComponent<PanelProperties>();
-                panelProperties.elementType = elementType;
+                panelProperties.elementType = searchParameters.elementType;
                 panelProperties.referenceArea = referenceArea;
-                panelProperties.icon = enableIcon;
+                panelProperties.iconType = searchParameters.iconType;
 
                 break;
 
             case Enums.ElementType.Tile: case Enums.ElementType.CompactTile:
 
                 TileProperties tileProperties = gameObject.AddComponent<TileProperties>();
-                tileProperties.elementType = elementType;
+                tileProperties.elementType = searchParameters.elementType;
 
                 break;
 
-            default: Debug.Log("CASE MISSING:" + elementType); break;
+            default: Debug.Log("CASE MISSING:" + searchParameters.elementType); break;
         }
     }
 
-    private void InitializeDataController(Enums.DataType dataType)
+    private void InitializeDataController(SearchParameters searchParameters)
     {
-        IDataController dataController;
+        IDataController dataController = null;
 
-        switch (dataType)
+        switch (searchParameters.dataType)
         {
             case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileController>();             break;
             case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconController>();             break;
             case Enums.DataType.ObjectGraphic:  dataController = gameObject.AddComponent<ObjectGraphicController>();    break;
             case Enums.DataType.Interactable:   dataController = gameObject.AddComponent<InteractableController>();     break;
             case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionController>();           break;
-            default:                            dataController = null; Debug.Log("CASE MISSING:" + dataType);           break;
+
+            default: Debug.Log("CASE MISSING:" + searchParameters.dataType); break;
         }
 
         dataController.SearchParameters = data.searchParameters;

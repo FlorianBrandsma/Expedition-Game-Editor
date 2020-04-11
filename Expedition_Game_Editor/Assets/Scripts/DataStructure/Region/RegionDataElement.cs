@@ -7,11 +7,18 @@ public class RegionDataElement : RegionCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public RegionDataElement() : base() { }
+    public RegionDataElement() : base()
+    {
+        DataType = Enums.DataType.Region;
+    }
 
-    public SceneDataElement sceneDataElement;
+    public WorldDataElement worldDataElement;
 
     public Enums.RegionType type;
+
+    public string tileIconPath;
+
+    public string originalTileIconPath;
 
     public override void Update()
     {
@@ -24,28 +31,48 @@ public class RegionDataElement : RegionCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
+
+        originalTileIconPath = tileIconPath;
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
+    public new void GetOriginalValues()
+    {
+        tileIconPath = originalTileIconPath;
+    }
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new RegionDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var regionDataSource = (RegionDataElement)dataSource;
+
+        worldDataElement = regionDataSource.worldDataElement;
+
+        type = regionDataSource.type;
+
+        tileIconPath = regionDataSource.tileIconPath;
+
+        SetOriginalValues();
     }
 }

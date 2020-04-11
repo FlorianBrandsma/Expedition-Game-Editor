@@ -6,9 +6,13 @@ public class TileDataElement : TileCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public TileDataElement() : base() { }
+    public TileDataElement() : base()
+    {
+        DataType = Enums.DataType.Tile;
+    }
 
     public string icon;
+
     public string originalIcon;
 
     public override void Update()
@@ -22,8 +26,6 @@ public class TileDataElement : TileCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -33,17 +35,30 @@ public class TileDataElement : TileCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new TileDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var tileDataSource = (TileDataElement)dataSource;
+
+        icon = tileDataSource.icon;
+
+        SetOriginalValues();
     }
 }

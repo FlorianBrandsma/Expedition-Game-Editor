@@ -37,21 +37,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    var itemDataList = DataEditor.DataList.Cast<ItemDataElement>().ToList();
-                    itemDataList.ForEach(itemData =>
-                    {
-                        itemData.Name = value;
-                    });
+                    var itemData = (ItemDataElement)DataEditor.Data.dataElement;
+
+                    itemData.Name = value;
 
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableDataList = DataEditor.DataList.Cast<InteractableDataElement>().ToList();
-                    interactableDataList.ForEach(interactableData =>
-                    {
-                        interactableData.Name = value;
-                    });
+                    var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
+
+                    interactableData.Name = value;
 
                     break;
             }
@@ -62,34 +58,30 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         set
         {
-            objectGraphicId    = value.Id;
-            objectGraphicPath  = value.Path;
-            objectGraphicIconPath  = value.iconPath;
+            objectGraphicId         = value.Id;
+            objectGraphicPath       = value.Path;
+            objectGraphicIconPath   = value.iconPath;
 
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
 
-                    var itemDataList = DataEditor.DataList.Cast<ItemDataElement>().ToList();
-                    itemDataList.ForEach(itemData => 
-                    {
-                        itemData.ObjectGraphicId = value.Id;
-                        itemData.objectGraphicPath = value.Path;
-                        itemData.objectGraphicIconPath = value.iconPath;
-                    });
-                    
+                    var itemData = (ItemDataElement)DataEditor.Data.dataElement;
+
+                    itemData.ObjectGraphicId        = value.Id;
+                    itemData.objectGraphicPath      = value.Path;
+                    itemData.objectGraphicIconPath  = value.iconPath;
+
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableDataList = DataEditor.DataList.Cast<InteractableDataElement>().ToList();
-                    interactableDataList.ForEach(interactableData =>
-                    {
-                        interactableData.ObjectGraphicId = value.Id;
-                        interactableData.objectGraphicPath = value.Path;
-                        interactableData.objectGraphicIconPath = value.iconPath;
-                    });
+                    var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
 
+                    interactableData.ObjectGraphicId = value.Id;
+                    interactableData.objectGraphicPath = value.Path;
+                    interactableData.objectGraphicIconPath = value.iconPath;
+                    
                     break;
             }
         }
@@ -132,6 +124,13 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
+
+        var objectGraphicDataElement = new ObjectGraphicDataElement();
+        
+        objectGraphicDataElement.SelectionElement = selectionElement;
+
+        selectionElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
+        selectionElement.data.dataElement = objectGraphicDataElement;
     }
     
     public void InitializeData()
@@ -189,21 +188,15 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         inputField.text = assetName;
 
-        var objectGraphicDataElement    = new ObjectGraphicDataElement();
+        var objectGraphicDataElement = (ObjectGraphicDataElement)selectionElement.data.dataElement;
 
         objectGraphicDataElement.Id         = objectGraphicId;
         objectGraphicDataElement.Path       = objectGraphicPath;
         objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
-        objectGraphicDataElement.SelectionElement = selectionElement;
-
-        selectionElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
-        selectionElement.data.dataElement = objectGraphicDataElement;
-
         SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         selectionElement.SetElement();
-
         selectionElement.SetOverlay();
 
         gameObject.SetActive(true);

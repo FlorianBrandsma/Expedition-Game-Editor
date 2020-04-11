@@ -7,7 +7,7 @@ public class TerrainInfoManager : MonoBehaviour, IOverlay
     static public List<Text> textList = new List<Text>();
     private Text terrainInfoText;
 
-    private SceneOrganizer sceneOrganizer;
+    private WorldOrganizer worldOrganizer;
 
     private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
 
@@ -18,7 +18,7 @@ public class TerrainInfoManager : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer)
     {
-        sceneOrganizer = (SceneOrganizer)organizer;
+        worldOrganizer = (WorldOrganizer)organizer;
 
         terrainInfoText = SpawnText();
 
@@ -38,7 +38,7 @@ public class TerrainInfoManager : MonoBehaviour, IOverlay
 
     private void SetText()
     {
-        terrainInfoText.text = sceneOrganizer.activeTerrainData.name;
+        terrainInfoText.text = worldOrganizer.activeTerrainData.name;
     }
 
     private Text SpawnText()

@@ -22,15 +22,13 @@ public class ObjectiveDataManager : IDataManager
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveDataElement()
                     {
-                        DataType = Enums.DataType.Objective,
-
                         Id = objectiveData.Id,
                         Index = objectiveData.Index,
 
                         QuestId = objectiveData.questId,
                         Name = objectiveData.name,
                         Journal = objectiveData.journal,
-                        Notes = objectiveData.notes
+                        PublicNotes = objectiveData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -56,7 +54,7 @@ public class ObjectiveDataManager : IDataManager
             objectiveData.questId = objective.questId;
             objectiveData.name = objective.name;
             objectiveData.journal = objective.journal;
-            objectiveData.notes = objective.notes;
+            objectiveData.notes = objective.publicNotes;
 
             objectiveDataList.Add(objectiveData);
         }

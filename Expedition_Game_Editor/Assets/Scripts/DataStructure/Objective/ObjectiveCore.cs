@@ -4,28 +4,36 @@ using System.Linq;
 public class ObjectiveCore : GeneralData
 {
     private int questId;
+
     private string name;
     private string journal;
-    private string notes;
 
+    private string publicNotes;
+    private string privateNotes;
+
+    //Original
     public string originalName;
     public string originalJournal;
-    public string originalNotes;
 
+    public string originalPublicNotes;
+    public string originalPrivateNotes;
+
+    //Changed
     private bool changedName;
     private bool changedJournal;
-    private bool changedNotes;
+
+    private bool changedPublicNotes;
+    private bool changedPrivateNotes;
 
     public bool Changed
     {
         get
         {
-            return changedName || changedJournal || changedNotes;
+            return changedName || changedJournal || changedPublicNotes || changedPrivateNotes;
         }
     }
 
     #region Properties
-
     public int QuestId
     {
         get { return questId; }
@@ -58,23 +66,34 @@ public class ObjectiveCore : GeneralData
         }
     }
 
-    public string Notes
+    public string PublicNotes
     {
-        get { return notes; }
+        get { return publicNotes; }
         set
         {
-            if (value == notes) return;
+            if (value == publicNotes) return;
 
-            changedNotes = (value != originalNotes);
+            changedPublicNotes = (value != originalPublicNotes);
 
-            notes = value;
+            publicNotes = value;
         }
     }
 
+    public string PrivateNotes
+    {
+        get { return privateNotes; }
+        set
+        {
+            if (value == privateNotes) return;
+
+            changedPrivateNotes = (value != originalPrivateNotes);
+
+            privateNotes = value;
+        }
+    }
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -87,8 +106,11 @@ public class ObjectiveCore : GeneralData
         if (changedJournal)
             objectiveData.journal = journal;
 
-        if (changedNotes)
-            objectiveData.notes = notes;
+        if (changedPublicNotes)
+            objectiveData.publicNotes = publicNotes;
+
+        if (changedPrivateNotes)
+            objectiveData.privateNotes = privateNotes;
     }
 
     public void UpdateSearch() { }
@@ -108,14 +130,16 @@ public class ObjectiveCore : GeneralData
     {
         originalName = name;
         originalJournal = journal;
-        originalNotes = notes;
+        originalPublicNotes = publicNotes;
+        originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
     {
         name = originalName;
         journal = originalJournal;
-        notes = originalNotes;
+        publicNotes = originalPublicNotes;
+        privateNotes = originalPrivateNotes;
     }
 
     public virtual void ClearChanges()
@@ -124,10 +148,23 @@ public class ObjectiveCore : GeneralData
 
         changedName = false;
         changedJournal = false;
-        changedNotes = false;
+        changedPublicNotes = false;
+        changedPrivateNotes = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var objectiveDataSource = (ObjectiveDataElement)dataSource;
+
+        questId = objectiveDataSource.questId;
+
+        name = objectiveDataSource.name;
+        journal = objectiveDataSource.journal;
+
+        publicNotes = objectiveDataSource.publicNotes;
+        privateNotes = objectiveDataSource.privateNotes;
+    }
 }

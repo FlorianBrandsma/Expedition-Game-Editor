@@ -27,15 +27,13 @@ public class PhaseDataManager : IDataManager
         var list = (from phaseData in phaseDataList
                     select new PhaseDataElement()
                     {
-                        DataType = Enums.DataType.Phase,
-
                         Id = phaseData.Id,
                         Index = phaseData.Index,
 
                         ChapterId = phaseData.chapterId,
 
                         Name = phaseData.name,
-                        Notes = phaseData.notes
+                        PublicNotes = phaseData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -60,7 +58,7 @@ public class PhaseDataManager : IDataManager
 
             phaseData.chapterId = phase.chapterId;
             phaseData.name = phase.name;
-            phaseData.notes = phase.notes;
+            phaseData.notes = phase.publicNotes;
 
             phaseDataList.Add(phaseData);
         }

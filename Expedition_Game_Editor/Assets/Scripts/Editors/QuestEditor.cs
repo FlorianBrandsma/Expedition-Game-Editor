@@ -62,7 +62,7 @@ public class QuestEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(QuestData))
-                x.SetOriginalValues();
+                x.Copy(QuestData);
             else
                 x.Update();
 

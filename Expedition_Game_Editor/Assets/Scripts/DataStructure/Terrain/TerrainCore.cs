@@ -5,14 +5,17 @@ public class TerrainCore : GeneralData
 {
     private int regionId;
     private int iconId;
+
     private string name;
 
-    public int originalRegionId;
+    //Original
     public int originalIconId;
+
     public string originalName;
 
-    private bool changedRegionId;
+    //Changed
     private bool changedIconId;
+
     private bool changedName;
 
     public bool Changed
@@ -24,18 +27,10 @@ public class TerrainCore : GeneralData
     }
 
     #region Properties
-
     public int RegionId
     {
         get { return regionId; }
-        set
-        {
-            if (value == regionId) return;
-
-            changedRegionId = (value != originalRegionId);
-
-            regionId = value;
-        }
+        set { regionId = value; }
     }
 
     public int IconId
@@ -63,11 +58,9 @@ public class TerrainCore : GeneralData
             name = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -88,13 +81,15 @@ public class TerrainCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalName = Name;
+
         originalIconId = IconId;
     }
 
     public void GetOriginalValues()
     {
-        Name = originalName;
-        IconId = originalIconId;
+        name = originalName;
+
+        iconId = originalIconId;
     }
 
     public virtual void ClearChanges()
@@ -102,10 +97,20 @@ public class TerrainCore : GeneralData
         GetOriginalValues();
 
         changedIconId = false;
+
         changedName = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var terrainDataSource = (TerrainDataElement)dataSource;
+
+        regionId = terrainDataSource.regionId;
+        iconId = terrainDataSource.iconId;
+
+        name = terrainDataSource.name;
+    }
 }

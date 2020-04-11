@@ -6,7 +6,10 @@ public class PhaseInteractableDataElement : PhaseInteractableCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public PhaseInteractableDataElement() : base() { }
+    public PhaseInteractableDataElement() : base()
+    {
+        DataType = Enums.DataType.PhaseInteractable;
+    }
 
     public Enums.ElementStatus elementStatus;
 
@@ -27,8 +30,6 @@ public class PhaseInteractableDataElement : PhaseInteractableCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         originalInteractableName = interactableName;
@@ -45,17 +46,33 @@ public class PhaseInteractableDataElement : PhaseInteractableCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new PhaseInteractableDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var phaseInteractableDataSource = (PhaseInteractableDataElement)dataSource;
+
+        elementStatus = phaseInteractableDataSource.elementStatus;
+
+        interactableName = phaseInteractableDataSource.interactableName;
+        objectGraphicIcon = phaseInteractableDataSource.objectGraphicIcon;
+
+        SetOriginalValues();
     }
 }

@@ -144,7 +144,7 @@ public class PathController : MonoBehaviour
         if (step < path.route.Count)
             controllers[path.route[step].controller].GetComponents(path);
 
-        return GetComponents<IComponent>().Count() > 0;
+        return GetComponents<IAction>().Count() > 0;
     }
 
     public void SetSubControllers(Path path)
@@ -158,19 +158,19 @@ public class PathController : MonoBehaviour
 
     private void InitializeComponents(Path path)
     {
-        foreach (IComponent component in GetComponents<IComponent>())
-            component.InitializeComponent(path);
+        foreach (IAction action in GetComponents<IAction>())
+            action.InitializeAction(path);
     }
 
-    public bool SetComponents(Path path)
+    public bool SetActions(Path path)
     {
-        foreach (IComponent component in GetComponents<IComponent>())
-            component.SetComponent(path);
+        foreach (IAction action in GetComponents<IAction>())
+            action.SetAction(path);
 
         if (step < path.route.Count)
-            controllers[path.route[step].controller].SetComponents(path);
+            controllers[path.route[step].controller].SetActions(path);
 
-        return GetComponents<IComponent>().Count() > 0;
+        return GetComponents<IAction>().Count() > 0;
     }
 
     void InitializeTabs(Path path)
@@ -194,8 +194,8 @@ public class PathController : MonoBehaviour
 
     public void ClosePath(Path path)
     {
-        foreach (IComponent component in GetComponents<IComponent>())
-            component.CloseComponent();
+        foreach (IAction action in GetComponents<IAction>())
+            action.CloseAction();
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].ClosePath(path);

@@ -76,6 +76,8 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
 
         SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+
+        RegionDataElement.tileIconPath = SegmentController.DataController.DataList.Cast<TileDataElement>().First().icon;
     }
 
     private void SetDisplay()

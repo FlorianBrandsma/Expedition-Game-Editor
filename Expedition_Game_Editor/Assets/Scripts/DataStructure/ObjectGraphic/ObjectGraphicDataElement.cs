@@ -6,10 +6,12 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public ObjectGraphicDataElement() : base() { }
+    public ObjectGraphicDataElement() : base()
+    {
+        DataType = Enums.DataType.ObjectGraphic;
+    }
 
     public int category;
-
     public string iconPath;
 
     public override void Update()
@@ -23,11 +25,8 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
-
-
+        
         ClearChanges();
     }
 
@@ -35,17 +34,31 @@ public class ObjectGraphicDataElement : ObjectGraphicCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new ObjectGraphicDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var objectGraphicDataSource = (ObjectGraphicDataElement)dataSource;
+
+        category = objectGraphicDataSource.category;
+        iconPath = objectGraphicDataSource.iconPath;
+
+        SetOriginalValues();
     }
 }

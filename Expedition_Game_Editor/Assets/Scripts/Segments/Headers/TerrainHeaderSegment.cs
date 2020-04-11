@@ -26,23 +26,18 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void UpdateName()
     {
-        var terrainDataList = DataEditor.DataList.Cast<TerrainDataElement>().ToList();
-        terrainDataList.ForEach(terrainData =>
-        {
-            terrainData.Name = inputField.text;
-        });
-
+        var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
+        terrainData.Name = inputField.text;
+        
         DataEditor.UpdateEditor();
     }
 
     private void UpdateIcon(IconDataElement iconDataElement)
     {
-        var terrainDataList = DataEditor.DataList.Cast<TerrainDataElement>().ToList();
-        terrainDataList.ForEach(terrainData =>
-        {
-            terrainData.IconId = iconDataElement.Id;
-            terrainData.iconPath = iconDataElement.Path;
-        });
+        var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
+
+        terrainData.IconId = iconDataElement.Id;
+        terrainData.iconPath = iconDataElement.Path;
 
         DataEditor.UpdateEditor();
     }

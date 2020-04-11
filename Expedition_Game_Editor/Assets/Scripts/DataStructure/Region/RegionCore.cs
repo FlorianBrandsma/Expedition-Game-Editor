@@ -6,20 +6,25 @@ public class RegionCore : GeneralData
     private int chapterRegionId;
     private int phaseId;
     private int tileSetId;
+
     private string name;
     private int regionSize;
     private int terrainSize;
 
+    //Original
     public int originalChapterRegionId;
     public int originalPhaseId;
     public int originalTileSetId;
+
     public string originalName;
     public int originalRegionSize;
     public int originalTerrainSize;
 
+    //Changed
     private bool changedChapterRegionId;
     private bool changedPhaseId;
     public bool changedTileSetId;
+
     public bool changedName;
     private bool changedRegionSize;
     private bool changedTerrainSize;
@@ -33,7 +38,6 @@ public class RegionCore : GeneralData
     }
 
     #region Properties
-
     public int ChapterRegionId
     {
         get { return chapterRegionId; }
@@ -111,11 +115,9 @@ public class RegionCore : GeneralData
             terrainSize = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -153,6 +155,7 @@ public class RegionCore : GeneralData
         originalChapterRegionId = chapterRegionId;
         originalPhaseId = phaseId;
         originalTileSetId = tileSetId;
+
         originalName = name;
         originalRegionSize = regionSize;
         originalTerrainSize = terrainSize;
@@ -163,6 +166,7 @@ public class RegionCore : GeneralData
         chapterRegionId = originalChapterRegionId;
         phaseId = originalPhaseId;
         tileSetId = originalTileSetId;
+
         name = originalName;
         regionSize = originalRegionSize;
         terrainSize = originalTerrainSize;
@@ -175,12 +179,25 @@ public class RegionCore : GeneralData
         changedChapterRegionId = false;
         changedPhaseId = false;
         changedTileSetId = false;
+
         changedName = false;
         changedRegionSize = false;
         changedTerrainSize = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var regionDataSource = (RegionDataElement)dataSource;
+
+        chapterRegionId = regionDataSource.chapterRegionId;
+        phaseId = regionDataSource.phaseId;
+        tileSetId = regionDataSource.tileSetId;
+
+        name = regionDataSource.name;
+        regionSize = regionDataSource.regionSize;
+        terrainSize = regionDataSource.terrainSize;
+    }
 }

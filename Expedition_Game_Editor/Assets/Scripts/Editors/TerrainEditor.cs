@@ -58,7 +58,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(TerrainData))
-                x.SetOriginalValues();
+                x.Copy(TerrainData);
             else
                 x.Update();
 

@@ -15,10 +15,7 @@ public class EditorTile : MonoBehaviour, IElement
 
     public Color ElementColor { set { } }
 
-    public void InitializeElement()
-    {
-        //properties = element.ListManager.listProperties.GetComponent<TileProperties>();
-    }
+    public void InitializeElement() { }
 
     public void SetElement()
     {
@@ -30,7 +27,7 @@ public class EditorTile : MonoBehaviour, IElement
             case Enums.DataType.Tile:               SetTileElement();               break;
             case Enums.DataType.TerrainTile:        SetTerrainTileElement();        break;
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
-            case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
             case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
 
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
@@ -109,9 +106,9 @@ public class EditorTile : MonoBehaviour, IElement
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetSceneInteractableElement()
+    private void SetWorldInteractableElement()
     {
-        var dataElement = (SceneInteractableDataElement)Element.data.dataElement;
+        var dataElement = (WorldInteractableDataElement)Element.data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
@@ -133,8 +130,5 @@ public class EditorTile : MonoBehaviour, IElement
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
-    public void CloseElement()
-    {
-
-    }
+    public void CloseElement() { }
 }

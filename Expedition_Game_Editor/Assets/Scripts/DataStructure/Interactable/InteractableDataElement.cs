@@ -6,7 +6,10 @@ public class InteractableDataElement : InteractableCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public InteractableDataElement() : base() { }
+    public InteractableDataElement() : base()
+    {
+        DataType = Enums.DataType.Interactable;
+    }
 
     public string objectGraphicPath;
     public string objectGraphicIconPath;
@@ -25,8 +28,6 @@ public class InteractableDataElement : InteractableCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         originalObjectGraphicPath = objectGraphicPath;
@@ -43,17 +44,31 @@ public class InteractableDataElement : InteractableCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new InteractableDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var interactableDataSource = (InteractableDataElement)dataSource;
+
+        objectGraphicPath = interactableDataSource.objectGraphicPath;
+        objectGraphicIconPath = interactableDataSource.objectGraphicIconPath;
+
+        SetOriginalValues();
     }
 }

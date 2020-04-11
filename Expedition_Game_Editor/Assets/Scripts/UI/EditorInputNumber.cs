@@ -5,22 +5,26 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
 {
     private float inputValue;
 
-    public string valueType;
-    public string valueUnit;
-
     public InputField inputField;
     public Button minusButton;
     public Button plusButton;
-    public Text valueTypeText;
-    public Text valueUnitText;
+    public GameObject glow;
 
     public bool enableLimit;
     public bool invertOnOverextension;
     public float min, max;
-
+    
     public Image Image { get { return GetComponent<Image>(); } }
 
     public EditorElement EditorElement { get { return GetComponent<EditorElement>(); } }
+
+    public bool InputInvalid
+    {
+        set
+        {
+            glow.SetActive(value);
+        }
+    }
 
     public float Value
     {
@@ -34,22 +38,6 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
 
     private void Awake()
     {
-        if (valueType.Length > 0)
-        {
-            valueTypeText.text = valueType;
-
-            Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMin;
-            inputField.GetComponent<RectTransform>().offsetMin = new Vector2(inputFieldOffset.x + valueTypeText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
-        }
-
-        if(valueUnit.Length > 0)
-        {
-            valueUnitText.text = valueUnit;
-
-            Vector2 inputFieldOffset = inputField.GetComponent<RectTransform>().offsetMax;
-            inputField.GetComponent<RectTransform>().offsetMax = new Vector2(inputFieldOffset.x - valueUnitText.rectTransform.sizeDelta.x / 2, inputFieldOffset.y);
-        }
-
         if (enableLimit)
             inputField.placeholder.GetComponent<Text>().text = min + "-" + max;
     }
@@ -58,7 +46,7 @@ public class EditorInputNumber : MonoBehaviour, IEditorElement
     {
         Image.sprite = enable ? EditorElement.enabledImage : EditorElement.disabledImage;
 
-        inputField.interactable = false;
+        inputField.interactable = enable;
 
         minusButton.interactable = enable;
         plusButton.interactable = enable;

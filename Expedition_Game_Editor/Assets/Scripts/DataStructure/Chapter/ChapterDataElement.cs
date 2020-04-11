@@ -8,7 +8,10 @@ public class ChapterDataElement : ChapterCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public ChapterDataElement() : base() { }
+    public ChapterDataElement() : base()
+    {
+        DataType = Enums.DataType.Chapter;
+    }
 
     public override void Update()
     {
@@ -21,8 +24,6 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -32,17 +33,26 @@ public class ChapterDataElement : ChapterCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new ChapterDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        SetOriginalValues();
     }
 }

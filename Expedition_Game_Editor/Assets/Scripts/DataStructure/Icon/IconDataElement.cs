@@ -6,7 +6,10 @@ public class IconDataElement : IconCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public IconDataElement() : base() { }
+    public IconDataElement() : base()
+    {
+        DataType = Enums.DataType.Icon;
+    }
 
     public string baseIconPath;
 
@@ -21,8 +24,6 @@ public class IconDataElement : IconCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -32,17 +33,30 @@ public class IconDataElement : IconCore, IDataElement
 
     public override void ClearChanges()
     {
+
+        if (!Changed) return;
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new IconDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var iconDataSource = (IconDataElement)dataSource;
+
+        baseIconPath = iconDataSource.baseIconPath;
+
+        SetOriginalValues();
     }
 }

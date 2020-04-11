@@ -64,7 +64,7 @@ public class RegionEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(RegionData))
-                x.SetOriginalValues();
+                x.Copy(RegionData);
             else
                 x.Update();
 
@@ -100,10 +100,10 @@ public class RegionEditor : MonoBehaviour, IEditor
         
         var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
 
-        Fixtures.sceneInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.sceneInteractableId).Contains(x.Id));
-        Fixtures.sceneObjectList.RemoveAll(x => regions.Select(y => y.Id).Contains(x.regionId));
+        //Fixtures.worldInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.worldInteractableId).Contains(x.Id));
+        //Fixtures.worldObjectList.RemoveAll(x => regions.Select(y => y.Id).Contains(x.regionId));
 
-        Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.Id).Contains(x.Id));
+        //Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.Id).Contains(x.Id));
     }
 
     public void CancelEdit()

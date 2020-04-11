@@ -61,11 +61,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(true);
     }
 
-    public void SelectData()
-    {
-        organizer.SelectData();
-    }
-
     public void SetList()
     {
         if (organizer == null) return;
@@ -83,7 +78,9 @@ public class ListManager : MonoBehaviour, IDisplayManager
         listSize = List.GetListSize(dataList.Count, false);
 
         //Select data after the list has been resized, so that the position may be properly corrected
-        organizer.SelectData();
+        //"Set" elements never receive this kind of visual feedback
+        if(listProperties.SelectionProperty != SelectionManager.Property.Set)
+            organizer.SelectData();
         
         if (!listProperties.enablePaging)
             SetData();

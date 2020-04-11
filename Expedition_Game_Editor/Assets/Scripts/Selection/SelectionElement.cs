@@ -17,10 +17,21 @@ public class SelectionElement : MonoBehaviour
 
         public Data() { }
 
+        public Data(Route.Data data)
+        {
+            dataController = data.dataController;
+            dataElement = data.dataElement;
+        }
+
         public Data(IDataController dataController)
         {
-            this.dataController = dataController;
             dataElement = new GeneralDataElement();
+
+            if (dataController != null)
+            {
+                this.dataController = dataController;
+                dataElement.DataType = dataController.DataType;
+            }
         }
         
         public Data(IDataController dataController, IDataElement dataElement)
@@ -69,17 +80,22 @@ public class SelectionElement : MonoBehaviour
     public IEditor DataEditor               { get; set; }
     public IDisplayManager DisplayManager   { get; set; }
 
-    public IDataController dataController;
-
     public UnityEvent OnSelection = new UnityEvent();
 
     public void InitializeElement(IDataController dataController)
     {
         DataEditor = segmentController.editorController.PathController.DataEditor;
 
-        this.dataController = dataController;
+        data = new Data(dataController);
 
-        data = new Data(GetComponent<IDataController>());
+        GetComponent<IElement>().InitializeElement();
+    }
+
+    public void InitializeElement(Route.Data data)
+    {
+        DataEditor = segmentController.editorController.PathController.DataEditor;
+
+        this.data = new Data(data);
         
         GetComponent<IElement>().InitializeElement();
     }
@@ -91,7 +107,7 @@ public class SelectionElement : MonoBehaviour
         segmentController = DisplayManager.Display.DataController.SegmentController;
 
         //Can be overwritten
-        dataController = DisplayManager.Display.DataController;
+        data.dataController = DisplayManager.Display.DataController;
 
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
@@ -109,7 +125,7 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().SetElement();
         
         if (displayParent != null)
-            displayParent.GetComponent<IDisplay>().DataController = dataController;
+            displayParent.GetComponent<IDisplay>().DataController = data.dataController;
     }
 
     public void UpdateElement()
@@ -198,7 +214,7 @@ public class SelectionElement : MonoBehaviour
         OnSelection.Invoke();
     }
 
-    private void SelectElement()
+    public void SelectElement()
     {
         if (selectionType == SelectionManager.Type.None) return;
         
@@ -212,8 +228,8 @@ public class SelectionElement : MonoBehaviour
                 
                 var dataElement = data.dataElement;
 
-                EditorManager.editorManager.InitializePath(editorPath.path);
-
+                EditorManager.editorManager.Render(editorPath.path);
+                
                 SelectionManager.SelectSearch(dataElement);
 
                 break;
@@ -223,20 +239,20 @@ public class SelectionElement : MonoBehaviour
                 break;
 
             case SelectionManager.Property.Enter:
-                EditorManager.editorManager.InitializePath(editorPath.path);
+                EditorManager.editorManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Edit:
-                EditorManager.editorManager.InitializePath(editorPath.path);
+                EditorManager.editorManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Open:
-                EditorManager.editorManager.InitializePath(editorPath.path);
+                EditorManager.editorManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Toggle:
 
-                dataController.ToggleElement(data.dataElement);
+                data.dataController.ToggleElement(data.dataElement);
 
                 break;
 
@@ -249,19 +265,15 @@ public class SelectionElement : MonoBehaviour
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
-        dataController.SetData(this, resultData);
+        data.dataController.SetData(this, resultData);
         
-        if(dataController.SearchParameters != null)
+        if(data.dataController.SearchParameters != null)
         {
-            if (dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
+            if (data.dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
                 data.dataElement.UpdateSearch();
         }
 
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
-        
-        SetElement();
-
-        SetOverlay();
     }
 
     public void CloseElement()

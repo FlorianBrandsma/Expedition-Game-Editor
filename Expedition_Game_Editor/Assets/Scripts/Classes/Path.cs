@@ -85,6 +85,13 @@ public class Path
         return path;
     }
 
+    public Path TrimToFirstType(Enums.DataType dataType)
+    {
+        var index = route.FindIndex(x => x.GeneralData.DataType == dataType);
+
+        return Trim(index + 1);
+    }
+
     public Path TrimToLastType(Enums.DataType dataType)
     {
         var index = route.FindLastIndex(x => x.GeneralData.DataType == dataType);

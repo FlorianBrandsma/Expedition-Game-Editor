@@ -3,33 +3,16 @@ using System.Collections;
 
 public class TileCore : GeneralData
 {
-    public bool Changed
-    {
-        get
-        {
-            return false;
-        }
-    }
-
-    #region Properties
-
-    #endregion
+    public bool Changed { get { return false; } }
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update() { }
 
     public void UpdateSearch() { }
 
-    public void UpdateIndex()
-    {
-        if (!changedIndex) return;
-
-        //Debug.Log("Update index " + index);
-        changedIndex = false;
-    }
+    public void UpdateIndex() { }
 
     public virtual void SetOriginalValues() { }
 
@@ -41,6 +24,7 @@ public class TileCore : GeneralData
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource) { }
 }

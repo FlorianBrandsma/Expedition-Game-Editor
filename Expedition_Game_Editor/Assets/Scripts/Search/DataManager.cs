@@ -22,7 +22,7 @@ public class DataManager
 
     public List<IconData> GetIconData(Search.Icon searchParameters)
     {
-        List<IconData> dataList = new List<IconData>();
+        var dataList = new List<IconData>();
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
@@ -43,7 +43,7 @@ public class DataManager
 
     public List<ObjectGraphicData> GetObjectGraphicData(Search.ObjectGraphic searchParameters)
     {
-        List<ObjectGraphicData> dataList = new List<ObjectGraphicData>();
+        var dataList = new List<ObjectGraphicData>();
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
@@ -75,7 +75,7 @@ public class DataManager
 
     public List<InteractableData> GetInteractableData(Search.Interactable searchParameters)
     {
-        List<InteractableData> dataList = new List<InteractableData>();
+        var dataList = new List<InteractableData>();
 
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
@@ -94,22 +94,22 @@ public class DataManager
         return dataList;
     }
     
-    public List<SceneInteractableData> GetChapterSceneInteractableData(int chapterId, bool searchById = false)
+    public List<WorldInteractableData> GetChapterWorldInteractableData(int chapterId, bool searchById = false)
     {
-        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
+        var dataList = new List<WorldInteractableData>();
 
-        foreach (Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
+        foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchById && chapterId != sceneInteractable.chapterId) continue;
+            if (searchById && chapterId != worldInteractable.chapterId) continue;
 
-            var data = new SceneInteractableData();
+            var data = new WorldInteractableData();
 
-            data.Id = sceneInteractable.Id;
+            data.Id = worldInteractable.Id;
 
-            data.chapterId = sceneInteractable.chapterId;
-            data.objectiveId = sceneInteractable.objectiveId;
-            data.interactableId = sceneInteractable.interactableId;
-            data.interactionIndex = sceneInteractable.interactionIndex;
+            data.chapterId = worldInteractable.chapterId;
+            data.objectiveId = worldInteractable.objectiveId;
+            data.interactableId = worldInteractable.interactableId;
+            data.interactionIndex = worldInteractable.interactionIndex;
 
             dataList.Add(data);
         }
@@ -119,7 +119,7 @@ public class DataManager
 
     public List<PhaseData> GetPhaseData(int chapterId, bool searchById = false)
     {
-        List<PhaseData> dataList = new List<PhaseData>();
+        var dataList = new List<PhaseData>();
 
         foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
@@ -138,12 +138,12 @@ public class DataManager
 
     public List<PhaseInteractableData> GetPhaseInteractableData(Search.PhaseInteractable searchParameters)
     {
-        List<PhaseInteractableData> dataList = new List<PhaseInteractableData>();
+        var dataList = new List<PhaseInteractableData>();
 
         foreach (Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId)) continue;
-            if (searchParameters.sceneInteractableId.Count > 0 && !searchParameters.sceneInteractableId.Contains(phaseInteractable.sceneInteractableId)) continue;
+            if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(phaseInteractable.worldInteractableId)) continue;
 
             var data = new PhaseInteractableData();
 
@@ -151,7 +151,7 @@ public class DataManager
 
             data.phaseId = phaseInteractable.phaseId;
             data.questId = phaseInteractable.questId;
-            data.sceneInteractableId = phaseInteractable.sceneInteractableId;
+            data.worldInteractableId = phaseInteractable.worldInteractableId;
 
             dataList.Add(data);
         }
@@ -199,22 +199,46 @@ public class DataManager
         return dataList;
     }
 
-    public List<SceneInteractableData> GetSceneInteractableData(Search.SceneInteractable searchParameters)
+    public List<WorldInteractableData> GetWorldInteractableData(Search.WorldInteractable searchParameters)
     {
-        List<SceneInteractableData> dataList = new List<SceneInteractableData>();
+        var dataList = new List<WorldInteractableData>();
 
-        foreach (Fixtures.SceneInteractable sceneInteractable in Fixtures.sceneInteractableList)
+        foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneInteractable.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(worldInteractable.Id)) continue;
 
-            var data = new SceneInteractableData();
+            var data = new WorldInteractableData();
 
-            data.Id = sceneInteractable.Id;
+            data.Id = worldInteractable.Id;
 
-            data.chapterId = sceneInteractable.chapterId;
-            data.objectiveId = sceneInteractable.objectiveId;
-            data.interactableId = sceneInteractable.interactableId;
-            data.interactionIndex = sceneInteractable.interactionIndex;
+            data.chapterId = worldInteractable.chapterId;
+            data.objectiveId = worldInteractable.objectiveId;
+            data.interactableId = worldInteractable.interactableId;
+            data.interactionIndex = worldInteractable.interactionIndex;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TaskData> GetTaskData(Search.Task searchParameters)
+    {
+        var dataList = new List<TaskData>();
+
+        foreach(Fixtures.Task task in Fixtures.taskList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(task.Id)) continue;
+            if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId)) continue;
+            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(task.objectiveId)) continue;
+
+            var data = new TaskData();
+
+            data.Id = task.Id;
+            data.Index = task.Index;
+
+            data.worldInteractableId = task.worldInteractableId;
+            data.objectiveId = task.objectiveId;
 
             dataList.Add(data);
         }
@@ -228,21 +252,28 @@ public class DataManager
 
         foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
-            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
+            if (searchParameters.taskId.Count > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
 
             var data = new InteractionData();
 
             data.Id = interaction.Id;
             data.Index = interaction.Index;
 
-            data.objectiveId = interaction.objectiveId;
-            data.sceneInteractableId = interaction.sceneInteractableId;
+            data.taskId = interaction.taskId;
+
             data.regionId = interaction.regionId;
             data.terrainId = interaction.terrainId;
             data.terrainTileId = interaction.terrainTileId;
 
-            data.description = interaction.description;
+            data.isDefault = interaction.isDefault;
+
+            data.startTime = interaction.startTime;
+            data.endTime = interaction.endTime;
+
+            data.publicNotes = interaction.publicNotes;
+            data.privateNotes = interaction.privateNotes;
 
             data.positionX = interaction.positionX;
             data.positionY = interaction.positionY;
@@ -325,7 +356,7 @@ public class DataManager
             
             dataList.Add(data);
         }
-
+        
         return dataList;
     }
 
@@ -335,6 +366,7 @@ public class DataManager
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
             var data = new TerrainData();
@@ -343,8 +375,10 @@ public class DataManager
             data.Index = terrain.Index;
 
             data.regionId = terrain.regionId;
-            data.name = terrain.name;
+            data.iconId = terrain.iconId;
 
+            data.name = terrain.name;
+            
             dataList.Add(data);
         }
 
@@ -381,33 +415,33 @@ public class DataManager
         return dataList;
     }
     
-    public List<SceneObjectData> GetSceneObjectData(Search.SceneObject searchParameters)
+    public List<WorldObjectData> GetWorldObjectData(Search.WorldObject searchParameters)
     {
-        var dataList = new List<SceneObjectData>();
+        var dataList = new List<WorldObjectData>();
 
-        foreach (Fixtures.SceneObject sceneObject in Fixtures.sceneObjectList)
+        foreach (Fixtures.WorldObject worldObject in Fixtures.worldObjectList)
         {
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(sceneObject.regionId)) continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.regionId)) continue;
 
-            var data = new SceneObjectData();
+            var data = new WorldObjectData();
 
-            data.Id = sceneObject.Id;
-            data.objectGraphicId = sceneObject.objectGraphicId;
-            data.regionId = sceneObject.regionId;
-            data.terrainId = sceneObject.terrainId;
-            data.terrainTileId = sceneObject.terrainTileId;
+            data.Id = worldObject.Id;
+            data.objectGraphicId = worldObject.objectGraphicId;
+            data.regionId = worldObject.regionId;
+            data.terrainId = worldObject.terrainId;
+            data.terrainTileId = worldObject.terrainTileId;
             
-            data.positionX = sceneObject.positionX;
-            data.positionY = sceneObject.positionY;
-            data.positionZ = sceneObject.positionZ;
+            data.positionX = worldObject.positionX;
+            data.positionY = worldObject.positionY;
+            data.positionZ = worldObject.positionZ;
 
-            data.rotationX = sceneObject.rotationX;
-            data.rotationY = sceneObject.rotationY;
-            data.rotationZ = sceneObject.rotationZ;
+            data.rotationX = worldObject.rotationX;
+            data.rotationY = worldObject.rotationY;
+            data.rotationZ = worldObject.rotationZ;
 
-            data.scaleMultiplier = sceneObject.scaleMultiplier;
+            data.scaleMultiplier = worldObject.scaleMultiplier;
 
-            data.animation = sceneObject.animation;
+            data.animation = worldObject.animation;
             
             dataList.Add(data);
         }
@@ -450,7 +484,7 @@ public class DataManager
     {
         public int phaseId;
         public int questId;
-        public int sceneInteractableId;
+        public int worldInteractableId;
     }
 
     public class QuestData : GeneralData
@@ -463,7 +497,7 @@ public class DataManager
         public int questId;
     }
 
-    public class SceneInteractableData : GeneralData
+    public class WorldInteractableData : GeneralData
     {
         public int chapterId;
         public int objectiveId;
@@ -471,15 +505,26 @@ public class DataManager
         public int interactionIndex;
     }
 
+    public class TaskData : GeneralData
+    {
+        public int worldInteractableId;
+        public int objectiveId;
+    }
+
     public class InteractionData : GeneralData
     {
-        public int sceneInteractableId;
-        public int objectiveId;
+        public int taskId;
         public int regionId;
         public int terrainId;
         public int terrainTileId;
 
-        public string description;
+        public bool isDefault;
+
+        public int startTime;
+        public int endTime;
+
+        public string publicNotes;
+        public string privateNotes;
 
         public float positionX;
         public float positionY;
@@ -520,7 +565,7 @@ public class DataManager
     public class TerrainData : GeneralData
     {
         public int regionId;
-
+        public int iconId;
         public string name;
     }
 
@@ -530,7 +575,7 @@ public class DataManager
         public int tileId;
     }
     
-    public class SceneObjectData : GeneralData
+    public class WorldObjectData : GeneralData
     {
         public int objectGraphicId;
         public int regionId;

@@ -32,14 +32,14 @@ public class ChapterDataManager : IDataManager
                     join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
                     select new ChapterDataElement()
                     {
-                        DataType = Enums.DataType.Chapter,
-
                         Id = chapterData.Id,
                         Index = chapterData.Index,
                         
                         InteractableId = chapterData.interactableId,
                         Name = chapterData.name,
-                        Notes = chapterData.notes
+
+                        PublicNotes = chapterData.publicNotes,
+                        PrivateNotes = chapterData.privateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -63,7 +63,9 @@ public class ChapterDataManager : IDataManager
 
             chapterData.interactableId = chapter.interactableId;
             chapterData.name = chapter.name;
-            chapterData.notes = chapter.notes;
+
+            chapterData.publicNotes = chapter.publicNotes;
+            chapterData.privateNotes = chapter.privateNotes;
             
             chapterDataList.Add(chapterData);
         }
@@ -91,6 +93,8 @@ public class ChapterDataManager : IDataManager
     {
         public int interactableId;
         public string name;
-        public string notes;      
+
+        public string publicNotes;
+        public string privateNotes;
     }
 }

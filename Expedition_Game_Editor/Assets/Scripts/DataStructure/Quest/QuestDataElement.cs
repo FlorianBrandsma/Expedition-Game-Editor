@@ -6,7 +6,10 @@ public class QuestDataElement : QuestCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public QuestDataElement() : base() { }
+    public QuestDataElement() : base()
+    {
+        DataType = Enums.DataType.Quest;
+    }
 
     public override void Update()
     {
@@ -19,8 +22,6 @@ public class QuestDataElement : QuestCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -30,17 +31,26 @@ public class QuestDataElement : QuestCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new QuestDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        SetOriginalValues();
     }
 }

@@ -4,28 +4,34 @@ using System.Linq;
 public class ChapterCore : GeneralData
 {
     private int interactableId;
+
     private string name;
-    private string notes;
+    private string publicNotes;
+    private string privateNotes;
 
-    public int originalIndex;
+    //Original
     public int originalInteractableId;
-    public string originalName;
-    public string originalNotes;
 
+    public string originalName;
+    public string originalPublicNotes;
+    public string originalPrivateNotes;
+
+    //Changed
     private bool changedInteractableId;
+
     private bool changedName;
-    private bool changedNotes;
+    private bool changedPublicNotes;
+    private bool changedPrivateNotes;
 
     public bool Changed
     {
         get
         {
-            return changedInteractableId || changedName || changedNotes;
+            return changedInteractableId || changedName || changedPublicNotes || changedPrivateNotes;
         }
     }
 
     #region Properties
-
     public int InteractableId
     {
         get { return interactableId; }
@@ -52,23 +58,34 @@ public class ChapterCore : GeneralData
         }
     }
 
-    public string Notes
+    public string PublicNotes
     {
-        get { return notes; }
+        get { return publicNotes; }
         set
         {
-            if (value == notes) return;
+            if (value == publicNotes) return;
 
-            changedNotes = (value != originalNotes);
+            changedPublicNotes = (value != originalPublicNotes);
 
-            notes = value;
+            publicNotes = value;
         }
     }
 
+    public string PrivateNotes
+    {
+        get { return privateNotes; }
+        set
+        {
+            if (value == privateNotes) return;
+
+            changedPrivateNotes = (value != originalPrivateNotes);
+
+            privateNotes = value;
+        }
+    }
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -81,8 +98,11 @@ public class ChapterCore : GeneralData
         if (changedName)
             chapterData.name = name;
 
-        if (changedNotes)
-            chapterData.notes = notes;
+        if (changedPublicNotes)
+            chapterData.publicNotes = publicNotes;
+
+        if (changedPrivateNotes)
+            chapterData.privateNotes = privateNotes;
     }
 
     public void UpdateSearch() { }
@@ -101,15 +121,19 @@ public class ChapterCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalInteractableId = interactableId;
+
         originalName = name;
-        originalNotes = notes;
+        originalPublicNotes = publicNotes;
+        originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
     {
         interactableId = originalInteractableId;
+
         name = originalName;
-        notes = originalNotes;
+        publicNotes = originalPublicNotes;
+        privateNotes = originalPrivateNotes;
     }
 
     public virtual void ClearChanges()
@@ -118,10 +142,21 @@ public class ChapterCore : GeneralData
 
         changedInteractableId = false;
         changedName = false;
-        changedNotes = false;
+        changedPublicNotes = false;
+        changedPrivateNotes = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var chapterDataSource = (ChapterDataElement)dataSource;
+
+        interactableId = chapterDataSource.interactableId;
+
+        name = chapterDataSource.name;
+        publicNotes = chapterDataSource.publicNotes;
+        privateNotes = chapterDataSource.privateNotes;
+    }
 }

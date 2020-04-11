@@ -40,7 +40,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         {
             case DisplayManager.Type.None:      organizer = null; break;
             case DisplayManager.Type.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
-            case DisplayManager.Type.Scene:     organizer = gameObject.AddComponent<SceneOrganizer>(); break;
+            case DisplayManager.Type.World:     organizer = gameObject.AddComponent<WorldOrganizer>();  break;
             default: break;
         }
 
@@ -138,19 +138,19 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 break;
 
-            case Enums.DataType.SceneInteractable:
+            case Enums.DataType.WorldInteractable:
 
-                var sceneInteractableData = (SceneInteractableDataElement)dataElement;
+                var worldInteractableData = (WorldInteractableDataElement)dataElement;
 
-                elementPosition = new Vector3(sceneInteractableData.positionX, sceneInteractableData.positionY, sceneInteractableData.positionZ);
+                elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, worldInteractableData.positionZ);
                 
                 break;
 
-            case Enums.DataType.SceneObject:
+            case Enums.DataType.WorldObject:
 
-                var sceneObjectData = (SceneObjectDataElement)dataElement;
+                var worldObjectData = (WorldObjectDataElement)dataElement;
 
-                elementPosition = new Vector3(sceneObjectData.PositionX, sceneObjectData.PositionY, sceneObjectData.PositionZ);
+                elementPosition = new Vector3(worldObjectData.PositionX, worldObjectData.PositionY, worldObjectData.PositionZ);
 
                 break;
 
@@ -161,10 +161,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         var localPosition = new Vector3(startPos.x + elementPosition.x , startPos.y - elementPosition.y, -elementPosition.z);
 
         if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
-        {
-            cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);
-            organizer.UpdateData();
-        }
+            cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);     
     }
 
     public void ClearCamera()

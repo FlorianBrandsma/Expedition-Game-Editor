@@ -14,5 +14,6 @@ public interface IDataElement
     void SetOriginalValues();
     bool Changed { get; }
     void ClearChanges();
-    IDataElement Copy();
+    IDataElement Clone();
+    void Copy(IDataElement dataSource);
 }

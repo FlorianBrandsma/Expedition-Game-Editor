@@ -45,7 +45,8 @@ static public class SelectionElementManager
         element.transform.SetParent(parent, false);
     }
 
-    static public void UpdateElements(IDataElement dataElement, bool updateList = false)
+    //Reload the display of active elements that match the argument
+    static public void UpdateElements(IDataElement dataElement)
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 

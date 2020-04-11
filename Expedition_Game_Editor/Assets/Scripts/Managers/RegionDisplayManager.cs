@@ -4,7 +4,7 @@ public class RegionDisplayManager : MonoBehaviour
 {
     public enum Display
     {
-        Scene,
+        World,
         Tiles,
     }
 
@@ -14,6 +14,6 @@ public class RegionDisplayManager : MonoBehaviour
     {
         activeDisplay = (Display)display;
 
-        EditorManager.editorManager.InitializePath(path);
+        EditorManager.editorManager.Render(path);
     }
 }

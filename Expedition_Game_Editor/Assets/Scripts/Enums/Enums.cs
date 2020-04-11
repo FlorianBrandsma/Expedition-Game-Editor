@@ -13,20 +13,22 @@ public class Enums
         Item,
         Interactable,
         Region,
+        Atmosphere,
         Terrain,
         Tile,
         TerrainTile,
-        SceneInteractable,
-        SceneObject,
+        WorldInteractable,
+        WorldObject,
         Chapter,
         ChapterRegion,
         Phase,
         PhaseInteractable,
         Quest,
         Objective,
+        Task,
         Interaction,
         PartyMember,
-        Scene
+        World
     }
 
     public enum DataCategory
@@ -46,6 +48,13 @@ public class Enums
         Dragonkin,
         Goblin,
         Environment
+    }
+
+    public enum IconType
+    {
+        None,
+        Base,
+        Icon
     }
 
     public enum ItemType
@@ -86,7 +95,7 @@ public class Enums
         MultiGrid,
         CompactMultiGrid,
         Button,
-        SceneElement
+        WorldElement
     }
 
     public enum ElementStatus

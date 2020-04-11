@@ -7,7 +7,10 @@ public class GeneralDataElement : GeneralData, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public GeneralDataElement() : base() { }
+    public GeneralDataElement() : base()
+    {
+        DataType = Enums.DataType.None;
+    }
 
     public void Update() { }
 
@@ -23,12 +26,19 @@ public class GeneralDataElement : GeneralData, IDataElement
 
     public bool Changed { get { return false; } }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new GeneralDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
         
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        SetOriginalValues();
     }
 }

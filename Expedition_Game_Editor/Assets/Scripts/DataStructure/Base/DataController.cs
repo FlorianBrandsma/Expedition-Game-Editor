@@ -28,9 +28,9 @@ public class DataController : IDataController
 
         switch(DataType)
         {
-            case Enums.DataType.SceneInteractable:  DataManager = new SceneInteractableDataManager(this);   break;
+            case Enums.DataType.WorldInteractable:  DataManager = new WorldInteractableDataManager(this);   break;
             case Enums.DataType.Interaction:        DataManager = new InteractionDataManager(this);         break;
-            case Enums.DataType.SceneObject:        DataManager = new SceneObjectDataManager(this);         break;
+            case Enums.DataType.WorldObject:        DataManager = new WorldObjectDataManager(this);         break;
         }
     }
 
@@ -38,16 +38,16 @@ public class DataController : IDataController
     {
         switch(DataType)
         {
-            case Enums.DataType.SceneInteractable:  SetSceneInteractableData(searchElement, resultDataElement); break;
-            case Enums.DataType.SceneObject:        SetSceneObjectData(searchElement, resultDataElement);       break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableData(searchElement, resultDataElement); break;
+            case Enums.DataType.WorldObject:        SetWorldObjectData(searchElement, resultDataElement);       break;
 
             default: Debug.Log("CASE MISSING: " + DataType); break;
         }
     }
 
-    public void SetSceneInteractableData(SelectionElement searchElement, IDataElement resultDataElement)
+    public void SetWorldInteractableData(SelectionElement searchElement, IDataElement resultDataElement)
     {
-        var sceneInteractableData = (SceneInteractableDataElement)searchElement.data.dataElement;
+        var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
 
         switch (resultDataElement.DataType)
         {
@@ -55,19 +55,19 @@ public class DataController : IDataController
 
                 var interactableData = (InteractableDataElement)resultDataElement;
 
-                sceneInteractableData.InteractableId = interactableData.Id;
-                sceneInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
-                sceneInteractableData.interactableName = interactableData.Name;
-                sceneInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
-                sceneInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
+                worldInteractableData.InteractableId = interactableData.Id;
+                worldInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
+                worldInteractableData.interactableName = interactableData.Name;
+                worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
+                worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
 
                 break;
         }
     }
 
-    public void SetSceneObjectData(SelectionElement searchElement, IDataElement resultDataElement)
+    public void SetWorldObjectData(SelectionElement searchElement, IDataElement resultDataElement)
     {
-        var sceneObjectData = (SceneObjectDataElement)searchElement.data.dataElement;
+        var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
 
         switch (resultDataElement.DataType)
         {
@@ -75,14 +75,14 @@ public class DataController : IDataController
 
                 var objectGraphicData = (ObjectGraphicDataElement)resultDataElement;
 
-                sceneObjectData.ObjectGraphicId = objectGraphicData.Id;
-                sceneObjectData.objectGraphicName = objectGraphicData.Name;
-                sceneObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
-                sceneObjectData.objectGraphicPath = objectGraphicData.Path;
+                worldObjectData.ObjectGraphicId = objectGraphicData.Id;
+                worldObjectData.objectGraphicName = objectGraphicData.Name;
+                worldObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
+                worldObjectData.objectGraphicPath = objectGraphicData.Path;
 
-                sceneObjectData.height = objectGraphicData.Height;
-                sceneObjectData.width = objectGraphicData.Width;
-                sceneObjectData.depth = objectGraphicData.Depth;
+                worldObjectData.height = objectGraphicData.Height;
+                worldObjectData.width = objectGraphicData.Width;
+                worldObjectData.depth = objectGraphicData.Depth;
 
                 break;
         }

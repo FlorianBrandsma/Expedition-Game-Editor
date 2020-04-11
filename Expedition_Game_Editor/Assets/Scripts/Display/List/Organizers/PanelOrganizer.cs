@@ -61,42 +61,47 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
-                                                                            PanelProperties.elementType, DisplayManager,
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
+            EditorPanel panel = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
+                                                                     PanelProperties.elementType, DisplayManager,
+                                                                     DisplayManager.Display.SelectionType,
+                                                                     DisplayManager.Display.SelectionProperty).GetComponent<EditorPanel>();
 
-            ElementList.Add(element);
+            ElementList.Add(panel.Element);
             
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(DataController, data);
+            data.SelectionElement = panel.Element;
+            panel.Element.data = new SelectionElement.Data(DataController, data);
 
-            element.GetComponent<EditorPanel>().InitializeChildElement();
+            SetProperties(panel);
+
+            panel.GetComponent<EditorPanel>().InitializeChildElement();
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.Id;
+            panel.name = generalData.DebugName + generalData.Id;
             //
-
-            SetElement(element);
+            
+            SetElement(panel);
         }
     }
     
-    private void SetElement(SelectionElement element)
+    private void SetElement(EditorPanel panel)
     {
-        RectTransform rect = element.GetComponent<RectTransform>();
-
-        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
+        RectTransform rect = panel.GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
 
-        element.transform.localPosition = GetElementPosition(index);
+        int index = DataController.DataList.FindIndex(x => x.Id == panel.Element.GeneralData.Id);
+        panel.transform.localPosition = GetElementPosition(index);
 
-        element.gameObject.SetActive(true);
+        panel.gameObject.SetActive(true);
+        
+        panel.Element.SetElement();
+        panel.Element.SetOverlay();
+    }
 
-        element.SetElement();
-
-        element.SetOverlay();
+    private void SetProperties(EditorPanel panel)
+    {
+        panel.iconType = PanelProperties.iconType;
+        panel.childProperty = PanelProperties.childProperty;
     }
 
     public Vector2 GetElementPosition(int index)

@@ -11,6 +11,7 @@ public class RegionDataManager : IDataManager
     private DataManager dataManager = new DataManager();
 
     private List<DataManager.TileSetData> tileSetDataList;
+    private List<DataManager.TileData> tileDataList;
 
     public RegionDataManager(RegionController regionController)
     {
@@ -25,13 +26,16 @@ public class RegionDataManager : IDataManager
 
         GetRegionData(searchRegion);
         GetTileSetData();
+        GetTileData();
 
         var list = (from regionData in regionDataList
                     join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
+
+                    join leftJoin in (from tileData in tileDataList
+                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+
                     select new RegionDataElement()
                     {
-                        DataType = Enums.DataType.Region,
-
                         Id = regionData.Id,
                         Index = regionData.Index,
 
@@ -42,8 +46,10 @@ public class RegionDataManager : IDataManager
                         RegionSize = regionData.regionSize,
                         TerrainSize = regionData.terrainSize,
 
-                        type = regionController.regionType
+                        type = regionController.regionType,
 
+                        tileIconPath = tileData.First().tileData.iconPath
+                        
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
@@ -82,6 +88,14 @@ public class RegionDataManager : IDataManager
         tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
 
         tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+    }
+
+    private void GetTileData()
+    {
+        var tileSearchParameters = new Search.Tile();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+
+        tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
     internal class RegionData : GeneralData

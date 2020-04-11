@@ -48,25 +48,36 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return DataElements.Any(x => x.Changed) && !InteractionData.timeConflict;
     }
 
     public void ApplyChanges()
     {
+        var changedTime = InteractionData.changedStartTime || InteractionData.changedEndTime;
+
         InteractionData.Update();
 
-        DataElements.ForEach(x =>
+        //If time was changed, reset the entire editor so that the interaction segment may reload.
+        //Elements don't need to be updated as the reset takes care of that.
+        if (changedTime)
         {
-            if (((GeneralData)x).Equals(InteractionData))
-                x.SetOriginalValues();
-            else
-                x.Update();
+            EditorManager.editorManager.ResetEditor();
 
-            if (x.SelectionElement != null)
-                x.SelectionElement.UpdateElement();
-        });
+        } else {
 
-        UpdateEditor();
+            DataElements.ForEach(x =>
+            {
+                if (((GeneralData)x).Equals(InteractionData))
+                    x.Copy(InteractionData);
+                else
+                    x.Update();
+
+                if (x.SelectionElement != null)
+                    x.SelectionElement.UpdateElement();
+            });
+
+            UpdateEditor();
+        } 
     }
 
     public void CancelEdit()

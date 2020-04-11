@@ -22,14 +22,12 @@ public class QuestDataManager : IDataManager
         var list = (from questData in questDataList
                     select new QuestDataElement()
                     {
-                        DataType = Enums.DataType.Quest,
-
                         Id = questData.Id,
                         Index = questData.Index,
 
                         PhaseId = questData.phaseId,
                         Name = questData.name,
-                        Notes = questData.notes
+                        PublicNotes = questData.notes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -54,7 +52,7 @@ public class QuestDataManager : IDataManager
 
             questData.phaseId = quest.phaseId;
             questData.name = quest.name;
-            questData.notes = quest.notes;
+            questData.notes = quest.publicNotes;
 
             questDataList.Add(questData);
         }

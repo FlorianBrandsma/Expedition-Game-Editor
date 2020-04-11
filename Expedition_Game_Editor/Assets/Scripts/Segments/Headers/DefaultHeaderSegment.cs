@@ -11,15 +11,14 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     #region UI
     public IndexSwitch indexSwitch;
     public SelectionElement selectionElement;
-    public InputField inputField;
+    public EditorInputText inputText;
     public Text idText;
     #endregion
 
     #region Data Variables
     private int id;
     private int index;
-    private string name;
-    private string icon;
+    private new string name;
     #endregion
 
     #region Data Properties
@@ -33,56 +32,48 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Chapter:
-                    
-                    var chapterDataList = DataEditor.DataList.Cast<ChapterDataElement>().ToList();
-                    chapterDataList.ForEach(chapterData =>
-                    {
-                        chapterData.Name = value;
-                    });
+
+                    var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
+                    chapterData.Name = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
-                    phaseDataList.ForEach(phaseData =>
-                    {
-                        phaseData.Name = value;
-                    });
-
+                    var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+                    phaseData.Name = value;
+                    
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questDataList = DataEditor.DataList.Cast<QuestDataElement>().ToList();
-                    questDataList.ForEach(questData =>
-                    {
-                        questData.Name = value;
-                    });
+                    var questData = (QuestDataElement)DataEditor.Data.dataElement;
+                    questData.Name = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveDataList = DataEditor.DataList.Cast<ObjectiveDataElement>().ToList();
-                    objectiveDataList.ForEach(objectiveData =>
-                    {
-                        objectiveData.Name = value;
-                    });
+                    var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
+                    objectiveData.Name = value;
 
+                    break;
+
+                case Enums.DataType.Task:
+
+                    var taskData = (TaskDataElement)DataEditor.Data.dataElement;
+                    taskData.Name = value;
+                    
                     break;
 
                 case Enums.DataType.Region:
 
-                    var regionDataList = DataEditor.DataList.Cast<RegionDataElement>().ToList();
-                    regionDataList.ForEach(regionData =>
-                    {
-                        regionData.Name = value;
-                    });
+                    var regionData = (RegionDataElement)DataEditor.Data.dataElement;
+                    regionData.Name = value;
 
                     break;
                     
-                default: Debug.Log("CASE MISSING"); break;
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -91,7 +82,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     #region Data Methods
     public void UpdateName()
     {
-        Name = inputField.text;
+        Name = inputText.InputField.text;
         DataEditor.UpdateEditor();
     }
     #endregion
@@ -105,7 +96,10 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        inputText.InitializeElement();
+    }
 
     public void InitializeData()
     {
@@ -119,9 +113,11 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             case Enums.DataType.Phase:      InitializePhaseData();      break;
             case Enums.DataType.Quest:      InitializeQuestData();      break;
             case Enums.DataType.Objective:  InitializeObjectiveData();  break;
+            case Enums.DataType.Task:       InitializeTaskData();       break;
             case Enums.DataType.Region:     InitializeRegionData();     break;
             case Enums.DataType.Terrain:    InitializeTerrainData();    break;
-            default: Debug.Log("CASE MISSING"); break;
+
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
 
         if (indexSwitch != null)
@@ -132,53 +128,62 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     {
         var chapterData = (ChapterDataElement)DataEditor.Data.dataElement;
 
-        id = chapterData.Id;
-        index = chapterData.Index;
-        name = chapterData.Name;
+        id      = chapterData.Id;
+        index   = chapterData.Index;
+        name    = chapterData.Name;
     }
 
     private void InitializePhaseData()
     {
         var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
 
-        id = phaseData.Id;
-        index = phaseData.Index;
-        name = phaseData.Name;
+        id      = phaseData.Id;
+        index   = phaseData.Index;
+        name    = phaseData.Name;
     }
 
     private void InitializeQuestData()
     {
         var questData = (QuestDataElement)DataEditor.Data.dataElement;
 
-        id = questData.Id;
-        index = questData.Index;
-        name = questData.Name;
+        id      = questData.Id;
+        index   = questData.Index;
+        name    = questData.Name;
     }
 
     private void InitializeObjectiveData()
     {
         var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
 
-        id = objectiveData.Id;
-        index = objectiveData.Index;
-        name = objectiveData.Name;
+        id      = objectiveData.Id;
+        index   = objectiveData.Index;
+        name    = objectiveData.Name;
+    }
+
+    private void InitializeTaskData()
+    {
+        var objectiveData = (TaskDataElement)DataEditor.Data.dataElement;
+
+        id      = objectiveData.Id;
+        index   = objectiveData.Index;
+        name    = objectiveData.Name;
     }
 
     private void InitializeRegionData()
     {
         var regionData = (RegionDataElement)DataEditor.Data.dataElement;
 
-        id = regionData.Id;
-        index = regionData.Index;
-        name = regionData.Name;
+        id      = regionData.Id;
+        index   = regionData.Index;
+        name    = regionData.Name;
     }
 
     private void InitializeTerrainData()
     {
         var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
 
-        id = terrainData.Id;
-        name = terrainData.Name;
+        id      = terrainData.Id;
+        name    = terrainData.Name;
     }
 
     public void OpenSegment()
@@ -188,7 +193,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
         idText.text = id.ToString();
 
-        inputField.text = name;
+        inputText.InputField.text = name;
 
         gameObject.SetActive(true);
     }

@@ -5,7 +5,10 @@ public class ItemDataElement : ItemCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public ItemDataElement() : base() { }
+    public ItemDataElement() : base()
+    {
+        DataType = Enums.DataType.Item;
+    }
 
     public string objectGraphicPath;
     public string objectGraphicIconPath;
@@ -24,8 +27,6 @@ public class ItemDataElement : ItemCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         originalObjectGraphicPath = objectGraphicPath;
@@ -42,17 +43,31 @@ public class ItemDataElement : ItemCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new ItemDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var itemDataSource = (ItemDataElement)dataSource;
+
+        objectGraphicPath = itemDataSource.objectGraphicPath;
+        objectGraphicIconPath = itemDataSource.objectGraphicIconPath;
+
+        SetOriginalValues();
     }
 }

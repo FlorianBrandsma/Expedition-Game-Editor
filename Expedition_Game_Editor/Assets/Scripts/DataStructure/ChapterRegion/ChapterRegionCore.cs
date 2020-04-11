@@ -6,8 +6,10 @@ public class ChapterRegionCore : GeneralData
     private int chapterId;
     private int regionId;
 
+    //Original
     public int originalRegionId;
 
+    //Changed
     private bool changedRegionId;
 
     public bool Changed
@@ -19,7 +21,6 @@ public class ChapterRegionCore : GeneralData
     }
 
     #region Properties
-
     public int ChapterId
     {
         get { return chapterId; }
@@ -38,7 +39,6 @@ public class ChapterRegionCore : GeneralData
             regionId = value;
         }
     }
-
     #endregion
 
     #region Methods
@@ -86,4 +86,12 @@ public class ChapterRegionCore : GeneralData
     public void Delete() { }
 
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var chapterRegionDataSource = (ChapterRegionDataElement)dataSource;
+
+        chapterId = chapterRegionDataSource.chapterId;
+        regionId = chapterRegionDataSource.regionId;
+    }
 }

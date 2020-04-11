@@ -10,6 +10,10 @@ public class TerrainDataManager : IDataManager
 
     private DataManager dataManager = new DataManager();
 
+    private List<DataManager.RegionData> regionDataList;
+    private List<DataManager.TileSetData> tileSetDataList;
+    private List<DataManager.TileData> tileDataList;
+
     private List<DataManager.IconData> iconDataList;
 
     public TerrainDataManager(TerrainController terrainController)
@@ -22,15 +26,24 @@ public class TerrainDataManager : IDataManager
         var objectiveSearchData = searchParameters.Cast<Search.Terrain>().FirstOrDefault();
 
         GetTerrainData(objectiveSearchData);
-        GetIconData();
 
-        var list = (from terrainData in terrainDataList
-                    join iconData in iconDataList on terrainData.iconId equals iconData.Id
+        GetRegionData();
+        GetTileSetData();
+        GetTileData();
+
+        GetIconData();
+        
+        var list = (from terrainData    in terrainDataList
+                    join regionData     in regionDataList   on terrainData.regionId equals regionData.Id
+                    join tileSetData    in tileSetDataList  on regionData.tileSetId equals tileSetData.Id
+
+                    join leftJoin in (from tileData in tileDataList
+                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+
+                    join iconData       in iconDataList     on terrainData.iconId   equals iconData.Id
 
                     select new TerrainDataElement()
                     {
-                        DataType = Enums.DataType.Terrain,
-
                         Id = terrainData.Id,
                         Index = terrainData.Index,
 
@@ -40,8 +53,8 @@ public class TerrainDataManager : IDataManager
 
                         iconPath = iconData.path,
 
-                        tileSetId = terrainData.tileSetId,
-                        baseTilePath = terrainData.baseTileIconPath
+                        tileSetId = regionData.tileSetId,
+                        baseTilePath = tileData.First().tileData.iconPath
 
                     }).ToList();
 
@@ -58,14 +71,7 @@ public class TerrainDataManager : IDataManager
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
-
-            var region = Fixtures.regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
-
-            var tileList = Fixtures.terrainTileList.Where(x => x.terrainId == terrain.Id).Distinct().ToList();
-            var mostCommonTileId = tileList.GroupBy(x => x.tileId).OrderByDescending(x => x.Count()).Select(x => x.Key).FirstOrDefault();
-
-            var baseTile = Fixtures.tileList.Where(x => x.Id == mostCommonTileId).Distinct().FirstOrDefault();
-
+            
             var terrainData = new TerrainData();
 
             terrainData.Id = terrain.Id;
@@ -75,11 +81,32 @@ public class TerrainDataManager : IDataManager
             terrainData.iconId = terrain.iconId;
             terrainData.name = terrain.name;
 
-            terrainData.tileSetId = region.tileSetId;
-            terrainData.baseTileIconPath = baseTile.iconPath;
-
             terrainDataList.Add(terrainData);
         }
+    }
+
+    internal void GetRegionData()
+    {
+        var regionSearchParameters = new Search.Region();
+        regionSearchParameters.id = terrainDataList.Select(x => x.regionId).Distinct().ToList();
+
+        regionDataList = dataManager.GetRegionData(regionSearchParameters);
+    }
+
+    private void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+
+        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+    }
+
+    private void GetTileData()
+    {
+        var tileSearchParameters = new Search.Tile();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+
+        tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
     internal void GetIconData()
@@ -95,8 +122,5 @@ public class TerrainDataManager : IDataManager
         public int regionId;
         public int iconId;
         public string name;
-
-        public int tileSetId;
-        public string baseTileIconPath;
     }
 }

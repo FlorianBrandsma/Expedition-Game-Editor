@@ -4,6 +4,7 @@ using System.Collections;
 public class ObjectGraphicCore : GeneralData
 {
     private int iconId;
+
     private string name;
     private string path;
 
@@ -14,7 +15,6 @@ public class ObjectGraphicCore : GeneralData
     public bool Changed { get { return false; } }
 
     #region Properties
-
     public int IconId
     {
         get { return iconId; }
@@ -50,11 +50,9 @@ public class ObjectGraphicCore : GeneralData
         get { return depth; }
         set { depth = value; }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update() { }
@@ -73,6 +71,19 @@ public class ObjectGraphicCore : GeneralData
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var objectGraphicDataSource = (ObjectGraphicDataElement)dataSource;
+
+        iconId = objectGraphicDataSource.iconId;
+
+        name = objectGraphicDataSource.name;
+        path = objectGraphicDataSource.path;
+
+        height = objectGraphicDataSource.height;
+        width = objectGraphicDataSource.width;
+        depth = objectGraphicDataSource.depth;
+    }
 }

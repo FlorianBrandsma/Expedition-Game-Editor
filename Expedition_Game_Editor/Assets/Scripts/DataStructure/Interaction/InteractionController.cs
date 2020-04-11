@@ -7,7 +7,7 @@ public class InteractionController : MonoBehaviour, IDataController
 {
     public Search.Interaction searchParameters;
 
-    public IDataManager DataManager { get; set; }
+    public IDataManager DataManager             { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }

@@ -6,9 +6,11 @@ public class InteractableCore : GeneralData
     private int objectGraphicId;
     private string name;
 
+    //Original
     public int originalObjectGraphicId;
     public string originalName;
 
+    //Changed
     private bool changedObjectGraphicId;
     private bool changedName;
 
@@ -21,7 +23,6 @@ public class InteractableCore : GeneralData
     }
 
     #region Properties
-
     public string Name
     {
         get { return name; }
@@ -47,11 +48,9 @@ public class InteractableCore : GeneralData
             objectGraphicId = value;
         }
     }
-    
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -80,14 +79,14 @@ public class InteractableCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalName = Name;
         originalObjectGraphicId = ObjectGraphicId;
+        originalName = Name;
     }
 
     public void GetOriginalValues()
     {
-        Name = originalName;
-        ObjectGraphicId = originalObjectGraphicId;
+        objectGraphicId = originalObjectGraphicId;
+        name = originalName;
     }
 
     public virtual void ClearChanges()
@@ -99,6 +98,13 @@ public class InteractableCore : GeneralData
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var interactableDataSource = (InteractableDataElement)dataSource;
+
+        objectGraphicId = interactableDataSource.objectGraphicId;
+        name = interactableDataSource.name;
+    }
 }

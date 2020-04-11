@@ -74,16 +74,16 @@ public class EditorPanelTile : MonoBehaviour, IElement
     {
         switch (Element.data.dataController.DataType)
         {
-            case Enums.DataType.SceneInteractable:SetSceneInteractableElement();break;
-            case Enums.DataType.SceneObject:      SetSceneObjectElement();      break;
+            case Enums.DataType.WorldInteractable:SetWorldInteractableElement();break;
+            case Enums.DataType.WorldObject:      SetWorldObjectElement();      break;
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
     }
 
-    private void SetSceneInteractableElement()
+    private void SetWorldInteractableElement()
     {
         var data = Element.data;
-        SceneInteractableDataElement dataElement = (SceneInteractableDataElement)data.dataElement;
+        WorldInteractableDataElement dataElement = (WorldInteractableDataElement)data.dataElement;
 
         idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.interactableName;
@@ -92,10 +92,10 @@ public class EditorPanelTile : MonoBehaviour, IElement
             IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
     }
 
-    private void SetSceneObjectElement()
+    private void SetWorldObjectElement()
     {
         var data = Element.data;
-        SceneObjectDataElement dataElement = (SceneObjectDataElement)data.dataElement;
+        WorldObjectDataElement dataElement = (WorldObjectDataElement)data.dataElement;
 
         idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.objectGraphicName;

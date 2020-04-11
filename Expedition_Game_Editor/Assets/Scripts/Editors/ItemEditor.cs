@@ -58,7 +58,7 @@ public class ItemEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ItemData))
-                x.SetOriginalValues();
+                x.Copy(ItemData);
             else
                 x.Update();
 

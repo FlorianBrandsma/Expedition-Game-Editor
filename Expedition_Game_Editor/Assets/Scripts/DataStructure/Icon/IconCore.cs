@@ -5,8 +5,10 @@ public class IconCore : GeneralData
 {
     private string path;
 
+    //Original
     public string originalPath;
 
+    //Changed
     private bool changedPath;
 
     public bool Changed
@@ -18,7 +20,6 @@ public class IconCore : GeneralData
     }
 
     #region Properties
-
     public string Path
     {
         get { return path; }
@@ -31,11 +32,9 @@ public class IconCore : GeneralData
             path = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update() { }
@@ -62,6 +61,12 @@ public class IconCore : GeneralData
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var iconDataSource = (IconDataElement)dataSource;
+
+        path = iconDataSource.path;
+    }
 }

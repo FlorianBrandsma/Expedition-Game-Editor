@@ -8,7 +8,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<SceneInteractableDataElement> sceneInteractableDataList;
+    public List<WorldInteractableDataElement> worldInteractableDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -29,7 +29,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
             DataList.ForEach(x => list.Add(x));
 
-            sceneInteractableDataList.ForEach(x => list.Add(x));
+            worldInteractableDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -62,7 +62,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ObjectiveData))
-                x.SetOriginalValues();
+                x.Copy(ObjectiveData);
             else
                 x.Update();
 

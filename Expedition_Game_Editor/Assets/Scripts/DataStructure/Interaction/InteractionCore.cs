@@ -3,12 +3,18 @@ using System.Linq;
 
 public class InteractionCore : GeneralData
 {
-    private int sceneInteractableId;
+    private int taskId;
     private int regionId;
     private int terrainId;
     private int terrainTileId;
 
-    private string description;
+    private bool isDefault;
+
+    private int startTime;
+    private int endTime;
+
+    private string publicNotes;
+    private string privateNotes;
 
     private float positionX;
     private float positionY;
@@ -22,12 +28,16 @@ public class InteractionCore : GeneralData
 
     private int animation;
     
-
+    //Original
     public int originalRegionId;
     public int originalTerrainId;
     public int originalTerrainTileId;
 
-    public string originalDescription;
+    public int originalStartTime;
+    public int originalEndTime;
+
+    public string originalPublicNotes;
+    public string originalPrivateNotes;
 
     public float originalPositionX;
     public float originalPositionY;
@@ -41,12 +51,16 @@ public class InteractionCore : GeneralData
 
     public int originalAnimation;
 
-
+    //Original
     private bool changedRegionId;
     private bool changedTerrainId;
     private bool changedTerrainTileId;
 
-    private bool changedDescription;
+    public bool changedStartTime;
+    public bool changedEndTime;
+
+    private bool changedPublicNotes;
+    private bool changedPrivateNotes;
 
     private bool changedPositionX;
     private bool changedPositionY;
@@ -64,18 +78,18 @@ public class InteractionCore : GeneralData
     {
         get
         {
-            return  changedRegionId     || changedTerrainId || changedTerrainTileId     || changedDescription   || 
-                    changedPositionX    || changedPositionY || changedPositionZ         || changedRotationX     || 
-                    changedRotationY    || changedRotationZ || changedScaleMultiplier   || changedAnimation;
+            return  changedRegionId     || changedTerrainId         || changedTerrainTileId || changedStartTime ||
+                    changedEndTime      || changedPublicNotes       || changedPrivateNotes  || changedPositionX || 
+                    changedPositionY    || changedPositionZ         || changedRotationX     || changedRotationY || 
+                    changedRotationZ    || changedScaleMultiplier   || changedAnimation;
         }
     }
 
     #region Properties
-
-    public int SceneInteractableId
+    public int TaskId
     {
-        get { return sceneInteractableId; }
-        set { sceneInteractableId = value; }
+        get { return taskId; }
+        set { taskId = value; }
     }
 
     public int RegionId
@@ -117,16 +131,61 @@ public class InteractionCore : GeneralData
         }
     }
 
-    public string Description
+    public bool Default
     {
-        get { return description; }
+        get { return isDefault; }
+        set { isDefault = value; }
+    }
+
+    public int StartTime
+    {
+        get { return startTime; }
         set
         {
-            if (value == description) return;
+            if (value == startTime) return;
 
-            changedDescription = (value != originalDescription);
+            changedStartTime = (value != originalStartTime);
 
-            description = value;
+            startTime = value;
+        }
+    }
+
+    public int EndTime
+    {
+        get { return endTime; }
+        set
+        {
+            if (value == endTime) return;
+
+            changedEndTime = (value != originalEndTime);
+
+            endTime = value;
+        }
+    }
+
+    public string PublicNotes
+    {
+        get { return publicNotes; }
+        set
+        {
+            if (value == publicNotes) return;
+
+            changedPublicNotes = (value != originalPublicNotes);
+
+            publicNotes = value;
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return privateNotes; }
+        set
+        {
+            if (value == privateNotes) return;
+
+            changedPrivateNotes = (value != originalPrivateNotes);
+
+            privateNotes = value;
         }
     }
 
@@ -233,11 +292,9 @@ public class InteractionCore : GeneralData
             animation = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -253,8 +310,17 @@ public class InteractionCore : GeneralData
         if (changedTerrainTileId)
             interactionData.terrainTileId = terrainTileId;
 
-        if (changedDescription)
-            interactionData.description = description;
+        if (changedStartTime)
+            interactionData.startTime = startTime;
+
+        if (changedEndTime)
+            interactionData.endTime = endTime;
+
+        if (changedPublicNotes)
+            interactionData.publicNotes = publicNotes;
+
+        if (changedPrivateNotes)
+            interactionData.privateNotes = privateNotes;
 
         if (changedPositionX)
             interactionData.positionX = positionX;
@@ -300,7 +366,11 @@ public class InteractionCore : GeneralData
         originalTerrainId = terrainId;
         originalTerrainTileId = terrainTileId;
 
-        originalDescription = description;
+        originalStartTime = startTime;
+        originalEndTime = endTime;
+
+        originalPublicNotes = publicNotes;
+        originalPrivateNotes = privateNotes;
 
         originalPositionX = positionX;
         originalPositionY = positionY;
@@ -321,7 +391,11 @@ public class InteractionCore : GeneralData
         terrainId = originalTerrainId;
         terrainTileId = originalTerrainTileId;
 
-        description = originalDescription;
+        startTime = originalStartTime;
+        endTime = originalEndTime;
+
+        publicNotes = originalPublicNotes;
+        privateNotes = originalPrivateNotes;
 
         positionX = originalPositionX;
         positionY = originalPositionY;
@@ -344,7 +418,11 @@ public class InteractionCore : GeneralData
         changedTerrainId = false;
         changedTerrainTileId = false;
 
-        changedDescription = false;
+        changedStartTime = false;
+        changedEndTime = false;
+
+        changedPublicNotes = false;
+        changedPrivateNotes = false;
 
         changedPositionX = false;
         changedPositionY = false;
@@ -363,14 +441,20 @@ public class InteractionCore : GeneralData
 
     public void CopyCore(InteractionDataElement dataElement)
     {
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
-        dataElement.sceneInteractableId = sceneInteractableId;
+        dataElement.taskId = taskId;
         dataElement.regionId = regionId;
         dataElement.terrainId = terrainId;
         dataElement.terrainTileId = terrainTileId;
 
-        dataElement.description = description;
+        dataElement.isDefault = isDefault;
+
+        dataElement.startTime = startTime;
+        dataElement.endTime = endTime;
+
+        dataElement.publicNotes = publicNotes;
+        dataElement.privateNotes = privateNotes;
 
         dataElement.positionX = positionX;
         dataElement.positionY = positionY;
@@ -389,7 +473,11 @@ public class InteractionCore : GeneralData
         dataElement.originalTerrainId = originalTerrainId;
         dataElement.originalTerrainTileId = originalTerrainTileId;
 
-        dataElement.originalDescription = originalDescription;
+        dataElement.originalStartTime = originalStartTime;
+        dataElement.originalEndTime = originalEndTime;
+
+        dataElement.originalPublicNotes = originalPublicNotes;
+        dataElement.originalPrivateNotes = originalPrivateNotes;
 
         dataElement.originalPositionX = originalPositionX;
         dataElement.originalPositionY = originalPositionY;
@@ -402,7 +490,36 @@ public class InteractionCore : GeneralData
         dataElement.originalScaleMultiplier = originalScaleMultiplier;
 
         dataElement.originalAnimation = originalAnimation;
-
     }
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var interactionDataSource = (InteractionDataElement)dataSource;
+
+        taskId = interactionDataSource.taskId;
+        regionId = interactionDataSource.regionId;
+        terrainId = interactionDataSource.terrainId;
+        terrainTileId = interactionDataSource.terrainTileId;
+
+        isDefault = interactionDataSource.isDefault;
+
+        startTime = interactionDataSource.startTime;
+        endTime = interactionDataSource.endTime;
+
+        publicNotes = interactionDataSource.publicNotes;
+        privateNotes = interactionDataSource.privateNotes;
+
+        positionX = interactionDataSource.positionX;
+        positionY = interactionDataSource.positionY;
+        positionZ = interactionDataSource.positionZ;
+
+        rotationX = interactionDataSource.rotationX;
+        rotationY = interactionDataSource.rotationY;
+        rotationZ = interactionDataSource.rotationZ;
+
+        scaleMultiplier = interactionDataSource.scaleMultiplier;
+
+        animation = interactionDataSource.animation;
+    }
 }

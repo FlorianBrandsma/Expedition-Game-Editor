@@ -6,7 +6,10 @@ public class PartyMemberDataElement : PartyMemberCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public PartyMemberDataElement() : base() { }
+    public PartyMemberDataElement() : base()
+    {
+        DataType = Enums.DataType.PartyMember;
+    }
 
     public string interactableName;
     public string objectGraphicIconPath;
@@ -25,8 +28,6 @@ public class PartyMemberDataElement : PartyMemberCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         originalInteractableName = interactableName;
@@ -43,17 +44,31 @@ public class PartyMemberDataElement : PartyMemberCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new PartyMemberDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var partyMemberDataSource = (PartyMemberDataElement)dataSource;
+
+        interactableName = partyMemberDataSource.interactableName;
+        objectGraphicIconPath = partyMemberDataSource.objectGraphicIconPath;
+
+        SetOriginalValues();
     }
 }

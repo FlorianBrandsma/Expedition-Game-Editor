@@ -15,7 +15,7 @@ public class EditorForm : MonoBehaviour
     public bool activeInPath;
 
     [HideInInspector]
-    public FormComponent formComponent;
+    public FormAction formAction;
 
     public PathController baseController;
 
@@ -26,7 +26,7 @@ public class EditorForm : MonoBehaviour
 
     public Path activeViewPath = new Path();
     
-    private bool hasComponents;
+    private bool hasActions;
 
     public void InitializeForm()
     {
@@ -40,12 +40,12 @@ public class EditorForm : MonoBehaviour
     }
 
     #region Path
-    public void OpenPath(Path path)
+    public void InitializePath(Path path)
     {
-        InitializePath(path);
+        OpenPath(path);
     }
 
-    public void InitializePath(Path path)
+    public void OpenPath(Path path)
     {
         //Close the initialization of previous path
         ClosePath();
@@ -101,14 +101,14 @@ public class EditorForm : MonoBehaviour
         //Open the target editors
         OpenSectionEditors();
         
-        SetComponents(activeViewPath);
+        SetActions(activeViewPath);
     }
 
     public void CloseEditor()
     {
         CloseSectionEditorSegments();
 
-        CloseComponents();
+        CloseActions();
     }
 
     public void FinalizePath()
@@ -133,7 +133,7 @@ public class EditorForm : MonoBehaviour
     public void ResetPath()
     {
         if (activeInPath)
-            EditorManager.editorManager.InitializePath(activePath);
+            EditorManager.editorManager.Render(activePath);
     }
     #endregion
 
@@ -166,21 +166,21 @@ public class EditorForm : MonoBehaviour
         baseController.CloseTabs(activeViewPath);
     }
 
-    public void SetComponents(Path path)
+    public void SetActions(Path path)
     {
         //Activate all components along the path and sort them
-        hasComponents = baseController.SetComponents(path);
+        hasActions = baseController.SetActions(path);
 
-        if (hasComponents)
-            ComponentManager.componentManager.SortComponents();    
+        if (hasActions)
+            ActionManager.actionManager.SortActions();    
     }
 
-    private void CloseComponents()
+    private void CloseActions()
     {
-        if (hasComponents)
+        if (hasActions)
         {
-            ComponentManager.componentManager.CloseComponents();
-            hasComponents = false;
+            ActionManager.actionManager.CloseActions();
+            hasActions = false;
         }
     }
     
@@ -244,7 +244,7 @@ public class EditorForm : MonoBehaviour
     {
         if (!activeInPath) return;
 
-        EditorManager.editorManager.InitializePath(new Path(new List<Route>(), this));
+        EditorManager.editorManager.Render(new Path(new List<Route>(), this));
     }
     #endregion
 }

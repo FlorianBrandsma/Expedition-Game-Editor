@@ -6,10 +6,13 @@ public class ChapterRegionDataElement : ChapterRegionCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public ChapterRegionDataElement() : base() { }
+    public ChapterRegionDataElement() : base()
+    {
+        DataType = Enums.DataType.ChapterRegion;
+    }
 
     public string name;
-    public string originalName;
+    public string tileIconPath;
 
     public override void Update()
     {
@@ -22,8 +25,6 @@ public class ChapterRegionDataElement : ChapterRegionCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -33,17 +34,31 @@ public class ChapterRegionDataElement : ChapterRegionCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new ChapterRegionDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var chapterRegionDataSource = (ChapterRegionDataElement)dataSource;
+
+        name = chapterRegionDataSource.name;
+        tileIconPath = chapterRegionDataSource.tileIconPath;
+
+        SetOriginalValues();
     }
 }

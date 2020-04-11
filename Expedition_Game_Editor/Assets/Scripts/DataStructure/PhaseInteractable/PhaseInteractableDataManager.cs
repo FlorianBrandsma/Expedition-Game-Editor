@@ -10,7 +10,7 @@ public class PhaseInteractableDataManager : IDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.SceneInteractableData> sceneInteractableDataList;
+    private List<DataManager.WorldInteractableData> worldInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
@@ -26,26 +26,24 @@ public class PhaseInteractableDataManager : IDataManager
 
         GetPhaseInteractableData(phaseInteractableSearchData);
 
-        GetSceneInteractableData();
+        GetWorldInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
 
         var list = (from phaseInteractableData  in phaseInteractableDataList
-                    join sceneInteractableData  in sceneInteractableDataList    on phaseInteractableData.sceneInteractableId    equals sceneInteractableData.Id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId         equals interactableData.Id
+                    join worldInteractableData  in worldInteractableDataList    on phaseInteractableData.worldInteractableId    equals worldInteractableData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.interactableId         equals interactableData.Id
                     join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.Id
                     join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.Id
                     select new PhaseInteractableDataElement()
                     {
-                        DataType = Enums.DataType.PhaseInteractable,
-
                         Id = phaseInteractableData.Id,
                         Index = phaseInteractableData.Index,
 
                         PhaseId = phaseInteractableData.phaseId,
                         QuestId = phaseInteractableData.questId,
-                        SceneInteractableId = phaseInteractableData.sceneInteractableId,
+                        WorldInteractableId = phaseInteractableData.worldInteractableId,
 
                         elementStatus = GetElementStatus(phaseInteractableData),
                         interactableName = interactableData.name,
@@ -74,26 +72,26 @@ public class PhaseInteractableDataManager : IDataManager
 
             phaseInteractableData.phaseId = phaseInteractable.phaseId;
             phaseInteractableData.questId = phaseInteractable.questId;
-            phaseInteractableData.sceneInteractableId = phaseInteractable.sceneInteractableId;
+            phaseInteractableData.worldInteractableId = phaseInteractable.worldInteractableId;
 
             phaseInteractableDataList.Add(phaseInteractableData);
         }
     }
 
-    internal void GetSceneInteractableData()
+    internal void GetWorldInteractableData()
     {
-        var sceneInteractableSearchParameters = new Search.SceneInteractable();
+        var worldInteractableSearchParameters = new Search.WorldInteractable();
 
-        sceneInteractableSearchParameters.id = phaseInteractableDataList.Select(x => x.sceneInteractableId).Distinct().ToList();
+        worldInteractableSearchParameters.id = phaseInteractableDataList.Select(x => x.worldInteractableId).Distinct().ToList();
 
-        sceneInteractableDataList = dataManager.GetSceneInteractableData(sceneInteractableSearchParameters);
+        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
     }
 
     internal void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
 
         interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
@@ -131,6 +129,6 @@ public class PhaseInteractableDataManager : IDataManager
     {
         public int questId;
         public int phaseId;
-        public int sceneInteractableId;
+        public int worldInteractableId;
     }
 }

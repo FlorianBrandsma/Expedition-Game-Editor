@@ -39,6 +39,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 
                 chapterRegionData.RegionId = resultElementData.Id;
                 chapterRegionData.name = resultElementData.Name;
+                chapterRegionData.tileIconPath = resultElementData.tileIconPath;
 
                 break;
         }

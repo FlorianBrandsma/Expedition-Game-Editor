@@ -6,7 +6,10 @@ public class ObjectiveDataElement : ObjectiveCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public ObjectiveDataElement() : base() { }
+    public ObjectiveDataElement() : base()
+    {
+        DataType = Enums.DataType.Objective;
+    }
 
     public override void Update()
     {
@@ -19,8 +22,6 @@ public class ObjectiveDataElement : ObjectiveCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -30,17 +31,26 @@ public class ObjectiveDataElement : ObjectiveCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new ObjectiveDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        SetOriginalValues();
     }
 }

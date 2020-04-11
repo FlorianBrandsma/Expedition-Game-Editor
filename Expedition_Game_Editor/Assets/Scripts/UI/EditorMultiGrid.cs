@@ -126,7 +126,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             element.data = new SelectionElement.Data(multiGridProperties.SecondaryDataController, data, searchParameters);
 
             //Overwrites dataController set by initialization
-            element.dataController = multiGridProperties.SecondaryDataController;
+            element.data.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
             GeneralData generalData = (GeneralData)data;

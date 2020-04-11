@@ -284,11 +284,38 @@ public class PathManager
 
     #endregion
 
+    #region Atmosphere
+    public class Atmosphere
+    {
+        Path path;
+        Route route;
+
+        int enter = 0;
+
+        EditorForm form = EditorManager.editorManager.forms[0];
+
+        public Atmosphere(SelectionElement selection, Route route) //Combine existing path with new route
+        {
+            this.route = route;
+
+            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            route.controller = enter;
+
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+        }
+    }
+    #endregion
+
     #region Terrain
 
     public class Terrain
     {
         int edit = 0;
+        int enter = 1;
 
         SelectionElement selection;
         Path path;
@@ -302,6 +329,15 @@ public class PathManager
             this.route = route;
         }
 
+        public Path Enter()
+        {
+            route.controller = enter;
+
+            path = selection.path;
+
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+        }
+
         public Path Edit()
         {
             route.controller = edit;
@@ -312,7 +348,7 @@ public class PathManager
         }
     }
 
-    public class SceneInteractable
+    public class WorldInteractable
     {
         SelectionElement selection;
         Path path;
@@ -321,7 +357,7 @@ public class PathManager
 
         int enter = 0;
 
-        public SceneInteractable(SelectionElement selection, Route route)
+        public WorldInteractable(SelectionElement selection, Route route)
         {
             this.selection = selection;
 
@@ -348,13 +384,13 @@ public class PathManager
         }
     }
 
-    public class SceneObject
+    public class WorldObject
     {
         Path path;
         Route route;
         EditorForm form = EditorManager.editorManager.forms[0];
 
-        public SceneObject(SelectionElement selection, Route route)
+        public WorldObject(SelectionElement selection, Route route)
         {
             this.route = route;
         }
@@ -410,7 +446,7 @@ public class PathManager
             this.selection = selection;
             this.route = route;
 
-            route.data = new Route.Data(route.data.dataController, route.data.dataElement, selection.dataController.SearchParameters);
+            route.data = new Route.Data(route.data.dataController, route.data.dataElement, selection.data.dataController.SearchParameters);
         }
 
         public Path Get()
@@ -463,23 +499,6 @@ public class PathManager
         return path;
     }
 
-    static public Path ReloadPath(Path path, Route new_route)
-    {
-        Path newPath = new Path();
-
-        newPath.form = path.form;
-
-        path.route.ForEach(x => newPath.Add(x.Copy()));
-
-        newPath.route[newPath.route.Count - 1] = new_route;
-
-        newPath.start = path.start;
-
-        EditorManager.loadType = Enums.LoadType.Reload;
-
-        return newPath;
-    }
-
     static public Path ReloadPath(Path path, Route.Data data)
     {
         var newPath = new Path();
@@ -489,23 +508,6 @@ public class PathManager
         path.route.ForEach(x => newPath.Add(x.Copy()));
 
         newPath.route.Last().data = data;
-
-        newPath.start = path.start;
-
-        EditorManager.loadType = Enums.LoadType.Reload;
-
-        return newPath;
-    }
-
-    static public Path ReloadPath(Path path, Route.Data data, int step)
-    {
-        Path newPath = new Path();
-
-        newPath.form = path.form;
-
-        path.route.ForEach(x => newPath.Add(x.Copy()));
-
-        newPath.route[step].data = data;
 
         newPath.start = path.start;
 

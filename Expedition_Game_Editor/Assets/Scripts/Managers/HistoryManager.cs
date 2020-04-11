@@ -12,23 +12,26 @@ public class HistoryManager
     {
         None,
         Assets,
-        Progress,
+        Stage,
         Chapter,
         ChapterSelection,
         Phase,
         PhaseSelection,
         Quest,
         QuestSelection,
-        Step,
-        StepSelection,
+        Objective,
+        ObjectiveSelection,
         Interactable,
         InteractableSelection,
+        Task,
+        TaskSelection,
         Interaction,
         InteractionSelection,
         Region,
         Terrain,
         TerrainSelection,
         Popup,
+        Atmosphere
     }
 
     private List<HistoryElement> history = new List<HistoryElement>();

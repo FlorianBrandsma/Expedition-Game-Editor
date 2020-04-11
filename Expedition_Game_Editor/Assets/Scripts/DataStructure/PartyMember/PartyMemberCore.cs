@@ -6,9 +6,11 @@ public class PartyMemberCore : GeneralData
     private int chapterId;
     private int interactableId;
 
+    //Original
     public int originalChapterId;
     public int originalInteractableId;
 
+    //Changed
     private bool changedChapterId;
     private bool changedInteractableId;
 
@@ -21,7 +23,6 @@ public class PartyMemberCore : GeneralData
     }
 
     #region Properties
-
     public int ChapterId
     {
         get { return chapterId; }
@@ -47,11 +48,9 @@ public class PartyMemberCore : GeneralData
             interactableId = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -74,8 +73,8 @@ public class PartyMemberCore : GeneralData
 
     public void GetOriginalValues()
     {
-        ChapterId = originalChapterId;
-        InteractableId = originalInteractableId;
+        chapterId = originalChapterId;
+        interactableId = originalInteractableId;
     }
 
     public virtual void ClearChanges()
@@ -87,6 +86,13 @@ public class PartyMemberCore : GeneralData
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var partyMemberDataSource = (PartyMemberDataElement)dataSource;
+
+        chapterId = partyMemberDataSource.chapterId;
+        interactableId = partyMemberDataSource.interactableId;
+    }
 }

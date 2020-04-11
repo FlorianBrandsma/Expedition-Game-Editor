@@ -54,7 +54,6 @@ static public class SelectionManager
             {
                 if (((GeneralData)dataElement).Equals(route.GeneralData))
                 {
-
                     if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
                         dataElement.SelectionStatus = route.selectionStatus;
                     else
@@ -76,8 +75,10 @@ static public class SelectionManager
     {
         var dataElementList = SelectionElementManager.FindDataElements((GeneralData)getDataElement);
 
+        //First set the result to all relevant elements
         dataElementList.ForEach(x => x.SelectionElement.SetResult(setDataElement));
 
+        //Cancelling selection will re-render the editor and visualize the selection
         CancelGetSelection();
     }
     
@@ -90,7 +91,7 @@ static public class SelectionManager
         getDataElement = null;
 
         //Return to previous path in form
-        EditorManager.editorManager.InitializePath(EditorManager.editorManager.forms[2].previousPath);  
+        EditorManager.editorManager.Render(EditorManager.editorManager.forms[2].previousPath);  
     }
 
     static public void CancelSelection(List<IDataElement> dataList)

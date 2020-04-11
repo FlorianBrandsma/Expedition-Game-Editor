@@ -4,21 +4,25 @@ using System.Linq;
 
 public class EditorPanel : MonoBehaviour, IElement
 {
+    private SelectionElement.Data data;
+
+    public Enums.IconType iconType;
+    public SelectionManager.Property childProperty;
+
     public Text idText;
     public Text headerText;
     public Text descriptionText;
     public RectTransform iconParent;
     public RawImage icon;
+    public RawImage iconBase;
     public RectTransform content;
     public Image background;
-
+    
     private string header;
     private string description;
     private string iconPath;
 
-    private PanelProperties properties;
-
-    private SelectionElement Element        { get { return GetComponent<SelectionElement>(); } }
+    public SelectionElement Element         { get { return GetComponent<SelectionElement>(); } }
     private SelectionElement ElementChild   { get { return Element.child; } }
 
     public Color ElementColor
@@ -31,8 +35,15 @@ public class EditorPanel : MonoBehaviour, IElement
         get { return icon.texture; }
         set
         {
+            if (iconType == Enums.IconType.None) return;
+
             InitializeIcon();
-            icon.texture = value;
+
+            if (iconType == Enums.IconType.Base)
+                iconBase.texture = value;
+
+            if (iconType == Enums.IconType.Icon)
+                icon.texture = value;
         }
     }
 
@@ -46,34 +57,33 @@ public class EditorPanel : MonoBehaviour, IElement
         }
     }
     
-    public void InitializeElement()
-    {
-        properties = (PanelProperties)Element.DisplayManager.Display.Properties;
-    }
+    public void InitializeElement() { }
 
     public void InitializeChildElement()
     {
-        if (properties.childProperty != SelectionManager.Property.None)
+        if (childProperty != SelectionManager.Property.None)
             ChildButtonData = Element.data;
     }
 
     private void InitializeIcon()
     {
-        content.offsetMin = new Vector2(iconParent.rect.width, content.offsetMin.y);
+        content.offsetMin = new Vector2(iconParent.rect.width + 5, content.offsetMin.y);
         iconParent.gameObject.SetActive(true);
     }
 
     private void InitializeEdit()
     {
-        ElementChild.InitializeElement(Element.DisplayManager, ElementChild.selectionType, properties.childProperty);
+        ElementChild.InitializeElement(Element.DisplayManager, ElementChild.selectionType, childProperty);
 
         ElementChild.gameObject.SetActive(true);
 
-        content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
+        content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width - 5, content.offsetMax.y);
     }
 
     public void SetElement()
     {
+        data = Element.data;
+
         switch (Element.data.dataController.DataType)
         {
             case Enums.DataType.Chapter:            SetChapterElement();            break;
@@ -82,12 +92,14 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
             case Enums.DataType.Quest:              SetQuestElement();              break;
             case Enums.DataType.Objective:          SetObjectiveElement();          break;
+            case Enums.DataType.Task:               SetTaskElement();               break;
             case Enums.DataType.Interaction:        SetInteractionElement();        break;
             case Enums.DataType.Region:             SetRegionElement();             break;
+            case Enums.DataType.Atmosphere:         SetAtmosphereElement();         break;
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
             case Enums.DataType.Item:               SetItemElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
-            case Enums.DataType.SceneInteractable:  SetSceneInteractableElement();  break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
             case Enums.DataType.PartyMember:        SetPartyMemberElement();        break;
 
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType);  break;
@@ -104,18 +116,15 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetChapterElement()
     {
-        var data = Element.data;
         var dataElement = (ChapterDataElement)data.dataElement;
 
         if(Element.selectionProperty == SelectionManager.Property.Get)
         {
             header              = dataElement.Name;
-            description         = dataElement.Notes;
-
+            description         = dataElement.PublicNotes;
         } else {
-
             header              = dataElement.originalName;
-            description         = dataElement.originalNotes;
+            description         = dataElement.originalPublicNotes;
         }
 
         idText.text             = dataElement.Id.ToString();
@@ -125,29 +134,28 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetChapterRegionElement()
     {
-        var data = Element.data;
         var dataElement = (ChapterRegionDataElement)data.dataElement;
 
         header = dataElement.name;
 
         idText.text = dataElement.Id.ToString();
         headerText.text = header;
+
+        iconPath = dataElement.tileIconPath;
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetPhaseElement()
     {
-        var data = Element.data;
         var dataElement = (PhaseDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header              = dataElement.Name;
-            description         = dataElement.Notes;
-
+            description         = dataElement.PublicNotes;
         } else {
-
             header              = dataElement.originalName;
-            description         = dataElement.originalNotes;
+            description         = dataElement.originalPublicNotes;
         }
 
         idText.text             = dataElement.Id.ToString();
@@ -157,16 +165,13 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetPhaseInteractableElement()
     {
-        var data = Element.data;
         var dataElement = (PhaseInteractableDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header = dataElement.interactableName;
             iconPath = dataElement.objectGraphicIcon;
-
         } else {
-
             header = dataElement.originalInteractableName;
             iconPath = dataElement.originalObjectGraphicIcon;
         }
@@ -176,24 +181,20 @@ public class EditorPanel : MonoBehaviour, IElement
         idText.text = dataElement.Id.ToString();
         headerText.text = header;
 
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(iconPath);
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetQuestElement()
     {
-        var data = Element.data;
         var dataElement = (QuestDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header              = dataElement.Name;
-            description         = dataElement.Notes;
-
+            description         = dataElement.PublicNotes;
         } else {
-
             header              = dataElement.originalName;
-            description         = dataElement.originalNotes;
+            description         = dataElement.originalPublicNotes;
         }
 
         idText.text             = dataElement.Id.ToString();
@@ -203,18 +204,15 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetObjectiveElement()
     {
-        var data = Element.data;
         var dataElement = (ObjectiveDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header              = dataElement.Name;
-            description         = dataElement.Notes;
-
+            description         = dataElement.PublicNotes;
         } else {
-
             header              = dataElement.originalName;
-            description         = dataElement.originalNotes;
+            description         = dataElement.originalPublicNotes;
         }
 
         idText.text             = dataElement.Id.ToString();
@@ -222,10 +220,27 @@ public class EditorPanel : MonoBehaviour, IElement
         descriptionText.text    = description;
     }
 
-    private void SetSceneInteractableElement()
+    private void SetTaskElement()
     {
-        var data = Element.data;
-        var dataElement = (SceneInteractableDataElement)data.dataElement;
+        var dataElement = (TaskDataElement)data.dataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.Name;
+            description = dataElement.PublicNotes;
+        } else {
+            header = dataElement.originalName;
+            description = dataElement.originalPublicNotes;
+        }
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetWorldInteractableElement()
+    {
+        var dataElement = (WorldInteractableDataElement)data.dataElement;
 
         header      = dataElement.interactableName;
         iconPath    = dataElement.objectGraphicIconPath;
@@ -233,13 +248,11 @@ public class EditorPanel : MonoBehaviour, IElement
         idText.text     = dataElement.Id.ToString();
         headerText.text = header;
 
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(iconPath);
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetPartyMemberElement()
     {
-        var data = Element.data;
         var dataElement = (PartyMemberDataElement)data.dataElement;
 
         header = dataElement.interactableName;
@@ -247,50 +260,66 @@ public class EditorPanel : MonoBehaviour, IElement
 
         idText.text = dataElement.Id.ToString();
         headerText.text = header;
-        
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(iconPath);
+
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetInteractionElement()
     {
-        var data = Element.data;
         var dataElement = (InteractionDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
-            description         = dataElement.Description;
-
+            header              = dataElement.Default ? "Default" : dataElement.StartTime.ToString("D2") + ":00 - " + dataElement.EndTime.ToString("D2") + ":59";
+            description         = dataElement.PublicNotes;
         } else {
-
-            description         = dataElement.originalDescription;
+            header              = dataElement.Default ? "Default" : dataElement.originalStartTime.ToString("D2") + ":00 - " + dataElement.originalEndTime.ToString("D2") + ":59";
+            description         = dataElement.originalPublicNotes;
         }
 
         idText.text             = dataElement.Id.ToString();
+        headerText.text         = header;
         descriptionText.text    = description;
     }
 
     private void SetRegionElement()
     {
-        var data = Element.data;
         var dataElement = (RegionDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
-
+            iconPath    = dataElement.tileIconPath;
         } else {
-
             header      = dataElement.originalName;
+            iconPath    = dataElement.originalTileIconPath;
         }
-
+        
         idText.text     = dataElement.Id.ToString();
         headerText.text = header;
+        IconTexture = Resources.Load<Texture2D>(iconPath);
+    }
+
+    private void SetAtmosphereElement()
+    {
+        var dataElement = (AtmosphereDataElement)data.dataElement;
+
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.Default ? "Default" : dataElement.StartTime.ToString("D2") + ":00 - " + dataElement.EndTime.ToString("D2") + ":59";
+            description = dataElement.PublicNotes;
+        } else {
+            header = dataElement.Default ? "Default" : dataElement.originalStartTime.ToString("D2") + ":00 - " + dataElement.originalEndTime.ToString("D2") + ":59";
+            description = dataElement.originalPublicNotes;
+        }
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
     }
 
     private void SetObjectGraphicElement()
     {
-        var data = Element.data;
         var dataElement = (ObjectGraphicDataElement)data.dataElement;
         
         header      = dataElement.Name;
@@ -303,16 +332,13 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetItemElement()
     {
-        var data = Element.data;
         var dataElement = (ItemDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
             iconPath    = dataElement.objectGraphicIconPath;
-
         } else {
-
             header      = dataElement.originalName;
             iconPath    = dataElement.originalObjectGraphicIconPath;
         }
@@ -324,16 +350,13 @@ public class EditorPanel : MonoBehaviour, IElement
 
     private void SetInteractableElement()
     {
-        var data = Element.data;
         var dataElement = (InteractableDataElement)data.dataElement;
 
         if (Element.selectionProperty == SelectionManager.Property.Get)
         {
             header      = dataElement.Name;
             iconPath    = dataElement.objectGraphicIconPath;
-
         } else {
-
             header      = dataElement.originalName;
             iconPath    = dataElement.originalObjectGraphicIconPath;
         }
@@ -359,10 +382,18 @@ public class EditorPanel : MonoBehaviour, IElement
             description = string.Empty;
         }
 
-        if (properties.icon)
+        if (iconType != Enums.IconType.None)
+        {
             iconParent.gameObject.SetActive(false);
 
-        if (properties.childProperty != SelectionManager.Property.None)
+            if(iconType == Enums.IconType.Base)
+                iconBase.texture = Resources.Load<Texture2D>("Textures/Icons/Nothing");
+
+            if (iconType == Enums.IconType.Icon)
+                icon.texture = Resources.Load<Texture2D>("Textures/Icons/Objects/Nothing");
+        }
+
+        if (childProperty != SelectionManager.Property.None)
             ElementChild.gameObject.SetActive(false);
     }
 }

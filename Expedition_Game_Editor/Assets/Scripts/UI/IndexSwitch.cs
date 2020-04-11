@@ -58,7 +58,6 @@ public class IndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-
         dataList.RemoveAt(dataElement.Index);
         dataList.Insert(index, dataElement);
 
@@ -73,7 +72,7 @@ public class IndexSwitch : MonoBehaviour
         if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
             dataElement.SelectionStatus = segment.SegmentController.editorController.PathController.route.selectionStatus;
 
-        SelectionElementManager.UpdateElements(dataElement, true);
+        SelectionElementManager.UpdateElements(dataElement);
         
         SetIndex();
     }

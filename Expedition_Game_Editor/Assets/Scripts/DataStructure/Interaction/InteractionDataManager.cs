@@ -10,7 +10,8 @@ public class InteractionDataManager : IDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.SceneInteractableData> sceneInteractableDataList;
+    private List<DataManager.TaskData> taskDataList;
+    private List<DataManager.WorldInteractableData> worldInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
@@ -24,40 +25,44 @@ public class InteractionDataManager : IDataManager
 
     public List<IDataElement> GetDataElements(IEnumerable searchParameters)
     {
-        var objectiveSearchData = searchParameters.Cast<Search.Interaction>().FirstOrDefault();
+        var interactionSearchData = searchParameters.Cast<Search.Interaction>().FirstOrDefault();
 
-        GetInteractionData(objectiveSearchData);
+        GetInteractionData(interactionSearchData);
 
-        GetSceneInteractableData();
+        GetTaskData();
+        GetWorldInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
 
         GetRegionData();
 
-        var list = (from interactionData        in interactionDataList
-
-                    join sceneInteractableData  in sceneInteractableDataList    on interactionData.sceneInteractableId  equals sceneInteractableData.Id
-                    join interactableData       in interactableDataList         on sceneInteractableData.interactableId equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
+        var list = (from interactionData in interactionDataList
+                    join taskData in taskDataList on interactionData.taskId equals taskData.Id
+                    join worldInteractableData in worldInteractableDataList on taskData.worldInteractableId equals worldInteractableData.Id
+                    join interactableData in interactableDataList on worldInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData
 
                     select new InteractionDataElement()
                     {
-                        DataType = Enums.DataType.Interaction,
-
                         Id = interactionData.Id,
-                        Index = interactionData.Index,
 
-                        SceneInteractableId = interactionData.sceneInteractableId,
+                        TaskId = interactionData.taskId,
                         RegionId = interactionData.regionId,
                         TerrainId = interactionData.terrainId,
                         TerrainTileId = interactionData.terrainTileId,
 
-                        Description = interactionData.description,
+                        Default = interactionData.isDefault,
+
+                        StartTime = interactionData.startTime,
+                        EndTime = interactionData.endTime,
+
+                        PublicNotes = interactionData.publicNotes,
+                        PrivateNotes = interactionData.privateNotes,
 
                         PositionX = interactionData.positionX,
                         PositionY = interactionData.positionY,
@@ -73,14 +78,14 @@ public class InteractionDataManager : IDataManager
 
                         objectGraphicId = objectGraphicData.Id,
 
-                        regionName  = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
+                        regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
                         objectGraphicIconPath = iconData.path,
 
                         height = objectGraphicData.height,
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -94,21 +99,24 @@ public class InteractionDataManager : IDataManager
         foreach(Fixtures.Interaction interaction in Fixtures.interactionList)
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
-            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(interaction.objectiveId)) continue;
-            if (searchParameters.sceneInteractableId.Count > 0 && !searchParameters.sceneInteractableId.Contains(interaction.sceneInteractableId)) continue;
+            if (searchParameters.taskId.Count > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
 
             var interactionData = new InteractionData();
 
             interactionData.Id = interaction.Id;
-            interactionData.Index = interaction.Index;
 
-            interactionData.objectiveId = interaction.objectiveId;
-            interactionData.sceneInteractableId = interaction.sceneInteractableId;
+            interactionData.taskId = interaction.taskId;
             interactionData.regionId = interaction.regionId;
             interactionData.terrainId = interaction.terrainId;
             interactionData.terrainTileId = interaction.terrainTileId;
-            
-            interactionData.description = interaction.description;
+
+            interactionData.isDefault = interaction.isDefault;
+
+            interactionData.startTime = interaction.startTime;
+            interactionData.endTime = interaction.endTime;
+
+            interactionData.publicNotes = interaction.publicNotes;
+            interactionData.privateNotes = interaction.privateNotes;
 
             interactionData.positionX = interaction.positionX;
             interactionData.positionY = interaction.positionY;
@@ -126,20 +134,29 @@ public class InteractionDataManager : IDataManager
         }
     }
 
-    internal void GetSceneInteractableData()
+    internal void GetTaskData()
     {
-        var sceneInteractableSearchParameters = new Search.SceneInteractable();
+        var taskSearchParameters = new Search.Task();
 
-        sceneInteractableSearchParameters.id = interactionDataList.Select(x => x.sceneInteractableId).Distinct().ToList();
+        taskSearchParameters.id = interactionDataList.Select(x => x.taskId).Distinct().ToList();
 
-        sceneInteractableDataList = dataManager.GetSceneInteractableData(sceneInteractableSearchParameters);
+        taskDataList = dataManager.GetTaskData(taskSearchParameters);
+    }
+
+    internal void GetWorldInteractableData()
+    {
+        var worldInteractableSearchParameters = new Search.WorldInteractable();
+
+        worldInteractableSearchParameters.id = taskDataList.Select(x => x.worldInteractableId).Distinct().ToList();
+
+        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
     }
 
     internal void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = sceneInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
 
         interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
@@ -171,13 +188,18 @@ public class InteractionDataManager : IDataManager
 
     internal class InteractionData : GeneralData
     {
-        public int objectiveId;
-        public int sceneInteractableId;
+        public int taskId;
         public int regionId;
         public int terrainId;
         public int terrainTileId;
 
-        public string description;
+        public bool isDefault;
+
+        public int startTime;
+        public int endTime;
+
+        public string publicNotes;
+        public string privateNotes;
 
         public float positionX;
         public float positionY;

@@ -6,10 +6,16 @@ public class InteractionDataElement : InteractionCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public InteractionDataElement() : base() { }
+    public InteractionDataElement() : base()
+    {
+        DataType = Enums.DataType.Interaction;
+    }
+
+    public bool timeConflict;
 
     public int questId;
     public int objectiveId;
+    public int worldInteractableId;
 
     public int objectGraphicId;
     public string objectGraphicPath;
@@ -34,8 +40,6 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         ClearChanges();
@@ -45,17 +49,20 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new InteractionDataElement();
         
         dataElement.SelectionElement = SelectionElement;
 
+        dataElement.worldInteractableId = worldInteractableId;
         dataElement.questId = questId;
         dataElement.objectiveId = objectiveId;
 
@@ -74,5 +81,32 @@ public class InteractionDataElement : InteractionCore, IDataElement
         CopyCore(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var interactionDataSource = (InteractionDataElement)dataSource;
+
+        timeConflict = interactionDataSource.timeConflict;
+
+        worldInteractableId = interactionDataSource.worldInteractableId;
+        questId = interactionDataSource.questId;
+        objectiveId = interactionDataSource.objectiveId;
+
+        objectGraphicId = interactionDataSource.objectGraphicId;
+        objectGraphicPath = interactionDataSource.objectGraphicPath;
+
+        regionName = interactionDataSource.regionName;
+        objectGraphicIconPath = interactionDataSource.objectGraphicIconPath;
+
+        height = interactionDataSource.height;
+        width = interactionDataSource.width;
+        depth = interactionDataSource.depth;
+
+        startPosition = interactionDataSource.startPosition;
+
+        SetOriginalValues();
     }
 }

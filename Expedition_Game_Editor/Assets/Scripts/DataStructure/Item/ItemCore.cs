@@ -5,12 +5,17 @@ public class ItemCore : GeneralData
 {
     private int type;
     private int objectGraphicId;
+
     private string name;
 
+    //Original
     public int originalObjectGraphicId;
+
     public string originalName;
 
+    //Changed
     private bool changedObjectGraphicId;
+
     private bool changedName;
 
     public bool Changed
@@ -21,8 +26,7 @@ public class ItemCore : GeneralData
         }
     }
 
-    #region Properties
-    
+    #region Properties 
     public int Type
     {
         get { return type; }
@@ -54,11 +58,9 @@ public class ItemCore : GeneralData
             name = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
@@ -87,14 +89,16 @@ public class ItemCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalName = Name;
         originalObjectGraphicId = ObjectGraphicId;
+
+        originalName = Name;  
     }
 
     public void GetOriginalValues()
     {
-        Name = originalName;
-        ObjectGraphicId = originalObjectGraphicId;
+        objectGraphicId = originalObjectGraphicId;
+
+        name = originalName;  
     }
 
     public virtual void ClearChanges()
@@ -102,10 +106,19 @@ public class ItemCore : GeneralData
         GetOriginalValues();
 
         changedObjectGraphicId = false;
+
         changedName = false;
     }
-
+    
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var itemDataSource = (ItemDataElement)dataSource;
+
+        objectGraphicId = itemDataSource.objectGraphicId;
+
+        name = itemDataSource.name;
+    }
 }

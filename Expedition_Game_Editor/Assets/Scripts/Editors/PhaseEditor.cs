@@ -60,7 +60,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(PhaseData))
-                x.SetOriginalValues();
+                x.Copy(PhaseData);
             else
                 x.Update();
 

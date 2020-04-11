@@ -4,25 +4,33 @@ using System.Linq;
 public class QuestCore : GeneralData
 {
     private int phaseId;
+
     private string name;
-    private string notes;
 
+    private string publicNotes;
+    private string privateNotes;
+
+    //Original
     public string originalName;
-    public string originalNotes;
 
+    public string originalPublicNotes;
+    public string originalPrivateNotes;
+
+    //Changed
     private bool changedName;
-    private bool changedNotes;
+
+    private bool changedPublicNotes;
+    private bool changedPrivateNotes;
 
     public bool Changed
     {
         get
         {
-            return changedName || changedNotes;
+            return changedName || changedPublicNotes || changedPrivateNotes;
         }
     }
 
     #region Properties
-
     public int PhaseId
     {
         get { return phaseId; }
@@ -42,35 +50,48 @@ public class QuestCore : GeneralData
         }
     }
 
-    public string Notes
+    public string PublicNotes
     {
-        get { return notes; }
+        get { return publicNotes; }
         set
         {
-            if (value == notes) return;
+            if (value == publicNotes) return;
 
-            changedNotes = (value != originalNotes);
+            changedPublicNotes = (value != originalPublicNotes);
 
-            notes = value;
+            publicNotes = value;
         }
     }
 
+    public string PrivateNotes
+    {
+        get { return privateNotes; }
+        set
+        {
+            if (value == privateNotes) return;
+
+            changedPrivateNotes = (value != originalPrivateNotes);
+
+            privateNotes = value;
+        }
+    }
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
     {
-
         var questData = Fixtures.questList.Where(x => x.Id == Id).FirstOrDefault();
 
         if (changedName)
             questData.name = name;
 
-        if (changedNotes)
-            questData.notes = notes;
+        if (changedPublicNotes)
+            questData.publicNotes = publicNotes;
+
+        if (changedPrivateNotes)
+            questData.privateNotes = privateNotes;
 
         SetOriginalValues();
     }
@@ -91,13 +112,17 @@ public class QuestCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalName = name;
-        originalNotes = notes;
+
+        originalPublicNotes = publicNotes;
+        originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
     {
         name = originalName;
-        notes = originalNotes;
+
+        publicNotes = originalPublicNotes;
+        privateNotes = originalPrivateNotes;
     }
 
     public virtual void ClearChanges()
@@ -105,10 +130,23 @@ public class QuestCore : GeneralData
         GetOriginalValues();
 
         changedName = false;
-        changedNotes = false;
+
+        changedPublicNotes = false;
+        changedPrivateNotes = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var questDataSource = (QuestDataElement)dataSource;
+
+        phaseId = questDataSource.phaseId;
+
+        name = questDataSource.name;
+
+        publicNotes = questDataSource.publicNotes;
+        privateNotes = questDataSource.privateNotes;
+    }
 }

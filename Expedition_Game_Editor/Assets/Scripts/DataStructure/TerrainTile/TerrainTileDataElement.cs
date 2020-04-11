@@ -6,7 +6,10 @@ public class TerrainTileDataElement : TerrainTileCore, IDataElement
 {
     public SelectionElement SelectionElement { get; set; }
 
-    public TerrainTileDataElement() : base() { }
+    public TerrainTileDataElement() : base()
+    {
+        DataType = Enums.DataType.TerrainTile;
+    }
 
     public string iconPath;
 
@@ -23,8 +26,6 @@ public class TerrainTileDataElement : TerrainTileCore, IDataElement
 
     public override void SetOriginalValues()
     {
-        if (!Changed) return;
-
         base.SetOriginalValues();
 
         originalIconPath = iconPath;
@@ -39,17 +40,30 @@ public class TerrainTileDataElement : TerrainTileCore, IDataElement
 
     public override void ClearChanges()
     {
+        if (!Changed) return;
+
         base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IDataElement Copy()
+    public IDataElement Clone()
     {
         var dataElement = new TerrainTileDataElement();
 
-        CopyGeneralData(dataElement);
+        CloneGeneralData(dataElement);
 
         return dataElement;
+    }
+
+    public override void Copy(IDataElement dataSource)
+    {
+        base.Copy(dataSource);
+
+        var terrainTileDataSource = (TerrainTileDataElement)dataSource;
+
+        iconPath = terrainTileDataSource.iconPath;
+
+        SetOriginalValues();
     }
 }

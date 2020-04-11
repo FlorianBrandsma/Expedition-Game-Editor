@@ -31,8 +31,6 @@ public class ItemDataManager : IDataManager
                     join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new ItemDataElement()
                     {
-                        DataType = Enums.DataType.Item,
-
                         Id = itemData.Id,
                         Index = itemData.Index,
 

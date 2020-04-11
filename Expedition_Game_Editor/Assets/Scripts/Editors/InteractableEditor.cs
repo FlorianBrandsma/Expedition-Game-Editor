@@ -58,7 +58,7 @@ public class InteractableEditor : MonoBehaviour, IEditor
         DataElements.ForEach(x =>
         {
             if (((GeneralData)x).Equals(InteractableData))
-                x.SetOriginalValues();
+                x.Copy(InteractableData);
             else
                 x.Update();
 

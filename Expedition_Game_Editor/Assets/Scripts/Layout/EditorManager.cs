@@ -22,6 +22,8 @@ public class EditorManager : MonoBehaviour
 
     private void Awake()
     {
+        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+        
         Fixtures.LoadFixtures();
 
         editorManager = this;
@@ -36,7 +38,7 @@ public class EditorManager : MonoBehaviour
     {
         LanguageManager.GetLanguage();
 
-        InitializePath(new PathManager.Main().Initialize());
+        Render(new PathManager.Main().Initialize());
     }
 
     private void Update()
@@ -48,12 +50,12 @@ public class EditorManager : MonoBehaviour
             PreviousEditor();
     }
 
-    public void InitializePath(Path path)
+    public void Render(Path path)
     {
         SelectionManager.CancelGetSelection();
         
         //Set up data along the path
-        path.form.OpenPath(path);
+        path.form.InitializePath(path);
 
         //Get target routes for selecting elements
         SelectionManager.GetRouteList();
@@ -73,10 +75,10 @@ public class EditorManager : MonoBehaviour
     
     private void InitializeSecondaryPaths(Path path)
     {
-        //Follows path, activates form components and adds last route to history
+        //Follows path, activates form actions and adds last route to history
         path.form.FinalizePath();
 
-        //Set forms based on their component's state
+        //Set forms based on their action's state
         SetForms();
     }
 
@@ -87,7 +89,7 @@ public class EditorManager : MonoBehaviour
 
     private void SetForms()
     {
-        forms.Where(x => x.formComponent != null).Select(x => x.formComponent).ToList().ForEach(formComponent =>
+        forms.Where(x => x.formAction != null).Select(x => x.formAction).ToList().ForEach(formComponent =>
         {
             if (formComponent.activeInPath)
                 formComponent.SetForm();
@@ -120,6 +122,8 @@ public class EditorManager : MonoBehaviour
 
     public void ResetEditor()
     {
+        loadType = Enums.LoadType.Reload;
+
         foreach (EditorForm form in forms)
             form.ResetPath();
 
@@ -128,9 +132,9 @@ public class EditorManager : MonoBehaviour
 
     public void ResetEditor(Path path)
     {
-        InitializePath(path);
+        Render(path);
 
-        forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => InitializePath(form.activePath));
+        forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => Render(form.activePath));
 
         loadType = Enums.LoadType.Normal;
     }
@@ -143,8 +147,6 @@ public class EditorManager : MonoBehaviour
 
         var mainForm = pathController.editorSection.editorForm;
         mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
-
-        //editorManager.forms.Where(x => x != mainForm).ToList().ForEach(x => x.activePath.ReplaceDataLists(0, dataController.DataType, dataList));
 
         return dataList;
     }

@@ -7,7 +7,11 @@ public class EditorPath
 
     public EditorPath(SelectionElement selection, Route route)
     {
-        if(selection.selectionProperty == SelectionManager.Property.Get)
+        if (selection.selectionProperty == SelectionManager.Property.Set) return;
+
+        if (selection.selectionProperty == SelectionManager.Property.Toggle) return;
+
+        if (selection.selectionProperty == SelectionManager.Property.Get)
         {
             PathManager.Search search = new PathManager.Search(selection, route);
 
@@ -15,7 +19,7 @@ public class EditorPath
 
             return;
         }
-        
+
         switch (selection.GeneralData.DataType)
         {
             case Enums.DataType.Chapter:
@@ -66,22 +70,37 @@ public class EditorPath
 
                 break;
 
-            case Enums.DataType.SceneInteractable:
+            case Enums.DataType.WorldInteractable:
 
                 //Don't stick with "Enter/Edit/Etc" restrictions
-                //Add Combine, Extend: somewhat global, so not like "SceneInteractableExtend"
+                //Add Combine, Extend: somewhat global, so not like "WorldInteractableExtend"
 
                 //Add another path to root, to directly open Interaction without going through the path
                 //The way an asset-less Interaction opens the selection is kind of a happy accident, but something more intentional would be preferable
 
-                PathManager.SceneInteractable sceneInteractable = new PathManager.SceneInteractable(selection, route);
+                PathManager.WorldInteractable worldInteractable = new PathManager.WorldInteractable(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = sceneInteractable.Enter();
+                    path = worldInteractable.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
-                    path = sceneInteractable.Open();
+                    path = worldInteractable.Open();
                 
+                break;
+
+            case Enums.DataType.Task:
+
+                PathManager.Structure task = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = task.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = task.Edit();
+
+                if (selection.selectionProperty == SelectionManager.Property.Open)
+                    path = task.Open();
+
                 break;
 
             case Enums.DataType.Interaction:
@@ -114,21 +133,33 @@ public class EditorPath
 
                 break;
 
+            case Enums.DataType.Atmosphere:
+
+                PathManager.Atmosphere atmosphere = new PathManager.Atmosphere(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = atmosphere.Enter();
+
+                break;
+
             case Enums.DataType.Terrain:
 
                 PathManager.Terrain terrain = new PathManager.Terrain(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = terrain.Enter();
 
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = terrain.Edit();
 
                 break;
 
-            case Enums.DataType.SceneObject:
+            case Enums.DataType.WorldObject:
 
-                PathManager.SceneObject sceneObject = new PathManager.SceneObject(selection, route);
+                PathManager.WorldObject worldObject = new PathManager.WorldObject(selection, route);
                 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
-                    path = sceneObject.Open();
+                    path = worldObject.Open();
 
                 break;
 
@@ -142,9 +173,6 @@ public class EditorPath
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = item.Edit();
 
-                if (selection.selectionProperty == SelectionManager.Property.Get)
-                    path = item.Get();
-
                 break;
 
             case Enums.DataType.Interactable:
@@ -157,18 +185,6 @@ public class EditorPath
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = interactable.Edit();
 
-                if (selection.selectionProperty == SelectionManager.Property.Get)
-                    path = interactable.Get();
-
-                break;
-
-            case Enums.DataType.ObjectGraphic:
-
-                PathManager.ObjectGraphic objectGraphic = new PathManager.ObjectGraphic(selection, route);
-
-                if (selection.selectionProperty == SelectionManager.Property.Get)
-                    path = objectGraphic.Get();
-
                 break;
 
             case Enums.DataType.Option:
@@ -180,7 +196,7 @@ public class EditorPath
 
             break;
 
-            default: break;
+            default: Debug.Log("CASE MISSING: " + selection.GeneralData.DataType); break;
         }
     }
 }

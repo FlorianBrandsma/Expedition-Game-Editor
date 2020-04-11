@@ -6,33 +6,25 @@ public class TerrainTileCore : GeneralData
     private int terrainId;
     private int tileId;
 
-    public int originalTerrainId;
+    //Original
     public int originalTileId;
 
-    private bool changedTerrainId;
+    //Changed
     private bool changedTileId;
 
     public bool Changed
     {
         get
         {
-            return changedTerrainId || changedTileId;
+            return changedTileId;
         }
     }
 
     #region Properties
-
     public int TerrainId
     {
         get { return terrainId; }
-        set
-        {
-            if (value == terrainId) return;
-
-            changedTerrainId = (value != originalTerrainId);
-
-            terrainId = value;
-        }
+        set { terrainId = value; }
     }
 
     public int TileId
@@ -47,19 +39,14 @@ public class TerrainTileCore : GeneralData
             tileId = value;
         }
     }
-
     #endregion
 
     #region Methods
-
     public void Create() { }
 
     public virtual void Update()
     {
         var terrainTileData = Fixtures.terrainTileList.Where(x => x.Id == Id).FirstOrDefault();
-
-        if (changedTerrainId)
-            terrainTileData.terrainId = terrainId;
 
         if (changedTileId)
             terrainTileData.tileId = tileId;
@@ -71,13 +58,11 @@ public class TerrainTileCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalTerrainId = TerrainId;
         originalTileId = TileId;
     }
 
     public void GetOriginalValues()
     {
-        TerrainId = originalTerrainId;
         TileId = originalTileId;
     }
 
@@ -85,11 +70,17 @@ public class TerrainTileCore : GeneralData
     {
         GetOriginalValues();
 
-        changedTerrainId = false;
         changedTileId = false;
     }
 
     public void Delete() { }
-
     #endregion
+
+    new public virtual void Copy(IDataElement dataSource)
+    {
+        var terrainTileDataSource = (TerrainTileDataElement)dataSource;
+
+        terrainId = terrainTileDataSource.terrainId;
+        tileId = terrainTileDataSource.tileId;
+    }
 }
