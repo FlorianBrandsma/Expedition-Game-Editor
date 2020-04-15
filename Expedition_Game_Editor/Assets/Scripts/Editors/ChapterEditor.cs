@@ -9,7 +9,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
     public List<PartyMemberDataElement> partyMemberDataList;
-    public List<WorldInteractableDataElement> worldInteractableDataList;
+    public List<ChapterInteractableDataElement> chapterInteractableDataList;
     public List<ChapterRegionDataElement> chapterRegionDataList;
     
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -32,7 +32,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => list.Add(x));
 
             partyMemberDataList.ForEach(x => list.Add(x));
-            worldInteractableDataList.ForEach(x => list.Add(x));
+            chapterInteractableDataList.ForEach(x => list.Add(x));
             chapterRegionDataList.ForEach(x => list.Add(x));
 
             return list;
@@ -248,7 +248,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
     public void CancelEdit()
     {
         partyMemberDataList.Clear();
-        worldInteractableDataList.Clear();
+        chapterInteractableDataList.Clear();
         chapterRegionDataList.Clear();
 
         DataElements.ForEach(x => x.ClearChanges());

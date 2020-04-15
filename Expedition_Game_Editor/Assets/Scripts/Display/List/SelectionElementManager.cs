@@ -86,27 +86,7 @@ static public class SelectionElementManager
     static public void CloseElement(List<SelectionElement> elementList)
     {
         foreach (SelectionElement element in elementList)
-        {
             element.CloseElement();
-            element.GetComponent<IElement>().CloseElement();
-            element.OnSelection.RemoveAllListeners();
-            
-            if (element.elementStatus != Enums.ElementStatus.Enabled)
-            {
-                element.elementStatus = Enums.ElementStatus.Enabled;
-
-                if(element.elementStatus == Enums.ElementStatus.Locked)
-                    element.lockIcon.SetActive(false);
-            }
-            
-            if (element.child != null)
-            {
-                element.child.gameObject.SetActive(false);
-                element.child.OnSelection.RemoveAllListeners();
-            }
-
-            element.gameObject.SetActive(false);
-        }
 
         elementList.Clear();
     }

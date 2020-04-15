@@ -18,8 +18,6 @@ public class EditorManager : MonoBehaviour
 
     static public Enums.LoadType loadType;
 
-    public TimeManager TimeManager { get { return GetComponent<TimeManager>(); } }
-
     private void Awake()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;

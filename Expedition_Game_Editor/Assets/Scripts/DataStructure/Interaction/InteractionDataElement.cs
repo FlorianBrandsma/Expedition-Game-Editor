@@ -10,9 +10,7 @@ public class InteractionDataElement : InteractionCore, IDataElement
     {
         DataType = Enums.DataType.Interaction;
     }
-
-    public bool timeConflict;
-
+    
     public int questId;
     public int objectiveId;
     public int worldInteractableId;
@@ -28,6 +26,12 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public float depth;
 
     public Vector2 startPosition;
+
+    public bool timeConflict;
+    
+    public int defaultTime;
+
+    public bool containsActiveTime;
 
     public override void Update()
     {
@@ -62,6 +66,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
         
         dataElement.SelectionElement = SelectionElement;
 
+        dataElement.timeConflict = timeConflict;
+        dataElement.containsActiveTime = containsActiveTime;
+        dataElement.defaultTime = defaultTime;
+
         dataElement.worldInteractableId = worldInteractableId;
         dataElement.questId = questId;
         dataElement.objectiveId = objectiveId;
@@ -90,6 +98,8 @@ public class InteractionDataElement : InteractionCore, IDataElement
         var interactionDataSource = (InteractionDataElement)dataSource;
 
         timeConflict = interactionDataSource.timeConflict;
+        containsActiveTime = interactionDataSource.containsActiveTime;
+        defaultTime = interactionDataSource.defaultTime;
 
         worldInteractableId = interactionDataSource.worldInteractableId;
         questId = interactionDataSource.questId;

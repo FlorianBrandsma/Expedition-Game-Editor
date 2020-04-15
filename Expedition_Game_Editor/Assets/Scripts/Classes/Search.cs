@@ -97,6 +97,32 @@ public class Search
         public RequestType requestType;
     }
 
+    public class PartyMember : SearchParameters
+    {
+        public List<int> chapterId = new List<int>();
+        public List<int> interactableId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class ChapterInteractable : SearchParameters
+    {
+        public List<int> chapterId = new List<int>();
+        public List<int> interactableId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     [System.Serializable]
     public class ChapterRegion : SearchParameters
     {
@@ -132,9 +158,9 @@ public class Search
     public class PhaseInteractable : SearchParameters
     {
         public List<int> phaseId = new List<int>();
+        public List<int> chapterInteractableId = new List<int>();
         public List<int> questId = new List<int>();
-        public List<int> worldInteractableId = new List<int>();
-
+        
         public enum RequestType
         {
             Custom
@@ -170,6 +196,25 @@ public class Search
         public enum RequestType
         {
             Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class WorldInteractable : SearchParameters
+    {
+        public List<int> regionId = new List<int>();
+        public List<int> objectiveId = new List<int>();
+        public List<int> interactableId = new List<int>();
+
+        public int isDefault = -1;
+
+        public List<int> interactionIndex = new List<int>();
+
+        public enum RequestType
+        {
+            Custom,
+            GetRegionWorldInteractables
         }
 
         public RequestType requestType;
@@ -280,38 +325,6 @@ public class Search
     public class WorldObject : SearchParameters
     {
         public List<int> regionId = new List<int>();
-
-        public enum RequestType
-        {
-            Custom
-        }
-
-        public RequestType requestType;
-    }
-
-    public class WorldInteractable : SearchParameters
-    {
-        public List<int> regionId = new List<int>();
-        public List<int> chapterId = new List<int>();
-        public List<int> questId = new List<int>();
-        public List<int> objectiveId = new List<int>();
-        public List<int> interactableId = new List<int>();
-        public List<int> interactionIndex = new List<int>();
-
-        public enum RequestType
-        {
-            Custom,
-            GetQuestAndObjectiveInteractables,
-            GetInteractablesFromInteractionRegion
-        }
-
-        public RequestType requestType;
-    }
-
-    public class PartyMember : SearchParameters
-    {
-        public List<int> chapterId = new List<int>();
-        public List<int> interactableId = new List<int>();
 
         public enum RequestType
         {

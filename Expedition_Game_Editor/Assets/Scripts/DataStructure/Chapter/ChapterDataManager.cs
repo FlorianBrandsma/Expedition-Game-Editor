@@ -27,9 +27,9 @@ public class ChapterDataManager : IDataManager
         GetInteractableData();
         GetObjectGraphicData();
 
-        var list = (from chapterData in chapterDataList
-                    join interactableData in interactableDataList on chapterData.interactableId equals interactableData.Id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+        var list = (from chapterData        in chapterDataList
+                    join interactableData   in interactableDataList     on chapterData.interactableId       equals interactableData.Id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
                     select new ChapterDataElement()
                     {
                         Id = chapterData.Id,

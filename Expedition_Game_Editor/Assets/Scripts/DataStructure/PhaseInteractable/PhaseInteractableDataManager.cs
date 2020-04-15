@@ -10,7 +10,7 @@ public class PhaseInteractableDataManager : IDataManager
 
     private DataManager dataManager = new DataManager();
 
-    private List<DataManager.WorldInteractableData> worldInteractableDataList;
+    private List<DataManager.ChapterInteractableData> chapterInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
@@ -26,25 +26,25 @@ public class PhaseInteractableDataManager : IDataManager
 
         GetPhaseInteractableData(phaseInteractableSearchData);
 
-        GetWorldInteractableData();
+        GetChapterInteractableData();
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from phaseInteractableData  in phaseInteractableDataList
-                    join worldInteractableData  in worldInteractableDataList    on phaseInteractableData.worldInteractableId    equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.interactableId         equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.Id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId                     equals iconData.Id
+        var list = (from phaseInteractableData      in phaseInteractableDataList
+                    join chapterInteractableData    in chapterInteractableDataList  on phaseInteractableData.chapterInteractableId  equals chapterInteractableData.Id
+                    join interactableData           in interactableDataList         on chapterInteractableData.interactableId       equals interactableData.Id
+                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId             equals objectGraphicData.Id
+                    join iconData                   in iconDataList                 on objectGraphicData.iconId                     equals iconData.Id
                     select new PhaseInteractableDataElement()
                     {
                         Id = phaseInteractableData.Id,
                         Index = phaseInteractableData.Index,
 
                         PhaseId = phaseInteractableData.phaseId,
+                        ChapterInteractableId = phaseInteractableData.chapterInteractableId,
                         QuestId = phaseInteractableData.questId,
-                        WorldInteractableId = phaseInteractableData.worldInteractableId,
-
+                        
                         elementStatus = GetElementStatus(phaseInteractableData),
                         interactableName = interactableData.name,
                         objectGraphicIcon = iconData.path
@@ -72,26 +72,26 @@ public class PhaseInteractableDataManager : IDataManager
 
             phaseInteractableData.phaseId = phaseInteractable.phaseId;
             phaseInteractableData.questId = phaseInteractable.questId;
-            phaseInteractableData.worldInteractableId = phaseInteractable.worldInteractableId;
+            phaseInteractableData.chapterInteractableId = phaseInteractable.chapterInteractableId;
 
             phaseInteractableDataList.Add(phaseInteractableData);
         }
     }
 
-    internal void GetWorldInteractableData()
+    internal void GetChapterInteractableData()
     {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        var chapterInteractableSearchParameters = new Search.ChapterInteractable();
 
-        worldInteractableSearchParameters.id = phaseInteractableDataList.Select(x => x.worldInteractableId).Distinct().ToList();
+        chapterInteractableSearchParameters.id = phaseInteractableDataList.Select(x => x.chapterInteractableId).Distinct().ToList();
 
-        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        chapterInteractableDataList = dataManager.GetChapterInteractableData(chapterInteractableSearchParameters);
     }
 
     internal void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = chapterInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
 
         interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
     }
@@ -127,8 +127,8 @@ public class PhaseInteractableDataManager : IDataManager
 
     internal class PhaseInteractableData : GeneralData
     {
-        public int questId;
         public int phaseId;
-        public int worldInteractableId;
+        public int chapterInteractableId;
+        public int questId;
     }
 }

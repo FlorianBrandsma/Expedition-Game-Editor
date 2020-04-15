@@ -21,7 +21,7 @@ public class WorldInteractableSegment : MonoBehaviour, ISegment
 
         var searchParameters = new Search.WorldInteractable();
 
-        searchParameters.requestType = Search.WorldInteractable.RequestType.GetInteractablesFromInteractionRegion;
+        searchParameters.requestType = Search.WorldInteractable.RequestType.GetRegionWorldInteractables;
 
         searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
         searchParameters.objectiveId = new List<int>() { 0 };

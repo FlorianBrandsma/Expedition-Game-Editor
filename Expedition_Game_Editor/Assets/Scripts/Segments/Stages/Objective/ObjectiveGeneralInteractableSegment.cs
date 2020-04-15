@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,7 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.WorldInteractable.RequestType.Custom;
         searchParameters.objectiveId = new List<int>() { ObjectiveEditor.ObjectiveData.Id };
+        searchParameters.isDefault = Convert.ToInt32(false);
 
         SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
 

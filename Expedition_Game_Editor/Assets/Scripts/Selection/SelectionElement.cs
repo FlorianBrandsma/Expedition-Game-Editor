@@ -187,12 +187,11 @@ public class SelectionElement : MonoBehaviour
 
                 break;
 
-            case Enums.ElementStatus.Hidden:
+            //case Enums.ElementStatus.Hidden:
 
-                OnSelection.RemoveAllListeners();
-                Element.ElementColor = hiddenColor;
+            //    //Hidden elements are prevented from opening
 
-                break;
+            //    break;
 
             case Enums.ElementStatus.Related:
 
@@ -280,6 +279,17 @@ public class SelectionElement : MonoBehaviour
     {
         if (data.dataElement == null) return;
 
+        GetComponent<IElement>().CloseElement();
+        OnSelection.RemoveAllListeners();
+
+        if (elementStatus != Enums.ElementStatus.Enabled)
+        {
+            elementStatus = Enums.ElementStatus.Enabled;
+
+            if (elementStatus == Enums.ElementStatus.Locked)
+                lockIcon.SetActive(false);
+        }
+
         if (child != null)
             child.CloseElement();
         
@@ -290,6 +300,8 @@ public class SelectionElement : MonoBehaviour
 
         if (lockIcon != null)
             lockIcon.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 
     public void CancelSelection()

@@ -29,7 +29,9 @@ public class WorldDataManager : IDataManager
 
     private List<DataManager.ObjectiveData> objectiveDataList;
     private List<DataManager.QuestData> questDataList;
-    
+
+    private List<int> defaultTimeList;
+
     public WorldDataManager(WorldController worldController)
     {
         DataController = worldController;
@@ -61,7 +63,7 @@ public class WorldDataManager : IDataManager
         GetPhaseInteractableData();
 
         GroupInteractions();
-        
+
         basicWorldData = GetBasicWorldData();
 
         var worldStartPosition = GetWorldStartPosition();
@@ -119,8 +121,11 @@ public class WorldDataManager : IDataManager
                         Id = worldInteractableData.Id,
                         terrainTileId = interactionData.terrainTileId,
 
-                        interactableName = interactableData.name,
+                        isDefault = interactionData.isDefault,
+                        taskGroup = taskData.Id,
 
+                        interactableName = interactableData.name,
+                        
                         positionX = interactionData.positionX,
                         positionY = interactionData.positionY,
                         positionZ = interactionData.positionZ,
@@ -142,7 +147,12 @@ public class WorldDataManager : IDataManager
 
                         objectGraphicIconPath = iconData.path,
 
-                        startPosition = worldStartPosition
+                        startPosition = worldStartPosition,
+                        
+                        startTime = interactionData.startTime,
+                        endTime = interactionData.endTime,
+
+                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0
 
                     }).ToList() : new List<WorldInteractableDataElement>(),
 
@@ -156,9 +166,6 @@ public class WorldDataManager : IDataManager
 
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
-
-                    join leftJoin in (from phaseInteractableData in phaseInteractableDataList
-                                      select new { phaseInteractableData }) on worldInteractableData.Id equals leftJoin.phaseInteractableData.worldInteractableId into phaseInteractableData
 
                     where interactionData.terrainId == terrainData.Id
                     select new InteractionDataElement()
@@ -189,11 +196,10 @@ public class WorldDataManager : IDataManager
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
-
+                        
                         worldInteractableId = taskData.worldInteractableId,
                         objectiveId = taskData.objectiveId,
-                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId :
-                                        phaseInteractableData.FirstOrDefault() != null ? phaseInteractableData.FirstOrDefault().phaseInteractableData.questId : 0,
+                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId : 0,
 
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
@@ -204,7 +210,9 @@ public class WorldDataManager : IDataManager
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,
 
-                        startPosition = worldStartPosition
+                        startPosition = worldStartPosition,
+
+                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0
 
                     }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
                     
@@ -313,7 +321,7 @@ public class WorldDataManager : IDataManager
     {
         var interactionSearchParameters = new Search.Interaction();
         interactionSearchParameters.regionId = searchData.regionId;
-
+        
         interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
     }
 
@@ -386,7 +394,7 @@ public class WorldDataManager : IDataManager
     internal void GetPhaseInteractableData()
     {
         var phaseInteractableSearchParameters = new Search.PhaseInteractable();
-        phaseInteractableSearchParameters.worldInteractableId = worldInteractableDataList.Select(x => x.Id).Distinct().ToList();
+        phaseInteractableSearchParameters.chapterInteractableId = worldInteractableDataList.Select(x => x.Id).Distinct().ToList();
 
         phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
     }
@@ -395,9 +403,27 @@ public class WorldDataManager : IDataManager
     {
         if (regionType == Enums.RegionType.Interaction) return;
 
-        interactionDataList = interactionDataList.OrderByDescending(x => x.isDefault).ThenBy(x => x.startTime)
-                                                 .GroupBy(x => taskDataList.Where(y => x.taskId == y.Id)
-                                                                           .Select(y => y.worldInteractableId).FirstOrDefault())
-                                                 .Select(x => x.FirstOrDefault()).ToList();
+        //First task of each world interactable
+        var firstTaskList = taskDataList.GroupBy(x => x.worldInteractableId).Select(x => x.FirstOrDefault()).ToList();
+
+        //Interactions belonging to the first task of each world interactable
+        interactionDataList = interactionDataList.Where(x => firstTaskList.Select(y => y.Id).Contains(x.taskId)).ToList();
+    }
+
+    internal int DefaultTime(int taskId)
+    {
+        var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
+
+        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
+                             select new TimeManager.TimeFrame()
+                             {
+                                 StartTime = interactionData.startTime,
+                                 EndTime = interactionData.endTime
+
+                             }).ToList();
+        
+        var defaultTime = TimeManager.FirstAvailableTime(timeFrameList);
+
+        return defaultTime;
     }
 }

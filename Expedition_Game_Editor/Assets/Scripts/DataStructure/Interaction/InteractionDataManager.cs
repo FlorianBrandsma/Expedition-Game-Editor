@@ -28,7 +28,7 @@ public class InteractionDataManager : IDataManager
         var interactionSearchData = searchParameters.Cast<Search.Interaction>().FirstOrDefault();
 
         GetInteractionData(interactionSearchData);
-
+        
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
@@ -37,12 +37,12 @@ public class InteractionDataManager : IDataManager
 
         GetRegionData();
 
-        var list = (from interactionData in interactionDataList
-                    join taskData in taskDataList on interactionData.taskId equals taskData.Id
-                    join worldInteractableData in worldInteractableDataList on taskData.worldInteractableId equals worldInteractableData.Id
-                    join interactableData in interactableDataList on worldInteractableData.interactableId equals interactableData.Id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from interactionData        in interactionDataList
+                    join taskData               in taskDataList                 on interactionData.taskId               equals taskData.Id
+                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId         equals worldInteractableData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData
@@ -75,7 +75,7 @@ public class InteractionDataManager : IDataManager
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
-
+                        
                         objectGraphicId = objectGraphicData.Id,
 
                         regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
@@ -83,7 +83,9 @@ public class InteractionDataManager : IDataManager
 
                         height = objectGraphicData.height,
                         width = objectGraphicData.width,
-                        depth = objectGraphicData.depth
+                        depth = objectGraphicData.depth,
+
+                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0,
 
                     }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
@@ -184,6 +186,23 @@ public class InteractionDataManager : IDataManager
         searchParameters.id = interactionDataList.Select(x => x.regionId).Distinct().ToList();
 
         regionDataList = dataManager.GetRegionData(searchParameters);
+    }
+
+    internal int DefaultTime(int taskId)
+    {
+        var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
+
+        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
+                             select new TimeManager.TimeFrame()
+                             {
+                                 StartTime = interactionData.startTime,
+                                 EndTime = interactionData.endTime
+
+                             }).ToList();
+
+        var defaultTime = TimeManager.FirstAvailableTime(timeFrameList);
+
+        return defaultTime;
     }
 
     internal class InteractionData : GeneralData

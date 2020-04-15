@@ -17,7 +17,7 @@ static public class Fixtures
     static public int terrainTilesInTerrains = 5;
     static public int chapters = 3;
     static public int partyMembersInChapter = 1;
-    static public int worldInteractablesInChapter = 3;
+    static public int chapterInteractablesInChapter = 3;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
     static public int objectivesInQuest = 3;
@@ -37,21 +37,21 @@ static public class Fixtures
     static public List<Tile> tileList = new List<Tile>();
     static public List<Region> regionList = new List<Region>();
     static public List<Atmosphere> atmosphereList = new List<Atmosphere>();
+    static public List<WorldObject> worldObjectList = new List<WorldObject>();
     static public List<Terrain> terrainList = new List<Terrain>();
     static public List<TerrainTile> terrainTileList = new List<TerrainTile>();
     static public List<Chapter> chapterList = new List<Chapter>();
+    static public List<PartyMember> partyMemberList = new List<PartyMember>();
+    static public List<ChapterInteractable> chapterInteractableList = new List<ChapterInteractable>(); //Supporting interactables
     static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
     static public List<Phase> phaseList = new List<Phase>();
     static public List<PhaseInteractable> phaseInteractableList = new List<PhaseInteractable>();
     static public List<Quest> questList = new List<Quest>();
     static public List<Objective> objectiveList = new List<Objective>();
+    static public List<WorldInteractable> worldInteractableList = new List<WorldInteractable>();
     static public List<Task> taskList = new List<Task>();
     static public List<Interaction> interactionList = new List<Interaction>();
-
-    static public List<PartyMember> partyMemberList = new List<PartyMember>();
-    static public List<WorldInteractable> worldInteractableList = new List<WorldInteractable>();
-    static public List<WorldObject> worldObjectList = new List<WorldObject>();
-
+    
     public class Item : GeneralData
     {
         public int objectGraphicId;
@@ -64,13 +64,7 @@ static public class Fixtures
         public int objectGraphicId;
         public string name;
     }
-
-    public class PartyMember : GeneralData
-    {
-        public int chapterId;
-        public int interactableId;
-    }
-
+    
     public class WorldObject : GeneralData
     {
         public int objectGraphicId;
@@ -90,15 +84,7 @@ static public class Fixtures
 
         public int animation;
     }
-
-    public class WorldInteractable : GeneralData
-    {
-        public int chapterId;
-        public int objectiveId;
-        public int interactableId;
-        public int interactionIndex;
-    }
-
+    
     public class ObjectGraphic : GeneralData
     {
         public int iconId;
@@ -171,6 +157,18 @@ static public class Fixtures
         public string privateNotes;
     }
 
+    public class PartyMember : GeneralData
+    {
+        public int chapterId;
+        public int interactableId;
+    }
+
+    public class ChapterInteractable : GeneralData
+    {
+        public int chapterId;
+        public int interactableId;
+    }
+
     public class ChapterRegion : GeneralData
     {
         public int chapterId;
@@ -188,8 +186,8 @@ static public class Fixtures
     public class PhaseInteractable : GeneralData
     {
         public int phaseId;
-        public int questId;
-        public int worldInteractableId;
+        public int chapterInteractableId;
+        public int questId;      
     }
 
     public class Quest : GeneralData
@@ -208,7 +206,17 @@ static public class Fixtures
         public string publicNotes;
         public string privateNotes;
     }
-    
+
+    public class WorldInteractable : GeneralData
+    {
+        public int objectiveId;
+        public int interactableId;
+
+        public bool isDefault;
+
+        public int interactionIndex;
+    }
+
     public class Task : GeneralData
     {
         public int worldInteractableId;
@@ -261,7 +269,7 @@ static public class Fixtures
         LoadWorldObjects();
         LoadChapters();
         LoadChapterPartyMembers();
-        LoadChapterWorldInteractables();
+        LoadChapterInteractables();
         LoadChapterRegions();
         LoadPhases();
         LoadPhaseRegions();
@@ -769,8 +777,8 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var worldInteractableIds = worldInteractableList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !worldInteractableIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
+            var chapterInteractableIds = chapterInteractableList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
+            interactableList.Where(x => !chapterInteractableIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
 
             for (int i = 0; i < partyMembersInChapter; i++)
             {
@@ -794,7 +802,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadChapterWorldInteractables()
+    static public void LoadChapterInteractables()
     {
         foreach(Chapter chapter in chapterList)
         {
@@ -803,11 +811,11 @@ static public class Fixtures
             var partyMemberIds = partyMemberList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
             interactableList.Where(x => !partyMemberIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
 
-            for (int i = 0; i < worldInteractablesInChapter; i++)
+            for (int i = 0; i < chapterInteractablesInChapter; i++)
             {
-                var chapterInteractable = new WorldInteractable();
+                var chapterInteractable = new ChapterInteractable();
 
-                int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+                int id = chapterInteractableList.Count > 0 ? (chapterInteractableList[chapterInteractableList.Count - 1].Id + 1) : 1;
 
                 chapterInteractable.Id = id;
                 chapterInteractable.Index = i;
@@ -820,7 +828,7 @@ static public class Fixtures
 
                 randomInteractables.RemoveAt(randomInteractable);
 
-                worldInteractableList.Add(chapterInteractable);
+                chapterInteractableList.Add(chapterInteractable);
             }
         }
     }
@@ -961,8 +969,6 @@ static public class Fixtures
 
                     worldInteractable.Id = worldInteractableId;
 
-                    worldInteractable.chapterId = worldInteractableSource.chapterId;
-                    worldInteractable.objectiveId = worldInteractableSource.objectiveId;
                     worldInteractable.interactableId = worldInteractableSource.interactableId;
                     worldInteractable.interactionIndex = worldInteractableSource.interactionIndex;
 
@@ -1088,7 +1094,7 @@ static public class Fixtures
         {
             foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.Id).Distinct().ToList())
             {
-                var chapterInteractables = worldInteractableList.Where(x => x.chapterId == chapter.Id).Distinct().ToList();
+                var chapterInteractables = chapterInteractableList.Where(x => x.chapterId == chapter.Id).Distinct().ToList();
                 var questIds = questList.Where(x => x.phaseId == phase.Id).Select(x => x.Id).Distinct().ToList();
 
                 for (int i = 0; i < chapterInteractables.Count; i++)
@@ -1100,7 +1106,7 @@ static public class Fixtures
                     phaseInteractable.Id = id;
 
                     phaseInteractable.phaseId = phase.Id;
-                    phaseInteractable.worldInteractableId = chapterInteractables[i].Id;
+                    phaseInteractable.chapterInteractableId = chapterInteractables[i].Id;
 
                     int randomQuestId = Random.Range(0, questIds.Count);
 
@@ -1143,22 +1149,50 @@ static public class Fixtures
             List<int> randomInteractables = new List<int>();
 
             interactableList.ForEach(x => randomInteractables.Add(x.Id));
+            
+            //Fetch the interactables belonging to the quest and create an objective interactable for each
+            var chapterInteractableIds = chapterInteractableList.Where(x => phaseInteractableList.Where(y => y.questId == objective.questId).Select(y => y.chapterInteractableId).Contains(x.Id))
+                                                                .Select(x => x.interactableId).ToList();
 
-            for(int i = 0; i < interactablesInObjective; i++)
+            int index = 0;
+
+            for (int i = 0; i < chapterInteractableIds.Count; i++)
             {
-                var objectiveInteractable = new WorldInteractable();
+                var worldInteractable = new WorldInteractable();
 
                 int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
-                objectiveInteractable.Id = id;
-                objectiveInteractable.Index = i;
+                worldInteractable.Id = id;
+                worldInteractable.Index = index;
+                
+                worldInteractable.objectiveId = objective.Id;
 
-                objectiveInteractable.objectiveId = objective.Id;
+                worldInteractable.interactableId = chapterInteractableIds[i];
+
+                worldInteractable.isDefault = true;
+
+                worldInteractableList.Add(worldInteractable);
+
+                index++;
+            }
+
+            for(int i = 0; i < interactablesInObjective; i++)
+            {
+                var worldInteractable = new WorldInteractable();
+
+                int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+
+                worldInteractable.Id = id;
+                worldInteractable.Index = index;
+
+                worldInteractable.objectiveId = objective.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
-                objectiveInteractable.interactableId = randomInteractables[randomInteractable];
+                worldInteractable.interactableId = randomInteractables[randomInteractable];
 
-                worldInteractableList.Add(objectiveInteractable);
+                worldInteractableList.Add(worldInteractable);
+
+                index++;
             }
         }
     }
@@ -1167,8 +1201,9 @@ static public class Fixtures
     {
         foreach (Objective objective in objectiveList)
         {
-            var phaseInteractableWorldInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.worldInteractableId).Distinct().ToList();
-            var worldInteractables = worldInteractableList.Where(x => phaseInteractableWorldInteractableIds.Contains(x.Id) || x.objectiveId == objective.Id).Distinct().ToList();
+            //var phaseInteractableWorldInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.chapterInteractableId).Distinct().ToList();
+
+            var worldInteractables = worldInteractableList.Where(x => x.objectiveId == objective.Id).Distinct().ToList();
 
             var phaseId = phaseList.Where(x => questList.Where(y => y.Id == objective.questId).Select(y => y.phaseId).Contains(x.Id)).Select(x => x.Id).FirstOrDefault();
             var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();

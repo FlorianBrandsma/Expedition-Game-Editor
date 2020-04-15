@@ -17,17 +17,18 @@ public class Enums
         Terrain,
         Tile,
         TerrainTile,
-        WorldInteractable,
         WorldObject,
         Chapter,
+        PartyMember,
+        ChapterInteractable,
         ChapterRegion,
         Phase,
         PhaseInteractable,
         Quest,
         Objective,
+        WorldInteractable,
         Task,
-        Interaction,
-        PartyMember,
+        Interaction,   
         World
     }
 
@@ -62,6 +63,12 @@ public class Enums
         Supplies,
         Gear,
         Spoils,
+    }
+
+    public enum InteractableType
+    {
+        Characters,
+        Objects
     }
 
     public enum RegionType

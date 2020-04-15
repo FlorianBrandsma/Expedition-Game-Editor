@@ -5,23 +5,23 @@ public class PhaseInteractableCore : GeneralData
 {
     private int phaseId;
     private int questId;
-    private int worldInteractableId;
+    private int chapterInteractableId;
 
     //Original
     public int originalPhaseId;
     public int originalQuestId;
-    public int originalWorldInteractableId;
+    public int originalChapterInteractableId;
 
     //Changed
     private bool changedPhaseId;
     private bool changedQuestId;
-    private bool changedWorldInteractableId;
+    private bool changedChapterInteractableId;
 
     public bool Changed
     {
         get
         {
-            return changedPhaseId || changedQuestId || changedWorldInteractableId;
+            return changedPhaseId || changedQuestId || changedChapterInteractableId;
         }
     }
 
@@ -52,16 +52,16 @@ public class PhaseInteractableCore : GeneralData
         }
     }
 
-    public int WorldInteractableId
+    public int ChapterInteractableId
     {
-        get { return worldInteractableId; }
+        get { return chapterInteractableId; }
         set
         {
-            if (value == worldInteractableId) return;
+            if (value == chapterInteractableId) return;
 
-            changedWorldInteractableId = (value != originalWorldInteractableId);
+            changedChapterInteractableId = (value != originalChapterInteractableId);
 
-            worldInteractableId = value;
+            chapterInteractableId = value;
         }
     }
     #endregion
@@ -77,10 +77,10 @@ public class PhaseInteractableCore : GeneralData
         {
             phaseElementData.questId = questId;
 
-            var taskList = Fixtures.taskList.Where(x => x.worldInteractableId == phaseElementData.worldInteractableId).Distinct().ToList();
+            //var taskList = Fixtures.taskList.Where(x => x.worldInteractableId == phaseElementData.worldInteractableId).Distinct().ToList();
 
-            Fixtures.interactionList.Where(x => taskList.Select(y => y.Id).Contains(x.taskId)).Distinct().ToList().ForEach(x => Fixtures.interactionList.Remove(x));
-            Fixtures.taskList.Where(x => taskList.Select(y => y.Id).Contains(x.Id)).Distinct().ToList().ForEach(x => Fixtures.taskList.Remove(x));
+            //Fixtures.interactionList.Where(x => taskList.Select(y => y.Id).Contains(x.taskId)).Distinct().ToList().ForEach(x => Fixtures.interactionList.Remove(x));
+            //Fixtures.taskList.Where(x => taskList.Select(y => y.Id).Contains(x.Id)).Distinct().ToList().ForEach(x => Fixtures.taskList.Remove(x));
         }
     }
 
@@ -92,14 +92,14 @@ public class PhaseInteractableCore : GeneralData
     {
         originalPhaseId = phaseId;
         originalQuestId = questId;
-        originalWorldInteractableId = worldInteractableId;
+        originalChapterInteractableId = chapterInteractableId;
     }
 
     public void GetOriginalValues()
     {
         phaseId = originalPhaseId;
         questId = originalQuestId;
-        worldInteractableId = originalWorldInteractableId;
+        chapterInteractableId = originalChapterInteractableId;
     }
 
     public virtual void ClearChanges()
@@ -108,7 +108,7 @@ public class PhaseInteractableCore : GeneralData
 
         changedPhaseId = false;
         changedQuestId = false;
-        changedWorldInteractableId = false;
+        changedChapterInteractableId = false;
     }
 
     public void Delete() { }
@@ -120,6 +120,6 @@ public class PhaseInteractableCore : GeneralData
 
         phaseId = phaseInteractableDataSource.phaseId;
         questId = phaseInteractableDataSource.questId;
-        worldInteractableId = phaseInteractableDataSource.worldInteractableId;
+        chapterInteractableId = phaseInteractableDataSource.chapterInteractableId;
     }
 }

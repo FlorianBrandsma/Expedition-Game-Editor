@@ -90,9 +90,9 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             overlayManager.SetOverlay();
 
         if (cameraProperties.timeBasedLighting)
-            EditorManager.editorManager.TimeManager.SetCameraLight(directionalLight);
+            TimeManager.instance.SetCameraLight(directionalLight);
         else
-            EditorManager.editorManager.TimeManager.ResetLighting(directionalLight);
+            TimeManager.instance.ResetLighting(directionalLight);
     }
 
     private void ResetListPosition()
@@ -160,6 +160,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         var startPos = new Vector3(-content.rect.width / 2, content.rect.height / 2, 0);
         var localPosition = new Vector3(startPos.x + elementPosition.x , startPos.y - elementPosition.y, -elementPosition.z);
 
+        //It seems like it doesn't do this if the selected object alignes horizintally with the center?
         if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
             cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);     
     }

@@ -10085,7 +10085,7 @@ GameObject:
   - component: {fileID: 357577327}
   - component: {fileID: 357577326}
   m_Layer: 5
-  m_Name: World
+  m_Name: Supporting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10421,6 +10421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  active: 0
   defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0
@@ -11381,7 +11382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partyMemberDataList: []
-  worldInteractableDataList: []
+  chapterInteractableDataList: []
   chapterRegionDataList: []
 --- !u!1 &401679383
 GameObject:
@@ -25086,6 +25087,7 @@ MonoBehaviour:
   actionProperties:
     anchor: 0
     width: 65
+  regionNavigationAction: {fileID: 1226603128}
 --- !u!114 &993477356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29500,7 +29502,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1158307198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e97afdd8583fef640ab82285cc1fc942, type: 3}
+  m_Script: {fileID: 11500000, guid: ad2c6842965460546bd426236766b421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   searchParameters:
@@ -29528,7 +29530,7 @@ MonoBehaviour:
   dataControllerParent: {fileID: 0}
   enableToggle: 0
   editorToggle: {fileID: 423150525}
-  segmentName: Interactables
+  segmentName: Characters
   header: {fileID: 1240155048}
   segmentGroup: []
   editorElements: []
@@ -31839,6 +31841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  active: 0
   defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0
@@ -43051,8 +43054,8 @@ MonoBehaviour:
     autoUpdate: 0
     id: 
     phaseId: 
+    chapterInteractableId: 
     questId: 
-    worldInteractableId: 
     requestType: 0
 --- !u!114 &1553673206
 MonoBehaviour:
@@ -48407,7 +48410,7 @@ Transform:
   m_GameObject: {fileID: 1716053770}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999994, y: 1.0000002, z: 1.0000002}
+  m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000002}
   m_Children: []
   m_Father: {fileID: 848948710}
   m_RootOrder: 4
@@ -54799,6 +54802,7 @@ MonoBehaviour:
   actionProperties:
     anchor: 0
     width: 75
+  regionNavigationAction: {fileID: 0}
 --- !u!224 &1986959732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000012771355508, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -57511,6 +57515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  active: 0
   defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0

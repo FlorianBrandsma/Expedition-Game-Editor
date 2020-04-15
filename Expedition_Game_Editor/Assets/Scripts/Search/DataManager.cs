@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class DataManager
 {
     #region Methods
-
     static public void SetIndex(List<GeneralData> dataList)
     {
         for (int index = 0; index < dataList.Count; index++)
@@ -15,11 +15,9 @@ public class DataManager
             data.Index = index;
         }
     }
-
     #endregion
 
     #region Functions
-
     public List<IconData> GetIconData(Search.Icon searchParameters)
     {
         var dataList = new List<IconData>();
@@ -94,22 +92,21 @@ public class DataManager
         return dataList;
     }
     
-    public List<WorldInteractableData> GetChapterWorldInteractableData(int chapterId, bool searchById = false)
+    public List<ChapterInteractableData> GetChapterInteractableData(Search.ChapterInteractable searchParameters)
     {
-        var dataList = new List<WorldInteractableData>();
+        var dataList = new List<ChapterInteractableData>();
 
-        foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
+        foreach (Fixtures.ChapterInteractable chapterInteractable in Fixtures.chapterInteractableList)
         {
-            if (searchById && chapterId != worldInteractable.chapterId) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId)) continue;
+            if (searchParameters.interactableId.Count > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId)) continue;
 
-            var data = new WorldInteractableData();
+            var data = new ChapterInteractableData();
 
-            data.Id = worldInteractable.Id;
+            data.Id = chapterInteractable.Id;
 
-            data.chapterId = worldInteractable.chapterId;
-            data.objectiveId = worldInteractable.objectiveId;
-            data.interactableId = worldInteractable.interactableId;
-            data.interactionIndex = worldInteractable.interactionIndex;
+            data.chapterId = chapterInteractable.chapterId;
+            data.interactableId = chapterInteractable.interactableId;
 
             dataList.Add(data);
         }
@@ -143,16 +140,16 @@ public class DataManager
         foreach (Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId)) continue;
-            if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(phaseInteractable.worldInteractableId)) continue;
+            if (searchParameters.chapterInteractableId.Count > 0 && !searchParameters.chapterInteractableId.Contains(phaseInteractable.chapterInteractableId)) continue;
 
             var data = new PhaseInteractableData();
 
             data.Id = phaseInteractable.Id;
 
             data.phaseId = phaseInteractable.phaseId;
+            data.chapterInteractableId = phaseInteractable.chapterInteractableId;
             data.questId = phaseInteractable.questId;
-            data.worldInteractableId = phaseInteractable.worldInteractableId;
-
+            
             dataList.Add(data);
         }
 
@@ -206,12 +203,12 @@ public class DataManager
         foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(worldInteractable.Id)) continue;
+            if (searchParameters.isDefault > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault)) continue;
 
             var data = new WorldInteractableData();
 
             data.Id = worldInteractable.Id;
 
-            data.chapterId = worldInteractable.chapterId;
             data.objectiveId = worldInteractable.objectiveId;
             data.interactableId = worldInteractable.interactableId;
             data.interactionIndex = worldInteractable.interactionIndex;
@@ -255,7 +252,7 @@ public class DataManager
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
             if (searchParameters.taskId.Count > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
-
+            
             var data = new InteractionData();
 
             data.Id = interaction.Id;
@@ -448,11 +445,9 @@ public class DataManager
 
         return dataList;
     }
-
     #endregion
 
     #region Classes
-
     public class IconData : GeneralData
     {
         public int category;
@@ -475,6 +470,12 @@ public class DataManager
         public string name;
     }
     
+    public class ChapterInteractableData : GeneralData
+    {
+        public int chapterId;
+        public int interactableId;
+    }
+
     public class PhaseData : GeneralData
     {
         public int chapterId;
@@ -483,8 +484,8 @@ public class DataManager
     public class PhaseInteractableData : GeneralData
     {
         public int phaseId;
+        public int chapterInteractableId;
         public int questId;
-        public int worldInteractableId;
     }
 
     public class QuestData : GeneralData

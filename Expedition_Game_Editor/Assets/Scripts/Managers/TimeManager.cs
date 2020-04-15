@@ -48,7 +48,11 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    static public TimeManager instance;
+
     private float dot;
+
+    static public Color test;
 
     public Color baseColor;
     public Gradient nightDayColor;
@@ -65,6 +69,8 @@ public class TimeManager : MonoBehaviour
 
     public void Awake()
     {
+        instance = this;
+
         InitializeTime();
     }
 
@@ -72,14 +78,15 @@ public class TimeManager : MonoBehaviour
     {
         activeTime = defaultTime;
     }
-    
-    public void SetTime(int time)
+
+    public void SetTime(int time, bool resetEditor = false)
     {
         activeTime = time;
 
         SetLighting(activeTime);
 
-        EditorManager.editorManager.ResetEditor();
+        if (resetEditor)
+            EditorManager.editorManager.ResetEditor();
     }
 
     public void SetLighting()
@@ -108,34 +115,34 @@ public class TimeManager : MonoBehaviour
     {
         light.color = nightDayColor.Evaluate(dot);
     }
-    
-    static public string FormatTime(int time)
+
+    static public string FormatTime(int time, bool isStart = false)
     {
-        return time.ToString("D2") + ":00";
+        return time.ToString("D2") + (isStart ? ":00" : ":59");
     }
 
     static public bool TimeFramesAvailable(IDataController dataController)
     {
         int usedFrames = 0;
 
-        var dataList = new List<TimeFrame>();
+        var timeFrameList = new List<TimeFrame>();
 
         switch(dataController.DataType)
         {
             case Enums.DataType.Atmosphere:
 
-                dataList = dataController.DataList.Cast<AtmosphereDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.DataList.Cast<AtmosphereDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
 
                 break;
 
             case Enums.DataType.Interaction:
                 
-                dataList = dataController.DataList.Cast<InteractionDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.DataList.Cast<InteractionDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
         
                 break;  
         }
 
-        dataList.ForEach(x =>
+        timeFrameList.ForEach(x =>
         {
             if (x.StartTime <= x.EndTime)
                 usedFrames += (x.EndTime + 1) - x.StartTime;
@@ -144,6 +151,33 @@ public class TimeManager : MonoBehaviour
         });
 
         return (usedFrames < hoursInDay);
+    }
+
+    static public int FirstAvailableTime(List<TimeFrame> timeFrameList)
+    {
+        for(int i = 0; i < hoursInDay; i++)
+        {
+            if (!timeFrameList.Any(x => TimeInFrame(i, x.StartTime, x.EndTime)))
+                return i;
+        }
+
+        return 0;
+    }
+
+    static public bool TimeInFrame(int time, int startTime, int endTime)
+    {
+        if (startTime <= endTime)
+        {
+            if (time >= startTime && time <= endTime)
+                return true;
+
+        } else {
+
+            if (time <= startTime && time >= 0 || time >= endTime && time <= hoursInDay)
+                return true;
+        }
+
+        return false;
     }
 
     static public bool TimeConflict(IDataController dataController, IDataElement changedData)

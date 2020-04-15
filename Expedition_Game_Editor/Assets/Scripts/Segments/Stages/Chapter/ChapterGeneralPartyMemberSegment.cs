@@ -42,7 +42,7 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
         var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Interactable>().FirstOrDefault();
 
         var idList = ChapterEditor.partyMemberDataList.Select(x => x.InteractableId).Union(
-                     ChapterEditor.worldInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
+                     ChapterEditor.chapterInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
 
         //Find interactables where id is not in the list
         var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();

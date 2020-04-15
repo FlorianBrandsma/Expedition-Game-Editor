@@ -14,6 +14,10 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
     public int terrainTileId;
 
     public int objectGraphicId;
+
+    public bool isDefault;
+    public int taskGroup;
+
     public string objectGraphicPath;
 
     public string interactableName;
@@ -39,6 +43,13 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
     public int animation;
 
     public Vector2 startPosition;
+    
+    public int startTime;
+    public int endTime;
+
+    public int defaultTime;
+
+    public bool containsActiveTime;
 
     public override void Update()
     {
@@ -83,6 +94,10 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         dataElement.terrainTileId = terrainTileId;
 
         dataElement.objectGraphicId = objectGraphicId;
+
+        dataElement.isDefault = isDefault;
+        dataElement.taskGroup = taskGroup;
+
         dataElement.objectGraphicPath = objectGraphicPath;
 
         dataElement.interactableName = interactableName;
@@ -108,6 +123,13 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         dataElement.animation = animation;
 
         dataElement.startPosition = startPosition;
+        
+        dataElement.startTime = startTime;
+        dataElement.endTime = endTime;
+
+        dataElement.defaultTime = defaultTime;
+
+        dataElement.containsActiveTime = containsActiveTime;
 
         CloneCore(dataElement);
 
@@ -123,6 +145,10 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         terrainTileId = worldInteractableDataSource.terrainTileId;
 
         objectGraphicId = worldInteractableDataSource.objectGraphicId;
+
+        isDefault = worldInteractableDataSource.isDefault;
+        taskGroup = worldInteractableDataSource.taskGroup;
+
         objectGraphicPath = worldInteractableDataSource.objectGraphicPath;
 
         interactableName = worldInteractableDataSource.interactableName;
@@ -148,6 +174,13 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         animation = worldInteractableDataSource.animation;
 
         startPosition = worldInteractableDataSource.startPosition;
+        
+        startTime = worldInteractableDataSource.startTime;
+        endTime = worldInteractableDataSource.endTime;
+
+        defaultTime = worldInteractableDataSource.defaultTime;
+
+        containsActiveTime = worldInteractableDataSource.containsActiveTime;
 
         SetOriginalValues();
     }

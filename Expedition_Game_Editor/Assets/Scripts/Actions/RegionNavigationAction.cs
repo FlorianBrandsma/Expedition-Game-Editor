@@ -24,11 +24,13 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         }
     }
 
+    public bool active;
+
     private Enums.RegionType regionType;
 
     public RegionDisplayManager defaultDisplay;
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    public PathController PathController { get { return GetComponent<PathController>(); } }
 
     public ActionProperties actionProperties;
 
@@ -40,7 +42,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     public void InitializeAction(Path path)
     {
-        structureList = path.route.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation).Select(x => x.data.dataController.DataType).Distinct().ToList();
+        active = true;
+
+        structureList = path.route.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
+                                  .Select(x => x.data.dataController.DataType).Distinct().ToList();
 
         regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
 
@@ -112,13 +117,27 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             if (route.GeneralData.Id != mainRoute.GeneralData.Id)
                 actionData.data.dataElement = mainRoute.data.dataElement;
 
+            if (actionData.data.dataController.DataType == Enums.DataType.Interaction)
+                CheckTime((InteractionDataElement)actionData.data.dataElement);
+
             if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id))
                 ResetData(actionData);
             else
-                SelectOption(actionData);
+                SelectOption(dataType);
         }
     }
 
+    private void CheckTime(IDataElement dataElement)
+    {
+        var interactionData = (InteractionDataElement)dataElement;
+
+        var startTime   = interactionData.Default ? interactionData.defaultTime : interactionData.StartTime;
+        var endTime     = interactionData.Default ? interactionData.defaultTime : interactionData.EndTime;
+
+        if (!TimeManager.TimeInFrame(TimeManager.activeTime, startTime, endTime))
+            TimeManager.instance.SetTime(startTime);
+    }
+    
     private void ResetData(ActionData actionData)
     {
         if (actionData.data.dataController.DataType == Enums.DataType.Interaction)
@@ -319,7 +338,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         actionData.data.dataList = EditorManager.GetData(dataController, new[] { searchParameters });
 
-        SelectOption(actionData);
+        SelectOption(dataController.DataType);
     }
 
     #region Get Data
@@ -360,25 +379,20 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var searchParameters = new Search.WorldInteractable();
 
-        var questAction = FindActionByDataType(Enums.DataType.Quest);
         var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
 
-        if (questAction != null && objectiveAction != null)
+        if (objectiveAction != null)
         {
-            searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveInteractables;
-
-            searchParameters.questId = new List<int>() { questAction.data.dataElement.Id };
             searchParameters.objectiveId = new List<int>() { objectiveAction.data.dataElement.Id };
 
         } else {
 
-            searchParameters.requestType = Search.WorldInteractable.RequestType.GetInteractablesFromInteractionRegion;
+            searchParameters.requestType = Search.WorldInteractable.RequestType.GetRegionWorldInteractables;
 
             var regionRoute = FindActionByDataType(Enums.DataType.Region);
 
             searchParameters.regionId = new List<int>() { regionRoute.data.dataElement.Id };
 
-            searchParameters.questId = new List<int>() { 0 };
             searchParameters.objectiveId = new List<int>() { 0 };
         }
 
@@ -390,9 +404,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var searchParameters = new Search.Task();
 
         searchParameters.worldInteractableId = new List<int>() { FindActionByDataType(Enums.DataType.WorldInteractable).data.dataElement.Id };
-
-        if (FindActionByDataType(Enums.DataType.Objective) != null)
-            searchParameters.objectiveId = new List<int>() { FindActionByDataType(Enums.DataType.Objective).data.dataElement.Id };
 
         return searchParameters;
     }
@@ -421,6 +432,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     private void SetOptions(Dropdown dropdown, ActionData actionData)
     {
+        var dataType = actionData.data.dataController.DataType;
+
         switch (actionData.data.dataController.DataType)
         {
             case Enums.DataType.Chapter:            SetChapterOptions(dropdown, actionData);            break;
@@ -482,7 +495,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetInteractionOptions(Dropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<InteractionDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : x.StartTime.ToString("D2") + ":00 - " + x.EndTime.ToString("D2") + ":59")));
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetRegionOptions(Dropdown dropdown, ActionData actionData)
@@ -492,12 +505,34 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     }
     #endregion
 
-    private void SelectOption(ActionData actionData)
+    public void SelectOption(Enums.DataType dataType)
     {
-        if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id))
-            actionData.data.dataElement = actionData.data.dataList.First();
+        var actionData = FindActionByDataType(dataType);
 
-        PathController.route.path.ReplaceAllData(actionData.data);
+        if(dataType == Enums.DataType.Interaction)
+        {
+            SelectValidInteraction(actionData);
+
+            PathController.editorSection.editorForm.activePath.ReplaceAllData(actionData.data);
+
+        } else {
+
+            if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id))
+                actionData.data.dataElement = actionData.data.dataList.First();
+
+            PathController.route.path.ReplaceAllData(actionData.data);
+        } 
+    }
+
+    private void SelectValidInteraction(ActionData actionData)
+    {
+        var interactionDataList = actionData.data.dataList.Cast<InteractionDataElement>().ToList();
+        var validInteraction = interactionDataList.Where(x => TimeManager.TimeInFrame(TimeManager.activeTime, x.StartTime, x.EndTime) || x.Default).OrderBy(x => x.Default).First();
+
+        if(validInteraction.Default)
+            validInteraction.defaultTime = TimeManager.activeTime;
+
+        actionData.data.dataElement = validInteraction;
     }
 
     private ActionData FindActionByDataType(Enums.DataType dataType)
@@ -505,5 +540,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         return actionDataList.Where(x => x.data.dataController.DataType == dataType).FirstOrDefault();
     }
 
-    public void CloseAction() { }
+    public void CloseAction()
+    {
+        active = false;
+    }
 }
