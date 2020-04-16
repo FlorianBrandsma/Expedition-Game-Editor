@@ -9,7 +9,10 @@ public class WorldDataElement : GeneralData, IDataElement
         public int regionId;
 
         public string name;
-
+        
+        public AtmosphereDataElement activeAtmosphere;
+        
+        public List<AtmosphereDataElement> atmosphereDataList;
         public List<TerrainTileDataElement> terrainTileDataList;
         public List<WorldInteractableDataElement> worldInteractableDataList;
         public List<InteractionDataElement> interactionDataList;
@@ -17,6 +20,7 @@ public class WorldDataElement : GeneralData, IDataElement
 
         public void SetOriginalValues()
         {
+            atmosphereDataList.ForEach(x => x.SetOriginalValues());
             terrainTileDataList.ForEach(x => x.SetOriginalValues());
             worldInteractableDataList.ForEach(x => x.SetOriginalValues());
             interactionDataList.ForEach(x => x.SetOriginalValues());
@@ -28,6 +32,12 @@ public class WorldDataElement : GeneralData, IDataElement
             regionId = terrainDataSource.regionId;
 
             name = terrainDataSource.name;
+
+            for(int i = 0; i < atmosphereDataList.Count; i++)
+            {
+                var atmosphereDataSource = terrainDataSource.atmosphereDataList[i];
+                atmosphereDataList[i].Copy(atmosphereDataSource);
+            }
 
             for (int i = 0; i < terrainTileDataList.Count; i++)
             {

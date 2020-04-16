@@ -10,14 +10,15 @@ public class AtmosphereDataElement : AtmosphereCore, IDataElement
     {
         DataType = Enums.DataType.Atmosphere;
     }
-
-    public bool timeConflict;
-
+    
     public string regionName;
     public string terrainName;
 
     public string iconPath;
     public string baseTilePath;
+
+    public bool timeConflict;
+    public bool containsActiveTime;
 
     public override void Update()
     {

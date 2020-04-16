@@ -556,7 +556,7 @@ static public class Fixtures
                 terrain.iconId = 1;
                 terrain.name = "Terrain " + (i + 1);
 
-                CreateAtmosphere(terrain, true, 0, 4);
+                CreateAtmosphere(terrain, true, 0, 0);
                 CreateAtmosphere(terrain, false, 8, 12);
                 CreateAtmosphere(terrain, false, 16, 20);
 
@@ -678,7 +678,7 @@ static public class Fixtures
 
         CreateInteraction(task, true, 0, 0, regionId, position, rotation);
         CreateInteraction(task, false, 0, 4, regionId, position, rotation);
-        CreateInteraction(task, false, 9, 12, regionId, position, rotation);
+        CreateInteraction(task, false, 9, 15, regionId, position, rotation);
 
         taskList.Add(task);
     }

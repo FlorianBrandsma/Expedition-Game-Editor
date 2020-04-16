@@ -161,7 +161,7 @@ public class TimeManager : MonoBehaviour
                 return i;
         }
 
-        return 0;
+        return -1;
     }
 
     static public bool TimeInFrame(int time, int startTime, int endTime)

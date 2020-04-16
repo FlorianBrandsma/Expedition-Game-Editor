@@ -44,9 +44,9 @@ public class InteractionGeneralInteractableStatusSegment : MonoBehaviour, ISegme
 
         if (regionData.Id == 0)
             regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;
-
+        
         editButton.path = SegmentController.editorController.PathController.route.path;
-
+        
         editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(InteractionData.objectGraphicIconPath);
     }

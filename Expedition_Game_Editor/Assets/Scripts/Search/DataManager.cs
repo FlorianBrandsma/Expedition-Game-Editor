@@ -357,6 +357,32 @@ public class DataManager
         return dataList;
     }
 
+    public List<AtmosphereData> GetAtmosphereData(Search.Atmosphere searchParameters)
+    {
+        var dataList = new List<AtmosphereData>();
+
+        foreach(Fixtures.Atmosphere atmosphere in Fixtures.atmosphereList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
+            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.terrainId)) continue;
+
+            var data = new AtmosphereData();
+
+            data.Id = atmosphere.Id;
+
+            data.terrainId = atmosphere.terrainId;
+
+            data.isDefault = atmosphere.isDefault;
+
+            data.startTime = atmosphere.startTime;
+            data.endTime = atmosphere.endTime;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<TerrainData> GetTerrainData(Search.Terrain searchParameters)
     {
         var dataList = new List<TerrainData>();
@@ -568,6 +594,16 @@ public class DataManager
         public int regionId;
         public int iconId;
         public string name;
+    }
+
+    public class AtmosphereData : GeneralData
+    {
+        public int terrainId;
+
+        public bool isDefault;
+
+        public int startTime;
+        public int endTime;
     }
 
     public class TerrainTileData : GeneralData

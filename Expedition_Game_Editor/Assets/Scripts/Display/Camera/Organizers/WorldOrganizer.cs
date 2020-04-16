@@ -131,12 +131,12 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void InitializeControllers()
     {
-        worldInteractableController.SegmentController = DataController.SegmentController;
-        interactionController.SegmentController = DataController.SegmentController;
-        worldObjectController.SegmentController = DataController.SegmentController;
-
-        worldInteractableController.DataCategory = Enums.DataCategory.Navigation;
-        interactionController.DataCategory = Enums.DataCategory.Navigation;
+        worldObjectController.SegmentController         = DataController.SegmentController;
+        worldInteractableController.SegmentController   = DataController.SegmentController;
+        interactionController.SegmentController         = DataController.SegmentController;
+        
+        worldInteractableController.DataCategory    = Enums.DataCategory.Navigation;
+        interactionController.DataCategory          = Enums.DataCategory.Navigation;
     }
 
     public void SelectData()
@@ -215,9 +215,14 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
         planes = GeometryUtility.CalculateFrustumPlanes(CameraManager.cam);
 
         worldStartPosition = worldData.startPosition;
-        
+
+        //Confirm which atmosphere's timeframes contain the active time
+        ValidateAtmosphereTime();
+
         foreach (WorldDataElement.TerrainData terrainData in worldData.terrainDataList)
         {
+            terrainData.activeAtmosphere = terrainData.atmosphereDataList.Where(x => x.containsActiveTime).First();
+
             SetTerrain(terrainData);
 
             worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == 0 || worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
@@ -226,17 +231,21 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
             interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
         }
-
-        //Extract interactions that will be obtained by the region navigation dropdown.
-        //Also maintains selection focus
+        
         if (interactionData != null)
         {
+            //Confirm which interactions's timeframes contain the active time
             ValidateInteractionsTime();
+
+            //Extract interactions that will be obtained by the region navigation dropdown and also maintains selection focus
             ExtractInteractions();
+
+        } else {
+
+            //There are no world interactables to validate when there is an interaction
+            ValidateWorldInteractablesTime();
         }
-
-        ValidateWorldInteractablesTime();
-
+        
         //Set objects that are bound to this terrain tile
         SetWorldElements(worldObjectController);
 
@@ -247,6 +256,14 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
         SetWorldElements(interactionController);
         
         GetActiveTerrain();
+    }
+
+    private void ValidateAtmosphereTime()
+    {
+        worldData.terrainDataList.SelectMany(x => x.atmosphereDataList.GroupBy(y => y.TerrainId)
+                                                                      .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
+                                                                      .OrderBy(z => z.Default).First())).ToList()
+                                                                      .ForEach(x => x.containsActiveTime = true);
     }
 
     private void ValidateInteractionsTime()

@@ -16,6 +16,7 @@ public class WorldDataManager : IDataManager
     private List<DataManager.RegionData> regionDataList;
     private List<DataManager.TileSetData> tileSetDataList;
     private List<DataManager.TerrainData> terrainDataList;
+    private List<DataManager.AtmosphereData> atmosphereDataList;
     private List<DataManager.TerrainTileData> terrainTileDataList;
     private List<DataManager.WorldObjectData> worldObjectDataList;
     private List<DataManager.TaskData> taskDataList;
@@ -46,6 +47,7 @@ public class WorldDataManager : IDataManager
         GetRegionData(searchData);
         GetTileSetData();
         GetTerrainData();
+        GetAtmosphereData();
         GetTerrainTileData();
 
         GetWorldObjectData(searchData);
@@ -62,7 +64,7 @@ public class WorldDataManager : IDataManager
 
         GetPhaseInteractableData();
 
-        GroupInteractions();
+        FilterInteractions();
 
         basicWorldData = GetBasicWorldData();
 
@@ -87,6 +89,7 @@ public class WorldDataManager : IDataManager
 
                 terrainDataList = (
                 from terrainData in terrainDataList
+                
                 select new WorldDataElement.TerrainData()
                 {
                     Id = terrainData.Id,
@@ -94,13 +97,27 @@ public class WorldDataManager : IDataManager
 
                     name = terrainData.name,
 
+                    atmosphereDataList = (
+                    from atmosphereData in atmosphereDataList
+                    where atmosphereData.terrainId == terrainData.Id
+                    select new AtmosphereDataElement()
+                    {
+                        Id = atmosphereData.Id,
+
+                        TerrainId = atmosphereData.terrainId,
+
+                        Default = atmosphereData.isDefault,
+
+                        StartTime = atmosphereData.startTime,
+                        EndTime = atmosphereData.endTime
+
+                    }).ToList(),
+
                     terrainTileDataList = (
                     from terrainTileData in terrainTileDataList
                     where terrainTileData.terrainId == terrainData.Id
                     select new TerrainTileDataElement()
                     {
-                        DataType = Enums.DataType.TerrainTile,
-
                         Id = terrainTileData.Id,
                         Index = terrainTileData.Index,
 
@@ -151,8 +168,6 @@ public class WorldDataManager : IDataManager
                         
                         startTime = interactionData.startTime,
                         endTime = interactionData.endTime,
-
-                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0
 
                     }).ToList() : new List<WorldInteractableDataElement>(),
 
@@ -309,6 +324,14 @@ public class WorldDataManager : IDataManager
         terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
     }
 
+    internal void GetAtmosphereData()
+    {
+        var atmosphereSearchParameters = new Search.Atmosphere();
+        atmosphereSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+
+        atmosphereDataList = dataManager.GetAtmosphereData(atmosphereSearchParameters);
+    }
+
     internal void GetTerrainTileData()
     {
         var terrainTileSearchParameters = new Search.TerrainTile();
@@ -399,7 +422,7 @@ public class WorldDataManager : IDataManager
         phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
     }
 
-    internal void GroupInteractions()
+    internal void FilterInteractions()
     {
         if (regionType == Enums.RegionType.Interaction) return;
 

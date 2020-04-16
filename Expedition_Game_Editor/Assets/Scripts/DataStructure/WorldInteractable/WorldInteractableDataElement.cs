@@ -47,8 +47,6 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
     public int startTime;
     public int endTime;
 
-    public int defaultTime;
-
     public bool containsActiveTime;
 
     public override void Update()
@@ -127,8 +125,6 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         dataElement.startTime = startTime;
         dataElement.endTime = endTime;
 
-        dataElement.defaultTime = defaultTime;
-
         dataElement.containsActiveTime = containsActiveTime;
 
         CloneCore(dataElement);
@@ -177,8 +173,6 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         
         startTime = worldInteractableDataSource.startTime;
         endTime = worldInteractableDataSource.endTime;
-
-        defaultTime = worldInteractableDataSource.defaultTime;
 
         containsActiveTime = worldInteractableDataSource.containsActiveTime;
 

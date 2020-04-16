@@ -208,13 +208,13 @@ public class SelectionElement : MonoBehaviour
 
     public void InvokeSelection()
     {
-        if (elementStatus == Enums.ElementStatus.Locked) return;
-
         OnSelection.Invoke();
     }
 
     public void SelectElement()
     {
+        if (elementStatus == Enums.ElementStatus.Locked) return;
+
         if (selectionType == SelectionManager.Type.None) return;
         
         EditorPath editorPath = new EditorPath(this, new Route(this));
@@ -282,26 +282,27 @@ public class SelectionElement : MonoBehaviour
         GetComponent<IElement>().CloseElement();
         OnSelection.RemoveAllListeners();
 
-        if (elementStatus != Enums.ElementStatus.Enabled)
-        {
-            elementStatus = Enums.ElementStatus.Enabled;
-
-            if (elementStatus == Enums.ElementStatus.Locked)
-                lockIcon.SetActive(false);
-        }
-
-        if (child != null)
-            child.CloseElement();
-        
-        Element.ElementColor = enabledColor;
+        ResetStatus();
 
         if (glow != null)
             glow.SetActive(false);
+        
+        gameObject.SetActive(false);
 
-        if (lockIcon != null)
+        if (child != null)
+            child.CloseElement();
+    }
+
+    public void ResetStatus()
+    {
+        if (elementStatus == Enums.ElementStatus.Enabled) return;
+
+        if (elementStatus == Enums.ElementStatus.Locked)
             lockIcon.SetActive(false);
 
-        gameObject.SetActive(false);
+        elementStatus = Enums.ElementStatus.Enabled;
+
+        SetStatus();
     }
 
     public void CancelSelection()

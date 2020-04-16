@@ -119,14 +119,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             if (actionData.data.dataController.DataType == Enums.DataType.Interaction)
                 CheckTime((InteractionDataElement)actionData.data.dataElement);
-
+            
             if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id))
                 ResetData(actionData);
             else
                 SelectOption(dataType);
         }
     }
-
+    
     private void CheckTime(IDataElement dataElement)
     {
         var interactionData = (InteractionDataElement)dataElement;

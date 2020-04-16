@@ -38,7 +38,12 @@ public class TerrainInfoManager : MonoBehaviour, IOverlay
 
     private void SetText()
     {
-        terrainInfoText.text = worldOrganizer.activeTerrainData.name;
+        //The atmosphere part is only temporary for debugging
+        terrainInfoText.text = worldOrganizer.activeTerrainData.name + " (Atmosphere: " + (worldOrganizer.activeTerrainData.activeAtmosphere.Default ? 
+            "Default" :
+            TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.StartTime, true) + 
+            " - " + 
+            TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.EndTime)) + ")";
     }
 
     private Text SpawnText()
