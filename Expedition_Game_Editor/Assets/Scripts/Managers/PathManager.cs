@@ -80,7 +80,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
         }
 
         public Path Open()
@@ -90,6 +90,68 @@ public class PathManager
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
         }
     }
+
+    public class Interaction
+    {
+        Path path;
+        Route route;
+        SelectionElement selectionElement;
+
+        EditorForm form = EditorManager.editorManager.forms[0];
+
+        public Interaction(SelectionElement selection, Route route)
+        {
+            this.route = route;
+            selectionElement = selection; 
+        }
+
+        public Path Enter()
+        {
+            int enter = 0;
+
+            route.controller = enter;
+
+            path = selectionElement.DisplayManager.Display.DataController.SegmentController.Path;
+
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+        }
+
+        public Path OutcomeList()
+        {
+            int enter = 1;
+
+            route.controller = enter;
+
+            path = selectionElement.path;
+
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+        }
+    }
+
+    public class Outcome
+    {
+        Path path;
+        Route route;
+
+        EditorForm form = EditorManager.editorManager.forms[0];
+
+        public Outcome(SelectionElement selection, Route route)
+        {
+            this.route = route;
+
+            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+        }
+        
+        public Path OutcomeEditor()
+        {
+            int open = 0;
+
+            route.controller = open;
+
+            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+        }
+    }
+
     #endregion
 
     #region Item

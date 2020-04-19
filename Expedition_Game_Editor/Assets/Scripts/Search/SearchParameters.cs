@@ -47,6 +47,7 @@ public class SearchProperties
             case Enums.DataType.WorldInteractable:  searchParameters = new[] { new Search.WorldInteractable() };    break;
             case Enums.DataType.Task:               searchParameters = new[] { new Search.Task() };                 break;
             case Enums.DataType.Interaction:        searchParameters = new[] { new Search.Interaction() };          break;
+            case Enums.DataType.Outcome:            searchParameters = new[] { new Search.Outcome() };              break;
             case Enums.DataType.World:              searchParameters = new[] { new Search.World() };                break;
 
             default: Debug.Log("CASE MISSING: " + dataType); break;

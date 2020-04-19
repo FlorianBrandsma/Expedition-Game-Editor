@@ -106,7 +106,7 @@ public class EditorPath
             case Enums.DataType.Interaction:
 
                 PathManager.Structure interaction = new PathManager.Structure(selection, route);
-
+                
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
                     path = interaction.Enter();
 
@@ -115,6 +115,15 @@ public class EditorPath
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
                     path = interaction.Open();
+
+                break;
+
+            case Enums.DataType.Outcome:
+
+                PathManager.Structure outcome = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = outcome.Enter();
 
                 break;
 

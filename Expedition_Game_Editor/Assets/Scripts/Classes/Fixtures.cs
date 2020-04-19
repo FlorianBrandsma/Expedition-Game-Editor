@@ -51,6 +51,7 @@ static public class Fixtures
     static public List<WorldInteractable> worldInteractableList = new List<WorldInteractable>();
     static public List<Task> taskList = new List<Task>();
     static public List<Interaction> interactionList = new List<Interaction>();
+    static public List<Outcome> outcomeList = new List<Outcome>();
     
     public class Item : GeneralData
     {
@@ -261,6 +262,13 @@ static public class Fixtures
         public float scaleMultiplier;
 
         public int animation;
+    }
+
+    public class Outcome : GeneralData
+    {
+        public int type;
+
+        public int interactionId;
     }
 
     static public void LoadFixtures()
@@ -734,8 +742,25 @@ static public class Fixtures
         interaction.rotationZ = (int)rotation.z;
 
         interaction.scaleMultiplier = 1;
-        
+
+        CreateOutcome(interaction, Enums.OutcomeType.Positive);
+
         interactionList.Add(interaction);
+    }
+
+    static public void CreateOutcome(Interaction interaction, Enums.OutcomeType type)
+    {
+        var outcome = new Outcome();
+
+        int id = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
+
+        outcome.Id = id;
+
+        outcome.type = (int)type;
+
+        outcome.interactionId = interaction.Id;
+
+        outcomeList.Add(outcome);
     }
 
     static public void CreateWorldObject(int objectGraphicId, int index, int regionId, Vector3 position, Vector3 rotation)
@@ -1048,6 +1073,23 @@ static public class Fixtures
                             interaction.rotationZ = interactionSource.rotationZ;
 
                             interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+
+                            var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
+
+                            foreach(Outcome outcomeSource in outcomeSourceList)
+                            {
+                                var outcome = new Outcome();
+
+                                int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
+
+                                outcome.Id = outcomeId;
+
+                                outcome.type = outcomeSource.type;
+
+                                outcome.interactionId = interaction.Id;
+
+                                outcomeList.Add(outcome);
+                            }
 
                             interactionList.Add(interaction);
                         }

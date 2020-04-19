@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Linq;
 
 public class EditorPanel : MonoBehaviour, IElement
@@ -97,6 +98,7 @@ public class EditorPanel : MonoBehaviour, IElement
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
             case Enums.DataType.Task:               SetTaskElement();               break;
             case Enums.DataType.Interaction:        SetInteractionElement();        break;
+            case Enums.DataType.Outcome:            SetOutcomeElement();            break;
             case Enums.DataType.Region:             SetRegionElement();             break;
             case Enums.DataType.Atmosphere:         SetAtmosphereElement();         break;
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
@@ -294,6 +296,18 @@ public class EditorPanel : MonoBehaviour, IElement
         idText.text             = dataElement.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
+    }
+
+    private void SetOutcomeElement()
+    {
+        var dataElement = (OutcomeDataElement)data.dataElement;
+
+        header = Enum.GetName(typeof(Enums.OutcomeType), dataElement.type);
+        description = (Enums.OutcomeType)dataElement.type == Enums.OutcomeType.Positive ? "Requirements passed" : "Requirements failed";
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
     }
 
     private void SetRegionElement()

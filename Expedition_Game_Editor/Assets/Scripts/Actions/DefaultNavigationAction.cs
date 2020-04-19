@@ -37,6 +37,7 @@ public class DefaultNavigationAction : MonoBehaviour, IAction
             case Enums.DataType.Objective:          SetObjectiveOptions();          break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableOptions();  break;
             case Enums.DataType.Task:               SetTaskOptions();               break;
+            case Enums.DataType.Interaction:        SetInteractionOptions();        break;
 
             case Enums.DataType.Terrain:            SetTerrainOptions();            break;
 
@@ -54,43 +55,43 @@ public class DefaultNavigationAction : MonoBehaviour, IAction
     private void SetChapterOptions()
     {
         var dataElements = data.dataList.Cast<ChapterDataElement>().ToList();
-
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseOptions()
     {
         var dataElements = data.dataList.Cast<PhaseDataElement>().ToList();
-
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestOptions()
     {
         var dataElements = data.dataList.Cast<QuestDataElement>().ToList();
-
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveOptions()
     {
         var dataElements = data.dataList.Cast<ObjectiveDataElement>().ToList();
-
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetWorldInteractableOptions()
     {
-        var dataElements = data.dataList.Cast<WorldInteractableDataElement>().ToList();
-        
+        var dataElements = data.dataList.Cast<WorldInteractableDataElement>().ToList();      
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 
     private void SetTaskOptions()
     {
         var dataElements = data.dataList.Cast<TaskDataElement>().ToList();
-
         dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+    }
+
+    private void SetInteractionOptions()
+    {
+        var dataElements = data.dataList.Cast<InteractionDataElement>().ToList();
+        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetTerrainOptions()

@@ -28,7 +28,8 @@ public class Enums
         Objective,
         WorldInteractable,
         Task,
-        Interaction,   
+        Interaction,
+        Outcome,
         World
     }
 
@@ -69,6 +70,12 @@ public class Enums
     {
         Characters,
         Objects
+    }
+
+    public enum OutcomeType
+    {
+        Positive,
+        Negative
     }
 
     public enum RegionType

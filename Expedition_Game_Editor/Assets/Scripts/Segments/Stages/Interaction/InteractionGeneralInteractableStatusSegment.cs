@@ -27,7 +27,6 @@ public class InteractionGeneralInteractableStatusSegment : MonoBehaviour, ISegme
         var regionData = new RegionDataElement();
 
         regionData.Id = InteractionData.RegionId;
-        regionData.DataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
 
         var searchProperties = new SearchProperties(Enums.DataType.Region);

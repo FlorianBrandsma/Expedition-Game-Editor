@@ -31,7 +31,9 @@ public class HistoryManager
         Terrain,
         TerrainSelection,
         Popup,
-        Atmosphere
+        Atmosphere,
+        Outcome,
+        OutcomeSelection
     }
 
     private List<HistoryElement> history = new List<HistoryElement>();

@@ -20,7 +20,8 @@ static public class SelectionManager
         Edit,
         Enter,
         Open,
-        Toggle
+        Toggle,
+        OpenOutcomeEditor
     }
 
     static public List<Route> routeList = new List<Route>();

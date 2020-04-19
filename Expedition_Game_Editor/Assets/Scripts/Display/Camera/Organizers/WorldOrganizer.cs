@@ -33,9 +33,10 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private IDataController DataController      { get { return CameraManager.Display.DataController; } }
 
-    private DataController worldObjectController        = new DataController(Enums.DataType.WorldObject);
-    private DataController worldInteractableController  = new DataController(Enums.DataType.WorldInteractable);
-    private DataController interactionController        = new DataController(Enums.DataType.Interaction);
+    private DataController worldObjectController                = new DataController(Enums.DataType.WorldObject);
+    private DataController worldInteractableCharacterController = new DataController(Enums.DataType.WorldInteractable);
+    private DataController worldInteractableObjectController    = new DataController(Enums.DataType.WorldInteractable);
+    private DataController interactionController                = new DataController(Enums.DataType.Interaction);
     
     public List<SelectionElement> elementList = new List<SelectionElement>();
 
@@ -117,6 +118,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
             case Enums.DataType.WorldInteractable:
 
+
                 worldInteractableData = worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
 
                 break;
@@ -131,12 +133,14 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void InitializeControllers()
     {
-        worldObjectController.SegmentController         = DataController.SegmentController;
-        worldInteractableController.SegmentController   = DataController.SegmentController;
-        interactionController.SegmentController         = DataController.SegmentController;
+        worldObjectController.SegmentController                 = DataController.SegmentController;
+        worldInteractableCharacterController.SegmentController  = DataController.SegmentController;
+        worldInteractableObjectController.SegmentController     = DataController.SegmentController;
+        interactionController.SegmentController                 = DataController.SegmentController;
         
-        worldInteractableController.DataCategory    = Enums.DataCategory.Navigation;
-        interactionController.DataCategory          = Enums.DataCategory.Navigation;
+        worldInteractableCharacterController.DataCategory   = Enums.DataCategory.Navigation;
+        worldInteractableObjectController.DataCategory   = Enums.DataCategory.Navigation;
+        interactionController.DataCategory                  = Enums.DataCategory.Navigation;
     }
 
     public void SelectData()
@@ -169,7 +173,8 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
             ClearOrganizer();
 
             worldObjectController.DataList.Clear();
-            worldInteractableController.DataList.Clear();
+            worldInteractableCharacterController.DataList.Clear();
+            worldInteractableObjectController.DataList.Clear();
             interactionController.DataList.Clear();
             
             SetData();
@@ -227,7 +232,11 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
             worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == 0 || worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
             
-            worldInteractableController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.terrainTileId == 0 || worldInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+            worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Characters)
+                                                                                                        .Where(x => x.terrainTileId == 0 || worldInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+
+            worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Objects)
+                                                                                                        .Where(x => x.terrainTileId == 0 || worldInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
             interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == 0).Cast<IDataElement>());
         }
@@ -241,16 +250,21 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
             ExtractInteractions();
 
         } else {
-
+            
             //There are no world interactables to validate when there is an interaction
             ValidateWorldInteractablesTime();
+
+            //Only show interactables where the active time is within their first interaction's timeframe
+            FilterWorldInteractables();
         }
         
         //Set objects that are bound to this terrain tile
         SetWorldElements(worldObjectController);
 
         //Set world interactables that are bound to this tile by their first interaction
-        SetWorldElements(worldInteractableController);
+        SetWorldElements(worldInteractableCharacterController);
+
+        SetWorldElements(worldInteractableObjectController);
 
         //Set interactions that are bound to this terrain tile
         SetWorldElements(interactionController);
@@ -280,6 +294,15 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
                                                                              .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.startTime, z.endTime) || z.isDefault)
                                                                              .OrderBy(z => z.isDefault).First())).ToList()
                                                                              .ForEach(x => x.containsActiveTime = true);
+    }
+
+    private void FilterWorldInteractables()
+    {
+        var characterList = worldInteractableCharacterController.DataList.Where(x => ((WorldInteractableDataElement)x).containsActiveTime).GroupBy(x => x.Id).Select(x => x.FirstOrDefault()).ToList();
+        worldInteractableCharacterController.DataList = characterList;
+
+        var objectList = worldInteractableObjectController.DataList.Where(x => ((WorldInteractableDataElement)x).containsActiveTime).GroupBy(x => x.Id).Select(x => x.FirstOrDefault()).ToList();
+        worldInteractableObjectController.DataList = objectList;
     }
 
     private void ExtractInteractions()
@@ -321,7 +344,11 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
                 
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
 
-                worldInteractableController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id && !worldInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+                worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Characters && x.terrainTileId == terrainTileData.Id && !worldInteractableData
+                                                                                                            .Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
+
+                worldInteractableObjectController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Objects && x.terrainTileId == terrainTileData.Id && !worldInteractableData
+                                                                                                         .Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
                 worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && !worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 

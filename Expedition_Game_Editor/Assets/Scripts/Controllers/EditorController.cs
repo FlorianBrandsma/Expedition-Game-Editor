@@ -13,7 +13,7 @@ public class EditorController : MonoBehaviour
     public void InitializeDependencies()
     {
         foreach (SegmentController segment in segments)
-            segment.InitializeDependencies(this);
+            segment.InitializeDependencies(this); 
     }
 
     public void InitializeController()

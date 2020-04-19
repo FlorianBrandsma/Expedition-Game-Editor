@@ -51,17 +51,17 @@ public class TaskDataManager : IDataManager
             if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId)) continue;
             if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(task.objectiveId)) continue;
 
-            var questData = new TaskData();
+            var taskData = new TaskData();
 
-            questData.Id = task.Id;
-            questData.Index = task.Index;
+            taskData.Id = task.Id;
+            taskData.Index = task.Index;
 
-            questData.worldInteractableId = task.worldInteractableId;
-            questData.objectiveId = task.objectiveId;
-            questData.name = task.name;
-            questData.notes = task.publicNotes;
+            taskData.worldInteractableId = task.worldInteractableId;
+            taskData.objectiveId = task.objectiveId;
+            taskData.name = task.name;
+            taskData.notes = task.publicNotes;
 
-            taskDataList.Add(questData);
+            taskDataList.Add(taskData);
         }
     }
 

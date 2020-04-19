@@ -7,7 +7,7 @@ public class TaskController : MonoBehaviour, IDataController
 {
     public SearchProperties searchProperties;
 
-    public IDataManager DataManager { get; set; }
+    public IDataManager DataManager             { get; set; }
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }

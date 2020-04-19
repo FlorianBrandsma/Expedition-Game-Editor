@@ -67,8 +67,6 @@ public class WorldDataManager : IDataManager
 
         GetPhaseInteractableData();
 
-        FilterInteractions();
-
         basicWorldData = GetBasicWorldData();
 
         var worldStartPosition = GetWorldStartPosition();
@@ -433,17 +431,6 @@ public class WorldDataManager : IDataManager
         phaseInteractableSearchParameters.chapterInteractableId = worldInteractableDataList.Select(x => x.Id).Distinct().ToList();
 
         phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
-    }
-
-    internal void FilterInteractions()
-    {
-        if (regionType == Enums.RegionType.Interaction) return;
-
-        //First task of each world interactable
-        var firstTaskList = taskDataList.GroupBy(x => x.worldInteractableId).Select(x => x.FirstOrDefault()).ToList();
-
-        //Interactions belonging to the first task of each world interactable
-        interactionDataList = interactionDataList.Where(x => firstTaskList.Select(y => y.Id).Contains(x.taskId)).ToList();
     }
 
     internal int DefaultTime(int taskId)
