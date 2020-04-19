@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public class AtmosphereSegment : MonoBehaviour, ISegment
 {
-    public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
     public IEditor DataEditor { get; set; }
+
+    public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
 
     public void InitializeDependencies() { }
 
@@ -23,11 +23,12 @@ public class AtmosphereSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Atmosphere();
+        var searchProperties = new SearchProperties(Enums.DataType.Atmosphere);
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
         searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

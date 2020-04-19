@@ -6,6 +6,7 @@ using System.Linq;
 public class TerrainDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<TerrainData> terrainDataList;
 
     private DataManager dataManager = new DataManager();
@@ -21,11 +22,13 @@ public class TerrainDataManager : IDataManager
         DataController = terrainController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var objectiveSearchData = searchParameters.Cast<Search.Terrain>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
 
-        GetTerrainData(objectiveSearchData);
+        GetTerrainData(searchParameters);
+
+        if (terrainDataList.Count == 0) return new List<IDataElement>();
 
         GetRegionData();
         GetTileSetData();

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PhaseController : MonoBehaviour, IDataController
 {
-    public Search.Phase searchParameters;
+    public SearchProperties searchProperties;
 
     public IDataManager DataManager { get; set; }
 
@@ -16,15 +16,20 @@ public class PhaseController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Phase>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public PhaseController()
     {
         DataManager = new PhaseDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     private void CreatePhaseElements()

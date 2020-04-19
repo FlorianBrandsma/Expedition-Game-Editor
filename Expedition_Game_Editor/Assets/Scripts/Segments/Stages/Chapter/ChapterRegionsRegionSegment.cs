@@ -25,13 +25,13 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
     public void InitializeData()
     {
         if (DataEditor.Loaded) return;
-        
-        var searchParameters = new Search.ChapterRegion();
 
-        searchParameters.requestType = Search.ChapterRegion.RequestType.Custom;
+        var searchProperties = new SearchProperties(Enums.DataType.ChapterRegion);
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionDataElement>().ToList();
         chapterRegionList.ForEach(x => ChapterEditor.chapterRegionDataList.Add(x));
@@ -39,7 +39,9 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Region>().FirstOrDefault();
+        var searchProperties = SegmentController.DataController.SearchProperties;
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         var idList = ChapterEditor.chapterRegionDataList.Select(x => x.RegionId).Distinct().ToList();
 

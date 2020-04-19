@@ -6,6 +6,7 @@ using System.Linq;
 public class InteractionDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<InteractionData> interactionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -23,12 +24,14 @@ public class InteractionDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var interactionSearchData = searchParameters.Cast<Search.Interaction>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
 
-        GetInteractionData(interactionSearchData);
-        
+        GetInteractionData(searchParameters);
+
+        if (interactionDataList.Count == 0) return new List<IDataElement>();
+
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
@@ -38,11 +41,10 @@ public class InteractionDataManager : IDataManager
         GetRegionData();
 
         var list = (from interactionData        in interactionDataList
-                    join taskData               in taskDataList                 on interactionData.taskId               equals taskData.Id
-                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId         equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.interactableId equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
+                    join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.Id
+                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on worldInteractableData.objectGraphicId    equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData

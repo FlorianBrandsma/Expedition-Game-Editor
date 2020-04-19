@@ -20,7 +20,9 @@ public class WorldSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.World();
+        var searchProperties = new SearchProperties(Enums.DataType.World);
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.World>().First();
         
         var regionDataElement = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
         searchParameters.regionId = new List<int>() { regionDataElement.Id };
@@ -30,7 +32,7 @@ public class WorldSegment : MonoBehaviour, ISegment
         if (objectiveRoute == null)
             searchParameters.objectiveId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         regionDataElement.worldDataElement = SegmentController.DataController.DataList.Cast<WorldDataElement>().FirstOrDefault();
     }

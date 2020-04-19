@@ -139,8 +139,8 @@ public class DataManager
 
         foreach (Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
         {
-            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId)) continue;
-            if (searchParameters.chapterInteractableId.Count > 0 && !searchParameters.chapterInteractableId.Contains(phaseInteractable.chapterInteractableId)) continue;
+            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId))                               continue;
+            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(phaseInteractable.chapterInteractableId))   continue;
 
             var data = new PhaseInteractableData();
 
@@ -202,15 +202,22 @@ public class DataManager
 
         foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(worldInteractable.Id)) continue;
-            if (searchParameters.isDefault > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
+            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
+            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
+            if (searchParameters.objectGraphicId.Count  > 0 && !searchParameters.objectGraphicId.Contains(worldInteractable.objectGraphicId))   continue;
+            if (searchParameters.isDefault              > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault))     continue;
 
             var data = new WorldInteractableData();
 
             data.Id = worldInteractable.Id;
 
+            data.type = worldInteractable.type;
+
             data.objectiveId = worldInteractable.objectiveId;
             data.interactableId = worldInteractable.interactableId;
+            data.objectGraphicId = worldInteractable.objectGraphicId;
+
             data.interactionIndex = worldInteractable.interactionIndex;
 
             dataList.Add(data);
@@ -225,9 +232,9 @@ public class DataManager
 
         foreach(Fixtures.Task task in Fixtures.taskList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(task.Id)) continue;
-            if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId)) continue;
-            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(task.objectiveId)) continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId))    continue;
+            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.objectiveId))                    continue;
 
             var data = new TaskData();
 
@@ -249,9 +256,9 @@ public class DataManager
 
         foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId)) continue;
-            if (searchParameters.taskId.Count > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id))               continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId))   continue;
+            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.taskId))       continue;
             
             var data = new InteractionData();
 
@@ -526,9 +533,13 @@ public class DataManager
 
     public class WorldInteractableData : GeneralData
     {
+        public int type;
+
         public int chapterId;
         public int objectiveId;
         public int interactableId;
+        public int objectGraphicId;
+
         public int interactionIndex;
     }
 

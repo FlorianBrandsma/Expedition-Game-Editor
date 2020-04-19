@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class SupplySegment : MonoBehaviour, ISegment
@@ -18,10 +19,12 @@ public class SupplySegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Item();
+        var searchProperties = new SearchProperties(Enums.DataType.Item);
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
         searchParameters.type = new List<int>() { (int)Enums.ItemType.Supplies };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

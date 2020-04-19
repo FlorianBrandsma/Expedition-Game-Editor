@@ -19,29 +19,29 @@ public class InteractableDataManager : IDataManager
         DataController = interactableController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var interactableSearchData = searchParameters.Cast<Search.Interactable>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
+        
+        GetInteractableData(searchParameters);
 
-        switch(interactableSearchData.requestType)
-        {  
-            case Search.Interactable.RequestType.Custom:
-                GetCustomInteractableData(interactableSearchData);
-                break;
-        }
+        if (interactableDataList.Count == 0) return new List<IDataElement>();
 
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from interactableData in interactableDataList
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from interactableData   in interactableDataList
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     select new InteractableDataElement()
                     {
                         Id      = interactableData.Id,
                         Index   = interactableData.Index,
 
+                        Type = interactableData.type,
+
                         ObjectGraphicId = interactableData.objectGraphicId,
+
                         Name    = interactableData.name,
 
                         objectGraphicPath = objectGraphicData.path,
@@ -54,20 +54,24 @@ public class InteractableDataManager : IDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
-    internal void GetCustomInteractableData(Search.Interactable searchParameters)
+    internal void GetInteractableData(Search.Interactable searchParameters)
     {
         interactableDataList = new List<InteractableData>();
         
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactable.type)) continue;
 
             var interactableData = new InteractableData();
 
             interactableData.Id = interactable.Id;
             interactableData.Index = interactable.Index;
 
+            interactableData.type = interactable.type;
+
             interactableData.objectGraphicId = interactable.objectGraphicId;
+
             interactableData.name = interactable.name;
 
             interactableDataList.Add(interactableData);
@@ -93,7 +97,10 @@ public class InteractableDataManager : IDataManager
 
     internal class InteractableData : GeneralData
     {
+        public int type;
+
         public int objectGraphicId;
+
         public string name;
     }
 }

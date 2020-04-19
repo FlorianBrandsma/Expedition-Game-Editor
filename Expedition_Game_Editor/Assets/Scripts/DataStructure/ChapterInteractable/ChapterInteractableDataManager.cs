@@ -6,7 +6,8 @@ using System.Linq;
 public class ChapterInteractableDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
-    private List<ChapterInteractableData> chapterInteractableDataList = new List<ChapterInteractableData>();
+
+    private List<ChapterInteractableData> chapterInteractableDataList;
 
     private DataManager dataManager = new DataManager();
 
@@ -19,11 +20,11 @@ public class ChapterInteractableDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var chapterInteractableSearchData = searchParameters.Cast<Search.ChapterInteractable>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();
         
-        GetChapterInteractableData(chapterInteractableSearchData);
+        GetChapterInteractableData(searchParameters);
         
         if (chapterInteractableDataList.Count == 0) return new List<IDataElement>();
 

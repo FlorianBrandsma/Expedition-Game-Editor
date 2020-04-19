@@ -446,7 +446,7 @@ public class PathManager
             this.selection = selection;
             this.route = route;
 
-            route.data = new Route.Data(route.data.dataController, route.data.dataElement, selection.data.dataController.SearchParameters);
+            route.data = new Route.Data(route.data.dataController, route.data.dataElement, selection.data.dataController.SearchProperties);
         }
 
         public Path Get()

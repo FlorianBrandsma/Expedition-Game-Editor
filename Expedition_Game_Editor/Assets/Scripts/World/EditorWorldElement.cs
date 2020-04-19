@@ -14,16 +14,7 @@ public class EditorWorldElement : MonoBehaviour, IElement
         {
             if (objectGraphic == null) return;
 
-            foreach(GameObject mesh in objectGraphic.mesh)
-            {
-                var renderer = mesh.GetComponent<Renderer>();
-                renderer.material.color = value;
-
-                if (value.a == 0)
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                else
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-            }
+            objectGraphic.SetStatus(value);
         }
     }
     
@@ -50,7 +41,7 @@ public class EditorWorldElement : MonoBehaviour, IElement
         var dataElement = (WorldInteractableDataElement)data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab.PoolType, prefab);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab.PoolType, prefab);
 
         transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.positionX, dataElement.startPosition.y - dataElement.positionY, -dataElement.positionZ);
         transform.localEulerAngles  = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);

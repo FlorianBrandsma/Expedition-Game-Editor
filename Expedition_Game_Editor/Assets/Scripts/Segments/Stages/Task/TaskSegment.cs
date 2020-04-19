@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class TaskSegment : MonoBehaviour, ISegment
@@ -18,7 +19,9 @@ public class TaskSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Task();
+        var searchProperties = new SearchProperties(Enums.DataType.Task);
+        
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
         //If a worldInteractable is selected without being directly related to an objective, don't try to get this data
         if (SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
@@ -30,7 +33,7 @@ public class TaskSegment : MonoBehaviour, ISegment
         var worldInteractableData = (WorldInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).data.dataElement;
         searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

@@ -20,7 +20,7 @@ public class DataController : IDataController
 
     public Enums.DataCategory DataCategory { get; set; }
 
-    public IEnumerable SearchParameters { get; set; }
+    public SearchProperties SearchProperties { get; set; }
 
     public DataController(Enums.DataType dataType)
     {
@@ -33,6 +33,8 @@ public class DataController : IDataController
             case Enums.DataType.WorldObject:        DataManager = new WorldObjectDataManager(this);         break;
         }
     }
+
+    public void InitializeController() { }
 
     public void SetData(SelectionElement searchElement, IDataElement resultDataElement)
     {
@@ -51,12 +53,25 @@ public class DataController : IDataController
 
         switch (resultDataElement.DataType)
         {
+            case Enums.DataType.ObjectGraphic:
+
+                var objectGraphicData = (ObjectGraphicDataElement)resultDataElement;
+
+                worldInteractableData.ObjectGraphicId = objectGraphicData.Id;
+
+                worldInteractableData.interactableName = objectGraphicData.Name;
+                worldInteractableData.objectGraphicIconPath = objectGraphicData.iconPath;
+                worldInteractableData.objectGraphicPath = objectGraphicData.Path;
+
+                break;
+
             case Enums.DataType.Interactable:
 
                 var interactableData = (InteractableDataElement)resultDataElement;
 
                 worldInteractableData.InteractableId = interactableData.Id;
-                worldInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
+                worldInteractableData.ObjectGraphicId = interactableData.ObjectGraphicId;
+
                 worldInteractableData.interactableName = interactableData.Name;
                 worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
                 worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
@@ -76,6 +91,7 @@ public class DataController : IDataController
                 var objectGraphicData = (ObjectGraphicDataElement)resultDataElement;
 
                 worldObjectData.ObjectGraphicId = objectGraphicData.Id;
+
                 worldObjectData.objectGraphicName = objectGraphicData.Name;
                 worldObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
                 worldObjectData.objectGraphicPath = objectGraphicData.Path;

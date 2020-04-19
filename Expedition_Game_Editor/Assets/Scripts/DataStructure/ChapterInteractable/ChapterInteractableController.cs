@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ChapterInteractableController : MonoBehaviour, IDataController
 {
-    public Search.Interactable searchParameters;
+    public SearchProperties searchProperties;
 
     public IDataManager DataManager             { get; set; }
 
@@ -16,15 +16,20 @@ public class ChapterInteractableController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Interactable>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public ChapterInteractableController()
     {
         DataManager = new ChapterInteractableDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)

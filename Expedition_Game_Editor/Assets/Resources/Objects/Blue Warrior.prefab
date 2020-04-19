@@ -199,7 +199,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013415901566}
-  - component: {fileID: 111000013402820830}
   m_Layer: 10
   m_Name: Warrior_Idle
   m_TagString: Untagged
@@ -223,22 +222,6 @@ Transform:
   m_Father: {fileID: 4000013122310766}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
---- !u!111 &111000013402820830
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010448941352}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: b7c3fa1fe65883b4eab047926fb2edfd, type: 3}
-  m_Animations:
-  - {fileID: 7400000, guid: b7c3fa1fe65883b4eab047926fb2edfd, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 1
 --- !u!1 &1000010519957102
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +357,7 @@ GameObject:
   - component: {fileID: 4000013122310766}
   - component: {fileID: 114000012599619866}
   - component: {fileID: 65000010683393358}
+  - component: {fileID: 95559573191447072}
   m_Layer: 10
   m_Name: Blue Warrior
   m_TagString: Untagged
@@ -430,6 +414,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 3.5}
   m_Center: {x: 0, y: 0, z: -1.75}
+--- !u!95 &95559573191447072
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010700673656}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: b7c3fa1fe65883b4eab047926fb2edfd, type: 3}
+  m_Controller: {fileID: 9100000, guid: f85a1049ad7dd884fb420fd07ac7bb44, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1000010714434052
 GameObject:
   m_ObjectHideFlags: 0

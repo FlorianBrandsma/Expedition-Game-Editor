@@ -19,13 +19,12 @@ public class WorldObjectSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.WorldObject();
+        var searchProperties = new SearchProperties(Enums.DataType.WorldObject);
 
-        searchParameters.requestType = Search.WorldObject.RequestType.Custom;
-
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
         searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

@@ -6,6 +6,7 @@ using System.Linq;
 public class ChapterDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<ChapterData> chapterDataList;
 
     private DataManager dataManager = new DataManager();
@@ -18,11 +19,13 @@ public class ChapterDataManager : IDataManager
         DataController = chapterController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var chapterSearchData = searchParameters.Cast<Search.Chapter>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
-        GetChapterData(chapterSearchData);
+        GetChapterData(searchParameters);
+
+        if (chapterDataList.Count == 0) return new List<IDataElement>();
 
         GetInteractableData();
         GetObjectGraphicData();

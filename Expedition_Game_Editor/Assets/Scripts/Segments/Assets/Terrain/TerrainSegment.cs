@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class TerrainSegment : MonoBehaviour, ISegment
@@ -22,11 +23,12 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
         regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
 
-        var searchParameters = new Search.Terrain();
+        var searchProperties = new SearchProperties(Enums.DataType.Terrain);
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

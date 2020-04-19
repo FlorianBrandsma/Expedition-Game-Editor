@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
-public class WorldInteractableSegment : MonoBehaviour, ISegment
+public class CharacterSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -19,14 +19,12 @@ public class WorldInteractableSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.WorldInteractable();
+        var searchProperties = new SearchProperties(Enums.DataType.Interactable);
 
-        searchParameters.requestType = Search.WorldInteractable.RequestType.GetRegionWorldInteractables;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Characters };
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
-        searchParameters.objectiveId = new List<int>() { 0 };
-
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

@@ -17,10 +17,10 @@ public class ChapterSegment : MonoBehaviour, ISegment
     public void InitializeData()
     {
         if (SegmentController.Loaded) return;
-        
-        var searchParameters = new Search.Chapter();
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        var searchProperties = new SearchProperties(Enums.DataType.Chapter);
+
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

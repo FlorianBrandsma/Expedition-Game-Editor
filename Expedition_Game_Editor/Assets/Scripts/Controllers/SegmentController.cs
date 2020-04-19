@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class SegmentController : MonoBehaviour
@@ -36,6 +36,19 @@ public class SegmentController : MonoBehaviour
                 return dataControllerParent.GetComponent<IDataController>();
             else
                 return GetComponent<IDataController>();
+        }
+    }
+
+    public List<IDataController> DataControllerList
+    {
+        get
+        {
+            List<IDataController> dataControllerList = GetComponents<IDataController>().ToList();
+
+            if (dataControllerParent != null)
+                dataControllerList.AddRange(dataControllerParent.GetComponents<IDataController>().ToList());
+
+            return dataControllerList;
         }
     }
 
@@ -79,8 +92,10 @@ public class SegmentController : MonoBehaviour
     {
         this.editorController = editorController;
 
+        DataControllerList.ForEach(x => x.InitializeController());
+        
         if (Segment != null)
-            Segment.InitializeDependencies();
+            Segment.InitializeDependencies();            
     }
 
     public void InitializeSegment(EditorController editorController)

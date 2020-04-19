@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
+public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
 {
     private ObjectiveEditor ObjectiveEditor { get { return (ObjectiveEditor)DataEditor; } }
 
@@ -27,13 +27,15 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var searchParameters = new Search.WorldInteractable();
+        var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
-        searchParameters.requestType = Search.WorldInteractable.RequestType.Custom;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+
         searchParameters.objectiveId = new List<int>() { ObjectiveEditor.ObjectiveData.Id };
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Objects };
         searchParameters.isDefault = Convert.ToInt32(false);
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         var worldInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableDataElement>().ToList();
         worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableDataList.Add(x));

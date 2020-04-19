@@ -6,6 +6,7 @@ using System.Linq;
 public class TaskDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<TaskData> taskDataList;
 
     public TaskDataManager(IDataController dataController)
@@ -13,11 +14,13 @@ public class TaskDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var taskSearchData = searchParameters.Cast<Search.Task>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
-        GetTaskData(taskSearchData);
+        GetTaskData(searchParameters);
+
+        if (taskDataList.Count == 0) return new List<IDataElement>();
 
         var list = (from taskData in taskDataList
                     select new TaskDataElement()

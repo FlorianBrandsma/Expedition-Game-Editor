@@ -19,16 +19,13 @@ public class WorldObjectDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var worldObjectSearchData = searchParameters.Cast<Search.WorldObject>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
 
-        switch (worldObjectSearchData.requestType)
-        {
-            case Search.WorldObject.RequestType.Custom:
-                GetCustomWorldObjectData(worldObjectSearchData);
-                break;
-        }
+        GetWorldObjectData(searchParameters);
+        
+        if (worldObjectDataList.Count == 0) return new List<IDataElement>();
 
         GetObjectGraphicData();
         GetIconData();
@@ -58,6 +55,8 @@ public class WorldObjectDataManager : IDataManager
 
                         Animation = worldObjectData.animation,
 
+                        objectGraphicPath = objectGraphicData.path,
+
                         objectGraphicName = objectGraphicData.name,
                         objectGraphicIconPath = iconData.path,
 
@@ -72,7 +71,7 @@ public class WorldObjectDataManager : IDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
-    internal void GetCustomWorldObjectData(Search.WorldObject searchParameters)
+    internal void GetWorldObjectData(Search.WorldObject searchParameters)
     {
         worldObjectDataList = new List<WorldObjectData>();
 

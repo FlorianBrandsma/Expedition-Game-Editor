@@ -6,36 +6,42 @@ using System.Linq;
 public class ItemDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
-    private List<ItemData> itemDataList;
 
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
+    private List<ItemData> itemDataList;
 
     private DataManager dataManager = new DataManager();
 
+    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
+    private List<DataManager.IconData> iconDataList;
+    
     public ItemDataManager(ItemController itemController)
     {
         DataController = itemController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var searchItem = searchParameters.Cast<Search.Item>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
 
-        GetItemData(searchItem);
+        GetItemData(searchParameters);
+
+        if (itemDataList.Count == 0) return new List<IDataElement>();
+
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from itemData in itemDataList
-                    join objectGraphicData in objectGraphicDataList on itemData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from itemData           in itemDataList
+                    join objectGraphicData  in objectGraphicDataList    on itemData.objectGraphicId equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId equals iconData.Id
                     select new ItemDataElement()
                     {
                         Id = itemData.Id,
                         Index = itemData.Index,
 
                         Type = itemData.type,
+
                         ObjectGraphicId = itemData.objectGraphicId,
+
                         Name = itemData.name,
 
                         objectGraphicPath = objectGraphicData.path,
@@ -63,7 +69,9 @@ public class ItemDataManager : IDataManager
             itemData.Index = item.Index;
 
             itemData.type = item.type;
+
             itemData.objectGraphicId = item.objectGraphicId;
+
             itemData.name = item.name;
 
             itemDataList.Add(itemData);

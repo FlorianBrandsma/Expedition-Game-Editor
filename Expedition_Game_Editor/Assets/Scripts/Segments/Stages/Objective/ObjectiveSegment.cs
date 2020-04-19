@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class ObjectiveSegment : MonoBehaviour, ISegment
@@ -18,11 +19,12 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Objective();
+        var searchProperties = new SearchProperties(Enums.DataType.Objective);
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
         searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

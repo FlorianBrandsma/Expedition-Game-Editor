@@ -26,12 +26,12 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var searchParameters = new Search.PhaseInteractable();
+        var searchProperties = new SearchProperties(Enums.DataType.PhaseInteractable);
 
-        searchParameters.requestType = Search.PhaseInteractable.RequestType.Custom;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseInteractable>().First();
         searchParameters.phaseId = new List<int>() { QuestEditor.QuestData.PhaseId };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
         questInteractableList.ForEach(x => QuestEditor.questInteractableDataList.Add(x));

@@ -6,6 +6,7 @@ using System.Linq;
 public class PhaseInteractableDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<PhaseInteractableData> phaseInteractableDataList;
 
     private DataManager dataManager = new DataManager();
@@ -20,11 +21,13 @@ public class PhaseInteractableDataManager : IDataManager
         DataController = phaseInteractableController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var phaseInteractableSearchData = searchParameters.Cast<Search.PhaseInteractable>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseInteractable>().First();
 
-        GetPhaseInteractableData(phaseInteractableSearchData);
+        GetPhaseInteractableData(searchParameters);
+
+        if (phaseInteractableDataList.Count == 0) return new List<IDataElement>();
 
         GetChapterInteractableData();
         GetInteractableData();

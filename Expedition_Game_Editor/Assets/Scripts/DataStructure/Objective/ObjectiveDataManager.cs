@@ -6,6 +6,7 @@ using System.Linq;
 public class ObjectiveDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<ObjectiveData> objectiveDataList;
 
     public ObjectiveDataManager(ObjectiveController objectiveController)
@@ -13,12 +14,14 @@ public class ObjectiveDataManager : IDataManager
         DataController = objectiveController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var objectiveSearchData = searchParameters.Cast<Search.Objective>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
         
-        GetObjectiveData(objectiveSearchData);
-        
+        GetObjectiveData(searchParameters);
+
+        if (objectiveDataList.Count == 0) return new List<IDataElement>();
+
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveDataElement()
                     {

@@ -6,7 +6,8 @@ using System.Linq;
 public class PartyMemberDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
-    private List<PartyMemberData> partyMemberDataList = new List<PartyMemberData>();
+
+    private List<PartyMemberData> partyMemberDataList;
 
     private DataManager dataManager = new DataManager();
 
@@ -19,17 +20,11 @@ public class PartyMemberDataManager : IDataManager
         DataController = partyMemberController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var partyMemberSearchData = searchParameters.Cast<Search.PartyMember>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
 
-        switch (partyMemberSearchData.requestType)
-        {
-            case Search.PartyMember.RequestType.Custom:
-
-                GetCustomPartyMemberData(partyMemberSearchData);
-                break;
-        }
+        GetPartyMemberData(searchParameters);
 
         if (partyMemberDataList.Count == 0) return new List<IDataElement>();
 
@@ -37,10 +32,10 @@ public class PartyMemberDataManager : IDataManager
         GetObjectGraphicData();
         GetIconData();
 
-        var list = (from partyMemberData in partyMemberDataList
-                    join interactableData in interactableDataList on partyMemberData.interactableId equals interactableData.Id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from partyMemberData    in partyMemberDataList
+                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     select new PartyMemberDataElement()
                     {
                         Id = partyMemberData.Id,
@@ -59,7 +54,7 @@ public class PartyMemberDataManager : IDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
-    internal void GetCustomPartyMemberData(Search.PartyMember searchParameters)
+    internal void GetPartyMemberData(Search.PartyMember searchParameters)
     {
         partyMemberDataList = new List<PartyMemberData>();
 

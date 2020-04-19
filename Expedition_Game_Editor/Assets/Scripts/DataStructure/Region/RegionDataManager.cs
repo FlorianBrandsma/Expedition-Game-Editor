@@ -6,6 +6,7 @@ using System.Linq;
 public class RegionDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<RegionData> regionDataList;
 
     private DataManager dataManager = new DataManager();
@@ -18,13 +19,16 @@ public class RegionDataManager : IDataManager
         DataController = regionController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
         var regionController = (RegionController)DataController;
 
-        var searchRegion = searchParameters.Cast<Search.Region>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
-        GetRegionData(searchRegion);
+        GetRegionData(searchParameters);
+
+        if (regionDataList.Count == 0) return new List<IDataElement>();
+
         GetTileSetData();
         GetTileData();
 

@@ -6,6 +6,7 @@ using System.Linq;
 public class QuestDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<QuestData> questDataList;
 
     public QuestDataManager(QuestController questController)
@@ -13,11 +14,13 @@ public class QuestDataManager : IDataManager
         DataController = questController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var questSearchData = searchParameters.Cast<Search.Quest>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
 
-        GetQuestData(questSearchData);
+        GetQuestData(searchParameters);
+
+        if (questDataList.Count == 0) return new List<IDataElement>();
 
         var list = (from questData in questDataList
                     select new QuestDataElement()

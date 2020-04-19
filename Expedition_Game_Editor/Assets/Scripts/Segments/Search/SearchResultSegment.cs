@@ -18,9 +18,9 @@ public class SearchResultSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.DataController == null) return;
         
-        var searchParameters = SegmentController.editorController.PathController.route.data.searchParameters;
+        var searchProperties = SegmentController.editorController.PathController.route.data.searchProperties;
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchParameters);
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

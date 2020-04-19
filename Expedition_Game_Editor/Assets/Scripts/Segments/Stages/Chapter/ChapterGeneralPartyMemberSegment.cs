@@ -26,12 +26,12 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var searchParameters = new Search.PartyMember();
+        var searchProperties = new SearchProperties(Enums.DataType.PartyMember);
 
-        searchParameters.requestType = Search.PartyMember.RequestType.Custom;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberDataElement>().ToList();
         partyMemberList.ForEach(x => ChapterEditor.partyMemberDataList.Add(x));
@@ -39,7 +39,9 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Interactable>().FirstOrDefault();
+        var searchProperties = SegmentController.DataController.SearchProperties;
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
 
         var idList = ChapterEditor.partyMemberDataList.Select(x => x.InteractableId).Union(
                      ChapterEditor.chapterInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();

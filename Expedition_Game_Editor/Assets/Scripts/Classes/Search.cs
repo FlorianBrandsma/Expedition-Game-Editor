@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 public class Search
 {
-    [System.Serializable]
-    public class Icon : SearchParameters
+    public class Icon
     {
+        public List<int> id = new List<int>();
+
         public List<int> category = new List<int>();
 
         public enum RequestType
@@ -16,9 +17,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class ObjectGraphic : SearchParameters
+    public class ObjectGraphic
     {
+        public List<int> id = new List<int>();
+
         public enum RequestType
         {
             Custom
@@ -27,9 +29,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class TileSet : SearchParameters
+    public class TileSet
     {
+        public List<int> id = new List<int>();
+
         public enum RequestType
         {
             Custom
@@ -38,9 +41,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Tile : SearchParameters
+    public class Tile
     {
+        public List<int> id = new List<int>();
+
         public List<int> tileSetId = new List<int>();
 
         public enum RequestType
@@ -51,43 +55,11 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Interactable : SearchParameters
+    public class Interactable
     {
-        public List<int> index = new List<int>();
-        public List<string> name = new List<string>();
+        public List<int> id = new List<int>();
 
-        public enum RequestType
-        {
-            Custom,
-            GetAllInteractables,
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
-    public class Item : SearchParameters
-    {
-        public List<int> index = new List<int>();
         public List<int> type = new List<int>();
-        public List<string> name = new List<string>();
-
-        public enum RequestType
-        {
-            Custom,
-            GetItemsByType,
-        }
-
-        public RequestType requestType;
-    }
-
-    [System.Serializable]
-    public class Chapter : SearchParameters
-    {
-        public List<int> index          = new List<int>();
-        public List<string> name        = new List<string>();
-        public List<string> description = new List<string>();
 
         public enum RequestType
         {
@@ -97,8 +69,36 @@ public class Search
         public RequestType requestType;
     }
 
-    public class PartyMember : SearchParameters
+    public class Item
     {
+        public List<int> id = new List<int>();
+
+        public List<int> type = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class Chapter
+    {
+        public List<int> id = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class PartyMember
+    {
+        public List<int> id = new List<int>();
+
         public List<int> chapterId = new List<int>();
         public List<int> interactableId = new List<int>();
 
@@ -110,8 +110,10 @@ public class Search
         public RequestType requestType;
     }
 
-    public class ChapterInteractable : SearchParameters
+    public class ChapterInteractable
     {
+        public List<int> id = new List<int>();
+
         public List<int> chapterId = new List<int>();
         public List<int> interactableId = new List<int>();
 
@@ -123,9 +125,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class ChapterRegion : SearchParameters
+    public class ChapterRegion
     {
+        public List<int> id = new List<int>();
+
         public List<int> chapterId = new List<int>();
         public List<int> regionId = new List<int>();
 
@@ -137,13 +140,11 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Phase : SearchParameters
+    public class Phase
     {
-        public List<int> index          = new List<int>();
-        public List<int> chapterId      = new List<int>();
-        public List<string> name        = new List<string>();
-        public List<string> description = new List<string>();
+        public List<int> id = new List<int>();
+
+        public List<int> chapterId = new List<int>();
 
         public enum RequestType
         {
@@ -154,9 +155,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class PhaseInteractable : SearchParameters
+    public class PhaseInteractable
     {
+        public List<int> id = new List<int>();
+
         public List<int> phaseId = new List<int>();
         public List<int> chapterInteractableId = new List<int>();
         public List<int> questId = new List<int>();
@@ -169,13 +171,11 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Quest : SearchParameters
+    public class Quest
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> phaseId = new List<int>();
-        public List<string> name = new List<string>();
-        public List<string> description = new List<string>();
 
         public enum RequestType
         {
@@ -185,13 +185,11 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Objective : SearchParameters
+    public class Objective
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> questId = new List<int>();
-        public List<string> name = new List<string>();
-        public List<string> description = new List<string>();
 
         public enum RequestType
         {
@@ -201,11 +199,16 @@ public class Search
         public RequestType requestType;
     }
 
-    public class WorldInteractable : SearchParameters
+    public class WorldInteractable
     {
+        public List<int> id = new List<int>();
+
+        public List<int> type = new List<int>();
+
         public List<int> regionId = new List<int>();
         public List<int> objectiveId = new List<int>();
         public List<int> interactableId = new List<int>();
+        public List<int> objectGraphicId = new List<int>();
 
         public int isDefault = -1;
 
@@ -220,10 +223,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Task : SearchParameters
+    public class Task
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> objectiveId = new List<int>();
         public List<int> worldInteractableId = new List<int>();
 
@@ -233,10 +236,10 @@ public class Search
         }
     }
 
-    [System.Serializable]
-    public class Interaction : SearchParameters
+    public class Interaction
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> taskId = new List<int>();
         public List<int> regionId = new List<int>();
 
@@ -248,9 +251,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class World : SearchParameters
+    public class World
     {
+        public List<int> id = new List<int>();
+
         public List<int> regionId = new List<int>();
         public List<int> objectiveId = new List<int>();
 
@@ -262,12 +266,11 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Region : SearchParameters
+    public class Region
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> phaseId = new List<int>();
-        public List<string> name = new List<string>();
 
         public enum RequestType
         {
@@ -277,9 +280,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Atmosphere : SearchParameters
+    public class Atmosphere
     {
+        public List<int> id = new List<int>();
+
         public List<int> terrainId = new List<int>();
 
         public enum RequestType
@@ -290,13 +294,12 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class Terrain : SearchParameters
+    public class Terrain
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
+
         public List<int> regionId = new List<int>();
-        public List<string> name = new List<string>();
-        
+
         public enum RequestType
         {
             Custom
@@ -305,10 +308,9 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class TerrainTile : SearchParameters
+    public class TerrainTile
     {
-        public List<int> index = new List<int>();
+        public List<int> id = new List<int>();
 
         public List<int> regionId = new List<int>();
         public List<int> terrainId = new List<int>();
@@ -321,9 +323,10 @@ public class Search
         public RequestType requestType;
     }
 
-    [System.Serializable]
-    public class WorldObject : SearchParameters
+    public class WorldObject
     {
+        public List<int> id = new List<int>();
+
         public List<int> regionId = new List<int>();
 
         public enum RequestType

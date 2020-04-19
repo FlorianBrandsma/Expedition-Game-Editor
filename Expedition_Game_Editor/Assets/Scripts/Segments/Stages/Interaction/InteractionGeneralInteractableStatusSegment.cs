@@ -29,18 +29,20 @@ public class InteractionGeneralInteractableStatusSegment : MonoBehaviour, ISegme
         regionData.Id = InteractionData.RegionId;
         regionData.DataType = Enums.DataType.Region;
         regionData.type = Enums.RegionType.Interaction;
-        
-        var regionSearchParameters = new Search.Region();
+
+        var searchProperties = new SearchProperties(Enums.DataType.Region);
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         var phaseRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Phase);
 
         //To get all phase regions
         if (phaseRoute != null)
-            regionSearchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.Id };
+            searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.Id };
         else
-            regionSearchParameters.phaseId = new List<int>() { 0 };
+            searchParameters.phaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { regionSearchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         if (regionData.Id == 0)
             regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;

@@ -318,66 +318,59 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     private void GetData(IDataController dataController)
     {
-        SearchParameters searchParameters = null;
+        SearchProperties searchProperties = new SearchProperties(dataController.DataType);
 
         switch (dataController.DataType)
         {
-            case Enums.DataType.Chapter:            searchParameters = GetChapterData();            break;
-            case Enums.DataType.Phase:              searchParameters = GetPhaseData();              break;
-            case Enums.DataType.Quest:              searchParameters = GetQuestData();              break;
-            case Enums.DataType.Objective:          searchParameters = GetObjectiveData();          break;
-            case Enums.DataType.WorldInteractable:  searchParameters = GetWorldInteractableData();  break;
-            case Enums.DataType.Task:               searchParameters = GetTaskData();               break;
-            case Enums.DataType.Interaction:        searchParameters = GetInteractionData();        break;
-            case Enums.DataType.Region:             searchParameters = GetRegionData();             break;
+            case Enums.DataType.Chapter:            GetChapterData(searchProperties);            break;
+            case Enums.DataType.Phase:              GetPhaseData(searchProperties);              break;
+            case Enums.DataType.Quest:              GetQuestData(searchProperties);              break;
+            case Enums.DataType.Objective:          GetObjectiveData(searchProperties);          break;
+            case Enums.DataType.WorldInteractable:  GetWorldInteractableData(searchProperties);  break;
+            case Enums.DataType.Task:               GetTaskData(searchProperties);               break;
+            case Enums.DataType.Interaction:        GetInteractionData(searchProperties);        break;
+            case Enums.DataType.Region:             GetRegionData(searchProperties);             break;
         }
-
-        searchParameters.id = FindActionByDataType(dataController.DataType).idFilter;
-
+        
         var actionData = FindActionByDataType(dataController.DataType);
 
-        actionData.data.dataList = EditorManager.GetData(dataController, new[] { searchParameters });
+        actionData.data.dataList = EditorManager.GetData(dataController, searchProperties);
 
         SelectOption(dataController.DataType);
     }
 
     #region Get Data
-    private SearchParameters GetChapterData()
+    private void GetChapterData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Chapter();
-        return searchParameters;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
+
+        searchProperties.searchParameters = FindActionByDataType(searchProperties.dataType).idFilter;
     }
 
-    private SearchParameters GetPhaseData()
+    private void GetPhaseData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Phase();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
 
         searchParameters.chapterId = new List<int>() { FindActionByDataType(Enums.DataType.Chapter).data.dataElement.Id };
-
-        return searchParameters;
     }
 
-    private SearchParameters GetQuestData()
+    private void GetQuestData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Quest();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
 
         searchParameters.phaseId = new List<int>() { FindActionByDataType(Enums.DataType.Phase).data.dataElement.Id };
-
-        return searchParameters;
     }
 
-    private SearchParameters GetObjectiveData()
+    private void GetObjectiveData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Objective();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
 
         searchParameters.questId = new List<int>() { FindActionByDataType(Enums.DataType.Quest).data.dataElement.Id };
-
-        return searchParameters;
     }
 
-    private SearchParameters GetWorldInteractableData()
+    private void GetWorldInteractableData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.WorldInteractable();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
         var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
 
@@ -395,38 +388,30 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             searchParameters.objectiveId = new List<int>() { 0 };
         }
-
-        return searchParameters;
     }
 
-    private SearchParameters GetTaskData()
+    private void GetTaskData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Task();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
         searchParameters.worldInteractableId = new List<int>() { FindActionByDataType(Enums.DataType.WorldInteractable).data.dataElement.Id };
-
-        return searchParameters;
     }
 
-    private SearchParameters GetInteractionData()
+    private void GetInteractionData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Interaction();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
 
         searchParameters.taskId = new List<int>() { FindActionByDataType(Enums.DataType.Task).data.dataElement.Id };
-
-        return searchParameters;
     }
 
-    private SearchParameters GetRegionData()
+    private void GetRegionData(SearchProperties searchProperties)
     {
-        var searchParameters = new Search.Region();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         var phaseAction = FindActionByDataType(Enums.DataType.Phase);
         int phaseId = phaseAction != null ? phaseAction.data.dataElement.Id : 0;
 
         searchParameters.phaseId = new List<int>() { phaseId };
-
-        return searchParameters;
     }
     #endregion
 

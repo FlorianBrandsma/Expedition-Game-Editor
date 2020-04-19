@@ -6,6 +6,7 @@ using System.Linq;
 public class IconDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<IconData> iconDataList;
 
     public IconDataManager(IconController iconController)
@@ -13,11 +14,13 @@ public class IconDataManager : IDataManager
         DataController = iconController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var iconSearchData = searchParameters.Cast<Search.Icon>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
 
-        GetIconData(iconSearchData);
+        GetIconData(searchParameters);
+
+        if (iconDataList.Count == 0) return new List<IDataElement>();
 
         var list = (from iconData in iconDataList
                     select new IconDataElement()

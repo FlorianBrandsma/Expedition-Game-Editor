@@ -54,14 +54,19 @@ static public class Fixtures
     
     public class Item : GeneralData
     {
-        public int objectGraphicId;
         public int type;
+
+        public int objectGraphicId;
+
         public string name;
     }
 
     public class Interactable : GeneralData
     {
+        public int type;
+
         public int objectGraphicId;
+        
         public string name;
     }
     
@@ -209,8 +214,11 @@ static public class Fixtures
 
     public class WorldInteractable : GeneralData
     {
+        public int type;
+
         public int objectiveId;
         public int interactableId;
+        public int objectGraphicId;
 
         public bool isDefault;
 
@@ -434,11 +442,12 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-
-            item.type = (int)Enums.ItemType.Supplies;
             item.Index = index;
 
+            item.type = (int)Enums.ItemType.Supplies;
+            
             item.objectGraphicId = 1;
+
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -460,11 +469,12 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-
-            item.type = (int)Enums.ItemType.Gear;
             item.Index = index;
 
+            item.type = (int)Enums.ItemType.Gear;
+            
             item.objectGraphicId = gearList[i];
+
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -484,11 +494,12 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-
-            item.type = (int)Enums.ItemType.Spoils;
             item.Index = index;
 
+            item.type = (int)Enums.ItemType.Spoils;
+            
             item.objectGraphicId = 1;
+
             item.name = "Item " + id;
 
             itemList.Add(item);
@@ -510,7 +521,10 @@ static public class Fixtures
             interactable.Id = id;
             interactable.Index = i;
 
+            interactable.type = (int)Enums.InteractableType.Characters;
+
             interactable.objectGraphicId = objectList[i];
+
             interactable.name = "Interactable " + id;
 
             interactableList.Add(interactable);
@@ -626,13 +640,16 @@ static public class Fixtures
             CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 236.75f, 0f), new Vector3(0, 0, 0));
 
             /*Red warrior*/
-            CreateWorldInteractable(1, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
+            CreateWorldInteractable(Enums.InteractableType.Characters, 1, 10, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(4, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
+            CreateWorldInteractable(Enums.InteractableType.Characters, 4, 13, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
 
             /*Mage*/
-            CreateWorldInteractable(5, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
+            CreateWorldInteractable(Enums.InteractableType.Characters, 5, 14, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
+
+            /*Pool*/
+            CreateWorldInteractable(Enums.InteractableType.Objects, 0, 20, region.Id, new Vector3(238.125f, 242.375f, 0f), new Vector3(0, 0, 0));
 
             var regionSize = GetRegionSize(region.Id);
 
@@ -643,16 +660,20 @@ static public class Fixtures
         }
     }
 
-    static public void CreateWorldInteractable(int interactableId, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int objectGraphicId, int regionId, Vector3 position, Vector3 rotation)
     {
         var worldInteractable = new WorldInteractable();
 
         int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
         worldInteractable.Id = id;
-        worldInteractable.interactableId = interactableId;
 
-        for(int index = 0; index < baseTasks; index++)
+        worldInteractable.type = (int)type;
+
+        worldInteractable.interactableId = interactableId;
+        worldInteractable.objectGraphicId = objectGraphicId;
+        
+        for (int index = 0; index < baseTasks; index++)
         {
             CreateTask(worldInteractable, 0, index, regionId, position, rotation);
         }
@@ -969,7 +990,11 @@ static public class Fixtures
 
                     worldInteractable.Id = worldInteractableId;
 
+                    worldInteractable.type = worldInteractableSource.type;
+
                     worldInteractable.interactableId = worldInteractableSource.interactableId;
+                    worldInteractable.objectGraphicId = worldInteractableSource.objectGraphicId;
+                    
                     worldInteractable.interactionIndex = worldInteractableSource.interactionIndex;
 
                     var taskSourceList = taskList.Where(x => x.worldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
@@ -1146,9 +1171,9 @@ static public class Fixtures
     {
         foreach (Objective objective in objectiveList)
         {
-            List<int> randomInteractables = new List<int>();
+            List<int> randomObjectGraphicList = new List<int>();
 
-            interactableList.ForEach(x => randomInteractables.Add(x.Id));
+            objectGraphicList.Where(x => x.Id > 1).ToList().ForEach(x => randomObjectGraphicList.Add(x.Id));
             
             //Fetch the interactables belonging to the quest and create an objective interactable for each
             var chapterInteractableIds = chapterInteractableList.Where(x => phaseInteractableList.Where(y => y.questId == objective.questId).Select(y => y.chapterInteractableId).Contains(x.Id))
@@ -1164,10 +1189,13 @@ static public class Fixtures
 
                 worldInteractable.Id = id;
                 worldInteractable.Index = index;
-                
+
+                worldInteractable.type = (int)Enums.InteractableType.Characters;
+
                 worldInteractable.objectiveId = objective.Id;
 
                 worldInteractable.interactableId = chapterInteractableIds[i];
+                worldInteractable.objectGraphicId = interactableList.Where(x => x.Id == chapterInteractableIds[i]).First().objectGraphicId;
 
                 worldInteractable.isDefault = true;
 
@@ -1185,11 +1213,13 @@ static public class Fixtures
                 worldInteractable.Id = id;
                 worldInteractable.Index = index;
 
+                worldInteractable.type = (int)Enums.InteractableType.Objects;
+
                 worldInteractable.objectiveId = objective.Id;
 
-                int randomInteractable = Random.Range(0, randomInteractables.Count);
-                worldInteractable.interactableId = randomInteractables[randomInteractable];
-
+                int randomObjectGraphic = Random.Range(0, randomObjectGraphicList.Count);
+                worldInteractable.objectGraphicId = randomObjectGraphicList[randomObjectGraphic];
+                
                 worldInteractableList.Add(worldInteractable);
 
                 index++;
@@ -1201,8 +1231,6 @@ static public class Fixtures
     {
         foreach (Objective objective in objectiveList)
         {
-            //var phaseInteractableWorldInteractableIds = phaseInteractableList.Where(x => x.questId == objective.questId).Select(x => x.chapterInteractableId).Distinct().ToList();
-
             var worldInteractables = worldInteractableList.Where(x => x.objectiveId == objective.Id).Distinct().ToList();
 
             var phaseId = phaseList.Where(x => questList.Where(y => y.Id == objective.questId).Select(y => y.phaseId).Contains(x.Id)).Select(x => x.Id).FirstOrDefault();

@@ -9,7 +9,7 @@ public class Route
     {
         public IDataController dataController;
         public IDataElement dataElement;
-        public IEnumerable searchParameters;
+        public SearchProperties searchProperties;
 
         public List<IDataElement> dataList;
 
@@ -22,7 +22,7 @@ public class Route
         {
             dataController = data.dataController;
             dataElement = data.dataElement;
-            searchParameters = data.searchParameters;
+            searchProperties = data.searchProperties;
             
             if(data.dataList != null)
             {
@@ -35,7 +35,7 @@ public class Route
         {
             dataController = selectionData.dataController;
             dataElement = selectionData.dataElement;
-            searchParameters = selectionData.searchParameters;
+            searchProperties = selectionData.searchProperties;
 
             dataList = selectionData.dataController.DataList;
         }
@@ -60,11 +60,11 @@ public class Route
             dataList = data.dataList;
         }
 
-        public Data(IDataController dataController, IDataElement dataElement, IEnumerable searchParameters)
+        public Data(IDataController dataController, IDataElement dataElement, SearchProperties searchProperties)
         {
             this.dataController = dataController;
             this.dataElement = dataElement;
-            this.searchParameters = searchParameters;
+            this.searchProperties = searchProperties;
         }
     }
     
@@ -81,7 +81,7 @@ public class Route
     public Route(Path path)
     {
         controller = 0;
-        data = new Data(null, new GeneralDataElement(), new[] { new SearchParameters() });
+        data = new Data(null, new GeneralDataElement(), new SearchProperties(Enums.DataType.None));
         this.path = path;
     }
 

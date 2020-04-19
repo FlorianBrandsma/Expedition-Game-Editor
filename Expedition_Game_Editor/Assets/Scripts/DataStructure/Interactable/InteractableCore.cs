@@ -3,6 +3,7 @@ using System.Linq;
 
 public class InteractableCore : GeneralData
 {
+    private int type;
     private int objectGraphicId;
     private string name;
 
@@ -23,6 +24,12 @@ public class InteractableCore : GeneralData
     }
 
     #region Properties
+    public int Type
+    {
+        get { return type; }
+        set { type = value; }
+    }
+
     public string Name
     {
         get { return name; }

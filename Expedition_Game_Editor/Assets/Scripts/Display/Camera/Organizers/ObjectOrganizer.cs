@@ -67,9 +67,6 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
         objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
         objectGraphic.transform.localScale = objectGraphic.previewScale;
-
-        if(objectGraphic.model.GetComponent<Animation>() != null)
-            objectGraphic.model.GetComponent<Animation>().Play();
         
         objectGraphic.gameObject.SetActive(true);
     }

@@ -23,11 +23,12 @@ public class InteractionSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Interaction();
+        var searchProperties = new SearchProperties(Enums.DataType.Interaction);
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
         searchParameters.taskId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Task).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

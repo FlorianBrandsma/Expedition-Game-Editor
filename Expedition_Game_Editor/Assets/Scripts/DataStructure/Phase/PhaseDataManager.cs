@@ -6,6 +6,7 @@ using System.Linq;
 public class PhaseDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<PhaseData> phaseDataList;
 
     public PhaseDataManager(PhaseController phaseController)
@@ -13,16 +14,13 @@ public class PhaseDataManager : IDataManager
         DataController = phaseController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var phaseSearchData = searchParameters.Cast<Search.Phase>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
 
-        switch (phaseSearchData.requestType)
-        {
-            case Search.Phase.RequestType.Custom:               GetCustomPhaseData(phaseSearchData); break;
-            case Search.Phase.RequestType.GetPhaseWithQuests:   GetPhaseWithQuests(phaseSearchData); break;
-            default: Debug.Log("CASE MISSING"); break;
-        }
+        GetCustomPhaseData(searchParameters);
+
+        if (phaseDataList.Count == 0) return new List<IDataElement>();
 
         var list = (from phaseData in phaseDataList
                     select new PhaseDataElement()
@@ -62,11 +60,6 @@ public class PhaseDataManager : IDataManager
 
             phaseDataList.Add(phaseData);
         }
-    }
-
-    private void GetPhaseWithQuests(Search.Phase searchParameters)
-    {
-        
     }
 
     internal class PhaseData : GeneralData

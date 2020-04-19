@@ -81,7 +81,7 @@ public class WorldObjectDataElement : WorldObjectCore, IDataElement
         base.Copy(dataSource);
 
         var worldObjectDataSource = (WorldObjectDataElement)dataSource;
-
+        
         objectGraphicPath = worldObjectDataSource.objectGraphicPath;
 
         objectGraphicName = worldObjectDataSource.objectGraphicName;
@@ -90,8 +90,6 @@ public class WorldObjectDataElement : WorldObjectCore, IDataElement
         height = worldObjectDataSource.height;
         width = worldObjectDataSource.width;
         depth = worldObjectDataSource.depth;
-
-        startPosition = worldObjectDataSource.startPosition;
         
         SetOriginalValues();
     }

@@ -94,15 +94,18 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     {
         dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileDataElement>().Where(x => x.TerrainId == terrainData.Id).Distinct().Cast<IDataElement>().ToList();
 
-        var searchParameters = multiGridProperties.SecondaryDataController.SearchParameters.Cast<Search.Tile>().FirstOrDefault();
-        searchParameters.elementType = Enums.ElementType.CompactTile;
+        var searchProperties = multiGridProperties.SecondaryDataController.SearchProperties;
+        searchProperties.elementType = Enums.ElementType.CompactTile;
 
+        //multiGridProperties.SecondaryDataController.InitializeController();
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
         searchParameters.tileSetId = new List<int>() { terrainData.tileSetId };
 
-        SetData(dataList, new[] { searchParameters });
+        SetData(dataList, searchProperties);
     }
 
-    public void SetData(List<IDataElement> list, IEnumerable searchParameters)
+    public void SetData(List<IDataElement> list, SearchProperties searchProperties)
     {
         generalDataList = list.Cast<GeneralData>().ToList();
 
@@ -123,7 +126,7 @@ public class EditorMultiGrid : MonoBehaviour, IElement
             elementList.Add(element);
 
             data.SelectionElement = element;
-            element.data = new SelectionElement.Data(multiGridProperties.SecondaryDataController, data, searchParameters);
+            element.data = new SelectionElement.Data(multiGridProperties.SecondaryDataController, data, searchProperties);
 
             //Overwrites dataController set by initialization
             element.data.dataController = multiGridProperties.SecondaryDataController;
@@ -158,19 +161,5 @@ public class EditorMultiGrid : MonoBehaviour, IElement
     public void CloseElement()
     {
         SelectionElementManager.CloseElement(elementList);
-        //content.offsetMin = new Vector2(10, content.offsetMin.y);
-        //content.offsetMax = new Vector2(-10, content.offsetMax.y);
-
-        //headerText.text = string.Empty;
-        //idText.text = string.Empty;
-
-        //if (descriptionText != null)
-        //    descriptionText.text = string.Empty;
-
-        //if (multiGridProperties.icon)
-        //    icon.gameObject.SetActive(false);
-
-        //if (multiGridProperties.edit)
-        //    EditButton.gameObject.SetActive(false);
     }
 }

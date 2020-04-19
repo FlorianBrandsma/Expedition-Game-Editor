@@ -5,9 +5,9 @@ using System.Linq;
 
 public class WorldInteractableController : MonoBehaviour, IDataController
 {
-    public Search.Interactable searchParameters;
+    public SearchProperties searchProperties;
 
-    public IDataManager DataManager { get; set; }
+    public IDataManager DataManager             { get; set; }
 
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -16,10 +16,10 @@ public class WorldInteractableController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Interactable>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public WorldInteractableController()
@@ -27,21 +27,39 @@ public class WorldInteractableController : MonoBehaviour, IDataController
         DataManager = new WorldInteractableDataManager(this);
     }
 
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
+    }
+
     public void SetData(SelectionElement searchElement, IDataElement resultData)
     {
         var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
 
-        switch (((GeneralData)resultData).DataType)
+        switch (resultData.DataType)
         {
+            case Enums.DataType.ObjectGraphic:
+
+                var objectGraphicData = (ObjectGraphicDataElement)resultData;
+
+                worldInteractableData.ObjectGraphicId = objectGraphicData.Id;
+                worldInteractableData.interactableName = objectGraphicData.Name;
+                worldInteractableData.objectGraphicIconPath = objectGraphicData.iconPath;
+
+                break;
+
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData;
+                var interactableData = (InteractableDataElement)resultData;
 
-                worldInteractableData.InteractableId = resultElementData.Id;
-                worldInteractableData.interactableName = resultElementData.Name;
-                worldInteractableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;
+                worldInteractableData.InteractableId = interactableData.Id;
+                worldInteractableData.ObjectGraphicId = interactableData.ObjectGraphicId;
+                worldInteractableData.interactableName = interactableData.Name;
+                worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
                 
                 break;
+
+            default: Debug.Log("CASE MISSING: " + resultData.DataType); break;
         }
     }
 

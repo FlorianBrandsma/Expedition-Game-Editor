@@ -7,6 +7,7 @@ using System.Linq;
 public class WorldInteractableDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<WorldInteractableData> worldInteractableDataList = new List<WorldInteractableData>();
 
     private DataManager dataManager = new DataManager();
@@ -20,23 +21,23 @@ public class WorldInteractableDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var worldInteractableSearchData = searchParameters.Cast<Search.WorldInteractable>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
-        switch (worldInteractableSearchData.requestType)
+        switch (searchParameters.requestType)
         {
             case Search.WorldInteractable.RequestType.Custom:
 
-                GetCustomWorldInteractableData(worldInteractableSearchData);
+                GetCustomWorldInteractableData(searchParameters);
                 break;
 
             case Search.WorldInteractable.RequestType.GetRegionWorldInteractables:
 
-                GetRegionWorldInteractableData(worldInteractableSearchData);
+                GetRegionWorldInteractableData(searchParameters);
                 break;
         }
-
+        
         if (worldInteractableDataList.Count == 0) return new List<IDataElement>();
 
         DataManager.SetIndex(worldInteractableDataList.Cast<GeneralData>().ToList());
@@ -46,17 +47,23 @@ public class WorldInteractableDataManager : IDataManager
         GetIconData();
 
         var list = (from worldInteractableData  in worldInteractableDataList
-                    join interactableData       in interactableDataList     on worldInteractableData.interactableId equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
-                    join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
+                    join objectGraphicData      in objectGraphicDataList    on worldInteractableData.objectGraphicId    equals objectGraphicData.Id
+                    join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
+
+                    join leftJoin in (from interactableData in interactableDataList
+                                      select new { interactableData }) on worldInteractableData.interactableId equals leftJoin.interactableData.Id into interactableData
+
                     select new WorldInteractableDataElement()
                     {
                         Id = worldInteractableData.Id,
                         Index = worldInteractableData.Index,
-                        
-                        InteractableId = worldInteractableData.interactableId,
 
-                        interactableName = interactableData.name,
+                        Type = worldInteractableData.type,
+
+                        InteractableId = worldInteractableData.interactableId,
+                        ObjectGraphicId = worldInteractableData.objectGraphicId,
+
+                        interactableName =  interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.name : objectGraphicData.name,
                         objectGraphicIconPath = iconData.path,
 
                         height = objectGraphicData.height,
@@ -73,20 +80,26 @@ public class WorldInteractableDataManager : IDataManager
     internal void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableData>();
-
+        
         foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(worldInteractable.Id)) continue;
-            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId)) continue;
-            if (searchParameters.isDefault > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
+            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
+            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(worldInteractable.interactableId))     continue;
+            if (searchParameters.objectGraphicId.Count  > 0 && !searchParameters.objectGraphicId.Contains(worldInteractable.objectGraphicId))   continue;
+            if (searchParameters.isDefault              > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault))     continue;
 
             var worldInteractableData = new WorldInteractableData();
 
             worldInteractableData.Id = worldInteractable.Id;
-            
+
+            worldInteractableData.type = worldInteractable.type;
+
             worldInteractableData.objectiveId = worldInteractable.objectiveId;
             worldInteractableData.interactableId = worldInteractable.interactableId;
-
+            worldInteractableData.objectGraphicId = worldInteractable.objectGraphicId;
+            
             worldInteractableData.isDefault = worldInteractable.isDefault;
 
             worldInteractableDataList.Add(worldInteractableData);
@@ -103,12 +116,22 @@ public class WorldInteractableDataManager : IDataManager
 
         foreach (Fixtures.WorldInteractable worldInteractable in worldInteractableList)
         {
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
+            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
+            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(worldInteractable.interactableId))     continue;
+            if (searchParameters.objectGraphicId.Count  > 0 && !searchParameters.objectGraphicId.Contains(worldInteractable.objectGraphicId))   continue;
+            if (searchParameters.isDefault              > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault))     continue;
+
             var worldInteractableData = new WorldInteractableData();
 
             worldInteractableData.Id = worldInteractable.Id;
 
+            worldInteractableData.type = worldInteractable.type;
+
             worldInteractableData.objectiveId = worldInteractable.objectiveId;
             worldInteractableData.interactableId = worldInteractable.interactableId;
+            worldInteractableData.objectGraphicId = worldInteractable.objectGraphicId;
 
             worldInteractableDataList.Add(worldInteractableData);
         }
@@ -127,7 +150,7 @@ public class WorldInteractableDataManager : IDataManager
     {
         var objectGraphicSearchParameters = new Search.ObjectGraphic();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        objectGraphicSearchParameters.id = worldInteractableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
 
         objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }
@@ -142,8 +165,11 @@ public class WorldInteractableDataManager : IDataManager
 
     internal class WorldInteractableData : GeneralData
     {
+        public int type;
+
         public int objectiveId;
         public int interactableId;
+        public int objectGraphicId;
 
         public bool isDefault;
     }

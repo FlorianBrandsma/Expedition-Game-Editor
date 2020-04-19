@@ -26,12 +26,12 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var searchParameters = new Search.Region();
+        var searchProperties = new SearchProperties(Enums.DataType.Region);
 
-        searchParameters.requestType = Search.Region.RequestType.Custom;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
         searchParameters.phaseId = new List<int>() { PhaseEditor.PhaseData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionDataElement>().ToList();
         phaseRegionList.ForEach(x => PhaseEditor.regionDataList.Add(x));

@@ -6,6 +6,7 @@ using System.Linq;
 public class AtmosphereDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<AtmosphereData> atmosphereDataList;
 
     private DataManager dataManager = new DataManager();
@@ -23,11 +24,13 @@ public class AtmosphereDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var atmosphereSearchData = searchParameters.Cast<Search.Atmosphere>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
 
-        GetAtmosphereData(atmosphereSearchData);
+        GetAtmosphereData(searchParameters);
+
+        if (atmosphereDataList.Count == 0) return new List<IDataElement>();
 
         GetTerrainData();
 

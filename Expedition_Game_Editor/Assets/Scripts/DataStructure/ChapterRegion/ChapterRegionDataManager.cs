@@ -6,6 +6,7 @@ using System.Linq;
 public class ChapterRegionDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<ChapterRegionData> chapterRegionDataList;
     
     private DataManager dataManager = new DataManager();
@@ -19,11 +20,14 @@ public class ChapterRegionDataManager : IDataManager
         DataController = chapterRegionController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var chapterRegionSearchData = searchParameters.Cast<Search.ChapterRegion>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
 
-        GetChapterRegionData(chapterRegionSearchData);
+        GetChapterRegionData(searchParameters);
+
+        if (chapterRegionDataList.Count == 0) return new List<IDataElement>();
+
         GetRegionData();
         GetTileSetData();
         GetTileData();

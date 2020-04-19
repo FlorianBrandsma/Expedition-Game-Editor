@@ -70,12 +70,12 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
     private void SetTiles()
     {
-        var searchParameters = new Search.Tile();
+        var searchProperties = new SearchProperties(Enums.DataType.Tile);
 
-        searchParameters.requestType = Search.Tile.RequestType.Custom;
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
         searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
 
         RegionDataElement.tileIconPath = SegmentController.DataController.DataList.Cast<TileDataElement>().First().icon;
     }

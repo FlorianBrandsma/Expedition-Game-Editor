@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class RegionSegment : MonoBehaviour, ISegment
@@ -18,11 +19,12 @@ public class RegionSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchParameters = new Search.Region();
+        var searchProperties = new SearchProperties(Enums.DataType.Region);
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
         searchParameters.phaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, new[] { searchParameters });
+        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

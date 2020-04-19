@@ -5,9 +5,9 @@ using System.Linq;
 
 public class ChapterController : MonoBehaviour, IDataController
 {
-    public Search.Chapter searchParameters;
+    public SearchProperties searchProperties;
 
-    public IDataManager DataManager { get; set; }
+    public IDataManager DataManager             { get; set; }
     
     public IDisplay Display                     { get { return GetComponent<IDisplay>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -16,15 +16,20 @@ public class ChapterController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Chapter>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public ChapterController()
     {
         DataManager = new ChapterDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultDataElement) { }

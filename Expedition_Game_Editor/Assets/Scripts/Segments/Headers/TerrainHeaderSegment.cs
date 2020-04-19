@@ -62,6 +62,8 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        gameObject.SetActive(true);
+
         idText.text = TerrainData.Id.ToString();
         inputField.text = TerrainData.Name;
 
@@ -78,17 +80,16 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
-        var searchParameters = SegmentController.DataController.SearchParameters.Cast<Search.Icon>().FirstOrDefault();
+        var searchProperties = SegmentController.DataController.SearchProperties;
 
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
         searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().ToList();
 
-        selectionElement.data.searchParameters = new[] { searchParameters };
+        selectionElement.data.searchProperties = searchProperties;
 
         selectionElement.SetElement();
 
-        selectionElement.SetOverlay();
-
-        gameObject.SetActive(true);
+        selectionElement.SetOverlay(); 
     }
 
     public void CloseSegment()

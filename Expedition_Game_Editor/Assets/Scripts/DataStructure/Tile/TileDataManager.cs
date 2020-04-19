@@ -6,6 +6,7 @@ using System.Linq;
 public class TileDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<TileData> tileDataList;
 
     private DataManager dataManager = new DataManager();
@@ -17,11 +18,13 @@ public class TileDataManager : IDataManager
         DataController = tileController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var tileSearchData = searchParameters.Cast<Search.Tile>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
 
-        GetTileData(tileSearchData);
+        GetTileData(searchParameters);
+
+        if (tileDataList.Count == 0) return new List<IDataElement>();
 
         var list = (from tileData in tileDataList
 

@@ -7,7 +7,7 @@ public class RegionController : MonoBehaviour, IDataController
 {
     public Enums.RegionType regionType;
 
-    public Search.Region searchParameters;
+    public SearchProperties searchProperties;
 
     public IDataManager DataManager { get; set; }
     
@@ -18,15 +18,20 @@ public class RegionController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Region>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public RegionController()
     {
         DataManager = new RegionDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

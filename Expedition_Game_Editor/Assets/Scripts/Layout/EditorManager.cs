@@ -137,10 +137,10 @@ public class EditorManager : MonoBehaviour
         loadType = Enums.LoadType.Normal;
     }
 
-    static public List<IDataElement> GetData(IDataController dataController, IEnumerable searchParameters)
+    static public List<IDataElement> GetData(IDataController dataController, SearchProperties searchProperties)
     {
-        var dataList = dataController.DataManager.GetDataElements(searchParameters);
-
+        var dataList = dataController.DataManager.GetDataElements(searchProperties);
+        
         var pathController = dataController.SegmentController.editorController.PathController;
 
         var mainForm = pathController.editorSection.editorForm;

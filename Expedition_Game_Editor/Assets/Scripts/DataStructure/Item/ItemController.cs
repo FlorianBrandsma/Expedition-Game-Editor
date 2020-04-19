@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ItemController : MonoBehaviour, IDataController
 {
-    public Search.Item searchParameters;
+    public SearchProperties searchProperties;
 
     public IDataManager DataManager { get; set; }
     
@@ -16,15 +16,20 @@ public class ItemController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Item>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public ItemController()
     {
         DataManager = new ItemDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

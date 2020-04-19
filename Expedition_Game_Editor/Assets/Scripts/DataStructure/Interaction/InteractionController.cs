@@ -5,7 +5,7 @@ using System.Linq;
 
 public class InteractionController : MonoBehaviour, IDataController
 {
-    public Search.Interaction searchParameters;
+    public SearchProperties searchProperties;
 
     public IDataManager DataManager             { get; set; }
     
@@ -16,15 +16,20 @@ public class InteractionController : MonoBehaviour, IDataController
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
     public List<IDataElement> DataList          { get; set; }
 
-    public IEnumerable SearchParameters
+    public SearchProperties SearchProperties
     {
-        get { return new[] { searchParameters }; }
-        set { searchParameters = value.Cast<Search.Interaction>().FirstOrDefault(); }
+        get { return searchProperties; }
+        set { searchProperties = value; }
     }
 
     public InteractionController()
     {
         DataManager = new InteractionDataManager(this);
+    }
+
+    public void InitializeController()
+    {
+        SearchProperties.Initialize();
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData) { }

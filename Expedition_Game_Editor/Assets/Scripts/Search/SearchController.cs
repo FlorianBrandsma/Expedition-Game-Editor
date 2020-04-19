@@ -17,31 +17,29 @@ public class SearchController : MonoBehaviour
 
         data = SegmentController.editorController.PathController.route.data;
         
-        if (data.searchParameters == null) return;
+        if (data.searchProperties == null) return;
         
-        var searchParameters = data.searchParameters.Cast<SearchParameters>().FirstOrDefault();
-
-        InitializeListProperties(searchParameters);
-        InitializeDataController(searchParameters);
+        InitializeListProperties(data.searchProperties);
+        InitializeDataController(data.searchProperties);
     }
 
-    private void InitializeListProperties(SearchParameters searchParameters)
+    private void InitializeListProperties(SearchProperties searchParameters)
     {
         switch(searchParameters.elementType)
         {
             case Enums.ElementType.Panel: case Enums.ElementType.CompactPanel:
 
                 PanelProperties panelProperties = gameObject.AddComponent<PanelProperties>();
-                panelProperties.elementType = searchParameters.elementType;
-                panelProperties.referenceArea = referenceArea;
-                panelProperties.iconType = searchParameters.iconType;
+                panelProperties.elementType     = searchParameters.elementType;
+                panelProperties.referenceArea   = referenceArea;
+                panelProperties.iconType        = searchParameters.iconType;
 
                 break;
 
             case Enums.ElementType.Tile: case Enums.ElementType.CompactTile:
 
-                TileProperties tileProperties = gameObject.AddComponent<TileProperties>();
-                tileProperties.elementType = searchParameters.elementType;
+                TileProperties tileProperties   = gameObject.AddComponent<TileProperties>();
+                tileProperties.elementType      = searchParameters.elementType;
 
                 break;
 
@@ -49,7 +47,7 @@ public class SearchController : MonoBehaviour
         }
     }
 
-    private void InitializeDataController(SearchParameters searchParameters)
+    private void InitializeDataController(SearchProperties searchParameters)
     {
         IDataController dataController = null;
 
@@ -64,7 +62,7 @@ public class SearchController : MonoBehaviour
             default: Debug.Log("CASE MISSING:" + searchParameters.dataType); break;
         }
 
-        dataController.SearchParameters = data.searchParameters;
+        dataController.SearchProperties = data.searchProperties;
     }
 
     public void CloseController()

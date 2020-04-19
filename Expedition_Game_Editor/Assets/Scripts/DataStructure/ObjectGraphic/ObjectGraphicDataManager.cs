@@ -6,6 +6,7 @@ using System.Linq;
 public class ObjectGraphicDataManager : IDataManager
 {
     public IDataController DataController { get; set; }
+
     private List<ObjectGraphicData> objectGraphicDataList;
 
     private DataManager dataManager = new DataManager();
@@ -17,15 +18,18 @@ public class ObjectGraphicDataManager : IDataManager
         this.DataController = objectGraphicController;
     }
 
-    public List<IDataElement> GetDataElements(IEnumerable searchParameters)
+    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        var objectGraphicSearchData = searchParameters.Cast<Search.ObjectGraphic>().FirstOrDefault();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectGraphic>().First();
 
-        GetObjectGraphicData(objectGraphicSearchData);
+        GetObjectGraphicData(searchParameters);
+
+        if (objectGraphicDataList.Count == 0) return new List<IDataElement>();
+
         GetIconData();
 
-        var list = (from objectGraphicData in objectGraphicDataList
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+        var list = (from objectGraphicData  in objectGraphicDataList
+                    join iconData           in iconDataList on objectGraphicData.iconId equals iconData.Id
                     select new ObjectGraphicDataElement()
                     {
                         Id = objectGraphicData.Id,

@@ -13,7 +13,7 @@ public class SelectionElement : MonoBehaviour
     {
         public IDataController dataController;
         public IDataElement dataElement;
-        public IEnumerable searchParameters;
+        public SearchProperties searchProperties;
 
         public Data() { }
 
@@ -40,11 +40,11 @@ public class SelectionElement : MonoBehaviour
             this.dataElement = dataElement;
         }
 
-        public Data(IDataController dataController, IDataElement dataElement, IEnumerable searchParameters)
+        public Data(IDataController dataController, IDataElement dataElement, SearchProperties searchProperties)
         {
             this.dataController = dataController;
             this.dataElement = dataElement;
-            this.searchParameters = searchParameters;
+            this.searchProperties = searchProperties;
         }
     }
 
@@ -266,9 +266,9 @@ public class SelectionElement : MonoBehaviour
 
         data.dataController.SetData(this, resultData);
         
-        if(data.dataController.SearchParameters != null)
+        if(data.dataController.SearchProperties != null)
         {
-            if (data.dataController.SearchParameters.Cast<SearchParameters>().FirstOrDefault().autoUpdate)
+            if (data.dataController.SearchProperties.autoUpdate)
                 data.dataElement.UpdateSearch();
         }
 
@@ -279,13 +279,10 @@ public class SelectionElement : MonoBehaviour
     {
         if (data.dataElement == null) return;
 
-        GetComponent<IElement>().CloseElement();
-        OnSelection.RemoveAllListeners();
-
         ResetStatus();
 
-        if (glow != null)
-            glow.SetActive(false);
+        GetComponent<IElement>().CloseElement();
+        OnSelection.RemoveAllListeners();
         
         gameObject.SetActive(false);
 
