@@ -481,13 +481,15 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
     
     private void InitializeStatusIconOverlay(SelectionElement element)
     {
-        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconManager>();
+        if (element.glow != null && element.glow.activeInHierarchy) return;
+
+        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconOverlay>();
 
         if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
-            element.glow = statusIconManager.StatusIcon(element, StatusIconManager.StatusIconType.Selection);
+            element.glow = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
 
         if (element.elementStatus == Enums.ElementStatus.Locked)
-            element.lockIcon = statusIconManager.StatusIcon(element, StatusIconManager.StatusIconType.Lock);
+            element.lockIcon = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
     }
 
     private void SetElement(SelectionElement element)

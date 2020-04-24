@@ -118,9 +118,10 @@ public class EditorManager : MonoBehaviour
         loadType = Enums.LoadType.Normal;
     }
 
-    public void ResetEditor()
+    public void ResetEditor(bool reload)
     {
-        loadType = Enums.LoadType.Reload;
+        if(reload)
+            loadType = Enums.LoadType.Reload;
 
         foreach (EditorForm form in forms)
             form.ResetPath();

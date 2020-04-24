@@ -148,7 +148,7 @@ public class EditorSection : MonoBehaviour
 
     public void CancelEdit()
     {
-        if(dataEditor.Loaded)
+        if (dataEditor.Loaded)
             dataEditor.CancelEdit();
         
         if (previousDataElements != null)

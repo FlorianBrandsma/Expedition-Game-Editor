@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class EditorStatusIcon : MonoBehaviour
 {
-	public StatusIconManager statusIconManager;
+	public StatusIconOverlay statusIconManager;
 
-	public StatusIconManager.StatusIconType statusIconType;
+	public StatusIconOverlay.StatusIconType statusIconType;
 
 	public Camera cam;
 	public IDataElement targetDataElement;
@@ -28,8 +28,8 @@ public class EditorStatusIcon : MonoBehaviour
 		
 		switch (statusIconType)
 		{
-			case StatusIconManager.StatusIconType.Selection:    UpdateSelectionPosition();  break;
-			case StatusIconManager.StatusIconType.Lock:         UpdateLockPosition();       break;
+			case StatusIconOverlay.StatusIconType.Selection:    UpdateSelectionPosition();  break;
+			case StatusIconOverlay.StatusIconType.Lock:         UpdateLockPosition();       break;
 		}
 	}
 

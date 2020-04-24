@@ -44,6 +44,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             default: break;
         }
 
+        InitializeViewportRect();
+
         if (organizer == null) return;
 
         organizer.InitializeOrganizer();
@@ -55,6 +57,14 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             ResetListPosition();
 
         RenderSettings.fog = enableFog;
+    }
+
+    private void InitializeViewportRect()
+    {
+        float leftBorder = (30 / EditorManager.UI.rect.width);
+
+        cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
+                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
     }
 
     public void SetProperties()
@@ -78,12 +88,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         if(overlayManager != null)
             overlayManager.ActivateOverlay(organizer);
-
-        float leftBorder = (30 / EditorManager.UI.rect.width);
-
-        cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
-                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
-
+        
         SetData();
 
         if (overlayManager != null)
@@ -159,8 +164,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         var startPos = new Vector3(-content.rect.width / 2, content.rect.height / 2, 0);
         var localPosition = new Vector3(startPos.x + elementPosition.x , startPos.y - elementPosition.y, -elementPosition.z);
-
-        //It seems like it doesn't do this if the selected object alignes horizintally with the center?
+        
         if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
             cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);     
     }

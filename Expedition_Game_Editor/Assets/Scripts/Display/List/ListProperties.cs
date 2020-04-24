@@ -22,8 +22,9 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool enableSliders;
     public bool enableNumbers;
     public bool enablePaging;
-
     public bool enablePositionCorrection;
+
+    public string headerText;
 
     private IDataController dataController;
     

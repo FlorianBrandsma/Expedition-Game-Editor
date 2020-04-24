@@ -85,8 +85,9 @@ public class TimeManager : MonoBehaviour
 
         SetLighting(activeTime);
 
+        //No need to reload data for time - it's there and filtered by the organizer
         if (resetEditor)
-            EditorManager.editorManager.ResetEditor();
+            EditorManager.editorManager.ResetEditor(false);
     }
 
     public void SetLighting()

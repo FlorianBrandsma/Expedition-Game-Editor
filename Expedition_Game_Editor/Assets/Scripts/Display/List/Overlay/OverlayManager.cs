@@ -45,13 +45,16 @@ public class OverlayManager : MonoBehaviour
         var listProperties = (ListProperties)displayProperties;
 
         if (listProperties.enableNumbers)
-            gameObject.AddComponent<NumberManager>();
+            gameObject.AddComponent<NumberOverlay>();
 
         if (listProperties.enableSliders)
-            gameObject.AddComponent<SliderManager>();
+            gameObject.AddComponent<SliderOverlay>();
 
         if (listProperties.enablePaging)
-            gameObject.AddComponent<PagingManager>();
+            gameObject.AddComponent<PagingOverlay>();
+
+        if (listProperties.headerText.Length > 0)
+            gameObject.AddComponent<HeaderOverlay>();
     }
 
     private void SetCameraOverlayProperties(IDisplay displayProperties)
@@ -59,10 +62,10 @@ public class OverlayManager : MonoBehaviour
         var cameraProperties = (CameraProperties)displayProperties;
 
         if (cameraProperties.enableStatusIcons)
-            gameObject.AddComponent<StatusIconManager>();
+            gameObject.AddComponent<StatusIconOverlay>();
 
         if (cameraProperties.enableTerrainInfo)
-            gameObject.AddComponent<TerrainInfoManager>();
+            gameObject.AddComponent<TerrainHeaderOverlay>();
     }
 
     public void ActivateOverlay(IOrganizer organizer)

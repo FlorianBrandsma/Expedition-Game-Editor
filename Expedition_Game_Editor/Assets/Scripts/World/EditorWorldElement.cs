@@ -8,6 +8,13 @@ public class EditorWorldElement : MonoBehaviour, IElement
     
     private SelectionElement Element { get { return GetComponent<SelectionElement>(); } }
 
+    private Vector3 startPosition;
+
+    private Vector3 position;
+    private Vector3 rotation;
+    
+    private float scaleMultiplier;
+
     public Color ElementColor
     {
         set
@@ -33,6 +40,10 @@ public class EditorWorldElement : MonoBehaviour, IElement
 
             default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType);    break;
         }
+
+        transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y - position.y, -position.z);
+        transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
+        transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
     }
 
     private void SetWorldInteractableElement()
@@ -43,9 +54,12 @@ public class EditorWorldElement : MonoBehaviour, IElement
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab.PoolType, prefab);
 
-        transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.positionX, dataElement.startPosition.y - dataElement.positionY, -dataElement.positionZ);
-        transform.localEulerAngles  = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
-        transform.localScale        = new Vector3(1 * dataElement.scaleMultiplier, 1 * dataElement.scaleMultiplier, 1 * dataElement.scaleMultiplier);
+        startPosition = dataElement.startPosition;
+
+        position = new Vector3(dataElement.positionX, dataElement.positionY, dataElement.positionZ);
+        rotation = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
+
+        scaleMultiplier = dataElement.scaleMultiplier;
 
         SetObjectGraphic();
     }
@@ -57,10 +71,13 @@ public class EditorWorldElement : MonoBehaviour, IElement
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab.PoolType, prefab);
-        
-        transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.PositionX, dataElement.startPosition.y - dataElement.PositionY, -dataElement.PositionZ);
-        transform.localEulerAngles  = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
-        transform.localScale        = new Vector3(1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier);
+
+        startPosition = dataElement.startPosition;
+
+        position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
+        rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
+
+        scaleMultiplier = dataElement.ScaleMultiplier;
 
         SetObjectGraphic();
     }
@@ -73,9 +90,12 @@ public class EditorWorldElement : MonoBehaviour, IElement
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab.PoolType, prefab);
 
-        transform.localPosition     = new Vector3(dataElement.startPosition.x + dataElement.PositionX, dataElement.startPosition.y - dataElement.PositionY, -dataElement.PositionZ);
-        transform.localEulerAngles  = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
-        transform.localScale        = new Vector3(1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier, 1 * dataElement.ScaleMultiplier);
+        startPosition = dataElement.startPosition;
+
+        position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
+        rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
+
+        scaleMultiplier = dataElement.ScaleMultiplier;
 
         SetObjectGraphic();
     }

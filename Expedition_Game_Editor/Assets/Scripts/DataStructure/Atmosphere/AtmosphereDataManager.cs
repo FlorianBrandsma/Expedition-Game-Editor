@@ -61,6 +61,9 @@ public class AtmosphereDataManager : IDataManager
                         StartTime = atmosphereData.startTime,
                         EndTime = atmosphereData.endTime,
 
+                        PublicNotes = atmosphereData.publicNotes,
+                        PrivateNotes = atmosphereData.privateNotes,
+
                         regionName = regionData.name,
                         terrainName = terrainData.name,
 
@@ -93,6 +96,9 @@ public class AtmosphereDataManager : IDataManager
 
             atmosphereData.startTime = atmosphere.startTime;
             atmosphereData.endTime = atmosphere.endTime;
+
+            atmosphereData.publicNotes = atmosphere.publicNotes;
+            atmosphereData.privateNotes = atmosphere.privateNotes;
 
             atmosphereDataList.Add(atmosphereData);
         }
@@ -146,5 +152,8 @@ public class AtmosphereDataManager : IDataManager
 
         public int startTime;
         public int endTime;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 }
