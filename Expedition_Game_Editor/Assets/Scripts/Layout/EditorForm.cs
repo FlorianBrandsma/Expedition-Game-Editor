@@ -19,7 +19,7 @@ public class EditorForm : MonoBehaviour
 
     public PathController baseController;
 
-    public EditorSection[] editorSections;
+    public LayoutSection[] editorSections;
 
     public Path activePath = new Path();
     public Path previousPath;
@@ -30,7 +30,7 @@ public class EditorForm : MonoBehaviour
 
     public void InitializeForm()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.InitializeSection(this);
 
         baseController.InitializeDependencies();
@@ -124,7 +124,7 @@ public class EditorForm : MonoBehaviour
         
         baseController.ClosePath(activePath);
 
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.ClosePath();
 
         activeInPath = false;
@@ -133,13 +133,13 @@ public class EditorForm : MonoBehaviour
     public void ResetPath()
     {
         if (activeInPath)
-            EditorManager.editorManager.Render(activePath);
+            RenderManager.Render(activePath);
     }
     #endregion
 
     private void CancelEdit()
     {
-        foreach (EditorSection editorSection in editorSections)
+        foreach (LayoutSection editorSection in editorSections)
         {
             if (editorSection.dataEditor == null) continue;
 
@@ -149,7 +149,7 @@ public class EditorForm : MonoBehaviour
         }
     }
 
-    private bool MatchPrevious(EditorSection editorSection)
+    private bool MatchPrevious(LayoutSection editorSection)
     {
         if (editorSection.previousEditor == null) return true;
 
@@ -172,14 +172,14 @@ public class EditorForm : MonoBehaviour
         hasActions = baseController.SetActions(path);
 
         if (hasActions)
-            ActionManager.actionManager.SortActions();    
+            ActionManager.instance.SortActions();    
     }
 
     private void CloseActions()
     {
         if (hasActions)
         {
-            ActionManager.actionManager.CloseActions();
+            ActionManager.instance.CloseActions();
             hasActions = false;
         }
     }
@@ -187,19 +187,19 @@ public class EditorForm : MonoBehaviour
     #region Layout
     private void InitializeSectionLayout()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.InitializeLayout();
     }
 
     private void SetSectionLayout()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.SetLayout();
     }
 
     private void CloseSectionDependencies()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.CloseLayoutDependencies();
     }
     #endregion
@@ -207,7 +207,7 @@ public class EditorForm : MonoBehaviour
     #region Sections
     private void InitializeSections()
     {
-        foreach (EditorSection editorSection in editorSections)
+        foreach (LayoutSection editorSection in editorSections)
         {
             if (editorSection.targetController != null)
                 editorSection.targetController.InitializeController();
@@ -218,7 +218,7 @@ public class EditorForm : MonoBehaviour
 
     private void ActivateSections()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
         {
             if (section.targetController == null) continue;
 
@@ -228,13 +228,13 @@ public class EditorForm : MonoBehaviour
 
     public void OpenSectionEditors()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.OpenEditor();
     }
 
     private void CloseSectionEditorSegments()
     {
-        foreach (EditorSection section in editorSections)
+        foreach (LayoutSection section in editorSections)
             section.CloseEditorSegments();
     }
     #endregion
@@ -244,7 +244,7 @@ public class EditorForm : MonoBehaviour
     {
         if (!activeInPath) return;
 
-        EditorManager.editorManager.Render(new Path(new List<Route>(), this));
+        RenderManager.Render(new Path(new List<Route>(), this));
     }
     #endregion
 }

@@ -19,9 +19,9 @@ public class ObjectProperties : MonoBehaviour, IProperties
     public bool castShadow;
 
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.Object;
+        return DisplayManager.OrganizerType.Object;
     }
 
     public SelectionManager.Property SelectionProperty

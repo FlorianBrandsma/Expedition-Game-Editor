@@ -8,9 +8,9 @@ public class PanelTileProperties : MonoBehaviour, IProperties
     public SelectionManager.Property childProperty;
 
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.PanelTile;
+        return DisplayManager.OrganizerType.PanelTile;
     }
     #endregion
 }

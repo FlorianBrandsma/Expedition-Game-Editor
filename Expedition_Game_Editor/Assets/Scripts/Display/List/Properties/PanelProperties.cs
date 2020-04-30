@@ -14,9 +14,9 @@ public class PanelProperties : MonoBehaviour, IProperties
     public SelectionManager.Property childProperty;
 
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.Panel;
+        return DisplayManager.OrganizerType.Panel;
     }
     #endregion
 }

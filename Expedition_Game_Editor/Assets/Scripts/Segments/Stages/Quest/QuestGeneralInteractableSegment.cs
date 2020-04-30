@@ -31,7 +31,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseInteractable>().First();
         searchParameters.phaseId = new List<int>() { QuestEditor.QuestData.PhaseId };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
         questInteractableList.ForEach(x => QuestEditor.questInteractableDataList.Add(x));

@@ -24,7 +24,7 @@ public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
         searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

@@ -2,7 +2,7 @@
 
 public class DisplayManager
 {
-    public enum Type
+    public enum OrganizerType
     {
         None,
         Button,

@@ -10,7 +10,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public EditorInputNumber xInputField, yInputField, zInputField;
+    public ExInputNumber xInputField, yInputField, zInputField;
     #endregion
 
     #region Data Variables

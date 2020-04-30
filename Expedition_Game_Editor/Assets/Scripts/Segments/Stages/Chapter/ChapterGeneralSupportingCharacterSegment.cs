@@ -31,7 +31,7 @@ public class ChapterGeneralSupportingCharacterSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();     
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var chapterInteractableList = SegmentController.DataController.DataList.Cast<ChapterInteractableDataElement>().ToList();
         chapterInteractableList.ForEach(x => ChapterEditor.chapterInteractableDataList.Add(x));

@@ -20,7 +20,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
         
         var searchProperties = SegmentController.editorController.PathController.route.data.searchProperties;
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

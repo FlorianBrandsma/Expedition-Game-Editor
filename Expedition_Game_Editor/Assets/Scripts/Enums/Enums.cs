@@ -109,7 +109,18 @@ public class Enums
         MultiGrid,
         CompactMultiGrid,
         Button,
-        WorldElement
+        WorldElement,
+        WorldInteractable,
+        ObjectGraphic,
+        Text,
+        Dropdown,
+        StatusIcon,
+        SliderHorizontal,
+        SliderVertical,
+        TabHorizontal,
+        TabVertical,
+        Header,
+        PagingButton
     }
 
     public enum ElementStatus

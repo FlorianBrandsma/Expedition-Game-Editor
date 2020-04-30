@@ -12,7 +12,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
     #region UI
     public GameObject defaultHeader;
     public GameObject timeInput;
-    public EditorInputNumber startTimeInput, endTimeInput;
+    public ExInputNumber startTimeInput, endTimeInput;
     public Text idText;
     #endregion
 

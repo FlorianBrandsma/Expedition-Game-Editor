@@ -43,7 +43,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public void SetEditor()
     {
-        PathController.editorSection.SetActionButtons();
+        PathController.layoutSection.SetActionButtons();
     }
 
     public bool Changed()
@@ -61,7 +61,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
         //Elements don't need to be updated as the reset takes care of that.
         if (changedTime)
         {
-            EditorManager.editorManager.ResetEditor(true);
+            RenderManager.ResetPath(true);
 
         } else {
 

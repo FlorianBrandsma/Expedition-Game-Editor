@@ -24,7 +24,7 @@ public class QuestSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
         searchParameters.phaseId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

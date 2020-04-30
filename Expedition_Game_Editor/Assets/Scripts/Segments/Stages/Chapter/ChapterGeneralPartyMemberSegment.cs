@@ -31,7 +31,7 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberDataElement>().ToList();
         partyMemberList.ForEach(x => ChapterEditor.partyMemberDataList.Add(x));

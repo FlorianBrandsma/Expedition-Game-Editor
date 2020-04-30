@@ -28,7 +28,7 @@ public class AtmosphereSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
         searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

@@ -9,7 +9,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
         Lock
     }
 
-    static public List<EditorStatusIcon> statusIconList = new List<EditorStatusIcon>();
+    private List<ExStatusIcon> statusIconList = new List<ExStatusIcon>();
 
     public Texture selectTexture;
     public Texture lockTexture;
@@ -26,7 +26,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
     {
         cameraManager = (CameraManager)displayManager;
 
-        Multiplier  = (((cameraManager.displayRect.rect.width / Screen.width)) * 2f) / ((cameraManager.displayRect.rect.width / EditorManager.UI.rect.width) * 2);
+        Multiplier  = (((cameraManager.displayRect.rect.width / Screen.width)) * 2f) / ((cameraManager.displayRect.rect.width / RenderManager.UI.rect.width) * 2);
         WidthCap    = (cameraManager.displayRect.rect.width / 2 - iconSize.x);
         HeightCap   = (cameraManager.displayRect.rect.height / 2 - iconSize.y);
         
@@ -48,7 +48,13 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
 
     public GameObject StatusIcon(SelectionElement target, StatusIconType statusIconType)
     {
-        var statusIcon = SpawnStatusIcon(cameraManager.overlayParent);
+        var prefab = Resources.Load<ExStatusIcon>("UI/StatusIcon");
+
+        var statusIcon = (ExStatusIcon)PoolManager.SpawnObject(0, prefab);
+        statusIconList.Add(statusIcon);
+
+        statusIcon.transform.SetParent(cameraManager.overlayParent);
+        statusIcon.transform.localEulerAngles = Vector3.zero;
         
         statusIcon.cam = cameraManager.cam;
         statusIcon.targetDataElement = target.data.dataElement;
@@ -74,39 +80,22 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
                 break;
         }
 
+        statusIcon.gameObject.SetActive(true);
+
         return statusIcon.gameObject;
     }
 
     public void CloseOverlay()
     {
-        ResetStatusIcons();
+        CloseStatusIcons();
 
         DestroyImmediate(this);
     }
-    
-    private EditorStatusIcon SpawnStatusIcon(RectTransform parentRect)
+
+    public void CloseStatusIcons()
     {
-        foreach (EditorStatusIcon statusIcon in statusIconList)
-        {
-            if (!statusIcon.gameObject.activeInHierarchy)
-            {
-                statusIcon.gameObject.SetActive(true);
-                return statusIcon;
-            }
-        }
-
-        var newStatusIcon = Instantiate(Resources.Load<EditorStatusIcon>("UI/StatusIcon"));
-        statusIconList.Add(newStatusIcon);
-
-        newStatusIcon.transform.SetParent(parentRect);
-        newStatusIcon.transform.localEulerAngles = Vector3.zero;
+        statusIconList.ForEach(x => PoolManager.ClosePoolObject(x));
         
-        return newStatusIcon;
-    }
-
-    public void ResetStatusIcons()
-    {
-        foreach (EditorStatusIcon statusIcon in statusIconList)
-            statusIcon.gameObject.SetActive(false);
+        statusIconList.Clear();
     }
 }

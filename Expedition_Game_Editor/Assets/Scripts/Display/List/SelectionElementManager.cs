@@ -7,42 +7,19 @@ static public class SelectionElementManager
 {
     static public List<SelectionElement> elementPool = new List<SelectionElement>();
     
-    static public SelectionElement SpawnElement(SelectionElement elementPrefab, Transform parent,
-                                                Enums.ElementType elementType, IDisplayManager displayManager, 
-                                                SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    static public void InitializeElement(SelectionElement element, Transform parent, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
-        foreach (SelectionElement element in elementPool.Where(x => x.elementType == elementType))
-        {
-            if (element.disableSpawn) continue;
-            if (element.gameObject.activeInHierarchy) continue;
+        element.InitializeElement(displayManager, selectionType, selectionProperty);
 
-            InitializeElement(element, displayManager, selectionType, selectionProperty, parent);
-            return element;
-        }
-        
-        SelectionElement newElement = Object.Instantiate(elementPrefab);
-        newElement.elementType = elementType;
-        
-        InitializeElement(newElement, displayManager, selectionType, selectionProperty, parent);
-
-        Add(newElement);
-
-        if (newElement.child != null)
-            Add(newElement.child);
-
-        return newElement;
+        element.transform.SetParent(parent, false);
     }
 
     static public void Add(SelectionElement selectionElement)
     {
         elementPool.Add(selectionElement);
-    }
 
-    static public void InitializeElement(SelectionElement element, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, Transform parent)
-    {
-        element.InitializeElement(displayManager, selectionType, selectionProperty);
-
-        element.transform.SetParent(parent, false);
+        if (selectionElement.child != null)
+            Add(selectionElement.child);
     }
 
     //Reload the display of active elements that match the argument

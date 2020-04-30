@@ -13,6 +13,7 @@ public class FormAction : MonoBehaviour, IAction
 
     public bool autoOpen;
 
+    private ExButton actionButton;
     public EditorForm editorForm;
 
     public Texture2D openIcon;
@@ -37,7 +38,7 @@ public class FormAction : MonoBehaviour, IAction
         if (autoOpen)
         {
             if (!editorForm.activeInPath)
-                EditorManager.editorManager.Render(new PathManager.Form(editorForm).Initialize());
+                RenderManager.Render(new PathManager.Form(editorForm).Initialize());
         }
         
         closedManually = false;
@@ -45,11 +46,11 @@ public class FormAction : MonoBehaviour, IAction
 
     private void InitializeButton()
     {
-        var button = ActionManager.actionManager.AddFormButton(actionProperties);
+        actionButton = ActionManager.instance.AddFormButton(actionProperties);
 
-        button.GetComponent<EditorButton>().icon.texture = editorForm.activeInPath ? openIcon : closeIcon;
+        actionButton.icon.texture = editorForm.activeInPath ? openIcon : closeIcon;
 
-        button.onClick.AddListener(delegate { Interact(); });
+        actionButton.Button.onClick.AddListener(delegate { Interact(); });
     }
 
     public void Interact()
@@ -69,7 +70,7 @@ public class FormAction : MonoBehaviour, IAction
     {
         Path path = (new PathManager.Form(editorForm).Initialize());
 
-        EditorManager.editorManager.Render(path);
+        RenderManager.Render(path);
     }
 
     public void CloseAction()

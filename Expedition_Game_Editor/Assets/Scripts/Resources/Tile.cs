@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Tile : MonoBehaviour, IPoolable
 {
-    public PoolManager.PoolType PoolType { get { return PoolManager.PoolType.Tile; } }
+    public Transform Transform { get { return GetComponent<Transform>(); } }
+
+    public Enums.ElementType ElementType { get { return Enums.ElementType.Tile; } }
 
     public int Id { get; set; }
 

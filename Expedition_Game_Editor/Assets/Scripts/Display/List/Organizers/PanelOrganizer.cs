@@ -57,48 +57,52 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), PanelProperties.elementType);
 
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
+        var prefab = Resources.Load<ExPanel>("UI/" + elementType);
 
-        foreach (IDataElement data in list)
+        foreach (IDataElement dataElement in list)
         {
-            EditorPanel panel = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
-                                                                     PanelProperties.elementType, DisplayManager,
-                                                                     DisplayManager.Display.SelectionType,
-                                                                     DisplayManager.Display.SelectionProperty).GetComponent<EditorPanel>();
+            var panel = (ExPanel)PoolManager.SpawnObject(0, prefab);
+
+            SelectionElementManager.InitializeElement(  panel.Element, ListManager.listParent,
+                                                        DisplayManager, 
+                                                        DisplayManager.Display.SelectionType, 
+                                                        DisplayManager.Display.SelectionProperty);
 
             ElementList.Add(panel.Element);
-            
-            data.SelectionElement = panel.Element;
-            panel.Element.data = new SelectionElement.Data(DataController, data);
+
+            dataElement.SelectionElement = panel.Element;
+            panel.Element.data = new SelectionElement.Data(DataController, dataElement);
 
             SetProperties(panel);
 
-            panel.GetComponent<EditorPanel>().InitializeChildElement();
+            panel.GetComponent<ExPanel>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
+            GeneralData generalData = (GeneralData)dataElement;
             panel.name = generalData.DebugName + generalData.Id;
             //
-            
-            SetElement(panel);
+
+            SetElement(panel.Element);
         }
     }
     
-    private void SetElement(EditorPanel panel)
+    private void SetElement(SelectionElement element)
     {
-        RectTransform rect = panel.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
+        element.RectTransform.sizeDelta = new Vector2(element.RectTransform.sizeDelta.x, ElementSize.y);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == panel.Element.GeneralData.Id);
-        panel.transform.localPosition = GetElementPosition(index);
-
-        panel.gameObject.SetActive(true);
+        element.RectTransform.offsetMin = new Vector2(0, element.RectTransform.offsetMin.y);
+        element.RectTransform.offsetMax = new Vector2(0, element.RectTransform.offsetMax.y);
         
-        panel.Element.SetElement();
-        panel.Element.SetOverlay();
+        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        element.transform.localPosition = GetElementPosition(index);
+
+        element.gameObject.SetActive(true);
+        
+        element.SetElement();
+        element.SetOverlay();
     }
 
-    private void SetProperties(EditorPanel panel)
+    private void SetProperties(ExPanel panel)
     {
         panel.iconType = PanelProperties.iconType;
         panel.childProperty = PanelProperties.childProperty;
@@ -121,6 +125,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer()
     {
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

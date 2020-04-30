@@ -14,6 +14,6 @@ public class RegionDisplayManager : MonoBehaviour
     {
         activeDisplay = (Display)display;
 
-        EditorManager.editorManager.Render(path);
+        RenderManager.Render(path);
     }
 }

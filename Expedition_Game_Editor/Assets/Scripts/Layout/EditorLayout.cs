@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EditorLayout : MonoBehaviour
 {
-    public LayoutSection layoutSection;
+    public LayoutAnchors layoutSection;
 
     public Vector2  anchor_min,
                     anchor_max;

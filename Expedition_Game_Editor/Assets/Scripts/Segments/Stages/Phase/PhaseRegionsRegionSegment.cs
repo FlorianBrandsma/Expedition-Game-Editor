@@ -31,7 +31,7 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
         searchParameters.phaseId = new List<int>() { PhaseEditor.PhaseData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionDataElement>().ToList();
         phaseRegionList.ForEach(x => PhaseEditor.regionDataList.Add(x));

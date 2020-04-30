@@ -11,38 +11,15 @@ public class SegmentPlaceholder : MonoBehaviour, ISegment
         DataEditor = SegmentController.editorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment()
-    {
-        
-    }
+    public void InitializeSegment() { }
 
-    public void InitializeData()
-    {
+    public void InitializeData() { }
 
-    }
+    public void OpenSegment() { }
 
-    public void OpenSegment()
-    {
+    public void ApplySegment() { }
 
-    }
+    public void CloseSegment() { }
 
-    public void Activate(EditorController new_controller)
-    {
-
-    }
-
-    public void ApplySegment()
-    {
-
-    }
-
-    public void CloseSegment()
-    {
-
-    }
-
-    public void SetSearchResult(SelectionElement selectionElement)
-    {
-
-    }
+    public void SetSearchResult(SelectionElement selectionElement) { }
 }

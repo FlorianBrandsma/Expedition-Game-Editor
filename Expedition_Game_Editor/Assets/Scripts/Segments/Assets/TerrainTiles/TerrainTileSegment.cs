@@ -38,7 +38,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainController.DataList = EditorManager.GetData(TerrainController, searchProperties);
+        TerrainController.DataList = RenderManager.GetData(TerrainController, searchProperties);
     }
 
     private void GetTerrainTileData()
@@ -48,7 +48,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.TerrainTile>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainTileController.DataList = EditorManager.GetData(TerrainTileController, searchProperties);
+        TerrainTileController.DataList = RenderManager.GetData(TerrainTileController, searchProperties);
     }
 
     public void OpenSegment()

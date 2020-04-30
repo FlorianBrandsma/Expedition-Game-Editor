@@ -8,13 +8,9 @@ using System.IO;
 
 public class ActionManager : MonoBehaviour
 {
-    static public ActionManager actionManager;
+    static public ActionManager instance;
 
-    private List<Dropdown> dropdownPool = new List<Dropdown>();
-    private List<Button> buttonPool = new List<Button>();
-    private List<Button> formButtonPool = new List<Button>();
-
-    private List<RectTransform> elements = new List<RectTransform>();
+    private List<ActionElement> elementList = new List<ActionElement>();
 
     public RectTransform element_parent;
     public RectTransform main_content;
@@ -26,14 +22,14 @@ public class ActionManager : MonoBehaviour
 
     private void Awake()
     {
-        actionManager = this;
+        instance = this;
 
         CloseSlider();
     }
 
     public void SortActions()
     {
-        if (elements.Count == 0) return;
+        if (elementList.Count == 0) return;
 
         List<ActionElement> leftElements = new List<ActionElement>();
         List<ActionElement> rightElements = new List<ActionElement>();
@@ -44,38 +40,38 @@ public class ActionManager : MonoBehaviour
         float mainSize = 0;
 
         //Sort element by anchor
-        foreach (RectTransform element in elements)
+        foreach (ActionElement element in elementList)
         {
-            ActionElement actionElement = element.GetComponent<ActionElement>();
+            var rectTransform = element.GetComponent<RectTransform>();
 
-            element.sizeDelta = new Vector2(actionElement.ActionProperties.width + 5, element.sizeDelta.y);
+            rectTransform.sizeDelta = new Vector2(element.ActionProperties.width + 5, rectTransform.sizeDelta.y);
 
-            switch (actionElement.ActionProperties.anchor)
+            switch (element.ActionProperties.anchor)
             {
                 case ActionProperties.Anchor.Left:
 
                     element.transform.SetParent(element_parent, false);
-                    leftOffset += actionElement.ActionProperties.width;
+                    leftOffset += element.ActionProperties.width;
 
-                    leftElements.Add(actionElement);
+                    leftElements.Add(element);
                     
                     break;
 
                 case ActionProperties.Anchor.Right:
 
                     element.transform.SetParent(element_parent, false);
-                    rightOffset += actionElement.ActionProperties.width;
+                    rightOffset += element.ActionProperties.width;
 
-                    rightElements.Add(actionElement);
+                    rightElements.Add(element);
                     
                     break;
 
                 case ActionProperties.Anchor.Main:
 
                     element.transform.SetParent(main_parent, false);
-                    mainSize += actionElement.ActionProperties.width;
+                    mainSize += element.ActionProperties.width;
 
-                    mainElements.Add(actionElement);
+                    mainElements.Add(element);
 
                     break;
             }
@@ -169,38 +165,38 @@ public class ActionManager : MonoBehaviour
             SetArrow(right_arrow, false);
     }
 
-    public Dropdown AddDropdown(ActionProperties actionProperties)
+    public ExDropdown AddDropdown(ActionProperties actionProperties)
     {
-        Dropdown dropdown = SpawnDropdown();
+        var dropdown = SpawnDropdown();
 
         if (dropdown.GetComponent<IDataController>() != null)
             DestroyImmediate((UnityEngine.Object)dropdown.GetComponent<IDataController>());
 
-        dropdown.options.Clear();
-        dropdown.value = 0;
-        dropdown.onValueChanged.RemoveAllListeners();
+        dropdown.Dropdown.options.Clear();
+        dropdown.Dropdown.value = 0;
+        dropdown.Dropdown.onValueChanged.RemoveAllListeners();
 
         AddAction(dropdown.GetComponent<RectTransform>(), actionProperties);
 
         return dropdown;
     }
 
-    public Button AddButton(ActionProperties actionProperties)
+    public ExButton AddButton(ActionProperties actionProperties)
     {
-        Button button = SpawnButton();
+        var button = SpawnButton();
 
-        button.onClick.RemoveAllListeners();
+        button.Button.onClick.RemoveAllListeners();
 
         AddAction(button.GetComponent<RectTransform>(), actionProperties);
 
         return button;
     }
 
-    public Button AddFormButton(ActionProperties actionProperties)
+    public ExButton AddFormButton(ActionProperties actionProperties)
     {
-        Button button = SpawnFormButton();
+        var button = SpawnFormButton();
 
-        button.onClick.RemoveAllListeners();
+        button.Button.onClick.RemoveAllListeners();
 
         AddAction(button.GetComponent<RectTransform>(), actionProperties);
 
@@ -215,7 +211,7 @@ public class ActionManager : MonoBehaviour
         ActionElement actionElement = element.GetComponent<ActionElement>();
         actionElement.SetElement(actionProperties);
 
-        elements.Add(element);
+        elementList.Add(actionElement);
     }
 
     public void CloseActions()
@@ -228,10 +224,9 @@ public class ActionManager : MonoBehaviour
         main_parent.offsetMin = new Vector2(0, main_parent.offsetMin.y);
         main_parent.offsetMax = new Vector2(0, main_parent.offsetMax.y);
 
-        foreach (RectTransform element in elements)
-            element.gameObject.SetActive(false);
+        elementList.ForEach(x => PoolManager.ClosePoolObject(x.GetComponent<IPoolable>()));
 
-        elements.Clear();
+        elementList.Clear();
     }
 
     private void CloseSlider()
@@ -251,65 +246,34 @@ public class ActionManager : MonoBehaviour
 
     #region Spawners
 
-    private Dropdown SpawnDropdown()
+    private ExDropdown SpawnDropdown()
     {
-        foreach(Dropdown dropdown in dropdownPool)
-        {
-            if (!dropdown.gameObject.activeInHierarchy)
-            {
-                dropdown.gameObject.SetActive(true);
+        var prefab = Resources.Load<ExDropdown>("UI/Dropdown");
+        var dropdown = (ExDropdown)PoolManager.SpawnObject(0, prefab);
 
-                return dropdown;
-            }
-        }
+        dropdown.gameObject.SetActive(true);
 
-        Dropdown newComponent = Instantiate(Resources.Load<Dropdown>("UI/EditorDropdown"));
-
-        dropdownPool.Add(newComponent);
-
-        return newComponent;
+        return dropdown;
     }
 
-    private Button SpawnButton()
+    private ExButton SpawnButton()
     {
-        foreach(Button button in buttonPool)
-        {
-            if (!button.gameObject.activeInHierarchy)
-            {
-                button.onClick.RemoveAllListeners();
+        var prefab = Resources.Load<ExButton>("UI/ActionButton");
+        var button = (ExButton)PoolManager.SpawnObject(0, prefab);
 
-                button.gameObject.SetActive(true);
+        button.gameObject.SetActive(true);
 
-                return button;
-            }
-        }
-
-        Button newComponent = Instantiate(Resources.Load<Button>("UI/ActionButton"));
-
-        buttonPool.Add(newComponent);
-
-        return newComponent;
+        return button;
     }
 
-    private Button SpawnFormButton()
+    private ExButton SpawnFormButton()
     {
-        foreach(Button button in formButtonPool)
-        {
-            if (!button.gameObject.activeInHierarchy)
-            {
-                button.GetComponent<Button>().onClick.RemoveAllListeners();
+        var prefab = Resources.Load<ExButton>("UI/FormButton");
+        var button = (ExButton)PoolManager.SpawnObject(0, prefab);
 
-                button.gameObject.SetActive(true);
+        button.gameObject.SetActive(true);
 
-                return button;
-            }
-        }
-
-        Button newComponent = Instantiate(Resources.Load<Button>("UI/EditorFormButton"));
-
-        formButtonPool.Add(newComponent);
-
-        return newComponent;
+        return button;
     }
     #endregion
 }

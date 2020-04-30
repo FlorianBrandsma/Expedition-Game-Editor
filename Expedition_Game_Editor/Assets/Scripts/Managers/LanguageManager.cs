@@ -21,6 +21,6 @@ public class LanguageManager : MonoBehaviour
     {
         active_language = (Language)new_language;
 
-        EditorManager.editorManager.ResetEditor(true);
+        RenderManager.ResetPath(true);
     }
 }

@@ -20,18 +20,18 @@ public class TimeAction : MonoBehaviour, IAction
 
     public void SetAction(Path path)
     {
-        var dropdown = ActionManager.actionManager.AddDropdown(actionProperties);
+        var dropdown = ActionManager.instance.AddDropdown(actionProperties);
 
-        dropdown.captionText.text = TimeManager.FormatTime(TimeManager.activeTime, true);
+        dropdown.Dropdown.captionText.text = TimeManager.FormatTime(TimeManager.activeTime, true);
 
         for(int hour = 0; hour < TimeManager.hoursInDay; hour++)
         {
-            dropdown.options.Add(new Dropdown.OptionData(TimeManager.FormatTime(hour, true)));
+            dropdown.Dropdown.options.Add(new Dropdown.OptionData(TimeManager.FormatTime(hour, true)));
         }
 
-        dropdown.value = (int)TimeManager.activeTime;
+        dropdown.Dropdown.value = (int)TimeManager.activeTime;
 
-        dropdown.onValueChanged.AddListener(delegate { SetTime(dropdown.value); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { SetTime(dropdown.Dropdown.value); });
     }
     
     private void SetTime(int time)

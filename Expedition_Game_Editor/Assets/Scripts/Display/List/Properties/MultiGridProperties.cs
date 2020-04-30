@@ -40,9 +40,9 @@ public class MultiGridProperties : MonoBehaviour, IProperties
     }
 
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.MultiGrid;
+        return DisplayManager.OrganizerType.MultiGrid;
     }
     #endregion
 }

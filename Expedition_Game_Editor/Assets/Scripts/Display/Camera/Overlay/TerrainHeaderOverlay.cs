@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 {
-    static public List<Text> textList = new List<Text>();
-    private Text terrainInfoText;
+    private ExText terrainInfoText;
 
     private WorldOrganizer worldOrganizer;
 
@@ -16,11 +15,14 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
     public void ActivateOverlay(IOrganizer organizer)
     {
         worldOrganizer = (WorldOrganizer)organizer;
-
-        terrainInfoText = SpawnText();
+        
+        var prefab = Resources.Load<ExText>("UI/Text");
+        terrainInfoText = (ExText)PoolManager.SpawnObject(0, prefab);
 
         terrainInfoText.transform.SetParent(overlayManager.horizontal_min, false);
         terrainInfoText.transform.localPosition = new Vector2(0, 0);
+
+        terrainInfoText.gameObject.SetActive(true);
     }
     
     public void UpdateOverlay()
@@ -36,34 +38,19 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
     private void SetText()
     {
         //The atmosphere part is only temporary for debugging
-        terrainInfoText.text = worldOrganizer.activeTerrainData.name + " (Atmosphere: " + (worldOrganizer.activeTerrainData.activeAtmosphere.Default ? 
+        terrainInfoText.Text.text = worldOrganizer.activeTerrainData.name + " (Atmosphere: " + (worldOrganizer.activeTerrainData.activeAtmosphere.Default ? 
             "Default" :
             TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.StartTime, true) + 
             " - " + 
             TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.EndTime)) + ")";
-    }
 
-    private Text SpawnText()
-    {
-        foreach (Text element in textList)
-        {
-            if (!element.gameObject.activeInHierarchy)
-            {
-                element.gameObject.SetActive(true);
-                return element;
-            }
-        }
-
-        Text newText = Instantiate(Resources.Load<Text>("UI/Text"));
-        textList.Add(newText);
-
-        return newText;
+        terrainInfoText.RectTransform.anchorMin = new Vector2(0, 0);
+        terrainInfoText.RectTransform.anchorMax = new Vector2(1, 1);
     }
 
     public void ResetText()
     {
-        foreach (Text element in textList)
-            element.gameObject.SetActive(false);
+        PoolManager.ClosePoolObject(terrainInfoText);
     }
 
     public void CloseOverlay()

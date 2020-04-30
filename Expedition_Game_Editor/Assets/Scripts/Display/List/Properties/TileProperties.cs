@@ -9,9 +9,9 @@ public class TileProperties : MonoBehaviour, IProperties
     public Vector2 GridSize { get; set; }
 
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.Tile;
+        return DisplayManager.OrganizerType.Tile;
     }
     #endregion
 }

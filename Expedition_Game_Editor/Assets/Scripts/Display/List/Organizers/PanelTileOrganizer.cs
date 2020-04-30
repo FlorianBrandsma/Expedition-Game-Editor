@@ -46,27 +46,48 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData(List<IDataElement> list)
     {
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/PanelTile");
+        var prefab = Resources.Load<ExPanelTile>("UI/PanelTile");
 
-        foreach (IDataElement data in list)
+        foreach (IDataElement dataElement in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
-                                                                            Enums.ElementType.PanelTile, DisplayManager, 
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
-            ElementList.Add(element);
+            var panelTile = (ExPanelTile)PoolManager.SpawnObject(0, prefab);
 
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(DataController, data);
+            SelectionElementManager.InitializeElement(  panelTile.Element, ListManager.listParent,
+                                                        DisplayManager,
+                                                        DisplayManager.Display.SelectionType,
+                                                        DisplayManager.Display.SelectionProperty);
 
-            element.GetComponent<EditorPanelTile>().InitializeChildElement();
+            ElementList.Add(panelTile.Element);
+
+            dataElement.SelectionElement = panelTile.Element;
+            panelTile.Element.data = new SelectionElement.Data(DataController, dataElement);
+
+            panelTile.GetComponent<ExPanelTile>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.Id;
+            GeneralData generalData = (GeneralData)dataElement;
+            panelTile.name = generalData.DebugName + generalData.Id;
             //
-            
-            SetElement(element);
+
+            SetElement(panelTile.Element);
+
+            //SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
+            //                                                                Enums.ElementType.PanelTile, DisplayManager, 
+            //                                                                DisplayManager.Display.SelectionType,
+            //                                                                DisplayManager.Display.SelectionProperty);
+            //ElementList.Add(element);
+
+            //data.SelectionElement = element;
+            //element.data = new SelectionElement.Data(DataController, data);
+
+            //element.GetComponent<ExPanelTile>().InitializeChildElement();
+
+            ////Debugging
+            //GeneralData generalData = (GeneralData)data;
+            //element.name = generalData.DebugName + generalData.Id;
+            ////
+
+            //SetElement(element);
         }
     }
     

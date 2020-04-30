@@ -5,26 +5,26 @@ using System.Linq;
 
 public class SegmentController : MonoBehaviour
 {
-    public bool Loaded { get { return editorController.PathController.editorSection.Loaded; } }
+    public bool Loaded { get { return editorController.PathController.layoutSection.Loaded; } }
 
     public GameObject dataControllerParent;
     
     public bool enableToggle;
 
-    public EditorToggle editorToggle;
+    public ExToggle editorToggle;
 
     public string segmentName;
     public Text header;
 
     public SegmentController[] segmentGroup;
 
-    public EditorElement[] editorElements;
+    public ExElement[] editorElements;
 
     [HideInInspector]
     public EditorController editorController;
 
     public Path Path { get { return editorController.PathController.route.path; } }
-    public Path MainPath { get { return editorController.PathController.editorSection.editorForm.activePath; } }
+    public Path MainPath { get { return editorController.PathController.layoutSection.editorForm.activePath; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 
@@ -71,7 +71,7 @@ public class SegmentController : MonoBehaviour
                 segment.editorToggle.Toggle.isOn  = editorToggle.Toggle.isOn;
         }
 
-        foreach (EditorElement editorElement in editorElements)
+        foreach (ExElement editorElement in editorElements)
             editorElement.GetComponent<IEditorElement>().EnableElement(editorToggle.Toggle.isOn);
     }
 
@@ -84,7 +84,7 @@ public class SegmentController : MonoBehaviour
     {
         editorToggle.EnableElement(enable);
 
-        foreach (EditorElement editorElement in editorElements)
+        foreach (ExElement editorElement in editorElements)
             editorElement.GetComponent<IEditorElement>().EnableElement(enable);
     }
 

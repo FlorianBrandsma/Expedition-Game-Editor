@@ -10,7 +10,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public EditorInputNumber inputField;
+    public ExInputNumber inputField;
 
     public Text heightText, widthText, depthText;
     #endregion

@@ -13,7 +13,9 @@ public class ObjectGraphic : MonoBehaviour, IPoolable
     public Vector3 previewRotation;
     public Vector3 previewScale;
 
-    public PoolManager.PoolType PoolType { get { return PoolManager.PoolType.ObjectGraphic; } }
+    public Transform Transform { get { return GetComponent<Transform>(); } }
+
+    public Enums.ElementType ElementType { get { return Enums.ElementType.ObjectGraphic; } }
 
     public int Id { get; set; }
 

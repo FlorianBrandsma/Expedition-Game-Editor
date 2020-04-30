@@ -50,21 +50,21 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
-                                                                            Enums.ElementType.Button, DisplayManager, 
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
-            ElementList.Add(element);
+            //SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
+            //                                                                Enums.ElementType.Button, DisplayManager, 
+            //                                                                DisplayManager.Display.SelectionType,
+            //                                                                DisplayManager.Display.SelectionProperty);
+            //ElementList.Add(element);
 
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(DataController, data);
+            //data.SelectionElement = element;
+            //element.data = new SelectionElement.Data(DataController, data);
 
-            //Debugging
-            GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.Id;
-            //
+            ////Debugging
+            //GeneralData generalData = (GeneralData)data;
+            //element.name = generalData.DebugName + generalData.Id;
+            ////
 
-            SetElement(element);
+            //SetElement(element);
         }
     }
 

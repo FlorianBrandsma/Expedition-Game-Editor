@@ -12,7 +12,7 @@ public class LanguageAction : MonoBehaviour, IAction
 
     private LanguageManager.Language language;
 
-    Dropdown dropdown;
+    private ExDropdown dropdown;
 
     public void InitializeAction(Path path)
     {
@@ -21,18 +21,18 @@ public class LanguageAction : MonoBehaviour, IAction
 
     public void SetAction(Path path)
     {
-        dropdown = ActionManager.actionManager.AddDropdown(actionProperties);
+        dropdown = ActionManager.instance.AddDropdown(actionProperties);
 
-        dropdown.captionText.text = Enum.GetName(typeof(LanguageManager.Language), LanguageManager.active_language);
+        dropdown.Dropdown.captionText.text = Enum.GetName(typeof(LanguageManager.Language), LanguageManager.active_language);
 
         foreach (var language in Enum.GetValues(typeof(LanguageManager.Language)))
         {
-            dropdown.options.Add(new Dropdown.OptionData(language.ToString()));
+            dropdown.Dropdown.options.Add(new Dropdown.OptionData(language.ToString()));
         }
 
-        dropdown.value = (int)LanguageManager.active_language;
+        dropdown.Dropdown.value = (int)LanguageManager.active_language;
 
-        dropdown.onValueChanged.AddListener(delegate { LanguageManager.SetLanguage(dropdown.value); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { LanguageManager.SetLanguage(dropdown.Dropdown.value); });
     }
 
     public void CloseAction() { }

@@ -112,7 +112,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             var dataType = actionData.data.dataController.DataType;
 
             var route = PathController.route.path.FindLastRoute(dataType);
-            var mainRoute = PathController.editorSection.editorForm.activePath.FindLastRoute(dataType);
+            var mainRoute = PathController.layoutSection.editorForm.activePath.FindLastRoute(dataType);
 
             if (route.GeneralData.Id != mainRoute.GeneralData.Id)
                 actionData.data.dataElement = mainRoute.data.dataElement;
@@ -292,13 +292,13 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     private void SetDropdown(ActionData actionData)
     {
-        Dropdown dropdown = ActionManager.actionManager.AddDropdown(actionProperties);
+        var dropdown = ActionManager.instance.AddDropdown(actionProperties);
 
         SetOptions(dropdown, actionData);
 
-        dropdown.onValueChanged.AddListener(delegate
+        dropdown.Dropdown.onValueChanged.AddListener(delegate
         {
-            InitializePath(actionData.data.dataList[dropdown.value], actionDataList.IndexOf(actionData));
+            InitializePath(actionData.data.dataList[dropdown.Dropdown.value], actionDataList.IndexOf(actionData));
         });
     }
 
@@ -308,12 +308,12 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         var path = PathController.route.path;
 
-        EditorManager.loadType = Enums.LoadType.Reload;
+        RenderManager.loadType = Enums.LoadType.Reload;
 
         for (int i = (index + 1); i < actionDataList.Count; i++)
             GetData(actionDataList[i].data.dataController);
 
-        EditorManager.editorManager.ResetEditor(PathController.route.path);
+        RenderManager.ResetPath(PathController.route.path);
     }
 
     private void GetData(IDataController dataController)
@@ -334,7 +334,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         
         var actionData = FindActionByDataType(dataController.DataType);
 
-        actionData.data.dataList = EditorManager.GetData(dataController, searchProperties);
+        actionData.data.dataList = RenderManager.GetData(dataController, searchProperties);
 
         SelectOption(dataController.DataType);
     }
@@ -415,7 +415,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     }
     #endregion
 
-    private void SetOptions(Dropdown dropdown, ActionData actionData)
+    private void SetOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataType = actionData.data.dataController.DataType;
 
@@ -435,58 +435,58 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         int selectedIndex = actionData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == data.dataElement.Id);
 
-        dropdown.value = selectedIndex;
+        dropdown.Dropdown.value = selectedIndex;
 
-        dropdown.captionText.text = dropdown.options[dropdown.value].text;
+        dropdown.Dropdown.captionText.text = dropdown.Dropdown.options[dropdown.Dropdown.value].text;
     }
 
     #region Dropdown options
-    private void SetChapterOptions(Dropdown dropdown, ActionData actionData)
+    private void SetChapterOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<ChapterDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetPhaseOptions(Dropdown dropdown, ActionData actionData)
+    private void SetPhaseOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<PhaseDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetQuestOptions(Dropdown dropdown, ActionData actionData)
+    private void SetQuestOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<QuestDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetObjectiveOptions(Dropdown dropdown, ActionData actionData)
+    private void SetObjectiveOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<ObjectiveDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetWorldInteractableOptions(Dropdown dropdown, ActionData actionData)
+    private void SetWorldInteractableOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<WorldInteractableDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 
-    private void SetTaskOptions(Dropdown dropdown, ActionData actionData)
+    private void SetTaskOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<TaskDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    private void SetInteractionOptions(Dropdown dropdown, ActionData actionData)
+    private void SetInteractionOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<InteractionDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
-    private void SetRegionOptions(Dropdown dropdown, ActionData actionData)
+    private void SetRegionOptions(ExDropdown dropdown, ActionData actionData)
     {
         var dataElements = actionData.data.dataList.Cast<RegionDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
     #endregion
 
@@ -498,7 +498,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             SelectValidInteraction(actionData);
 
-            PathController.editorSection.editorForm.activePath.ReplaceAllData(actionData.data);
+            PathController.layoutSection.editorForm.activePath.ReplaceAllData(actionData.data);
 
         } else {
 

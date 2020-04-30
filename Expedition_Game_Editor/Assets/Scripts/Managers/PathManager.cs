@@ -13,7 +13,7 @@ public class PathManager
 
     public class Main
     {
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         List<int> source = new List<int>() { 0, 0 };
 
@@ -60,7 +60,7 @@ public class PathManager
         int edit    = 1;
         int open    = 0;
 
-        EditorForm form  = EditorManager.editorManager.forms[0];
+        EditorForm form  = RenderManager.layoutManager.forms[0];
 
         public Structure(SelectionElement selection, Route route) //Combine existing path with new route
         {
@@ -97,7 +97,7 @@ public class PathManager
         Route route;
         SelectionElement selectionElement;
 
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Interaction(SelectionElement selection, Route route)
         {
@@ -133,7 +133,7 @@ public class PathManager
         Path path;
         Route route;
 
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Outcome(SelectionElement selection, Route route)
         {
@@ -181,19 +181,19 @@ public class PathManager
 
         public Path Enter()
         {
-            EditorForm form = EditorManager.editorManager.forms[1];
+            EditorForm form = RenderManager.layoutManager.forms[1];
             return CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
         }
 
         public Path Edit()
         {
-            EditorForm form = EditorManager.editorManager.forms[0];
+            EditorForm form = RenderManager.layoutManager.forms[0];
             return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
         }
 
         public Path Get()
         {
-            EditorForm form = EditorManager.editorManager.forms[2];
+            EditorForm form = RenderManager.layoutManager.forms[2];
             return CreatePath(CreateRoutes(get, route, selection.selectionStatus), form);
         }
     }
@@ -228,13 +228,13 @@ public class PathManager
             //Looks convoluted
             path = selection.DisplayManager.Display.DataController.SegmentController.Path;
 
-            EditorForm form = EditorManager.editorManager.forms[0];
+            EditorForm form = RenderManager.layoutManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
 
         public Path Edit()
         {
-            EditorForm form = EditorManager.editorManager.forms[0];
+            EditorForm form = RenderManager.layoutManager.forms[0];
             return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
         }
 
@@ -267,7 +267,7 @@ public class PathManager
 
         public Path Get()
         {
-            EditorForm form = EditorManager.editorManager.forms[2];
+            EditorForm form = RenderManager.layoutManager.forms[2];
             return CreatePath(CreateRoutes(get, route, selection.selectionStatus), form);
         }
     }
@@ -287,7 +287,7 @@ public class PathManager
         List<int> enter = new List<int>() { 0, 3 };
         List<int> edit  = new List<int>() { 0, 4 };
 
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Region(SelectionElement selection, Route route)
         {
@@ -354,7 +354,7 @@ public class PathManager
 
         int enter = 0;
 
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Atmosphere(SelectionElement selection, Route route) //Combine existing path with new route
         {
@@ -383,7 +383,7 @@ public class PathManager
         Path path;
         Route route;
 
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Terrain(SelectionElement selection, Route route)
         {
@@ -415,7 +415,7 @@ public class PathManager
         SelectionElement selection;
         Path path;
         Route route;
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         int enter = 0;
 
@@ -450,7 +450,7 @@ public class PathManager
     {
         Path path;
         Route route;
-        EditorForm form = EditorManager.editorManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public WorldObject(SelectionElement selection, Route route)
         {
@@ -487,7 +487,7 @@ public class PathManager
 
         public Path Enter()
         {
-            EditorForm form = EditorManager.editorManager.forms[2];
+            EditorForm form = RenderManager.layoutManager.forms[2];
             return CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
         }
     }
@@ -513,7 +513,7 @@ public class PathManager
 
         public Path Get()
         {
-            EditorForm form = EditorManager.editorManager.forms[2];
+            EditorForm form = RenderManager.layoutManager.forms[2];
             return CreatePath(CreateRoutes(controllers, route, selection.selectionStatus), form);
         }
     }
@@ -573,7 +573,7 @@ public class PathManager
 
         newPath.start = path.start;
 
-        EditorManager.loadType = Enums.LoadType.Reload;
+        RenderManager.loadType = Enums.LoadType.Reload;
 
         return newPath;
     }

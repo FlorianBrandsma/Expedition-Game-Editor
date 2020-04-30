@@ -59,43 +59,41 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), MultiGridProperties.elementType);
 
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
+        var prefab = Resources.Load<ExMultiGrid>("UI/" + elementType);
 
-        foreach (IDataElement data in primaryList)
+        foreach (IDataElement dataElement in primaryList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
-                                                                            MultiGridProperties.elementType, DisplayManager, 
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
+            var multiGrid = (ExMultiGrid)PoolManager.SpawnObject(0, prefab);
 
-            ElementList.Add(element);
+            SelectionElementManager.InitializeElement(  multiGrid.Element, ListManager.listParent,
+                                                        DisplayManager,
+                                                        DisplayManager.Display.SelectionType,
+                                                        DisplayManager.Display.SelectionProperty);
 
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(PrimaryDataController, data);
+            ElementList.Add(multiGrid.Element);
+
+            dataElement.SelectionElement = multiGrid.Element;
+            multiGrid.Element.data = new SelectionElement.Data(PrimaryDataController, dataElement);
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
-            //element.name = generalData.DebugName + generalData.id;
+            GeneralData generalData = (GeneralData)dataElement;
+            multiGrid.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(element);
+            SetElement(multiGrid.Element);
         }
     }
 
     private void SetElement(SelectionElement element)
     {
-        RectTransform rect = element.GetComponent<RectTransform>();
-
+        element.RectTransform.sizeDelta = ElementSize;
+        
         int index = PrimaryDataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
-        rect.sizeDelta = ElementSize;
-
-        rect.transform.localPosition = GetElementPosition(index);
+        element.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
 
         element.SetElement();
-
         element.SetOverlay();
     }
 
@@ -146,6 +144,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     
     public void ClearOrganizer()
     {
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

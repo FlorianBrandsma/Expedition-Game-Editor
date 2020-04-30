@@ -10,8 +10,8 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public EditorInputNumber xInputField, yInputField, zInputField;
-    public EditorToggle bindToTile;
+    public ExInputNumber xInputField, yInputField, zInputField;
+    public ExToggle bindToTile;
     #endregion
 
     #region Data Variables
@@ -236,7 +236,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
             case Enums.DataType.WorldObject:    InitializeworldObjectData();    break;
 
-            default: Debug.Log("CASE MISSING"); break;
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
     }
 

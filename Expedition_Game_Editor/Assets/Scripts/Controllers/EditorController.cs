@@ -48,7 +48,7 @@ public class EditorController : MonoBehaviour
 
     public void ResetEditorData()
     {
-        if (EditorManager.loadType == Enums.LoadType.Normal) return;
+        if (RenderManager.loadType == Enums.LoadType.Normal) return;
         
         var data = PathController.DataEditor.Data;
 

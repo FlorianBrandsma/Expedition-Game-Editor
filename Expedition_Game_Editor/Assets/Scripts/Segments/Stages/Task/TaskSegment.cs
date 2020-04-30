@@ -33,7 +33,7 @@ public class TaskSegment : MonoBehaviour, ISegment
         var worldInteractableData = (WorldInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).data.dataElement;
         searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

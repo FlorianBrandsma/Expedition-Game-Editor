@@ -41,7 +41,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
         else
             searchParameters.phaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         if (regionData.Id == 0)
             regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;

@@ -35,7 +35,7 @@ public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Objects };
         searchParameters.isDefault = Convert.ToInt32(false);
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var worldInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableDataElement>().ToList();
         worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableDataList.Add(x));

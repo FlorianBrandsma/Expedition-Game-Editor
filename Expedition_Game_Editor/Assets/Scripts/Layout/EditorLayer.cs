@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class EditorLayer : MonoBehaviour
 {
-    public List<LayoutSection> layoutSections;
+    public List<LayoutAnchors> layoutSections;
 
     public void InitializeAnchors()
     {

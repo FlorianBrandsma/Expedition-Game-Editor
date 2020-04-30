@@ -48,42 +48,40 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), TileProperties.elementType);
 
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/" + elementType);
-        
+        var prefab = Resources.Load<ExTile>("UI/" + elementType);
+
         foreach (IDataElement data in list)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
-                                                                            TileProperties.elementType, DisplayManager, 
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
-            ElementList.Add(element);
+            var tile = (ExTile)PoolManager.SpawnObject(0, prefab);
+            
+            SelectionElementManager.InitializeElement(  tile.Element, ListManager.listParent,
+                                                        DisplayManager,
+                                                        DisplayManager.Display.SelectionType,
+                                                        DisplayManager.Display.SelectionProperty);
+            ElementList.Add(tile.Element);
 
-            data.SelectionElement = element;
-            element.data = new SelectionElement.Data(DataController, data);
+            data.SelectionElement = tile.Element;
+            tile.Element.data = new SelectionElement.Data(DataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
-            element.name = generalData.DebugName + generalData.Id;
+            tile.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(element);
+            SetElement(tile.Element);
         }
     }
 
     private void SetElement(SelectionElement element)
     {
-        RectTransform rect = element.GetComponent<RectTransform>();
+        element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
         int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
-        rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
-
-        rect.transform.localPosition = GetElementPosition(index);
-
+        element.transform.localPosition = GetElementPosition(index);
+        
         element.gameObject.SetActive(true);
 
         element.SetElement();
-
         element.SetOverlay();
     }
 
@@ -141,6 +139,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     
     public void ClearOrganizer()
     {
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

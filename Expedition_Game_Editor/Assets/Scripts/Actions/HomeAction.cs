@@ -9,7 +9,9 @@ public class HomeAction : MonoBehaviour, IAction
     public ActionProperties actionProperties;
 
     public Texture2D icon;
-    
+
+    private ExButton actionButton;
+
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeAction(Path path) { }
@@ -21,17 +23,20 @@ public class HomeAction : MonoBehaviour, IAction
     
     private void InitializeButton()
     {
-        var button = ActionManager.actionManager.AddButton(actionProperties);
+        actionButton = ActionManager.instance.AddButton(actionProperties);
 
-        button.GetComponent<EditorButton>().icon.texture = icon;
+        actionButton.icon.texture = icon;
 
-        button.onClick.AddListener(delegate { InitializePath(new PathManager.Main().Initialize()); });
+        actionButton.Button.onClick.AddListener(delegate { InitializePath(new PathManager.Main().Initialize()); });
     }
 
     public void InitializePath(Path path)
     {
-        EditorManager.editorManager.Render(path);
+        RenderManager.Render(path);
     }
 
-    public void CloseAction() { }
+    public void CloseAction()
+    {
+        actionButton.Button.onClick.RemoveAllListeners();
+    }
 }

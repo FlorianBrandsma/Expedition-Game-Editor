@@ -19,7 +19,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public IDisplay Display { get; set; }
     private CameraProperties cameraProperties;
 
-    public CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
+    public ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
     public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
     public RectTransform cameraParent;
 
@@ -36,11 +36,11 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         Display = cameraProperties;
         this.cameraProperties = cameraProperties;
 
-        switch (cameraProperties.elementType)
+        switch (cameraProperties.OrganizerType)
         {
-            case DisplayManager.Type.None:      organizer = null; break;
-            case DisplayManager.Type.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
-            case DisplayManager.Type.World:     organizer = gameObject.AddComponent<WorldOrganizer>();  break;
+            case DisplayManager.OrganizerType.None:      organizer = null; break;
+            case DisplayManager.OrganizerType.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
+            case DisplayManager.OrganizerType.World:     organizer = gameObject.AddComponent<WorldOrganizer>();  break;
             default: break;
         }
 
@@ -53,7 +53,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         if(overlayManager != null)
             overlayManager.InitializeOverlay(this);
 
-        if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && EditorManager.loadType == Enums.LoadType.Normal)
+        if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && RenderManager.loadType == Enums.LoadType.Normal)
             ResetListPosition();
 
         RenderSettings.fog = enableFog;
@@ -61,10 +61,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     private void InitializeViewportRect()
     {
-        float leftBorder = (30 / EditorManager.UI.rect.width);
+        float leftBorder = (30 / RenderManager.UI.rect.width);
 
         cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
-                            new Vector2((displayRect.rect.width / EditorManager.UI.rect.width) - leftBorder, cam.rect.height));
+                            new Vector2((displayRect.rect.width / RenderManager.UI.rect.width) - leftBorder, cam.rect.height));
     }
 
     public void SetProperties()

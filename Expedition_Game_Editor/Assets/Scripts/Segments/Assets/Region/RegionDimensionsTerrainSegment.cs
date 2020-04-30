@@ -7,7 +7,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
     private RegionDataElement RegionDataElement { get { return (RegionDataElement)DataEditor.Data.dataElement; } }
 
     #region UI
-    public EditorInputNumber sizeInputNumber;
+    public ExInputNumber sizeInputNumber;
     public Text heightText;
     #endregion
 

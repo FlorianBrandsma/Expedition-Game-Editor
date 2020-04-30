@@ -31,7 +31,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
         searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionDataElement>().ToList();
         chapterRegionList.ForEach(x => ChapterEditor.chapterRegionDataList.Add(x));

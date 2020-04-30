@@ -9,9 +9,9 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public IndexSwitch indexSwitch;
+    public ExIndexSwitch indexSwitch;
     public SelectionElement selectionElement;
-    public EditorInputText inputText;
+    public ExInputText inputText;
     public Text idText;
     #endregion
 

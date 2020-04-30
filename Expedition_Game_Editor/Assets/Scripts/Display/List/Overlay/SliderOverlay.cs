@@ -7,12 +7,10 @@ using UnityEngine.EventSystems;
 
 public class SliderOverlay : MonoBehaviour, IOverlay
 {
-    static public List<Slider> horizontalSliderList = new List<Slider>();
-    static public List<Slider> verticalSliderList = new List<Slider>();
-    private List<Slider> sliderListLocal = new List<Slider>();
+    private List<ExSlider> sliderList = new List<ExSlider>();
 
-    private Slider  horizontalSlider,
-                    verticalSlider;
+    private ExSlider horizontalSlider,
+                     verticalSlider;
 
     private RectTransform mainList;
 
@@ -52,7 +50,7 @@ public class SliderOverlay : MonoBehaviour, IOverlay
         {
             verticalSlider = SpawnVerticalSlider();
 
-            sliderListLocal.Add(verticalSlider);
+            sliderList.Add(verticalSlider);
 
             verticalSlider.transform.SetParent(overlayManager.vertical_max, false);
 
@@ -63,7 +61,7 @@ public class SliderOverlay : MonoBehaviour, IOverlay
         {
             horizontalSlider = SpawnHorizontalSlider();
 
-            sliderListLocal.Add(horizontalSlider);
+            sliderList.Add(horizontalSlider);
 
             horizontalSlider.transform.SetParent(overlayManager.horizontal_max, false);
 
@@ -76,9 +74,9 @@ public class SliderOverlay : MonoBehaviour, IOverlay
     public void UpdateOverlay()
     {
         if (verticalSlider != null)
-            verticalSlider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
+            verticalSlider.Slider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().verticalNormalizedPosition, 0, 1);
         if (horizontalSlider != null)
-            horizontalSlider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
+            horizontalSlider.Slider.value = Mathf.Clamp(mainList.GetComponent<ScrollRect>().horizontalNormalizedPosition, 0, 1);
     }
 
     public void CloseOverlay()
@@ -88,39 +86,30 @@ public class SliderOverlay : MonoBehaviour, IOverlay
         DestroyImmediate(this);
     }
 
-    public Slider SpawnHorizontalSlider()
+    public ExSlider SpawnHorizontalSlider()
     {
-        foreach(Slider slider in horizontalSliderList)
-        {
-            if (!slider.gameObject.activeInHierarchy)
-                return slider;      
-        }
+        var prefab = Resources.Load<ExSlider>("UI/SliderHorizontal");
+        var slider = (ExSlider)PoolManager.SpawnObject(0, prefab);
 
-        Slider newSlider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Horizontal"));
+        slider.gameObject.SetActive(true);
 
-        horizontalSliderList.Add(newSlider);
-
-        return newSlider;
+        return slider;
     }
 
-    public Slider SpawnVerticalSlider()
+    public ExSlider SpawnVerticalSlider()
     {
-        foreach (Slider slider in verticalSliderList)
-        {
-            if (!slider.gameObject.activeInHierarchy)
-                return slider;
-        }
+        var prefab = Resources.Load<ExSlider>("UI/SliderVertical");
+        var slider = (ExSlider)PoolManager.SpawnObject(0, prefab);
 
-        Slider newSlider = Instantiate(Resources.Load<Slider>("Editor/Overlay/Slider_Vertical"));
+        slider.gameObject.SetActive(true);
 
-        verticalSliderList.Add(newSlider);
-
-        return newSlider;
+        return slider;
     }
 
     public void ResetSliders()
     {
-        foreach (Slider slider in sliderListLocal)
-            slider.gameObject.SetActive(false);
+        sliderList.ForEach(x => PoolManager.ClosePoolObject(x));
+        
+        sliderList.Clear();
     }
 }

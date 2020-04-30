@@ -9,7 +9,7 @@ public class ButtonActionManager : MonoBehaviour
 
     public Toggle   trash_toggle;
 
-    public void InitializeButtons(EditorSection section)
+    public void InitializeButtons(LayoutSection section)
     {
         if (apply_button != null)
             apply_button.onClick.AddListener(delegate { section.ApplyChanges(); });

@@ -5,9 +5,9 @@
 public class ButtonProperties : MonoBehaviour, IProperties
 {
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.Button;
+        return DisplayManager.OrganizerType.Button;
     }
     #endregion
 }

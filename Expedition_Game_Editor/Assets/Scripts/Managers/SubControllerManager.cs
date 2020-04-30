@@ -16,15 +16,12 @@ public class SubControllerManager : MonoBehaviour
 
     private PathController pathController;
 
-    private List<EditorTab> tabList = new List<EditorTab>();
-    private List<EditorTab> localTabList = new List<EditorTab>();
+    private List<ExTab> tabList = new List<ExTab>();
+    private ExHeader header;
 
     private PathController[] controllers;
-
-    private RectTransform header;
-
+    
     public Axis axis;
-    private string axis_name;
 
     public void SetTabs(PathController pathController, Path main_path)
     {
@@ -38,41 +35,43 @@ public class SubControllerManager : MonoBehaviour
         //Spawn tabs if more than 1 controller is to be displayed
         //Otherwise only show a basic header
 
-        if(controllers.Length > 1)
+        if (controllers.Length > 1)
         {
-            axis_name = Enum.GetName(typeof(Axis), axis);
+            var prefab = Resources.Load<ExTab>("UI/Tab" + Enum.GetName(typeof(Axis), axis));
 
             for (int i = 0; i < controllers.Length; i++)
             {
-                EditorTab newTab = SpawnTab();
-                localTabList.Add(newTab);
+                var newTab = (ExTab)PoolManager.SpawnObject(0, prefab);
+                tabList.Add(newTab);
 
+                newTab.transform.SetParent(transform, false);
                 SetAnchors(i, controllers.Length);
-
-                //controllers[i].route = pathController.route;
-
+                
                 newTab.label.text = controllers[i].name;
-                 
-                int index = i;
-                newTab.GetComponent<Button>().onClick.AddListener(delegate { InitializePath(index); });
+
+                var tempIndex = i; //Required for the delegate
+                newTab.GetComponent<Button>().onClick.AddListener(delegate { InitializePath(tempIndex); });
 
                 newTab.gameObject.SetActive(true);
             }
 
             SelectTab(main_path.Trim(pathController.step + 1).route[pathController.step].controller);
 
-        } else if(controllers.Length == 1) { 
+        } else if(controllers.Length == 1) {
 
             //Only optimized for horizontal
             //No cases where it's required vertically as of 01/01/2019
 
-            if (header == null)
-                header = SpawnHeader();
+            var prefab = Resources.Load<ExHeader>("UI/Header");
+            header = (ExHeader)PoolManager.SpawnObject(0, prefab);
 
-            header.GetComponentInChildren<Text>().text = controllers[0].name;
+            header.transform.SetParent(transform, false);
+            header.transform.localPosition = Vector2.zero;
 
-            header.localPosition = Vector2.zero;
+            header.RectTransform.sizeDelta = new Vector2(-20, header.RectTransform.sizeDelta.y);
 
+            header.label.text = controllers[0].name;
+            
             header.gameObject.SetActive(true);   
         } 
     }
@@ -84,16 +83,16 @@ public class SubControllerManager : MonoBehaviour
 
     private void SetAnchors(int index, int tabs)
     {
-        EditorTab new_tab = localTabList[index].GetComponent<EditorTab>();
-        RectTransform rect = new_tab.GetComponent<RectTransform>();
-
-        if(axis == Axis.Horizontal)
+        ExTab tab = tabList[index].GetComponent<ExTab>();
+        RectTransform rect = tab.GetComponent<RectTransform>();
+        
+        if (axis == Axis.Horizontal)
         {
             rect.anchorMin = new Vector2(index * (1f / tabs), 0);
             rect.anchorMax = new Vector2((index + 1) * (1f / tabs), 1);
 
-            rect.offsetMin = new Vector2(-1, rect.offsetMin.y);
-            rect.offsetMax = new Vector2(1, rect.offsetMax.y);
+            rect.offsetMin = new Vector2(-1, 0);
+            rect.offsetMax = new Vector2(1, 0);
         }     
 
         if(axis == Axis.Vertical)
@@ -104,7 +103,7 @@ public class SubControllerManager : MonoBehaviour
             rect.offsetMin = new Vector2(rect.offsetMin.x, -1);
             rect.offsetMax = new Vector2(rect.offsetMax.x, 1);
 
-            ScaleLabel(rect, new_tab.label_rect);
+            ScaleLabel(rect, tab.LabelRect);
         }
     }
 
@@ -112,57 +111,35 @@ public class SubControllerManager : MonoBehaviour
     {
         pathController.route.path.Add(selectedTab);
 
-        EditorManager.editorManager.Render(pathController.route.path);
+        RenderManager.Render(pathController.route.path);
     }
 
     private void SelectTab(int selectedTab)
     {
-        for (int tab = 0; tab < localTabList.Count; tab++) 
+        for (int i = 0; i < tabList.Count; i++) 
         {
-            if (tab == selectedTab)
-                localTabList[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/UI/" + axis_name + "_Tab_A");
-            else
-                localTabList[tab].GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/UI/" + axis_name + "_Tab_O");
+            var tab = tabList[i];
+            tab.Image.sprite = i == selectedTab ? tab.tabActive : tab.tabInactive;
         }
-    }
-
-    private EditorTab SpawnTab()
-    {
-        foreach(EditorTab tab in tabList)
-        {
-            if (!tab.gameObject.activeInHierarchy)
-                return tab;
-        }
-
-        EditorTab newTab = Instantiate(Resources.Load<EditorTab>("UI/Tab_" + axis_name));
-        newTab.transform.SetParent(transform, false);
-        tabList.Add(newTab);
-
-        return newTab;
-    }
-
-    private RectTransform SpawnHeader()
-    {
-        RectTransform newHeader = Instantiate(Resources.Load<RectTransform>("UI/EditorHeader"));
-        newHeader.transform.SetParent(transform, false);
-
-        return newHeader;
     }
 
     public void CloseTabs()
     {
-        for (int i = 0; i < localTabList.Count; i++)
+        for (int i = 0; i < tabList.Count; i++)
         {
-            localTabList[i].GetComponent<Button>().onClick.RemoveAllListeners();
-            localTabList[i].gameObject.SetActive(false);
+            var tab = tabList[i];
+            PoolManager.ClosePoolObject(tab);
 
             controllers[i].gameObject.SetActive(false);
         }
 
-        localTabList.Clear();
+        tabList.Clear();
 
         if(header != null)
-            header.gameObject.SetActive(false);
+        {
+            PoolManager.ClosePoolObject(header);
+            header = null;
+        }
 
         gameObject.SetActive(false);
     }

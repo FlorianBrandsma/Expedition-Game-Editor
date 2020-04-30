@@ -32,7 +32,7 @@ public class WorldSegment : MonoBehaviour, ISegment
         if (objectiveRoute == null)
             searchParameters.objectiveId = new List<int>() { 0 };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         regionDataElement.worldDataElement = SegmentController.DataController.DataList.Cast<WorldDataElement>().FirstOrDefault();
     }

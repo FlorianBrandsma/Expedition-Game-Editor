@@ -56,8 +56,7 @@ public class SelectionElement : MonoBehaviour
     public Enums.SelectionStatus selectionStatus;
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
-    public Enums.ElementType elementType;
-
+    
     public Enums.ElementStatus elementStatus;
     public Color enabledColor;
     public Color disabledColor;
@@ -76,6 +75,7 @@ public class SelectionElement : MonoBehaviour
 
     public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
     
+    public IPoolable Poolable               { get { return GetComponent<IPoolable>(); } }
     public IElement Element                 { get { return GetComponent<IElement>(); } }
     public IEditor DataEditor               { get; set; }
     public IDisplayManager DisplayManager   { get; set; }
@@ -109,6 +109,7 @@ public class SelectionElement : MonoBehaviour
         //Can be overwritten
         data.dataController = DisplayManager.Display.DataController;
 
+
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
 
@@ -137,8 +138,10 @@ public class SelectionElement : MonoBehaviour
 
     private void UpdateStatusIcon()
     {
-        if (glow.GetComponent<EditorStatusIcon>() != null)
-            glow.GetComponent<EditorStatusIcon>().UpdatePosition();
+        if (glow == null) return;
+
+        if (glow.GetComponent<ExStatusIcon>() != null)
+            glow.GetComponent<ExStatusIcon>().UpdatePosition();
     }
 
     public void SetOverlay()
@@ -155,9 +158,9 @@ public class SelectionElement : MonoBehaviour
     private void SetSelection()
     {
         if (selectionStatus == Enums.SelectionStatus.None) return;
-
+        
         if (selectionStatus == data.dataElement.SelectionStatus || data.dataElement.SelectionStatus == Enums.SelectionStatus.Both)
-            glow.SetActive(true);  
+            glow.SetActive(true);
     }
 
     public void SetStatus()
@@ -227,7 +230,7 @@ public class SelectionElement : MonoBehaviour
                 
                 var dataElement = data.dataElement;
 
-                EditorManager.editorManager.Render(editorPath.path);
+                RenderManager.Render(editorPath.path);
                 
                 SelectionManager.SelectSearch(dataElement);
 
@@ -238,15 +241,15 @@ public class SelectionElement : MonoBehaviour
                 break;
 
             case SelectionManager.Property.Enter:
-                EditorManager.editorManager.Render(editorPath.path);
+                RenderManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Edit:
-                EditorManager.editorManager.Render(editorPath.path);
+                RenderManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Open:
-                EditorManager.editorManager.Render(editorPath.path);
+                RenderManager.Render(editorPath.path);
                 break;
 
             case SelectionManager.Property.Toggle:
@@ -271,7 +274,7 @@ public class SelectionElement : MonoBehaviour
             if (data.dataController.SearchProperties.autoUpdate)
                 data.dataElement.UpdateSearch();
         }
-
+        
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
     }
 
@@ -281,7 +284,8 @@ public class SelectionElement : MonoBehaviour
 
         ResetStatus();
 
-        GetComponent<IElement>().CloseElement();
+        Element.CloseElement();
+        
         OnSelection.RemoveAllListeners();
         
         gameObject.SetActive(false);

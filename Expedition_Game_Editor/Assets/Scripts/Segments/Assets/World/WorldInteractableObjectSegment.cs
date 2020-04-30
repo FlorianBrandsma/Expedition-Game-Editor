@@ -27,10 +27,10 @@ public class WorldInteractableObjectSegment : MonoBehaviour, ISegment
 
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Objects };
 
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
+        searchParameters.regionId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
         searchParameters.objectiveId = new List<int>() { 0 };
         
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

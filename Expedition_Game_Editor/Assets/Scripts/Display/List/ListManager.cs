@@ -33,12 +33,12 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         switch(listProperties.elementType)
         {
-            case DisplayManager.Type.None:      organizer = null;                                           break;
-            case DisplayManager.Type.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
-            case DisplayManager.Type.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();       break;
-            case DisplayManager.Type.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
-            case DisplayManager.Type.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
-            case DisplayManager.Type.MultiGrid: organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
+            case DisplayManager.OrganizerType.None:      organizer = null;                                           break;
+            case DisplayManager.OrganizerType.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
+            case DisplayManager.OrganizerType.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();       break;
+            case DisplayManager.OrganizerType.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
+            case DisplayManager.OrganizerType.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
+            case DisplayManager.OrganizerType.MultiGrid: organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
             default: Debug.Log("CASE MISSING: " + listProperties.elementType);                              break;
         }
 

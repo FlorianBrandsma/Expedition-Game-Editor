@@ -6,7 +6,7 @@ public class ListProperties : MonoBehaviour, IDisplay
     public Enums.DisplayType DisplayType { get { return Enums.DisplayType.List; } }
 
     [HideInInspector]
-    public DisplayManager.Type elementType;
+    public DisplayManager.OrganizerType elementType;
 
     public ListManager listManager;
 
@@ -56,7 +56,7 @@ public class ListProperties : MonoBehaviour, IDisplay
     private void InitializeProperties()
     {
         if (GetComponent<IProperties>() != null)
-            elementType = GetComponent<IProperties>().Type();
+            elementType = GetComponent<IProperties>().OrganizerType();
 
         listManager.InitializeList(this);
     }

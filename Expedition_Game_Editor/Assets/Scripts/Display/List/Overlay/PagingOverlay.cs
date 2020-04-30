@@ -7,8 +7,7 @@ using UnityEngine.EventSystems;
 
 public class PagingOverlay : MonoBehaviour, IOverlay
 {
-    static public List<Button> buttonList = new List<Button>();
-    private List<Button> buttonListLocal = new List<Button>();
+    private List<ExButton> buttonList = new List<ExButton>();
 
     private Color activeColor   = Color.white;
     private Color inactiveColor = Color.gray;
@@ -57,8 +56,8 @@ public class PagingOverlay : MonoBehaviour, IOverlay
 
             for (int i = 0; i < pageCount; i++)
             {
-                Button button = SpawnButton();
-                buttonListLocal.Add(button);
+                var button = SpawnButton();
+                buttonList.Add(button);
 
                 button.GetComponent<RectTransform>().sizeDelta = new Vector2(buttonSize, buttonSize);
 
@@ -69,8 +68,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
                 button.transform.localPosition = new Vector2(offset + ((buttonSize * i) * 2), 0);
 
                 int index = i;
-
-                button.onClick.AddListener(delegate { SelectPage(index); });
+                button.Button.onClick.AddListener(delegate { SelectPage(index); });
 
                 button.gameObject.SetActive(true);
             }
@@ -83,14 +81,14 @@ public class PagingOverlay : MonoBehaviour, IOverlay
         ResetSelection();
         selectedPage = page;
 
-        buttonListLocal[selectedPage].GetComponent<RawImage>().color = activeColor;
+        buttonList[selectedPage].icon.color = activeColor;
 
         OpenPage();
     }
 
     void ResetSelection()
     {
-        buttonListLocal[selectedPage].GetComponent<RawImage>().color = inactiveColor;
+        buttonList[selectedPage].icon.color = inactiveColor;
     }
 
     void OpenPage()
@@ -108,10 +106,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
         organizer.ResetData(dataController.DataList.GetRange(start, count));
     }
      
-    public void UpdateOverlay()
-    {
-
-    }
+    public void UpdateOverlay() { }
 
     public void CloseOverlay()
     {
@@ -120,28 +115,24 @@ public class PagingOverlay : MonoBehaviour, IOverlay
         DestroyImmediate(this);
     }
 
-    public Button SpawnButton()
+    public ExButton SpawnButton()
     {
-        foreach (Button button in buttonList)
-        {
-            if (!button.gameObject.activeInHierarchy)
-                return button;
-        }
+        var prefab = Resources.Load<ExButton>("UI/PagingButton");
+        var button = (ExButton)PoolManager.SpawnObject(0, prefab);
 
-        Button newButton = Instantiate(Resources.Load<Button>("Editor/Overlay/Slideshow_Button"));
+        button.gameObject.SetActive(true);
 
-        buttonList.Add(newButton);
-
-        return newButton;
+        return button;
     }
 
     public void CloseButtons()
     {
-        foreach (Button button in buttonListLocal)
+        buttonList.ForEach(x => 
         {
-            button.onClick.RemoveAllListeners();
-            button.GetComponent<RawImage>().color = inactiveColor;
-            button.gameObject.SetActive(false);
-        }   
+            x.Button.onClick.RemoveAllListeners();
+            x.icon.color = inactiveColor;
+
+            PoolManager.ClosePoolObject(x);
+        });  
     }
 }

@@ -34,7 +34,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             if (objectGraphicData.Id == 1) continue;
 
             var prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
-            var graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.Id, prefab.PoolType, prefab);
+            var graphic = (ObjectGraphic)PoolManager.SpawnObject(objectGraphicData.Id, prefab);
 
             poolObjects.Add(graphic);
 
@@ -87,10 +87,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         poolObjects.Clear();
     }
 
-    private void CloseCamera()
-    {
-
-    }
+    private void CloseCamera() { }
 
     public void ClearOrganizer()
     {

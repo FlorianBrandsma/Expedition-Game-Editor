@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c91b665768a0f94aa6b2af05148d171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementType: 7
   label: {fileID: 114000012904829640}
   icon: {fileID: 114000013358529708}
 --- !u!114 &114000011852793538
@@ -343,7 +344,6 @@ MonoBehaviour:
   selectionStatus: 0
   selectionType: 0
   selectionProperty: 0
-  elementType: 0
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}

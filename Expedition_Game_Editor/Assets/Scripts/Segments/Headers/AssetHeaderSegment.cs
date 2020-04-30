@@ -10,7 +10,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public IndexSwitch indexSwitch;
+    public ExIndexSwitch indexSwitch;
     public SelectionElement selectionElement;
     public InputField inputField;
     public Text idText;

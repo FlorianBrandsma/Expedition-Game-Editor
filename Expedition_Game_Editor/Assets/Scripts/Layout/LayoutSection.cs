@@ -1,80 +1,169 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 public class LayoutSection : MonoBehaviour
 {
-    public enum Anchor
+    [HideInInspector]
+    public bool active;
+
+    [HideInInspector]
+    public EditorForm editorForm;
+
+    [HideInInspector]
+    public EditorController displayTargetController;
+
+    [HideInInspector]
+    public EditorController targetController;
+
+    [HideInInspector]
+    public EditorController previousTargetController;
+
+    [HideInInspector]
+    public GeneralData previousTargetControllerData;
+
+    [HideInInspector]
+    public LayoutDependency targetView;
+
+    public bool Loaded
     {
-        None,
-        Top,
-        Bottom,
-        Left,
-        Right,
+        get
+        {
+            if (!editorForm.loaded)
+                return false;
+
+            if (RenderManager.loadType == Enums.LoadType.Reload)
+                return false;
+
+            if (targetController != previousTargetController)
+                return false;
+
+            if (previousTargetControllerData != null)
+                return targetController.PathController.route.GeneralData.Equals(previousTargetControllerData);
+
+            return false;
+        }
     }
 
-    public RectTransform parent_rect;
+    public IEditor dataEditor;
 
-    public LayoutSection sibling_layout;
-
-    public Anchor anchor;
-
-    private RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
-
-    private Vector2 initialAnchorMin, initialAnchorMax;
-
-    private Vector2 anchorMin, anchorMax;
+    //Previous data editor
+    public IEditor previousEditor;
+    public IDataElement previousDataSource;
+    public List<IDataElement> previousDataElements;
+    //
     
-    public void InitializeAnchors()
-    {
-        initialAnchorMin = new Vector2(anchor == Anchor.Right ? 1 : 0, 0);
-        initialAnchorMax = new Vector2(anchor == Anchor.Left ? 0 : 1, 1);
+    public ButtonActionManager buttonActionManager;
 
-        anchorMin = initialAnchorMin;
-        anchorMax = initialAnchorMax;
+    public void InitializeSection(EditorForm editorForm)
+    {
+        this.editorForm = editorForm;
+
+        if (buttonActionManager != null)
+            buttonActionManager.InitializeButtons(this);
     }
 
-    public void InitializeLayout(Vector2 anchorMin, Vector2 anchorMax)
+    public void InitializeLayout()
     {
-        this.anchorMin = anchorMin;
-        this.anchorMax = anchorMax;
+        if (targetView == null) return;
+
+        targetView.InitializeDependency();       
     }
-    
+
     public void SetLayout()
     {
-        if (!gameObject.activeInHierarchy) return;
+        if (targetView == null) return;
 
-        if (sibling_layout != null)
+        //Adjust size of dependency content based on active headers and footers
+        targetView.SetDependency(); 
+    }
+
+    public void Activate()
+    {
+        active = true;
+    }
+
+    public void OpenEditor()
+    {
+        if (targetController == null) return;
+
+        displayTargetController = targetController;
+
+        displayTargetController.OpenSegments();
+
+        SetActionButtons();
+    }
+
+    public void SetActionButtons()
+    {
+        if (dataEditor == null) return;
+
+        if (buttonActionManager != null && dataEditor != null)
+            buttonActionManager.SetButtons(dataEditor.Changed());
+    }
+
+    public void ClosePath()
+    {
+        if (targetController == null) return;
+
+        if (buttonActionManager != null)
+            buttonActionManager.CloseButtons();
+
+        previousTargetController = targetController;
+        previousTargetControllerData = (GeneralData)targetController.PathController.route.data.dataElement;
+        
+        targetController = null;
+
+        active = false;
+    }
+
+    public void CloseLayoutDependencies()
+    {
+        if (targetView == null) return;
+        
+        targetView.CloseDependency();
+        
+        targetView = null;
+    }
+
+    public void CloseEditorSegments()
+    {
+        if (displayTargetController == null) return;
+
+        previousTargetController = displayTargetController;
+        previousTargetControllerData = (GeneralData)displayTargetController.PathController.route.data.dataElement;
+
+        displayTargetController.CloseSegments();
+    }
+
+    public void ApplyChanges()
+    {
+        if(dataEditor != null)
+            dataEditor.ApplyChanges();
+    }
+
+    public void CancelEdit()
+    {
+        if (dataEditor.Loaded)
+            dataEditor.CancelEdit();
+        
+        if (previousDataElements != null)
         {
-            //anchorMin = new Vector2(RectTransform.anchorMin.x, RectTransform.anchorMin.y);
-            anchorMax = new Vector2(anchor == Anchor.Left ? sibling_layout.anchorMin.x : anchorMax.x, anchorMax.y);
+            previousDataElements.ForEach(x => x.ClearChanges());
+
+            previousDataElements.Where(x => x.SelectionElement != null && x.SelectionElement.gameObject.activeInHierarchy).ToList()
+                                .ForEach(x => x.SelectionElement.UpdateElement());
         }
-
-        RectTransform.anchorMin = new Vector2(ScaledWidth(anchorMin.x), anchorMin.y);
-        RectTransform.anchorMax = new Vector2(ScaledWidth(anchorMax.x), anchorMax.y);
+        
+        if (!active) dataEditor = null;
     }
 
-    private float ScaledWidth(float anchor)
+    public void CloseEditor()
     {
-        var UISize = EditorManager.UI.rect.size;
-        var parentSize = parent_rect.rect.size;
-
-        return FixedAnchor((parentSize.x - (UISize.x - (UISize.x * anchor))) / parentSize.x);
-    }
-
-    float FixedAnchor(float anchor)
-    {
-        if (anchor < 0)
-            return 0;
-
-        if (anchor > 1)
-            return 1;
-
-        return anchor;
-    }
-
-    public void CloseSection()
-    {
-        anchorMin = initialAnchorMin;
-        anchorMax = initialAnchorMax;
+        RenderManager.PreviousPath();
     }
 }

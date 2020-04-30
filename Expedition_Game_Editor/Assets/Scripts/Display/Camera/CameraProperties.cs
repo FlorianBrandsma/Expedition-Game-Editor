@@ -4,9 +4,8 @@ using System.Collections;
 public class CameraProperties : MonoBehaviour, IDisplay
 {
     public Enums.DisplayType DisplayType { get { return Enums.DisplayType.Camera; } }
-
-    [HideInInspector]
-    public DisplayManager.Type elementType;
+    
+    public DisplayManager.OrganizerType OrganizerType { get; set; }
 
     public CameraManager cameraManager;
 
@@ -44,7 +43,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     private void InitializeProperties()
     {
-        elementType = GetComponent<IProperties>().Type();
+        OrganizerType = Properties.OrganizerType();
 
         cameraManager.InitializeCamera(this);
     }

@@ -3,5 +3,5 @@ using System.Collections;
 
 public interface IProperties
 {
-    DisplayManager.Type Type();
+    DisplayManager.OrganizerType OrganizerType();
 }

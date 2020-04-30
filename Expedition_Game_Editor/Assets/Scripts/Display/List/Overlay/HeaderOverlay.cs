@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class HeaderOverlay : MonoBehaviour, IOverlay
 {
-    static public List<Text> textList = new List<Text>();
-    private Text headerText;
+    private ExText headerText;
 
     private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
 
@@ -18,10 +17,13 @@ public class HeaderOverlay : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer)
     {
-        headerText = SpawnText();
+        var prefab = Resources.Load<ExText>("UI/Text");
+        headerText = (ExText)PoolManager.SpawnObject(0, prefab);
 
         headerText.transform.SetParent(overlayManager.horizontal_min, false);
         headerText.transform.localPosition = new Vector2(0, 0);
+
+        headerText.gameObject.SetActive(true);
     }
 
     public void UpdateOverlay() { }
@@ -33,30 +35,15 @@ public class HeaderOverlay : MonoBehaviour, IOverlay
 
     private void SetText()
     {
-        headerText.text = listProperties.headerText;
-    }
+        headerText.Text.text = listProperties.headerText;
 
-    private Text SpawnText()
-    {
-        foreach (Text element in textList)
-        {
-            if (!element.gameObject.activeInHierarchy)
-            {
-                element.gameObject.SetActive(true);
-                return element;
-            }
-        }
-
-        Text newText = Instantiate(Resources.Load<Text>("UI/Text"));
-        textList.Add(newText);
-
-        return newText;
+        headerText.RectTransform.anchorMin = new Vector2(0, 0);
+        headerText.RectTransform.anchorMax = new Vector2(1, 1);
     }
 
     public void ResetText()
     {
-        foreach (Text element in textList)
-            element.gameObject.SetActive(false);
+        PoolManager.ClosePoolObject(headerText);
     }
 
     public void CloseOverlay()

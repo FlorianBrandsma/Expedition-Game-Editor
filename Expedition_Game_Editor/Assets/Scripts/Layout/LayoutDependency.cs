@@ -35,8 +35,8 @@ public class LayoutDependency : MonoBehaviour
         if (GetComponent<LayoutContent>() != null)
             GetComponent<LayoutContent>().CloseContent();
 
-        if (GetComponent<LayoutSection>() != null)
-            GetComponent<LayoutSection>().CloseSection();
+        if (GetComponent<LayoutAnchors>() != null)
+            GetComponent<LayoutAnchors>().CloseSection();
 
         if (layoutDependency != null)
             layoutDependency.CloseDependency();

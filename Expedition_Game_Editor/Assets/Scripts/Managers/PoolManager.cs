@@ -3,24 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-static public class PoolManager
+public class PoolManager : MonoBehaviour
 {
-    public enum PoolType
-    {
-        WorldInteractable,
-        ObjectGraphic,
-        Tile
-    }
-
     //e.g. all objectGraphics
     public class Pool
     {
-        public PoolType poolType;
+        public Enums.ElementType elementType;
         public List<ObjectPool> objectPoolList = new List<ObjectPool>();
 
-        public Pool(PoolType poolType)
+        public Pool(Enums.ElementType elementType)
         {
-            this.poolType = poolType;
+            this.elementType = elementType;
         }
 
         public void Add(IPoolable poolObject)
@@ -44,16 +37,23 @@ static public class PoolManager
         }
     }
 
+    static public PoolManager instance;
+
     static public List<Pool> poolList = new List<Pool>();
 
-    //e.g. an objectGraphic with id 1
-    static public IPoolable SpawnObject(int id, PoolType poolType, IPoolable prefab) //e.g. an objectGraphic with id 1
+    private void Awake()
     {
-        var poolList = PoolManager.poolList.Where(x => x.poolType == poolType).FirstOrDefault();
+        instance = this;
+    }
 
-        if(poolList != null)
+    //e.g. an objectGraphic with id 1
+    static public IPoolable SpawnObject(int id, IPoolable prefab) //e.g. an objectGraphic with id 1
+    {
+        var filteredPoolList = poolList.Where(x => x.elementType == prefab.ElementType).FirstOrDefault();
+        
+        if(filteredPoolList != null)
         {
-            var objectPool = poolList.objectPoolList.Where(x => x.id == id).FirstOrDefault();
+            var objectPool = filteredPoolList.objectPoolList.Where(x => x.id == id).FirstOrDefault();
 
             if(objectPool != null)
             {
@@ -65,6 +65,8 @@ static public class PoolManager
         }
 
         var poolObject = prefab.Instantiate();
+        poolObject.Transform.gameObject.AddComponent<GlobalComponent>();
+
         poolObject.Id = id;
 
         Add(poolObject);
@@ -74,9 +76,16 @@ static public class PoolManager
 
     static public void Add(IPoolable poolObject)
     {
-        if (!poolList.Any(x => x.poolType == poolObject.PoolType))
-            poolList.Add(new Pool(poolObject.PoolType));
+        if (!poolList.Any(x => x.elementType == poolObject.ElementType))
+            poolList.Add(new Pool(poolObject.ElementType));
 
-        poolList.Where(x => x.poolType == poolObject.PoolType).FirstOrDefault().Add(poolObject);
+        poolList.Where(x => x.elementType == poolObject.ElementType).FirstOrDefault().Add(poolObject);
+    }
+
+    static public void ClosePoolObject(IPoolable poolable)
+    {
+        poolable.ClosePoolable();
+        
+        poolable.Transform.SetParent(instance.transform, false);
     }
 }

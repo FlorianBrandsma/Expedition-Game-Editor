@@ -22,9 +22,9 @@ public class WorldObjectSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldObject);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
-        searchParameters.regionId = new List<int>() { EditorManager.editorManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
+        searchParameters.regionId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

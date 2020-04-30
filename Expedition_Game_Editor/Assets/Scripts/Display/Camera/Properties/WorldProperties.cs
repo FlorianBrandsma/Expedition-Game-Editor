@@ -4,9 +4,9 @@ using System.Collections;
 public class WorldProperties : MonoBehaviour, IProperties
 {
     #region IProperties
-    public DisplayManager.Type Type()
+    public DisplayManager.OrganizerType OrganizerType()
     {
-        return DisplayManager.Type.World;
+        return DisplayManager.OrganizerType.World;
     }
 
     public SelectionManager.Property SelectionProperty

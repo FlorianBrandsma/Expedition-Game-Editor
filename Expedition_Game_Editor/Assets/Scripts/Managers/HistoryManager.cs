@@ -48,7 +48,7 @@ public class HistoryManager
         }
     }
 
-    public void PreviousEditor()
+    public void PreviousPath()
     {
         if(history.Count > 1)
         {
@@ -72,8 +72,8 @@ public class HistoryManager
 
     public void InitializePath()
     {
-        EditorManager.loadType = Enums.LoadType.Return;
+        RenderManager.loadType = Enums.LoadType.Return;
 
-        EditorManager.editorManager.ResetEditor(history[history.Count - 1].path);
+        RenderManager.ResetPath(history[history.Count - 1].path);
     }
 }

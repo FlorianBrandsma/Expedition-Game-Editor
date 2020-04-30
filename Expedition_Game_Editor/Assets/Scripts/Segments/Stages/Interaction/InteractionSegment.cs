@@ -28,7 +28,7 @@ public class InteractionSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
         searchParameters.taskId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Task).GeneralData.Id };
 
-        SegmentController.DataController.DataList = EditorManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
     public void OpenSegment()

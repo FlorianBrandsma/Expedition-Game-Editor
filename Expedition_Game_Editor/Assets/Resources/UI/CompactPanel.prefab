@@ -835,7 +835,6 @@ MonoBehaviour:
   selectionStatus: 2
   selectionType: 1
   selectionProperty: 0
-  elementType: 0
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
@@ -862,6 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c91b665768a0f94aa6b2af05148d171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementType: 0
   label: {fileID: 0}
   icon: {fileID: 114000010474843732}
 --- !u!1 &1000014226526798
@@ -976,7 +976,6 @@ MonoBehaviour:
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
-  elementType: 1
   elementStatus: 0
   enabledColor: {r: 0.86274517, g: 0.86274517, b: 0.76470596, a: 1}
   disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
@@ -1003,6 +1002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b2c4885c105df4782bdf0ce79c849d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementType: 1
   iconType: 0
   childProperty: 0
   idText: {fileID: 114000013826848850}

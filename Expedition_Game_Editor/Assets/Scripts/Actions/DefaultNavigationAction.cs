@@ -12,7 +12,7 @@ public class DefaultNavigationAction : MonoBehaviour, IAction
 
     private Route.Data data;
 
-    private Dropdown dropdown;
+    private ExDropdown dropdown;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -27,7 +27,7 @@ public class DefaultNavigationAction : MonoBehaviour, IAction
 
         this.path = path;
 
-        dropdown = ActionManager.actionManager.AddDropdown(actionProperties);
+        dropdown = ActionManager.instance.AddDropdown(actionProperties);
 
         switch (data.dataController.DataType)
         {
@@ -46,64 +46,64 @@ public class DefaultNavigationAction : MonoBehaviour, IAction
 
         int selectedIndex = data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == PathController.route.GeneralData.Id);
 
-        dropdown.value = selectedIndex;
-        dropdown.captionText.text = dropdown.options[selectedIndex].text;
+        dropdown.Dropdown.value = selectedIndex;
+        dropdown.Dropdown.captionText.text = dropdown.Dropdown.options[selectedIndex].text;
 
-        dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Route.Data(data, data.dataList[dropdown.value])); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Route.Data(data, data.dataList[dropdown.Dropdown.value])); });
     }
 
     private void SetChapterOptions()
     {
         var dataElements = data.dataList.Cast<ChapterDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseOptions()
     {
         var dataElements = data.dataList.Cast<PhaseDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestOptions()
     {
         var dataElements = data.dataList.Cast<QuestDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveOptions()
     {
         var dataElements = data.dataList.Cast<ObjectiveDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetWorldInteractableOptions()
     {
         var dataElements = data.dataList.Cast<WorldInteractableDataElement>().ToList();      
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
     }
 
     private void SetTaskOptions()
     {
         var dataElements = data.dataList.Cast<TaskDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetInteractionOptions()
     {
         var dataElements = data.dataList.Cast<InteractionDataElement>().ToList();
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetTerrainOptions()
     {
         var dataElements = data.dataList.Cast<TerrainDataElement>().ToList();
 
-        dataElements.ForEach(x => dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     public void InitializePath(Path path, Route.Data data)
     {
-        EditorManager.editorManager.Render(PathManager.ReloadPath(path, data));
+        RenderManager.Render(PathManager.ReloadPath(path, data));
     }
 
     public void CloseAction() { }

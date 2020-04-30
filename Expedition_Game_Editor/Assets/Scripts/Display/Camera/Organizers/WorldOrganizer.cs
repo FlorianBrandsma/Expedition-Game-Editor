@@ -40,7 +40,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
     
     public List<SelectionElement> elementList = new List<SelectionElement>();
 
-    private CustomScrollRect ScrollRect { get { return GetComponent<CustomScrollRect>(); } }
+    private ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
 
     private bool allowSelection = true;
     private bool dataSet;
@@ -103,7 +103,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
     private void GetSelectedElement(Path path, Enums.DataType dataType)
     {
         //Get selected elements from all paths
-        var paths = EditorManager.editorManager.forms.Select(x => x.activePath).ToList();
+        var paths = RenderManager.layoutManager.forms.Select(x => x.activePath).ToList();
         var routes = paths.Select(x => x.FindLastRoute(dataType)).Where(x => x != null).ToList();
         
         if (routes == null) return;
@@ -336,10 +336,12 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
             {
                 Tile prefab = Resources.Load<Tile>("Objects/Tile/" + worldData.tileSetName + "/" + terrainTileData.TileId);
 
-                Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.TileId, prefab.PoolType, prefab);
+                Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.TileId, prefab);
                 tileList.Add(tile);
 
-                tile.transform.SetParent(CameraManager.content.transform, false);
+                tile.gameObject.SetActive(true);
+
+                tile.transform.SetParent(CameraManager.content, false);
                 tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
                 
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
@@ -351,8 +353,6 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
                                                                                                          .Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
                 worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && !worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
-
-                tile.gameObject.SetActive(true);
             }
         }
     }
@@ -361,28 +361,29 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
     {
         if (dataController.DataList.Count == 0) return;
         
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("World/EditorWorldElement");
+        var prefab = Resources.Load<ExWorldElement>("World/WorldElement");
         
         foreach (IDataElement dataElement in dataController.DataList)
         {
-            SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, CameraManager.content,
-                                                                            Enums.ElementType.WorldElement, DisplayManager, 
-                                                                            DisplayManager.Display.SelectionType,
-                                                                            DisplayManager.Display.SelectionProperty);
+            var worldElement = (ExWorldElement)PoolManager.SpawnObject(0, prefab);
 
-            elementList.Add(element);
+            SelectionElementManager.InitializeElement(  worldElement.Element, CameraManager.content,
+                                                        DisplayManager,
+                                                        DisplayManager.Display.SelectionType,
+                                                        DisplayManager.Display.SelectionProperty);
+            elementList.Add(worldElement.Element);
 
-            dataElement.SelectionElement = element;
-            element.data.dataController = dataController;
-            element.data = new SelectionElement.Data(dataController, dataElement);
-            
+            dataElement.SelectionElement = worldElement.Element;
+            worldElement.Element.data.dataController = dataController;
+            worldElement.Element.data = new SelectionElement.Data(dataController, dataElement);
+
             //Debugging
             GeneralData generalData = (GeneralData)dataElement;
-            element.name = generalData.DebugName + generalData.Id;
+            worldElement.name = generalData.DebugName + generalData.Id;
             //
 
-            SetStatus(element);
-            SetElement(element);
+            SetStatus(worldElement.Element);
+            SetElement(worldElement.Element);
         }
     }
 
@@ -485,11 +486,11 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
         var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconOverlay>();
 
-        if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
-            element.glow = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
-
         if (element.elementStatus == Enums.ElementStatus.Locked)
             element.lockIcon = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
+
+        if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
+            element.glow = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
     }
 
     private void SetElement(SelectionElement element)
@@ -519,11 +520,11 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
     {
         dataSet = false;
 
-        tileList.ForEach(x => x.ClosePoolable());
-
-        SelectionElementManager.CloseElement(elementList);
-        
+        tileList.ForEach(x => PoolManager.ClosePoolObject(x));
         tileList.Clear();
+
+        elementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
+        SelectionElementManager.CloseElement(elementList);
     }
 
     private void CancelSelection()

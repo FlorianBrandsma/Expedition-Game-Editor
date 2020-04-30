@@ -43,7 +43,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public void SetEditor()
     {
-        PathController.editorSection.SetActionButtons();
+        PathController.layoutSection.SetActionButtons();
     }
 
     public bool Changed()

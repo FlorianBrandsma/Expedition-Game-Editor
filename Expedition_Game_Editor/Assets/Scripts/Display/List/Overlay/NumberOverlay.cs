@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class NumberOverlay : MonoBehaviour, IOverlay
 {
-    static public List<Text> numberList = new List<Text>();
-    private List<Text> numberListLocal = new List<Text>();
+    private List<ExText> numberListLocal = new List<ExText>();
 
     private ListManager     listManager;
 
@@ -46,7 +45,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
 
         if(overlayManager.horizontal_min.gameObject.activeInHierarchy)
         {
-            horizontalParent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().ScrollParent();
+            horizontalParent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().scrollParent;
 
             for (int x = 0; x < listSize.x; x++)
                 SetNumbers(overlayManager.horizontal_min, x, -((baseSize.x * 0.5f) * (listSize.x - 1)) + (x * baseSize.x));
@@ -54,7 +53,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
 
         if(overlayManager.vertical_min.gameObject.activeInHierarchy)
         {
-            verticalParent = overlayManager.vertical_min.GetComponent<OverlayBorder>().ScrollParent();
+            verticalParent = overlayManager.vertical_min.GetComponent<OverlayBorder>().scrollParent;
 
             for (int y = 0; y < listSize.y; y++)
                 SetNumbers(overlayManager.vertical_min, y, -(baseSize.y * 0.5f) + (listParent.sizeDelta.y / 2f) - (y * baseSize.y));
@@ -76,40 +75,44 @@ public class NumberOverlay : MonoBehaviour, IOverlay
     {
         OverlayBorder overlayBorder = numberParent.GetComponent<OverlayBorder>();
 
-        Text newText = SpawnText(numberList);
+        var prefab = Resources.Load<ExText>("UI/Text");
+        
+        var newText = (ExText)PoolManager.SpawnObject(0, prefab);
         numberListLocal.Add(newText);
 
-        newText.text = (index + 1).ToString();
-        newText.transform.SetParent(overlayBorder.scroll_parent, false);
-
+        newText.Text.text = (index + 1).ToString();
+        newText.transform.SetParent(overlayBorder.scrollParent, false);
+        
         if (overlayBorder.vertical)
-            newText.transform.localPosition = new Vector2(0, new_position);
-
-        if (overlayBorder.horizontal)
-            newText.transform.localPosition = new Vector2(new_position, 0);
-    }
-
-    private Text SpawnText(List<Text> list)
-    {
-        foreach (Text element in list)
         {
-            if (!element.gameObject.activeInHierarchy)
-            {
-                element.gameObject.SetActive(true);
-                return element;
-            }
+            newText.RectTransform.anchorMin = new Vector2(0, 0.5f);
+            newText.RectTransform.anchorMax = new Vector2(1, 0.5f);
+
+            var width = overlayBorder.scrollParent.rect.width;
+            newText.RectTransform.sizeDelta = new Vector2(0, width);
+
+            newText.transform.localPosition = new Vector2(0, new_position);
         }
+        
+        if (overlayBorder.horizontal)
+        {
+            newText.RectTransform.anchorMin = new Vector2(0.5f, 0);
+            newText.RectTransform.anchorMax = new Vector2(0.5f, 1);
 
-        Text newText = Instantiate(Resources.Load<Text>("UI/Number"));
-        list.Add(newText);
+            var height = overlayBorder.scrollParent.rect.height;
+            newText.RectTransform.sizeDelta = new Vector2(height, 0);
 
-        return newText;
+            newText.transform.localPosition = new Vector2(new_position, 0);
+        }
+        
+        newText.gameObject.SetActive(true);
     }
 
-    public void ResetText(List<Text> list)
+    public void ResetText(List<ExText> list)
     {
-        foreach (Text element in list)
-            element.gameObject.SetActive(false);
+        list.ForEach(x => PoolManager.ClosePoolObject(x));
+
+        list.Clear();
     }
 
     public void CloseOverlay()

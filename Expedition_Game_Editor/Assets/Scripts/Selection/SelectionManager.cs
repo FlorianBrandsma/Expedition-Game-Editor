@@ -32,9 +32,9 @@ static public class SelectionManager
     {
         routeList.Clear();
 
-        foreach (EditorForm form in EditorManager.editorManager.forms)
+        foreach (EditorForm form in RenderManager.layoutManager.forms)
         {
-            foreach (EditorSection section in form.editorSections)
+            foreach (LayoutSection section in form.editorSections)
             {
                 if (!section.active) continue;
 
@@ -75,7 +75,7 @@ static public class SelectionManager
     static public void SelectSet(IDataElement setDataElement)
     {
         var dataElementList = SelectionElementManager.FindDataElements((GeneralData)getDataElement);
-
+        
         //First set the result to all relevant elements
         dataElementList.ForEach(x => x.SelectionElement.SetResult(setDataElement));
 
@@ -92,7 +92,7 @@ static public class SelectionManager
         getDataElement = null;
 
         //Return to previous path in form
-        EditorManager.editorManager.Render(EditorManager.editorManager.forms[2].previousPath);  
+        RenderManager.Render(RenderManager.layoutManager.forms[2].previousPath);  
     }
 
     static public void CancelSelection(List<IDataElement> dataList)

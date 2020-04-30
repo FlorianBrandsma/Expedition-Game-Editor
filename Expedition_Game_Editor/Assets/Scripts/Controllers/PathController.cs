@@ -12,7 +12,7 @@ public class PathController : MonoBehaviour
 
     public HistoryElement   history;
 
-    public EditorSection    editorSection;
+    public LayoutSection    layoutSection;
 
     private EditorController EditorController   { get { return GetComponent<EditorController>(); } }
 
@@ -20,8 +20,8 @@ public class PathController : MonoBehaviour
 
     public IEditor DataEditor
     {
-        get { return editorSection.dataEditor; }
-        set { editorSection.dataEditor = value; }
+        get { return layoutSection.dataEditor; }
+        set { layoutSection.dataEditor = value; }
     }
 
     public SubControllerManager subControllerManager;
@@ -78,7 +78,7 @@ public class PathController : MonoBehaviour
         InitializeComponents(mainPath);
 
         if (EditorController != null)
-            editorSection.targetController = EditorController;
+            layoutSection.targetController = EditorController;
 
         if (step < mainPath.route.Count)
         {
@@ -126,17 +126,17 @@ public class PathController : MonoBehaviour
             SetPreviousEditor();
             SetHistory();
 
-            editorSection.targetController.FinalizeController();
+            layoutSection.targetController.FinalizeController();
         }
     }
 
     private void SetPreviousEditor()
     {
-        if (editorSection.dataEditor == null) return;
+        if (layoutSection.dataEditor == null) return;
 
-        editorSection.previousEditor = editorSection.dataEditor;
-        editorSection.previousDataSource = editorSection.dataEditor.Data.dataElement;
-        editorSection.previousDataElements = editorSection.dataEditor.DataElements.ToList();
+        layoutSection.previousEditor = layoutSection.dataEditor;
+        layoutSection.previousDataSource = layoutSection.dataEditor.Data.dataElement;
+        layoutSection.previousDataElements = layoutSection.dataEditor.DataElements.ToList();
     }
 
     public bool GetComponents(Path path)
@@ -186,7 +186,7 @@ public class PathController : MonoBehaviour
         this.layoutStep = step;
 
         if (GetComponent<LayoutDependency>() != null)
-            editorSection.targetView = GetComponent<LayoutDependency>();
+            layoutSection.targetView = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].GetTargetLayout(path, layoutStep);
