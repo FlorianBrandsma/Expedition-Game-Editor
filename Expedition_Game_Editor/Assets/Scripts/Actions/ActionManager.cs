@@ -116,6 +116,8 @@ public class ActionManager : MonoBehaviour
 
     private void SetMainElements(List<ActionElement> elements)
     {
+        main_content.gameObject.SetActive(elements.Count > 0);
+        
         float previousPosition = -(main_parent.rect.width / 2);
 
         foreach(ActionElement element in elements)

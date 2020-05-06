@@ -27,7 +27,7 @@ public class HomeAction : MonoBehaviour, IAction
 
         actionButton.icon.texture = icon;
 
-        actionButton.Button.onClick.AddListener(delegate { InitializePath(new PathManager.Main().Initialize()); });
+        actionButton.Button.onClick.AddListener(delegate { InitializePath(new PathManager.Editor().Initialize()); });
     }
 
     public void InitializePath(Path path)

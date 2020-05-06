@@ -91,7 +91,31 @@ public class DataManager
 
         return dataList;
     }
-    
+
+    public List<ChapterData> GetChapterData(Search.Chapter searchParameters)
+    {
+        var dataList = new List<ChapterData>();
+
+        foreach (Fixtures.Chapter chapter in Fixtures.chapterList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) continue;
+
+            var data = new ChapterData();
+
+            data.Id = chapter.Id;
+            data.Index = chapter.Index;
+
+            data.name = chapter.name;
+
+            data.publicNotes = chapter.publicNotes;
+            data.privateNotes = chapter.privateNotes;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<ChapterInteractableData> GetChapterInteractableData(Search.ChapterInteractable searchParameters)
     {
         var dataList = new List<ChapterInteractableData>();
@@ -205,7 +229,6 @@ public class DataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
             if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
             if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
-            if (searchParameters.objectGraphicId.Count  > 0 && !searchParameters.objectGraphicId.Contains(worldInteractable.objectGraphicId))   continue;
             if (searchParameters.isDefault              > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault))     continue;
 
             var data = new WorldInteractableData();
@@ -216,7 +239,6 @@ public class DataManager
 
             data.objectiveId = worldInteractable.objectiveId;
             data.interactableId = worldInteractable.interactableId;
-            data.objectGraphicId = worldInteractable.objectGraphicId;
 
             data.interactionIndex = worldInteractable.interactionIndex;
 
@@ -503,6 +525,14 @@ public class DataManager
         public string name;
     }
     
+    public class ChapterData : GeneralData
+    {
+        public string name;
+
+        public string publicNotes;
+        public string privateNotes;
+    }
+
     public class ChapterInteractableData : GeneralData
     {
         public int chapterId;
@@ -535,10 +565,8 @@ public class DataManager
     {
         public int type;
 
-        public int chapterId;
         public int objectiveId;
         public int interactableId;
-        public int objectGraphicId;
 
         public int interactionIndex;
     }

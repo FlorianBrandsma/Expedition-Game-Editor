@@ -24,7 +24,7 @@ public class SegmentController : MonoBehaviour
     public EditorController editorController;
 
     public Path Path { get { return editorController.PathController.route.path; } }
-    public Path MainPath { get { return editorController.PathController.layoutSection.editorForm.activePath; } }
+    public Path MainPath { get { return editorController.PathController.layoutSection.EditorForm.activePath; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 

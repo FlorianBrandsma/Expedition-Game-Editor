@@ -9,21 +9,11 @@ static public class RenderManager
     static public LayoutManager layoutManager;
     static public RectTransform UI { get { return layoutManager.UI; } }
 
-    static public HistoryManager historyManager = new HistoryManager();
-
     static public Enums.LoadType loadType;
     
-    //private void Update()
-    //{
-    //    //Escape button shares a built in function of the dropdown that closes it
-    //    if (GameObject.Find("Dropdown List") != null) return;
-
-    //    if (Input.GetKeyUp(KeyCode.Escape))
-    //        PreviousPath();
-    //}
-
     static public void Render(Path path)
     {
+        //Debug.Log(PathString(path));
         SelectionManager.CancelGetSelection();
 
         //Set up data along the path
@@ -92,7 +82,7 @@ static public class RenderManager
 
     static public void PreviousPath()
     {
-        historyManager.PreviousPath();
+        HistoryManager.PreviousPath();
 
         loadType = Enums.LoadType.Normal;
     }
@@ -123,7 +113,7 @@ static public class RenderManager
 
         var pathController = dataController.SegmentController.editorController.PathController;
 
-        var mainForm = pathController.layoutSection.editorForm;
+        var mainForm = pathController.layoutSection.EditorForm;
         mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
 
         return dataList;

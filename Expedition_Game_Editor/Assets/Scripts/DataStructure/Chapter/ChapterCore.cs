@@ -3,23 +3,20 @@ using System.Linq;
 
 public class ChapterCore : GeneralData
 {
-    private int interactableId;
-
     private string name;
+
     private string publicNotes;
     private string privateNotes;
 
     //Original
-    public int originalInteractableId;
-
     public string originalName;
+
     public string originalPublicNotes;
     public string originalPrivateNotes;
 
     //Changed
-    private bool changedInteractableId;
-
     private bool changedName;
+
     private bool changedPublicNotes;
     private bool changedPrivateNotes;
 
@@ -27,24 +24,11 @@ public class ChapterCore : GeneralData
     {
         get
         {
-            return changedInteractableId || changedName || changedPublicNotes || changedPrivateNotes;
+            return changedName || changedPublicNotes || changedPrivateNotes;
         }
     }
 
     #region Properties
-    public int InteractableId
-    {
-        get { return interactableId; }
-        set
-        {
-            if (value == interactableId) return;
-
-            changedInteractableId = (value != originalInteractableId);
-
-            interactableId = value;
-        }
-    }
-
     public string Name
     {
         get { return name; }
@@ -92,9 +76,6 @@ public class ChapterCore : GeneralData
     {
         var chapterData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
 
-        if (changedInteractableId)
-            chapterData.interactableId = interactableId;
-
         if (changedName)
             chapterData.name = name;
 
@@ -120,18 +101,16 @@ public class ChapterCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalInteractableId = interactableId;
-
         originalName = name;
+
         originalPublicNotes = publicNotes;
         originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
     {
-        interactableId = originalInteractableId;
-
         name = originalName;
+
         publicNotes = originalPublicNotes;
         privateNotes = originalPrivateNotes;
     }
@@ -140,8 +119,8 @@ public class ChapterCore : GeneralData
     {
         GetOriginalValues();
 
-        changedInteractableId = false;
         changedName = false;
+
         changedPublicNotes = false;
         changedPrivateNotes = false;
     }
@@ -153,9 +132,8 @@ public class ChapterCore : GeneralData
     {
         var chapterDataSource = (ChapterDataElement)dataSource;
 
-        interactableId = chapterDataSource.interactableId;
-
         name = chapterDataSource.name;
+
         publicNotes = chapterDataSource.publicNotes;
         privateNotes = chapterDataSource.privateNotes;
     }

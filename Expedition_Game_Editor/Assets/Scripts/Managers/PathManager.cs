@@ -7,25 +7,7 @@ public class PathManager
 {
     #region Paths
 
-    #region Initializers
-
-    #region Main
-
-    public class Main
-    {
-        EditorForm form = RenderManager.layoutManager.forms[0];
-
-        List<int> source = new List<int>() { 0, 0 };
-
-        public Path Initialize()
-        {
-            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
-        }
-    }
-
-    #endregion
-
-     #region Form (Temporary)
+    #region Global
 
     public class Form
     {
@@ -46,9 +28,19 @@ public class PathManager
 
     #endregion
 
-    #endregion
-
     #region Editor
+
+    public class Editor
+    {
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        List<int> source = new List<int>() { 0, 0 };
+
+        public Path Initialize()
+        {
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+        }
+    }
 
     #region Structure
     public class Structure
@@ -56,11 +48,11 @@ public class PathManager
         Path path;
         Route route;
 
-        int enter   = 0;
-        int edit    = 1;
-        int open    = 0;
+        int enter = 0;
+        int edit = 1;
+        int open = 0;
 
-        EditorForm form  = RenderManager.layoutManager.forms[0];
+        EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Structure(SelectionElement selection, Route route) //Combine existing path with new route
         {
@@ -102,7 +94,7 @@ public class PathManager
         public Interaction(SelectionElement selection, Route route)
         {
             this.route = route;
-            selectionElement = selection; 
+            selectionElement = selection;
         }
 
         public Path Enter()
@@ -141,7 +133,7 @@ public class PathManager
 
             path = selection.DisplayManager.Display.DataController.SegmentController.Path;
         }
-        
+
         public Path OutcomeEditor()
         {
             int open = 0;
@@ -174,9 +166,9 @@ public class PathManager
 
             var itemDataElement = (ItemDataElement)selection.data.dataElement;
 
-            enter   = new List<int>() { 0, 0, 0, itemDataElement.Type };
-            edit    = new List<int>() { 0, 1, 0, itemDataElement.Type };
-            get     = new List<int>() { 1 };
+            enter = new List<int>() { 0, 0, 0, itemDataElement.Type };
+            edit = new List<int>() { 0, 1, 0, itemDataElement.Type };
+            get = new List<int>() { 1 };
         }
 
         public Path Enter()
@@ -218,8 +210,10 @@ public class PathManager
 
             this.route = route;
 
-            enter   = 0;
-            edit    = new List<int>() { 0, 2, 0, 0 };
+            var interactableDataElement = (InteractableDataElement)selection.data.dataElement;
+
+            enter = 0;
+            edit = new List<int>() { 0, 2, 0, interactableDataElement.Type };
         }
 
         public Path Enter()
@@ -285,7 +279,7 @@ public class PathManager
         RegionDataElement regionDataElement;
 
         List<int> enter = new List<int>() { 0, 3 };
-        List<int> edit  = new List<int>() { 0, 4 };
+        List<int> edit = new List<int>() { 0, 4 };
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
@@ -334,7 +328,7 @@ public class PathManager
         public Path Open()
         {
             List<int> open = new List<int>() { 1, (int)regionDataElement.type };
-            
+
             Route customRoute = new Route(1, route.data, selection.selectionStatus);
 
             path = ExtendPath(route.path, CreateRoutes(open, customRoute, selection.selectionStatus));
@@ -519,6 +513,92 @@ public class PathManager
     }
 
     #endregion
+
+    #endregion
+
+    #region Game
+
+    public class Game
+    {
+        EditorForm form = RenderManager.layoutManager.forms[3];
+
+        List<int> source = new List<int>() { 0, 0 };
+
+        public Path Initialize()
+        {
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+        }
+    }
+
+    public class GameMenu
+    {
+        EditorForm form = RenderManager.layoutManager.forms[3];
+        
+        List<int> source = new List<int>() { 0, 1 };
+        
+        public Path LoadGameSave()
+        {
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+        }
+    }
+
+    public class GameSave
+    {
+        SelectionElement selection;
+        Path path;
+        Route route;
+
+        List<int> enter = new List<int>() { 0, 0, 0 };
+
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public GameSave(SelectionElement selection, Route route)
+        {
+            this.selection = selection;
+
+            this.route = route;
+
+            if (selection.DisplayManager != null)
+                path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+        }
+
+        public Path EnterGame()
+        {
+            RenderManager.CloseForms();
+
+            HistoryManager.ClearHistory();
+            
+            path = CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
+
+            path.type = Path.Type.New;
+
+            return path;
+        }
+
+        
+    }
+
+    public class GameDisplay
+    {
+        Path path;
+        Route route;
+
+        List<int> open = new List<int>() { 0, (int)GameDisplayManager.activeDisplay, 0 };
+
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public GameDisplay(Route route)
+        {
+            this.route = route;
+        }
+        
+        public Path Open()
+        {
+            path = CreatePath(CreateRoutes(open, route, Enums.SelectionStatus.None), form);
+
+            return path;
+        }
+    }
 
     #endregion
 

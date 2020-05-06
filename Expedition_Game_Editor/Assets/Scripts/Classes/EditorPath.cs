@@ -205,6 +205,29 @@ public class EditorPath
 
             break;
 
+            case Enums.DataType.GameSave:
+
+                PathManager.GameSave gameSave = new PathManager.GameSave(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = gameSave.EnterGame();
+
+                break;
+
+            case Enums.DataType.ChapterSave:
+
+                PathManager.Structure chapterSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = chapterSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = chapterSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
             default: Debug.Log("CASE MISSING: " + selection.GeneralData.DataType); break;
         }
     }

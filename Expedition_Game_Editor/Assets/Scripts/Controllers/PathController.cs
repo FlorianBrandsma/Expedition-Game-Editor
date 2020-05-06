@@ -78,7 +78,7 @@ public class PathController : MonoBehaviour
         InitializeComponents(mainPath);
 
         if (EditorController != null)
-            layoutSection.targetController = EditorController;
+            layoutSection.TargetController = EditorController;
 
         if (step < mainPath.route.Count)
         {
@@ -126,7 +126,7 @@ public class PathController : MonoBehaviour
             SetPreviousEditor();
             SetHistory();
 
-            layoutSection.targetController.FinalizeController();
+            layoutSection.TargetController.FinalizeController();
         }
     }
 
@@ -162,15 +162,13 @@ public class PathController : MonoBehaviour
             action.InitializeAction(path);
     }
 
-    public bool SetActions(Path path)
+    public void SetActions(Path path)
     {
         foreach (IAction action in GetComponents<IAction>())
             action.SetAction(path);
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].SetActions(path);
-
-        return GetComponents<IAction>().Count() > 0;
     }
 
     void InitializeTabs(Path path)
@@ -186,7 +184,7 @@ public class PathController : MonoBehaviour
         this.layoutStep = step;
 
         if (GetComponent<LayoutDependency>() != null)
-            layoutSection.targetView = GetComponent<LayoutDependency>();
+            layoutSection.TargetView = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].GetTargetLayout(path, layoutStep);

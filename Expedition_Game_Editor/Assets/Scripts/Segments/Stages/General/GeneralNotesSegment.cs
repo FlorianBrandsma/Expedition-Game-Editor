@@ -16,18 +16,12 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     public IEditor DataEditor { get; set; }
 
-    #region UI
+    //UI
     public InputField inputField;
-    #endregion
-
-    #region Data Variables
-    private int id;
-    private int index;
+    
+    //Data Variables
     private string notes;
-    private string icon;
-    #endregion
 
-    #region Data Properties
     public string Notes
     {
         get { return notes; }
@@ -118,17 +112,14 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
             }
         }
     }
-    #endregion
 
-    #region Data Methods
+
     public void UpdateNotes()
     {
         Notes = inputField.text;
         DataEditor.UpdateEditor();
     }
-    #endregion
 
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.editorController.PathController.DataEditor;
@@ -237,5 +228,4 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
     public void CloseSegment() { }
 
     public void SetSearchResult(SelectionElement selectionElement) { }
-    #endregion
 }

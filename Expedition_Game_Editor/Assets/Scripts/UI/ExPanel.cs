@@ -119,6 +119,9 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
             case Enums.DataType.Item:               SetItemElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
+
+            case Enums.DataType.GameSave:           SetGameSaveElement();           break;
+            case Enums.DataType.ChapterSave:        SetChapterSaveElement();        break;
             
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType);  break;
         }
@@ -407,6 +410,28 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         idText.text     = dataElement.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
+    }
+
+    private void SetGameSaveElement()
+    {
+        var dataElement = (GameSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+    }
+
+    private void SetChapterSaveElement()
+    {
+        var dataElement = (ChapterSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
     }
 
     public void CloseElement()

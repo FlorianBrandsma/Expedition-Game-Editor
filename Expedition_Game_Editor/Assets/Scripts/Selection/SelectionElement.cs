@@ -287,7 +287,7 @@ public class SelectionElement : MonoBehaviour
         Element.CloseElement();
         
         OnSelection.RemoveAllListeners();
-        
+
         gameObject.SetActive(false);
 
         if (child != null)

@@ -12,7 +12,9 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
     }
 
     public int terrainTileId;
-    
+
+    public int objectGraphicId;
+
     public bool isDefault;
     public int taskGroup;
 
@@ -89,6 +91,8 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
 
         dataElement.terrainTileId = terrainTileId;
 
+        dataElement.objectGraphicId = objectGraphicId;
+
         dataElement.isDefault = isDefault;
         dataElement.taskGroup = taskGroup;
 
@@ -135,6 +139,8 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         var worldInteractableDataSource = (WorldInteractableDataElement)dataSource;
 
         terrainTileId = worldInteractableDataSource.terrainTileId;
+
+        objectGraphicId = worldInteractableDataSource.objectGraphicId;
 
         isDefault = worldInteractableDataSource.isDefault;
         taskGroup = worldInteractableDataSource.taskGroup;

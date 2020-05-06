@@ -6,21 +6,18 @@ public class WorldInteractableCore : GeneralData
     private int type;
 
     private int interactableId;
-    private int objectGraphicId;
 
     //Original
     public int originalInteractableId;
-    public int originalObjectGraphicId;
 
     //Changed
     private bool changedInteractableId;
-    private bool changedObjectGraphicId;
 
     public bool Changed
     {
         get
         {
-            return changedInteractableId || changedObjectGraphicId;
+            return changedInteractableId;
         }
     }
 
@@ -43,19 +40,6 @@ public class WorldInteractableCore : GeneralData
             interactableId = value;
         }
     }
-
-    public int ObjectGraphicId
-    {
-        get { return objectGraphicId; }
-        set
-        {
-            if (value == objectGraphicId) return;
-
-            changedObjectGraphicId = (value != originalObjectGraphicId);
-
-            objectGraphicId = value;
-        }
-    }
     #endregion
 
     #region Methods
@@ -67,9 +51,6 @@ public class WorldInteractableCore : GeneralData
 
         if (changedInteractableId)
             worldInteractableData.interactableId = interactableId;
-
-        if (changedObjectGraphicId)
-            worldInteractableData.objectGraphicId = objectGraphicId;
     }
 
     public void UpdateSearch()
@@ -82,13 +63,11 @@ public class WorldInteractableCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalInteractableId = interactableId;
-        originalObjectGraphicId = objectGraphicId;
     }
 
     public void GetOriginalValues()
     {
         interactableId = originalInteractableId;
-        objectGraphicId = originalObjectGraphicId;
     }
 
     public virtual void ClearChanges()
@@ -96,7 +75,6 @@ public class WorldInteractableCore : GeneralData
         GetOriginalValues();
 
         changedInteractableId = false;
-        changedObjectGraphicId = false;
     }
 
     public void Delete() { }
@@ -108,10 +86,8 @@ public class WorldInteractableCore : GeneralData
         dataElement.type = type;
 
         dataElement.InteractableId = interactableId;
-        dataElement.ObjectGraphicId = objectGraphicId;
 
         dataElement.originalInteractableId = originalInteractableId;
-        dataElement.originalObjectGraphicId = originalObjectGraphicId;
     }
     #endregion
 
@@ -122,6 +98,5 @@ public class WorldInteractableCore : GeneralData
         type = worldInteractableDataSource.type;
 
         interactableId = worldInteractableDataSource.interactableId;
-        objectGraphicId = worldInteractableDataSource.objectGraphicId;
     }
 }

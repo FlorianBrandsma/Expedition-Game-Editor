@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-public class HistoryManager
+static public class HistoryManager
 {
     public enum Group
     {
@@ -33,12 +33,14 @@ public class HistoryManager
         Popup,
         Atmosphere,
         Outcome,
-        OutcomeSelection
+        OutcomeSelection,
+        Menu,
+        MenuSelection
     }
 
-    private List<HistoryElement> history = new List<HistoryElement>();
+    static private List<HistoryElement> history = new List<HistoryElement>();
 
-    public void AddHistory(HistoryElement element)
+    static public void AddHistory(HistoryElement element)
     {
         if (history.Count > 0 && element.group == history[history.Count - 1].group)
         {
@@ -48,7 +50,12 @@ public class HistoryManager
         }
     }
 
-    public void PreviousPath()
+    static public void ClearHistory()
+    {
+        history.Clear();
+    }
+
+    static public void PreviousPath()
     {
         if(history.Count > 1)
         {
@@ -65,12 +72,12 @@ public class HistoryManager
         }
     }
 
-    public void CloseForm(EditorForm form)
+    static public void CloseForm(EditorForm form)
     {
         form.CloseForm();
     }
 
-    public void InitializePath()
+    static public void InitializePath()
     {
         RenderManager.loadType = Enums.LoadType.Return;
 

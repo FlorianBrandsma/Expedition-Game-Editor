@@ -23,10 +23,13 @@ public class WorldSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.World);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.World>().First();
-        
-        var regionDataElement = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
-        searchParameters.regionId = new List<int>() { regionDataElement.Id };
 
+        var regionData = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
+        searchParameters.regionType = ((RegionController)regionData.dataController).regionType;
+
+        var regionDataElement = (RegionDataElement)regionData.dataElement;
+        searchParameters.regionId = new List<int>() { regionDataElement.Id };
+        
         var objectiveRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Objective);
 
         if (objectiveRoute == null)

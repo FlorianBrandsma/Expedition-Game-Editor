@@ -14,6 +14,7 @@ public class HistoryElement
     public void AddHistory(Path path)
     {
         this.path = path;
-        RenderManager.historyManager.AddHistory(new HistoryElement(this));
+
+        HistoryManager.AddHistory(new HistoryElement(this));
     }
 }

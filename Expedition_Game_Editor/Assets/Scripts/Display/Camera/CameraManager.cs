@@ -24,6 +24,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public RectTransform cameraParent;
 
     public RectTransform displayRect;
+    public RectTransform leftBorder;
 
     public Light directionalLight;
 
@@ -38,12 +39,15 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         switch (cameraProperties.OrganizerType)
         {
-            case DisplayManager.OrganizerType.None:      organizer = null; break;
-            case DisplayManager.OrganizerType.Object:    organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
-            case DisplayManager.OrganizerType.World:     organizer = gameObject.AddComponent<WorldOrganizer>();  break;
-            default: break;
+            case DisplayManager.OrganizerType.None:     organizer = null; break;
+            case DisplayManager.OrganizerType.Object:   organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
+            case DisplayManager.OrganizerType.World:    organizer = gameObject.AddComponent<WorldOrganizer>();  break;
+            case DisplayManager.OrganizerType.Game:     organizer = gameObject.AddComponent<GameOrganizer>();   break;
+
+            default: Debug.Log("CASE MISSING: " + cameraProperties.OrganizerType); break;
         }
 
+        //Don't do this in games. Actually base it off border
         InitializeViewportRect();
 
         if (organizer == null) return;
@@ -61,10 +65,13 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     private void InitializeViewportRect()
     {
-        float leftBorder = (30 / RenderManager.UI.rect.width);
+        float leftBorderOffset = 0;
 
-        cam.rect = new Rect(new Vector2(leftBorder, cam.rect.y),
-                            new Vector2((displayRect.rect.width / RenderManager.UI.rect.width) - leftBorder, cam.rect.height));
+        if(leftBorder != null)
+            leftBorderOffset = leftBorder.rect.width / RenderManager.UI.rect.width;
+
+        cam.rect = new Rect(new Vector2(leftBorderOffset, cam.rect.y),
+                            new Vector2((displayRect.rect.width / RenderManager.UI.rect.width) - leftBorderOffset, cam.rect.height));
     }
 
     public void SetProperties()

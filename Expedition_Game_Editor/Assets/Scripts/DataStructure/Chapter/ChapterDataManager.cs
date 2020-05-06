@@ -9,11 +9,6 @@ public class ChapterDataManager : IDataManager
 
     private List<ChapterData> chapterDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.InteractableData> interactableDataList;
-
     public ChapterDataManager(ChapterController chapterController)
     {
         DataController = chapterController;
@@ -27,18 +22,12 @@ public class ChapterDataManager : IDataManager
 
         if (chapterDataList.Count == 0) return new List<IDataElement>();
 
-        GetInteractableData();
-        GetObjectGraphicData();
-
-        var list = (from chapterData        in chapterDataList
-                    join interactableData   in interactableDataList     on chapterData.interactableId       equals interactableData.Id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
+        var list = (from chapterData in chapterDataList
                     select new ChapterDataElement()
                     {
                         Id = chapterData.Id,
                         Index = chapterData.Index,
-                        
-                        InteractableId = chapterData.interactableId,
+
                         Name = chapterData.name,
 
                         PublicNotes = chapterData.publicNotes,
@@ -64,7 +53,6 @@ public class ChapterDataManager : IDataManager
             chapterData.Id = chapter.Id;
             chapterData.Index = chapter.Index;
 
-            chapterData.interactableId = chapter.interactableId;
             chapterData.name = chapter.name;
 
             chapterData.publicNotes = chapter.publicNotes;
@@ -74,27 +62,8 @@ public class ChapterDataManager : IDataManager
         }
     }
 
-    internal void GetInteractableData()
-    {
-        var interactableSearchParameters = new Search.Interactable();
-
-        interactableSearchParameters.id = chapterDataList.Select(x => x.interactableId).Distinct().ToList();
-
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
-    }
-
-    internal void GetObjectGraphicData()
-    {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
-
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
-
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
-    }
-
     internal class ChapterData : GeneralData
     {
-        public int interactableId;
         public string name;
 
         public string publicNotes;

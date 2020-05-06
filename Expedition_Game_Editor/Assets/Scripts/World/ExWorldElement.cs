@@ -66,7 +66,7 @@ public class ExWorldElement : MonoBehaviour, IElement, IPoolable
         var dataElement = (WorldInteractableDataElement)data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab);
 
         startPosition = dataElement.startPosition;
 

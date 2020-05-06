@@ -43,7 +43,8 @@ public class InteractionDataManager : IDataManager
         var list = (from interactionData        in interactionDataList
                     join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.Id
                     join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on worldInteractableData.objectGraphicId    equals objectGraphicData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.interactableId     equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
 
                     join leftJoin in (from regionData in regionDataList

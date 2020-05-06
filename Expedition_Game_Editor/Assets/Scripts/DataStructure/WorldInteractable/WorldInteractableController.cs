@@ -6,6 +6,7 @@ using System.Linq;
 public class WorldInteractableController : MonoBehaviour, IDataController
 {
     public SearchProperties searchProperties;
+    public Search.Interactable searchInteractable;
 
     public IDataManager DataManager             { get; set; }
 
@@ -29,7 +30,16 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
     public void InitializeController()
     {
-        SearchProperties.Initialize();
+        //SearchProperties.Initialize();
+
+        //Temporary until search parameters needs another rework
+
+        //Search was reworked so that one controller could find
+        //data from multiple data types, but lost the ability to provide standard
+        //search parameters on a component basis. At the moment, no controller
+        //uses multiple data types 1/5/2020
+
+        SearchProperties.searchParameters = new[] { searchInteractable };
     }
 
     public void SetData(SelectionElement searchElement, IDataElement resultData)
@@ -38,22 +48,12 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
         switch (resultData.DataType)
         {
-            case Enums.DataType.ObjectGraphic:
-
-                var objectGraphicData = (ObjectGraphicDataElement)resultData;
-
-                worldInteractableData.ObjectGraphicId = objectGraphicData.Id;
-                worldInteractableData.interactableName = objectGraphicData.Name;
-                worldInteractableData.objectGraphicIconPath = objectGraphicData.iconPath;
-
-                break;
-
             case Enums.DataType.Interactable:
 
                 var interactableData = (InteractableDataElement)resultData;
 
                 worldInteractableData.InteractableId = interactableData.Id;
-                worldInteractableData.ObjectGraphicId = interactableData.ObjectGraphicId;
+
                 worldInteractableData.interactableName = interactableData.Name;
                 worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
                 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class EditorMenuSegment : MonoBehaviour, ISegment
 {
@@ -32,9 +31,7 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
 
     private void OpenGame()
     {
-        RenderManager.CloseForms();
-        Debug.Log("Open game");
-        SceneManager.LoadScene("Game");
+        GlobalManager.OpenScene(GlobalManager.Scenes.Game);
     }
 
     public void ApplySegment() { }

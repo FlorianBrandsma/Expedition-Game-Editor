@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
+using System.Collections;
 
-public class CharacterSegment : MonoBehaviour, ISegment
+public class ChapterSaveSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
-    
+
     public void InitializeDependencies() { }
 
     public void InitializeSegment()
@@ -19,10 +17,7 @@ public class CharacterSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchProperties = new SearchProperties(Enums.DataType.Interactable);
-
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Characters };
+        var searchProperties = new SearchProperties(Enums.DataType.ChapterSave);
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }

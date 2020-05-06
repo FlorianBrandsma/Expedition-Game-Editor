@@ -32,7 +32,7 @@ public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
         searchParameters.objectiveId = new List<int>() { ObjectiveEditor.ObjectiveData.Id };
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Objects };
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Object };
         searchParameters.isDefault = Convert.ToInt32(false);
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);

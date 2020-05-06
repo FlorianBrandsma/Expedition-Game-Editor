@@ -5,15 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class GlobalManager : MonoBehaviour
 {
-    public enum ProgramType
+    public enum Scenes
     {
+        Global,
         Editor,
         Game
     }
 
     static public bool loaded;
 
-    static public ProgramType programType;
+    static public Scenes programType = Scenes.Editor;
 
     private void Awake()
     {
@@ -23,6 +24,34 @@ public class GlobalManager : MonoBehaviour
 
         Fixtures.LoadFixtures();
 
+        InitializeScene();
+    }
+
+    private void Update()
+    {
+        //Escape button shares a built in function of the dropdown that closes it
+        if (GameObject.Find("Dropdown List") != null) return;
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+            RenderManager.PreviousPath();
+    }
+
+    private void InitializeScene()
+    {
         SceneManager.LoadScene((int)programType);
+    }
+    
+    static public void OpenScene(Scenes scene)
+    {
+        RenderManager.CloseForms();
+
+        HistoryManager.ClearHistory();
+        
+        SceneManager.LoadScene((int)scene);
+    }
+
+    static public void CloseApplication()
+    {
+        Application.Quit();
     }
 }

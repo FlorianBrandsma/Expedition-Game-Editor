@@ -29,30 +29,40 @@ static public class Fixtures
     static public int tilesInTileSet = 10;
     static public int objectsInWorld = 3;
 
-    static public List<Icon> iconList = new List<Icon>();
-    static public List<ObjectGraphic> objectGraphicList = new List<ObjectGraphic>();
-    static public List<Item> itemList = new List<Item>();
-    static public List<Interactable> interactableList = new List<Interactable>();
-    static public List<TileSet> tileSetList = new List<TileSet>();
-    static public List<Tile> tileList = new List<Tile>();
-    static public List<Region> regionList = new List<Region>();
-    static public List<Atmosphere> atmosphereList = new List<Atmosphere>();
-    static public List<WorldObject> worldObjectList = new List<WorldObject>();
-    static public List<Terrain> terrainList = new List<Terrain>();
-    static public List<TerrainTile> terrainTileList = new List<TerrainTile>();
-    static public List<Chapter> chapterList = new List<Chapter>();
-    static public List<PartyMember> partyMemberList = new List<PartyMember>();
-    static public List<ChapterInteractable> chapterInteractableList = new List<ChapterInteractable>(); //Supporting interactables
-    static public List<ChapterRegion> chapterRegionList = new List<ChapterRegion>();
-    static public List<Phase> phaseList = new List<Phase>();
-    static public List<PhaseInteractable> phaseInteractableList = new List<PhaseInteractable>();
-    static public List<Quest> questList = new List<Quest>();
-    static public List<Objective> objectiveList = new List<Objective>();
-    static public List<WorldInteractable> worldInteractableList = new List<WorldInteractable>();
-    static public List<Task> taskList = new List<Task>();
-    static public List<Interaction> interactionList = new List<Interaction>();
-    static public List<Outcome> outcomeList = new List<Outcome>();
-    
+    static public int gameSaves = 1;
+
+    static public List<Icon>                iconList                = new List<Icon>();
+    static public List<ObjectGraphic>       objectGraphicList       = new List<ObjectGraphic>();
+    static public List<Item>                itemList                = new List<Item>();
+    static public List<Interactable>        interactableList        = new List<Interactable>();
+    static public List<TileSet>             tileSetList             = new List<TileSet>();
+    static public List<Tile>                tileList                = new List<Tile>();
+    static public List<Region>              regionList              = new List<Region>();
+    static public List<Atmosphere>          atmosphereList          = new List<Atmosphere>();
+    static public List<WorldObject>         worldObjectList         = new List<WorldObject>();
+    static public List<Terrain>             terrainList             = new List<Terrain>();
+    static public List<TerrainTile>         terrainTileList         = new List<TerrainTile>();
+    static public List<Chapter>             chapterList             = new List<Chapter>();
+    static public List<PartyMember>         partyMemberList         = new List<PartyMember>();
+    static public List<ChapterInteractable> chapterInteractableList = new List<ChapterInteractable>();
+    static public List<ChapterRegion>       chapterRegionList       = new List<ChapterRegion>();
+    static public List<Phase>               phaseList               = new List<Phase>();
+    static public List<PhaseInteractable>   phaseInteractableList   = new List<PhaseInteractable>();
+    static public List<Quest>               questList               = new List<Quest>();
+    static public List<Objective>           objectiveList           = new List<Objective>();
+    static public List<WorldInteractable>   worldInteractableList   = new List<WorldInteractable>();
+    static public List<Task>                taskList                = new List<Task>();
+    static public List<Interaction>         interactionList         = new List<Interaction>();
+    static public List<Outcome>             outcomeList             = new List<Outcome>();
+
+    static public List<GameSave>            gameSaveList            = new List<GameSave>();
+    static public List<ChapterSave>         chapterSaveList         = new List<ChapterSave>();
+    static public List<PhaseSave>           phaseSaveList           = new List<PhaseSave>();
+    static public List<QuestSave>           questSaveList           = new List<QuestSave>();
+    static public List<ObjectiveSave>       objectiveSaveList       = new List<ObjectiveSave>();
+    static public List<TaskSave>            taskSaveList            = new List<TaskSave>();
+    static public List<InteractionSave>     interactionSaveList     = new List<InteractionSave>();
+
     public class Item : GeneralData
     {
         public int type;
@@ -94,8 +104,10 @@ static public class Fixtures
     public class ObjectGraphic : GeneralData
     {
         public int iconId;
+
         public string name;
         public string path;
+
         public float height;
         public float width;
         public float depth;
@@ -124,6 +136,7 @@ static public class Fixtures
         public int chapterRegionId;
         public int phaseId;
         public int tileSetId;
+
         public string name;
         public int regionSize;
         public int terrainSize;
@@ -146,6 +159,7 @@ static public class Fixtures
     {
         public int regionId;
         public int iconId;
+
         public string name;
     }
 
@@ -157,8 +171,8 @@ static public class Fixtures
 
     public class Chapter : GeneralData
     {
-        public int interactableId;
         public string name;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -184,7 +198,9 @@ static public class Fixtures
     public class Phase : GeneralData
     {
         public int chapterId;
+
         public string name;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -199,7 +215,9 @@ static public class Fixtures
     public class Quest : GeneralData
     {
         public int phaseId;
+
         public string name;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -207,8 +225,10 @@ static public class Fixtures
     public class Objective : GeneralData
     {
         public int questId;
+
         public string name;
         public string journal;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -219,7 +239,6 @@ static public class Fixtures
 
         public int objectiveId;
         public int interactableId;
-        public int objectGraphicId;
 
         public bool isDefault;
 
@@ -230,6 +249,7 @@ static public class Fixtures
     {
         public int worldInteractableId;
         public int objectiveId;
+
         public string name;
         public string publicNotes;
         public string privateNotes;
@@ -271,6 +291,70 @@ static public class Fixtures
         public int interactionId;
     }
 
+
+    #region Save data
+
+    public class Game : GeneralData
+    {
+        public string name;
+    }
+
+    public class GameSave : GeneralData
+    {
+        public int gameId;
+    }
+
+    public class ChapterSave : GeneralData
+    {
+        public int gameSaveId;
+        public int chapterId;
+
+        public bool complete;
+    }
+
+    public class PhaseSave : GeneralData
+    {
+        public int gameSaveId;
+        public int phaseId;
+
+        public bool complete;
+    }
+
+    public class QuestSave : GeneralData
+    {
+        public int gameSaveId;
+        public int questId;
+
+        public bool complete;
+    }
+
+    public class ObjectiveSave : GeneralData
+    {
+        public int gameSaveId;
+        public int objectiveId;
+
+        public bool complete;
+    }
+
+    public class TaskSave : GeneralData
+    {
+        public int gameSaveId;
+        public int taskId;
+
+        public bool complete;
+    }
+
+    public class InteractionSave : GeneralData
+    {
+        public int gameSaveId;
+        public int interactionId;
+
+        public bool complete;
+    }
+
+    #endregion
+
+
     static public void LoadFixtures()
     {
         LoadIcons();
@@ -278,7 +362,8 @@ static public class Fixtures
         LoadTileSets();
         LoadTiles();
         LoadItems();
-        LoadInteractables();
+        LoadInteractableCharacters();
+        LoadInteractableObjects();
         LoadRegions();
         LoadTerrains();
         LoadTerrainTiles();
@@ -294,7 +379,8 @@ static public class Fixtures
         LoadObjectives();
         LoadObjectiveWorldInteractables();
         LoadTasks();
-        //LoadInteractions();
+
+        LoadSaveData();
 
         Query();
     }
@@ -516,7 +602,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadInteractables()
+    static public void LoadInteractableCharacters()
     {
         var objectList = new List<int> { 10, 11, 12, 13, 14, 15 };
 
@@ -524,12 +610,35 @@ static public class Fixtures
         {
             var interactable = new Interactable();
 
-            int id = (i + 1);
+            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
 
             interactable.Id = id;
             interactable.Index = i;
 
-            interactable.type = (int)Enums.InteractableType.Characters;
+            interactable.type = (int)Enums.InteractableType.Character;
+
+            interactable.objectGraphicId = objectList[i];
+
+            interactable.name = "Interactable " + id;
+
+            interactableList.Add(interactable);
+        }
+    }
+
+    static public void LoadInteractableObjects()
+    {
+        var objectList = new List<int> { 20 };
+
+        for (int i = 0; i < objectList.Count; i++)
+        {
+            var interactable = new Interactable();
+
+            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
+
+            interactable.Id = id;
+            interactable.Index = i;
+
+            interactable.type = (int)Enums.InteractableType.Object;
 
             interactable.objectGraphicId = objectList[i];
 
@@ -648,16 +757,16 @@ static public class Fixtures
             CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 236.75f, 0f), new Vector3(0, 0, 0));
 
             /*Red warrior*/
-            CreateWorldInteractable(Enums.InteractableType.Characters, 1, 10, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
+            CreateWorldInteractable(Enums.InteractableType.Character, 1, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(Enums.InteractableType.Characters, 4, 13, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
+            CreateWorldInteractable(Enums.InteractableType.Character, 4, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
 
             /*Mage*/
-            CreateWorldInteractable(Enums.InteractableType.Characters, 5, 14, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
+            CreateWorldInteractable(Enums.InteractableType.Character, 5, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
 
             /*Pool*/
-            CreateWorldInteractable(Enums.InteractableType.Objects, 0, 20, region.Id, new Vector3(238.125f, 242.375f, 0f), new Vector3(0, 0, 0));
+            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 242.375f, 0f), new Vector3(0, 0, 0));
 
             var regionSize = GetRegionSize(region.Id);
 
@@ -668,7 +777,7 @@ static public class Fixtures
         }
     }
 
-    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int objectGraphicId, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int regionId, Vector3 position, Vector3 rotation)
     {
         var worldInteractable = new WorldInteractable();
 
@@ -679,7 +788,6 @@ static public class Fixtures
         worldInteractable.type = (int)type;
 
         worldInteractable.interactableId = interactableId;
-        worldInteractable.objectGraphicId = objectGraphicId;
         
         for (int index = 0; index < baseTasks; index++)
         {
@@ -793,10 +901,6 @@ static public class Fixtures
 
     static public void LoadChapters()
     {
-        List<int> randomInteractables = new List<int>();
-
-        interactableList.ForEach(x => randomInteractables.Add(x.Id));
-
         for (int i = 0; i < chapters; i++)
         {
             var chapter = new Chapter();
@@ -805,10 +909,6 @@ static public class Fixtures
 
             chapter.Id = id;
             chapter.Index = i;
-
-            int randomInteractable = Random.Range(0, randomInteractables.Count);
-
-            chapter.interactableId = randomInteractables[randomInteractable];
 
             chapter.name = "Chapter " + id;
             chapter.publicNotes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
@@ -1018,7 +1118,6 @@ static public class Fixtures
                     worldInteractable.type = worldInteractableSource.type;
 
                     worldInteractable.interactableId = worldInteractableSource.interactableId;
-                    worldInteractable.objectGraphicId = worldInteractableSource.objectGraphicId;
                     
                     worldInteractable.interactionIndex = worldInteractableSource.interactionIndex;
 
@@ -1209,14 +1308,18 @@ static public class Fixtures
         }
     }
 
+
+
+
+
     static public void LoadObjectiveWorldInteractables()
     {
         foreach (Objective objective in objectiveList)
         {
-            List<int> randomObjectGraphicList = new List<int>();
+            List<int> randomInteractables = new List<int>();
 
-            objectGraphicList.Where(x => x.Id > 1).ToList().ForEach(x => randomObjectGraphicList.Add(x.Id));
-            
+            interactableList.ForEach(x => randomInteractables.Add(x.Id));
+
             //Fetch the interactables belonging to the quest and create an objective interactable for each
             var chapterInteractableIds = chapterInteractableList.Where(x => phaseInteractableList.Where(y => y.questId == objective.questId).Select(y => y.chapterInteractableId).Contains(x.Id))
                                                                 .Select(x => x.interactableId).ToList();
@@ -1232,12 +1335,11 @@ static public class Fixtures
                 worldInteractable.Id = id;
                 worldInteractable.Index = index;
 
-                worldInteractable.type = (int)Enums.InteractableType.Characters;
+                worldInteractable.type = (int)Enums.InteractableType.Character;
 
                 worldInteractable.objectiveId = objective.Id;
 
                 worldInteractable.interactableId = chapterInteractableIds[i];
-                worldInteractable.objectGraphicId = interactableList.Where(x => x.Id == chapterInteractableIds[i]).First().objectGraphicId;
 
                 worldInteractable.isDefault = true;
 
@@ -1255,13 +1357,13 @@ static public class Fixtures
                 worldInteractable.Id = id;
                 worldInteractable.Index = index;
 
-                worldInteractable.type = (int)Enums.InteractableType.Objects;
+                worldInteractable.type = (int)Enums.InteractableType.Object;
 
                 worldInteractable.objectiveId = objective.Id;
 
-                int randomObjectGraphic = Random.Range(0, randomObjectGraphicList.Count);
-                worldInteractable.objectGraphicId = randomObjectGraphicList[randomObjectGraphic];
-                
+                int randomInteractable = Random.Range(0, randomInteractables.Count);
+                worldInteractable.interactableId = randomInteractables[randomInteractable];
+
                 worldInteractableList.Add(worldInteractable);
 
                 index++;
@@ -1291,6 +1393,124 @@ static public class Fixtures
                     CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomPosition, Vector3.zero);
                 }
             }
+        }
+    }
+
+    static public void LoadSaveData()
+    {
+        for(int i = 0; i < gameSaves; i++)
+        {
+            var gameSave = new GameSave();
+
+            int id = gameSaveList.Count > 0 ? (gameSaveList[gameSaveList.Count - 1].Id + 1) : 1;
+
+            gameSave.Id = id;
+            gameSave.Index = i;
+
+            LoadChapterSaves(id);
+            LoadPhaseSaves(id);
+            LoadQuestSaves(id);
+            LoadObjectiveSaves(id);
+            LoadTaskSaves(id);
+            LoadInteractionSaves(id);
+            
+            gameSaveList.Add(gameSave);
+        }
+    }
+
+    static public void LoadChapterSaves(int gameSaveId)
+    {
+        foreach(Chapter chapter in chapterList)
+        {
+            var chapterSave = new ChapterSave();
+
+            int id = chapterSaveList.Count > 0 ? (chapterSaveList[chapterSaveList.Count - 1].Id + 1) : 1;
+
+            chapterSave.Id = id;
+
+            chapterSave.chapterId = chapter.Id;
+
+            chapterSaveList.Add(chapterSave);
+        }
+    }
+
+    static public void LoadPhaseSaves(int gameSaveId)
+    {
+        foreach (Phase phase in phaseList)
+        {
+            var phaseSave = new PhaseSave();
+
+            int id = phaseSaveList.Count > 0 ? (phaseSaveList[phaseSaveList.Count - 1].Id + 1) : 1;
+
+            phaseSave.Id = id;
+
+            phaseSave.phaseId = phase.Id;
+
+            phaseSaveList.Add(phaseSave);
+        }
+    }
+
+    static public void LoadQuestSaves(int gameSaveId)
+    {
+        foreach (Quest quest in questList)
+        {
+            var questSave = new QuestSave();
+
+            int id = questSaveList.Count > 0 ? (questSaveList[questSaveList.Count - 1].Id + 1) : 1;
+
+            questSave.Id = id;
+
+            questSave.questId = quest.Id;
+
+            questSaveList.Add(questSave);
+        }
+    }
+
+    static public void LoadObjectiveSaves(int gameSaveId)
+    {
+        foreach (Objective objective in objectiveList)
+        {
+            var objectiveSave = new ObjectiveSave();
+
+            int id = objectiveSaveList.Count > 0 ? (objectiveSaveList[objectiveSaveList.Count - 1].Id + 1) : 1;
+
+            objectiveSave.Id = id;
+
+            objectiveSave.objectiveId = objective.Id;
+
+            objectiveSaveList.Add(objectiveSave);
+        }
+    }
+
+    static public void LoadTaskSaves(int gameSaveId)
+    {
+        foreach (Task task in taskList)
+        {
+            var taskSave = new TaskSave();
+
+            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].Id + 1) : 1;
+
+            taskSave.Id = id;
+
+            taskSave.taskId = task.Id;
+
+            taskSaveList.Add(taskSave);
+        }
+    }
+
+    static public void LoadInteractionSaves(int gameSaveId)
+    {
+        foreach (Interaction interaction in interactionList)
+        {
+            var interactionSave = new InteractionSave();
+
+            int id = interactionSaveList.Count > 0 ? (interactionSaveList[interactionSaveList.Count - 1].Id + 1) : 1;
+
+            interactionSave.Id = id;
+
+            interactionSave.interactionId = interaction.Id;
+
+            interactionSaveList.Add(interactionSave);
         }
     }
 

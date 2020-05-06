@@ -40,10 +40,10 @@ public class WorldDataManager : IDataManager
 
     public List<IDataElement> GetDataElements(SearchProperties searchProperties)
     {
-        regionType = ((RegionController)DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataController).regionType;
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.World>().First();
 
+        regionType = searchParameters.regionType;
+        
         GetRegionData(searchParameters);
 
         if (regionDataList.Count == 0) return new List<IDataElement>();
@@ -130,11 +130,9 @@ public class WorldDataManager : IDataManager
                     from worldInteractableData  in worldInteractableDataList
                     join taskData               in taskDataList             on worldInteractableData.Id                 equals taskData.worldInteractableId
                     join interactionData        in interactionDataList      on taskData.Id                              equals interactionData.taskId
-                    join objectGraphicData      in objectGraphicDataList    on worldInteractableData.objectGraphicId    equals objectGraphicData.Id
+                    join interactableData       in interactableDataList     on worldInteractableData.interactableId     equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
-
-                    join leftJoin in (from interactableData in interactableDataList
-                                      select new { interactableData }) on worldInteractableData.interactableId equals leftJoin.interactableData.Id into interactableData
 
                     where interactionData.terrainId == terrainData.Id
                     select new WorldInteractableDataElement()
@@ -143,15 +141,14 @@ public class WorldDataManager : IDataManager
 
                         Type = worldInteractableData.type,
 
-                        InteractableId = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.Id : 0,
-                        ObjectGraphicId = objectGraphicData.Id,
+                        InteractableId = interactableData.Id,
 
                         terrainTileId = interactionData.terrainTileId,
 
                         isDefault = interactionData.isDefault,
                         taskGroup = taskData.Id,
 
-                        interactableName = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.name : objectGraphicData.name,
+                        interactableName = interactableData.name,
 
                         positionX = interactionData.positionX,
                         positionY = interactionData.positionY,
@@ -168,7 +165,8 @@ public class WorldDataManager : IDataManager
                         scaleMultiplier = interactionData.scaleMultiplier,
 
                         animation = interactionData.animation,
-                        
+
+                        objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
                         objectGraphicIconPath = iconData.path,
@@ -184,14 +182,12 @@ public class WorldDataManager : IDataManager
                     from interactionData        in interactionDataList
                     join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.Id
                     join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on worldInteractableData.objectGraphicId    equals objectGraphicData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.interactableId     equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
 
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
-
-                    join leftJoin in (from interactableData in interactableDataList
-                                      select new { interactableData }) on worldInteractableData.interactableId equals leftJoin.interactableData.Id into interactableData
 
                     where interactionData.terrainId == terrainData.Id
                     select new InteractionDataElement()
@@ -396,7 +392,7 @@ public class WorldDataManager : IDataManager
     internal void GetObjectGraphicData()
     {
         var objectGraphicSearchParameters = new Search.ObjectGraphic();
-        objectGraphicSearchParameters.id = worldInteractableDataList.Select(x => x.objectGraphicId).Distinct().ToList().Union(worldObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList().Union(worldObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
 
         objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
     }

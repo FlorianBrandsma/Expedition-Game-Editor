@@ -70,20 +70,16 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void SetElement(SelectionElement element)
     {
-        RectTransform rect = element.GetComponent<RectTransform>();
+        element.RectTransform.sizeDelta = new Vector2(element.RectTransform.sizeDelta.x, ElementSize.y);
+
+        element.RectTransform.anchorMax = new Vector2(1, 1);
 
         int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
-        rect.anchorMax = new Vector2(1, 1);
-
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ElementSize.y);
-
-        rect.transform.localPosition = GetElementPosition(index);
-
+        element.transform.localPosition = GetElementPosition(index);
+        
         element.gameObject.SetActive(true);
 
         element.SetElement();
-
         element.SetOverlay();
     }
 

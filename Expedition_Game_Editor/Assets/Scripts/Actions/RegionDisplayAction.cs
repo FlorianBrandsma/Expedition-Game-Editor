@@ -13,10 +13,9 @@ public class RegionDisplayAction : MonoBehaviour, IAction
 
     public void SetAction(Path path)
     {
-        var dropdown = ActionManager.instance.AddDropdown(actionProperties);
-
         RegionDisplayManager.activeDisplay = (RegionDisplayManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
 
+        var dropdown = ActionManager.instance.AddDropdown(actionProperties);
         dropdown.Dropdown.captionText.text = Enum.GetName(typeof(RegionDisplayManager.Display), RegionDisplayManager.activeDisplay);
 
         foreach (var display in Enum.GetValues(typeof(RegionDisplayManager.Display)))

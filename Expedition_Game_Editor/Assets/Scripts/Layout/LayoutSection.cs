@@ -8,42 +8,34 @@ using System.Linq;
 
 public class LayoutSection : MonoBehaviour
 {
-    [HideInInspector]
-    public bool active;
+    public bool Active                                  { get; set; }
+    
+    public EditorForm EditorForm                        { get; set; }
 
-    [HideInInspector]
-    public EditorForm editorForm;
+    public EditorController TargetController            { get; set; }
+    public EditorController PreviousTargetController    { get; set; }
+    public EditorController DisplayTargetController     { get; set; }
 
-    [HideInInspector]
-    public EditorController displayTargetController;
-
-    [HideInInspector]
-    public EditorController targetController;
-
-    [HideInInspector]
-    public EditorController previousTargetController;
-
-    [HideInInspector]
-    public GeneralData previousTargetControllerData;
-
-    [HideInInspector]
-    public LayoutDependency targetView;
+    public GeneralData PreviousTargetControllerData     { get; set; }
+    
+    public LayoutDependency TargetView                  { get; set; }
 
     public bool Loaded
     {
         get
         {
-            if (!editorForm.loaded)
+            if (!EditorForm.loaded)
                 return false;
 
             if (RenderManager.loadType == Enums.LoadType.Reload)
                 return false;
 
-            if (targetController != previousTargetController)
+            //Empty editor controllers are added to enforce loading (e.g. items, interactables)
+            if (TargetController != PreviousTargetController)
                 return false;
 
-            if (previousTargetControllerData != null)
-                return targetController.PathController.route.GeneralData.Equals(previousTargetControllerData);
+            if (PreviousTargetControllerData != null)
+                return TargetController.PathController.route.GeneralData.Equals(PreviousTargetControllerData);
 
             return false;
         }
@@ -61,7 +53,7 @@ public class LayoutSection : MonoBehaviour
 
     public void InitializeSection(EditorForm editorForm)
     {
-        this.editorForm = editorForm;
+        this.EditorForm = editorForm;
 
         if (buttonActionManager != null)
             buttonActionManager.InitializeButtons(this);
@@ -69,31 +61,31 @@ public class LayoutSection : MonoBehaviour
 
     public void InitializeLayout()
     {
-        if (targetView == null) return;
+        if (TargetView == null) return;
 
-        targetView.InitializeDependency();       
+        TargetView.InitializeDependency();       
     }
 
     public void SetLayout()
     {
-        if (targetView == null) return;
+        if (TargetView == null) return;
 
         //Adjust size of dependency content based on active headers and footers
-        targetView.SetDependency(); 
+        TargetView.SetDependency(); 
     }
 
     public void Activate()
     {
-        active = true;
+        Active = true;
     }
 
     public void OpenEditor()
     {
-        if (targetController == null) return;
+        if (TargetController == null) return;
 
-        displayTargetController = targetController;
+        DisplayTargetController = TargetController;
 
-        displayTargetController.OpenSegments();
+        DisplayTargetController.OpenSegments();
 
         SetActionButtons();
     }
@@ -108,36 +100,36 @@ public class LayoutSection : MonoBehaviour
 
     public void ClosePath()
     {
-        if (targetController == null) return;
+        if (TargetController == null) return;
 
         if (buttonActionManager != null)
             buttonActionManager.CloseButtons();
 
-        previousTargetController = targetController;
-        previousTargetControllerData = (GeneralData)targetController.PathController.route.data.dataElement;
+        PreviousTargetController = TargetController;
+        PreviousTargetControllerData = (GeneralData)TargetController.PathController.route.data.dataElement;
         
-        targetController = null;
+        TargetController = null;
 
-        active = false;
+        Active = false;
     }
 
     public void CloseLayoutDependencies()
     {
-        if (targetView == null) return;
+        if (TargetView == null) return;
         
-        targetView.CloseDependency();
+        TargetView.CloseDependency();
         
-        targetView = null;
+        TargetView = null;
     }
 
     public void CloseEditorSegments()
     {
-        if (displayTargetController == null) return;
+        if (DisplayTargetController == null) return;
 
-        previousTargetController = displayTargetController;
-        previousTargetControllerData = (GeneralData)displayTargetController.PathController.route.data.dataElement;
+        PreviousTargetController = DisplayTargetController;
+        PreviousTargetControllerData = (GeneralData)DisplayTargetController.PathController.route.data.dataElement;
 
-        displayTargetController.CloseSegments();
+        DisplayTargetController.CloseSegments();
     }
 
     public void ApplyChanges()
@@ -159,7 +151,7 @@ public class LayoutSection : MonoBehaviour
                                 .ForEach(x => x.SelectionElement.UpdateElement());
         }
         
-        if (!active) dataEditor = null;
+        if (!Active) dataEditor = null;
     }
 
     public void CloseEditor()

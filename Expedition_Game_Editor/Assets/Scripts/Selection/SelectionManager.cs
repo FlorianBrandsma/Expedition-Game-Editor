@@ -21,7 +21,8 @@ static public class SelectionManager
         Enter,
         Open,
         Toggle,
-        OpenOutcomeEditor
+        OpenOutcomeEditor,
+        LoadGameSave
     }
 
     static public List<Route> routeList = new List<Route>();
@@ -36,11 +37,11 @@ static public class SelectionManager
         {
             foreach (LayoutSection section in form.editorSections)
             {
-                if (!section.active) continue;
+                if (!section.Active) continue;
 
                 //For each section, add the target controller's route to a list so
                 //that it can be used for finding the elements that should be selected
-                routeList.Add(section.targetController.PathController.route);
+                routeList.Add(section.TargetController.PathController.route);
             }
         }
     }

@@ -25,8 +25,6 @@ public class EditorForm : MonoBehaviour
     public Path previousPath;
 
     public Path activeViewPath = new Path();
-    
-    private bool hasActions;
 
     public void InitializeForm()
     {
@@ -144,7 +142,7 @@ public class EditorForm : MonoBehaviour
             if (editorSection.dataEditor == null) continue;
 
             //If section is inactive or the section's editor doesn't match the previous editor
-            if (!editorSection.active || !MatchPrevious(editorSection))
+            if (!editorSection.Active || !MatchPrevious(editorSection))
                 editorSection.CancelEdit();
         }
     }
@@ -169,19 +167,14 @@ public class EditorForm : MonoBehaviour
     public void SetActions(Path path)
     {
         //Activate all components along the path and sort them
-        hasActions = baseController.SetActions(path);
+        baseController.SetActions(path);
 
-        if (hasActions)
-            ActionManager.instance.SortActions();    
+        ActionManager.instance.SortActions();    
     }
 
     private void CloseActions()
     {
-        if (hasActions)
-        {
-            ActionManager.instance.CloseActions();
-            hasActions = false;
-        }
+        ActionManager.instance.CloseActions();
     }
     
     #region Layout
@@ -209,10 +202,10 @@ public class EditorForm : MonoBehaviour
     {
         foreach (LayoutSection editorSection in editorSections)
         {
-            if (editorSection.targetController != null)
-                editorSection.targetController.InitializeController();
+            if (editorSection.TargetController != null)
+                editorSection.TargetController.InitializeController();
             else
-                editorSection.previousTargetController = null;
+                editorSection.PreviousTargetController = null;
         }
     }
 
@@ -220,7 +213,7 @@ public class EditorForm : MonoBehaviour
     {
         foreach (LayoutSection section in editorSections)
         {
-            if (section.targetController == null) continue;
+            if (section.TargetController == null) continue;
 
             section.Activate();
         }

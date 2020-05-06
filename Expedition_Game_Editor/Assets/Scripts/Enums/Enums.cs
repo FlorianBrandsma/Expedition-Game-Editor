@@ -30,7 +30,15 @@ public class Enums
         Task,
         Interaction,
         Outcome,
-        World
+        World,
+        Game,
+        GameSave,
+        ChapterSave,
+        PhaseSave,
+        QuestSave,
+        ObjectiveSave,
+        TaskSave,
+        InteractionSave
     }
 
     public enum DataCategory
@@ -68,8 +76,8 @@ public class Enums
 
     public enum InteractableType
     {
-        Characters,
-        Objects
+        Character,
+        Object
     }
 
     public enum OutcomeType
@@ -82,7 +90,8 @@ public class Enums
     {
         Base,
         Phase,
-        Interaction
+        Interaction,
+        Game
     }
 
     public enum DisplayType

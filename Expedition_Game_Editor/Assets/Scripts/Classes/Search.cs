@@ -55,6 +55,7 @@ public class Search
         public RequestType requestType;
     }
 
+    [System.Serializable]
     public class Interactable
     {
         public List<int> id = new List<int>();
@@ -272,6 +273,8 @@ public class Search
         public List<int> regionId = new List<int>();
         public List<int> objectiveId = new List<int>();
 
+        public Enums.RegionType regionType;
+
         public enum RequestType
         {
             Custom
@@ -342,6 +345,34 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> regionId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class GameSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> gameId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class ChapterSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> gameSaveId = new List<int>();
 
         public enum RequestType
         {

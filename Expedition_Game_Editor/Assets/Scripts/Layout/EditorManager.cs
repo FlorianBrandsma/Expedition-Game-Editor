@@ -1,29 +1,22 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 public class EditorManager : MonoBehaviour
 {
-    static public EditorManager instance;
-    
     private void Awake()
     {
-        instance = this;
-
         if (!GlobalManager.loaded)
         {
-            GlobalManager.programType = GlobalManager.ProgramType.Editor;
+            GlobalManager.programType = GlobalManager.Scenes.Editor;
 
-            SceneManager.LoadScene("Global");
+            GlobalManager.OpenScene(GlobalManager.Scenes.Global);
+
             return;
         }
     }
 
     private void Start()
     {
-        RenderManager.Render(new PathManager.Main().Initialize());
+        RenderManager.Render(new PathManager.Editor().Initialize());
     }
 
     public void PreviousPath()
@@ -31,6 +24,3 @@ public class EditorManager : MonoBehaviour
         RenderManager.PreviousPath();
     }
 }
-
-
-

@@ -112,7 +112,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             var dataType = actionData.data.dataController.DataType;
 
             var route = PathController.route.path.FindLastRoute(dataType);
-            var mainRoute = PathController.layoutSection.editorForm.activePath.FindLastRoute(dataType);
+            var mainRoute = PathController.layoutSection.EditorForm.activePath.FindLastRoute(dataType);
 
             if (route.GeneralData.Id != mainRoute.GeneralData.Id)
                 actionData.data.dataElement = mainRoute.data.dataElement;
@@ -498,7 +498,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             SelectValidInteraction(actionData);
 
-            PathController.layoutSection.editorForm.activePath.ReplaceAllData(actionData.data);
+            PathController.layoutSection.EditorForm.activePath.ReplaceAllData(actionData.data);
 
         } else {
 

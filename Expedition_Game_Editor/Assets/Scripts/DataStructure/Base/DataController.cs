@@ -53,24 +53,11 @@ public class DataController : IDataController
 
         switch (resultDataElement.DataType)
         {
-            case Enums.DataType.ObjectGraphic:
-
-                var objectGraphicData = (ObjectGraphicDataElement)resultDataElement;
-
-                worldInteractableData.ObjectGraphicId = objectGraphicData.Id;
-
-                worldInteractableData.interactableName = objectGraphicData.Name;
-                worldInteractableData.objectGraphicIconPath = objectGraphicData.iconPath;
-                worldInteractableData.objectGraphicPath = objectGraphicData.Path;
-
-                break;
-
             case Enums.DataType.Interactable:
 
                 var interactableData = (InteractableDataElement)resultDataElement;
 
                 worldInteractableData.InteractableId = interactableData.Id;
-                worldInteractableData.ObjectGraphicId = interactableData.ObjectGraphicId;
 
                 worldInteractableData.interactableName = interactableData.Name;
                 worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;

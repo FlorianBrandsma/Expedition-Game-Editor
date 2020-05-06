@@ -50,6 +50,9 @@ public class SearchProperties
             case Enums.DataType.Outcome:            searchParameters = new[] { new Search.Outcome() };              break;
             case Enums.DataType.World:              searchParameters = new[] { new Search.World() };                break;
 
+            case Enums.DataType.GameSave:           searchParameters = new[] { new Search.GameSave() };             break;
+            case Enums.DataType.ChapterSave:        searchParameters = new[] { new Search.ChapterSave() };          break;
+
             default: Debug.Log("CASE MISSING: " + dataType); break;
         }
     }

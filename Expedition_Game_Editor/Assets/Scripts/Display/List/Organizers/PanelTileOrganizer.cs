@@ -70,41 +70,19 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             //
 
             SetElement(panelTile.Element);
-
-            //SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent, 
-            //                                                                Enums.ElementType.PanelTile, DisplayManager, 
-            //                                                                DisplayManager.Display.SelectionType,
-            //                                                                DisplayManager.Display.SelectionProperty);
-            //ElementList.Add(element);
-
-            //data.SelectionElement = element;
-            //element.data = new SelectionElement.Data(DataController, data);
-
-            //element.GetComponent<ExPanelTile>().InitializeChildElement();
-
-            ////Debugging
-            //GeneralData generalData = (GeneralData)data;
-            //element.name = generalData.DebugName + generalData.Id;
-            ////
-
-            //SetElement(element);
         }
     }
     
     private void SetElement(SelectionElement element)
     {
-        RectTransform rect = element.GetComponent<RectTransform>();
+        element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
         int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
-
-        rect.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
-
-        rect.transform.localPosition = GetElementPosition(index);
-
+        element.transform.localPosition = GetElementPosition(index);
+        
         element.gameObject.SetActive(true);
 
         element.SetElement();
-
         element.SetOverlay();
     }
 
