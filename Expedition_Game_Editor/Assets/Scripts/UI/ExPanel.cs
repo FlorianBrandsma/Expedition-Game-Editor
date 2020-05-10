@@ -122,6 +122,11 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
             case Enums.DataType.GameSave:           SetGameSaveElement();           break;
             case Enums.DataType.ChapterSave:        SetChapterSaveElement();        break;
+            case Enums.DataType.PhaseSave:          SetPhaseSaveElement();          break;
+            case Enums.DataType.QuestSave:          SetQuestSaveElement();          break;
+            case Enums.DataType.ObjectiveSave:      SetObjectiveSaveElement();      break;
+            case Enums.DataType.TaskSave:           SetTaskSaveElement();           break;
+            case Enums.DataType.InteractionSave:    SetInteractionSaveElement();    break;
             
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType);  break;
         }
@@ -427,6 +432,67 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var dataElement = (ChapterSaveDataElement)data.dataElement;
 
         header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetPhaseSaveElement()
+    {
+        var dataElement = (PhaseSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetQuestSaveElement()
+    {
+        var dataElement = (QuestSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetObjectiveSaveElement()
+    {
+        var dataElement = (ObjectiveSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetTaskSaveElement()
+    {
+        var dataElement = (TaskSaveDataElement)data.dataElement;
+
+        header = dataElement.name;
+        description = dataElement.publicNotes;
+
+        idText.text = dataElement.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetInteractionSaveElement()
+    {
+        var dataElement = (InteractionSaveDataElement)data.dataElement;
+
+        header = dataElement.isDefault ? "Default" : TimeManager.FormatTime(dataElement.startTime, true) + " - " + TimeManager.FormatTime(dataElement.endTime);
+
         description = dataElement.publicNotes;
 
         idText.text = dataElement.Id.ToString();

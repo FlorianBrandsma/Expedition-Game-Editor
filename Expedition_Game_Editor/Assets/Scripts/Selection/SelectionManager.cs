@@ -22,7 +22,8 @@ static public class SelectionManager
         Open,
         Toggle,
         OpenOutcomeEditor,
-        LoadGameSave
+        LoadGameSave,
+        OpenDataCharacters
     }
 
     static public List<Route> routeList = new List<Route>();

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameDisplayManager : MonoBehaviour
 {
@@ -12,11 +10,11 @@ public class GameDisplayManager : MonoBehaviour
 
     static public Display activeDisplay = Display.Game;
 
-    static public void SetDisplay(int display, Route route)
+    static public void SetDisplay(int display, Path path)
     {
         activeDisplay = (Display)display;
 
-        var path = new PathManager.GameDisplay(route).Open();
+        HistoryManager.ClearHistory();
 
         RenderManager.Render(path);
     }

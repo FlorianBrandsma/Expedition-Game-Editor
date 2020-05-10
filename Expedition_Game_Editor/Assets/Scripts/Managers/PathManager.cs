@@ -8,7 +8,6 @@ public class PathManager
     #region Paths
 
     #region Global
-
     public class Form
     {
         EditorForm form;
@@ -25,11 +24,9 @@ public class PathManager
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
         }
     }
-
     #endregion
 
     #region Editor
-
     public class Editor
     {
         EditorForm form = RenderManager.layoutManager.forms[0];
@@ -65,21 +62,30 @@ public class PathManager
         {
             route.controller = enter;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            newPath.type = path.type;
+
+            return newPath;
         }
 
         public Path Edit()
         {
             route.controller = edit;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            newPath.type = path.type;
+
+            return newPath;
         }
 
         public Path Open()
         {
             route.controller = open;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            newPath.type = path.type;
+
+            return newPath;
         }
     }
 
@@ -147,7 +153,6 @@ public class PathManager
     #endregion
 
     #region Item
-
     public class Item
     {
         SelectionElement selection;
@@ -189,11 +194,9 @@ public class PathManager
             return CreatePath(CreateRoutes(get, route, selection.selectionStatus), form);
         }
     }
-
     #endregion
 
     #region Interactable
-
     public class Interactable
     {
         SelectionElement selection;
@@ -208,6 +211,8 @@ public class PathManager
         {
             this.selection = selection;
 
+            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+
             this.route = route;
 
             var interactableDataElement = (InteractableDataElement)selection.data.dataElement;
@@ -220,8 +225,7 @@ public class PathManager
         {
             route.controller = enter;
             //Looks convoluted
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
-
+            
             EditorForm form = RenderManager.layoutManager.forms[0];
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
         }
@@ -229,7 +233,20 @@ public class PathManager
         public Path Edit()
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
+
             return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
+        }
+
+        public Path OpenDataCharacters()
+        {
+            EditorForm form = RenderManager.layoutManager.forms[0];
+
+            var controllers = new List<int> { 0, 1, 1, 0 };
+
+            Path newPath = CreatePath(CreateRoutes(controllers, route, selection.selectionStatus), form);
+            newPath.type = path.type;
+
+            return newPath;
         }
 
         public Path Get()
@@ -426,7 +443,10 @@ public class PathManager
 
             path = selection.DisplayManager.Display.DataController.SegmentController.Path;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+            newPath.type = path.type;
+
+            return newPath;
         }
 
         public Path Open()
@@ -464,7 +484,6 @@ public class PathManager
     #endregion
 
     #region Options
-
     public class Option
     {
         SelectionElement selection;
@@ -485,11 +504,9 @@ public class PathManager
             return CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
         }
     }
-
     #endregion
 
     #region Search
-
     public class Search
     {
         SelectionElement selection;
@@ -511,13 +528,11 @@ public class PathManager
             return CreatePath(CreateRoutes(controllers, route, selection.selectionStatus), form);
         }
     }
-
     #endregion
 
     #endregion
 
     #region Game
-
     public class Game
     {
         EditorForm form = RenderManager.layoutManager.forms[3];
@@ -548,7 +563,7 @@ public class PathManager
         Path path;
         Route route;
 
-        List<int> enter = new List<int>() { 0, 0, 0 };
+        List<int> enter = new List<int>() { 0 };
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
@@ -569,43 +584,16 @@ public class PathManager
             HistoryManager.ClearHistory();
             
             path = CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
-
             path.type = Path.Type.New;
 
             return path;
         }
-
-        
     }
-
-    public class GameDisplay
-    {
-        Path path;
-        Route route;
-
-        List<int> open = new List<int>() { 0, (int)GameDisplayManager.activeDisplay, 0 };
-
-        EditorForm form = RenderManager.layoutManager.forms[0];
-
-        public GameDisplay(Route route)
-        {
-            this.route = route;
-        }
-        
-        public Path Open()
-        {
-            path = CreatePath(CreateRoutes(open, route, Enums.SelectionStatus.None), form);
-
-            return path;
-        }
-    }
-
     #endregion
 
     #endregion
 
     #region Methods
-
     static public List<Route> CreateRoutes(List<int> controllers, EditorForm form, Enums.SelectionStatus selectionStatus)
     {
         return CreateRoutes(controllers, new Route(form.activePath), selectionStatus);
@@ -653,10 +641,11 @@ public class PathManager
 
         newPath.start = path.start;
 
+        newPath.type = path.type;
+
         RenderManager.loadType = Enums.LoadType.Reload;
 
         return newPath;
     }
-
     #endregion
 }

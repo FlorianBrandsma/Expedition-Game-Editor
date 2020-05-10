@@ -79,7 +79,7 @@ public class ActionManager : MonoBehaviour
 
         SetLeftElements(leftElements);
         SetRightElements(rightElements);
-        
+
         //Set main parent size according to the combined sizes of the left and right elements
         SetMainSize(leftOffset, rightOffset, mainSize);
 
@@ -136,9 +136,9 @@ public class ActionManager : MonoBehaviour
         main_content.offsetMax = new Vector2(element_parent.offsetMax.x - rightOffset, main_content.offsetMax.y);
 
         float parentWidth = main_parent.parent.GetComponent<RectTransform>().rect.width;
-
+        
         main_parent.offsetMax = new Vector2(-parentWidth + mainSize, 0);
-
+        
         if (mainSize > parentWidth)
             ActivateSlider();
     }
@@ -233,7 +233,7 @@ public class ActionManager : MonoBehaviour
 
     private void CloseSlider()
     {
-        //scrollRect.horizontalNormalizedPosition = 1f;
+        scrollRect.horizontalNormalizedPosition = 1f;
 
         scrollRect.enabled = false;
 
@@ -247,7 +247,6 @@ public class ActionManager : MonoBehaviour
     }
 
     #region Spawners
-
     private ExDropdown SpawnDropdown()
     {
         var prefab = Resources.Load<ExDropdown>("UI/Dropdown");

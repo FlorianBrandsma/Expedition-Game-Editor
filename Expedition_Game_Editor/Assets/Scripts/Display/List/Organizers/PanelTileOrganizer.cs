@@ -137,6 +137,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     
     public void ClearOrganizer()
     {
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

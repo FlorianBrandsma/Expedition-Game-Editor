@@ -108,8 +108,7 @@ public class SelectionElement : MonoBehaviour
 
         //Can be overwritten
         data.dataController = DisplayManager.Display.DataController;
-
-
+        
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
 
@@ -258,7 +257,11 @@ public class SelectionElement : MonoBehaviour
 
                 break;
 
-            default: Debug.Log("CASE MISSING"); break;
+            case SelectionManager.Property.OpenDataCharacters:
+                RenderManager.Render(editorPath.path);
+                break;
+
+            default: Debug.Log("CASE MISSING: " + selectionProperty); break;
         }
     }
 

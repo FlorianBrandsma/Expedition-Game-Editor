@@ -43,8 +43,8 @@ public class GameSaveDataManager : IDataManager
 
         foreach (Fixtures.GameSave gameSave in Fixtures.gameSaveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(gameSave.Id))          return;
-            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(gameSave.gameId))  return;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(gameSave.Id))          continue;
+            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(gameSave.gameId))  continue;
 
             var gameSaveData = new GameSaveData();
 

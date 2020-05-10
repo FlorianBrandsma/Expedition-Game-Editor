@@ -129,7 +129,8 @@ public class Enums
         TabHorizontal,
         TabVertical,
         Header,
-        PagingButton
+        PagingButton,
+        FormButton
     }
 
     public enum ElementStatus

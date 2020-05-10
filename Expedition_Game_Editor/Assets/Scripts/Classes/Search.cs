@@ -373,6 +373,85 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> gameSaveId = new List<int>();
+        public List<int> chapterId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class PhaseSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> chapterSaveId = new List<int>();
+        public List<int> phaseId = new List<int>();
+
+        public List<int> questId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class QuestSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> phaseSaveId = new List<int>();
+        public List<int> questId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class ObjectiveSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> questSaveId = new List<int>();
+        public List<int> objectiveId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class TaskSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> objectiveSaveId = new List<int>();
+        public List<int> worldInteractableId = new List<int>();
+        public List<int> taskId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class InteractionSave
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> taskSaveId = new List<int>();
+        public List<int> interactionId = new List<int>();
 
         public enum RequestType
         {

@@ -19,11 +19,6 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Methods
-    public void Awake()
-    {
-        SelectionElementManager.Add(selectionElement);
-    }
-
     public void UpdateName()
     {
         var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
@@ -78,6 +73,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         selectionElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
         selectionElement.data.dataElement = iconDataElement;
 
+        SelectionElementManager.Add(selectionElement);
         SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         var searchProperties = SegmentController.DataController.SearchProperties;
@@ -94,6 +90,8 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void CloseSegment()
     {
+        SelectionElementManager.elementPool.Remove(selectionElement);
+
         gameObject.SetActive(false);
     }
 

@@ -138,18 +138,23 @@ public class DataManager
         return dataList;
     }
 
-    public List<PhaseData> GetPhaseData(int chapterId, bool searchById = false)
+    public List<PhaseData> GetPhaseData(Search.Phase searchParameters)
     {
         var dataList = new List<PhaseData>();
 
         foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchById && chapterId != phase.chapterId) continue;
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
 
             var data = new PhaseData();
 
             data.Id = phase.Id;
             data.chapterId = phase.chapterId;
+
+            data.name = phase.name;
+
+            data.publicNotes = phase.publicNotes;
+            data.privateNotes = phase.privateNotes;
 
             dataList.Add(data);
         }
@@ -194,6 +199,11 @@ public class DataManager
 
             data.phaseId = quest.phaseId;
 
+            data.name = quest.name;
+
+            data.publicNotes = quest.publicNotes;
+            data.privateNotes = quest.privateNotes;
+
             dataList.Add(data);
         }
 
@@ -213,6 +223,11 @@ public class DataManager
             data.Id = objective.Id;
 
             data.questId = objective.questId;
+
+            data.name = objective.name;
+
+            data.publicNotes = objective.publicNotes;
+            data.privateNotes = objective.privateNotes;
 
             dataList.Add(data);
         }
@@ -265,6 +280,11 @@ public class DataManager
 
             data.worldInteractableId = task.worldInteractableId;
             data.objectiveId = task.objectiveId;
+
+            data.name = task.name;
+
+            data.publicNotes = task.publicNotes;
+            data.privateNotes = task.privateNotes;
 
             dataList.Add(data);
         }
@@ -542,6 +562,11 @@ public class DataManager
     public class PhaseData : GeneralData
     {
         public int chapterId;
+
+        public string name;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class PhaseInteractableData : GeneralData
@@ -554,11 +579,21 @@ public class DataManager
     public class QuestData : GeneralData
     {
         public int phaseId;
+
+        public string name;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class ObjectiveData : GeneralData
     {
         public int questId;
+
+        public string name;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class WorldInteractableData : GeneralData
@@ -575,6 +610,11 @@ public class DataManager
     {
         public int worldInteractableId;
         public int objectiveId;
+
+        public string name;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class InteractionData : GeneralData

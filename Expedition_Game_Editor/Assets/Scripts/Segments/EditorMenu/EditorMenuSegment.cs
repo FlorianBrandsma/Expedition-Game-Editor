@@ -34,6 +34,11 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
         GlobalManager.OpenScene(GlobalManager.Scenes.Game);
     }
 
+    public void ExitEditor()
+    {
+        GlobalManager.CloseApplication();
+    }
+
     public void ApplySegment() { }
 
     public void CloseSegment()

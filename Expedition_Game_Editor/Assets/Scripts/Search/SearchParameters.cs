@@ -52,6 +52,11 @@ public class SearchProperties
 
             case Enums.DataType.GameSave:           searchParameters = new[] { new Search.GameSave() };             break;
             case Enums.DataType.ChapterSave:        searchParameters = new[] { new Search.ChapterSave() };          break;
+            case Enums.DataType.PhaseSave:          searchParameters = new[] { new Search.PhaseSave() };            break;
+            case Enums.DataType.QuestSave:          searchParameters = new[] { new Search.QuestSave() };            break;
+            case Enums.DataType.ObjectiveSave:      searchParameters = new[] { new Search.ObjectiveSave() };        break;
+            case Enums.DataType.TaskSave:           searchParameters = new[] { new Search.TaskSave() };             break;
+            case Enums.DataType.InteractionSave:    searchParameters = new[] { new Search.InteractionSave() };      break;
 
             default: Debug.Log("CASE MISSING: " + dataType); break;
         }

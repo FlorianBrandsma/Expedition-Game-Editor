@@ -94,11 +94,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Methods
-    public void Awake()
-    {
-        SelectionElementManager.Add(selectionElement);
-    }
-
     public void UpdateName()
     {
         Name = inputField.text;
@@ -123,6 +118,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
+        
+
         selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
 
         var objectGraphicDataElement = new ObjectGraphicDataElement();
@@ -194,6 +191,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         objectGraphicDataElement.Path       = objectGraphicPath;
         objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
+        SelectionElementManager.Add(selectionElement);
         SelectionManager.SelectData(selectionElement.data.dataController.DataList);
 
         selectionElement.SetElement();
@@ -206,6 +204,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         if (indexSwitch != null)
             indexSwitch.Deactivate();
+
+        SelectionElementManager.elementPool.Remove(selectionElement);
 
         gameObject.SetActive(false);
     }

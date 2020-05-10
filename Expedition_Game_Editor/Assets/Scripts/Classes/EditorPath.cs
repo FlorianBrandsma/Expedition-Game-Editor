@@ -194,6 +194,9 @@ public class EditorPath
                 if (selection.selectionProperty == SelectionManager.Property.Edit)
                     path = interactable.Edit();
 
+                if (selection.selectionProperty == SelectionManager.Property.OpenDataCharacters)
+                    path = interactable.OpenDataCharacters();
+
                 break;
 
             case Enums.DataType.Option:
@@ -228,6 +231,82 @@ public class EditorPath
                 //    path = chapterSave.Open();
 
                 break;
+
+            case Enums.DataType.PhaseSave:
+
+                PathManager.Structure phaseSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = phaseSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = phaseSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
+
+            case Enums.DataType.QuestSave:
+
+                PathManager.Structure questSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = questSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = questSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
+
+            case Enums.DataType.ObjectiveSave:
+
+                PathManager.Structure objectiveSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = objectiveSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = objectiveSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
+
+            case Enums.DataType.TaskSave:
+
+                PathManager.Structure taskSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = taskSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = taskSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
+
+            case Enums.DataType.InteractionSave:
+
+                PathManager.Structure interactionSave = new PathManager.Structure(selection, route);
+
+                if (selection.selectionProperty == SelectionManager.Property.Enter)
+                    path = interactionSave.Enter();
+
+                if (selection.selectionProperty == SelectionManager.Property.Edit)
+                    path = interactionSave.Edit();
+
+                //if (selection.selectionProperty == SelectionManager.Property.Open)
+                //    path = chapterSave.Open();
+
+                break;
+
             default: Debug.Log("CASE MISSING: " + selection.GeneralData.DataType); break;
         }
     }

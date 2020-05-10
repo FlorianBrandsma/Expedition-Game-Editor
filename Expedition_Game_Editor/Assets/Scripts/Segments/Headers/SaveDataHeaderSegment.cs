@@ -38,11 +38,11 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.ChapterSave:        InitializeChapterSaveData();        break;
-            //case Enums.DataType.PhaseSave:          InitializePhaseSaveData();          break;
-            //case Enums.DataType.QuestSave:          InitializeQuestSaveData();          break;
-            //case Enums.DataType.ObjectiveSave:      InitializeObjectiveSaveData();      break;
-            //case Enums.DataType.TaskSave:           InitializeTaskSaveData();           break;
-            //case Enums.DataType.InteractionSave:    InitializeInteractionSaveData();    break;
+            case Enums.DataType.PhaseSave:          InitializePhaseSaveData();          break;
+            case Enums.DataType.QuestSave:          InitializeQuestSaveData();          break;
+            case Enums.DataType.ObjectiveSave:      InitializeObjectiveSaveData();      break;
+            case Enums.DataType.TaskSave:           InitializeTaskSaveData();           break;
+            case Enums.DataType.InteractionSave:    InitializeInteractionSaveData();    break;
             
 
             default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
@@ -51,57 +51,57 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterSaveData()
     {
-        var chapterData = (ChapterSaveDataElement)DataEditor.Data.dataElement;
+        var chapterSaveData = (ChapterSaveDataElement)DataEditor.Data.dataElement;
 
-        id = chapterData.Id;
-        index = chapterData.Index;
-        name = chapterData.name;
+        id = chapterSaveData.Id;
+        index = chapterSaveData.Index;
+        name = chapterSaveData.name;
     }
 
-    //private void InitializePhaseSaveData()
-    //{
-    //    var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+    private void InitializePhaseSaveData()
+    {
+        var phaseSaveData = (PhaseSaveDataElement)DataEditor.Data.dataElement;
 
-    //    id = phaseData.Id;
-    //    index = phaseData.Index;
-    //    name = phaseData.Name;
-    //}
+        id = phaseSaveData.Id;
+        index = phaseSaveData.Index;
+        name = phaseSaveData.name;
+    }
 
-    //private void InitializeQuestSaveData()
-    //{
-    //    var questData = (QuestDataElement)DataEditor.Data.dataElement;
+    private void InitializeQuestSaveData()
+    {
+        var questSaveData = (QuestSaveDataElement)DataEditor.Data.dataElement;
 
-    //    id = questData.Id;
-    //    index = questData.Index;
-    //    name = questData.Name;
-    //}
+        id = questSaveData.Id;
+        index = questSaveData.Index;
+        name = questSaveData.name;
+    }
 
-    //private void InitializeObjectiveSaveData()
-    //{
-    //    var objectiveData = (ObjectiveDataElement)DataEditor.Data.dataElement;
+    private void InitializeObjectiveSaveData()
+    {
+        var objectiveSaveData = (ObjectiveSaveDataElement)DataEditor.Data.dataElement;
 
-    //    id = objectiveData.Id;
-    //    index = objectiveData.Index;
-    //    name = objectiveData.Name;
-    //}
+        id = objectiveSaveData.Id;
+        index = objectiveSaveData.Index;
+        name = objectiveSaveData.name;
+    }
 
-    //private void InitializeTaskSaveData()
-    //{
-    //    var objectiveData = (TaskDataElement)DataEditor.Data.dataElement;
+    private void InitializeTaskSaveData()
+    {
+        var taskSaveData = (TaskSaveDataElement)DataEditor.Data.dataElement;
 
-    //    id = objectiveData.Id;
-    //    index = objectiveData.Index;
-    //    name = objectiveData.Name;
-    //}
+        id = taskSaveData.Id;
+        index = taskSaveData.Index;
+        name = taskSaveData.name;
+    }
 
-    //private void InitializeInteractionSaveData()
-    //{
-    //    var objectiveData = (TaskDataElement)DataEditor.Data.dataElement;
+    private void InitializeInteractionSaveData()
+    {
+        var interactionSaveData = (InteractionSaveDataElement)DataEditor.Data.dataElement;
 
-    //    id = objectiveData.Id;
-    //    index = objectiveData.Index;
-    //    name = objectiveData.Name;
-    //}
+        id = interactionSaveData.Id;
+        index = interactionSaveData.Index;
+        name = interactionSaveData.isDefault ? "Default" : TimeManager.FormatTime(interactionSaveData.startTime, true) + " - " + TimeManager.FormatTime(interactionSaveData.endTime); ;
+    }
 
     public void OpenSegment()
     {

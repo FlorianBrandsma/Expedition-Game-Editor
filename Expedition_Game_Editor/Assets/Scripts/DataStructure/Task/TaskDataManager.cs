@@ -47,9 +47,9 @@ public class TaskDataManager : IDataManager
 
         foreach (Fixtures.Task task in Fixtures.taskList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(task.Id)) continue;
-            if (searchParameters.worldInteractableId.Count > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId)) continue;
-            if (searchParameters.objectiveId.Count > 0 && !searchParameters.objectiveId.Contains(task.objectiveId)) continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId))    continue;
+            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.objectiveId))                    continue;
 
             var taskData = new TaskData();
 

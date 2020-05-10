@@ -26,6 +26,8 @@ public class EditorForm : MonoBehaviour
 
     public Path activeViewPath = new Path();
 
+    //public ActionManager ActionManager { get { return GetComponent<ActionManager>(); } }
+
     public void InitializeForm()
     {
         foreach (LayoutSection section in editorSections)
@@ -105,8 +107,6 @@ public class EditorForm : MonoBehaviour
     public void CloseEditor()
     {
         CloseSectionEditorSegments();
-
-        CloseActions();
     }
 
     public void FinalizePath()
@@ -168,13 +168,6 @@ public class EditorForm : MonoBehaviour
     {
         //Activate all components along the path and sort them
         baseController.SetActions(path);
-
-        ActionManager.instance.SortActions();    
-    }
-
-    private void CloseActions()
-    {
-        ActionManager.instance.CloseActions();
     }
     
     #region Layout

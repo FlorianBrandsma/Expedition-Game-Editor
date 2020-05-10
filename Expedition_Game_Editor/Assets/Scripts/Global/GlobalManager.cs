@@ -24,6 +24,8 @@ public class GlobalManager : MonoBehaviour
 
         Fixtures.LoadFixtures();
 
+        Fixtures.CreateSaveFile();
+
         InitializeScene();
     }
 

@@ -31,6 +31,8 @@ static public class RenderManager
         //Opening view only needs to initialize editors, so lists can be set
         ResetView();
 
+        SortActions();
+
         //Performed at the end so it doesn't interfere with the current (de)activation process
         InitializeSecondaryPaths(path);
     }
@@ -72,7 +74,20 @@ static public class RenderManager
         layoutManager.layers.ForEach(x => x.SetLayout());
 
         layoutManager.forms.ForEach(x => x.CloseEditor());
+
+        CloseActions();
+
         layoutManager.forms.ForEach(x => x.OpenEditor());
+    }
+
+    static public void SortActions()
+    {
+        ActionManager.instance.SortActions();
+    }
+
+    static public void CloseActions()
+    {
+        ActionManager.instance.CloseActions();
     }
 
     static public void CloseForms()

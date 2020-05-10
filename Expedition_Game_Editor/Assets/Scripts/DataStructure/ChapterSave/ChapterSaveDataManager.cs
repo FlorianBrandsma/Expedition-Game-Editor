@@ -56,8 +56,8 @@ public class ChapterSaveDataManager : IDataManager
 
         foreach (Fixtures.ChapterSave chapterSave in Fixtures.chapterSaveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterSave.Id)) return;
-            if (searchParameters.gameSaveId.Count > 0 && !searchParameters.gameSaveId.Contains(chapterSave.gameSaveId)) return;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterSave.Id))                   continue;
+            if (searchParameters.gameSaveId.Count   > 0 && !searchParameters.gameSaveId.Contains(chapterSave.gameSaveId))   continue;
 
             var chapterSaveData = new ChapterSaveData();
 
@@ -65,6 +65,8 @@ public class ChapterSaveDataManager : IDataManager
 
             chapterSaveData.gameSaveId = chapterSave.gameSaveId;
             chapterSaveData.chapterId = chapterSave.chapterId;
+
+            chapterSaveData.complete = chapterSave.complete;
 
             chapterSaveDataList.Add(chapterSaveData);
         }
