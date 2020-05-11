@@ -22,18 +22,7 @@ public class GameSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.World);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.World>().First();
-        searchParameters.regionType = Enums.RegionType.Game;
-
-        //var regionDataElement = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
-        searchParameters.regionId = new List<int>() { 0 };
-
-        //var objectiveRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Objective);
-
-        //if (objectiveRoute == null)
-        //    searchParameters.objectiveId = new List<int>() { 0 };
-
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        //SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
         //regionDataElement.worldDataElement = SegmentController.DataController.DataList.Cast<WorldDataElement>().FirstOrDefault();
     }

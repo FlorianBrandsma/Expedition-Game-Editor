@@ -91,6 +91,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
 
     public void ClearOrganizer()
     {
+        poolObjects.ForEach(x => PoolManager.ClosePoolObject(x));
         ClearCamera();
     }
 
