@@ -29,7 +29,7 @@ public class TimeAction : MonoBehaviour, IAction
             dropdown.Dropdown.options.Add(new Dropdown.OptionData(TimeManager.FormatTime(hour, true)));
         }
 
-        dropdown.Dropdown.value = (int)TimeManager.activeTime;
+        dropdown.Dropdown.value = TimeManager.activeTime;
 
         dropdown.Dropdown.onValueChanged.AddListener(delegate { SetTime(dropdown.Dropdown.value); });
     }

@@ -88,7 +88,7 @@ public class InteractionDataManager : IDataManager
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,
 
-                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0,
+                        defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>(),
 
                     }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
@@ -191,7 +191,7 @@ public class InteractionDataManager : IDataManager
         regionDataList = dataManager.GetRegionData(searchParameters);
     }
 
-    internal int DefaultTime(int taskId)
+    internal List<int> DefaultTimes(int taskId)
     {
         var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
 
@@ -203,9 +203,9 @@ public class InteractionDataManager : IDataManager
 
                              }).ToList();
 
-        var defaultTime = TimeManager.FirstAvailableTime(timeFrameList);
+        var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
 
-        return defaultTime;
+        return defaultTimes;
     }
 
     internal class InteractionData : GeneralData

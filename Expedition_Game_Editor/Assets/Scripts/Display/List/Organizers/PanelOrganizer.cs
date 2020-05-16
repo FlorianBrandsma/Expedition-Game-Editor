@@ -136,10 +136,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

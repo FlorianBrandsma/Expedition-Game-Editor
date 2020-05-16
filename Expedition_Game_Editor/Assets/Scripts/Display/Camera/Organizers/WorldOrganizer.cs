@@ -168,8 +168,6 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
             ScrollRect.content.localPosition.y >= positionTracker.y + worldData.tileSize ||
             ScrollRect.content.localPosition.y <= positionTracker.y - worldData.tileSize)
         {
-            positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
-            
             ClearOrganizer();
 
             worldObjectController.DataList.Clear();
@@ -191,6 +189,8 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     public void SetData()
     {
+        positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
+
         FixLostInteractions();
         FixLostWorldObjects();
 
@@ -274,6 +274,8 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ValidateAtmosphereTime()
     {
+        worldData.terrainDataList.ForEach(x => x.atmosphereDataList.ForEach(y => y.containsActiveTime = false));
+
         worldData.terrainDataList.SelectMany(x => x.atmosphereDataList.GroupBy(y => y.TerrainId)
                                                                       .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
                                                                       .OrderBy(z => z.Default).First())).ToList()
@@ -282,6 +284,8 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ValidateInteractionsTime()
     {
+        worldData.terrainDataList.ForEach(x => x.interactionDataList.ForEach(y => y.containsActiveTime = false));
+
         worldData.terrainDataList.SelectMany(x => x.interactionDataList.GroupBy(y => y.TaskId)
                                                                        .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
                                                                        .OrderBy(z => z.Default).First())).ToList()
@@ -290,6 +294,8 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ValidateWorldInteractablesTime()
     {
+        worldData.terrainDataList.ForEach(x => x.worldInteractableDataList.ForEach(y => y.containsActiveTime = false));
+
         worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.GroupBy(y => y.taskGroup)
                                                                              .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.startTime, z.endTime) || z.isDefault)
                                                                              .OrderBy(z => z.isDefault).First())).ToList()

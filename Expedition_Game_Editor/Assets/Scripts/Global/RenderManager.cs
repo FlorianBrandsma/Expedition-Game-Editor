@@ -124,6 +124,11 @@ static public class RenderManager
 
     static public List<IDataElement> GetData(IDataController dataController, SearchProperties searchProperties)
     {
+        //Cancel the selection of data that is about to be overwritten while it still has active elements.
+        //Results in some double cancel calls, but necessary to do via DataList for selected data without elements
+        if(dataController.DataList != null)
+            SelectionManager.CancelSelection(dataController.DataList);
+
         var dataList = dataController.DataManager.GetDataElements(searchProperties);
 
         var pathController = dataController.SegmentController.editorController.PathController;

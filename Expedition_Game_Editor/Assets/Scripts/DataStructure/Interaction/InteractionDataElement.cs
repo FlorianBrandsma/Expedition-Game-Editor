@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]
 public class InteractionDataElement : InteractionCore, IDataElement
@@ -29,7 +30,7 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
     public bool timeConflict;
     
-    public int defaultTime;
+    public List<int> defaultTimes;
 
     public bool containsActiveTime;
 
@@ -68,7 +69,7 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
         dataElement.timeConflict = timeConflict;
         dataElement.containsActiveTime = containsActiveTime;
-        dataElement.defaultTime = defaultTime;
+        dataElement.defaultTimes = defaultTimes.ToList();
 
         dataElement.worldInteractableId = worldInteractableId;
         dataElement.questId = questId;
@@ -99,8 +100,8 @@ public class InteractionDataElement : InteractionCore, IDataElement
 
         timeConflict = interactionDataSource.timeConflict;
         containsActiveTime = interactionDataSource.containsActiveTime;
-        defaultTime = interactionDataSource.defaultTime;
-
+        defaultTimes = interactionDataSource.defaultTimes.ToList();
+        
         worldInteractableId = interactionDataSource.worldInteractableId;
         questId = interactionDataSource.questId;
         objectiveId = interactionDataSource.objectiveId;

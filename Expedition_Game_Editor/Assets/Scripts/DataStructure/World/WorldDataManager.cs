@@ -234,7 +234,7 @@ public class WorldDataManager : IDataManager
 
                         startPosition = worldStartPosition,
 
-                        defaultTime = interactionData.isDefault ? DefaultTime(taskData.Id) : 0
+                        defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>()
 
                     }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
                     
@@ -429,7 +429,7 @@ public class WorldDataManager : IDataManager
         phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
     }
 
-    internal int DefaultTime(int taskId)
+    internal List<int> DefaultTimes(int taskId)
     {
         var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
 
@@ -441,8 +441,8 @@ public class WorldDataManager : IDataManager
 
                              }).ToList();
         
-        var defaultTime = TimeManager.FirstAvailableTime(timeFrameList);
+        var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
 
-        return defaultTime;
+        return defaultTimes;
     }
 }

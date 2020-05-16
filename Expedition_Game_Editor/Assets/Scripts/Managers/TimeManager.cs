@@ -154,15 +154,24 @@ public class TimeManager : MonoBehaviour
         return (usedFrames < hoursInDay);
     }
 
-    static public int FirstAvailableTime(List<TimeFrame> timeFrameList)
+    static public int DefaultTime(List<int> defaultTimes)
     {
-        for(int i = 0; i < hoursInDay; i++)
+        var defaultTime = defaultTimes.Contains(activeTime) ? activeTime : defaultTimes.First();
+
+        return defaultTime;
+    }
+
+    static public List<int> AvailableTimes(List<TimeFrame> timeFrameList)
+    {
+        var availableTimes = new List<int>();
+
+        for (int i = 0; i < hoursInDay; i++)
         {
             if (!timeFrameList.Any(x => TimeInFrame(i, x.StartTime, x.EndTime)))
-                return i;
+                availableTimes.Add(i);
         }
 
-        return -1;
+        return availableTimes;
     }
 
     static public bool TimeInFrame(int time, int startTime, int endTime)

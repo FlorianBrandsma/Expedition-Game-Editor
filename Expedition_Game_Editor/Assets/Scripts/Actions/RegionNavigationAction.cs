@@ -131,11 +131,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var interactionData = (InteractionDataElement)dataElement;
 
-        var startTime   = interactionData.Default ? interactionData.defaultTime : interactionData.StartTime;
-        var endTime     = interactionData.Default ? interactionData.defaultTime : interactionData.EndTime;
-
+        var startTime   = interactionData.Default ? TimeManager.DefaultTime(interactionData.defaultTimes) : interactionData.StartTime;
+        var endTime     = interactionData.Default ? TimeManager.DefaultTime(interactionData.defaultTimes) : interactionData.EndTime;
+        
         if (!TimeManager.TimeInFrame(TimeManager.activeTime, startTime, endTime))
-            TimeManager.instance.SetTime(startTime);
+            TimeManager.instance.SetTime(startTime);  
     }
     
     private void ResetData(ActionData actionData)
@@ -513,9 +513,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var interactionDataList = actionData.data.dataList.Cast<InteractionDataElement>().ToList();
         var validInteraction = interactionDataList.Where(x => TimeManager.TimeInFrame(TimeManager.activeTime, x.StartTime, x.EndTime) || x.Default).OrderBy(x => x.Default).First();
-
-        if(validInteraction.Default)
-            validInteraction.defaultTime = TimeManager.activeTime;
 
         actionData.data.dataElement = validInteraction;
     }
