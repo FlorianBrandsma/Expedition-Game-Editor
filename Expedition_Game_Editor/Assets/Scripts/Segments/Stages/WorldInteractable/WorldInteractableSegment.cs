@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
+public class WorldInteractableSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -22,7 +22,10 @@ public class ObjectiveInteractableSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
-        searchParameters.objectiveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData.Id };
+        searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
+
+        searchParameters.questId        = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.Id };
+        searchParameters.objectiveId    = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData.Id };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }

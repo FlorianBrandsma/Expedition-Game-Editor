@@ -44,7 +44,7 @@ public class TaskDataManager : IDataManager
     public void GetTaskData(Search.Task searchParameters)
     {
         taskDataList = new List<TaskData>();
-
+        
         foreach (Fixtures.Task task in Fixtures.taskList)
         {
             if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;

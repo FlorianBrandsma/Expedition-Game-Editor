@@ -65,8 +65,6 @@ public class WorldDataManager : IDataManager
         GetObjectiveData();
         GetQuestData();
 
-        GetPhaseInteractableData();
-
         basicWorldData = GetBasicWorldData();
 
         var worldStartPosition = GetWorldStartPosition();
@@ -141,6 +139,11 @@ public class WorldDataManager : IDataManager
 
                         Type = worldInteractableData.type,
 
+                        PhaseId = worldInteractableData.phaseId,
+                        QuestId = worldInteractableData.questId,
+                        ObjectiveId = worldInteractableData.objectiveId,
+
+                        ChapterInteractableId = worldInteractableData.chapterInteractableId,
                         InteractableId = interactableData.Id,
 
                         terrainTileId = interactionData.terrainTileId,
@@ -189,6 +192,9 @@ public class WorldDataManager : IDataManager
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
 
+                    join leftJoin in (from questData in questDataList
+                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
+
                     where interactionData.terrainId == terrainData.Id
                     select new InteractionDataElement()
                     {
@@ -221,7 +227,8 @@ public class WorldDataManager : IDataManager
                         
                         worldInteractableId = taskData.worldInteractableId,
                         objectiveId = taskData.objectiveId,
-                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId : 0,
+                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId : 
+                                  questData.FirstOrDefault() != null ? questData.FirstOrDefault().questData.Id : 0,
 
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
@@ -419,14 +426,6 @@ public class WorldDataManager : IDataManager
         questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
 
         questDataList = dataManager.GetQuestData(questSearchParameters);
-    }
-
-    internal void GetPhaseInteractableData()
-    {
-        var phaseInteractableSearchParameters = new Search.PhaseInteractable();
-        phaseInteractableSearchParameters.chapterInteractableId = worldInteractableDataList.Select(x => x.Id).Distinct().ToList();
-
-        phaseInteractableDataList = dataManager.GetPhaseInteractableData(phaseInteractableSearchParameters);
     }
 
     internal List<int> DefaultTimes(int taskId)

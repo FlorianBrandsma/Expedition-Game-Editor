@@ -11,6 +11,8 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         DataType = Enums.DataType.WorldInteractable;
     }
 
+    public Enums.ElementStatus elementStatus;
+
     public int terrainTileId;
 
     public int objectGraphicId;
@@ -89,6 +91,8 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         
         dataElement.SelectionElement = SelectionElement;
 
+        dataElement.elementStatus = elementStatus;
+
         dataElement.terrainTileId = terrainTileId;
 
         dataElement.objectGraphicId = objectGraphicId;
@@ -137,6 +141,8 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         base.Copy(dataSource);
 
         var worldInteractableDataSource = (WorldInteractableDataElement)dataSource;
+
+        elementStatus = worldInteractableDataSource.elementStatus;
 
         terrainTileId = worldInteractableDataSource.terrainTileId;
 

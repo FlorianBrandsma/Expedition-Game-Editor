@@ -445,9 +445,10 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
             return;
         }
 
-        //Hidden: Interactions belonging to the same world interactable
+        //Hidden: Interactions belonging to the same world interactable and objective
         if (interactionDataElement.Id != interactionData.Id &&
-            interactionDataElement.worldInteractableId == interactionData.worldInteractableId)
+            interactionDataElement.worldInteractableId == interactionData.worldInteractableId &&
+            interactionDataElement.objectiveId == interactionData.objectiveId)
         {
             element.elementStatus = Enums.ElementStatus.Hidden;
             return;
@@ -455,7 +456,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
         //Locked: Interactions that aren't selected and don't belong to a quest, only when an interaction with a quest is selected
         if (interactionDataElement.Id != interactionData.Id &&
-            interactionData.questId != 0 && interactionDataElement.questId == 0)
+            interactionData.objectiveId != 0 && interactionDataElement.objectiveId == 0)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;

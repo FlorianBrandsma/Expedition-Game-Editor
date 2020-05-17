@@ -63,5 +63,31 @@ public class WorldInteractableController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(IDataElement dataElement)
+    {
+        var worldInteractablesData = (WorldInteractableDataElement)dataElement;
+        var questData = (QuestDataElement)SegmentController.editorController.PathController.route.data.dataElement;
+
+        switch (worldInteractablesData.elementStatus)
+        {
+            case Enums.ElementStatus.Enabled:
+
+                worldInteractablesData.QuestId = 0;
+                worldInteractablesData.elementStatus = Enums.ElementStatus.Disabled;
+
+                break;
+
+            case Enums.ElementStatus.Disabled:
+
+                worldInteractablesData.QuestId = questData.Id;
+                worldInteractablesData.elementStatus = Enums.ElementStatus.Enabled;
+
+                break;
+        }
+
+        SegmentController.Segment.DataEditor.UpdateEditor();
+
+        dataElement.SelectionElement.elementStatus = worldInteractablesData.elementStatus;
+        dataElement.SelectionElement.SetStatus();
+    }
 }

@@ -23,7 +23,6 @@ public class Enums
         ChapterInteractable,
         ChapterRegion,
         Phase,
-        PhaseInteractable,
         Quest,
         Objective,
         WorldInteractable,

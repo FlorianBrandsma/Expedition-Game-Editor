@@ -43,7 +43,6 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.TerrainTile:        SetTerrainTileElement();        break;
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
-            case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
 
             default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
         }
@@ -129,18 +128,6 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
             iconPath = dataElement.objectGraphicIconPath;
         else
             iconPath = dataElement.originalObjectGraphicIconPath;
-
-        icon.texture = Resources.Load<Texture2D>(iconPath);
-    }
-
-    private void SetPhaseInteractableElement()
-    {
-        var dataElement = (PhaseInteractableDataElement)Element.data.dataElement;
-
-        if (Element.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIcon;
-        else
-            iconPath = dataElement.originalObjectGraphicIcon;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

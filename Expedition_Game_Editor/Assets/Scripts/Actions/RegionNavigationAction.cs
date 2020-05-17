@@ -15,6 +15,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     internal class ActionData
     {
         public Route.Data data;
+        public bool reset;
         public List<int> idFilter = new List<int>();
 
         public ActionData(Route.Data data)
@@ -119,12 +120,25 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             if (actionData.data.dataController.DataType == Enums.DataType.Interaction)
                 CheckTime((InteractionDataElement)actionData.data.dataElement);
-            
-            if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id))
+
+            //World interactable doesn't always reset as the id can be the same in multiple objectives
+            if (!ListContainsElement(actionData))
                 ResetData(actionData);
             else
                 SelectOption(dataType);
         }
+
+        for (int i = actionDataList.Count - 1; i >= 0; i--)
+        {
+            var actionData = actionDataList[i];
+
+            actionData.reset = false;
+        }
+    }
+    
+    private bool ListContainsElement(ActionData actionData)
+    {
+        return actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.dataElement.Id);
     }
     
     private void CheckTime(IDataElement dataElement)
@@ -372,11 +386,15 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
+        var questAction = FindActionByDataType(Enums.DataType.Quest);
         var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
 
-        if (objectiveAction != null)
+        if (questAction != null)
         {
-            searchParameters.objectiveId = new List<int>() { objectiveAction.data.dataElement.Id };
+            searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
+
+            searchParameters.questId        = new List<int>() { questAction.data.dataElement.Id };
+            searchParameters.objectiveId    = new List<int>() { objectiveAction.data.dataElement.Id };
 
         } else {
 
@@ -393,6 +411,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void GetTaskData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
+
+        var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
+
+        if(objectiveAction != null)
+            searchParameters.objectiveId = new List<int>() { objectiveAction.data.dataElement.Id };
 
         searchParameters.worldInteractableId = new List<int>() { FindActionByDataType(Enums.DataType.WorldInteractable).data.dataElement.Id };
     }

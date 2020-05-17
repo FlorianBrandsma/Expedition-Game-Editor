@@ -8,7 +8,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<PhaseInteractableDataElement> questInteractableDataList;
+    public List<WorldInteractableDataElement> worldInteractableDataList;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -29,7 +29,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
             DataList.ForEach(x => list.Add(x));
 
-            questInteractableDataList.ForEach(x => list.Add(x));
+            worldInteractableDataList.ForEach(x => list.Add(x));
 
             return list;
         }

@@ -26,15 +26,32 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var searchProperties = new SearchProperties(Enums.DataType.PhaseInteractable);
+        var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseInteractable>().First();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
         searchParameters.phaseId = new List<int>() { QuestEditor.QuestData.PhaseId };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var questInteractableList = SegmentController.DataController.DataList.Cast<PhaseInteractableDataElement>().ToList();
-        questInteractableList.ForEach(x => QuestEditor.questInteractableDataList.Add(x));
+        SetStatus(SegmentController.DataController.DataList);
+
+        var questInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableDataElement>().ToList();
+        questInteractableList.ForEach(x => QuestEditor.worldInteractableDataList.Add(x));
+    }
+
+    private void SetStatus(List<IDataElement> dataList)
+    {
+        dataList.ForEach(x =>
+        {
+            var worldInteractableDataElement = (WorldInteractableDataElement)x;
+
+            if (worldInteractableDataElement.QuestId == QuestEditor.QuestData.Id)
+                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Enabled;
+            else if (worldInteractableDataElement.QuestId == 0)
+                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Disabled;
+            else
+                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Locked;
+        });
     }
 
     private void SetSearchParameters() { }

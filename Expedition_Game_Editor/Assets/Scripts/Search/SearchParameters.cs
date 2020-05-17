@@ -41,7 +41,6 @@ public class SearchProperties
             case Enums.DataType.ChapterInteractable:searchParameters = new[] { new Search.ChapterInteractable() };  break;
             case Enums.DataType.ChapterRegion:      searchParameters = new[] { new Search.ChapterRegion() };        break;
             case Enums.DataType.Phase:              searchParameters = new[] { new Search.Phase() };                break;
-            case Enums.DataType.PhaseInteractable:  searchParameters = new[] { new Search.PhaseInteractable() };    break;
             case Enums.DataType.Quest:              searchParameters = new[] { new Search.Quest() };                break;
             case Enums.DataType.Objective:          searchParameters = new[] { new Search.Objective() };            break;
             case Enums.DataType.WorldInteractable:  searchParameters = new[] { new Search.WorldInteractable() };    break;

@@ -107,7 +107,6 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.ChapterInteractable:SetChapterInteractableElement();break;
             case Enums.DataType.ChapterRegion:      SetChapterRegionElement();      break;
             case Enums.DataType.Phase:              SetPhaseElement();              break;
-            case Enums.DataType.PhaseInteractable:  SetPhaseInteractableElement();  break;
             case Enums.DataType.Quest:              SetQuestElement();              break;
             case Enums.DataType.Objective:          SetObjectiveElement();          break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
@@ -214,28 +213,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         headerText.text         = header;
         descriptionText.text    = description;
     }
-
-    private void SetPhaseInteractableElement()
-    {
-        var dataElement = (PhaseInteractableDataElement)data.dataElement;
-
-        if (Element.selectionProperty == SelectionManager.Property.Get)
-        {
-            header      = dataElement.interactableName;
-            iconPath    = dataElement.objectGraphicIcon;
-        } else {
-            header      = dataElement.originalInteractableName;
-            iconPath    = dataElement.originalObjectGraphicIcon;
-        }
-
-        Element.elementStatus = dataElement.elementStatus;
-
-        idText.text     = dataElement.Id.ToString();
-        headerText.text = header;
-
-        IconTexture     = Resources.Load<Texture2D>(iconPath);
-    }
-
+    
     private void SetQuestElement()
     {
         var dataElement = (QuestDataElement)data.dataElement;
@@ -276,13 +254,21 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         var dataElement = (WorldInteractableDataElement)data.dataElement;
 
-        header          = dataElement.interactableName;
-        iconPath        = dataElement.objectGraphicIconPath;
+        if (Element.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = dataElement.interactableName;
+            iconPath = dataElement.objectGraphicIconPath;
+        } else {
+            header = dataElement.originalInteractableName;
+            iconPath = dataElement.originalObjectGraphicIconPath;
+        }
 
-        idText.text     = dataElement.Id.ToString();
+        Element.elementStatus = dataElement.elementStatus;
+
+        idText.text = dataElement.Id.ToString();
         headerText.text = header;
 
-        IconTexture     = Resources.Load<Texture2D>(iconPath);
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTaskElement()

@@ -162,29 +162,6 @@ public class DataManager
         return dataList;
     }
 
-    public List<PhaseInteractableData> GetPhaseInteractableData(Search.PhaseInteractable searchParameters)
-    {
-        var dataList = new List<PhaseInteractableData>();
-
-        foreach (Fixtures.PhaseInteractable phaseInteractable in Fixtures.phaseInteractableList)
-        {
-            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(phaseInteractable.phaseId))                               continue;
-            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(phaseInteractable.chapterInteractableId))   continue;
-
-            var data = new PhaseInteractableData();
-
-            data.Id = phaseInteractable.Id;
-
-            data.phaseId = phaseInteractable.phaseId;
-            data.chapterInteractableId = phaseInteractable.chapterInteractableId;
-            data.questId = phaseInteractable.questId;
-            
-            dataList.Add(data);
-        }
-
-        return dataList;
-    }
-
     public List<QuestData> GetQuestData(Search.Quest searchParameters)
     {
         var dataList = new List<QuestData>();
@@ -244,7 +221,6 @@ public class DataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
             if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
             if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
-            if (searchParameters.isDefault              > -1 && searchParameters.isDefault != Convert.ToInt32(worldInteractable.isDefault))     continue;
 
             var data = new WorldInteractableData();
 
@@ -252,10 +228,12 @@ public class DataManager
 
             data.type = worldInteractable.type;
 
+            data.phaseId = worldInteractable.phaseId;
+            data.questId = worldInteractable.questId;
             data.objectiveId = worldInteractable.objectiveId;
-            data.interactableId = worldInteractable.interactableId;
 
-            data.interactionIndex = worldInteractable.interactionIndex;
+            data.chapterInteractableId = worldInteractable.chapterInteractableId;
+            data.interactableId = worldInteractable.interactableId;
 
             dataList.Add(data);
         }
@@ -599,11 +577,13 @@ public class DataManager
     public class WorldInteractableData : GeneralData
     {
         public int type;
-
+        
+        public int phaseId;
+        public int questId;
         public int objectiveId;
-        public int interactableId;
 
-        public int interactionIndex;
+        public int chapterInteractableId;
+        public int interactableId;
     }
 
     public class TaskData : GeneralData

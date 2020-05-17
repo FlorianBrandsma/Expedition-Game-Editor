@@ -5,19 +5,26 @@ public class WorldInteractableCore : GeneralData
 {
     private int type;
 
+    private int phaseId;
+    private int questId;
+    private int objectiveId;
+
+    private int chapterInteractableId;
     private int interactableId;
 
     //Original
     public int originalInteractableId;
+    public int originalQuestId;
 
     //Changed
     private bool changedInteractableId;
+    private bool changedQuestId;
 
     public bool Changed
     {
         get
         {
-            return changedInteractableId;
+            return changedInteractableId || changedQuestId;
         }
     }
 
@@ -26,6 +33,12 @@ public class WorldInteractableCore : GeneralData
     {
         get { return type; }
         set { type = value; }
+    }
+
+    public int ChapterInteractableId
+    {
+        get { return chapterInteractableId; }
+        set { chapterInteractableId = value; }
     }
 
     public int InteractableId
@@ -40,6 +53,31 @@ public class WorldInteractableCore : GeneralData
             interactableId = value;
         }
     }
+
+    public int PhaseId
+    {
+        get { return phaseId; }
+        set { phaseId = value; }
+    }
+
+    public int QuestId
+    {
+        get { return questId; }
+        set
+        {
+            if (value == questId) return;
+
+            changedQuestId = (value != originalQuestId);
+
+            questId = value;
+        }
+    }
+
+    public int ObjectiveId
+    {
+        get { return objectiveId; }
+        set { objectiveId = value; }
+    }
     #endregion
 
     #region Methods
@@ -51,6 +89,9 @@ public class WorldInteractableCore : GeneralData
 
         if (changedInteractableId)
             worldInteractableData.interactableId = interactableId;
+
+        if (changedQuestId)
+            worldInteractableData.questId = questId;
     }
 
     public void UpdateSearch()
@@ -63,11 +104,13 @@ public class WorldInteractableCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalInteractableId = interactableId;
+        originalQuestId = questId;
     }
 
     public void GetOriginalValues()
     {
         interactableId = originalInteractableId;
+        questId = originalQuestId;
     }
 
     public virtual void ClearChanges()
@@ -75,6 +118,7 @@ public class WorldInteractableCore : GeneralData
         GetOriginalValues();
 
         changedInteractableId = false;
+        changedQuestId = false;
     }
 
     public void Delete() { }
@@ -85,9 +129,16 @@ public class WorldInteractableCore : GeneralData
 
         dataElement.type = type;
 
-        dataElement.InteractableId = interactableId;
+        dataElement.phaseId = phaseId;
+        dataElement.questId = questId;
+        dataElement.objectiveId = objectiveId;
 
-        dataElement.originalInteractableId = originalInteractableId;
+        dataElement.chapterInteractableId = chapterInteractableId;
+        dataElement.interactableId = interactableId;
+
+        dataElement.originalQuestId = originalQuestId;
+
+        dataElement.originalInteractableId = originalInteractableId;       
     }
     #endregion
 
@@ -97,6 +148,11 @@ public class WorldInteractableCore : GeneralData
 
         type = worldInteractableDataSource.type;
 
+        phaseId = worldInteractableDataSource.phaseId;
+        questId = worldInteractableDataSource.questId;
+        objectiveId = worldInteractableDataSource.objectiveId;
+
+        chapterInteractableId = worldInteractableDataSource.chapterInteractableId;
         interactableId = worldInteractableDataSource.interactableId;
     }
 }

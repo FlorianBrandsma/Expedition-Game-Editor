@@ -36,6 +36,7 @@ public class AtmosphereDataManager : IDataManager
 
         GetRegionData();
         GetTileSetData();
+
         GetTileData();
 
         GetIconData();

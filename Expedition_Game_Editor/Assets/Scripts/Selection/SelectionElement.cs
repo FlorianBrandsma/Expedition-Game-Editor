@@ -165,7 +165,7 @@ public class SelectionElement : MonoBehaviour
     public void SetStatus()
     {
         if (selectionStatus == Enums.SelectionStatus.Child) return;
-
+        
         switch (elementStatus)
         {
             case Enums.ElementStatus.Enabled:
