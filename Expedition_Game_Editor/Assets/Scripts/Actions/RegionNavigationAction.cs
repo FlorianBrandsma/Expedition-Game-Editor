@@ -25,11 +25,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         }
     }
 
-    public bool active;
-
     private Enums.RegionType regionType;
-
-    public RegionDisplayManager defaultDisplay;
+    public Enums.RegionType RegionType { get { return regionType; } }
 
     public PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -43,8 +40,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     public void InitializeAction(Path path)
     {
-        active = true;
-
         structureList = path.route.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
                                   .Select(x => x.data.dataController.DataType).Distinct().ToList();
 
@@ -336,14 +331,18 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         switch (dataController.DataType)
         {
-            case Enums.DataType.Chapter:            GetChapterData(searchProperties);            break;
-            case Enums.DataType.Phase:              GetPhaseData(searchProperties);              break;
-            case Enums.DataType.Quest:              GetQuestData(searchProperties);              break;
-            case Enums.DataType.Objective:          GetObjectiveData(searchProperties);          break;
-            case Enums.DataType.WorldInteractable:  GetWorldInteractableData(searchProperties);  break;
-            case Enums.DataType.Task:               GetTaskData(searchProperties);               break;
-            case Enums.DataType.Interaction:        GetInteractionData(searchProperties);        break;
-            case Enums.DataType.Region:             GetRegionData(searchProperties);             break;
+            case Enums.DataType.Chapter:            GetChapterData(searchProperties);           break;
+            case Enums.DataType.Phase:              GetPhaseData(searchProperties);             break;
+            case Enums.DataType.Quest:              GetQuestData(searchProperties);             break;
+            case Enums.DataType.Objective:          GetObjectiveData(searchProperties);         break;
+            case Enums.DataType.WorldInteractable:  GetWorldInteractableData(searchProperties); break;
+            case Enums.DataType.Task:               GetTaskData(searchProperties);              break;
+            case Enums.DataType.Interaction:        GetInteractionData(searchProperties);       break;
+            case Enums.DataType.Region:             GetRegionData(searchProperties);            break;
+
+            case Enums.DataType.PhaseSave:          GetPhaseSaveData(searchProperties);         break;
+
+            default: Debug.Log("CASE MISSING: " + dataController.DataType); break;
         }
         
         var actionData = FindActionByDataType(dataController.DataType);
@@ -357,28 +356,24 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void GetChapterData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
-
         searchProperties.searchParameters = FindActionByDataType(searchProperties.dataType).idFilter;
     }
 
     private void GetPhaseData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
-
         searchParameters.chapterId = new List<int>() { FindActionByDataType(Enums.DataType.Chapter).data.dataElement.Id };
     }
 
     private void GetQuestData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
-
         searchParameters.phaseId = new List<int>() { FindActionByDataType(Enums.DataType.Phase).data.dataElement.Id };
     }
 
     private void GetObjectiveData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
-
         searchParameters.questId = new List<int>() { FindActionByDataType(Enums.DataType.Quest).data.dataElement.Id };
     }
 
@@ -423,18 +418,41 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void GetInteractionData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
-
         searchParameters.taskId = new List<int>() { FindActionByDataType(Enums.DataType.Task).data.dataElement.Id };
     }
 
     private void GetRegionData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
+        
+        int phaseId = 0;
 
         var phaseAction = FindActionByDataType(Enums.DataType.Phase);
-        int phaseId = phaseAction != null ? phaseAction.data.dataElement.Id : 0;
+
+        if (phaseAction != null)
+        {
+            var phaseData = (PhaseDataElement)phaseAction.data.dataElement;
+            phaseId = phaseData.Id;
+        }
+
+        var phaseSaveAction = FindActionByDataType(Enums.DataType.PhaseSave);
+
+        if (phaseSaveAction != null)
+        {
+            var phaseSaveData = (PhaseSaveDataElement)phaseSaveAction.data.dataElement;
+            phaseId = phaseSaveData.PhaseId;
+        }
 
         searchParameters.phaseId = new List<int>() { phaseId };
+    }
+
+    private void GetPhaseSaveData(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
+        searchParameters.requestType = Search.PhaseSave.RequestType.GetPhaseSaveByChapter;
+
+        var chapterSaveData = (ChapterSaveDataElement)FindActionByDataType(Enums.DataType.ChapterSave).data.dataElement;
+        searchParameters.chapterId = new List<int>() { chapterSaveData.ChapterId };
     }
     #endregion
 
@@ -442,7 +460,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var dataType = actionData.data.dataController.DataType;
 
-        switch (actionData.data.dataController.DataType)
+        switch (dataType)
         {
             case Enums.DataType.Chapter:            SetChapterOptions(dropdown, actionData);            break;
             case Enums.DataType.Phase:              SetPhaseOptions(dropdown, actionData);              break;
@@ -452,9 +470,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             case Enums.DataType.Task:               SetTaskOptions(dropdown, actionData);               break;
             case Enums.DataType.Interaction:        SetInteractionOptions(dropdown, actionData);        break;
             case Enums.DataType.Region:             SetRegionOptions(dropdown, actionData);             break;
+
+            case Enums.DataType.ChapterSave:        SetChapterSaveOptions(dropdown, actionData);        break;
+            case Enums.DataType.PhaseSave:          SetPhaseSaveOptions(dropdown, actionData);          break;
+            
+            default: Debug.Log("CASE MISSING: " + dataType); break;
         }
 
-        var data = FindActionByDataType(actionData.data.dataController.DataType).data;
+        var data = FindActionByDataType(dataType).data;
 
         int selectedIndex = actionData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == data.dataElement.Id);
 
@@ -511,6 +534,18 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var dataElements = actionData.data.dataList.Cast<RegionDataElement>().ToList();
         dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
+
+    private void SetChapterSaveOptions(ExDropdown dropdown, ActionData actionData)
+    {
+        var dataElements = actionData.data.dataList.Cast<ChapterSaveDataElement>().ToList();
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+    }
+
+    private void SetPhaseSaveOptions(ExDropdown dropdown, ActionData actionData)
+    {
+        var dataElements = actionData.data.dataList.Cast<PhaseSaveDataElement>().ToList();
+        dataElements.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+    }
     #endregion
 
     public void SelectOption(Enums.DataType dataType)
@@ -545,8 +580,5 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         return actionDataList.Where(x => x.data.dataController.DataType == dataType).FirstOrDefault();
     }
 
-    public void CloseAction()
-    {
-        active = false;
-    }
+    public void CloseAction() { }
 }

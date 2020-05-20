@@ -319,8 +319,6 @@ public class PathManager
             //Base stands alone
             List<Route> routes;
 
-            //Reset display to tiles, only when editor is manually opened
-            //RegionDisplayManager.ResetDisplay();
             switch (regionDataElement.type)
             {
                 case Enums.RegionType.Base:
@@ -350,6 +348,17 @@ public class PathManager
 
             path = ExtendPath(route.path, CreateRoutes(open, customRoute, selection.selectionStatus));
             path.type = Path.Type.New;
+
+            return path;
+        }
+
+        public Path OpenPhaseSaveRegion()
+        {
+            List<int> open = new List<int>() { 0, 1, 2, 0, 0 };
+
+            Route customRoute = new Route(1, route.data, selection.selectionStatus);
+
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, selection.selectionStatus));
 
             return path;
         }
@@ -452,6 +461,16 @@ public class PathManager
         public Path Open()
         {
             List<int> source = new List<int>() { 0, 5 };
+
+            route.controller = enter;
+
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            return ExtendPath(form.activePath, routes);
+        }
+
+        public Path OpenPhaseSaveRegionWorldInteractable()
+        {
+            List<int> source = new List<int>() { 0, 1, 3 };
 
             route.controller = enter;
 

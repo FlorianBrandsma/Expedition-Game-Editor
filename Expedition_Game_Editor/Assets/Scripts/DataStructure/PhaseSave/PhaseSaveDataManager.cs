@@ -22,8 +22,19 @@ public class PhaseSaveDataManager : IDataManager
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
 
-        GetPhaseSaveData(searchParameters);
+        switch (searchParameters.requestType)
+        {
+            case Search.PhaseSave.RequestType.Custom:
 
+                GetCustomPhaseSaveData(searchParameters);
+                break;
+
+            case Search.PhaseSave.RequestType.GetPhaseSaveByChapter:
+
+                GetPhaseSaveDataByChapter(searchParameters);
+                break;
+        }
+        
         if (phaseSaveDataList.Count == 0) return new List<IDataElement>();
 
         GetPhaseData();
@@ -50,7 +61,7 @@ public class PhaseSaveDataManager : IDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
-    public void GetPhaseSaveData(Search.PhaseSave searchParameters)
+    private void GetCustomPhaseSaveData(Search.PhaseSave searchParameters)
     {
         phaseSaveDataList = new List<PhaseSaveData>();
 
@@ -59,6 +70,28 @@ public class PhaseSaveDataManager : IDataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phaseSave.Id))                         continue;
             if (searchParameters.chapterSaveId.Count    > 0 && !searchParameters.chapterSaveId.Contains(phaseSave.chapterSaveId))   continue;
 
+            var phaseSaveData = new PhaseSaveData();
+
+            phaseSaveData.Id = phaseSave.Id;
+
+            phaseSaveData.chapterSaveId = phaseSave.chapterSaveId;
+            phaseSaveData.phaseId = phaseSave.phaseId;
+
+            phaseSaveData.complete = phaseSave.complete;
+
+            phaseSaveDataList.Add(phaseSaveData);
+        }
+    }
+
+    private void GetPhaseSaveDataByChapter(Search.PhaseSave searchParameters)
+    {
+        phaseSaveDataList = new List<PhaseSaveData>();
+
+        var phaseDataList = Fixtures.phaseList.Where(x => searchParameters.chapterId.Contains(x.chapterId)).Distinct().ToList();
+        var phaseSaveList = Fixtures.phaseSaveList.Where(x => phaseDataList.Select(y => y.Id).Contains(x.phaseId)).Distinct().ToList();
+
+        foreach(Fixtures.PhaseSave phaseSave in phaseSaveList)
+        {
             var phaseSaveData = new PhaseSaveData();
 
             phaseSaveData.Id = phaseSave.Id;

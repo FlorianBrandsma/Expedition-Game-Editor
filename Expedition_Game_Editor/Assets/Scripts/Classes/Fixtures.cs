@@ -344,10 +344,8 @@ static public class Fixtures
 
         public bool complete;
     }
-
     #endregion
-
-
+    
     static public void LoadFixtures()
     {
         LoadIcons();
@@ -1477,6 +1475,45 @@ static public class Fixtures
         }
     }
 
+    static private void LoadPhaseRegionWorldInteractableTasks()
+    {
+        foreach (PhaseSave phaseSave in phaseSaveList)
+        {
+            var phaseRegionSourceList = regionList.Where(x => x.phaseId == phaseSave.phaseId);
+
+            foreach (Region phaseRegionSource in phaseRegionSourceList)
+            {
+                var interactionIdList = interactionList.Where(x => x.regionId == phaseRegionSource.Id).Select(x => x.taskId).ToList();
+                var taskSourceIdList = taskList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.worldInteractableId).ToList();
+                var worldInteractableSourceList = worldInteractableList.Where(x => taskSourceIdList.Contains(x.Id)).Distinct().ToList();
+
+                foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
+                {
+                    LoadWorldInteractableTaskSaves(worldInteractableSource);
+                }
+            }
+        }
+    }
+
+    static public void LoadWorldInteractableTaskSaves(WorldInteractable worldInteractable)
+    {
+        foreach (Task task in taskList.Where(x => x.worldInteractableId == worldInteractable.Id))
+        {
+            var taskSave = new TaskSave();
+
+            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].Id + 1) : 1;
+
+            taskSave.Id = id;
+
+            taskSave.worldInteractableId = worldInteractable.Id;
+            taskSave.taskId = task.Id;
+
+            LoadInteractionSaves(task, taskSave);
+
+            taskSaveList.Add(taskSave);
+        }
+    }
+
     static public void LoadQuestSaves(Phase phase, PhaseSave phaseSave)
     {
         foreach (Quest quest in questList.Where(x => x.phaseId == phase.Id))
@@ -1534,26 +1571,7 @@ static public class Fixtures
             taskSaveList.Add(taskSave);
         }
     }
-
-    static public void LoadWorldInteractableTaskSaves(WorldInteractable worldInteractable)
-    {
-        foreach (Task task in taskList.Where(x => x.worldInteractableId == worldInteractable.Id))
-        {
-            var taskSave = new TaskSave();
-
-            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].Id + 1) : 1;
-
-            taskSave.Id = id;
-
-            taskSave.worldInteractableId = worldInteractable.Id;
-            taskSave.taskId = task.Id;
-
-            LoadInteractionSaves(task, taskSave);
-
-            taskSaveList.Add(taskSave);
-        }
-    }
-
+    
     static public void LoadInteractionSaves(Task task, TaskSave taskSave)
     {
         foreach (Interaction interaction in interactionList.Where(x => x.taskId == task.Id))
@@ -1570,28 +1588,9 @@ static public class Fixtures
             interactionSaveList.Add(interactionSave);
         }
     }
-
-    static private void LoadPhaseRegionWorldInteractableTasks()
-    {
-        foreach (PhaseSave phaseSave in phaseSaveList)
-        {
-            var phaseRegionSourceList = regionList.Where(x => x.phaseId == phaseSave.phaseId);
-
-            foreach (Region phaseRegionSource in phaseRegionSourceList)
-            {
-                var interactionIdList = interactionList.Where(x => x.regionId == phaseRegionSource.Id).Select(x => x.taskId).ToList();
-                var taskSourceIdList = taskList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.worldInteractableId).ToList();
-                var worldInteractableSourceList = worldInteractableList.Where(x => taskSourceIdList.Contains(x.Id)).Distinct().ToList();
-                
-                foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
-                {
-                    LoadWorldInteractableTaskSaves(worldInteractableSource);
-                }
-            }
-        }
-    }
-
+    
     static private void Query()
     {
+
     }
 }

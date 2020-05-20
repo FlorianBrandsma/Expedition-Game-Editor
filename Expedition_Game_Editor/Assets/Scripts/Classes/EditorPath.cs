@@ -85,7 +85,10 @@ public class EditorPath
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
                     path = worldInteractable.Open();
-                
+
+                if (selection.selectionProperty == SelectionManager.Property.OpenPhaseSaveRegionWorldInteractable)
+                    path = worldInteractable.OpenPhaseSaveRegionWorldInteractable();
+
                 break;
 
             case Enums.DataType.Task:
@@ -139,6 +142,9 @@ public class EditorPath
 
                 if (selection.selectionProperty == SelectionManager.Property.Open)
                     path = region.Open();
+
+                if (selection.selectionProperty == SelectionManager.Property.OpenPhaseSaveRegion)
+                    path = region.OpenPhaseSaveRegion();
 
                 break;
 

@@ -38,7 +38,6 @@ public class Path
     }
 
     #region Add
-
     public void Add()
     {
         //Use last used step as base
@@ -67,8 +66,21 @@ public class Path
     {
         this.route.Add(route);
     }
-
     #endregion
+
+    public Path Clone()
+    {
+        Path path = new Path();
+
+        route.ForEach(x => path.Add(x));
+
+        path.form = form;
+        path.start = start;
+
+        path.type = type;
+
+        return path;
+    }
 
     public Path Trim(int step)
     {

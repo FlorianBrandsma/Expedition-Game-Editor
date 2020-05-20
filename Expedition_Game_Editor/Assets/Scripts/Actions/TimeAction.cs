@@ -37,10 +37,10 @@ public class TimeAction : MonoBehaviour, IAction
     private void SetTime(int time)
     {
         TimeManager.activeTime = time;
-
-        if (regionNavigationAction.active)
+        
+        if (regionNavigationAction.RegionType == Enums.RegionType.Interaction)
             regionNavigationAction.SelectOption(Enums.DataType.Interaction);
-
+        
         TimeManager.instance.SetTime(time, true);
     }
 

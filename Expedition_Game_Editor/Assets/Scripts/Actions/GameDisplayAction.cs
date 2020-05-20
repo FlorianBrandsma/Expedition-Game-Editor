@@ -7,6 +7,8 @@ public class GameDisplayAction : MonoBehaviour, IAction
 {
     public ActionProperties actionProperties;
 
+    private Path basePath;
+
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeAction(Path path)
@@ -14,7 +16,12 @@ public class GameDisplayAction : MonoBehaviour, IAction
         int index = 0;
         
         if (PathController.route.path.type == Path.Type.New)
+        {
+            basePath = path.Clone();
+            basePath.type = Path.Type.Loaded;
+
             GameDisplayManager.activeDisplay = GameDisplayManager.Display.Game;
+        }
 
         index = (int)GameDisplayManager.activeDisplay;
         
@@ -39,7 +46,7 @@ public class GameDisplayAction : MonoBehaviour, IAction
 
         dropdown.Dropdown.value = (int)GameDisplayManager.activeDisplay;
 
-        dropdown.Dropdown.onValueChanged.AddListener(delegate { GameDisplayManager.SetDisplay(dropdown.Dropdown.value, PathController.route.path); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { GameDisplayManager.SetDisplay(dropdown.Dropdown.value, basePath); });
     }
 
     public void CloseAction() { }

@@ -14,6 +14,7 @@ static public class RenderManager
     static public void Render(Path path)
     {
         //Debug.Log(PathString(path));
+
         SelectionManager.CancelGetSelection();
 
         //Set up data along the path

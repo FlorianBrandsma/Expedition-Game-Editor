@@ -72,6 +72,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             dataElement.SelectionElement = panel.Element;
             panel.Element.data = new SelectionElement.Data(DataController, dataElement);
+            panel.Element.path = DisplayManager.Display.DataController.SegmentController.Path;
 
             SetProperties(panel);
 

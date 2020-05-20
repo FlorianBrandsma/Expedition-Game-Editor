@@ -380,11 +380,12 @@ public class Search
         public List<int> chapterSaveId = new List<int>();
         public List<int> phaseId = new List<int>();
 
-        public List<int> questId = new List<int>();
-
+        public List<int> chapterId = new List<int>();
+        
         public enum RequestType
         {
-            Custom
+            Custom,
+            GetPhaseSaveByChapter
         }
 
         public RequestType requestType;

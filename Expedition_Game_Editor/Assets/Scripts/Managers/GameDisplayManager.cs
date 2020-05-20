@@ -16,6 +16,6 @@ public class GameDisplayManager : MonoBehaviour
 
         HistoryManager.ClearHistory();
 
-        RenderManager.Render(path);
+        RenderManager.Render(path.Clone());
     }
 }

@@ -117,8 +117,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
                 break;
 
             case Enums.DataType.WorldInteractable:
-
-
+                
                 worldInteractableData = worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
 
                 break;
@@ -407,7 +406,7 @@ public class WorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetWorldObjectStatus(SelectionElement element)
     {
-        if (worldData.regionType == Enums.RegionType.Interaction)
+        if (worldData.regionType == Enums.RegionType.Interaction || worldData.regionType == Enums.RegionType.Game)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;

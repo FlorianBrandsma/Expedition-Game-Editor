@@ -23,7 +23,9 @@ static public class SelectionManager
         Toggle,
         OpenOutcomeEditor,
         LoadGameSave,
-        OpenDataCharacters
+        OpenDataCharacters,
+        OpenPhaseSaveRegion,
+        OpenPhaseSaveRegionWorldInteractable
     }
 
     static public List<Route> routeList = new List<Route>();

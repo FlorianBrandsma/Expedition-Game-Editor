@@ -22,9 +22,12 @@ public class ObjectiveSaveInteractableSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+        searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
+
+        var questSaveData = (QuestSaveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.QuestSave).data.dataElement;
+        searchParameters.questId = new List<int>() { questSaveData.QuestId };
 
         var objectiveSaveData = (ObjectiveSaveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave).data.dataElement;
-
         searchParameters.objectiveId = new List<int>() { objectiveSaveData.ObjectiveId };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);

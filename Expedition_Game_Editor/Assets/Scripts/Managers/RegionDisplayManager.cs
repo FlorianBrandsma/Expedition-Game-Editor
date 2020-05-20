@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RegionDisplayManager : MonoBehaviour
+static public class RegionDisplayManager
 {
     public enum Display
     {
@@ -8,7 +8,7 @@ public class RegionDisplayManager : MonoBehaviour
         Tiles,
     }
 
-    static public Display activeDisplay = Display.Tiles;
+    static public Display activeDisplay;
 
     static public void SetDisplay(int display, Path path)
     {

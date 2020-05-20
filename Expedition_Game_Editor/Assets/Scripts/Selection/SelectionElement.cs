@@ -261,6 +261,14 @@ public class SelectionElement : MonoBehaviour
                 RenderManager.Render(editorPath.path);
                 break;
 
+            case SelectionManager.Property.OpenPhaseSaveRegion:
+                RenderManager.Render(editorPath.path);
+                break;
+
+            case SelectionManager.Property.OpenPhaseSaveRegionWorldInteractable:
+                RenderManager.Render(editorPath.path);
+                break;
+
             default: Debug.Log("CASE MISSING: " + selectionProperty); break;
         }
     }
