@@ -31,7 +31,7 @@ public class Enums
         Outcome,
         World,
         Game,
-        GameSave,
+        Save,
         ChapterSave,
         PhaseSave,
         QuestSave,

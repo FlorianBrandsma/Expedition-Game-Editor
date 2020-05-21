@@ -22,7 +22,7 @@ static public class SelectionManager
         Open,
         Toggle,
         OpenOutcomeEditor,
-        LoadGameSave,
+        LoadSave,
         OpenDataCharacters,
         OpenPhaseSaveRegion,
         OpenPhaseSaveRegionWorldInteractable

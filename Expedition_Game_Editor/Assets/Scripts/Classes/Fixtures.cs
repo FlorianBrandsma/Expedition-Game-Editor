@@ -29,7 +29,7 @@ static public class Fixtures
     static public int tilesInTileSet = 10;
     static public int objectsInWorld = 3;
 
-    static public int gameSaves = 1;
+    static public int saves = 1;
 
     static public List<Icon>                iconList                = new List<Icon>();
     static public List<ObjectGraphic>       objectGraphicList       = new List<ObjectGraphic>();
@@ -54,7 +54,7 @@ static public class Fixtures
     static public List<Interaction>         interactionList         = new List<Interaction>();
     static public List<Outcome>             outcomeList             = new List<Outcome>();
 
-    static public List<GameSave>            gameSaveList            = new List<GameSave>();
+    static public List<Save>                saveList                = new List<Save>();
     static public List<ChapterSave>         chapterSaveList         = new List<ChapterSave>();
     static public List<PhaseSave>           phaseSaveList           = new List<PhaseSave>();
     static public List<QuestSave>           questSaveList           = new List<QuestSave>();
@@ -291,14 +291,14 @@ static public class Fixtures
         public string name;
     }
 
-    public class GameSave : GeneralData
+    public class Save : GeneralData
     {
         public int gameId;
     }
 
     public class ChapterSave : GeneralData
     {
-        public int gameSaveId;
+        public int saveId;
         public int chapterId;
 
         public bool complete;
@@ -1414,30 +1414,30 @@ static public class Fixtures
 
     static public void CreateSaveFile()
     {
-        CreateGameSave();
+        CreateSave();
     }
 
-    static public void CreateGameSave()
+    static public void CreateSave()
     {
-        var gameSave = new GameSave();
+        var save = new Save();
 
-        int id = gameSaveList.Count > 0 ? (gameSaveList[gameSaveList.Count - 1].Id + 1) : 1;
+        int id = saveList.Count > 0 ? (saveList[saveList.Count - 1].Id + 1) : 1;
 
-        gameSave.Id = id;
-        gameSave.Index = gameSaveList.Count;
+        save.Id = id;
+        save.Index = saveList.Count;
 
-        CreateStageSaves(gameSave);
+        CreateStageSaves(save);
 
-        gameSaveList.Add(gameSave);
+        saveList.Add(save);
     }
 
-    static private void CreateStageSaves(GameSave gameSave)
+    static private void CreateStageSaves(Save save)
     {
-        LoadChapterSaves(gameSave);
+        LoadChapterSaves(save);
         LoadPhaseRegionWorldInteractableTasks();
     }
 
-    static public void LoadChapterSaves(GameSave gameSave)
+    static public void LoadChapterSaves(Save save)
     {
         foreach (Chapter chapter in chapterList)
         {
@@ -1447,7 +1447,7 @@ static public class Fixtures
 
             chapterSave.Id = chapterSaveId;
 
-            chapterSave.gameSaveId = gameSave.Id;
+            chapterSave.saveId = save.Id;
             chapterSave.chapterId = chapter.Id;
 
             LoadPhaseSaves(chapter, chapterSave);

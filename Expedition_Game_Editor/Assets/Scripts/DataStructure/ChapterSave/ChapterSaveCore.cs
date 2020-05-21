@@ -3,7 +3,7 @@ using System.Linq;
 
 public class ChapterSaveCore : GeneralData
 {
-    private int gameSaveId;
+    private int saveId;
     private int chapterId;
 
     private bool complete;
@@ -23,10 +23,10 @@ public class ChapterSaveCore : GeneralData
     }
 
     #region Properties
-    public int GameSaveId
+    public int SaveId
     {
-        get { return gameSaveId; }
-        set { gameSaveId = value; }
+        get { return saveId; }
+        set { saveId = value; }
     }
 
     public int ChapterId
@@ -88,7 +88,7 @@ public class ChapterSaveCore : GeneralData
     {
         var chapterSaveDataSource = (ChapterSaveDataElement)dataSource;
 
-        gameSaveId = chapterSaveDataSource.gameSaveId;
+        saveId = chapterSaveDataSource.saveId;
         chapterId = chapterSaveDataSource.chapterId;
 
         complete = chapterSaveDataSource.complete;

@@ -34,7 +34,7 @@ public class ChapterSaveDataManager : IDataManager
                     {
                         Id = chapterSaveData.Id,
                         
-                        GameSaveId = chapterSaveData.gameSaveId,
+                        SaveId = chapterSaveData.saveId,
                         ChapterId = chapterSaveData.chapterId,
 
                         Complete = chapterSaveData.complete,
@@ -56,14 +56,14 @@ public class ChapterSaveDataManager : IDataManager
 
         foreach (Fixtures.ChapterSave chapterSave in Fixtures.chapterSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterSave.Id))                   continue;
-            if (searchParameters.gameSaveId.Count   > 0 && !searchParameters.gameSaveId.Contains(chapterSave.gameSaveId))   continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.Id))           continue;
+            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.saveId))   continue;
 
             var chapterSaveData = new ChapterSaveData();
 
             chapterSaveData.Id = chapterSave.Id;
 
-            chapterSaveData.gameSaveId = chapterSave.gameSaveId;
+            chapterSaveData.saveId = chapterSave.saveId;
             chapterSaveData.chapterId = chapterSave.chapterId;
 
             chapterSaveData.complete = chapterSave.complete;
@@ -82,7 +82,7 @@ public class ChapterSaveDataManager : IDataManager
 
     internal class ChapterSaveData : GeneralData
     {
-        public int gameSaveId;
+        public int saveId;
         public int chapterId;
 
         public bool complete;

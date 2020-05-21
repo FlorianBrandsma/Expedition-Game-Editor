@@ -570,13 +570,13 @@ public class PathManager
         
         List<int> source = new List<int>() { 0, 1 };
         
-        public Path LoadGameSave()
+        public Path LoadSave()
         {
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
         }
     }
 
-    public class GameSave
+    public class Save
     {
         SelectionElement selection;
         Path path;
@@ -586,7 +586,7 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public GameSave(SelectionElement selection, Route route)
+        public Save(SelectionElement selection, Route route)
         {
             this.selection = selection;
 

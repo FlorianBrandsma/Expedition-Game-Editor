@@ -214,12 +214,12 @@ public class EditorPath
 
             break;
 
-            case Enums.DataType.GameSave:
+            case Enums.DataType.Save:
 
-                PathManager.GameSave gameSave = new PathManager.GameSave(selection, route);
+                PathManager.Save save = new PathManager.Save(selection, route);
 
                 if (selection.selectionProperty == SelectionManager.Property.Enter)
-                    path = gameSave.EnterGame();
+                    path = save.EnterGame();
 
                 break;
 

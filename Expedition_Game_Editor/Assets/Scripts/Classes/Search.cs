@@ -344,7 +344,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class GameSave
+    public class Save
     {
         public List<int> id = new List<int>();
 
@@ -362,7 +362,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
-        public List<int> gameSaveId = new List<int>();
+        public List<int> saveId = new List<int>();
         public List<int> chapterId = new List<int>();
 
         public enum RequestType

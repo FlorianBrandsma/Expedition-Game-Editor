@@ -119,7 +119,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.Item:               SetItemElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
 
-            case Enums.DataType.GameSave:           SetGameSaveElement();           break;
+            case Enums.DataType.Save:               SetSaveElement();               break;
             case Enums.DataType.ChapterSave:        SetChapterSaveElement();        break;
             case Enums.DataType.PhaseSave:          SetPhaseSaveElement();          break;
             case Enums.DataType.QuestSave:          SetQuestSaveElement();          break;
@@ -403,9 +403,9 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetGameSaveElement()
+    private void SetSaveElement()
     {
-        var dataElement = (GameSaveDataElement)data.dataElement;
+        var dataElement = (SaveDataElement)data.dataElement;
 
         header = dataElement.name;
 

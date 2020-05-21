@@ -46,7 +46,7 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
     {
         var gameMenu = new PathManager.GameMenu();
 
-        RenderManager.Render(gameMenu.LoadGameSave());
+        RenderManager.Render(gameMenu.LoadSave());
     }
 
     public void OpenEditor()
