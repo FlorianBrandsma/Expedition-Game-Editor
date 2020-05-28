@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Linq;
 
 public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 {
     private ExText terrainInfoText;
 
-    private WorldOrganizer worldOrganizer;
+    private EditorWorldOrganizer worldOrganizer;
 
     private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
 
@@ -14,9 +14,9 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer)
     {
-        worldOrganizer = (WorldOrganizer)organizer;
+        worldOrganizer = (EditorWorldOrganizer)organizer;
         
-        var prefab = Resources.Load<ExText>("UI/Text");
+        var prefab = Resources.Load<ExText>("Elements/UI/Text");
         terrainInfoText = (ExText)PoolManager.SpawnObject(0, prefab);
 
         terrainInfoText.transform.SetParent(overlayManager.horizontal_min, false);
@@ -37,12 +37,14 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 
     private void SetText()
     {
+        var activeAtmosphere = worldOrganizer.activeTerrainData.atmosphereDataList.Where(x => x.containsActiveTime).First();
+
         //The atmosphere part is only temporary for debugging
-        terrainInfoText.Text.text = worldOrganizer.activeTerrainData.name + " (Atmosphere: " + (worldOrganizer.activeTerrainData.activeAtmosphere.Default ? 
+        terrainInfoText.Text.text = worldOrganizer.activeTerrainData.Name + " (Atmosphere: " + (activeAtmosphere.Default ? 
             "Default" :
-            TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.StartTime, true) + 
+            TimeManager.FormatTime(activeAtmosphere.StartTime, true) + 
             " - " + 
-            TimeManager.FormatTime(worldOrganizer.activeTerrainData.activeAtmosphere.EndTime)) + ")";
+            TimeManager.FormatTime(activeAtmosphere.EndTime)) + ")";
 
         terrainInfoText.RectTransform.anchorMin = new Vector2(0, 0);
         terrainInfoText.RectTransform.anchorMax = new Vector2(1, 1);

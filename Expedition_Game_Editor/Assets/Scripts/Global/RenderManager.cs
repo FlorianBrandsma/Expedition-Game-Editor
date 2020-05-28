@@ -30,9 +30,9 @@ static public class RenderManager
         OpenView(path);
 
         //Opening view only needs to initialize editors, so lists can be set
-        ResetView();
+        ResetLayer(path);
 
-        SortActions();
+        //SortActions();
 
         //Performed at the end so it doesn't interfere with the current (de)activation process
         InitializeSecondaryPaths(path);
@@ -69,26 +69,23 @@ static public class RenderManager
         path.form.OpenView();
     }
 
-    static public void ResetView()
+    static public void ResetLayer(Path path)
     {
+        //Get layer which the rendered path's form belongs to, including sub layers
+        var layers = new List<EditorLayer>() { path.form.editorLayer };
+        layers.AddRange(path.form.editorLayer.subLayers);
+
+        //Get forms which belong to the layer
+        var forms = layoutManager.forms.Where(x => layers.Contains(x.editorLayer)).ToList();
+
         //Activate layers, set anchors based on initialized values
         layoutManager.layers.ForEach(x => x.SetLayout());
 
-        layoutManager.forms.ForEach(x => x.CloseEditor());
+        //Close segments and actions
+        forms.ForEach(x => x.CloseEditor());
 
-        CloseActions();
-
-        layoutManager.forms.ForEach(x => x.OpenEditor());
-    }
-
-    static public void SortActions()
-    {
-        ActionManager.instance.SortActions();
-    }
-
-    static public void CloseActions()
-    {
-        ActionManager.instance.CloseActions();
+        //Open section editors and actions
+        forms.ForEach(x => x.OpenEditor());
     }
 
     static public void CloseForms()
@@ -132,11 +129,14 @@ static public class RenderManager
 
         var dataList = dataController.DataManager.GetDataElements(searchProperties);
 
-        var pathController = dataController.SegmentController.editorController.PathController;
+        if(dataController.SegmentController != null)
+        {
+            var pathController = dataController.SegmentController.editorController.PathController;
 
-        var mainForm = pathController.layoutSection.EditorForm;
-        mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
-
+            var mainForm = pathController.layoutSection.EditorForm;
+            mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
+        }
+        
         return dataList;
     }
 

@@ -40,6 +40,8 @@ public class ListProperties : MonoBehaviour, IDisplay
         }
     }
 
+    public IDisplayManager DisplayManager { get { return listManager; } }
+
     public IProperties Properties { get { return GetComponent<IProperties>(); } }
 
     public SelectionManager.Property SelectionProperty { get { return selectionProperty; } }

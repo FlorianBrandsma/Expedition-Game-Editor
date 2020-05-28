@@ -11,7 +11,7 @@ public class DisplayManager
         PanelTile,
         MultiGrid,
         Object,
-        World,
-        Game
+        EditorWorld,
+        GameWorld
     }
 }

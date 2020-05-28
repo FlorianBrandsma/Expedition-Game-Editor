@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class CameraManager : MonoBehaviour, IDisplayManager
 {
-    private IOrganizer organizer;
+    public IOrganizer Organizer { get; set; }
 
     public SelectionManager.Property    SelectionProperty   { get; set; }
     public SelectionManager.Type        SelectionType       { get; set; }
@@ -39,10 +39,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         switch (cameraProperties.OrganizerType)
         {
-            case DisplayManager.OrganizerType.None:     organizer = null; break;
-            case DisplayManager.OrganizerType.Object:   organizer = gameObject.AddComponent<ObjectOrganizer>(); break;
-            case DisplayManager.OrganizerType.World:    organizer = gameObject.AddComponent<WorldOrganizer>();  break;
-            case DisplayManager.OrganizerType.Game:     organizer = gameObject.AddComponent<GameOrganizer>();   break;
+            case DisplayManager.OrganizerType.None:         Organizer = null; break;
+            case DisplayManager.OrganizerType.Object:       Organizer = gameObject.AddComponent<ObjectOrganizer>();         break;
+            case DisplayManager.OrganizerType.EditorWorld:  Organizer = gameObject.AddComponent<EditorWorldOrganizer>();    break;
+            case DisplayManager.OrganizerType.GameWorld:    Organizer = gameObject.AddComponent<GameWorldOrganizer>();      break;
 
             default: Debug.Log("CASE MISSING: " + cameraProperties.OrganizerType); break;
         }
@@ -50,9 +50,9 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         //Don't do this in games. Actually base it off border
         InitializeViewportRect();
 
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
-        organizer.InitializeOrganizer();
+        Organizer.InitializeOrganizer();
 
         if(overlayManager != null)
             overlayManager.InitializeOverlay(this);
@@ -76,7 +76,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public void SetProperties()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         if(overlayManager != null)
             overlayManager.SetOverlayProperties(cameraProperties);
@@ -86,15 +86,15 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public void SelectData()
     {
-        organizer.SelectData();
+        Organizer.SelectData();
     }
 
     public void SetCamera()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         if(overlayManager != null)
-            overlayManager.ActivateOverlay(organizer);
+            overlayManager.ActivateOverlay(Organizer);
         
         SetData();
 
@@ -114,19 +114,19 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public void UpdateData()
     {
-        organizer.UpdateData();
+        Organizer.UpdateData();
 
         UpdateOverlay();
     }
 
     private void SetData()
     {
-        organizer.SetData();
+        Organizer.SetData();
     }
 
     public void UpdateOverlay()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         if (overlayManager != null)
             overlayManager.UpdateOverlay();
@@ -178,21 +178,21 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public void ClearCamera()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
-        organizer.ClearOrganizer();
+        Organizer.ClearOrganizer();
     }
 
     public void CloseCamera()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         ClearCamera();
 
         if (overlayManager != null)
             overlayManager.CloseOverlay();
 
-        organizer.CloseOrganizer();
+        Organizer.CloseOrganizer();
 
         transform.parent.gameObject.SetActive(false);
     }

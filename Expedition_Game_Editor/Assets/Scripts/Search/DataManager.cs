@@ -122,8 +122,8 @@ public class DataManager
 
         foreach (Fixtures.ChapterInteractable chapterInteractable in Fixtures.chapterInteractableList)
         {
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId)) continue;
-            if (searchParameters.interactableId.Count > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId)) continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId))             continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId))   continue;
 
             var data = new ChapterInteractableData();
 
@@ -144,7 +144,8 @@ public class DataManager
 
         foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.Id))                 continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(phase.chapterId))   continue;
 
             var data = new PhaseData();
 
@@ -446,12 +447,14 @@ public class DataManager
 
         foreach (Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(region.Id))            continue;
+            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(region.phaseId))  continue;
 
             var data = new RegionData();
             
             data.Id = region.Id;
 
+            data.phaseId = region.phaseId;
             data.tileSetId = region.tileSetId;
 
             data.regionSize = region.regionSize;
@@ -493,6 +496,150 @@ public class DataManager
 
             data.animation = worldObject.animation;
             
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<ChapterSaveData> GetChapterSaveData(Search.ChapterSave searchParameters)
+    {
+        var dataList = new List<ChapterSaveData>();
+
+        foreach(Fixtures.ChapterSave chapterSave in Fixtures.chapterSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(chapterSave.saveId)) continue;
+
+            var data = new ChapterSaveData();
+
+            data.Id = chapterSave.Id;
+
+            data.saveId = chapterSave.saveId;
+            data.chapterId = chapterSave.chapterId;
+
+            data.complete = chapterSave.complete;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<PhaseSaveData> GetPhaseSaveData(Search.PhaseSave searchParameters)
+    {
+        var dataList = new List<PhaseSaveData>();
+
+        foreach (Fixtures.PhaseSave phaseSave in Fixtures.phaseSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(phaseSave.saveId)) continue;
+
+            var data = new PhaseSaveData();
+
+            data.Id = phaseSave.Id;
+
+            data.saveId = phaseSave.saveId;
+            data.chapterSaveId = phaseSave.chapterSaveId;
+            data.phaseId = phaseSave.phaseId;
+
+            data.complete = phaseSave.complete;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<QuestSaveData> GetQuestSaveData(Search.QuestSave searchParameters)
+    {
+        var dataList = new List<QuestSaveData>();
+
+        foreach (Fixtures.QuestSave questSave in Fixtures.questSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(questSave.saveId)) continue;
+
+            var data = new QuestSaveData();
+
+            data.Id = questSave.Id;
+
+            data.saveId = questSave.saveId;
+            data.phaseSaveId = questSave.phaseSaveId;
+            data.questId = questSave.questId;
+
+            data.complete = questSave.complete;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<ObjectiveSaveData> GetObjectiveSaveData(Search.ObjectiveSave searchParameters)
+    {
+        var dataList = new List<ObjectiveSaveData>();
+
+        foreach (Fixtures.ObjectiveSave objectiveSave in Fixtures.objectiveSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(objectiveSave.saveId)) continue;
+
+            var data = new ObjectiveSaveData();
+
+            data.Id = objectiveSave.Id;
+
+            data.saveId = objectiveSave.saveId;
+            data.questSaveId = objectiveSave.questSaveId;
+            data.objectiveId = objectiveSave.objectiveId;
+
+            data.complete = objectiveSave.complete;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<TaskSaveData> GetTaskSaveData(Search.TaskSave searchParameters)
+    {
+        var dataList = new List<TaskSaveData>();
+
+        foreach (Fixtures.TaskSave taskSave in Fixtures.taskSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(taskSave.saveId)) continue;
+
+            var data = new TaskSaveData();
+
+            data.Id = taskSave.Id;
+
+            data.saveId = taskSave.saveId;
+            data.worldInteractableId = taskSave.worldInteractableId;
+            data.objectiveSaveId = taskSave.objectiveSaveId;
+            data.taskId = taskSave.taskId;
+
+            data.complete = taskSave.complete;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<InteractionSaveData> GetInteractionSaveData(Search.InteractionSave searchParameters)
+    {
+        var dataList = new List<InteractionSaveData>();
+
+        foreach (Fixtures.InteractionSave interactionSave in Fixtures.interactionSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(interactionSave.saveId)) continue;
+
+            var data = new InteractionSaveData();
+
+            data.Id = interactionSave.Id;
+
+            data.saveId = interactionSave.saveId;
+            data.taskSaveId = interactionSave.taskSaveId;
+            data.interactionId = interactionSave.interactionId;
+
+            data.complete = interactionSave.complete;
+
             dataList.Add(data);
         }
 
@@ -545,13 +692,6 @@ public class DataManager
 
         public string publicNotes;
         public string privateNotes;
-    }
-
-    public class PhaseInteractableData : GeneralData
-    {
-        public int phaseId;
-        public int chapterInteractableId;
-        public int questId;
     }
 
     public class QuestData : GeneralData
@@ -640,6 +780,7 @@ public class DataManager
 
     public class RegionData : GeneralData
     {
+        public int phaseId;
         public int tileSetId;
 
         public int regionSize;
@@ -689,6 +830,60 @@ public class DataManager
         public float scaleMultiplier;
 
         public int animation;
+    }
+
+    public class ChapterSaveData : GeneralData
+    {
+        public int saveId;
+        public int chapterId;
+
+        public bool complete;
+    }
+
+    public class PhaseSaveData : GeneralData
+    {
+        public int saveId;
+        public int chapterSaveId;
+        public int phaseId;
+
+        public bool complete;
+    }
+
+    public class QuestSaveData : GeneralData
+    {
+        public int saveId;
+        public int phaseSaveId;
+        public int questId;
+
+        public bool complete;
+    }
+
+    public class ObjectiveSaveData : GeneralData
+    {
+        public int saveId;
+        public int questSaveId;
+        public int objectiveId;
+
+        public bool complete;
+    }
+
+    public class TaskSaveData : GeneralData
+    {
+        public int saveId;
+        public int worldInteractableId;
+        public int objectiveSaveId;
+        public int taskId;
+
+        public bool complete;
+    }
+
+    public class InteractionSaveData : GeneralData
+    {
+        public int saveId;
+        public int taskSaveId;
+        public int interactionId;
+
+        public bool complete;
     }
     #endregion
 }

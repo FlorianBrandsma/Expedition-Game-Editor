@@ -29,9 +29,11 @@ public class Enums
         Task,
         Interaction,
         Outcome,
-        World,
+        EditorWorld,
         Game,
+        GameWorld,
         Save,
+        GameSave,
         ChapterSave,
         PhaseSave,
         QuestSave,
@@ -129,7 +131,8 @@ public class Enums
         TabVertical,
         Header,
         PagingButton,
-        FormButton
+        FormButton,
+        GameWorldElement
     }
 
     public enum ElementStatus

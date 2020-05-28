@@ -28,12 +28,14 @@ public class CameraProperties : MonoBehaviour, IDisplay
         }
     }
 
-    public IProperties Properties { get { return GetComponent<IProperties>(); } }
+    public IDisplayManager DisplayManager               { get { return cameraManager; } }
 
-    public SelectionManager.Property SelectionProperty { get { return selectionProperty; } }
-    public SelectionManager.Type SelectionType { get { return selectionType; } }
+    public IProperties Properties                       { get { return GetComponent<IProperties>(); } }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SelectionManager.Property SelectionProperty  { get { return selectionProperty; } }
+    public SelectionManager.Type SelectionType          { get { return selectionType; } }
+
+    public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }
 
     private void OpenCamera()
     {

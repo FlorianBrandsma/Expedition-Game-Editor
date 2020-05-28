@@ -216,10 +216,9 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
     public void InitializeSegment()
     {
         var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
-        var worldDataElement = regionData.worldDataElement;
 
-        var regionSize = new Vector2(worldDataElement.regionSize * worldDataElement.terrainSize * worldDataElement.tileSize,
-                                     worldDataElement.regionSize * worldDataElement.terrainSize * worldDataElement.tileSize);
+        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.tileSize,
+                                     regionData.RegionSize * regionData.TerrainSize * regionData.tileSize);
 
         xInputField.max = regionSize.x;
         yInputField.max = regionSize.y;

@@ -306,6 +306,7 @@ static public class Fixtures
 
     public class PhaseSave : GeneralData
     {
+        public int saveId;
         public int chapterSaveId;
         public int phaseId;
 
@@ -314,6 +315,7 @@ static public class Fixtures
 
     public class QuestSave : GeneralData
     {
+        public int saveId;
         public int phaseSaveId;
         public int questId;
 
@@ -322,6 +324,7 @@ static public class Fixtures
 
     public class ObjectiveSave : GeneralData
     {
+        public int saveId;
         public int questSaveId;
         public int objectiveId;
 
@@ -330,6 +333,7 @@ static public class Fixtures
 
     public class TaskSave : GeneralData
     {
+        public int saveId;
         public int worldInteractableId;
         public int objectiveSaveId;
         public int taskId;
@@ -339,6 +343,7 @@ static public class Fixtures
 
     public class InteractionSave : GeneralData
     {
+        public int saveId;
         public int taskSaveId;
         public int interactionId;
 
@@ -1466,6 +1471,7 @@ static public class Fixtures
 
             phaseSave.Id = id;
 
+            phaseSave.saveId = chapterSave.saveId;
             phaseSave.chapterSaveId = chapterSave.Id;
             phaseSave.phaseId = phase.Id;
 
@@ -1489,13 +1495,13 @@ static public class Fixtures
 
                 foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
                 {
-                    LoadWorldInteractableTaskSaves(worldInteractableSource);
+                    LoadWorldInteractableTaskSaves(worldInteractableSource, phaseSave);
                 }
             }
         }
     }
 
-    static public void LoadWorldInteractableTaskSaves(WorldInteractable worldInteractable)
+    static public void LoadWorldInteractableTaskSaves(WorldInteractable worldInteractable, PhaseSave phaseSave)
     {
         foreach (Task task in taskList.Where(x => x.worldInteractableId == worldInteractable.Id))
         {
@@ -1505,6 +1511,7 @@ static public class Fixtures
 
             taskSave.Id = id;
 
+            taskSave.saveId = phaseSave.saveId;
             taskSave.worldInteractableId = worldInteractable.Id;
             taskSave.taskId = task.Id;
 
@@ -1524,6 +1531,7 @@ static public class Fixtures
 
             questSave.Id = id;
 
+            questSave.saveId = phaseSave.saveId;
             questSave.phaseSaveId = phaseSave.Id;
             questSave.questId = quest.Id;
 
@@ -1543,6 +1551,7 @@ static public class Fixtures
 
             objectiveSave.Id = id;
 
+            objectiveSave.saveId = questSave.saveId;
             objectiveSave.questSaveId = questSave.Id;
             objectiveSave.objectiveId = objective.Id;
             
@@ -1562,6 +1571,7 @@ static public class Fixtures
 
             taskSave.Id = id;
 
+            taskSave.saveId = objectiveSave.saveId;
             taskSave.worldInteractableId = task.worldInteractableId;
             taskSave.objectiveSaveId = objectiveSave.Id;
             taskSave.taskId = task.Id;
@@ -1582,6 +1592,7 @@ static public class Fixtures
 
             interactionSave.Id = id;
 
+            interactionSave.saveId = taskSave.saveId;
             interactionSave.taskSaveId = taskSave.Id;
             interactionSave.interactionId = interaction.Id;
 

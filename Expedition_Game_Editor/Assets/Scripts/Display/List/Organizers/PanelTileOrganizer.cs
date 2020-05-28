@@ -46,7 +46,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData(List<IDataElement> list)
     {
-        var prefab = Resources.Load<ExPanelTile>("UI/PanelTile");
+        var prefab = Resources.Load<ExPanelTile>("Elements/UI/PanelTile");
 
         foreach (IDataElement dataElement in list)
         {

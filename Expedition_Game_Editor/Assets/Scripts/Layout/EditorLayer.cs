@@ -5,6 +5,8 @@ public class EditorLayer : MonoBehaviour
 {
     public List<LayoutAnchors> layoutSections;
 
+    public List<EditorLayer> subLayers;
+
     public void InitializeAnchors()
     {
         layoutSections.ForEach(x => x.InitializeAnchors());

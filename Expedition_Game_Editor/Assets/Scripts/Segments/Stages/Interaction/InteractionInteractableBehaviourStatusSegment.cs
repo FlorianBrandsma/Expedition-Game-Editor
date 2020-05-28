@@ -24,28 +24,22 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
     #region Data Methods
     private void InitializeEditButton()
     {
-        var regionData = new RegionDataElement();
-
-        regionData.Id = InteractionData.RegionId;
-        regionData.type = Enums.RegionType.Interaction;
-
         var searchProperties = new SearchProperties(Enums.DataType.Region);
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         var phaseRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Phase);
 
-        //To get all phase regions
+        //Get all phase regions if a phase was selected
         if (phaseRoute != null)
             searchParameters.phaseId = new List<int>() { phaseRoute.GeneralData.Id };
         else
             searchParameters.phaseId = new List<int>() { 0 };
-
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
-
-        if (regionData.Id == 0)
-            regionData.Id = SegmentController.DataController.DataList.FirstOrDefault().Id;
         
+        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        
+        var regionData = SegmentController.DataController.DataList.Cast<RegionDataElement>().Where(x => x.Id == InteractionData.RegionId).FirstOrDefault();
+        regionData.type = Enums.RegionType.Interaction;
+
         editButton.path = SegmentController.editorController.PathController.route.path;
         
         editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);

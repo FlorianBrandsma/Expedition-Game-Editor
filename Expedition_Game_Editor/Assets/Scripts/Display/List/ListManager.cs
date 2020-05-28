@@ -8,9 +8,9 @@ using System.IO;
 
 public class ListManager : MonoBehaviour, IDisplayManager
 {
-    public IOrganizer organizer;
+    public IOrganizer       Organizer       { get; set; }
+    public IDisplay         Display         { get; set; }
 
-    public IDisplay         Display { get; set; }
     private ListProperties  listProperties;
 
     public OverlayManager   overlayManager;
@@ -33,25 +33,26 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         switch(listProperties.elementType)
         {
-            case DisplayManager.OrganizerType.None:      organizer = null;                                           break;
-            case DisplayManager.OrganizerType.Button:    organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
-            case DisplayManager.OrganizerType.Tile:      organizer = gameObject.AddComponent<TileOrganizer>();       break;
-            case DisplayManager.OrganizerType.Panel:     organizer = gameObject.AddComponent<PanelOrganizer>();      break;
-            case DisplayManager.OrganizerType.PanelTile: organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
-            case DisplayManager.OrganizerType.MultiGrid: organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
+            case DisplayManager.OrganizerType.None:      Organizer = null;                                           break;
+            case DisplayManager.OrganizerType.Button:    Organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
+            case DisplayManager.OrganizerType.Tile:      Organizer = gameObject.AddComponent<TileOrganizer>();       break;
+            case DisplayManager.OrganizerType.Panel:     Organizer = gameObject.AddComponent<PanelOrganizer>();      break;
+            case DisplayManager.OrganizerType.PanelTile: Organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
+            case DisplayManager.OrganizerType.MultiGrid: Organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
+
             default: Debug.Log("CASE MISSING: " + listProperties.elementType);                              break;
         }
 
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
-        organizer.InitializeOrganizer();
+        Organizer.InitializeOrganizer();
 
         overlayManager.InitializeOverlay(this);
     }
 
     public void SetProperties()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         ScrollRect.horizontal   = listProperties.horizontal;
         ScrollRect.vertical     = listProperties.vertical;
@@ -63,13 +64,13 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
     public void SetList()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         var dataList = Display.DataController.DataList;
 
         if (dataList.Count == 0) return;
         
-        overlayManager.ActivateOverlay(organizer);
+        overlayManager.ActivateOverlay(Organizer);
 
         overlayManager.SetOverlaySize();
 
@@ -80,7 +81,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         //Select data after the list has been resized, so that the position may be properly corrected
         //"Set" elements never receive this kind of visual feedback
         if(listProperties.SelectionProperty != SelectionManager.Property.Set)
-            organizer.SelectData();
+            Organizer.SelectData();
         
         if (!listProperties.enablePaging)
             SetData();
@@ -99,17 +100,17 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
     public void UpdateData()
     {
-        organizer.UpdateData();
+        Organizer.UpdateData();
     }
 
     private void SetData()
     {
-        organizer.SetData();
+        Organizer.SetData();
     }
 
     public void UpdateOverlay()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         overlayManager.UpdateOverlay();
     }
@@ -153,7 +154,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
     public void AutoSelectElement()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
         
         if (Display.DataController.DataList.Count == 0) return;
         
@@ -167,13 +168,13 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
     public void CloseList()
     {
-        if (organizer == null) return;
+        if (Organizer == null) return;
 
         ScrollRect.horizontal = false;
         ScrollRect.vertical = false;
         
         overlayManager.CloseOverlay();
-        organizer.CloseOrganizer();
+        Organizer.CloseOrganizer();
         
         transform.parent.gameObject.SetActive(false);
     }

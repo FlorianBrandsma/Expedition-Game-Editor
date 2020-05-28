@@ -47,9 +47,12 @@ public class SearchProperties
             case Enums.DataType.Task:               searchParameters = new[] { new Search.Task() };                 break;
             case Enums.DataType.Interaction:        searchParameters = new[] { new Search.Interaction() };          break;
             case Enums.DataType.Outcome:            searchParameters = new[] { new Search.Outcome() };              break;
-            case Enums.DataType.World:              searchParameters = new[] { new Search.World() };                break;
+            case Enums.DataType.EditorWorld:        searchParameters = new[] { new Search.EditorWorld() };          break;
 
-            case Enums.DataType.Save:           searchParameters = new[] { new Search.Save() };             break;
+            case Enums.DataType.GameWorld:          searchParameters = new[] { new Search.GameWorld() };            break;
+
+            case Enums.DataType.Save:               searchParameters = new[] { new Search.Save() };                 break;
+            case Enums.DataType.GameSave:           searchParameters = new[] { new Search.GameSave() };             break;
             case Enums.DataType.ChapterSave:        searchParameters = new[] { new Search.ChapterSave() };          break;
             case Enums.DataType.PhaseSave:          searchParameters = new[] { new Search.PhaseSave() };            break;
             case Enums.DataType.QuestSave:          searchParameters = new[] { new Search.QuestSave() };            break;

@@ -48,7 +48,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
 
     public GameObject StatusIcon(SelectionElement target, StatusIconType statusIconType)
     {
-        var prefab = Resources.Load<ExStatusIcon>("UI/StatusIcon");
+        var prefab = Resources.Load<ExStatusIcon>("Elements/UI/StatusIcon");
 
         var statusIcon = (ExStatusIcon)PoolManager.SpawnObject(0, prefab);
         statusIconList.Add(statusIcon);

@@ -78,7 +78,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         if (PathController.route.path.type == Path.Type.New)
         {
-            var regionDataElement = (RegionDataElement)regionRoute.data.dataList.FirstOrDefault();
+            var regionDataElement = (RegionDataElement)regionRoute.data.dataElement;
             regionType = regionDataElement.type;
 
             if (regionType == Enums.RegionType.Interaction)

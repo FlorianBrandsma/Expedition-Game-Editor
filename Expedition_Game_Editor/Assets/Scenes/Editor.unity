@@ -6006,7 +6006,6 @@ GameObject:
   - component: {fileID: 223280774}
   - component: {fileID: 223280773}
   - component: {fileID: 223280779}
-  - component: {fileID: 223280775}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -6055,26 +6054,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &223280775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223280772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef949c55329b91648b3a2d2e4c21dc42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  element_parent: {fileID: 1559060554}
-  main_content: {fileID: 1959041974}
-  scrollRect: {fileID: 1581687987}
-  main_parent: {fileID: 1438790508}
-  left_arrow: {fileID: 1783357849}
-  right_arrow: {fileID: 1572607280}
-  arrow_active: {fileID: 2800000, guid: 36dd5b7add89e9845be6d8e02d6c8276, type: 3}
-  arrow_inactive: {fileID: 2800000, guid: f56501b48861a8b4e8e7108997f6d74b, type: 3}
 --- !u!223 &223280776
 Canvas:
   m_ObjectHideFlags: 0
@@ -9841,8 +9820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
-  defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0
     width: 100
@@ -18151,6 +18128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorLayer: {fileID: 1322216632}
   loaded: 0
   activeInPath: 0
   formAction: {fileID: 0}
@@ -25047,6 +25025,7 @@ MonoBehaviour:
   layoutSections:
   - {fileID: 1069878632}
   - {fileID: 1685155424}
+  subLayers: []
 --- !u!1001 &996487870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31067,8 +31046,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
-  defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0
     width: 100
@@ -31996,6 +31973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorLayer: {fileID: 995570910}
   loaded: 0
   activeInPath: 0
   formAction: {fileID: 0}
@@ -32016,6 +31994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layoutSections:
   - {fileID: 1250721022}
+  subLayers: []
 --- !u!114 &1250721021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34849,6 +34828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layoutSections:
   - {fileID: 778174902}
+  subLayers: []
 --- !u!1 &1322450493
 GameObject:
   m_ObjectHideFlags: 0
@@ -37582,6 +37562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorLayer: {fileID: 1762460843}
   loaded: 0
   activeInPath: 0
   formAction: {fileID: 0}
@@ -42734,7 +42715,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223280775}
+      - m_Target: {fileID: 0}
         m_MethodName: SetSlider
         m_Mode: 1
         m_Arguments:
@@ -47604,6 +47585,8 @@ MonoBehaviour:
   layoutSections:
   - {fileID: 2082631210}
   - {fileID: 1374861250}
+  subLayers:
+  - {fileID: 995570910}
 --- !u!1 &1764319300
 GameObject:
   m_ObjectHideFlags: 0
@@ -54868,6 +54851,7 @@ GameObject:
   - component: {fileID: 2082631210}
   - component: {fileID: 2082631211}
   - component: {fileID: 2082631209}
+  - component: {fileID: 2082631213}
   m_Layer: 5
   m_Name: Main (form-layoutSection)
   m_TagString: Untagged
@@ -54909,6 +54893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorLayer: {fileID: 1762460843}
   loaded: 0
   activeInPath: 0
   formAction: {fileID: 0}
@@ -54959,6 +54944,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutDependency: {fileID: 0}
+--- !u!114 &2082631213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082631207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef949c55329b91648b3a2d2e4c21dc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element_parent: {fileID: 1559060554}
+  main_content: {fileID: 1959041974}
+  scrollRect: {fileID: 1581687987}
+  main_parent: {fileID: 1438790508}
+  left_arrow: {fileID: 1783357849}
+  right_arrow: {fileID: 1572607280}
+  arrow_active: {fileID: 2800000, guid: 36dd5b7add89e9845be6d8e02d6c8276, type: 3}
+  arrow_inactive: {fileID: 2800000, guid: f56501b48861a8b4e8e7108997f6d74b, type: 3}
 --- !u!1 &2083398429
 GameObject:
   m_ObjectHideFlags: 0
@@ -55503,8 +55508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59394a1c893d2964baf0bc0a6c306d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
-  defaultDisplay: {fileID: 0}
   actionProperties:
     anchor: 0
     width: 100

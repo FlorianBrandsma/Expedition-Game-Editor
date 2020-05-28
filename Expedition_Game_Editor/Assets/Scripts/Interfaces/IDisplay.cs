@@ -7,6 +7,7 @@ public interface IDisplay
     
     Enums.DisplayType DisplayType { get; }
 
+    IDisplayManager DisplayManager { get; }
     IProperties Properties { get; }
     IDataController DataController { get; set; }
 

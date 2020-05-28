@@ -256,7 +256,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class World
+    public class EditorWorld
     {
         public List<int> id = new List<int>();
 
@@ -344,12 +344,43 @@ public class Search
         public RequestType requestType;
     }
 
+    public class GameWorld
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> phaseId = new List<int>();
+
+        //public List<int> regionId = new List<int>();
+        //public List<int> objectiveId = new List<int>();
+
+        //public Enums.RegionType regionType;
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class Save
     {
         public List<int> id = new List<int>();
 
         public List<int> gameId = new List<int>();
 
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class GameSave
+    {
+        public List<int> saveId = new List<int>();
+        
         public enum RequestType
         {
             Custom
@@ -377,6 +408,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
+        public List<int> saveId = new List<int>();
         public List<int> chapterSaveId = new List<int>();
         public List<int> phaseId = new List<int>();
 
@@ -395,6 +427,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
+        public List<int> saveId = new List<int>();
         public List<int> phaseSaveId = new List<int>();
         public List<int> questId = new List<int>();
 
@@ -410,6 +443,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
+        public List<int> saveId = new List<int>();
         public List<int> questSaveId = new List<int>();
         public List<int> objectiveId = new List<int>();
 
@@ -425,6 +459,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
+        public List<int> saveId = new List<int>();
         public List<int> objectiveSaveId = new List<int>();
         public List<int> worldInteractableId = new List<int>();
         public List<int> taskId = new List<int>();
@@ -441,6 +476,7 @@ public class Search
     {
         public List<int> id = new List<int>();
 
+        public List<int> saveId = new List<int>();
         public List<int> taskSaveId = new List<int>();
         public List<int> interactionId = new List<int>();
 

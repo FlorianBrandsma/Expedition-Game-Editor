@@ -35,7 +35,7 @@ public class OverlayManager : MonoBehaviour
             case Enums.DisplayType.List:    SetListOverlayProperties(displayProperties);    break;
             case Enums.DisplayType.Camera:  SetCameraOverlayProperties(displayProperties);  break;
         }
-        
+
         foreach (IOverlay overlay in GetComponents<IOverlay>())
             overlay.InitializeOverlay(DisplayManager);
     }

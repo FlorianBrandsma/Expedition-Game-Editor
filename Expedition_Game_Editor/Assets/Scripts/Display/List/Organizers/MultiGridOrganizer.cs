@@ -59,7 +59,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), MultiGridProperties.elementType);
 
-        var prefab = Resources.Load<ExMultiGrid>("UI/" + elementType);
+        var prefab = Resources.Load<ExMultiGrid>("Elements/UI/" + elementType);
 
         foreach (IDataElement dataElement in primaryList)
         {

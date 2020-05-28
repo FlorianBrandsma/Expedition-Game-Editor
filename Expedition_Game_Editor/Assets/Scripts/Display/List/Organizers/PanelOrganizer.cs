@@ -57,7 +57,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), PanelProperties.elementType);
 
-        var prefab = Resources.Load<ExPanel>("UI/" + elementType);
+        var prefab = Resources.Load<ExPanel>("Elements/UI/" + elementType);
 
         foreach (IDataElement dataElement in list)
         {

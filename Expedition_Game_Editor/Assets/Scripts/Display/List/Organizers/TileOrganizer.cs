@@ -48,7 +48,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), TileProperties.elementType);
 
-        var prefab = Resources.Load<ExTile>("UI/" + elementType);
+        var prefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
 
         foreach (IDataElement data in list)
         {

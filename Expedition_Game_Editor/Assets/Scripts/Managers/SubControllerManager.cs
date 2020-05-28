@@ -37,7 +37,7 @@ public class SubControllerManager : MonoBehaviour
 
         if (controllers.Length > 1)
         {
-            var prefab = Resources.Load<ExTab>("UI/Tab" + Enum.GetName(typeof(Axis), axis));
+            var prefab = Resources.Load<ExTab>("Elements/UI/Tab" + Enum.GetName(typeof(Axis), axis));
 
             for (int i = 0; i < controllers.Length; i++)
             {
@@ -62,7 +62,7 @@ public class SubControllerManager : MonoBehaviour
             //Only optimized for horizontal
             //No cases where it's required vertically as of 01/01/2019
 
-            var prefab = Resources.Load<ExHeader>("UI/Header");
+            var prefab = Resources.Load<ExHeader>("Elements/UI/Header");
             header = (ExHeader)PoolManager.SpawnObject(0, prefab);
 
             header.transform.SetParent(transform, false);

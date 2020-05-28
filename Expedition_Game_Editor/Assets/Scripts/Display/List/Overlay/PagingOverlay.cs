@@ -117,7 +117,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
 
     public ExButton SpawnButton()
     {
-        var prefab = Resources.Load<ExButton>("UI/PagingButton");
+        var prefab = Resources.Load<ExButton>("Elements/UI/PagingButton");
         var button = (ExButton)PoolManager.SpawnObject(0, prefab);
 
         button.gameObject.SetActive(true);

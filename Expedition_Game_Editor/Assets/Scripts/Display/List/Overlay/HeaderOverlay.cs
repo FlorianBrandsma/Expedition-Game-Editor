@@ -17,7 +17,7 @@ public class HeaderOverlay : MonoBehaviour, IOverlay
 
     public void ActivateOverlay(IOrganizer organizer)
     {
-        var prefab = Resources.Load<ExText>("UI/Text");
+        var prefab = Resources.Load<ExText>("Elements/UI/Text");
         headerText = (ExText)PoolManager.SpawnObject(0, prefab);
 
         headerText.transform.SetParent(overlayManager.horizontal_min, false);

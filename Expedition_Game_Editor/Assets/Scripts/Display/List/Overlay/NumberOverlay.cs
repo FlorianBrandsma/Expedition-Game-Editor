@@ -75,7 +75,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
     {
         OverlayBorder overlayBorder = numberParent.GetComponent<OverlayBorder>();
 
-        var prefab = Resources.Load<ExText>("UI/Text");
+        var prefab = Resources.Load<ExText>("Elements/UI/Text");
         
         var newText = (ExText)PoolManager.SpawnObject(0, prefab);
         numberListLocal.Add(newText);

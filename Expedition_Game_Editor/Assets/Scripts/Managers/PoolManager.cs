@@ -55,12 +55,12 @@ public class PoolManager : MonoBehaviour
         {
             var objectPool = filteredPoolList.objectPoolList.Where(x => x.id == id).FirstOrDefault();
 
-            if(objectPool != null)
+            if (objectPool != null)
             {
                 var poolable = objectPool.pool.Where(x => !x.IsActive).FirstOrDefault();
-
+                
                 if (poolable != null)
-                    return poolable;
+                    return poolable;  
             }
         }
 

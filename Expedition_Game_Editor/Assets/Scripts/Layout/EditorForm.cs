@@ -8,6 +8,8 @@ using System.Linq;
 
 public class EditorForm : MonoBehaviour
 {
+    public EditorLayer editorLayer;
+
     [HideInInspector]
     public bool loaded;
 
@@ -101,12 +103,16 @@ public class EditorForm : MonoBehaviour
         //Open the target editors
         OpenSectionEditors();
         
+        //Activate and sort actions
         SetActions(activeViewPath);
     }
 
     public void CloseEditor()
     {
         CloseSectionEditorSegments();
+
+        if (GetComponent<ActionManager>() != null)
+            GetComponent<ActionManager>().CloseActions();
     }
 
     public void FinalizePath()
@@ -168,6 +174,9 @@ public class EditorForm : MonoBehaviour
     {
         //Activate all components along the path and sort them
         baseController.SetActions(path);
+
+        if (GetComponent<ActionManager>() != null)
+            GetComponent<ActionManager>().SortActions();
     }
     
     #region Layout
