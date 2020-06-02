@@ -42,8 +42,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
             default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType); break;
         }
-
-        transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y - position.y, -position.z);
+        
+        transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
     }

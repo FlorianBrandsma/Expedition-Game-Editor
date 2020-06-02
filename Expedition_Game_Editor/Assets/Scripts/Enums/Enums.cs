@@ -77,7 +77,7 @@ public class Enums
 
     public enum InteractableType
     {
-        Character,
+        Agent,
         Object
     }
 

@@ -27,7 +27,7 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
 
     private void InitializeEditorButton()
     {
-        if (GlobalManager.programType != GlobalManager.Scenes.Editor) return;
+        //if (GlobalManager.programType != GlobalManager.Scenes.Editor) return;
         
         editorButton.gameObject.SetActive(true);
     }

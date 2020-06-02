@@ -708,9 +708,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013373647830}
-  - component: {fileID: 114000014238017966}
-  - component: {fileID: 65000012491289376}
+  - component: {fileID: 8565545378099911429}
   - component: {fileID: 95067264530216198}
+  - component: {fileID: 114000014238017966}
   m_Layer: 10
   m_Name: Mage
   m_TagString: Untagged
@@ -733,29 +733,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114000014238017966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000011498477230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectionElement: {fileID: 0}
-  model: {fileID: 1000013582943862}
-  mesh:
-  - {fileID: 1000013238507618}
-  - {fileID: 1000010558142218}
-  - {fileID: 1000011968035982}
-  pivot: 3
-  previewRotation: {x: 90, y: 0, z: 0}
-  previewScale: {x: 70, y: 70, z: 70}
---- !u!65 &65000012491289376
-BoxCollider:
+--- !u!136 &8565545378099911429
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -764,9 +743,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 3.3}
-  m_Center: {x: 0, y: 0, z: -1.65}
+  m_Radius: 0.5
+  m_Height: 3.3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.65, z: 0}
 --- !u!95 &95067264530216198
 Animator:
   serializedVersion: 3
@@ -786,6 +766,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114000014238017966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011498477230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionElement: {fileID: 0}
+  model: {fileID: 1000013582943862}
+  mesh:
+  - {fileID: 1000013238507618}
+  - {fileID: 1000010558142218}
+  - {fileID: 1000011968035982}
+  pivot: 3
+  previewRotation: {x: 0, y: 180, z: 0}
+  previewScale: {x: 70, y: 70, z: 70}
 --- !u!1 &1000011536399440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,7 +1881,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013582943862}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
@@ -1888,7 +1889,7 @@ Transform:
   - {fileID: 4000012600969692}
   m_Father: {fileID: 4000013373647830}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000013620468450
 GameObject:
   m_ObjectHideFlags: 0

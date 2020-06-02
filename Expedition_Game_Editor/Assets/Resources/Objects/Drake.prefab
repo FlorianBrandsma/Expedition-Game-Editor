@@ -101,9 +101,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013272985582}
-  - component: {fileID: 114000013436077714}
-  - component: {fileID: 65000010778968244}
+  - component: {fileID: 3905451059736183462}
   - component: {fileID: 95703133455900324}
+  - component: {fileID: 114000013436077714}
   m_Layer: 10
   m_Name: Drake
   m_TagString: Untagged
@@ -126,29 +126,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114000013436077714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010305433706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectionElement: {fileID: 0}
-  model: {fileID: 1000013231248294}
-  mesh:
-  - {fileID: 1000012207643262}
-  - {fileID: 1000011225585672}
-  - {fileID: 1000011940017520}
-  pivot: 3
-  previewRotation: {x: 90, y: 0, z: 0}
-  previewScale: {x: 50, y: 50, z: 50}
---- !u!65 &65000010778968244
-BoxCollider:
+--- !u!136 &3905451059736183462
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,9 +136,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 3, z: 2}
-  m_Center: {x: 0, y: -1, z: -2}
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0.5}
 --- !u!95 &95703133455900324
 Animator:
   serializedVersion: 3
@@ -179,6 +159,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114000013436077714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010305433706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionElement: {fileID: 0}
+  model: {fileID: 1000013231248294}
+  mesh:
+  - {fileID: 1000012207643262}
+  - {fileID: 1000011225585672}
+  - {fileID: 1000011940017520}
+  pivot: 3
+  previewRotation: {x: 0, y: 180, z: 0}
+  previewScale: {x: 50, y: 50, z: 50}
 --- !u!1 &1000010313708204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2317,7 +2318,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013231248294}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2325,7 +2326,7 @@ Transform:
   - {fileID: 4000014030310610}
   m_Father: {fileID: 4000013272985582}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000013239613148
 GameObject:
   m_ObjectHideFlags: 0

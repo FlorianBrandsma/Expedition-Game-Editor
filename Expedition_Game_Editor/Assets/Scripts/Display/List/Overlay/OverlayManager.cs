@@ -30,7 +30,7 @@ public class OverlayManager : MonoBehaviour
 
     public void SetOverlayProperties(IDisplay displayProperties)
     {
-        switch(displayProperties.DisplayType)
+        switch (displayProperties.DisplayType)
         {
             case Enums.DisplayType.List:    SetListOverlayProperties(displayProperties);    break;
             case Enums.DisplayType.Camera:  SetCameraOverlayProperties(displayProperties);  break;

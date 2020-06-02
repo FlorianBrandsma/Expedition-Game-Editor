@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public GameSaveController gameSaveController;
     public GameWorldController gameWorldController;
 
+    public LocalNavMeshBuilder localNavMeshBuilder;
+
     private int activePhaseId;
     public int ActivePhaseId
     {
@@ -183,8 +185,8 @@ public class GameManager : MonoBehaviour
         var regionData = gameWorldData.regionDataList.Where(x => x.PhaseId == ActivePhaseId).First();
 
         var tempWorldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
-        gameWorldData.tempPlayerPosition = new Vector3(238.125f, -238.125f, 0);
-
+        gameWorldData.tempPlayerPosition = new Vector3(238.125f, -241.9375f, 0);
+        //-238.125f -13.8125
         gameWorldController.Display.DisplayManager.Organizer.UpdateData();
 
         CheckTime();

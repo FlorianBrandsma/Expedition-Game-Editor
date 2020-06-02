@@ -19,8 +19,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public IDisplay Display { get; set; }
     private CameraProperties cameraProperties;
 
-    public ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
-    public RectTransform RectTransform { get { return GetComponent<RectTransform>(); } }
+    public ExScrollRect ScrollRect          { get { return GetComponent<ExScrollRect>(); } }
+    public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
+    public RectTransform ScrollRectContent  { get { return GetComponent<ExScrollRect>().content; } }
+
     public RectTransform cameraParent;
 
     public RectTransform displayRect;
@@ -49,7 +51,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         //Don't do this in games. Actually base it off border
         InitializeViewportRect();
-
+        
         if (Organizer == null) return;
 
         Organizer.InitializeOrganizer();
@@ -78,7 +80,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     {
         if (Organizer == null) return;
 
-        if(overlayManager != null)
+        if (overlayManager != null)
             overlayManager.SetOverlayProperties(cameraProperties);
 
         transform.parent.gameObject.SetActive(true);
@@ -109,7 +111,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     private void ResetListPosition()
     {
-        cameraParent.transform.localPosition = new Vector3(0, 0, cameraParent.transform.localPosition.z);
+        ScrollRectContent.transform.localPosition = new Vector3(0, ScrollRectContent.transform.localPosition.z, 0);
     }
 
     public void UpdateData()
@@ -138,6 +140,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         var elementBoundSize = new Vector3(1, 1, 1);
 
+        var startPosition = new Vector2();
         var elementPosition = Vector3.zero;
         
         switch(dataElement.DataType)
@@ -146,6 +149,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 var interactionData = (InteractionDataElement)dataElement;
 
+                startPosition = interactionData.startPosition;
                 elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
 
                 break;
@@ -154,6 +158,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 var worldInteractableData = (WorldInteractableDataElement)dataElement;
 
+                startPosition = worldInteractableData.startPosition;
                 elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, worldInteractableData.positionZ);
                 
                 break;
@@ -162,6 +167,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 var worldObjectData = (WorldObjectDataElement)dataElement;
 
+                startPosition = worldObjectData.startPosition;
                 elementPosition = new Vector3(worldObjectData.PositionX, worldObjectData.PositionY, worldObjectData.PositionZ);
 
                 break;
@@ -169,11 +175,13 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             default: return;
         }
 
-        var startPos = new Vector3(-content.rect.width / 2, content.rect.height / 2, 0);
-        var localPosition = new Vector3(startPos.x + elementPosition.x , startPos.y - elementPosition.y, -elementPosition.z);
-        
+        var localPosition = new Vector3(startPosition.x + elementPosition.x, -elementPosition.y, startPosition.y - elementPosition.z);
+
         if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
-            cameraParent.transform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraParent.transform.localPosition.z);     
+        {
+            ScrollRectContent.transform.localPosition = new Vector3(localPosition.x, localPosition.z, ScrollRectContent.transform.localPosition.z);
+            Organizer.UpdateData();
+        }
     }
 
     public void ClearCamera()

@@ -59,6 +59,10 @@ public class DataController : IDataController
 
                 worldInteractableData.InteractableId = interactableData.Id;
 
+                worldInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
+
+                worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
+
                 worldInteractableData.interactableName = interactableData.Name;
                 worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
                 worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
@@ -79,10 +83,11 @@ public class DataController : IDataController
 
                 worldObjectData.ObjectGraphicId = objectGraphicData.Id;
 
-                worldObjectData.objectGraphicName = objectGraphicData.Name;
-                worldObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
                 worldObjectData.objectGraphicPath = objectGraphicData.Path;
 
+                worldObjectData.objectGraphicName = objectGraphicData.Name;
+                worldObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
+                
                 worldObjectData.height = objectGraphicData.Height;
                 worldObjectData.width = objectGraphicData.Width;
                 worldObjectData.depth = objectGraphicData.Depth;

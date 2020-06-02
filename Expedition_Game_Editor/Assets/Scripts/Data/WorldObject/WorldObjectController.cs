@@ -36,17 +36,19 @@ public class WorldObjectController : MonoBehaviour, IDataController
     {
         var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
         
-        switch (((GeneralData)resultData).DataType)
+        switch (resultData.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
                 var resultElementData = (ObjectGraphicDataElement)resultData;
 
                 worldObjectData.ObjectGraphicId = resultElementData.Id;
-                worldObjectData.objectGraphicName = resultElementData.Name;
-                worldObjectData.objectGraphicIconPath = resultElementData.iconPath;
+
                 worldObjectData.objectGraphicPath = resultElementData.Path;
 
+                worldObjectData.objectGraphicName = resultElementData.Name;
+                worldObjectData.objectGraphicIconPath = resultElementData.iconPath;
+                
                 worldObjectData.height = resultElementData.Height;
                 worldObjectData.width = resultElementData.Width;
                 worldObjectData.depth = resultElementData.Depth;

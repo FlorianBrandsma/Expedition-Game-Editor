@@ -96,8 +96,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
         
         tileBoundSize = new Vector3(worldData.tileSize, worldData.tileSize, 0) * 3;
-
-        CameraManager.cam.transform.localPosition = new Vector3(0, 10 - (worldData.tileSize * 0.75f), -10);
+        
+        CameraManager.cam.transform.localPosition = new Vector3(0, 10, -(worldData.tileSize * 0.5f));
     }
 
     private void GetSelectedElement(Path path, Enums.DataType dataType)
@@ -159,9 +159,11 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ScrollRect.content.sizeDelta = regionSize * 2;
         CameraManager.content.sizeDelta = regionSize;
     }
-
+    
     public void UpdateData()
     {
+        SetCameraPosition();
+
         if (ScrollRect.content.localPosition.x >= positionTracker.x + worldData.tileSize ||
             ScrollRect.content.localPosition.x <= positionTracker.x - worldData.tileSize ||
             ScrollRect.content.localPosition.y >= positionTracker.y + worldData.tileSize ||
@@ -178,6 +180,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             dataSet = true;
         }
+    }
+
+    public void SetCameraPosition()
+    {
+        CameraManager.cameraParent.transform.localPosition = new Vector3(CameraManager.ScrollRectContent.localPosition.x,
+                                                                         CameraManager.cameraParent.transform.localPosition.y,
+                                                                         CameraManager.ScrollRectContent.localPosition.y);
     }
 
     private Vector2 FixTrackerPosition(Vector2 cameraPosition)
@@ -229,7 +238,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == 0 || worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
             
-            worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Character)
+            worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Agent)
                                                                                                         .Where(x => x.terrainTileId == 0 || worldInteractableData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
             worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Object)
@@ -334,9 +343,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         {
             var tilePosition = new Vector2( terrainStartPosition.x + (worldData.tileSize * (terrainTileData.Index % worldData.terrainSize)),
                                             terrainStartPosition.y - (worldData.tileSize * (Mathf.Floor(terrainTileData.Index / worldData.terrainSize))));
-            
-            if (GeometryUtility.TestPlanesAABB(planes, new Bounds(CameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
-            {
+
+            //if (GeometryUtility.TestPlanesAABB(planes, new Bounds(CameraManager.content.TransformPoint(tilePosition), tileBoundSize)))
+            //{
                 Tile prefab = Resources.Load<Tile>("Objects/Tile/" + worldData.tileSetName + "/" + terrainTileData.TileId);
 
                 Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.TileId, prefab);
@@ -345,7 +354,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                 tile.gameObject.SetActive(true);
 
                 tile.transform.SetParent(CameraManager.content, false);
-                tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
+                tile.transform.localPosition = new Vector3(tilePosition.x, 0, tilePosition.y);
 
                 tile.DataType = Enums.DataType.TerrainTile;
                 tile.DataElement = terrainTileData;
@@ -354,14 +363,14 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                 
                 interactionController.DataList.AddRange(terrainData.interactionDataList.Where(x => x.TerrainTileId == terrainTileData.Id).Cast<IDataElement>());
 
-                worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Character && x.terrainTileId == terrainTileData.Id && !worldInteractableData
+                worldInteractableCharacterController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Agent && x.terrainTileId == terrainTileData.Id && !worldInteractableData
                                                                                                             .Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
                 worldInteractableObjectController.DataList.AddRange(terrainData.worldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Object && x.terrainTileId == terrainTileData.Id && !worldInteractableData
                                                                                                          .Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
 
                 worldObjectController.DataList.AddRange(terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id && !worldObjectData.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>());
-            }
+            //}
         }
     }
     
@@ -497,7 +506,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (element.elementStatus == Enums.ElementStatus.Locked)
             element.lockIcon = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
-
+        
         if (element.data.dataElement.SelectionStatus != Enums.SelectionStatus.None)
             element.glow = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
     }

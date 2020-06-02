@@ -60,6 +60,14 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         SetOriginalValues();
     }
 
+    public override void UpdateSearch()
+    {
+        base.UpdateSearch();
+
+        originalInteractableName = interactableName;
+        originalObjectGraphicIconPath = objectGraphicIconPath;
+    }
+
     public override void SetOriginalValues()
     {
         base.SetOriginalValues();

@@ -82,7 +82,9 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void UpdateSelectionPosition()
 	{
-		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, cam.transform.position.y < target.position.y ? target.position.y : cam.transform.position.y, target.position.z - height)) * statusIconManager.Multiplier;
+		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
+													   target.position.y + height,
+													   cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
 
 		var widthCap = statusIconManager.WidthCap;
 		var heightCap = statusIconManager.HeightCap;
@@ -104,13 +106,15 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void UpdateLockPosition()
 	{
-		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x, cam.transform.position.y < target.position.y ? target.position.y : cam.transform.position.y, target.position.z - (height / 2))) * statusIconManager.Multiplier;
+		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
+													   target.position.y + (height / 2),
+													   cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
 
 		transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 	}
 
-    public void ClosePoolable()
-    {
-        gameObject.SetActive(false);
-    }
+	public void ClosePoolable()
+	{
+		gameObject.SetActive(false);
+	}
 }

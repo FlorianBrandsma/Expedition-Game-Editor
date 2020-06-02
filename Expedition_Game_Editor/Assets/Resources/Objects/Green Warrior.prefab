@@ -71,9 +71,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000011040765584}
-  - component: {fileID: 114000010321463136}
-  - component: {fileID: 65000010825615846}
+  - component: {fileID: 7700487543505745565}
   - component: {fileID: 95652477634450278}
+  - component: {fileID: 114000010321463136}
   m_Layer: 10
   m_Name: Green Warrior
   m_TagString: Untagged
@@ -96,29 +96,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114000010321463136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010145837854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectionElement: {fileID: 0}
-  model: {fileID: 1000012371759722}
-  mesh:
-  - {fileID: 1000013322009830}
-  - {fileID: 1000011519670718}
-  - {fileID: 1000011077888546}
-  pivot: 3
-  previewRotation: {x: 90, y: 0, z: 0}
-  previewScale: {x: 70, y: 70, z: 70}
---- !u!65 &65000010825615846
-BoxCollider:
+--- !u!136 &7700487543505745565
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -127,9 +106,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 3.5}
-  m_Center: {x: 0, y: 0, z: -1.75}
+  m_Radius: 0.5
+  m_Height: 3.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.75, z: 0}
 --- !u!95 &95652477634450278
 Animator:
   serializedVersion: 3
@@ -149,6 +129,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114000010321463136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010145837854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionElement: {fileID: 0}
+  model: {fileID: 1000012371759722}
+  mesh:
+  - {fileID: 1000013322009830}
+  - {fileID: 1000011519670718}
+  - {fileID: 1000011077888546}
+  pivot: 3
+  previewRotation: {x: 0, y: 180, z: 0}
+  previewScale: {x: 70, y: 70, z: 70}
 --- !u!1 &1000010339394522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,7 +1305,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000012371759722}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
@@ -1312,7 +1313,7 @@ Transform:
   - {fileID: 4000012919719992}
   m_Father: {fileID: 4000011040765584}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000012428801848
 GameObject:
   m_ObjectHideFlags: 0

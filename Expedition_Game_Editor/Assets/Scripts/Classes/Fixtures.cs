@@ -605,7 +605,7 @@ static public class Fixtures
             interactable.Id = id;
             interactable.Index = i;
 
-            interactable.type = (int)Enums.InteractableType.Character;
+            interactable.type = (int)Enums.InteractableType.Agent;
 
             interactable.objectGraphicId = objectList[i];
 
@@ -738,31 +738,31 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateWorldObject(16, 0, region.Id, new Vector3(245f, 236.5f, -0.2f), new Vector3(5, 0, 25));
+            CreateWorldObject(16, 0, region.Id, new Vector3(245f, -0.2f, 236.5f), new Vector3(355, 155, 0));
 
             /*Rock*/
-            CreateWorldObject(17, 1, region.Id, new Vector3(230f, 241.75f, 0f), new Vector3(0, 0, 180f));
+            CreateWorldObject(17, 1, region.Id, new Vector3(230f, 0f, 241.75f), new Vector3(0, 180, 0));
 
             /*Cactus*/
-            CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 236.75f, 0f), new Vector3(0, 0, 0));
+            CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 0f, 236.75f), new Vector3(0, 180, 0));
 
             /*Red warrior*/
-            CreateWorldInteractable(Enums.InteractableType.Character, 1, region.Id, new Vector3(238.125f, 239.875f, 0.1f), new Vector3(0, 0, 0));
+            CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(Enums.InteractableType.Character, 4, region.Id, new Vector3(235.625f, 242.375f, 0.2f), new Vector3(0, 0, 125));
+            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 75, 0));
 
             /*Mage*/
-            CreateWorldInteractable(Enums.InteractableType.Character, 5, region.Id, new Vector3(240.625f, 242.375f, 0f), new Vector3(0, 0, 235));
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 295, 0));
 
             /*Pool*/
-            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 242.375f, 0f), new Vector3(0, 0, 0));
+            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 0f, 242.375f), new Vector3(0, 180, 0));
 
             var regionSize = GetRegionSize(region.Id);
 
             for (int i = 3; i < objectsInWorld; i++)
             {
-                CreateWorldObject(Random.Range(16, 21), i, region.Id, new Vector3(Random.Range(0, (regionSize - 1)), Random.Range(0, (regionSize - 1)), 0f), new Vector3(0, 0, Random.Range(0, 359)));
+                CreateWorldObject(Random.Range(16, 21), i, region.Id, new Vector3(Random.Range(0, (regionSize - 1)), 0f, Random.Range(0, (regionSize - 1))), new Vector3(0, Random.Range(0, 359), 0));
             }
         }
     }
@@ -832,8 +832,8 @@ static public class Fixtures
         interaction.positionZ = position.z;
 
         interaction.regionId = regionId;
-        interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionY);
-        interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionY);
+        interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
+        interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
 
         interaction.rotationX = (int)rotation.x;
         interaction.rotationY = (int)rotation.y;
@@ -877,8 +877,8 @@ static public class Fixtures
         worldObject.positionY = position.y;
         worldObject.positionZ = position.z;
 
-        worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionY);
-        worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionY);
+        worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionZ);
+        worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionZ);
         
         worldObject.rotationX = (int)rotation.x;
         worldObject.rotationY = (int)rotation.y;
@@ -1152,8 +1152,8 @@ static public class Fixtures
                             interaction.positionY = interactionSource.positionY;
                             interaction.positionZ = interactionSource.positionZ;
 
-                            interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionY);
-                            interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionY);
+                            interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
+                            interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
 
                             interaction.rotationX = interactionSource.rotationX;
                             interaction.rotationY = interactionSource.rotationY;
@@ -1202,8 +1202,8 @@ static public class Fixtures
                     worldObject.positionY = worldObjectSource.positionY;
                     worldObject.positionZ = worldObjectSource.positionZ;
 
-                    worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionY);
-                    worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionY);
+                    worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionZ);
+                    worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionZ);
 
                     worldObject.rotationX = worldObjectSource.rotationX;
                     worldObject.rotationY = worldObjectSource.rotationY;
@@ -1259,7 +1259,7 @@ static public class Fixtures
 
                     worldInteractable.Id = id;
 
-                    worldInteractable.type = (int)Enums.InteractableType.Character;
+                    worldInteractable.type = (int)Enums.InteractableType.Agent;
 
                     var chapterInteractable = chapterInteractables[i];
 
@@ -1351,9 +1351,10 @@ static public class Fixtures
 
                     var regionSize = GetRegionSize(randomRegion.Id);
 
-                    var randomPosition = new Vector3(Random.Range(0, (regionSize - 1)), Random.Range(0, (regionSize - 1)), 0);
+                    var randomPosition = new Vector3(Random.Range(0, (regionSize - 1)), 0, Random.Range(0, (regionSize - 1)));
+                    var rotation = new Vector3(0, 180, 0);
 
-                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomPosition, Vector3.zero);
+                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomPosition, rotation);
                 }
             }
         }
@@ -1370,7 +1371,7 @@ static public class Fixtures
         return regionSize;
     }
 
-    static public int GetTerrain(int regionId, float posX, float posY)
+    static public int GetTerrain(int regionId, float posX, float posZ)
     {
         var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
         var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
@@ -1379,7 +1380,7 @@ static public class Fixtures
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
         var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
-                                             Mathf.Floor(posY / terrainSize));
+                                             Mathf.Floor(posZ / terrainSize));
 
         var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
@@ -1388,7 +1389,7 @@ static public class Fixtures
         return terrainId;
     }
 
-    static public int GetTerrainTile(int terrainId, float posX, float posY)
+    static public int GetTerrainTile(int terrainId, float posX, float posZ)
     {
         var terrain = terrainList.Where(x => x.Id == terrainId).FirstOrDefault();
         var region = regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
@@ -1397,7 +1398,7 @@ static public class Fixtures
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
         var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
-                                             Mathf.Floor(posY / terrainSize));
+                                             Mathf.Floor(posZ / terrainSize));
 
         var terrainTiles = terrainTileList.Where(x => x.terrainId == terrainId).Distinct().ToList();
 
@@ -1405,7 +1406,7 @@ static public class Fixtures
                                           terrainCoordinates.y * terrainSize);
 
         var localPosition = new Vector2(posX - terrainPosition.x,
-                                        posY - terrainPosition.y);
+                                        posZ - terrainPosition.y);
 
         var tileCoordinates = new Vector2(Mathf.Floor(localPosition.x / tileSet.tileSize),
                                           Mathf.Floor(localPosition.y / tileSet.tileSize));

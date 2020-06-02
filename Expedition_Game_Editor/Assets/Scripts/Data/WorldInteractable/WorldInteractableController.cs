@@ -54,9 +54,13 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
                 worldInteractableData.InteractableId = interactableData.Id;
 
+                worldInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
+
+                worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
+
                 worldInteractableData.interactableName = interactableData.Name;
                 worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
-                
+
                 break;
 
             default: Debug.Log("CASE MISSING: " + resultData.DataType); break;

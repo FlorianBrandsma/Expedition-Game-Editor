@@ -94,7 +94,7 @@ public class WorldInteractableCore : GeneralData
             worldInteractableData.questId = questId;
     }
 
-    public void UpdateSearch()
+    virtual public void UpdateSearch()
     {
         Update();
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class EditorWorldInteractableCharacterSegment : MonoBehaviour, ISegment
+public class EditorWorldInteractableAgentSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -25,7 +25,7 @@ public class EditorWorldInteractableCharacterSegment : MonoBehaviour, ISegment
 
         searchParameters.requestType = Search.WorldInteractable.RequestType.GetRegionWorldInteractables;
 
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Character };
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Agent };
 
         searchParameters.regionId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
         searchParameters.objectiveId = new List<int>() { 0 };

@@ -192,8 +192,8 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         {
             var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).GeneralData.Id;
 
-            terrainId = Fixtures.GetTerrain(regionId, positionX, positionY);
-            TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionY);
+            terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+            TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
 
         } else {
             terrainId = 0;

@@ -60,6 +60,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 			SetTerrain(terrainData);
 		}
 
+		GameManager.instance.localNavMeshBuilder.UpdateNavMesh();
+
 		//Spawn "agents" by going through ALL interaction data and add one as a world interactable when the interaction's world interactable is not found
 	}
 
@@ -92,12 +94,12 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		tile.gameObject.SetActive(true);
 
 		tile.transform.SetParent(CameraManager.content, false);
-		tile.transform.localPosition = new Vector3(tilePosition.x, tilePosition.y, tile.transform.localPosition.z);
+		tile.transform.localPosition = new Vector3(tilePosition.x, 0, tilePosition.y);
 
-        tile.DataType = Enums.DataType.TerrainTile;
-        tile.DataElement = terrainTileData;
+		tile.DataType = Enums.DataType.TerrainTile;
+		tile.DataElement = terrainTileData;
 
-        terrainTileData.active = true;
+		terrainTileData.active = true;
 	}
 
 	//Could be a general "SetWorldElement" like editor world organizer
@@ -138,9 +140,9 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	{
 		var cameraTransform = CameraManager.cam.transform;
 
-		cameraTransform.localPosition = new Vector3(gameWorldData.tempPlayerPosition.x, gameWorldData.tempPlayerPosition.y - 10, -10);
+		cameraTransform.localPosition = new Vector3(gameWorldData.tempPlayerPosition.x, 10, gameWorldData.tempPlayerPosition.y - 10);
 
-		var activeRangePosition = new Vector2(cameraTransform.localPosition.x - (GameManager.instance.TempActiveRange / 2), cameraTransform.localPosition.y + (GameManager.instance.TempActiveRange / 2));
+		var activeRangePosition = new Vector2(cameraTransform.localPosition.x - (GameManager.instance.TempActiveRange / 2), cameraTransform.localPosition.z + (GameManager.instance.TempActiveRange / 2));
 		var activeRangeSize = new Vector2(GameManager.instance.TempActiveRange, -GameManager.instance.TempActiveRange);
 
 		activeRect = new Rect(activeRangePosition, activeRangeSize);

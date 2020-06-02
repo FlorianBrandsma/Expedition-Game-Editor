@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-public class InteractableCharacterSegment : MonoBehaviour, ISegment
+public class InteractableAgentSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -22,7 +22,7 @@ public class InteractableCharacterSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Interactable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Character };
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Agent };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
