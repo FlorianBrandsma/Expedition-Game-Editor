@@ -44,8 +44,6 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
 
     public int animation;
 
-    public Vector2 startPosition;
-    
     public int startTime;
     public int endTime;
 
@@ -131,8 +129,6 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
         dataElement.scaleMultiplier = scaleMultiplier;
 
         dataElement.animation = animation;
-
-        dataElement.startPosition = startPosition;
         
         dataElement.startTime = startTime;
         dataElement.endTime = endTime;

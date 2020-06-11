@@ -75,8 +75,6 @@ public class EditorWorldDataManager : IDataManager
                 tileSetName = tileSetData.name,
                 tileSize = tileSetData.tileSize,
 
-                startPosition = GetWorldStartPosition(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
-
                 terrainDataList = (
                 from terrainData in terrainDataList
                 select new TerrainDataElement()
@@ -85,6 +83,8 @@ public class EditorWorldDataManager : IDataManager
                     Index = terrainData.Index,
 
                     Name = terrainData.name,
+
+                    gridElement = TerrainGridElement(terrainData.Index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
 
                     atmosphereDataList = (
                     from atmosphereData in atmosphereDataList
@@ -112,7 +112,9 @@ public class EditorWorldDataManager : IDataManager
 
                         TileId = terrainTileData.tileId,
 
-                        active = false
+                        active = false,
+
+                        gridElement = TileGridElement(terrainData.Index, terrainTileData.Index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize)
 
                     }).OrderBy(x => x.Index).ToList(),
 
@@ -166,8 +168,6 @@ public class EditorWorldDataManager : IDataManager
 
                         objectGraphicIconPath = iconData.path,
 
-                        startPosition = GetWorldStartPosition(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
-                        
                         startTime = interactionData.startTime,
                         endTime = interactionData.endTime,
 
@@ -231,8 +231,6 @@ public class EditorWorldDataManager : IDataManager
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,
 
-                        startPosition = GetWorldStartPosition(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
-
                         defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>()
 
                     }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
@@ -268,9 +266,7 @@ public class EditorWorldDataManager : IDataManager
 
                         height = objectGraphicData.height,
                         width = objectGraphicData.width,
-                        depth = objectGraphicData.depth,
-
-                        startPosition = GetWorldStartPosition(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize)
+                        depth = objectGraphicData.depth
 
                     }).ToList()
 
@@ -283,12 +279,55 @@ public class EditorWorldDataManager : IDataManager
         return list.Cast<IDataElement>().ToList();
     }
 
-    private Vector2 GetWorldStartPosition(int regionSize, int terrainSize, float tileSize)
+    private GridElement TerrainGridElement(int index, int regionSize, int terrainSize, float tileSize)
     {
-        var worldStartPosition = new Vector2(-(regionSize * terrainSize * tileSize / 2),
-                                              (regionSize * terrainSize * tileSize / 2));
+        var terrainStartPosition = TerrainStartPosition(index, regionSize, terrainSize, tileSize);
 
-        return worldStartPosition;
+        var terrainRectPosition = new Vector2(terrainStartPosition.x - (tileSize / 2),
+                                              terrainStartPosition.y - (tileSize / 2));
+
+        var terrainRectSize = new Vector2((terrainSize * tileSize),
+                                         -(terrainSize * tileSize));
+
+        var terrainRect = new Rect(terrainRectPosition, terrainRectSize);
+
+        var gridElement = new GridElement(terrainStartPosition, terrainRect);
+
+        return gridElement;
+    }
+
+    private GridElement TileGridElement(int terrainIndex, int tileIndex, int regionSize, int terrainSize, float tileSize)
+    {
+        var tileStartPosition = TileStartPosition(terrainIndex, tileIndex, regionSize, terrainSize, tileSize);
+
+        var tileRectPosition = new Vector2(tileStartPosition.x - (tileSize / 2),
+                                           tileStartPosition.y - (tileSize / 2));
+
+        var tileRectSize = new Vector2(tileSize, -tileSize);
+
+        var tileRect = new Rect(tileRectPosition, tileRectSize);
+
+        var gridElement = new GridElement(tileStartPosition, tileRect);
+
+        return gridElement;
+    }
+
+    private Vector2 TerrainStartPosition(int index, int regionSize, int terrainSize, float tileSize)
+    {
+        var startPosition = new Vector2((tileSize / 2) + ((index % regionSize) * (terrainSize * tileSize)),
+                                       -(tileSize / 2) - (Mathf.Floor(index / regionSize) * (terrainSize * tileSize)));
+
+        return startPosition;
+    }
+
+    public Vector2 TileStartPosition(int terrainIndex, int tileIndex, int regionSize, int terrainSize, float tileSize)
+    {
+        var terrainStartPosition = TerrainStartPosition(terrainIndex, regionSize, terrainSize, tileSize);
+
+        var startPosition = new Vector2(terrainStartPosition.x + (tileSize * (tileIndex % terrainSize)),
+                                        terrainStartPosition.y - (tileSize * (Mathf.Floor(tileIndex / terrainSize))));
+        
+        return startPosition;
     }
 
     internal void GetRegionData(Search.EditorWorld searchData)

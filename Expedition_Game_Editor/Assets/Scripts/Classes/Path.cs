@@ -153,19 +153,4 @@ public class Path
                 r.data = data;
         });
     }
-    
-    public void ReplaceDataLists(int start, Enums.DataType dataType, List<IDataElement> dataList, IDataElement dataElement = null)
-    {
-        for(int i = start; i < route.Count; i++)
-        {
-            if (route[i].GeneralData.DataType == dataType)
-            {
-                route[i].data.dataList = dataList;
-                route[i].data.dataController.DataList = dataList;
-                
-                if (dataElement != null)
-                    route[i].data.dataElement = dataElement;
-            }
-        }
-    }
 }

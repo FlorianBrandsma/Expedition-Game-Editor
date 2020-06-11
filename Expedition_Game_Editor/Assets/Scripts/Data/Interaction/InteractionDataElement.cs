@@ -26,8 +26,6 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public float width;
     public float depth;
 
-    public Vector2 startPosition;
-
     public bool timeConflict;
     
     public List<int> defaultTimes;
@@ -85,8 +83,6 @@ public class InteractionDataElement : InteractionCore, IDataElement
         dataElement.width = width;
         dataElement.depth = depth;
 
-        dataElement.startPosition = startPosition;
-
         CloneCore(dataElement);
 
         return dataElement;
@@ -97,6 +93,8 @@ public class InteractionDataElement : InteractionCore, IDataElement
         base.Copy(dataSource);
 
         var interactionDataSource = (InteractionDataElement)dataSource;
+
+        //Don't copy selection element: interactions can belong to different types
 
         timeConflict = interactionDataSource.timeConflict;
         containsActiveTime = interactionDataSource.containsActiveTime;
@@ -115,8 +113,6 @@ public class InteractionDataElement : InteractionCore, IDataElement
         height = interactionDataSource.height;
         width = interactionDataSource.width;
         depth = interactionDataSource.depth;
-
-        startPosition = interactionDataSource.startPosition;
 
         SetOriginalValues();
     }

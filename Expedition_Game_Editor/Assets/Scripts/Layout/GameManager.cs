@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private float tempActiveRange = 222.25f;
+    private float tempActiveRange = 2220.25f;
     public float TempActiveRange { get { return tempActiveRange; } }
 
     private void Awake()

@@ -46,7 +46,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
 		gameWorldData = (GameWorldDataElement)list.First();
 
-		SetCamera();
+		InitializeCamera();
 		
 		//var worldInteractables  = gameWorldData.regionDataList.SelectMany(x => x.terrainDataList.SelectMany(y => y.interactionDataList.Select(z => z.worldInteractableId))).Distinct().ToList();
 		//var interactions        = gameWorldData.regionDataList.SelectMany(x => x.terrainDataList.SelectMany(y => y.interactionDataList.Where(z => worldInteractables.Contains(z.worldInteractableId)))).ToList();
@@ -73,7 +73,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		{
 			if (terrainTileData.active || !activeRect.Overlaps(terrainTileData.gridElement.rect, true)) continue;
 
-			SetTerrainTile(terrainTileData, terrainTileData.gridElement.startPosition);
+			SetTerrainTile(terrainTileData);
 
 			var worldObjectList = terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).ToList();
 			
@@ -84,7 +84,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		}
 	}
 
-	private void SetTerrainTile(TerrainTileDataElement terrainTileData, Vector2 tilePosition)
+	private void SetTerrainTile(TerrainTileDataElement terrainTileData)
 	{
 		Tile prefab = Resources.Load<Tile>("Objects/Tile/" + regionData.tileSetName + "/" + terrainTileData.TileId);
 
@@ -94,7 +94,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		tile.gameObject.SetActive(true);
 
 		tile.transform.SetParent(CameraManager.content, false);
-		tile.transform.localPosition = new Vector3(tilePosition.x, 0, tilePosition.y);
+		tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, 0, terrainTileData.gridElement.startPosition.y);
 
 		tile.DataType = Enums.DataType.TerrainTile;
 		tile.DataElement = terrainTileData;
@@ -136,7 +136,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		SetData();
 	}
 
-	private void SetCamera()
+	private void InitializeCamera()
 	{
 		var cameraTransform = CameraManager.cam.transform;
 

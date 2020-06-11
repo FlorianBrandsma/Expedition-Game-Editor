@@ -19,8 +19,6 @@ public class WorldObjectDataElement : WorldObjectCore, IDataElement
     public float height;
     public float width;
     public float depth;
-    
-    public Vector2 startPosition;
 
     public string originalObjectGraphicName;
     public string originalObjectGraphicIconPath;

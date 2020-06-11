@@ -79,7 +79,10 @@ public class InteractionDataManager : IDataManager
 
                         Animation = interactionData.animation,
                         
+                        worldInteractableId = worldInteractableData.Id,
+
                         objectGraphicId = objectGraphicData.Id,
+                        objectGraphicPath = objectGraphicData.path,
 
                         regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
                         objectGraphicIconPath = iconData.path,

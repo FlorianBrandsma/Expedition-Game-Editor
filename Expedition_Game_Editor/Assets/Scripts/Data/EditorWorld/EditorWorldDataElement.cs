@@ -4,65 +4,6 @@ using System.Linq;
 
 public class EditorWorldDataElement : GeneralData, IDataElement
 {
-    //public class TerrainData : GeneralData
-    //{
-    //    public int regionId;
-
-    //    public string name;
-
-    //    public List<AtmosphereDataElement> atmosphereDataList;
-    //    public List<TerrainTileDataElement> terrainTileDataList;
-    //    public List<WorldInteractableDataElement> worldInteractableDataList;
-    //    public List<InteractionDataElement> interactionDataList;
-    //    public List<WorldObjectDataElement> worldObjectDataList;
-
-    //    public void SetOriginalValues()
-    //    {
-    //        atmosphereDataList.ForEach(x => x.SetOriginalValues());
-    //        terrainTileDataList.ForEach(x => x.SetOriginalValues());
-    //        worldInteractableDataList.ForEach(x => x.SetOriginalValues());
-    //        interactionDataList.ForEach(x => x.SetOriginalValues());
-    //        worldObjectDataList.ForEach(x => x.SetOriginalValues());
-    //    }
-
-    //    public void Copy(TerrainDataElement terrainDataSource)
-    //    {
-    //        regionId = terrainDataSource.regionId;
-
-    //        name = terrainDataSource.name;
-
-    //        for(int i = 0; i < atmosphereDataList.Count; i++)
-    //        {
-    //            var atmosphereDataSource = terrainDataSource.atmosphereDataList[i];
-    //            atmosphereDataList[i].Copy(atmosphereDataSource);
-    //        }
-
-    //        for (int i = 0; i < terrainTileDataList.Count; i++)
-    //        {
-    //            var terrainTileDataSource = terrainDataSource.terrainTileDataList[i];
-    //            terrainTileDataList[i].Copy(terrainTileDataSource);
-    //        }
-
-    //        for (int i = 0; i < worldInteractableDataList.Count; i++)
-    //        {
-    //            var worldInteractableDataSource = terrainDataSource.worldInteractableDataList[i];
-    //            worldInteractableDataList[i].Copy(worldInteractableDataSource);
-    //        }
-
-    //        for (int i = 0; i < interactionDataList.Count; i++)
-    //        {
-    //            var interactionDataSource = terrainDataSource.interactionDataList[i];
-    //            interactionDataList[i].Copy(interactionDataSource);
-    //        }
-
-    //        for (int i = 0; i < worldObjectDataList.Count; i++)
-    //        {
-    //            var worldObjectDataSource = terrainDataSource.worldObjectDataList[i];
-    //            worldObjectDataList[i].Copy(worldObjectDataSource);
-    //        }
-    //    }
-    //}
-
     public Enums.RegionType regionType;
 
     public int regionSize;
@@ -71,7 +12,7 @@ public class EditorWorldDataElement : GeneralData, IDataElement
 
     public string tileSetName;
 
-    public Vector2 startPosition;
+    public Vector3 startPosition;
 
     public List<TerrainDataElement> terrainDataList;
     
@@ -118,7 +59,7 @@ public class EditorWorldDataElement : GeneralData, IDataElement
 
         startPosition = worldDataSource.startPosition;
 
-        for(int i = 0; i < terrainDataList.Count; i++)
+        for (int i = 0; i < terrainDataList.Count; i++)
         {
             var terrainDataSource = worldDataSource.terrainDataList[i];
             terrainDataList[i].Copy(terrainDataSource);

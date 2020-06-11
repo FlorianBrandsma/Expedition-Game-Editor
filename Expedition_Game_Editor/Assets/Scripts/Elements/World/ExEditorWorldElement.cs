@@ -6,8 +6,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 {
     private ObjectGraphic objectGraphic;
     
-    private Vector3 startPosition;
-
     private Vector3 position;
     private Vector3 rotation;
     
@@ -55,7 +53,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType);    break;
         }
 
-        transform.localPosition     = new Vector3(startPosition.x + position.x, position.y, startPosition.y - position.z);
+        transform.localPosition     = new Vector3(position.x, position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
     }
@@ -67,8 +65,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab);
-
-        startPosition = dataElement.startPosition;
 
         position = new Vector3(dataElement.positionX, dataElement.positionY, dataElement.positionZ);
         rotation = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
@@ -86,8 +82,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab);
 
-        startPosition = dataElement.startPosition;
-
         position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
 
@@ -103,8 +97,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab);
-
-        startPosition = dataElement.startPosition;
 
         position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
@@ -127,7 +119,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
     {
         if (objectGraphic == null) return;
 
-        objectGraphic.gameObject.SetActive(false);
+        PoolManager.ClosePoolObject(objectGraphic);
         objectGraphic = null;
 
         CloseStatusIcons();
@@ -150,6 +142,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void ClosePoolable()
     {
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

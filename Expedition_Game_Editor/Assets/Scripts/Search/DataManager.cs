@@ -483,7 +483,7 @@ public class DataManager
             data.regionId = worldObject.regionId;
             data.terrainId = worldObject.terrainId;
             data.terrainTileId = worldObject.terrainTileId;
-            
+
             data.positionX = worldObject.positionX;
             data.positionY = worldObject.positionY;
             data.positionZ = worldObject.positionZ;

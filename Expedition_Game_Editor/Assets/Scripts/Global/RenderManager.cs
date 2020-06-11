@@ -128,14 +128,6 @@ static public class RenderManager
             SelectionManager.CancelSelection(dataController.DataList);
 
         var dataList = dataController.DataManager.GetDataElements(searchProperties);
-
-        if(dataController.SegmentController != null)
-        {
-            var pathController = dataController.SegmentController.editorController.PathController;
-
-            var mainForm = pathController.layoutSection.EditorForm;
-            mainForm.activePath.ReplaceDataLists(pathController.step, dataController.DataType, dataList);
-        }
         
         return dataList;
     }

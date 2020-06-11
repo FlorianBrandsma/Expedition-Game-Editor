@@ -294,7 +294,7 @@ public class GameWorldDataManager : IDataManager
     private Vector2 TerrainStartPosition(int index, int regionSize, int terrainSize, float tileSize)
     {
         var startPosition = new Vector2((tileSize / 2) + ((index % regionSize) * (terrainSize * tileSize)),
-                                        (tileSize / 2) - (Mathf.Floor(index / regionSize) * (terrainSize * tileSize)));
+                                       -(tileSize / 2) - (Mathf.Floor(index / regionSize) * (terrainSize * tileSize)));
 
         return startPosition;
     }

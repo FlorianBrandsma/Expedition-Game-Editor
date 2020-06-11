@@ -140,7 +140,6 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         var elementBoundSize = new Vector3(1, 1, 1);
 
-        var startPosition = new Vector2();
         var elementPosition = Vector3.zero;
         
         switch(dataElement.DataType)
@@ -148,36 +147,33 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             case Enums.DataType.Interaction:
 
                 var interactionData = (InteractionDataElement)dataElement;
-
-                startPosition = interactionData.startPosition;
-                elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
+                elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, -interactionData.PositionZ);
 
                 break;
 
             case Enums.DataType.WorldInteractable:
 
                 var worldInteractableData = (WorldInteractableDataElement)dataElement;
-
-                startPosition = worldInteractableData.startPosition;
-                elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, worldInteractableData.positionZ);
+                elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, -worldInteractableData.positionZ);
                 
                 break;
 
             case Enums.DataType.WorldObject:
 
                 var worldObjectData = (WorldObjectDataElement)dataElement;
-
-                startPosition = worldObjectData.startPosition;
-                elementPosition = new Vector3(worldObjectData.PositionX, worldObjectData.PositionY, worldObjectData.PositionZ);
+                elementPosition = new Vector3(worldObjectData.PositionX, worldObjectData.PositionY, -worldObjectData.PositionZ);
 
                 break;
 
             default: return;
         }
 
-        var localPosition = new Vector3(startPosition.x + elementPosition.x, -elementPosition.y, startPosition.y - elementPosition.z);
+        var regionData = (RegionDataElement)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        var worldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
 
-        if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(localPosition), elementBoundSize)))
+        var localPosition = new Vector3(-(worldSize / 2) + elementPosition.x, -elementPosition.y, (worldSize / 2) + elementPosition.z);
+
+        if (!GeometryUtility.TestPlanesAABB(planes, new Bounds(content.TransformPoint(elementPosition), elementBoundSize)))
         {
             ScrollRectContent.transform.localPosition = new Vector3(localPosition.x, localPosition.z, ScrollRectContent.transform.localPosition.z);
             Organizer.UpdateData();
