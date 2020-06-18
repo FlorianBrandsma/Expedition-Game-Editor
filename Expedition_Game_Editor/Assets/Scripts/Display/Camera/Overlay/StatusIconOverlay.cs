@@ -50,7 +50,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
     {
         var prefab = Resources.Load<ExStatusIcon>("Elements/UI/StatusIcon");
 
-        var statusIcon = (ExStatusIcon)PoolManager.SpawnObject(0, prefab);
+        var statusIcon = (ExStatusIcon)PoolManager.SpawnObject(prefab);
         statusIconList.Add(statusIcon);
 
         statusIcon.transform.SetParent(cameraManager.overlayParent);

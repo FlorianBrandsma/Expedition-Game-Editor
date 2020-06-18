@@ -50,7 +50,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement dataElement in list)
         {
-            var panelTile = (ExPanelTile)PoolManager.SpawnObject(0, prefab);
+            var panelTile = (ExPanelTile)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  panelTile.Element, ListManager.listParent,
                                                         DisplayManager,

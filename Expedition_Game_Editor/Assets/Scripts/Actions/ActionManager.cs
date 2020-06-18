@@ -250,7 +250,7 @@ public class ActionManager : MonoBehaviour
     private ExDropdown SpawnDropdown()
     {
         var prefab = Resources.Load<ExDropdown>("Elements/UI/Dropdown");
-        var dropdown = (ExDropdown)PoolManager.SpawnObject(0, prefab);
+        var dropdown = (ExDropdown)PoolManager.SpawnObject(prefab);
 
         dropdown.gameObject.SetActive(true);
 
@@ -260,7 +260,7 @@ public class ActionManager : MonoBehaviour
     private ExButton SpawnButton()
     {
         var prefab = Resources.Load<ExButton>("Elements/UI/ActionButton");
-        var button = (ExButton)PoolManager.SpawnObject(0, prefab);
+        var button = (ExButton)PoolManager.SpawnObject(prefab);
 
         button.gameObject.SetActive(true);
 
@@ -270,7 +270,7 @@ public class ActionManager : MonoBehaviour
     private ExButton SpawnFormButton()
     {
         var prefab = Resources.Load<ExButton>("Elements/UI/FormButton");
-        var button = (ExButton)PoolManager.SpawnObject(0, prefab);
+        var button = (ExButton)PoolManager.SpawnObject(prefab);
 
         button.gameObject.SetActive(true);
 

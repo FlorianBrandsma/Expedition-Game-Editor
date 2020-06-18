@@ -54,14 +54,14 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         
         if (Organizer == null) return;
 
+        if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && RenderManager.loadType == Enums.LoadType.Normal)
+            ResetListPosition();
+
         Organizer.InitializeOrganizer();
 
         if(overlayManager != null)
             overlayManager.InitializeOverlay(this);
-
-        if (cameraProperties.enableScroll && !Display.DataController.SegmentController.Loaded && RenderManager.loadType == Enums.LoadType.Normal)
-            ResetListPosition();
-
+        
         RenderSettings.fog = enableFog;
     }
 

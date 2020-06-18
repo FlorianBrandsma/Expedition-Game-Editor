@@ -495,7 +495,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         header = string.Empty;
 
         idText.text = string.Empty;
-        
+
         if (descriptionText != null)
         {
             descriptionText.text = string.Empty;

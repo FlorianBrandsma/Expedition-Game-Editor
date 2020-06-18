@@ -63,7 +63,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement dataElement in primaryList)
         {
-            var multiGrid = (ExMultiGrid)PoolManager.SpawnObject(0, prefab);
+            var multiGrid = (ExMultiGrid)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  multiGrid.Element, ListManager.listParent,
                                                         DisplayManager,

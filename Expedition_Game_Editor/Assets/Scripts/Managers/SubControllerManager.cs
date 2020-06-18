@@ -41,7 +41,7 @@ public class SubControllerManager : MonoBehaviour
 
             for (int i = 0; i < controllers.Length; i++)
             {
-                var newTab = (ExTab)PoolManager.SpawnObject(0, prefab);
+                var newTab = (ExTab)PoolManager.SpawnObject(prefab);
                 tabList.Add(newTab);
 
                 newTab.transform.SetParent(transform, false);
@@ -63,7 +63,7 @@ public class SubControllerManager : MonoBehaviour
             //No cases where it's required vertically as of 01/01/2019
 
             var prefab = Resources.Load<ExHeader>("Elements/UI/Header");
-            header = (ExHeader)PoolManager.SpawnObject(0, prefab);
+            header = (ExHeader)PoolManager.SpawnObject(prefab);
 
             header.transform.SetParent(transform, false);
             header.transform.localPosition = Vector2.zero;

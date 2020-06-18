@@ -89,7 +89,7 @@ public class SliderOverlay : MonoBehaviour, IOverlay
     public ExSlider SpawnHorizontalSlider()
     {
         var prefab = Resources.Load<ExSlider>("Elements/UI/SliderHorizontal");
-        var slider = (ExSlider)PoolManager.SpawnObject(0, prefab);
+        var slider = (ExSlider)PoolManager.SpawnObject(prefab);
 
         slider.gameObject.SetActive(true);
 
@@ -99,7 +99,7 @@ public class SliderOverlay : MonoBehaviour, IOverlay
     public ExSlider SpawnVerticalSlider()
     {
         var prefab = Resources.Load<ExSlider>("Elements/UI/SliderVertical");
-        var slider = (ExSlider)PoolManager.SpawnObject(0, prefab);
+        var slider = (ExSlider)PoolManager.SpawnObject(prefab);
 
         slider.gameObject.SetActive(true);
 

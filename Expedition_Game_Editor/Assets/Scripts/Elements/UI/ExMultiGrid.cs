@@ -127,7 +127,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
         foreach (IDataElement dataElement in list)
         {
-            var innerElement = (ExTile)PoolManager.SpawnObject(0, prefab);
+            var innerElement = (ExTile)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  innerElement.Element, innerGrid,
                                                         Element.DisplayManager,

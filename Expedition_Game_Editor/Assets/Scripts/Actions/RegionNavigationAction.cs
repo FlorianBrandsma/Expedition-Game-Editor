@@ -65,8 +65,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
                 //Adds the selected interaction to the path
                 var interactionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Interaction);
-                interactionRoute.controller = 0;
 
+                interactionRoute.controller = 0;
+                interactionRoute.selectionStatus = Enums.SelectionStatus.Main;
+                
                 path.Add(interactionRoute);
             }
         }

@@ -66,7 +66,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if (x.SelectionElement != null)
+            if (SelectionElementManager.SelectionActive(x.SelectionElement))
                 x.SelectionElement.UpdateElement();
         });
 

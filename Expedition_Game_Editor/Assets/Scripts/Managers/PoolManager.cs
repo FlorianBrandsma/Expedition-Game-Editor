@@ -47,7 +47,7 @@ public class PoolManager : MonoBehaviour
     }
 
     //e.g. an objectGraphic with id 1
-    static public IPoolable SpawnObject(int id, IPoolable prefab) //e.g. an objectGraphic with id 1
+    static public IPoolable SpawnObject(IPoolable prefab, int id = 0) //e.g. an objectGraphic with id 1
     {
         var filteredPoolList = poolList.Where(x => x.elementType == prefab.ElementType).FirstOrDefault();
         
@@ -60,7 +60,9 @@ public class PoolManager : MonoBehaviour
                 var poolable = objectPool.pool.Where(x => !x.IsActive).FirstOrDefault();
                 
                 if (poolable != null)
-                    return poolable;  
+                {
+                    return poolable;
+                }
             }
         }
 
@@ -85,7 +87,7 @@ public class PoolManager : MonoBehaviour
     static public void ClosePoolObject(IPoolable poolable)
     {
         poolable.ClosePoolable();
-        
+
         poolable.Transform.SetParent(instance.transform, false);
     }
 }

@@ -53,7 +53,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         var dataElement = (WorldObjectDataElement)Element.DataElement;
 
         var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
 
         position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);

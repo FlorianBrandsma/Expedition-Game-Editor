@@ -16,7 +16,7 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
 
     public List<IDataElement> DataList
     {
-        get { return SelectionElementManager.FindDataElements(InteractionData).Concat(new[] { InteractionData }).Distinct().ToList(); ; }
+        get { return SelectionElementManager.FindDataElements(InteractionData).Concat(new[] { InteractionData }).Distinct().ToList(); }
     }
 
     public List<IDataElement> DataElements
@@ -25,7 +25,7 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
         {
             var list = new List<IDataElement>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { list.Add(x); });
 
             return list;
         }
@@ -40,7 +40,7 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        DataElements.Where(x => x.SelectionElement != null).ToList().ForEach(x => x.SelectionElement.UpdateElement());
+        DataElements.Where(x => SelectionElementManager.SelectionActive(x.SelectionElement)).ToList().ForEach(x => x.SelectionElement.UpdateElement());
 
         SetEditor();
     }
@@ -70,7 +70,7 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if (x.SelectionElement != null)
+            if (SelectionElementManager.SelectionActive(x.SelectionElement))
                 x.SelectionElement.UpdateElement();
         });
 
@@ -79,7 +79,10 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        DataElements.ForEach(x => 
+        {
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

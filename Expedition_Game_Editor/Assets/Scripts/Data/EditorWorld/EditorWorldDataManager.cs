@@ -218,6 +218,7 @@ public class EditorWorldDataManager : IDataManager
                         Animation = interactionData.animation,
                         
                         worldInteractableId = taskData.worldInteractableId,
+
                         objectiveId = taskData.objectiveId,
                         questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId : 
                                   questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,

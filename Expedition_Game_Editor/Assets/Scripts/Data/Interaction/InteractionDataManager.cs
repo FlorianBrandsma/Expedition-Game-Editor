@@ -17,6 +17,9 @@ public class InteractionDataManager : IDataManager
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
     private List<DataManager.IconData> iconDataList;
 
+    private List<DataManager.ObjectiveData> objectiveDataList;
+    private List<DataManager.QuestData> questDataList;
+
     private List<DataManager.RegionData> regionDataList;
 
     public InteractionDataManager(IDataController dataController)
@@ -38,6 +41,9 @@ public class InteractionDataManager : IDataManager
         GetObjectGraphicData();
         GetIconData();
 
+        GetObjectiveData();
+        GetQuestData();
+
         GetRegionData();
 
         var list = (from interactionData        in interactionDataList
@@ -46,6 +52,12 @@ public class InteractionDataManager : IDataManager
                     join interactableData       in interactableDataList         on worldInteractableData.interactableId     equals interactableData.Id
                     join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
+
+                    join leftJoin in (from objectiveData in objectiveDataList
+                                      select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
+
+                    join leftJoin in (from questData in questDataList
+                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
 
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData
@@ -81,6 +93,10 @@ public class InteractionDataManager : IDataManager
                         
                         worldInteractableId = worldInteractableData.Id,
 
+                        objectiveId = taskData.objectiveId,
+                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId :
+                                  questData.FirstOrDefault() != null ? questData.FirstOrDefault().questData.Id : 0,
+
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
@@ -106,8 +122,8 @@ public class InteractionDataManager : IDataManager
 
         foreach(Fixtures.Interaction interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
-            if (searchParameters.taskId.Count > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
+            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
 
             var interactionData = new InteractionData();
 
@@ -184,6 +200,22 @@ public class InteractionDataManager : IDataManager
         iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
 
         iconDataList = dataManager.GetIconData(iconSearchParameters);
+    }
+
+    internal void GetObjectiveData()
+    {
+        var objectiveSearchParameters = new Search.Objective();
+        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.objectiveId).Union(taskDataList.Select(x => x.objectiveId)).Distinct().ToList();
+
+        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
+    }
+
+    internal void GetQuestData()
+    {
+        var questSearchParameters = new Search.Quest();
+        questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
+
+        questDataList = dataManager.GetQuestData(questSearchParameters);
     }
 
     internal void GetRegionData()

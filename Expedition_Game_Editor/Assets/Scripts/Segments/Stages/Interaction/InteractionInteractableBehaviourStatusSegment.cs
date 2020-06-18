@@ -41,7 +41,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
         regionData.type = Enums.RegionType.Interaction;
 
         editButton.path = SegmentController.editorController.PathController.route.path;
-        
+
         editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(InteractionData.objectGraphicIconPath);
     }

@@ -40,7 +40,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        DataElements.ForEach(x => x.SelectionElement.UpdateElement());
+        DataElements.Where(x => SelectionElementManager.SelectionActive(x.SelectionElement)).ToList().ForEach(x => x.SelectionElement.UpdateElement());
 
         SetEditor();
     }
@@ -70,7 +70,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if (x.SelectionElement != null)
+            if (SelectionElementManager.SelectionActive(x.SelectionElement))
                 x.SelectionElement.UpdateElement();
         });
 

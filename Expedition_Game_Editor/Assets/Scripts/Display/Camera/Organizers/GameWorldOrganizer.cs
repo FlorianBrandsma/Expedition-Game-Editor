@@ -88,7 +88,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	{
 		Tile prefab = Resources.Load<Tile>("Objects/Tile/" + regionData.tileSetName + "/" + terrainTileData.TileId);
 
-		Tile tile = (Tile)PoolManager.SpawnObject(terrainTileData.TileId, prefab);
+		Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.TileId);
 		tileList.Add(tile);
 
 		tile.gameObject.SetActive(true);
@@ -105,7 +105,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	//Could be a general "SetWorldElement" like editor world organizer
 	private void SetWorldObject(WorldObjectDataElement worldObjectData)
 	{
-		var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(0, gameWorldElementPrefab);
+		var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
 		elementList.Add(gameWorldElement.Element);
 
 		gameWorldElement.Element.DataElement = worldObjectData;

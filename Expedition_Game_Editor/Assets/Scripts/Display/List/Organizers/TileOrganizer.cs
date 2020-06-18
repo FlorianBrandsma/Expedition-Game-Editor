@@ -52,7 +52,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement data in list)
         {
-            var tile = (ExTile)PoolManager.SpawnObject(0, prefab);
+            var tile = (ExTile)PoolManager.SpawnObject(prefab);
             
             SelectionElementManager.InitializeElement(  tile.Element, ListManager.listParent,
                                                         DisplayManager,

@@ -17,7 +17,7 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
         worldOrganizer = (EditorWorldOrganizer)organizer;
         
         var prefab = Resources.Load<ExText>("Elements/UI/Text");
-        terrainInfoText = (ExText)PoolManager.SpawnObject(0, prefab);
+        terrainInfoText = (ExText)PoolManager.SpawnObject(prefab);
 
         terrainInfoText.transform.SetParent(overlayManager.horizontal_min, false);
         terrainInfoText.transform.localPosition = new Vector2(0, 0);

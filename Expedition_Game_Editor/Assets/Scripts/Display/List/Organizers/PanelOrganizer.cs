@@ -61,7 +61,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IDataElement dataElement in list)
         {
-            var panel = (ExPanel)PoolManager.SpawnObject(0, prefab);
+            var panel = (ExPanel)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  panel.Element, ListManager.listParent,
                                                         DisplayManager, 

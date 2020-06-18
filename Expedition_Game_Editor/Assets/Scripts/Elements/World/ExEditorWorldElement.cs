@@ -64,7 +64,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         var dataElement = (WorldInteractableDataElement)data.dataElement;
         
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
 
         position = new Vector3(dataElement.positionX, dataElement.positionY, dataElement.positionZ);
         rotation = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
@@ -80,7 +80,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         var dataElement = (InteractionDataElement)data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.objectGraphicId, prefab);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
 
         position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
@@ -96,7 +96,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         var dataElement = (WorldObjectDataElement)data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(dataElement.ObjectGraphicId, prefab);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
 
         position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);

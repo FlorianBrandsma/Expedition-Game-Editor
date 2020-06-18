@@ -60,11 +60,27 @@ static public class SelectionElementManager
                                             .Where(x => x.GeneralData.Equals(generalData)).ToList();
     }
 
+    static public void CloseElement(SelectionElement selectionElement)
+    {
+        CloseElement(new List<SelectionElement>() { selectionElement });
+    }
+
     static public void CloseElement(List<SelectionElement> elementList)
     {
         foreach (SelectionElement element in elementList)
+        {
+            if (element.child != null)
+                CloseElement(element.child);
+
             element.CloseElement();
+            //elementPool.Remove(element);
+        }
 
         elementList.Clear();
+    }
+
+    static public bool SelectionActive(SelectionElement selectionElement)
+    {
+        return (selectionElement != null && selectionElement.gameObject.activeInHierarchy);
     }
 }

@@ -77,7 +77,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
 
         var prefab = Resources.Load<ExText>("Elements/UI/Text");
         
-        var newText = (ExText)PoolManager.SpawnObject(0, prefab);
+        var newText = (ExText)PoolManager.SpawnObject(prefab);
         numberListLocal.Add(newText);
 
         newText.Text.text = (index + 1).ToString();
