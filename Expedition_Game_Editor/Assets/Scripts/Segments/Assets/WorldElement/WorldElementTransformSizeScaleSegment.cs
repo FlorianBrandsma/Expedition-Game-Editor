@@ -52,7 +52,17 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultScaleMultiplier = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -98,10 +108,11 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Interaction: InitializeInteractionData(); break;
-            case Enums.DataType.WorldObject: InitializeWorldObjectData(); break;
+            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
+            case Enums.DataType.WorldObject:    InitializeWorldObjectData();    break;
+            case Enums.DataType.Phase:          InitializePhaseData();          break;
 
-            default: Debug.Log("CASE MISSING"); break;
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
     }
 
@@ -119,6 +130,13 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
         scaleMultiplier = worldObjectData.ScaleMultiplier;
     }
 
+    private void InitializePhaseData()
+    {
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+
+        scaleMultiplier = phaseData.DefaultScaleMultiplier;
+    }
+
     private void SetSearchParameters() { }
 
     public void OpenSegment()
@@ -132,10 +150,11 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
     {
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Interaction: GetInteractionSizeData(); break;
-            case Enums.DataType.WorldObject: GetWorldObjectSizeData(); break;
+            case Enums.DataType.Interaction:    GetInteractionSizeData();   break;
+            case Enums.DataType.WorldObject:    GetWorldObjectSizeData();   break;
+            case Enums.DataType.Phase:          GetPhaseSizeData();         break;
 
-            default: Debug.Log("CASE MISSING"); break;
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
 
         SetSizeValues();
@@ -157,6 +176,15 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
         height = worldObjectData.height;
         width = worldObjectData.width;
         depth = worldObjectData.depth;
+    }
+
+    private void GetPhaseSizeData()
+    {
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+
+        height = phaseData.height;
+        width = phaseData.width;
+        depth = phaseData.depth;
     }
 
     public void CloseSegment() { }

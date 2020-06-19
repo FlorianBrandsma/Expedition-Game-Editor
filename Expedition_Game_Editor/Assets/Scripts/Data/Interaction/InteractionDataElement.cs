@@ -19,9 +19,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public int objectGraphicId;
     public string objectGraphicPath;
 
-    public string regionName;
     public string objectGraphicIconPath;
 
+    public string regionName;
+    
     public float height;
     public float width;
     public float depth;
@@ -76,9 +77,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
         dataElement.objectGraphicId = objectGraphicId;
         dataElement.objectGraphicPath = objectGraphicPath;
 
-        dataElement.regionName = regionName;
         dataElement.objectGraphicIconPath = objectGraphicIconPath;
 
+        dataElement.regionName = regionName;
+        
         dataElement.height = height;
         dataElement.width = width;
         dataElement.depth = depth;
@@ -107,9 +109,10 @@ public class InteractionDataElement : InteractionCore, IDataElement
         objectGraphicId = interactionDataSource.objectGraphicId;
         objectGraphicPath = interactionDataSource.objectGraphicPath;
 
-        regionName = interactionDataSource.regionName;
         objectGraphicIconPath = interactionDataSource.objectGraphicIconPath;
 
+        regionName = interactionDataSource.regionName;
+        
         height = interactionDataSource.height;
         width = interactionDataSource.width;
         depth = interactionDataSource.depth;

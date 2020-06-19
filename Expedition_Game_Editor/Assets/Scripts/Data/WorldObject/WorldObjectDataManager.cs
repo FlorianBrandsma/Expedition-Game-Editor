@@ -77,7 +77,7 @@ public class WorldObjectDataManager : IDataManager
 
         foreach (Fixtures.WorldObject worldObject in Fixtures.worldObjectList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(worldObject.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.Id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.regionId)) continue;
 
             var worldObjectData = new WorldObjectData();

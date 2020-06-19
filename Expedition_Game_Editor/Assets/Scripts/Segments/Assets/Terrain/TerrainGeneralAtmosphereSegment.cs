@@ -24,7 +24,7 @@ public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
         editButton.path = SegmentController.Path.TrimToLastType(Enums.DataType.Region);
 
         //Take the data from the last selected terrain
-        editButton.InitializeElement(SegmentController.Path.FindFirstRoute(Enums.DataType.Terrain).data);
+        editButton.InitializeElement(SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).data);
     }
     #endregion
 

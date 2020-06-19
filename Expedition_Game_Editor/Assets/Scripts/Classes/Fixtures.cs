@@ -176,6 +176,7 @@ static public class Fixtures
         public string privateNotes;
     }
 
+    //Party member might be merged with ChapterInteractable and sorted by type
     public class PartyMember : GeneralData
     {
         public int chapterId;
@@ -202,6 +203,18 @@ static public class Fixtures
 
         public string publicNotes;
         public string privateNotes;
+
+        public int defaultRegionId;
+
+        public float defaultPositionX;
+        public float defaultPositionY;
+        public float defaultPositionZ;
+
+        public int defaultRotationX;
+        public int defaultRotationY;
+        public int defaultRotationZ;
+
+        public float defaultScaleMultiplier;
     }
 
     public class Quest : GeneralData
@@ -369,7 +382,6 @@ static public class Fixtures
         LoadChapterInteractables();
         LoadChapterRegions();
         LoadPhases();
-        LoadPhaseRegions();
         LoadQuests();
         LoadPhaseWorldInteractables();
         LoadObjectives();
@@ -747,7 +759,7 @@ static public class Fixtures
             CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 0f, 236.75f), new Vector3(0, 180, 0));
 
             /*Red warrior*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
+            //CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
 
             /*Ranger*/
             CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 75, 0));
@@ -911,11 +923,6 @@ static public class Fixtures
     {
         foreach (Chapter chapter in chapterList)
         {
-            List<int> randomInteractables = new List<int>();
-
-            var chapterInteractableIds = chapterInteractableList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !chapterInteractableIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
-
             for (int i = 0; i < partyMembersInChapter; i++)
             {
                 var partyMember = new PartyMember();
@@ -927,11 +934,8 @@ static public class Fixtures
 
                 partyMember.chapterId = chapter.Id;
 
-                int randomInteractable = Random.Range(0, randomInteractables.Count);
-
-                partyMember.interactableId = randomInteractables[randomInteractable];
-
-                randomInteractables.RemoveAt(randomInteractable);
+                var partyMemberInteractableId = 1;
+                partyMember.interactableId = partyMemberInteractableId;
 
                 partyMemberList.Add(partyMember);
             }
@@ -1015,207 +1019,215 @@ static public class Fixtures
                 phase.Index = i;
 
                 phase.chapterId = chapter.Id;
+
                 phase.name = "Phase " + (i + 1);
+
+                foreach (ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
+                {
+                    var regionSource = regionList.Where(x => x.Id == chapterRegion.regionId).FirstOrDefault();
+
+                    var region = new Region();
+
+                    int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
+
+                    region.Id = regionId;
+                    region.phaseId = phase.Id;
+                    region.chapterRegionId = chapterRegion.Id;
+
+                    region.Index = chapterRegion.Index;
+                    region.tileSetId = regionSource.tileSetId;
+
+                    region.name = regionSource.name;
+                    region.regionSize = regionSource.regionSize;
+                    region.terrainSize = regionSource.terrainSize;
+
+                    regionList.Add(region);
+
+                    //Get all world interactables belonging to this region
+                    var tempInteractionSourceList = interactionList.Where(x => x.regionId == regionSource.Id);
+                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id));
+                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
+
+                    var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                    foreach (Terrain terrainSource in terrainSourceList)
+                    {
+                        var terrain = new Terrain();
+
+                        int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
+
+                        terrain.Id = terrainId;
+                        terrain.regionId = region.Id;
+
+                        terrain.Index = terrainSource.Index;
+
+                        terrain.iconId = terrainSource.iconId;
+                        terrain.name = terrainSource.name;
+
+                        var atmosphereSourceList = atmosphereList.Where(x => x.terrainId == terrainSource.Id).OrderByDescending(x => x.isDefault).ThenBy(x => x.startTime).ToList();
+
+                        foreach (Atmosphere atmosphereSource in atmosphereSourceList)
+                        {
+                            CreateAtmosphere(terrain, atmosphereSource.isDefault, atmosphereSource.startTime, atmosphereSource.endTime);
+                        }
+
+                        var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                        foreach (TerrainTile terrainTileSource in terrainTileSourceList)
+                        {
+                            var terrainTile = new TerrainTile();
+
+                            int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
+
+                            terrainTile.Id = terrainTileId;
+                            terrainTile.terrainId = terrain.Id;
+
+                            terrainTile.Index = terrainTileSource.Index;
+
+                            terrainTile.tileId = terrainTileSource.tileId;
+
+                            terrainTileList.Add(terrainTile);
+                        }
+
+                        terrainList.Add(terrain);
+                    }
+
+                    foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
+                    {
+                        var worldInteractable = new WorldInteractable();
+
+                        int worldInteractableId = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+
+                        worldInteractable.Id = worldInteractableId;
+
+                        worldInteractable.type = worldInteractableSource.type;
+
+                        worldInteractable.interactableId = worldInteractableSource.interactableId;
+
+                        var taskSourceList = taskList.Where(x => x.worldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                        foreach (Task taskSource in taskSourceList)
+                        {
+                            var task = new Task();
+
+                            int taskId = taskList.Count > 0 ? (taskList[taskList.Count - 1].Id + 1) : 1;
+
+                            task.Id = taskId;
+                            task.Index = taskSource.Index;
+
+                            task.worldInteractableId = worldInteractable.Id;
+                            task.objectiveId = taskSource.objectiveId;
+
+                            task.name = "Just a task" + (taskSource.objectiveId == 0 ? "" : " with an objective " + task.objectiveId);
+
+                            var interactionSourceList = interactionList.Where(x => x.taskId == taskSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                            foreach (Interaction interactionSource in interactionSourceList)
+                            {
+                                var interaction = new Interaction();
+
+                                int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
+
+                                interaction.Id = interactionId;
+                                interaction.taskId = task.Id;
+
+                                interaction.regionId = region.Id;
+
+                                interaction.Index = interactionSource.Index;
+
+                                interaction.isDefault = interactionSource.isDefault;
+
+                                interaction.startTime = interactionSource.startTime;
+                                interaction.endTime = interactionSource.endTime;
+
+                                interaction.publicNotes = interactionSource.publicNotes;
+                                interaction.privateNotes = interactionSource.privateNotes;
+
+                                interaction.positionX = interactionSource.positionX;
+                                interaction.positionY = interactionSource.positionY;
+                                interaction.positionZ = interactionSource.positionZ;
+
+                                interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
+                                interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
+
+                                interaction.rotationX = interactionSource.rotationX;
+                                interaction.rotationY = interactionSource.rotationY;
+                                interaction.rotationZ = interactionSource.rotationZ;
+
+                                interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+
+                                var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
+
+                                foreach (Outcome outcomeSource in outcomeSourceList)
+                                {
+                                    var outcome = new Outcome();
+
+                                    int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
+
+                                    outcome.Id = outcomeId;
+
+                                    outcome.type = outcomeSource.type;
+
+                                    outcome.interactionId = interaction.Id;
+
+                                    outcomeList.Add(outcome);
+                                }
+
+                                interactionList.Add(interaction);
+                            }
+
+                            taskList.Add(task);
+                        }
+
+                        worldInteractableList.Add(worldInteractable);
+                    }
+
+                    var worldObjectSourceList = worldObjectList.Where(x => x.regionId == regionSource.Id).Distinct().ToList();
+
+                    foreach (WorldObject worldObjectSource in worldObjectSourceList)
+                    {
+                        var worldObject = new WorldObject();
+
+                        int worldObjectId = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].Id + 1) : 1;
+
+                        worldObject.Id = worldObjectId;
+                        worldObject.regionId = region.Id;
+
+                        worldObject.positionX = worldObjectSource.positionX;
+                        worldObject.positionY = worldObjectSource.positionY;
+                        worldObject.positionZ = worldObjectSource.positionZ;
+
+                        worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionZ);
+                        worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionZ);
+
+                        worldObject.rotationX = worldObjectSource.rotationX;
+                        worldObject.rotationY = worldObjectSource.rotationY;
+                        worldObject.rotationZ = worldObjectSource.rotationZ;
+
+                        worldObject.scaleMultiplier = worldObjectSource.scaleMultiplier;
+
+                        worldObject.Index = worldObjectSource.Index;
+                        worldObject.objectGraphicId = worldObjectSource.objectGraphicId;
+
+                        worldObjectList.Add(worldObject);
+                    }
+                }
+                
+                phase.defaultRegionId = regionList.Where(x => x.phaseId == phase.Id).First().Id;
+
+                phase.defaultPositionX = 238.125f;
+                phase.defaultPositionY = 0.1f;
+                phase.defaultPositionZ = 239.875f;
+
+                phase.defaultRotationX = 0;
+                phase.defaultRotationY = 180;
+                phase.defaultRotationZ = 0;
+
+                phase.defaultScaleMultiplier = 1f;
+
                 phase.publicNotes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
                 
                 phaseList.Add(phase);
-            }
-        }
-    }
-
-    static public void LoadPhaseRegions()
-    {
-        foreach(Phase phase in phaseList)
-        {
-            foreach(ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
-            {
-                var regionSource = regionList.Where(x => x.Id == chapterRegion.regionId).FirstOrDefault();
-
-                var region = new Region();
-
-                int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
-
-                region.Id = regionId;
-                region.phaseId = phase.Id;
-                region.chapterRegionId = chapterRegion.Id;
-
-                region.Index = chapterRegion.Index;
-                region.tileSetId = regionSource.tileSetId;
-
-                region.name = regionSource.name;
-                region.regionSize = regionSource.regionSize;
-                region.terrainSize = regionSource.terrainSize;
-
-                regionList.Add(region);
-
-                //Get all world interactables belonging to this region
-                var tempInteractionSourceList = interactionList.Where(x => x.regionId == regionSource.Id);
-                var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id));
-                var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
-
-                var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
-
-                foreach (Terrain terrainSource in terrainSourceList)
-                {
-                    var terrain = new Terrain();
-
-                    int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
-
-                    terrain.Id = terrainId;
-                    terrain.regionId = region.Id;
-
-                    terrain.Index = terrainSource.Index;
-
-                    terrain.iconId = terrainSource.iconId;
-                    terrain.name = terrainSource.name;
-
-                    var atmosphereSourceList = atmosphereList.Where(x => x.terrainId == terrainSource.Id).OrderByDescending(x => x.isDefault).ThenBy(x => x.startTime).ToList();
-
-                    foreach (Atmosphere atmosphereSource in atmosphereSourceList)
-                    {
-                        CreateAtmosphere(terrain, atmosphereSource.isDefault, atmosphereSource.startTime, atmosphereSource.endTime);
-                    }
-
-                    var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.Id).OrderBy(x => x.Index).Distinct().ToList();
-
-                    foreach(TerrainTile terrainTileSource in terrainTileSourceList)
-                    {
-                        var terrainTile = new TerrainTile();
-                        
-                        int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
-
-                        terrainTile.Id = terrainTileId;
-                        terrainTile.terrainId = terrain.Id;
-
-                        terrainTile.Index = terrainTileSource.Index;
-
-                        terrainTile.tileId = terrainTileSource.tileId;
-                        
-                        terrainTileList.Add(terrainTile);
-                    }
-
-                    terrainList.Add(terrain);
-                }
-
-                foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
-                {
-                    var worldInteractable = new WorldInteractable();
-
-                    int worldInteractableId = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
-
-                    worldInteractable.Id = worldInteractableId;
-
-                    worldInteractable.type = worldInteractableSource.type;
-
-                    worldInteractable.interactableId = worldInteractableSource.interactableId;
-                    
-                    var taskSourceList = taskList.Where(x => x.worldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
-
-                    foreach(Task taskSource in taskSourceList)
-                    {
-                        var task = new Task();
-
-                        int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].Id + 1) : 1;
-
-                        task.Id = id;
-                        task.Index = taskSource.Index;
-
-                        task.worldInteractableId = worldInteractable.Id;
-                        task.objectiveId = taskSource.objectiveId;
-
-                        task.name = "Just a task" + (taskSource.objectiveId == 0 ? "" : " with an objective " + task.objectiveId);
-                        
-                        var interactionSourceList = interactionList.Where(x => x.taskId == taskSource.Id).OrderBy(x => x.Index).Distinct().ToList();
-
-                        foreach (Interaction interactionSource in interactionSourceList)
-                        {
-                            var interaction = new Interaction();
-
-                            int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
-
-                            interaction.Id = interactionId;
-                            interaction.taskId = task.Id;
-                            
-                            interaction.regionId = region.Id;
-
-                            interaction.Index = interactionSource.Index;
-
-                            interaction.isDefault = interactionSource.isDefault;
-
-                            interaction.startTime = interactionSource.startTime;
-                            interaction.endTime = interactionSource.endTime;
-
-                            interaction.publicNotes = interactionSource.publicNotes;
-                            interaction.privateNotes = interactionSource.privateNotes;
-
-                            interaction.positionX = interactionSource.positionX;
-                            interaction.positionY = interactionSource.positionY;
-                            interaction.positionZ = interactionSource.positionZ;
-
-                            interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
-                            interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
-
-                            interaction.rotationX = interactionSource.rotationX;
-                            interaction.rotationY = interactionSource.rotationY;
-                            interaction.rotationZ = interactionSource.rotationZ;
-
-                            interaction.scaleMultiplier = interactionSource.scaleMultiplier;
-
-                            var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
-
-                            foreach(Outcome outcomeSource in outcomeSourceList)
-                            {
-                                var outcome = new Outcome();
-
-                                int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
-
-                                outcome.Id = outcomeId;
-
-                                outcome.type = outcomeSource.type;
-
-                                outcome.interactionId = interaction.Id;
-
-                                outcomeList.Add(outcome);
-                            }
-
-                            interactionList.Add(interaction);
-                        }
-
-                        taskList.Add(task);
-                    }
-                    
-                    worldInteractableList.Add(worldInteractable);
-                }
-
-                var worldObjectSourceList = worldObjectList.Where(x => x.regionId == regionSource.Id).Distinct().ToList();
-
-                foreach (WorldObject worldObjectSource in worldObjectSourceList)
-                {
-                    var worldObject = new WorldObject();
-
-                    int worldObjectId = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].Id + 1) : 1;
-
-                    worldObject.Id = worldObjectId;
-                    worldObject.regionId = region.Id;
-
-                    worldObject.positionX = worldObjectSource.positionX;
-                    worldObject.positionY = worldObjectSource.positionY;
-                    worldObject.positionZ = worldObjectSource.positionZ;
-
-                    worldObject.terrainId = GetTerrain(worldObject.regionId, worldObject.positionX, worldObject.positionZ);
-                    worldObject.terrainTileId = GetTerrainTile(worldObject.terrainId, worldObject.positionX, worldObject.positionZ);
-
-                    worldObject.rotationX = worldObjectSource.rotationX;
-                    worldObject.rotationY = worldObjectSource.rotationY;
-                    worldObject.rotationZ = worldObjectSource.rotationZ;
-
-                    worldObject.scaleMultiplier = worldObjectSource.scaleMultiplier;
-
-                    worldObject.Index = worldObjectSource.Index;
-                    worldObject.objectGraphicId = worldObjectSource.objectGraphicId;
-                    
-                    worldObjectList.Add(worldObject);
-                }
             }
         }
     }

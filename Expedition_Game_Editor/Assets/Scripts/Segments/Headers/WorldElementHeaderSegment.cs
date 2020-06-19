@@ -71,12 +71,27 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         headerText.resizeTextMaxSize = StyleManager.headerFontSize;
     }
 
+    private void InitializePhaseData()
+    {
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+
+        id = phaseData.partyMemberId;
+        header = phaseData.interactableName;
+        objectGraphicIconPath = phaseData.objectGraphicIconPath;
+
+        headerText.fontSize = StyleManager.headerFontSize;
+        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
+    }
+
     public void OpenSegment()
     {
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Interaction: InitializeInteractionData(); break;
-            case Enums.DataType.WorldObject: InitializeWorldObjectData(); break;
+            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
+            case Enums.DataType.WorldObject:    InitializeWorldObjectData();    break;
+            case Enums.DataType.Phase:          InitializePhaseData();          break;
+
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
         
         icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);

@@ -57,19 +57,27 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             if (RegionDisplayManager.activeDisplay == RegionDisplayManager.Display.World)
                 path.Add(regionRoute);
 
-            if (regionType != Enums.RegionType.Interaction)
+            if(regionType == Enums.RegionType.Interaction)
             {
-                path.Add(regionRoute);
+                var interactionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Interaction);
+
+                interactionRoute.controller = (int)Enums.WorldSelectionType.Interaction;
+                interactionRoute.selectionStatus = Enums.SelectionStatus.Main;
+
+                path.Add(interactionRoute);
+                
+            } else if (regionType == Enums.RegionType.Party) {
+
+                var phaseRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Phase);
+
+                phaseRoute.controller = (int)Enums.WorldSelectionType.Party;
+                phaseRoute.selectionStatus = Enums.SelectionStatus.Main;
+
+                path.Add(phaseRoute);
 
             } else {
 
-                //Adds the selected interaction to the path
-                var interactionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Interaction);
-
-                interactionRoute.controller = 0;
-                interactionRoute.selectionStatus = Enums.SelectionStatus.Main;
-                
-                path.Add(interactionRoute);
+                path.Add(regionRoute);
             }
         }
     }
@@ -83,7 +91,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             var regionDataElement = (RegionDataElement)regionRoute.data.dataElement;
             regionType = regionDataElement.type;
 
-            if (regionType == Enums.RegionType.Interaction)
+            if (regionType == Enums.RegionType.Interaction || regionType == Enums.RegionType.Party)
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.World;
             else
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
@@ -96,7 +104,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         structureList.ForEach(x =>
         {
-            var data = PathController.route.path.FindLastRoute(x).data;
+            var data = PathController.route.path.FindFirstRoute(x).data;
 
             actionDataList.Add(new ActionData(data));
         });

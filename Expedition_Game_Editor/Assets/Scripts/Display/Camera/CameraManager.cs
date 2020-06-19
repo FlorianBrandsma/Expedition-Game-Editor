@@ -165,7 +165,14 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 break;
 
-            default: return;
+            case Enums.DataType.Phase:
+
+                var phaseData = (PhaseDataElement)dataElement;
+                elementPosition = new Vector3(phaseData.DefaultPositionX, phaseData.DefaultPositionY, -phaseData.DefaultPositionZ);
+
+                break;
+
+            default: Debug.Log("CASE MISSING: " + dataElement.DataType); return;
         }
 
         var regionData = (RegionDataElement)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;

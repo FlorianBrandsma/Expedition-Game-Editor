@@ -15,7 +15,9 @@ public class EditorWorldDataElement : GeneralData, IDataElement
     public Vector3 startPosition;
 
     public List<TerrainDataElement> terrainDataList;
-    
+
+    public List<PhaseDataElement> phaseDataList;
+
     #region DataElement
     public SelectionElement SelectionElement { get; set; }
 
@@ -63,6 +65,12 @@ public class EditorWorldDataElement : GeneralData, IDataElement
         {
             var terrainDataSource = worldDataSource.terrainDataList[i];
             terrainDataList[i].Copy(terrainDataSource);
+        }
+
+        for(int i = 0; i < phaseDataList.Count; i++)
+        {
+            var phaseDataSource = worldDataSource.phaseDataList[i];
+            phaseDataList[i].Copy(phaseDataSource);
         }        
     }
     #endregion

@@ -47,7 +47,17 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultRotationX = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -81,7 +91,17 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultRotationY = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -115,7 +135,17 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultRotationZ = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -163,8 +193,9 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Interaction: InitializeInteractionData(); break;
-            case Enums.DataType.WorldObject: InitializeWorldObjectData(); break;
+            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
+            case Enums.DataType.WorldObject:    InitializeWorldObjectData();    break;
+            case Enums.DataType.Phase:          InitializePhaseData();          break;
 
             default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
@@ -186,6 +217,15 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
         rotationX = worldObjectData.RotationX;
         rotationY = worldObjectData.RotationY;
         rotationZ = worldObjectData.RotationZ;
+    }
+
+    private void InitializePhaseData()
+    {
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+
+        rotationX = phaseData.DefaultRotationX;
+        rotationY = phaseData.DefaultRotationY;
+        rotationZ = phaseData.DefaultRotationZ;
     }
 
     private void SetSearchParameters() { }

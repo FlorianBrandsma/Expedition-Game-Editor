@@ -100,9 +100,10 @@ public class InteractionDataManager : IDataManager
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
 
-                        regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
                         objectGraphicIconPath = iconData.path,
 
+                        regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
+                        
                         height = objectGraphicData.height,
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,

@@ -5,10 +5,9 @@ using System.Linq;
 public class PhaseEditor : MonoBehaviour, IEditor
 {
     public PhaseDataElement PhaseData { get { return (PhaseDataElement)Data.dataElement; } }
-
-    private List<SegmentController> editorSegments = new List<SegmentController>();
-
-    public List<RegionDataElement> regionDataList;
+    
+    private List<RegionDataElement> regionDataList = new List<RegionDataElement>();
+    public List<RegionDataElement> RegionDataList { get { return regionDataList; } }
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -33,13 +32,13 @@ public class PhaseEditor : MonoBehaviour, IEditor
         }
     }
 
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
-    }
+    private List<SegmentController> editorSegments = new List<SegmentController>();
+    public List<SegmentController> EditorSegments { get { return editorSegments; } }
 
     public void UpdateEditor()
     {
+        DataElements.Where(x => SelectionElementManager.SelectionActive(x.SelectionElement)).ToList().ForEach(x => x.SelectionElement.UpdateElement());
+
         SetEditor();
     }
 

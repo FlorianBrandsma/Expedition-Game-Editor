@@ -91,8 +91,16 @@ public class Enums
     {
         Base,
         Phase,
+        Party,
         Interaction,
         Game
+    }
+
+    public enum WorldSelectionType
+    {
+        Interaction,
+        Object,
+        Party
     }
 
     public enum DisplayType

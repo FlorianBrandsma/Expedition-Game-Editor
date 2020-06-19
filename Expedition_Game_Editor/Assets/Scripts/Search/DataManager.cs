@@ -116,6 +116,28 @@ public class DataManager
         return dataList;
     }
 
+    public List<PartyMemberData> GetPartyMemberData(Search.PartyMember searchParameters)
+    {
+        var dataList = new List<PartyMemberData>();
+
+        foreach(Fixtures.PartyMember partyMember in Fixtures.partyMemberList)
+        {
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(partyMember.chapterId)) continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(partyMember.interactableId)) continue;
+
+            var data = new PartyMemberData();
+
+            data.Id = partyMember.Id;
+
+            data.chapterId = partyMember.chapterId;
+            data.interactableId = partyMember.interactableId;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<ChapterInteractableData> GetChapterInteractableData(Search.ChapterInteractable searchParameters)
     {
         var dataList = new List<ChapterInteractableData>();
@@ -144,8 +166,9 @@ public class DataManager
 
         foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.Id))                 continue;
-            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(phase.chapterId))   continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phase.Id))                             continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(phase.chapterId))               continue;
+            if (searchParameters.defaultRegionId.Count  > 0 && !searchParameters.defaultRegionId.Contains(phase.defaultRegionId))   continue;
 
             var data = new PhaseData();
 
@@ -153,6 +176,18 @@ public class DataManager
             data.chapterId = phase.chapterId;
 
             data.name = phase.name;
+
+            data.defaultRegionId = phase.defaultRegionId;
+
+            data.defaultPositionX = phase.defaultPositionX;
+            data.defaultPositionY = phase.defaultPositionY;
+            data.defaultPositionZ = phase.defaultPositionZ;
+
+            data.defaultRotationX = phase.defaultRotationX;
+            data.defaultRotationY = phase.defaultRotationY;
+            data.defaultRotationZ = phase.defaultRotationZ;
+
+            data.defaultScaleMultiplier = phase.defaultScaleMultiplier;
 
             data.publicNotes = phase.publicNotes;
             data.privateNotes = phase.privateNotes;
@@ -678,6 +713,12 @@ public class DataManager
         public string privateNotes;
     }
 
+    public class PartyMemberData : GeneralData
+    {
+        public int chapterId;
+        public int interactableId;
+    }
+
     public class ChapterInteractableData : GeneralData
     {
         public int chapterId;
@@ -692,6 +733,18 @@ public class DataManager
 
         public string publicNotes;
         public string privateNotes;
+
+        public int defaultRegionId;
+
+        public float defaultPositionX;
+        public float defaultPositionY;
+        public float defaultPositionZ;
+
+        public int defaultRotationX;
+        public int defaultRotationY;
+        public int defaultRotationZ;
+
+        public float defaultScaleMultiplier;
     }
 
     public class QuestData : GeneralData

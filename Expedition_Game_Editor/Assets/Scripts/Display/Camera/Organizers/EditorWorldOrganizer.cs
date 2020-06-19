@@ -16,6 +16,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private List<WorldInteractableDataElement> selectedWorldInteractableAgents  = new List<WorldInteractableDataElement>();
     private List<WorldInteractableDataElement> selectedWorldInteractableObjects = new List<WorldInteractableDataElement>();
     private List<InteractionDataElement> selectedInteractions                   = new List<InteractionDataElement>();
+    private List<PhaseDataElement> selectedParty                                = new List<PhaseDataElement>();
     
     private List<IDataElement> selectableDataList;
     
@@ -38,6 +39,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private DataController worldInteractableAgentController     = new DataController(Enums.DataType.WorldInteractable);
     private DataController worldInteractableObjectController    = new DataController(Enums.DataType.WorldInteractable);
     private DataController interactionController                = new DataController(Enums.DataType.Interaction);
+    private DataController partyController                      = new DataController(Enums.DataType.Phase);
     
     private ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
 
@@ -82,20 +84,19 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         //Get selected interaction
         GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.Interaction);
+        
+        //Get selected interactable agents
+        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldInteractable, Enums.InteractableType.Agent);
 
-        //Only get other data if no interaction was selected. Technically both could be selected,
-        //but this is never the case and so the world object doesn't have to stay active
-        if (selectedInteractions.FirstOrDefault() == null)
-        {
-            //Get selected interactable agents
-            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldInteractable, Enums.InteractableType.Agent);
+        //Get selected interactable objects
+        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldInteractable, Enums.InteractableType.Object);
 
-            //Get selected interactable objects
-            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldInteractable, Enums.InteractableType.Object);
+        //Get selected world objects
+        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldObject);
 
-            //Get selected world objects
-            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldObject);
-        }
+        //Get selected phase if the region type is "party"
+        if(worldData.regionType == Enums.RegionType.Party)
+            GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.Phase);
 
         InitializeControllers();
         
@@ -117,7 +118,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         {
             case Enums.DataType.WorldObject:        GetSelectedWorldObjects(routes);                            break;
             case Enums.DataType.WorldInteractable:  GetSelectedWorldInteractables(routes, interactableType);    break;
-            case Enums.DataType.Interaction:        GetSelectedInteractions(routes);                            break; 
+            case Enums.DataType.Interaction:        GetSelectedInteractions(routes);                            break;
+            case Enums.DataType.Phase:              GetSelectedPhases(routes);                                  break;
         }
     }
 
@@ -146,16 +148,23 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         selectedInteractions = worldData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
     }
 
+    private void GetSelectedPhases(List<Route> routes)
+    {
+        selectedParty = worldData.phaseDataList.Where(x => routes.Select(y => y.GeneralData.Id).Contains(x.Id)).Distinct().ToList();
+    }
+
     private void InitializeControllers()
     {
         worldObjectController.SegmentController             = DataController.SegmentController;
         worldInteractableAgentController.SegmentController  = DataController.SegmentController;
         worldInteractableObjectController.SegmentController = DataController.SegmentController;
         interactionController.SegmentController             = DataController.SegmentController;
+        partyController.SegmentController                   = DataController.SegmentController;
         
         worldInteractableAgentController.DataCategory   = Enums.DataCategory.Navigation;
         worldInteractableObjectController.DataCategory  = Enums.DataCategory.Navigation;
         interactionController.DataCategory              = Enums.DataCategory.Navigation;
+        partyController.DataCategory                    = Enums.DataCategory.Navigation;
 
         GetData();
     }
@@ -176,13 +185,17 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         worldObjectController.DataList = worldData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => !selectedWorldObjects.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList();
 
-        worldInteractableAgentController.DataList = worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Agent &&
-                                                                                              !selectedWorldInteractableAgents.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList();
+        //Only show interactables where the active time is within their first interaction's timeframe
+        worldInteractableAgentController.DataList = FilterWorldInteractables(worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Agent &&
+                                                                                                                       !selectedWorldInteractableAgents.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList());
 
-        worldInteractableObjectController.DataList = worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object &&
-                                                                                               !selectedWorldInteractableObjects.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList();
+        //Only show interactables where the active time is within their first interaction's timeframe
+        worldInteractableObjectController.DataList = FilterWorldInteractables(worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object &&
+                                                                                                                        !selectedWorldInteractableObjects.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList());
 
         interactionController.DataList = worldData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => !selectedInteractions.Select(z => z.Id).Contains(y.Id))).Cast<IDataElement>().ToList();
+
+        partyController.DataList = worldData.phaseDataList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id)).Cast<IDataElement>().ToList();
     }
 
     private void FixLostInteractions()
@@ -235,8 +248,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         selectableDataList =    worldData.terrainDataList.SelectMany(x => x.worldObjectDataList).Cast<IDataElement>().Concat(
                                 worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList).Cast<IDataElement>()).Concat(
-                                worldData.terrainDataList.SelectMany(x => x.interactionDataList).Cast<IDataElement>()).ToList();
-
+                                worldData.terrainDataList.SelectMany(x => x.interactionDataList).Cast<IDataElement>()).Concat(
+                                worldData.phaseDataList.Cast<IDataElement>()).ToList();
+        
         SelectionManager.SelectData(selectableDataList, DisplayManager);
     }
 
@@ -301,20 +315,20 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
 
         //Selected elements only spawn once on start up
-        if (selectedInteractions.FirstOrDefault() != null)
-        {
+        if (selectedInteractions.Count > 0)
             SetWorldElements(interactionController, selectedInteractions.Cast<IDataElement>().ToList());
-
-        } else {
-
-            //Only show interactables where the active time is within their first interaction's timeframe
-            worldInteractableAgentController.DataList = FilterWorldInteractables(worldInteractableAgentController.DataList);
-            worldInteractableObjectController.DataList = FilterWorldInteractables(worldInteractableObjectController.DataList);
-
+        
+        if (selectedWorldInteractableAgents.Count > 0)
             SetWorldElements(worldInteractableAgentController, selectedWorldInteractableAgents.Cast<IDataElement>().ToList());
+        
+        if (selectedWorldInteractableObjects.Count > 0)
             SetWorldElements(worldInteractableObjectController, selectedWorldInteractableObjects.Cast<IDataElement>().ToList());
+
+        if (selectedWorldObjects.Count > 0)
             SetWorldElements(worldObjectController, selectedWorldObjects.Cast<IDataElement>().ToList());
-        }
+
+        if (selectedParty.Count > 0)
+            SetWorldElements(partyController, selectedParty.Cast<IDataElement>().ToList());
 
         SetData(DataController.DataList);
     }
@@ -368,6 +382,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             //Set interactions that are bound to this terrain tile
             SetInteractions(terrainTileData.Id);
+
+            //Set default party representation of the active phase if it is bound to this tile 
+            SetParty(terrainTileData.Id);
         }
     }
     
@@ -381,7 +398,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         tile.gameObject.SetActive(true);
 
         tile.transform.SetParent(CameraManager.content, false);
-        tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, 0, terrainTileData.gridElement.startPosition.y);
+        tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, tile.transform.localPosition.y, terrainTileData.gridElement.startPosition.y);
 
         tile.DataType = Enums.DataType.TerrainTile;
         tile.DataElement = terrainTileData;
@@ -415,6 +432,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var interactionDataList = interactionController.DataList.Where(x => ((InteractionDataElement)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(interactionController, interactionDataList);
+    }
+
+    private void SetParty(int terrainTileId)
+    {
+        var partyDataList = partyController.DataList.Where(x => ((PhaseDataElement)x).terrainTileId == terrainTileId).ToList();
+
+        SetWorldElements(partyController, partyDataList);
     }
 
     private void SetWorldElements(IDataController dataController, List<IDataElement> dataList)
@@ -464,6 +488,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             case Enums.DataType.WorldObject:        SetWorldObjectStatus(element);          break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableStatus(element);    break;
             case Enums.DataType.Interaction:        SetInteractionStatus(element);          break;
+            case Enums.DataType.Phase:              SetPartyStatus(element);                break;
             
             default: Debug.Log("CASE MISSING: " + element.GeneralData.DataType); break;
         }
@@ -471,7 +496,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetWorldObjectStatus(SelectionElement element)
     {
-        if (worldData.regionType == Enums.RegionType.Interaction || worldData.regionType == Enums.RegionType.Game)
+        if (worldData.regionType == Enums.RegionType.Interaction || worldData.regionType == Enums.RegionType.Party || worldData.regionType == Enums.RegionType.Game)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -481,6 +506,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetWorldInteractableStatus(SelectionElement element)
     {
         var worldInteractableDataElement = (WorldInteractableDataElement)element.data.dataElement;
+
+        //Locked when editing default party transform
+        if (worldData.regionType == Enums.RegionType.Party)
+        {
+            element.elementStatus = Enums.ElementStatus.Locked;
+            return;
+        }
 
         //Hidden: Interactables where the active time is not within its timeframe
         if (!worldInteractableDataElement.containsActiveTime)
@@ -497,6 +529,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         if (selectedInteraction == null) return;
 
         var interactionDataElement = (InteractionDataElement)element.data.dataElement;
+
+        //Locked when editing default party transform
+        if (worldData.regionType == Enums.RegionType.Party)
+        {
+            element.elementStatus = Enums.ElementStatus.Locked;
+            return;
+        }
 
         //Debug.Log(  interactionData.Id + "/" + interactionDataElement.Id + "   " +
         //            interactionData.TaskId + "/" + interactionDataElement.TaskId + "   " +
@@ -553,6 +592,18 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
     
+    private void SetPartyStatus(SelectionElement element)
+    {
+        var partyDataElement = (PhaseDataElement)element.data.dataElement;
+
+        //Locked when not editing default party transform
+        if (worldData.regionType != Enums.RegionType.Party)
+        {
+            element.elementStatus = Enums.ElementStatus.Locked;
+            return;
+        }
+    }
+
     private bool SetElement(SelectionElement element)
     {
         element.gameObject.SetActive(true);
@@ -634,6 +685,17 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             
             worldElementList.RemoveAll(x => selectedInteractions.Select(y => y.Id).Contains(x.Id));
         }
+
+        if(selectedParty.Count > 0)
+        {
+            selectedParty.ForEach(x =>
+            {
+                PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
+                SelectionElementManager.CloseElement(x.SelectionElement);
+            });
+
+            worldElementList.RemoveAll(x => selectedParty.Select(y => y.Id).Contains(x.Id));
+        }
     }
 
     private void ClearTiles(List<Tile> inactiveTileList)
@@ -653,6 +715,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ClearWorldInteractableAgents(terrainTileData);
         ClearWorldInteractableObjects(terrainTileData);
         ClearInteractions(terrainTileData);
+        ClearParty(terrainTileData);
     }
 
     private void ClearWorldObjects(TerrainTileDataElement terrainTileData)
@@ -717,6 +780,22 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         });
         
         worldElementList.RemoveAll(x => inactiveInteractionList.Contains(x.Element.data.dataElement));
+    }
+
+    private void ClearParty(TerrainTileDataElement terrainTileData)
+    {
+        var partyElementList = partyController.DataList.Cast<PhaseDataElement>().Where(x => x.SelectionElement != null).ToList();
+
+        var inactivePartyList = partyElementList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id) &&
+                                                            x.terrainTileId == terrainTileData.Id).ToList();
+
+        inactivePartyList.ForEach(x =>
+        {
+            PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
+            SelectionElementManager.CloseElement(x.SelectionElement);
+        });
+
+        worldElementList.RemoveAll(x => inactivePartyList.Contains(x.Element.data.dataElement));
     }
 
     private void CancelSelection()

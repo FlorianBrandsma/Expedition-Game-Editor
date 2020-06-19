@@ -50,6 +50,9 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			case Enums.DataType.WorldInteractable:  InitializeWorldInteractableData();  break;
 			case Enums.DataType.Interaction:        InitializeInteractionData();        break;
 			case Enums.DataType.WorldObject:        InitializeWorldObjectData();        break;
+            case Enums.DataType.Phase:              InitializePhaseData();              break;
+
+			default: Debug.Log("CASE MISSING: " + targetDataElement.DataType); break;
 		}
 	}
 
@@ -80,7 +83,16 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		depth  = worldObjectData.depth  * worldObjectData.ScaleMultiplier;
 	}
 
-	private void UpdateSelectionPosition()
+    private void InitializePhaseData()
+    {
+        var phaseData = (PhaseDataElement)targetDataElement;
+
+        height = phaseData.height   * phaseData.DefaultScaleMultiplier;
+        width = phaseData.width     * phaseData.DefaultScaleMultiplier;
+        depth = phaseData.depth     * phaseData.DefaultScaleMultiplier;
+    }
+
+    private void UpdateSelectionPosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + height,

@@ -49,6 +49,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
             case Enums.DataType.Interaction:        SetInteractionElement();        break;
             case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
+            case Enums.DataType.Phase:              SetPartyElement();              break;
 
             default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType);    break;
         }
@@ -60,8 +61,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldInteractableElement()
     {
-        var data = Element.data;
-        var dataElement = (WorldInteractableDataElement)data.dataElement;
+        var dataElement = (WorldInteractableDataElement)Element.data.dataElement;
         
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
@@ -76,8 +76,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetInteractionElement()
     {
-        var data = Element.data;
-        var dataElement = (InteractionDataElement)data.dataElement;
+        var dataElement = (InteractionDataElement)Element.data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
@@ -92,8 +91,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldObjectElement()
     {
-        var data = Element.data;
-        var dataElement = (WorldObjectDataElement)data.dataElement;
+        var dataElement = (WorldObjectDataElement)Element.data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
@@ -102,6 +100,21 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
 
         scaleMultiplier = dataElement.ScaleMultiplier;
+
+        SetObjectGraphic();
+    }
+
+    private void SetPartyElement()
+    {
+        var dataElement = (PhaseDataElement)Element.data.dataElement;
+
+        var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
+
+        position = new Vector3(dataElement.DefaultPositionX, dataElement.DefaultPositionY, dataElement.DefaultPositionZ);
+        rotation = new Vector3(dataElement.DefaultRotationX, dataElement.DefaultRotationY, dataElement.DefaultRotationZ);
+
+        scaleMultiplier = dataElement.DefaultScaleMultiplier;
 
         SetObjectGraphic();
     }

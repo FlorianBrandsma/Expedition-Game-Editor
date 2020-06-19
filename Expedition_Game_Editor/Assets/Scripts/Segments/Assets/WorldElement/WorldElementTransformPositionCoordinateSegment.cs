@@ -50,7 +50,17 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultPositionX = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -84,7 +94,17 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultPositionY = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -118,7 +138,17 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultPositionZ = value;
+                    });
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -154,7 +184,9 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                     break;
 
-                default: Debug.Log("CASE MISSING"); break;
+                case Enums.DataType.Phase: break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -233,7 +265,8 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
-            case Enums.DataType.WorldObject:    InitializeworldObjectData();    break;
+            case Enums.DataType.WorldObject:    InitializeWorldObjectData();    break;
+            case Enums.DataType.Phase:          InitializePhaseData();          break;
 
             default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
@@ -250,7 +283,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         terrainTileId = interactionData.TerrainTileId;
     }
 
-    private void InitializeworldObjectData()
+    private void InitializeWorldObjectData()
     {
         var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
         
@@ -259,6 +292,17 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         positionZ = worldObjectData.PositionZ;
 
         terrainTileId = worldObjectData.TerrainTileId;
+    }
+
+    private void InitializePhaseData()
+    {
+        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+
+        positionX = phaseData.DefaultPositionX;
+        positionY = phaseData.DefaultPositionY;
+        positionZ = phaseData.DefaultPositionZ;
+
+        terrainTileId = phaseData.terrainTileId;
     }
 
     private void SetSearchParameters() { }
@@ -271,8 +315,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
         bindToTile.Toggle.isOn = terrainTileId != 0;
 
-        //Binding to tile is meant to render large objects that span multiple terrains.
-        //If necessary, modifications could be made to better support this feature for interacions
+        //Objects that are bound to tiles only load when the tile loads
         bindToTile.EnableElement(DataEditor.Data.dataElement.DataType == Enums.DataType.WorldObject);
 
         gameObject.SetActive(true);

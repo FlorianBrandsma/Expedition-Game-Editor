@@ -492,7 +492,7 @@ public class PathManager
 
         public Path Open()
         {
-            List<int> source = new List<int>() { 1 };
+            List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Object };
 
             List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
 

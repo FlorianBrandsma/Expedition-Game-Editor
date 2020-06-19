@@ -17,9 +17,14 @@ public class EditorWorldDataManager : IDataManager
     private List<DataManager.AtmosphereData> atmosphereDataList;
     private List<DataManager.TerrainTileData> terrainTileDataList;
     private List<DataManager.WorldObjectData> worldObjectDataList;
-    private List<DataManager.TaskData> taskDataList;
     private List<DataManager.InteractionData> interactionDataList;
+    private List<DataManager.TaskData> taskDataList;
     
+    private List<DataManager.PhaseData> phaseDataList;
+    private List<DataManager.ChapterData> chapterDataList;
+
+    private List<DataManager.PartyMemberData> partyMemberDataList;
+
     private List<DataManager.WorldInteractableData> worldInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
     private List<DataManager.ObjectGraphicData> objectGraphicDataList;
@@ -27,7 +32,7 @@ public class EditorWorldDataManager : IDataManager
 
     private List<DataManager.ObjectiveData> objectiveDataList;
     private List<DataManager.QuestData> questDataList;
-
+    
     public EditorWorldDataManager(EditorWorldController editorWorldController)
     {
         DataController = editorWorldController;
@@ -47,12 +52,15 @@ public class EditorWorldDataManager : IDataManager
         GetTerrainData();
         GetAtmosphereData();
         GetTerrainTileData();
-
         GetWorldObjectData(searchParameters);
-
         GetInteractionData(searchParameters);
         GetTaskData(searchParameters);
         GetWorldInteractableData();
+
+        GetPhaseData();
+        GetChapterData();
+        GetPartyMemberData();
+        
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
@@ -61,8 +69,8 @@ public class EditorWorldDataManager : IDataManager
         GetQuestData();
 
         var list = (
-            from regionData in regionDataList
-            join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
+            from regionData     in regionDataList
+            join tileSetData    in tileSetDataList on regionData.tileSetId equals tileSetData.Id
             select new EditorWorldDataElement
             {
                 Id = regionData.Id,
@@ -120,11 +128,11 @@ public class EditorWorldDataManager : IDataManager
 
                     worldInteractableDataList = regionType != Enums.RegionType.Interaction ? (
                     from worldInteractableData  in worldInteractableDataList
-                    join taskData               in taskDataList             on worldInteractableData.Id                 equals taskData.worldInteractableId
-                    join interactionData        in interactionDataList      on taskData.Id                              equals interactionData.taskId
-                    join interactableData       in interactableDataList     on worldInteractableData.interactableId     equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
-                    join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
+                    join taskData               in taskDataList             on worldInteractableData.Id             equals taskData.worldInteractableId
+                    join interactionData        in interactionDataList      on taskData.Id                          equals interactionData.taskId
+                    join interactableData       in interactableDataList     on worldInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
 
                     where interactionData.terrainId == terrainData.Id
                     select new WorldInteractableDataElement()
@@ -175,11 +183,11 @@ public class EditorWorldDataManager : IDataManager
 
                     interactionDataList = regionType == Enums.RegionType.Interaction ? (
                     from interactionData        in interactionDataList
-                    join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.Id
-                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.interactableId     equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
+                    join taskData               in taskDataList                 on interactionData.taskId               equals taskData.Id
+                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId         equals worldInteractableData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.interactableId equals interactableData.Id
+                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
+                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
 
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
@@ -216,12 +224,12 @@ public class EditorWorldDataManager : IDataManager
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
-                        
+
                         worldInteractableId = taskData.worldInteractableId,
 
                         objectiveId = taskData.objectiveId,
-                        questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId : 
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId :
+                                  questData.FirstOrDefault() != null ? questData.FirstOrDefault().questData.Id : 0,
 
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,
@@ -235,7 +243,7 @@ public class EditorWorldDataManager : IDataManager
                         defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>()
 
                     }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
-                    
+
                     worldObjectDataList = (
                     from worldObjectData    in worldObjectDataList
                     join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.Id
@@ -271,13 +279,190 @@ public class EditorWorldDataManager : IDataManager
 
                     }).ToList()
 
-                }).OrderBy(x => x.Index).ToList()
+                }).OrderBy(x => x.Index).ToList(),
+
+                phaseDataList = (
+                from phaseData      in phaseDataList
+                join chapterData    in chapterDataList on phaseData.chapterId equals chapterData.Id
+
+                join leftJoin in (from partyMemberData      in partyMemberDataList
+                                  join interactableData     in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
+                                  join objectGraphicData    in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
+                                  join iconData             in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                                  select new { partyMemberData, interactableData, objectGraphicData, iconData }) on chapterData.Id equals leftJoin.partyMemberData.chapterId into partyMemberData
+
+                select new PhaseDataElement()
+                {
+                    Id = phaseData.Id,
+
+                    DefaultRegionId = phaseData.defaultRegionId,
+
+                    DefaultPositionX = phaseData.defaultPositionX,
+                    DefaultPositionY = phaseData.defaultPositionY,
+                    DefaultPositionZ = phaseData.defaultPositionZ,
+
+                    DefaultRotationX = phaseData.defaultRotationX,
+                    DefaultRotationY = phaseData.defaultRotationY,
+                    DefaultRotationZ = phaseData.defaultRotationZ,
+
+                    terrainTileId = TerrainTileId(regionData.Id, phaseData.defaultPositionX, phaseData.defaultPositionZ),
+
+                    objectGraphicId = partyMemberData.First().objectGraphicData.Id,
+                    objectGraphicPath = partyMemberData.First().objectGraphicData.path,
+                    
+                    height = partyMemberData.First().objectGraphicData.height,
+                    width = partyMemberData.First().objectGraphicData.width,
+                    depth = partyMemberData.First().objectGraphicData.depth,
+
+                    DefaultScaleMultiplier = phaseData.defaultScaleMultiplier
+
+                }).ToList()
 
             }).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IDataElement>().ToList();
+    }
+    
+    internal void GetRegionData(Search.EditorWorld searchData)
+    {
+        var searchParameters = new Search.Region();
+        searchParameters.id = searchData.regionId;
+
+        regionDataList = dataManager.GetRegionData(searchParameters);
+    }
+
+    internal void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+
+        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+    }
+
+    internal void GetTerrainData()
+    {
+        var terrainSearchParameters = new Search.Terrain();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+
+        terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
+    }
+
+    internal void GetAtmosphereData()
+    {
+        var atmosphereSearchParameters = new Search.Atmosphere();
+        atmosphereSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+
+        atmosphereDataList = dataManager.GetAtmosphereData(atmosphereSearchParameters);
+    }
+
+    internal void GetTerrainTileData()
+    {
+        var terrainTileSearchParameters = new Search.TerrainTile();
+        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+
+        terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
+    }
+
+    internal void GetWorldObjectData(Search.EditorWorld searchData)
+    {
+        var worldObjectSearchParameters = new Search.WorldObject();
+        worldObjectSearchParameters.regionId = searchData.id;
+
+        worldObjectDataList = dataManager.GetWorldObjectData(worldObjectSearchParameters);
+    }
+
+    internal void GetInteractionData(Search.EditorWorld searchData)
+    {
+        var interactionSearchParameters = new Search.Interaction();
+        interactionSearchParameters.regionId = searchData.regionId;
+
+        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
+    }
+
+    internal void GetTaskData(Search.EditorWorld searchData)
+    {
+        var taskSearchParameters = new Search.Task();
+        taskSearchParameters.id = interactionDataList.Select(x => x.taskId).Distinct().ToList();
+        taskSearchParameters.objectiveId = searchData.objectiveId;
+
+        taskDataList = dataManager.GetTaskData(taskSearchParameters);
+    }
+    
+    internal void GetWorldInteractableData()
+    {
+        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        worldInteractableSearchParameters.id = taskDataList.Select(x => x.worldInteractableId).Distinct().ToList();
+
+        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+    }
+
+    internal void GetPhaseData()
+    {
+        var phaseSearchParameters = new Search.Phase();
+        phaseSearchParameters.defaultRegionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+
+        phaseDataList = dataManager.GetPhaseData(phaseSearchParameters);
+    }
+
+    internal void GetChapterData()
+    {
+        var chapterSearchParameters = new Search.Chapter();
+
+        chapterSearchParameters.id = phaseDataList.Select(x => x.chapterId).Distinct().ToList();
+
+        chapterDataList = dataManager.GetChapterData(chapterSearchParameters);
+    }
+
+    internal void GetPartyMemberData()
+    {
+        var partyMemberSearchParameters = new Search.PartyMember();
+
+        partyMemberSearchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
+
+        partyMemberDataList = dataManager.GetPartyMemberData(partyMemberSearchParameters);
+    }
+
+    internal void GetInteractableData()
+    {
+        var interactableSearchParameters = new Search.Interactable();
+
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Union(partyMemberDataList.Select(x => x.interactableId)).Distinct().ToList();
+
+        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+    }
+
+    internal void GetObjectGraphicData()
+    {
+        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Union(worldObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
+
+        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+    }
+
+    internal void GetIconData()
+    {
+        var iconSearchParameters = new Search.Icon();
+        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+
+        iconDataList = dataManager.GetIconData(iconSearchParameters);
+    }
+
+    internal void GetObjectiveData()
+    {
+        var objectiveSearchParameters = new Search.Objective();
+        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.objectiveId).Union(taskDataList.Select(x => x.objectiveId)).Distinct().ToList();
+
+        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
+    }
+
+    internal void GetQuestData()
+    {
+        var questSearchParameters = new Search.Quest();
+        questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
+
+        questDataList = dataManager.GetQuestData(questSearchParameters);
     }
 
     private GridElement TerrainGridElement(int index, int regionSize, int terrainSize, float tileSize)
@@ -327,122 +512,8 @@ public class EditorWorldDataManager : IDataManager
 
         var startPosition = new Vector2(terrainStartPosition.x + (tileSize * (tileIndex % terrainSize)),
                                         terrainStartPosition.y - (tileSize * (Mathf.Floor(tileIndex / terrainSize))));
-        
+
         return startPosition;
-    }
-
-    internal void GetRegionData(Search.EditorWorld searchData)
-    {
-        var searchParameters = new Search.Region();
-        searchParameters.id = searchData.regionId;
-
-        regionDataList = dataManager.GetRegionData(searchParameters);
-    }
-
-    internal void GetTileSetData()
-    {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
-
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
-    }
-
-    internal void GetTerrainData()
-    {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
-
-        terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
-    }
-
-    internal void GetAtmosphereData()
-    {
-        var atmosphereSearchParameters = new Search.Atmosphere();
-        atmosphereSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
-
-        atmosphereDataList = dataManager.GetAtmosphereData(atmosphereSearchParameters);
-    }
-
-    internal void GetTerrainTileData()
-    {
-        var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
-
-        terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
-    }
-
-    internal void GetInteractionData(Search.EditorWorld searchData)
-    {
-        var interactionSearchParameters = new Search.Interaction();
-        interactionSearchParameters.regionId = searchData.regionId;
-        
-        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
-    }
-
-    internal void GetWorldObjectData(Search.EditorWorld searchData)
-    {
-        var worldObjectSearchParameters = new Search.WorldObject();
-        worldObjectSearchParameters.regionId = searchData.id;
-
-        worldObjectDataList = dataManager.GetWorldObjectData(worldObjectSearchParameters);
-    }
-
-    internal void GetTaskData(Search.EditorWorld searchData)
-    {
-        var taskSearchParameters = new Search.Task();
-        taskSearchParameters.id = interactionDataList.Select(x => x.taskId).Distinct().ToList();
-        taskSearchParameters.objectiveId = searchData.objectiveId;
-
-        taskDataList = dataManager.GetTaskData(taskSearchParameters);
-    }
-
-    internal void GetWorldInteractableData()
-    {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.worldInteractableId).Distinct().ToList();
-
-        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
-    }
-
-    internal void GetInteractableData()
-    {
-        var interactableSearchParameters = new Search.Interactable();
-
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
-
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
-    }
-
-    internal void GetObjectGraphicData()
-    {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList().Union(worldObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList()).Distinct().ToList();
-
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
-    }
-
-    internal void GetIconData()
-    {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
-
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
-    }
-
-    internal void GetObjectiveData()
-    {
-        var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.objectiveId).Union(taskDataList.Select(x => x.objectiveId)).Distinct().ToList();
-
-        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
-    }
-
-    internal void GetQuestData()
-    {
-        var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
-
-        questDataList = dataManager.GetQuestData(questSearchParameters);
     }
 
     internal List<int> DefaultTimes(int taskId)
@@ -460,5 +531,14 @@ public class EditorWorldDataManager : IDataManager
         var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
 
         return defaultTimes;
+    }
+
+    internal int TerrainTileId(int regionId, float positionX, float positionZ)
+    {
+        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+
+        var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
+
+        return terrainTileId;
     }
 }

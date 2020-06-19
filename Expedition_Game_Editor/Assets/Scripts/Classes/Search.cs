@@ -146,6 +146,7 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> chapterId = new List<int>();
+        public List<int> defaultRegionId = new List<int>();
 
         public enum RequestType
         {
@@ -262,6 +263,7 @@ public class Search
 
         public List<int> regionId = new List<int>();
         public List<int> objectiveId = new List<int>();
+        public List<int> phaseId = new List<int>();
 
         public Enums.RegionType regionType;
 
