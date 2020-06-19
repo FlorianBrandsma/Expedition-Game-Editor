@@ -64,8 +64,6 @@ public class InteractionDataElement : InteractionCore, IDataElement
     {
         var dataElement = new InteractionDataElement();
         
-        dataElement.SelectionElement = SelectionElement;
-
         dataElement.timeConflict = timeConflict;
         dataElement.containsActiveTime = containsActiveTime;
         dataElement.defaultTimes = defaultTimes.ToList();
@@ -95,9 +93,7 @@ public class InteractionDataElement : InteractionCore, IDataElement
         base.Copy(dataSource);
 
         var interactionDataSource = (InteractionDataElement)dataSource;
-
-        //Don't copy selection element: interactions can belong to different types
-
+        
         timeConflict = interactionDataSource.timeConflict;
         containsActiveTime = interactionDataSource.containsActiveTime;
         defaultTimes = interactionDataSource.defaultTimes.ToList();

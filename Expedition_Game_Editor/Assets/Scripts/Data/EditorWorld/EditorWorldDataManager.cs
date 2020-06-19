@@ -43,7 +43,7 @@ public class EditorWorldDataManager : IDataManager
         var searchParameters = searchProperties.searchParameters.Cast<Search.EditorWorld>().First();
 
         regionType = searchParameters.regionType;
-        
+
         GetRegionData(searchParameters);
 
         if (regionDataList.Count == 0) return new List<IDataElement>();

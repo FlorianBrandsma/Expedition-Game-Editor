@@ -105,7 +105,7 @@ public class Route
     public Route(int controller, Data data, Enums.SelectionStatus selectionStatus)
     {
         this.controller = controller;
-        this.data = new Data(data);
+        this.data = data;
 
         this.selectionStatus = selectionStatus;
     }

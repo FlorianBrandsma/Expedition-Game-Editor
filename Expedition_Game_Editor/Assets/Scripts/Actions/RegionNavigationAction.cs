@@ -59,7 +59,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             if(regionType == Enums.RegionType.Interaction)
             {
-                var interactionRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Interaction);
+                var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
 
                 interactionRoute.controller = (int)Enums.WorldSelectionType.Interaction;
                 interactionRoute.selectionStatus = Enums.SelectionStatus.Main;
@@ -68,7 +68,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 
             } else if (regionType == Enums.RegionType.Party) {
 
-                var phaseRoute = PathController.route.path.FindFirstRoute(Enums.DataType.Phase);
+                var phaseRoute = PathController.route.path.FindLastRoute(Enums.DataType.Phase);
 
                 phaseRoute.controller = (int)Enums.WorldSelectionType.Party;
                 phaseRoute.selectionStatus = Enums.SelectionStatus.Main;
@@ -104,7 +104,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         structureList.ForEach(x =>
         {
-            var data = PathController.route.path.FindFirstRoute(x).data;
+            var data = PathController.route.path.FindLastRoute(x).data;
 
             actionDataList.Add(new ActionData(data));
         });

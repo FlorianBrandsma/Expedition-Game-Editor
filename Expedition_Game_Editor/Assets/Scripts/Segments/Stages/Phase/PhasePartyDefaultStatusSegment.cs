@@ -40,7 +40,6 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
         locationText.text = PhaseData.locationName;
 
         editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
-
         buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);
     }
 

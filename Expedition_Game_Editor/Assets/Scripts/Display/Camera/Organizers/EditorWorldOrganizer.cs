@@ -173,7 +173,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         FixLostInteractions();
         FixLostWorldObjects();
-        
+
         //Confirm which atmosphere's timeframes contain the active time
         ValidateAtmosphereTime();
 

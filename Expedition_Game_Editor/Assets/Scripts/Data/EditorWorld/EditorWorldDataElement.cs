@@ -32,6 +32,7 @@ public class EditorWorldDataElement : GeneralData, IDataElement
     public void SetOriginalValues()
     {
         terrainDataList.ForEach(x => x.SetOriginalValues());
+        phaseDataList.ForEach(x => x.SetOriginalValues());
     }
 
     public void GetOriginalValues() { }

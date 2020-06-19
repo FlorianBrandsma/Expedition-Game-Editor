@@ -57,9 +57,7 @@ public class PhaseDataElement : PhaseCore, IDataElement
     public IDataElement Clone()
     {
         var dataElement = new PhaseDataElement();
-
-        dataElement.SelectionElement = SelectionElement;
-
+        
         dataElement.terrainTileId = terrainTileId;
 
         dataElement.partyMemberId = partyMemberId;
