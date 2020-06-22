@@ -18,17 +18,17 @@ public class TileDataManager : IDataManager
         DataController = tileController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
 
         GetTileData(searchParameters);
 
-        if (tileDataList.Count == 0) return new List<IDataElement>();
+        if (tileDataList.Count == 0) return new List<IElementData>();
 
         var list = (from tileData in tileDataList
 
-                    select new TileDataElement()
+                    select new TileElementData()
                     {
                         Id = tileData.Id,
                         Index = tileData.Index,
@@ -39,7 +39,7 @@ public class TileDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetTileData(Search.Tile searchParameters)

@@ -6,7 +6,7 @@ using System.Linq;
 
 public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISegment
 {
-    private InteractionDataElement InteractionData { get { return (InteractionDataElement)DataEditor.Data.dataElement; } }
+    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -37,7 +37,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
         
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
         
-        var regionData = SegmentController.DataController.DataList.Cast<RegionDataElement>().Where(x => x.Id == InteractionData.RegionId).FirstOrDefault();
+        var regionData = SegmentController.DataController.DataList.Cast<RegionElementData>().Where(x => x.Id == InteractionData.RegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Interaction;
 
         editButton.Path = SegmentController.EditorController.PathController.route.path;
@@ -71,6 +71,6 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

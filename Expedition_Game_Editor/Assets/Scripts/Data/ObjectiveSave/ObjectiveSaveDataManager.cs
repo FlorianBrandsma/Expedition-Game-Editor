@@ -18,19 +18,19 @@ public class ObjectiveSaveDataManager : IDataManager
         DataController = objectiveController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectiveSave>().First();
 
         GetObjectiveSaveData(searchParameters);
 
-        if (objectiveSaveDataList.Count == 0) return new List<IDataElement>();
+        if (objectiveSaveDataList.Count == 0) return new List<IElementData>();
 
         GetObjectiveData();
 
         var list = (from objectiveSaveData  in objectiveSaveDataList
                     join objectiveData      in objectiveDataList on objectiveSaveData.objectiveId equals objectiveData.Id
-                    select new ObjectiveSaveDataElement()
+                    select new ObjectiveSaveElementData()
                     {
                         Id = objectiveSaveData.Id,
 
@@ -47,7 +47,7 @@ public class ObjectiveSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetObjectiveSaveData(Search.ObjectiveSave searchParameters)

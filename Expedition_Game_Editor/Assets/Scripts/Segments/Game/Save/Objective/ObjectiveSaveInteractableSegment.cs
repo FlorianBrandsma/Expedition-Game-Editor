@@ -24,10 +24,10 @@ public class ObjectiveSaveInteractableSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
         searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
 
-        var questSaveData = (QuestSaveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.QuestSave).data.dataElement;
+        var questSaveData = (QuestSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.QuestSave).data.elementData;
         searchParameters.questId = new List<int>() { questSaveData.QuestId };
 
-        var objectiveSaveData = (ObjectiveSaveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave).data.dataElement;
+        var objectiveSaveData = (ObjectiveSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave).data.elementData;
         searchParameters.objectiveId = new List<int>() { objectiveSaveData.ObjectiveId };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
@@ -41,5 +41,5 @@ public class ObjectiveSaveInteractableSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

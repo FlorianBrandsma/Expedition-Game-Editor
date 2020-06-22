@@ -14,16 +14,16 @@ public class ChapterDataManager : IDataManager
         DataController = chapterController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
         GetChapterData(searchParameters);
 
-        if (chapterDataList.Count == 0) return new List<IDataElement>();
+        if (chapterDataList.Count == 0) return new List<IElementData>();
 
         var list = (from chapterData in chapterDataList
-                    select new ChapterDataElement()
+                    select new ChapterElementData()
                     {
                         Id = chapterData.Id,
                         Index = chapterData.Index,
@@ -37,7 +37,7 @@ public class ChapterDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
         
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetChapterData(Search.Chapter searchParameters)

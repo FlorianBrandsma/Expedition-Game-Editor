@@ -18,19 +18,19 @@ public class InteractionSaveDataManager : IDataManager
         DataController = interactionController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionSave>().First();
 
         GetInteractionSaveData(searchParameters);
 
-        if (interactionSaveDataList.Count == 0) return new List<IDataElement>();
+        if (interactionSaveDataList.Count == 0) return new List<IElementData>();
 
         GetInteractionData();
 
         var list = (from interactionSaveData    in interactionSaveDataList
                     join interactionData        in interactionDataList on interactionSaveData.interactionId equals interactionData.Id
-                    select new InteractionSaveDataElement()
+                    select new InteractionSaveElementData()
                     {
                         Id = interactionSaveData.Id,
 
@@ -50,7 +50,7 @@ public class InteractionSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetInteractionSaveData(Search.InteractionSave searchParameters)

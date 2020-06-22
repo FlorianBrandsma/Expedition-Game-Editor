@@ -22,13 +22,13 @@ public class TerrainDataManager : IDataManager
         DataController = terrainController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
 
         GetTerrainData(searchParameters);
 
-        if (terrainDataList.Count == 0) return new List<IDataElement>();
+        if (terrainDataList.Count == 0) return new List<IElementData>();
 
         GetRegionData();
         GetTileSetData();
@@ -45,7 +45,7 @@ public class TerrainDataManager : IDataManager
 
                     join iconData       in iconDataList     on terrainData.iconId   equals iconData.Id
 
-                    select new TerrainDataElement()
+                    select new TerrainElementData()
                     {
                         Id = terrainData.Id,
                         Index = terrainData.Index,
@@ -63,7 +63,7 @@ public class TerrainDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetTerrainData(Search.Terrain searchParameters)

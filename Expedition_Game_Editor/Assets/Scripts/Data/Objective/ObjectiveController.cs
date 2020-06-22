@@ -14,7 +14,7 @@ public class ObjectiveController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.Objective; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,7 +32,7 @@ public class ObjectiveController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData) { }
+    public void SetData(DataElement searchElement, IElementData resultData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

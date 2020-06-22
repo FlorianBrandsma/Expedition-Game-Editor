@@ -93,14 +93,14 @@ public class PathManager
     {
         Path path;
         Route route;
-        DataElement selectionElement;
+        DataElement dataElement;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Interaction(DataElement selection, Route route)
+        public Interaction(DataElement dataElement, Route route)
         {
             this.route = route;
-            selectionElement = selection;
+            this.dataElement = dataElement;
         }
 
         public Path Enter()
@@ -109,7 +109,7 @@ public class PathManager
 
             route.controller = enter;
 
-            path = selectionElement.DisplayManager.Display.DataController.SegmentController.Path;
+            path = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -120,7 +120,7 @@ public class PathManager
 
             route.controller = enter;
 
-            path = selectionElement.Path;
+            path = dataElement.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -133,11 +133,11 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Outcome(DataElement selection, Route route)
+        public Outcome(DataElement dataElement, Route route)
         {
             this.route = route;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
         }
 
         public Path OutcomeEditor()
@@ -169,10 +169,10 @@ public class PathManager
 
             this.route = route;
 
-            var itemDataElement = (ItemDataElement)editorElement.DataElement.data.dataElement;
+            var itemElementData = (ItemElementData)editorElement.DataElement.data.elementData;
 
-            enter   = new List<int>() { 0, 0, 0, itemDataElement.Type };
-            edit    = new List<int>() { 0, 1, 0, itemDataElement.Type };
+            enter   = new List<int>() { 0, 0, 0, itemElementData.Type };
+            edit    = new List<int>() { 0, 1, 0, itemElementData.Type };
             get     = new List<int>() { 1 };
         }
 
@@ -215,10 +215,10 @@ public class PathManager
 
             this.route = route;
 
-            var interactableDataElement = (InteractableDataElement)editorElement.DataElement.data.dataElement;
+            var interactableElementData = (InteractableElementData)editorElement.DataElement.data.elementData;
 
             enter = 0;
-            edit = new List<int>() { 0, 2, 0, interactableDataElement.Type };
+            edit = new List<int>() { 0, 2, 0, interactableElementData.Type };
         }
 
         public Path Enter()
@@ -265,7 +265,7 @@ public class PathManager
         Path path;
         Route route;
 
-        RegionDataElement regionDataElement;
+        RegionElementData regionElementData;
 
         List<int> enter = new List<int>() { 0, 3 };
         List<int> edit = new List<int>() { 0, 4 };
@@ -278,7 +278,7 @@ public class PathManager
 
             this.route = route;
 
-            regionDataElement = (RegionDataElement)route.data.dataElement;
+            regionElementData = (RegionElementData)route.data.elementData;
 
             if (editorElement.DataElement.DisplayManager != null)
                 path = editorElement.DataElement.segmentController.Path;
@@ -291,7 +291,7 @@ public class PathManager
             //Base stands alone
             List<Route> routes;
 
-            switch (regionDataElement.type)
+            switch (regionElementData.type)
             {
                 case Enums.RegionType.Base:
                     path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
@@ -314,7 +314,7 @@ public class PathManager
 
         public Path Open()
         {
-            List<int> open = new List<int>() { 1, (int)regionDataElement.type };
+            List<int> open = new List<int>() { 1, (int)regionElementData.type };
 
             Route customRoute = new Route(1, route.data, editorElement.selectionStatus);
 
@@ -510,7 +510,7 @@ public class PathManager
             this.editorElement = editorElement;
             this.route = route;
 
-            route.data = new Route.Data(route.data.dataController, route.data.dataElement, editorElement.DataElement.data.dataController.SearchProperties);
+            route.data = new Route.Data(route.data.dataController, route.data.elementData, editorElement.DataElement.data.dataController.SearchProperties);
         }
 
         public Path Get()

@@ -33,7 +33,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         ResetData(null);
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         ClearOrganizer();
         SetData(filter);
@@ -44,11 +44,11 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(DataController.DataList);
     }
 
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IElementData> list)
     {
         var prefab = Resources.Load<ExPanelTile>("Elements/UI/PanelTile");
 
-        foreach (IDataElement elementData in list)
+        foreach (IElementData elementData in list)
         {
             var panelTile = (ExPanelTile)PoolManager.SpawnObject(prefab);
 

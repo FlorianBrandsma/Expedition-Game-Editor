@@ -14,7 +14,7 @@ public class WorldObjectController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.WorldObject; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class WorldObjectController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
+        var worldObjectData = (WorldObjectElementData)searchElement.data.elementData;
         
         switch (resultData.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var resultElementData = (ObjectGraphicDataElement)resultData;
+                var resultElementData = (ObjectGraphicElementData)resultData;
 
                 worldObjectData.ObjectGraphicId = resultElementData.Id;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TerrainTileSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement regionData;
+    private RegionElementData regionData;
     
     private TerrainController TerrainController { get { return GetComponent<TerrainController>(); } }
     private TerrainTileController TerrainTileController { get { return GetComponent<TerrainTileController>(); } }
@@ -25,7 +25,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
         
-        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
 
         GetTerrainData();
         GetTerrainTileData();
@@ -59,8 +59,8 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
-        selectionElement.data.dataElement.Update(); 
+        dataElement.data.elementData.Update(); 
     }
 }

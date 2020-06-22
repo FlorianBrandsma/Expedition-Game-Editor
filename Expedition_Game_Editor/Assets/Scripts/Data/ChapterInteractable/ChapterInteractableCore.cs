@@ -79,12 +79,12 @@ public class ChapterInteractableCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(ChapterInteractableDataElement dataElement) { }
+    public void CloneCore(ChapterInteractableElementData elementData) { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var chapterInteractableDataSource = (ChapterInteractableDataElement)dataSource;
+        var chapterInteractableDataSource = (ChapterInteractableElementData)dataSource;
 
         chapterId = chapterInteractableDataSource.chapterId;
         interactableId = chapterInteractableDataSource.interactableId;

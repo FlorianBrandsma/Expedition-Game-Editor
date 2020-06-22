@@ -165,32 +165,32 @@ public class AtmosphereCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(AtmosphereDataElement dataElement)
+    public void CloneCore(AtmosphereElementData elementData)
     {
-        CloneGeneralData(dataElement);
+        CloneGeneralData(elementData);
 
-        dataElement.terrainId = terrainId;
+        elementData.terrainId = terrainId;
         
-        dataElement.isDefault = isDefault;
+        elementData.isDefault = isDefault;
 
-        dataElement.startTime = startTime;
-        dataElement.endTime = endTime;
+        elementData.startTime = startTime;
+        elementData.endTime = endTime;
 
-        dataElement.publicNotes = publicNotes;
-        dataElement.privateNotes = privateNotes;
+        elementData.publicNotes = publicNotes;
+        elementData.privateNotes = privateNotes;
 
 
-        dataElement.originalStartTime = originalStartTime;
-        dataElement.originalEndTime = originalEndTime;
+        elementData.originalStartTime = originalStartTime;
+        elementData.originalEndTime = originalEndTime;
 
-        dataElement.originalPublicNotes = originalPublicNotes;
-        dataElement.originalPrivateNotes = originalPrivateNotes;
+        elementData.originalPublicNotes = originalPublicNotes;
+        elementData.originalPrivateNotes = originalPrivateNotes;
     }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var atmosphereDataSource = (AtmosphereDataElement)dataSource;
+        var atmosphereDataSource = (AtmosphereElementData)dataSource;
 
         terrainId = atmosphereDataSource.terrainId;
 

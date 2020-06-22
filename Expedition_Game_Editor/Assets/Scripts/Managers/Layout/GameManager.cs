@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 {
     static public GameManager instance;
     
-    public GameSaveDataElement gameSaveData;
-    public GameWorldDataElement gameWorldData;
+    public GameSaveElementData gameSaveData;
+    public GameWorldElementData gameWorldData;
 
     public GameSaveController gameSaveController;
     public GameWorldController gameWorldController;
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         CheckTime();
     }
 
-    public void LoadGameSaveData(SaveDataElement saveDataElement)
+    public void LoadGameSaveData(SaveElementData saveElementData)
     {
         Debug.Log("Get save data");
 
@@ -116,11 +116,11 @@ public class GameManager : MonoBehaviour
         var searchProperties = new SearchProperties(Enums.DataType.GameSave);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
-        searchParameters.saveId = new List<int>() { saveDataElement.Id };
+        searchParameters.saveId = new List<int>() { saveElementData.Id };
         Debug.Log(gameSaveController);
         gameSaveController.DataList = RenderManager.GetData(gameSaveController, searchProperties);
 
-        gameSaveData = gameSaveController.DataList.Cast<GameSaveDataElement>().FirstOrDefault();
+        gameSaveData = gameSaveController.DataList.Cast<GameSaveElementData>().FirstOrDefault();
     }
 
     public void OpenGame()
@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
 
         gameWorldController.DataList = RenderManager.GetData(gameWorldController, searchProperties);
 
-        gameWorldData = gameWorldController.DataList.Cast<GameWorldDataElement>().FirstOrDefault();
+        gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
     }
 
     private void CheckCompletion()

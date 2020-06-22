@@ -42,9 +42,9 @@ public class SaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var saveDataSource = (SaveDataElement)dataSource;
+        var saveDataSource = (SaveElementData)dataSource;
 
         gameId = saveDataSource.gameId;
     }

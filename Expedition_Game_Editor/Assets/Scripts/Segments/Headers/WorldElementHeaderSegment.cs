@@ -49,7 +49,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         id = interactionData.Id;
         header = interactionData.PublicNotes;
@@ -61,7 +61,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeWorldObjectData()
     {
-        var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
+        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
 
         id = worldObjectData.Id;
         header = worldObjectData.objectGraphicName;
@@ -73,7 +73,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         id = phaseData.partyMemberId;
         header = phaseData.interactableName;
@@ -106,6 +106,6 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

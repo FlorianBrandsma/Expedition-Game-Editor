@@ -19,13 +19,13 @@ public class ItemDataManager : IDataManager
         DataController = itemController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
 
         GetItemData(searchParameters);
 
-        if (itemDataList.Count == 0) return new List<IDataElement>();
+        if (itemDataList.Count == 0) return new List<IElementData>();
 
         GetObjectGraphicData();
         GetIconData();
@@ -33,7 +33,7 @@ public class ItemDataManager : IDataManager
         var list = (from itemData           in itemDataList
                     join objectGraphicData  in objectGraphicDataList    on itemData.objectGraphicId equals objectGraphicData.Id
                     join iconData           in iconDataList             on objectGraphicData.iconId equals iconData.Id
-                    select new ItemDataElement()
+                    select new ItemElementData()
                     {
                         Id = itemData.Id,
                         Index = itemData.Index,
@@ -51,7 +51,7 @@ public class ItemDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetItemData(Search.Item searchParameters)

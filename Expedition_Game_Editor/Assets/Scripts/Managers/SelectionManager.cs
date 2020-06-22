@@ -30,7 +30,7 @@ static public class SelectionManager
 
     static public List<Route> routeList = new List<Route>();
 
-    static public IDataElement getDataElement;
+    static public IElementData getElementData;
 
     static public void GetRouteList()
     {
@@ -49,40 +49,40 @@ static public class SelectionManager
         }
     }
 
-    static public void SelectData(List<IDataElement> dataList, IDisplayManager displayManager = null)
+    static public void SelectData(List<IElementData> dataList, IDisplayManager displayManager = null)
     {
         if (dataList.Count == 0) return;
 
-        foreach (IDataElement dataElement in dataList)
+        foreach (IElementData elementData in dataList)
         {
             foreach (Route route in routeList)
             {
                 //Debug.Log(dataElement.DataType + ":" + dataElement.Id + ":" + route.GeneralData.DataType + ":" + route.GeneralData.Id);
-                if (((GeneralData)dataElement).Equals(route.GeneralData))
+                if (((GeneralData)elementData).Equals(route.GeneralData))
                 {
-                    if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
-                        dataElement.SelectionStatus = route.selectionStatus;
+                    if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+                        elementData.SelectionStatus = route.selectionStatus;
                     else
-                        dataElement.SelectionStatus = Enums.SelectionStatus.Both;
+                        elementData.SelectionStatus = Enums.SelectionStatus.Both;
                     
                     if (displayManager != null)
-                        displayManager.CorrectPosition(dataElement);                 
+                        displayManager.CorrectPosition(elementData);                 
                 }
             }
         }
     }
 
-    static public void SelectSearch(IDataElement selectedDataElement)
+    static public void SelectSearch(IElementData selectedElementData)
     {
-        getDataElement = selectedDataElement;
+        getElementData = selectedElementData;
     }
 
-    static public void SelectSet(IDataElement setDataElement)
+    static public void SelectSet(IElementData setElementData)
     {
-        var dataElementList = SelectionElementManager.FindDataElements((GeneralData)getDataElement);
+        var elementDataList = SelectionElementManager.FindElementData((GeneralData)getElementData);
         
         //First set the result to all relevant elements
-        dataElementList.ForEach(x => x.DataElement.SetResult(setDataElement));
+        elementDataList.ForEach(x => x.DataElement.SetResult(setElementData));
 
         //Cancelling selection will re-render the editor and visualize the selection
         CancelGetSelection();
@@ -90,17 +90,17 @@ static public class SelectionManager
     
     static public void CancelGetSelection()
     {
-        if (getDataElement == null) return;
+        if (getElementData == null) return;
 
-        CancelSelection(new List<IDataElement>() { getDataElement });
+        CancelSelection(new List<IElementData>() { getElementData });
 
-        getDataElement = null;
+        getElementData = null;
 
         //Return to previous path in form
         RenderManager.Render(RenderManager.layoutManager.forms[2].previousPath);  
     }
 
-    static public void CancelSelection(List<IDataElement> dataList)
+    static public void CancelSelection(List<IElementData> dataList)
     {
         dataList.ForEach(x => 
         {

@@ -4,7 +4,7 @@ using System.Linq;
 
 public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement RegionDataElement { get { return (RegionDataElement)DataEditor.Data.dataElement; } }
+    private RegionElementData RegionElementData { get { return (RegionElementData)DataEditor.Data.elementData; } }
 
     #region UI
     public ExInputNumber sizeInputNumber;
@@ -17,7 +17,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void UpdateSize()
     {
-        var regionDataList = DataEditor.DataList.Cast<RegionDataElement>().ToList();
+        var regionDataList = DataEditor.DataList.Cast<RegionElementData>().ToList();
         regionDataList.ForEach(regionData =>
         {
             regionData.TerrainSize = (int)sizeInputNumber.Value;
@@ -45,11 +45,11 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
     {
         SegmentController.EnableSegment(false);
 
-        sizeInputNumber.Value = RegionDataElement.TerrainSize;
-        heightText.text = RegionDataElement.TerrainSize.ToString();
+        sizeInputNumber.Value = RegionElementData.TerrainSize;
+        heightText.text = RegionElementData.TerrainSize.ToString();
     }
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

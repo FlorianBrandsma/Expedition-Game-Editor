@@ -26,11 +26,11 @@ public class TaskSegment : MonoBehaviour, ISegment
         //If a worldInteractable is selected without being directly related to an objective, don't try to get this data
         if (SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
         {
-            var objectiveData = (ObjectiveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.dataElement;
+            var objectiveData = (ObjectiveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.elementData;
             searchParameters.objectiveId = new List<int>() { objectiveData.Id };
         }
 
-        var worldInteractableData = (WorldInteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).data.dataElement;
+        var worldInteractableData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).data.elementData;
         searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
@@ -44,5 +44,5 @@ public class TaskSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

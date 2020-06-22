@@ -6,7 +6,7 @@ using System.Linq;
 
 public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
 {
-    private PhaseDataElement PhaseData { get { return (PhaseDataElement)DataEditor.Data.dataElement; } }
+    private PhaseElementData PhaseData { get { return (PhaseElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -31,7 +31,7 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
         
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
         
-        var regionData = SegmentController.DataController.DataList.Cast<RegionDataElement>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
+        var regionData = SegmentController.DataController.DataList.Cast<RegionElementData>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Party;
 
         editButton.Path = SegmentController.EditorController.PathController.route.path;
@@ -65,6 +65,6 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

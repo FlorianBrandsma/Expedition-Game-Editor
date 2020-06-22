@@ -342,9 +342,9 @@ public class WorldObjectCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var worldObjectDataSource = (WorldObjectDataElement)dataSource;
+        var worldObjectDataSource = (WorldObjectElementData)dataSource;
 
         objectGraphicId = worldObjectDataSource.objectGraphicId;
         regionId = worldObjectDataSource.regionId;

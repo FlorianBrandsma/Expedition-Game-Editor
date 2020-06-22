@@ -63,9 +63,9 @@ public class IconCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var iconDataSource = (IconDataElement)dataSource;
+        var iconDataSource = (IconElementData)dataSource;
 
         path = iconDataSource.path;
     }

@@ -14,7 +14,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.ChapterRegion; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class ChapterRegionController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var chapterRegionData = (ChapterRegionDataElement)searchElement.data.dataElement;
+        var chapterRegionData = (ChapterRegionElementData)searchElement.data.elementData;
 
         switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Region:
 
-                var resultElementData = (RegionDataElement)resultData;
+                var resultElementData = (RegionElementData)resultData;
 
                 chapterRegionData.RegionId = resultElementData.Id;
                 chapterRegionData.name = resultElementData.Name;

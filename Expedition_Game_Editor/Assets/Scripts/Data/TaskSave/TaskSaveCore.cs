@@ -98,9 +98,9 @@ public class TaskSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var taskSaveDataSource = (TaskSaveDataElement)dataSource;
+        var taskSaveDataSource = (TaskSaveElementData)dataSource;
 
         saveId = taskSaveDataSource.saveId;
         worldInteractableId = taskSaveDataSource.worldInteractableId;

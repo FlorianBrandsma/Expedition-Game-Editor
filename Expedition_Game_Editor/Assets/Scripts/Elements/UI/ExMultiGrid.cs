@@ -26,7 +26,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
     private MultiGridProperties multiGridProperties;
 
     private List<EditorElement> elementList = new List<EditorElement>();
-    private List<IDataElement> dataList     = new List<IDataElement>();
+    private List<IElementData> dataList     = new List<IElementData>();
     private List<GeneralData> generalDataList;
 
     public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
@@ -84,13 +84,13 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     private void SetTerrain()
     {
-        var dataElement = (TerrainDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (TerrainElementData)EditorElement.DataElement.data.elementData;
 
         if(multiGridProperties.SecondaryDataController != null)
         {
             switch (multiGridProperties.SecondaryDataController.DataType)
             {
-                case Enums.DataType.TerrainTile: SetTerrainTileData(dataElement); break;
+                case Enums.DataType.TerrainTile: SetTerrainTileData(elementData); break;
                 default: Debug.Log("CASE MISSING: " + multiGridProperties.SecondaryDataController.DataType); break;
             }
         }
@@ -98,19 +98,19 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         if (icon != null)
         {
             if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-                iconPath = dataElement.iconPath;
+                iconPath = elementData.iconPath;
             else
-                iconPath = dataElement.originalIconPath; 
+                iconPath = elementData.originalIconPath; 
         }
 
-        id = dataElement.Id;
-        header = dataElement.Name;
-        baseTilePath = dataElement.baseTilePath;
+        id = elementData.Id;
+        header = elementData.Name;
+        baseTilePath = elementData.baseTilePath;
     }
 
-    private void SetTerrainTileData(TerrainDataElement terrainData)
+    private void SetTerrainTileData(TerrainElementData terrainData)
     {
-        dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileDataElement>().Where(x => x.TerrainId == terrainData.Id).Distinct().Cast<IDataElement>().ToList();
+        dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileElementData>().Where(x => x.TerrainId == terrainData.Id).Distinct().Cast<IElementData>().ToList();
 
         var searchProperties = multiGridProperties.SecondaryDataController.SearchProperties;
         searchProperties.elementType = Enums.ElementType.CompactTile;
@@ -121,7 +121,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         SetData(dataList, searchProperties);
     }
 
-    public void SetData(List<IDataElement> list, SearchProperties searchProperties)
+    public void SetData(List<IElementData> list, SearchProperties searchProperties)
     {
         generalDataList = list.Cast<GeneralData>().ToList();
 
@@ -130,7 +130,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         //It's always tile so far
         var prefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
 
-        foreach (IDataElement dataElement in list)
+        foreach (IElementData elementData in list)
         {
             var innerElement = (ExTile)PoolManager.SpawnObject(prefab);
 
@@ -143,14 +143,14 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
             elementList.Add(innerElement.EditorElement);
 
-            dataElement.DataElement = innerElement.EditorElement.DataElement;
-            innerElement.EditorElement.DataElement.data = new DataElement.Data(multiGridProperties.SecondaryDataController, dataElement, searchProperties);
+            elementData.DataElement = innerElement.EditorElement.DataElement;
+            innerElement.EditorElement.DataElement.data = new DataElement.Data(multiGridProperties.SecondaryDataController, elementData, searchProperties);
 
             //Overwrites dataController set by initialization
             innerElement.EditorElement.DataElement.data.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
-            GeneralData generalData = (GeneralData)dataElement;
+            GeneralData generalData = (GeneralData)elementData;
             innerElement.name = generalData.DebugName + generalData.Id;
             //
 

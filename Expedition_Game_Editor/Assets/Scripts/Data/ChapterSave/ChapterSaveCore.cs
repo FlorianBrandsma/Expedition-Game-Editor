@@ -84,9 +84,9 @@ public class ChapterSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var chapterSaveDataSource = (ChapterSaveDataElement)dataSource;
+        var chapterSaveDataSource = (ChapterSaveElementData)dataSource;
 
         saveId = chapterSaveDataSource.saveId;
         chapterId = chapterSaveDataSource.chapterId;

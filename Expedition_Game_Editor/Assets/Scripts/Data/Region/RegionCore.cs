@@ -187,32 +187,32 @@ public class RegionCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(RegionDataElement dataElement)
+    public void CloneCore(RegionElementData elementData)
     {
-        CloneGeneralData(dataElement);
+        CloneGeneralData(elementData);
 
-        dataElement.chapterRegionId = chapterRegionId;
-        dataElement.phaseId = phaseId;
-        dataElement.tileSetId = tileSetId;
+        elementData.chapterRegionId = chapterRegionId;
+        elementData.phaseId = phaseId;
+        elementData.tileSetId = tileSetId;
 
-        dataElement.name = name;
-        dataElement.regionSize = regionSize;
-        dataElement.terrainSize = terrainSize;
+        elementData.name = name;
+        elementData.regionSize = regionSize;
+        elementData.terrainSize = terrainSize;
 
         //Original
-        dataElement.originalChapterRegionId = originalChapterRegionId;
-        dataElement.originalPhaseId = originalPhaseId;
-        dataElement.originalTileSetId = originalTileSetId;
+        elementData.originalChapterRegionId = originalChapterRegionId;
+        elementData.originalPhaseId = originalPhaseId;
+        elementData.originalTileSetId = originalTileSetId;
 
-        dataElement.originalName = originalName;
-        dataElement.originalRegionSize = originalRegionSize;
-        dataElement.originalTerrainSize = originalTerrainSize;
+        elementData.originalName = originalName;
+        elementData.originalRegionSize = originalRegionSize;
+        elementData.originalTerrainSize = originalTerrainSize;
     }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var regionDataSource = (RegionDataElement)dataSource;
+        var regionDataSource = (RegionElementData)dataSource;
 
         chapterRegionId = regionDataSource.chapterRegionId;
         phaseId = regionDataSource.phaseId;

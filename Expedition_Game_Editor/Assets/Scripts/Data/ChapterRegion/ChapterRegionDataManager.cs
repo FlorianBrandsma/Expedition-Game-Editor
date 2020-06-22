@@ -20,13 +20,13 @@ public class ChapterRegionDataManager : IDataManager
         DataController = chapterRegionController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
 
         GetChapterRegionData(searchParameters);
 
-        if (chapterRegionDataList.Count == 0) return new List<IDataElement>();
+        if (chapterRegionDataList.Count == 0) return new List<IElementData>();
 
         GetRegionData();
         GetTileSetData();
@@ -39,7 +39,7 @@ public class ChapterRegionDataManager : IDataManager
                     join leftJoin in (from tileData in tileDataList
                                       select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
 
-                    select new ChapterRegionDataElement()
+                    select new ChapterRegionElementData()
                     {
                         Id = chapterRegionData.Id,
                         Index = chapterRegionData.Index,
@@ -55,7 +55,7 @@ public class ChapterRegionDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetChapterRegionData(Search.ChapterRegion searchParameters)

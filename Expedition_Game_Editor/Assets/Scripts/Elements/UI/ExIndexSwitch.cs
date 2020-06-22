@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ExIndexSwitch : MonoBehaviour
 {
-    private IDataElement dataElement;
+    private IElementData elementData;
 
     private ISegment segment;
 
@@ -17,7 +17,7 @@ public class ExIndexSwitch : MonoBehaviour
     private int index;
     private int indexLimit;
 
-    private List<IDataElement> dataList;
+    private List<IElementData> dataList;
 
     public void InitializeSwitch(ISegment segment, int index)
     {
@@ -25,7 +25,7 @@ public class ExIndexSwitch : MonoBehaviour
 
         this.index = index;
 
-        dataElement = segment.DataEditor.Data.dataElement;
+        elementData = segment.DataEditor.Data.elementData;
         dataList = segment.DataEditor.Data.dataController.DataList;
         
         indexLimit = dataList.Count - 1;
@@ -58,8 +58,8 @@ public class ExIndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-        dataList.RemoveAt(dataElement.Index);
-        dataList.Insert(index, dataElement);
+        dataList.RemoveAt(elementData.Index);
+        dataList.Insert(index, elementData);
 
         segment.DataEditor.Data.dataController.DataList = dataList;
 
@@ -69,10 +69,10 @@ public class ExIndexSwitch : MonoBehaviour
             dataList[i].UpdateIndex();
         }
         
-        if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
-            dataElement.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
+        if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+            elementData.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
 
-        SelectionElementManager.UpdateElements(dataElement);
+        SelectionElementManager.UpdateElements(elementData);
         
         SetIndex();
     }

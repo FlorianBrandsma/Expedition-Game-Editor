@@ -26,5 +26,5 @@ public class TileCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource) { }
+    new public virtual void Copy(IElementData dataSource) { }
 }

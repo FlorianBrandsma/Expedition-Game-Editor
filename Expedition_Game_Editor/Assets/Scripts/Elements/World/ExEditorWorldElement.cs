@@ -66,60 +66,60 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldInteractableElement()
     {
-        var dataElement = (WorldInteractableDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (WorldInteractableElementData)EditorElement.DataElement.data.elementData;
         
-        var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
+        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        position = new Vector3(dataElement.positionX, dataElement.positionY, dataElement.positionZ);
-        rotation = new Vector3(dataElement.rotationX, dataElement.rotationY, dataElement.rotationZ);
+        position = new Vector3(elementData.positionX, elementData.positionY, elementData.positionZ);
+        rotation = new Vector3(elementData.rotationX, elementData.rotationY, elementData.rotationZ);
 
-        scaleMultiplier = dataElement.scaleMultiplier;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         SetObjectGraphic();
     }
 
     private void SetInteractionElement()
     {
-        var dataElement = (InteractionDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (InteractionElementData)EditorElement.DataElement.data.elementData;
 
-        var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
+        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
-        rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = dataElement.ScaleMultiplier;
+        scaleMultiplier = elementData.ScaleMultiplier;
 
         SetObjectGraphic();
     }
 
     private void SetWorldObjectElement()
     {
-        var dataElement = (WorldObjectDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (WorldObjectElementData)EditorElement.DataElement.data.elementData;
 
-        var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
+        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.ObjectGraphicId);
 
-        position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
-        rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = dataElement.ScaleMultiplier;
+        scaleMultiplier = elementData.ScaleMultiplier;
 
         SetObjectGraphic();
     }
 
     private void SetPartyElement()
     {
-        var dataElement = (PhaseDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (PhaseElementData)EditorElement.DataElement.data.elementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
+        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        position = new Vector3(dataElement.DefaultPositionX, dataElement.DefaultPositionY, dataElement.DefaultPositionZ);
-        rotation = new Vector3(dataElement.DefaultRotationX, dataElement.DefaultRotationY, dataElement.DefaultRotationZ);
+        position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
+        rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
 
-        scaleMultiplier = dataElement.DefaultScaleMultiplier;
+        scaleMultiplier = elementData.DefaultScaleMultiplier;
 
         SetObjectGraphic();
     }

@@ -13,7 +13,7 @@ public class GameWorldController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.GameWorld; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -31,7 +31,7 @@ public class GameWorldController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData) { }
+    public void SetData(DataElement searchElement, IElementData resultData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

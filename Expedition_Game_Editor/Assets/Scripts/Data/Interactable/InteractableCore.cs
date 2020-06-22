@@ -107,9 +107,9 @@ public class InteractableCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var interactableDataSource = (InteractableDataElement)dataSource;
+        var interactableDataSource = (InteractableElementData)dataSource;
 
         objectGraphicId = interactableDataSource.objectGraphicId;
         name = interactableDataSource.name;

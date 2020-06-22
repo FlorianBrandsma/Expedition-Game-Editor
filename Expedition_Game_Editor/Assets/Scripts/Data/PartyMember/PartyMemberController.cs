@@ -14,7 +14,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.PartyMember; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class PartyMemberController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var partyMemberData = (PartyMemberDataElement)searchElement.data.dataElement;
+        var partyMemberData = (PartyMemberElementData)searchElement.data.elementData;
 
         switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData;
+                var resultElementData = (InteractableElementData)resultData;
 
                 partyMemberData.InteractableId = resultElementData.Id;
                 partyMemberData.interactableName = resultElementData.Name;

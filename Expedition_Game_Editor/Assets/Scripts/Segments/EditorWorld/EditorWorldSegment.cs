@@ -27,8 +27,8 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
         var regionData = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
         searchParameters.regionType = ((RegionController)regionData.dataController).regionType;
 
-        var regionDataElement = (RegionDataElement)regionData.dataElement;
-        searchParameters.regionId = new List<int>() { regionDataElement.Id };
+        var regionElementData = (RegionElementData)regionData.elementData;
+        searchParameters.regionId = new List<int>() { regionElementData.Id };
         
         var objectiveRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Objective);
 
@@ -46,5 +46,5 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

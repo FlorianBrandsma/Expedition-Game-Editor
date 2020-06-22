@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QuestSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private QuestSaveDataElement QuestSaveData { get { return (QuestSaveDataElement)DataEditor.Data.dataElement; } }
+    private QuestSaveElementData QuestSaveData { get { return (QuestSaveElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -38,5 +38,5 @@ public class QuestSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

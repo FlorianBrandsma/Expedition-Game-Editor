@@ -26,13 +26,13 @@ public class PhaseDataManager : IDataManager
         DataController = phaseController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
 
         GetPhaseData(searchParameters);
 
-        if (phaseDataList.Count == 0) return new List<IDataElement>();
+        if (phaseDataList.Count == 0) return new List<IElementData>();
 
         GetChapterData();
         GetPartyMemberData();
@@ -53,7 +53,7 @@ public class PhaseDataManager : IDataManager
                                       join iconData             in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                                       select new { partyMemberData, interactableData, objectGraphicData, iconData }) on chapterData.Id equals leftJoin.partyMemberData.chapterId into partyMemberData
 
-                    select new PhaseDataElement()
+                    select new PhaseElementData()
                     {
                         Id = phaseData.Id,
                         Index = phaseData.Index,
@@ -97,7 +97,7 @@ public class PhaseDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     private void GetPhaseData(Search.Phase searchParameters)

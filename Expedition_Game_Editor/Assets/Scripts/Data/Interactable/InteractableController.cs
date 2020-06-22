@@ -14,7 +14,7 @@ public class InteractableController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.Interactable; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class InteractableController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var interactableData = (InteractableDataElement)searchElement.data.dataElement;
+        var interactableData = (InteractableElementData)searchElement.data.elementData;
 
         switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableDataElement)resultData;
+                var resultElementData = (InteractableElementData)resultData;
 
                 interactableData.Id = resultElementData.Id;
                 interactableData.objectGraphicIconPath = resultElementData.objectGraphicIconPath;

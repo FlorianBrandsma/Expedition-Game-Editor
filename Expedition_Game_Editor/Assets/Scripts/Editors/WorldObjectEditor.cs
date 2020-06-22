@@ -4,7 +4,7 @@ using System.Linq;
 
 public class WorldObjectEditor : MonoBehaviour, IEditor
 {
-    public WorldObjectDataElement WorldObjectData { get { return (WorldObjectDataElement)Data.dataElement; } }
+    public WorldObjectElementData WorldObjectData { get { return (WorldObjectElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -14,16 +14,16 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(WorldObjectData).Concat(new[] { WorldObjectData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(WorldObjectData).Concat(new[] { WorldObjectData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -40,7 +40,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        DataElements.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
+        ElementDataList.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
 
         SetEditor();
     }
@@ -56,14 +56,14 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         WorldObjectData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(WorldObjectData))
                 x.Copy(WorldObjectData);
@@ -79,7 +79,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

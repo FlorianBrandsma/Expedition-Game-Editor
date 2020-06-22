@@ -14,7 +14,7 @@ public class IconController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.Icon; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class IconController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var iconData = (IconDataElement)searchElement.data.dataElement;
+        var iconData = (IconElementData)searchElement.data.elementData;
 
         switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Icon:
 
-                var resultElementData = (IconDataElement)resultData;
+                var resultElementData = (IconElementData)resultData;
 
                 iconData.Id = resultElementData.Id;
                 iconData.Path = resultElementData.Path;

@@ -15,7 +15,7 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.WorldInteractable; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -42,15 +42,15 @@ public class WorldInteractableController : MonoBehaviour, IDataController
         SearchProperties.searchParameters = new[] { searchInteractable };
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
+        var worldInteractableData = (WorldInteractableElementData)searchElement.data.elementData;
 
         switch (resultData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var interactableData = (InteractableDataElement)resultData;
+                var interactableData = (InteractableElementData)resultData;
 
                 worldInteractableData.InteractableId = interactableData.Id;
 
@@ -69,29 +69,29 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
     public void ToggleElement(EditorElement editorElement)
     {
-        var worldInteractablesData = (WorldInteractableDataElement)editorElement.DataElement.data.dataElement;
-        var questData = (QuestDataElement)SegmentController.EditorController.PathController.route.data.dataElement;
+        var worldInteractableData = (WorldInteractableElementData)editorElement.DataElement.data.elementData;
+        var questData = (QuestElementData)SegmentController.EditorController.PathController.route.data.elementData;
 
-        switch (worldInteractablesData.elementStatus)
+        switch (worldInteractableData.elementStatus)
         {
             case Enums.ElementStatus.Enabled:
 
-                worldInteractablesData.QuestId = 0;
-                worldInteractablesData.elementStatus = Enums.ElementStatus.Disabled;
+                worldInteractableData.QuestId = 0;
+                worldInteractableData.elementStatus = Enums.ElementStatus.Disabled;
 
                 break;
 
             case Enums.ElementStatus.Disabled:
 
-                worldInteractablesData.QuestId = questData.Id;
-                worldInteractablesData.elementStatus = Enums.ElementStatus.Enabled;
+                worldInteractableData.QuestId = questData.Id;
+                worldInteractableData.elementStatus = Enums.ElementStatus.Enabled;
 
                 break;
         }
 
         SegmentController.Segment.DataEditor.UpdateEditor();
 
-        editorElement.elementStatus = worldInteractablesData.elementStatus;
+        editorElement.elementStatus = worldInteractableData.elementStatus;
         editorElement.SetStatus();
     }
 }

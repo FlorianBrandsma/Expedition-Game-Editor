@@ -105,25 +105,25 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     private void SetWorldInteractableElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (WorldInteractableDataElement)data.dataElement;
+        var elementData = (WorldInteractableElementData)data.elementData;
 
-        idText.text = dataElement.Id.ToString();
-        headerText.text = dataElement.interactableName;
+        idText.text = elementData.Id.ToString();
+        headerText.text = elementData.interactableName;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
+            IconTexture = Resources.Load<Texture2D>(elementData.objectGraphicIconPath);
     }
 
     private void SetWorldObjectElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (WorldObjectDataElement)data.dataElement;
+        var elementData = (WorldObjectElementData)data.elementData;
 
-        idText.text = dataElement.Id.ToString();
-        headerText.text = dataElement.objectGraphicName;
+        idText.text = elementData.Id.ToString();
+        headerText.text = elementData.objectGraphicName;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(dataElement.objectGraphicIconPath);
+            IconTexture = Resources.Load<Texture2D>(elementData.objectGraphicIconPath);
     }
 
     public void CloseElement()

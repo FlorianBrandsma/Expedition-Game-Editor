@@ -91,9 +91,9 @@ public class PhaseSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var phaseSaveDataSource = (PhaseSaveDataElement)dataSource;
+        var phaseSaveDataSource = (PhaseSaveElementData)dataSource;
 
         saveId = phaseSaveDataSource.saveId;
         chapterSaveId = phaseSaveDataSource.chapterSaveId;

@@ -9,7 +9,7 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	public StatusIconOverlay.StatusIconType statusIconType;
 
 	public Camera cam;
-	public IDataElement targetDataElement;
+	public IElementData targetElementData;
 	public Transform target;
 	public Vector3 screenPos;
 	public RectTransform parentRect;
@@ -45,20 +45,20 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void InitializeData()
 	{
-		switch(targetDataElement.DataType)
+		switch(targetElementData.DataType)
 		{
 			case Enums.DataType.WorldInteractable:  InitializeWorldInteractableData();  break;
 			case Enums.DataType.Interaction:        InitializeInteractionData();        break;
 			case Enums.DataType.WorldObject:        InitializeWorldObjectData();        break;
-            case Enums.DataType.Phase:              InitializePhaseData();              break;
+			case Enums.DataType.Phase:              InitializePhaseData();              break;
 
-			default: Debug.Log("CASE MISSING: " + targetDataElement.DataType); break;
+			default: Debug.Log("CASE MISSING: " + targetElementData.DataType); break;
 		}
 	}
 
 	private void InitializeWorldInteractableData()
 	{
-		var worldInteractableData = (WorldInteractableDataElement)targetDataElement;
+		var worldInteractableData = (WorldInteractableElementData)targetElementData;
 
 		height = worldInteractableData.height * worldInteractableData.scaleMultiplier;
 		width  = worldInteractableData.width  * worldInteractableData.scaleMultiplier;
@@ -67,7 +67,7 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void InitializeInteractionData()
 	{
-		var interactionData = (InteractionDataElement)targetDataElement;
+		var interactionData = (InteractionElementData)targetElementData;
 
 		height = interactionData.height * interactionData.ScaleMultiplier;
 		width  = interactionData.width  * interactionData.ScaleMultiplier;
@@ -76,23 +76,23 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void InitializeWorldObjectData()
 	{
-		var worldObjectData = (WorldObjectDataElement)targetDataElement;
+		var worldObjectData = (WorldObjectElementData)targetElementData;
 
 		height = worldObjectData.height * worldObjectData.ScaleMultiplier;
 		width  = worldObjectData.width  * worldObjectData.ScaleMultiplier;
 		depth  = worldObjectData.depth  * worldObjectData.ScaleMultiplier;
 	}
 
-    private void InitializePhaseData()
-    {
-        var phaseData = (PhaseDataElement)targetDataElement;
+	private void InitializePhaseData()
+	{
+		var phaseData = (PhaseElementData)targetElementData;
 
-        height = phaseData.height   * phaseData.DefaultScaleMultiplier;
-        width = phaseData.width     * phaseData.DefaultScaleMultiplier;
-        depth = phaseData.depth     * phaseData.DefaultScaleMultiplier;
-    }
+		height = phaseData.height   * phaseData.DefaultScaleMultiplier;
+		width = phaseData.width     * phaseData.DefaultScaleMultiplier;
+		depth = phaseData.depth     * phaseData.DefaultScaleMultiplier;
+	}
 
-    private void UpdateSelectionPosition()
+	private void UpdateSelectionPosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + height,

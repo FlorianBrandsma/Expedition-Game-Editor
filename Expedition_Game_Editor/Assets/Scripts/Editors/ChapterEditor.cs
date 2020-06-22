@@ -4,13 +4,13 @@ using System.Linq;
 
 public class ChapterEditor : MonoBehaviour, IEditor
 {
-    public ChapterDataElement ChapterData { get { return (ChapterDataElement)Data.dataElement; } }
+    public ChapterElementData ChapterData { get { return (ChapterElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<PartyMemberDataElement> partyMemberDataList                 = new List<PartyMemberDataElement>();
-    public List<ChapterInteractableDataElement> chapterInteractableDataList = new List<ChapterInteractableDataElement>();
-    public List<ChapterRegionDataElement> chapterRegionDataList             = new List<ChapterRegionDataElement>();
+    public List<PartyMemberElementData> partyMemberDataList                 = new List<PartyMemberElementData>();
+    public List<ChapterInteractableElementData> chapterInteractableDataList = new List<ChapterInteractableElementData>();
+    public List<ChapterRegionElementData> chapterRegionDataList             = new List<ChapterRegionElementData>();
     
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -18,16 +18,16 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ChapterData).Concat(new[] { ChapterData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(ChapterData).Concat(new[] { ChapterData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -56,7 +56,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
@@ -65,7 +65,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
         ChapterData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ChapterData))
                 x.Copy(ChapterData);
@@ -81,7 +81,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         UpdatePhaseElements();
     }
 
-    private void ChangedRegion(ChapterRegionDataElement chapterRegion)
+    private void ChangedRegion(ChapterRegionElementData chapterRegion)
     {
         /*
         //0. Find all (PHASE)REGIONS linked with the changed CHAPTERREGIONS
@@ -253,7 +253,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
         chapterInteractableDataList.Clear();
         chapterRegionDataList.Clear();
 
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
         
         Loaded = false;
     }

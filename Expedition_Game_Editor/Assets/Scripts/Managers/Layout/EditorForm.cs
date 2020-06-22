@@ -160,7 +160,7 @@ public class EditorForm : MonoBehaviour
         if (editorSection.previousEditor != editorSection.dataEditor)
             return false;
         
-        return ((GeneralData)editorSection.previousDataSource).Equals((GeneralData)editorSection.dataEditor.Data.dataElement);
+        return ((GeneralData)editorSection.previousDataSource).Equals((GeneralData)editorSection.dataEditor.Data.elementData);
     }
 
     private void CloseView()

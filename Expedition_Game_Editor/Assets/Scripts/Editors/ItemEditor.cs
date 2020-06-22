@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ItemEditor : MonoBehaviour, IEditor
 {
-    public ItemDataElement ItemData { get { return (ItemDataElement)Data.dataElement; } }
+    public ItemElementData ItemData { get { return (ItemElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -14,16 +14,16 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ItemData).Concat(new[] { ItemData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(ItemData).Concat(new[] { ItemData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -48,14 +48,14 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         ItemData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ItemData))
                 x.Copy(ItemData);
@@ -71,7 +71,7 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

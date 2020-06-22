@@ -20,13 +20,13 @@ public class ChapterInteractableDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();
         
         GetChapterInteractableData(searchParameters);
         
-        if (chapterInteractableDataList.Count == 0) return new List<IDataElement>();
+        if (chapterInteractableDataList.Count == 0) return new List<IElementData>();
 
         GetInteractableData();
         GetObjectGraphicData();
@@ -36,7 +36,7 @@ public class ChapterInteractableDataManager : IDataManager
                     join interactableData           in interactableDataList     on chapterInteractableData.interactableId   equals interactableData.Id
                     join objectGraphicData          in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData                   in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
-                    select new ChapterInteractableDataElement()
+                    select new ChapterInteractableElementData()
                     {
                         Id = chapterInteractableData.Id,
                         Index = chapterInteractableData.Index,
@@ -51,7 +51,7 @@ public class ChapterInteractableDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetChapterInteractableData(Search.ChapterInteractable searchParameters)

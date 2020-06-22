@@ -52,7 +52,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterSaveData()
     {
-        var chapterSaveData = (ChapterSaveDataElement)DataEditor.Data.dataElement;
+        var chapterSaveData = (ChapterSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = chapterSaveData.publicNotes;
@@ -62,7 +62,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseSaveData()
     {
-        var phaseSaveData = (PhaseSaveDataElement)DataEditor.Data.dataElement;
+        var phaseSaveData = (PhaseSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = phaseSaveData.publicNotes;
@@ -72,7 +72,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeQuestSaveData()
     {
-        var questSaveData = (QuestSaveDataElement)DataEditor.Data.dataElement;
+        var questSaveData = (QuestSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = questSaveData.publicNotes;
@@ -82,7 +82,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeObjectiveSaveData()
     {
-        var objectiveSaveData = (ObjectiveSaveDataElement)DataEditor.Data.dataElement;
+        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = objectiveSaveData.publicNotes;
@@ -92,7 +92,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskSaveData()
     {
-        var taskSaveData = (TaskSaveDataElement)DataEditor.Data.dataElement;
+        var taskSaveData = (TaskSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = taskSaveData.publicNotes;
@@ -102,7 +102,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionSaveData()
     {
-        var interactionSaveData = (InteractionSaveDataElement)DataEditor.Data.dataElement;
+        var interactionSaveData = (InteractionSaveElementData)DataEditor.Data.elementData;
 
         if (noteType == NoteType.Public)
             notes = interactionSaveData.publicNotes;
@@ -117,5 +117,5 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

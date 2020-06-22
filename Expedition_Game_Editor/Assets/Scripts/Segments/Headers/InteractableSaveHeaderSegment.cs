@@ -49,7 +49,7 @@ public class InteractableSaveHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractableData()
     {
-        var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
+        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
 
         id = interactableData.Id;
         header = interactableData.Name;
@@ -72,6 +72,6 @@ public class InteractableSaveHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

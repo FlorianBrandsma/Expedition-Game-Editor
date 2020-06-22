@@ -8,5 +8,5 @@ public interface IDisplayManager
     IDisplay Display { get; }
 
     void UpdateData();
-    void CorrectPosition(IDataElement data);
+    void CorrectPosition(IElementData data);
 }

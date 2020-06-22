@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TaskSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private TaskSaveDataElement TaskSaveData { get { return (TaskSaveDataElement)DataEditor.Data.dataElement; } }
+    private TaskSaveElementData TaskSaveData { get { return (TaskSaveElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -38,5 +38,5 @@ public class TaskSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

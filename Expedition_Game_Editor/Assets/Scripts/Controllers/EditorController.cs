@@ -52,10 +52,10 @@ public class EditorController : MonoBehaviour
         
         var data = PathController.DataEditor.Data;
 
-        var dataElement = data.dataController.DataList.Where(x => x.Id == data.dataElement.Id).FirstOrDefault();
+        var elementData = data.dataController.DataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
 
-        if (dataElement != null)
-            data.dataElement = dataElement;
+        if (elementData != null)
+            data.elementData = elementData;
     }
 
     public void CloseEditor() { }

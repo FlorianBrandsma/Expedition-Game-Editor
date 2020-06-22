@@ -18,19 +18,19 @@ public class QuestSaveDataManager : IDataManager
         DataController = questController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.QuestSave>().First();
 
         GetQuestSaveData(searchParameters);
 
-        if (questSaveDataList.Count == 0) return new List<IDataElement>();
+        if (questSaveDataList.Count == 0) return new List<IElementData>();
 
         GetQuestData();
 
         var list = (from questSaveData  in questSaveDataList
                     join questData      in questDataList on questSaveData.questId equals questData.Id
-                    select new QuestSaveDataElement()
+                    select new QuestSaveElementData()
                     {
                         Id = questSaveData.Id,
 
@@ -47,7 +47,7 @@ public class QuestSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetQuestSaveData(Search.QuestSave searchParameters)

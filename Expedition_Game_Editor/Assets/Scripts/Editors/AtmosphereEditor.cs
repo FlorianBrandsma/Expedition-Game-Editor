@@ -4,7 +4,7 @@ using System.Linq;
 
 public class AtmosphereEditor : MonoBehaviour, IEditor
 {
-    public AtmosphereDataElement AtmosphereData { get { return (AtmosphereDataElement)Data.dataElement; } }
+    public AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -14,16 +14,16 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(AtmosphereData).Concat(new[] { AtmosphereData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(AtmosphereData).Concat(new[] { AtmosphereData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -48,7 +48,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed) && !AtmosphereData.timeConflict;
+        return ElementDataList.Any(x => x.Changed) && !AtmosphereData.timeConflict;
     }
 
     public void ApplyChanges()
@@ -65,7 +65,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
         } else {
 
-            DataElements.ForEach(x =>
+            ElementDataList.ForEach(x =>
             {
                 if (((GeneralData)x).Equals(AtmosphereData))
                     x.Copy(AtmosphereData);
@@ -82,7 +82,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

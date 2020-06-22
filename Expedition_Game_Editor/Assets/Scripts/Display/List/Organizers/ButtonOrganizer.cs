@@ -38,17 +38,17 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         ResetData(DataController.DataList);
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         ClearOrganizer();
         SetData(filter);
     }
 
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IElementData> list)
     {
         DataElement elementPrefab = Resources.Load<DataElement>("UI/Button");
 
-        foreach (IDataElement data in list)
+        foreach (IElementData data in list)
         {
             //SelectionElement element = SelectionElementManager.SpawnElement(elementPrefab, ListManager.listParent,
             //                                                                Enums.ElementType.Button, DisplayManager, 

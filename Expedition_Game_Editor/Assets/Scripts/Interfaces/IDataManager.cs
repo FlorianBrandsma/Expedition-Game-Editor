@@ -5,5 +5,5 @@ using System.Collections.Generic;
 public interface IDataManager
 {
     IDataController DataController { get; set; }
-    List<IDataElement> GetDataElements(SearchProperties searchProperties);
+    List<IElementData> GetData(SearchProperties searchProperties);
 }

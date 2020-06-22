@@ -14,16 +14,16 @@ public class OutcomeDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
 
         GetOutcomeData(searchParameters);
 
-        if (outcomeDataList.Count == 0) return new List<IDataElement>();
+        if (outcomeDataList.Count == 0) return new List<IElementData>();
 
         var list = (from outcomeData in outcomeDataList
-                    select new OutcomeDataElement()
+                    select new OutcomeElementData()
                     {
                         Id = outcomeData.Id,
 
@@ -35,7 +35,7 @@ public class OutcomeDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetOutcomeData(Search.Outcome searchParameters)

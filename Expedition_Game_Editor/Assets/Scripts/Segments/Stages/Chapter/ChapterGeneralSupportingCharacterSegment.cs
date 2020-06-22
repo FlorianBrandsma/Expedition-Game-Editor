@@ -33,7 +33,7 @@ public class ChapterGeneralSupportingCharacterSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var chapterInteractableList = SegmentController.DataController.DataList.Cast<ChapterInteractableDataElement>().ToList();
+        var chapterInteractableList = SegmentController.DataController.DataList.Cast<ChapterInteractableElementData>().ToList();
         chapterInteractableList.ForEach(x => ChapterEditor.chapterInteractableDataList.Add(x));
     }
 
@@ -62,7 +62,7 @@ public class ChapterGeneralSupportingCharacterSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
 

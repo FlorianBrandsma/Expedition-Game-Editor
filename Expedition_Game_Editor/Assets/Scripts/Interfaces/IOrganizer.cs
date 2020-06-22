@@ -8,7 +8,7 @@ public interface IOrganizer
     void SelectData();
     void UpdateData();
     void SetData();
-    void ResetData(List<IDataElement> filter);
+    void ResetData(List<IElementData> filter);
     void ClearOrganizer();
     void CloseOrganizer();   
 }

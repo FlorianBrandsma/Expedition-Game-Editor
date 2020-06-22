@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement regionData;
+    private RegionElementData regionData;
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -21,7 +21,7 @@ public class TerrainSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
 
         var searchProperties = new SearchProperties(Enums.DataType.Terrain);
 
@@ -39,5 +39,5 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

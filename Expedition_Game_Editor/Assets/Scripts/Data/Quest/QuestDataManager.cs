@@ -14,16 +14,16 @@ public class QuestDataManager : IDataManager
         DataController = questController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
 
         GetQuestData(searchParameters);
 
-        if (questDataList.Count == 0) return new List<IDataElement>();
+        if (questDataList.Count == 0) return new List<IElementData>();
 
         var list = (from questData in questDataList
-                    select new QuestDataElement()
+                    select new QuestElementData()
                     {
                         Id = questData.Id,
                         Index = questData.Index,
@@ -36,7 +36,7 @@ public class QuestDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetQuestData(Search.Quest searchParameters)

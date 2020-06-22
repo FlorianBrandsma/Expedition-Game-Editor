@@ -33,7 +33,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionDataElement>().ToList();
+        var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionElementData>().ToList();
         chapterRegionList.ForEach(x => ChapterEditor.chapterRegionDataList.Add(x));
     }
 
@@ -62,7 +62,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
 

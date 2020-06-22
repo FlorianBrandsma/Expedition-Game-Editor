@@ -25,7 +25,7 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
         var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
         editButton.data = new DataElement.Data(data);
 
-        var regionData = (RegionDataElement)data.dataElement;
+        var regionData = (RegionElementData)data.elementData;
         editButton.GetComponentInChildren<Text>().text = "Tiles, " + regionData.Name;
     }
     #endregion
@@ -50,6 +50,6 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

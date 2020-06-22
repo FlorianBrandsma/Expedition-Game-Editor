@@ -34,7 +34,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.ScaleMultiplier = value;
@@ -44,7 +44,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.ScaleMultiplier = value;
@@ -54,7 +54,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultScaleMultiplier = value;
@@ -118,21 +118,21 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         scaleMultiplier = interactionData.ScaleMultiplier;
     }
 
     private void InitializeWorldObjectData()
     {
-        var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
+        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
 
         scaleMultiplier = worldObjectData.ScaleMultiplier;
     }
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         scaleMultiplier = phaseData.DefaultScaleMultiplier;
     }
@@ -162,7 +162,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     private void GetInteractionSizeData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         height = interactionData.height;
         width = interactionData.width;
@@ -171,7 +171,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     private void GetWorldObjectSizeData()
     {
-        var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
+        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
 
         height = worldObjectData.height;
         width = worldObjectData.width;
@@ -180,7 +180,7 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     private void GetPhaseSizeData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         height = phaseData.height;
         width = phaseData.width;
@@ -189,6 +189,6 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

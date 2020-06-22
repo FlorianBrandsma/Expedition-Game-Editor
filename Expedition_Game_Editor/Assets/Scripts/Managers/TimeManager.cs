@@ -132,13 +132,13 @@ public class TimeManager : MonoBehaviour
         {
             case Enums.DataType.Atmosphere:
 
-                timeFrameList = dataController.DataList.Cast<AtmosphereDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.DataList.Cast<AtmosphereElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
 
                 break;
 
             case Enums.DataType.Interaction:
                 
-                timeFrameList = dataController.DataList.Cast<InteractionDataElement>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.DataList.Cast<InteractionElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
         
                 break;  
         }
@@ -190,7 +190,7 @@ public class TimeManager : MonoBehaviour
         return false;
     }
 
-    static public bool TimeConflict(IDataController dataController, IDataElement changedData)
+    static public bool TimeConflict(IDataController dataController, IElementData changedData)
     {
         var dataList = new List<TimeFrame>();
         var changedTimeFrame = new TimeFrame();
@@ -199,15 +199,15 @@ public class TimeManager : MonoBehaviour
         {
             case Enums.DataType.Atmosphere:
 
-                dataList = dataController.DataList.Cast<AtmosphereDataElement>()
-                                                  .Where(x => x != (AtmosphereDataElement)changedData && !x.Default)
+                dataList = dataController.DataList.Cast<AtmosphereElementData>()
+                                                  .Where(x => x != (AtmosphereElementData)changedData && !x.Default)
                                                   .Select(x => new TimeFrame()
                                                   {
                                                       StartTime = x.StartTime,
                                                       EndTime = x.EndTime
                                                   }).ToList();
 
-                var atmosphereData = (AtmosphereDataElement)changedData;
+                var atmosphereData = (AtmosphereElementData)changedData;
 
                 changedTimeFrame = new TimeFrame() { StartTime = atmosphereData.StartTime, EndTime = atmosphereData.EndTime };
 
@@ -215,15 +215,15 @@ public class TimeManager : MonoBehaviour
 
             case Enums.DataType.Interaction:
 
-                dataList = dataController.DataList.Cast<InteractionDataElement>()
-                                                  .Where(x => x != (InteractionDataElement)changedData && !x.Default)
+                dataList = dataController.DataList.Cast<InteractionElementData>()
+                                                  .Where(x => x != (InteractionElementData)changedData && !x.Default)
                                                   .Select(x => new TimeFrame()
                                                   {
                                                       StartTime = x.StartTime,
                                                       EndTime = x.EndTime
                                                   }).ToList();
 
-                var interactionData = (InteractionDataElement)changedData;
+                var interactionData = (InteractionElementData)changedData;
 
                 changedTimeFrame = new TimeFrame() { StartTime = interactionData.StartTime, EndTime = interactionData.EndTime };
 

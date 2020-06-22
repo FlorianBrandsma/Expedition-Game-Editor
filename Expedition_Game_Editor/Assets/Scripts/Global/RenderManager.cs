@@ -120,7 +120,7 @@ static public class RenderManager
         loadType = Enums.LoadType.Normal;
     }
 
-    static public List<IDataElement> GetData(IDataController dataController, SearchProperties searchProperties)
+    static public List<IElementData> GetData(IDataController dataController, SearchProperties searchProperties)
     {
         //Cancel the selection of data that is about to be overwritten while it still has active elements.
         //Results in some double cancel calls, but necessary to do via DataList for selected data without elements
@@ -128,7 +128,7 @@ static public class RenderManager
         if(dataController.DataList != null)
             SelectionManager.CancelSelection(dataController.DataList);
 
-        var dataList = dataController.DataManager.GetDataElements(searchProperties);
+        var dataList = dataController.DataManager.GetData(searchProperties);
         
         return dataList;
     }

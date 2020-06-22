@@ -145,9 +145,9 @@ public class TaskCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var taskDataSource = (TaskDataElement)dataSource;
+        var taskDataSource = (TaskElementData)dataSource;
 
         worldInteractableId = taskDataSource.worldInteractableId;
         objectiveId = taskDataSource.objectiveId;

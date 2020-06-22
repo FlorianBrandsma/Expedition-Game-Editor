@@ -32,7 +32,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.PositionX = value;
@@ -42,7 +42,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.PositionX = value;
@@ -52,7 +52,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultPositionX = value;
@@ -76,7 +76,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.PositionY = value;
@@ -86,7 +86,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.PositionY = value;
@@ -96,7 +96,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultPositionY = value;
@@ -120,7 +120,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.PositionZ = value;
@@ -130,7 +130,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.PositionZ = value;
@@ -140,7 +140,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultPositionZ = value;
@@ -164,7 +164,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.TerrainId = terrainId;
@@ -175,7 +175,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.TerrainId = terrainId;
@@ -247,7 +247,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     public void InitializeSegment()
     {
-        var regionData = (RegionDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
 
         var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.tileSize,
                                      regionData.RegionSize * regionData.TerrainSize * regionData.tileSize);
@@ -274,7 +274,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         positionX = interactionData.PositionX;
         positionY = interactionData.PositionY;
@@ -285,7 +285,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     private void InitializeWorldObjectData()
     {
-        var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
+        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
         
         positionX = worldObjectData.PositionX;
         positionY = worldObjectData.PositionY;
@@ -296,7 +296,7 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         positionX = phaseData.DefaultPositionX;
         positionY = phaseData.DefaultPositionY;
@@ -316,13 +316,13 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         bindToTile.Toggle.isOn = terrainTileId != 0;
 
         //Objects that are bound to tiles only load when the tile loads
-        bindToTile.EnableElement(DataEditor.Data.dataElement.DataType == Enums.DataType.WorldObject);
+        bindToTile.EnableElement(DataEditor.Data.elementData.DataType == Enums.DataType.WorldObject);
 
         gameObject.SetActive(true);
     }
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

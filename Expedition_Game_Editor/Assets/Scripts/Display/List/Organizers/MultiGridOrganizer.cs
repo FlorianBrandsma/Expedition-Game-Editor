@@ -44,7 +44,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         ResetData(PrimaryDataController.DataList);
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         ClearOrganizer();
         SetData(filter);
@@ -55,13 +55,13 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(PrimaryDataController.DataList);
     }
 
-    public void SetData(List<IDataElement> primaryList)
+    public void SetData(List<IElementData> primaryList)
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), MultiGridProperties.elementType);
 
         var prefab = Resources.Load<ExMultiGrid>("Elements/UI/" + elementType);
 
-        foreach (IDataElement dataElement in primaryList)
+        foreach (IElementData elementData in primaryList)
         {
             var multiGrid = (ExMultiGrid)PoolManager.SpawnObject(prefab);
 
@@ -72,11 +72,11 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
             ElementList.Add(multiGrid.EditorElement);
 
-            dataElement.DataElement = multiGrid.EditorElement.DataElement;
-            multiGrid.EditorElement.DataElement.data = new DataElement.Data(PrimaryDataController, dataElement);
+            elementData.DataElement = multiGrid.EditorElement.DataElement;
+            multiGrid.EditorElement.DataElement.data = new DataElement.Data(PrimaryDataController, elementData);
 
             //Debugging
-            GeneralData generalData = (GeneralData)dataElement;
+            GeneralData generalData = (GeneralData)elementData;
             multiGrid.name = generalData.DebugName + generalData.Id;
             //
 

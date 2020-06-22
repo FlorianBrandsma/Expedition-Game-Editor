@@ -21,7 +21,7 @@ public class WorldInteractableDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
@@ -43,7 +43,7 @@ public class WorldInteractableDataManager : IDataManager
                 break;
         }
         
-        if (worldInteractableDataList.Count == 0) return new List<IDataElement>();
+        if (worldInteractableDataList.Count == 0) return new List<IElementData>();
 
         DataManager.SetIndex(worldInteractableDataList.Cast<GeneralData>().ToList());
 
@@ -56,7 +56,7 @@ public class WorldInteractableDataManager : IDataManager
                     join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
 
-                    select new WorldInteractableDataElement()
+                    select new WorldInteractableElementData()
                     {
                         Id = worldInteractableData.Id,
                         Index = worldInteractableData.Index,
@@ -81,7 +81,7 @@ public class WorldInteractableDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)

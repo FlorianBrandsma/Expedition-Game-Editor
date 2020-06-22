@@ -21,13 +21,13 @@ public class GameSaveDataManager : IDataManager
         DataController = gameSaveController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
 
         GetChapterSaveData(searchParameters);
         
-        if (chapterSaveDataList.Count == 0) return new List<IDataElement>();
+        if (chapterSaveDataList.Count == 0) return new List<IElementData>();
 
         GetPhaseSaveData(searchParameters);
         GetQuestSaveData(searchParameters);
@@ -35,10 +35,10 @@ public class GameSaveDataManager : IDataManager
         GetTaskSaveData(searchParameters);
         GetInteractionSaveData(searchParameters);
 
-        var gameSaveDataElement = new GameSaveDataElement()
+        var gameSaveDataElement = new GameSaveElementData()
         {
             chapterSaveDataList = (from chapterSaveData in chapterSaveDataList
-                                   select new ChapterSaveDataElement
+                                   select new ChapterSaveElementData
                                    {
                                        Id = chapterSaveData.Id,
 
@@ -50,7 +50,7 @@ public class GameSaveDataManager : IDataManager
                                    }).ToList(),
 
             phaseSaveDataList = (from phaseSaveData in phaseSaveDataList
-                                 select new PhaseSaveDataElement
+                                 select new PhaseSaveElementData
                                  {
                                      Id = phaseSaveData.Id,
 
@@ -63,7 +63,7 @@ public class GameSaveDataManager : IDataManager
                                  }).ToList(),
 
             questSaveDataList = (from questSaveData in questSaveDataList
-                                 select new QuestSaveDataElement
+                                 select new QuestSaveElementData
                                  {
                                      Id = questSaveData.Id,
 
@@ -76,7 +76,7 @@ public class GameSaveDataManager : IDataManager
                                  }).ToList(),
 
             objectiveSaveDataList = (from objectiveSaveData in objectiveSaveDataList
-                                     select new ObjectiveSaveDataElement
+                                     select new ObjectiveSaveElementData
                                      {
                                          Id = objectiveSaveData.Id,
 
@@ -89,7 +89,7 @@ public class GameSaveDataManager : IDataManager
                                      }).ToList(),
 
             taskSaveDataList = (from taskSaveData in taskSaveDataList
-                                select new TaskSaveDataElement
+                                select new TaskSaveElementData
                                 {
                                     Id = taskSaveData.Id,
 
@@ -103,7 +103,7 @@ public class GameSaveDataManager : IDataManager
                                 }).ToList(),
 
             interactionSaveDataList = (from interactionSaveData in interactionSaveDataList
-                                       select new InteractionSaveDataElement
+                                       select new InteractionSaveElementData
                                        {
                                            Id = interactionSaveData.Id,
 
@@ -118,7 +118,7 @@ public class GameSaveDataManager : IDataManager
 
         gameSaveDataElement.SetOriginalValues();
 
-        return new List<IDataElement>() { gameSaveDataElement };
+        return new List<IElementData>() { gameSaveDataElement };
     }
 
     internal void GetChapterSaveData(Search.GameSave searchData)

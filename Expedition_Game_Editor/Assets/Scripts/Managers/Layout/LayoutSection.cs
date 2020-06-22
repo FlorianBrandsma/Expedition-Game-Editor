@@ -45,8 +45,8 @@ public class LayoutSection : MonoBehaviour
 
     //Previous data editor
     public IEditor previousEditor;
-    public IDataElement previousDataSource;
-    public List<IDataElement> previousDataElements;
+    public IElementData previousDataSource;
+    public List<IElementData> previousElementDataList;
     //
     
     public ButtonActionManager buttonActionManager;
@@ -106,7 +106,7 @@ public class LayoutSection : MonoBehaviour
             buttonActionManager.CloseButtons();
 
         PreviousTargetController = TargetController;
-        PreviousTargetControllerData = (GeneralData)TargetController.PathController.route.data.dataElement;
+        PreviousTargetControllerData = (GeneralData)TargetController.PathController.route.data.elementData;
         
         TargetController = null;
 
@@ -127,7 +127,7 @@ public class LayoutSection : MonoBehaviour
         if (DisplayTargetController == null) return;
 
         PreviousTargetController = DisplayTargetController;
-        PreviousTargetControllerData = (GeneralData)DisplayTargetController.PathController.route.data.dataElement;
+        PreviousTargetControllerData = (GeneralData)DisplayTargetController.PathController.route.data.elementData;
 
         DisplayTargetController.CloseSegments();
     }
@@ -143,11 +143,11 @@ public class LayoutSection : MonoBehaviour
         if (dataEditor.Loaded)
             dataEditor.CancelEdit();
         
-        if (previousDataElements != null)
+        if (previousElementDataList != null)
         {
-            previousDataElements.ForEach(x => x.ClearChanges());
+            previousElementDataList.ForEach(x => x.ClearChanges());
 
-            previousDataElements.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
+            previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
                                 .ForEach(x => x.DataElement.UpdateElement());
         }
         

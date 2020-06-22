@@ -14,7 +14,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
 
     public Enums.DataType DataType              { get { return Enums.DataType.TerrainTile; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IDataElement> DataList          { get; set; }
+    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -32,15 +32,15 @@ public class TerrainTileController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(DataElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IElementData resultData)
     {
-        var terrainTileData = (TerrainTileDataElement)searchElement.data.dataElement;
+        var terrainTileData = (TerrainTileElementData)searchElement.data.elementData;
 
         switch (((GeneralData)resultData).DataType)
         {
             case Enums.DataType.Tile:
 
-                var resultElementData = (TileDataElement)resultData;
+                var resultElementData = (TileElementData)resultData;
 
                 terrainTileData.TileId = resultElementData.Id;
                 terrainTileData.iconPath = resultElementData.icon;

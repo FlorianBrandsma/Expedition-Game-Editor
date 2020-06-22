@@ -20,16 +20,16 @@ public class InteractableObjectGraphicSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.ObjectGraphic);
 
-        var interactableDataElement = (InteractableDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Interactable).data.dataElement;
+        var interactableElementData = (InteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Interactable).data.elementData;
 
-        var objectGraphicDataElement = new ObjectGraphicDataElement()
+        var objectGraphicElementData = new ObjectGraphicElementData()
         {
-            Id = interactableDataElement.ObjectGraphicId,
-            Path = interactableDataElement.objectGraphicPath,
-            iconPath = interactableDataElement.objectGraphicIconPath
+            Id = interactableElementData.ObjectGraphicId,
+            Path = interactableElementData.objectGraphicPath,
+            iconPath = interactableElementData.objectGraphicIconPath
         };
 
-        SegmentController.DataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
+        SegmentController.DataController.DataList = new List<IElementData>() { objectGraphicElementData };
     }
 
     public void OpenSegment()
@@ -40,5 +40,5 @@ public class InteractableObjectGraphicSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

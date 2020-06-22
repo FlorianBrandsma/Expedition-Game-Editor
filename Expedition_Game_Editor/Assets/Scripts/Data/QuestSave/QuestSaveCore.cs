@@ -91,9 +91,9 @@ public class QuestSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var questSaveDataSource = (QuestSaveDataElement)dataSource;
+        var questSaveDataSource = (QuestSaveElementData)dataSource;
 
         saveId = questSaveDataSource.saveId;
         phaseSaveId = questSaveDataSource.phaseSaveId;

@@ -28,13 +28,13 @@ public class InteractionDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
 
         GetInteractionData(searchParameters);
 
-        if (interactionDataList.Count == 0) return new List<IDataElement>();
+        if (interactionDataList.Count == 0) return new List<IElementData>();
 
         GetTaskData();
         GetWorldInteractableData();
@@ -64,7 +64,7 @@ public class InteractionDataManager : IDataManager
                     join leftJoin in (from regionData in regionDataList
                                       select new { regionData }) on interactionData.regionId equals leftJoin.regionData.Id into regionData
 
-                    select new InteractionDataElement()
+                    select new InteractionElementData()
                     {
                         Id = interactionData.Id,
 
@@ -117,7 +117,7 @@ public class InteractionDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetInteractionData(Search.Interaction searchParameters)

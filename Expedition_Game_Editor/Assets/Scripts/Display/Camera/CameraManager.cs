@@ -134,7 +134,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(IDataElement dataElement)
+    public void CorrectPosition(IElementData elementData)
     {
         var planes = GeometryUtility.CalculateFrustumPlanes(cam);
 
@@ -142,40 +142,40 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         var elementPosition = Vector3.zero;
         
-        switch(dataElement.DataType)
+        switch(elementData.DataType)
         {
             case Enums.DataType.Interaction:
 
-                var interactionData = (InteractionDataElement)dataElement;
+                var interactionData = (InteractionElementData)elementData;
                 elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, -interactionData.PositionZ);
 
                 break;
 
             case Enums.DataType.WorldInteractable:
 
-                var worldInteractableData = (WorldInteractableDataElement)dataElement;
+                var worldInteractableData = (WorldInteractableElementData)elementData;
                 elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, -worldInteractableData.positionZ);
                 
                 break;
 
             case Enums.DataType.WorldObject:
 
-                var worldObjectData = (WorldObjectDataElement)dataElement;
+                var worldObjectData = (WorldObjectElementData)elementData;
                 elementPosition = new Vector3(worldObjectData.PositionX, worldObjectData.PositionY, -worldObjectData.PositionZ);
 
                 break;
 
             case Enums.DataType.Phase:
 
-                var phaseData = (PhaseDataElement)dataElement;
+                var phaseData = (PhaseElementData)elementData;
                 elementPosition = new Vector3(phaseData.DefaultPositionX, phaseData.DefaultPositionY, -phaseData.DefaultPositionZ);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + dataElement.DataType); return;
+            default: Debug.Log("CASE MISSING: " + elementData.DataType); return;
         }
 
-        var regionData = (RegionDataElement)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.dataElement;
+        var regionData = (RegionElementData)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
         var worldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
 
         var localPosition = new Vector3(-(worldSize / 2) + elementPosition.x, -elementPosition.y, (worldSize / 2) + elementPosition.z);

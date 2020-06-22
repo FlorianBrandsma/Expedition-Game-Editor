@@ -5,7 +5,7 @@ using System.Linq;
 
 public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionDataElement RegionDataElement { get { return (RegionDataElement)DataEditor.Data.dataElement; } }
+    private RegionElementData RegionDataElement { get { return (RegionElementData)DataEditor.Data.elementData; } }
 
     private DataManager dataManager = new DataManager();
 
@@ -77,7 +77,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        RegionDataElement.tileIconPath = SegmentController.DataController.DataList.Cast<TileDataElement>().First().icon;
+        RegionDataElement.tileIconPath = SegmentController.DataController.DataList.Cast<TileElementData>().First().icon;
     }
 
     private void SetDisplay()
@@ -90,5 +90,5 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

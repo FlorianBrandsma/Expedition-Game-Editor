@@ -38,19 +38,19 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         ResetData(DataController.DataList);
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         ClearOrganizer();
         SetData(filter);
     }
 
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IElementData> list)
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), TileProperties.elementType);
 
         var prefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
 
-        foreach (IDataElement data in list)
+        foreach (IElementData data in list)
         {
             var tile = (ExTile)PoolManager.SpawnObject(prefab);
             

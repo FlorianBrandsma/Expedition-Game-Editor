@@ -37,7 +37,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    var itemData = (ItemDataElement)DataEditor.Data.dataElement;
+                    var itemData = (ItemElementData)DataEditor.Data.elementData;
 
                     itemData.Name = value;
 
@@ -45,7 +45,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
+                    var interactableData = (InteractableElementData)DataEditor.Data.elementData;
 
                     interactableData.Name = value;
 
@@ -54,7 +54,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         }
     }
 
-    public ObjectGraphicDataElement ObjectGraphic
+    public ObjectGraphicElementData ObjectGraphic
     {
         set
         {
@@ -66,7 +66,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Item:
 
-                    var itemData = (ItemDataElement)DataEditor.Data.dataElement;
+                    var itemData = (ItemElementData)DataEditor.Data.elementData;
 
                     itemData.ObjectGraphicId        = value.Id;
                     itemData.objectGraphicPath      = value.Path;
@@ -76,7 +76,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
+                    var interactableData = (InteractableElementData)DataEditor.Data.elementData;
 
                     interactableData.ObjectGraphicId = value.Id;
                     interactableData.objectGraphicPath = value.Path;
@@ -100,9 +100,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void UpdateObjectGraphic(ObjectGraphicDataElement objectGraphicDataElement)
+    public void UpdateObjectGraphic(ObjectGraphicElementData objectGraphicElementData)
     {
-        ObjectGraphic = objectGraphicDataElement;
+        ObjectGraphic = objectGraphicElementData;
         DataEditor.UpdateEditor();
     }
     #endregion
@@ -120,12 +120,12 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         editorElement.DataElement.InitializeElement(editorElement.GetComponent<IDataController>());
 
-        var objectGraphicDataElement = new ObjectGraphicDataElement();
+        var objectGraphicElementData = new ObjectGraphicElementData();
         
-        objectGraphicDataElement.DataElement = editorElement.DataElement;
+        objectGraphicElementData.DataElement = editorElement.DataElement;
 
-        editorElement.DataElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
-        editorElement.DataElement.data.dataElement = objectGraphicDataElement;
+        editorElement.DataElement.data.dataController.DataList = new List<IElementData>() { objectGraphicElementData };
+        editorElement.DataElement.data.elementData = objectGraphicElementData;
     }
     
     public void InitializeData()
@@ -146,7 +146,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeItemData()
     {
-        var itemData        = (ItemDataElement)DataEditor.Data.dataElement;
+        var itemData        = (ItemElementData)DataEditor.Data.elementData;
 
         id                  = itemData.Id;
         index               = itemData.Index;
@@ -161,7 +161,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractableData()
     {
-        var interactableData = (InteractableDataElement)DataEditor.Data.dataElement;
+        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
 
         id                  = interactableData.Id;
         index               = interactableData.Index;
@@ -183,11 +183,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         inputField.text = assetName;
 
-        var objectGraphicDataElement = (ObjectGraphicDataElement)editorElement.DataElement.data.dataElement;
+        var objectGraphicElementData = (ObjectGraphicElementData)editorElement.DataElement.data.elementData;
 
-        objectGraphicDataElement.Id         = objectGraphicId;
-        objectGraphicDataElement.Path       = objectGraphicPath;
-        objectGraphicDataElement.iconPath   = objectGraphicIconPath;
+        objectGraphicElementData.Id         = objectGraphicId;
+        objectGraphicElementData.Path       = objectGraphicPath;
+        objectGraphicElementData.iconPath   = objectGraphicIconPath;
 
         SelectionElementManager.Add(editorElement);
         SelectionManager.SelectData(editorElement.DataElement.data.dataController.DataList);
@@ -208,15 +208,15 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
-        switch(selectionElement.data.dataController.DataType)
+        switch(dataElement.data.dataController.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var objectGraphicDataElement = (ObjectGraphicDataElement)selectionElement.data.dataElement;
+                var objectGraphicElementData = (ObjectGraphicElementData)dataElement.data.elementData;
 
-                UpdateObjectGraphic(objectGraphicDataElement);
+                UpdateObjectGraphic(objectGraphicElementData);
 
                 break;
 

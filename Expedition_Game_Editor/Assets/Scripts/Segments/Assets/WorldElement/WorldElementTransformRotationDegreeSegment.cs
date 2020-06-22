@@ -29,7 +29,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.RotationX = value;
@@ -39,7 +39,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.RotationX = value;
@@ -49,7 +49,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultRotationX = value;
@@ -73,7 +73,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.RotationY = value;
@@ -83,7 +83,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.RotationY = value;
@@ -93,7 +93,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultRotationY = value;
@@ -117,7 +117,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             {
                 case Enums.DataType.Interaction:
 
-                    var interactionDataList = DataEditor.DataList.Cast<InteractionDataElement>().ToList();
+                    var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
                     interactionDataList.ForEach(interactionData =>
                     {
                         interactionData.RotationZ = value;
@@ -127,7 +127,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.WorldObject:
 
-                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectDataElement>().ToList();
+                    var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
                     worldObjectDataList.ForEach(worldObjectData =>
                     {
                         worldObjectData.RotationZ = value;
@@ -137,7 +137,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
                 case Enums.DataType.Phase:
 
-                    var phaseDataList = DataEditor.DataList.Cast<PhaseDataElement>().ToList();
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
                     phaseDataList.ForEach(phaseData =>
                     {
                         phaseData.DefaultRotationZ = value;
@@ -203,7 +203,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         rotationX = interactionData.RotationX;
         rotationY = interactionData.RotationY;
@@ -212,7 +212,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
     private void InitializeWorldObjectData()
     {
-        var worldObjectData = (WorldObjectDataElement)DataEditor.Data.dataElement;
+        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
 
         rotationX = worldObjectData.RotationX;
         rotationY = worldObjectData.RotationY;
@@ -221,7 +221,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseDataElement)DataEditor.Data.dataElement;
+        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         rotationX = phaseData.DefaultRotationX;
         rotationY = phaseData.DefaultRotationY;
@@ -241,6 +241,6 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

@@ -14,16 +14,16 @@ public class SaveDataManager : IDataManager
         DataController = saveController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Save>().First();
 
         GetSaveData(searchParameters);
 
-        if (saveDataList.Count == 0) return new List<IDataElement>();
+        if (saveDataList.Count == 0) return new List<IElementData>();
 
         var list = (from saveData in saveDataList
-                    select new SaveDataElement()
+                    select new SaveElementData()
                     {
                         Id = saveData.Id,
                         GameId = saveData.gameId,
@@ -34,7 +34,7 @@ public class SaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetSaveData(Search.Save searchParameters)

@@ -55,84 +55,84 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetIconElement()
     {
-        var dataElement = (IconDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (IconElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.Path;
+            iconPath = elementData.Path;
         else
-            iconPath = dataElement.originalPath;
+            iconPath = elementData.originalPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
 
-        if(dataElement.baseIconPath != "")
-            iconBase.texture = Resources.Load<Texture2D>(dataElement.baseIconPath);
+        if(elementData.baseIconPath != "")
+            iconBase.texture = Resources.Load<Texture2D>(elementData.baseIconPath);
     }
 
     private void SetInteractableElement()
     {
-        var dataElement = (InteractableDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (InteractableElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIconPath;
+            iconPath = elementData.objectGraphicIconPath;
         else
-            iconPath = dataElement.originalObjectGraphicIconPath;
+            iconPath = elementData.originalObjectGraphicIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainElement()
     {
-        var dataElement = (TerrainDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (TerrainElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.iconPath;
+            iconPath = elementData.iconPath;
         else
-            iconPath = dataElement.originalIconPath;
+            iconPath = elementData.originalIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTileElement()
     {
-        var dataElement = (TileDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (TileElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.icon;
+            iconPath = elementData.icon;
         else
-            iconPath = dataElement.icon;
+            iconPath = elementData.icon;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainTileElement()
     {
-        var dataElement = (TerrainTileDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (TerrainTileElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.iconPath;
+            iconPath = elementData.iconPath;
         else
-            iconPath = dataElement.originalIconPath;
+            iconPath = elementData.originalIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetObjectGraphicElement()
     {
-        var dataElement = (ObjectGraphicDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (ObjectGraphicElementData)EditorElement.DataElement.data.elementData;
         
-        iconPath = dataElement.iconPath;
+        iconPath = elementData.iconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetWorldInteractableElement()
     {
-        var dataElement = (WorldInteractableDataElement)EditorElement.DataElement.data.dataElement;
+        var elementData = (WorldInteractableElementData)EditorElement.DataElement.data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = dataElement.objectGraphicIconPath;
+            iconPath = elementData.objectGraphicIconPath;
         else
-            iconPath = dataElement.originalObjectGraphicIconPath;
+            iconPath = elementData.originalObjectGraphicIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

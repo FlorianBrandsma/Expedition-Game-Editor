@@ -14,16 +14,16 @@ public class TaskDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
         GetTaskData(searchParameters);
 
-        if (taskDataList.Count == 0) return new List<IDataElement>();
+        if (taskDataList.Count == 0) return new List<IElementData>();
 
         var list = (from taskData in taskDataList
-                    select new TaskDataElement()
+                    select new TaskElementData()
                     {
                         Id = taskData.Id,
                         Index = taskData.Index,
@@ -38,7 +38,7 @@ public class TaskDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetTaskData(Search.Task searchParameters)

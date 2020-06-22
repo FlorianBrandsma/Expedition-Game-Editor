@@ -87,9 +87,9 @@ public class ChapterRegionCore : GeneralData
 
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var chapterRegionDataSource = (ChapterRegionDataElement)dataSource;
+        var chapterRegionDataSource = (ChapterRegionElementData)dataSource;
 
         chapterId = chapterRegionDataSource.chapterId;
         regionId = chapterRegionDataSource.regionId;

@@ -123,28 +123,28 @@ public class WorldInteractableCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(WorldInteractableDataElement dataElement)
+    public void CloneCore(WorldInteractableElementData elementData)
     {
-        CloneGeneralData(dataElement);
+        CloneGeneralData(elementData);
 
-        dataElement.type = type;
+        elementData.type = type;
 
-        dataElement.phaseId = phaseId;
-        dataElement.questId = questId;
-        dataElement.objectiveId = objectiveId;
+        elementData.phaseId = phaseId;
+        elementData.questId = questId;
+        elementData.objectiveId = objectiveId;
 
-        dataElement.chapterInteractableId = chapterInteractableId;
-        dataElement.interactableId = interactableId;
+        elementData.chapterInteractableId = chapterInteractableId;
+        elementData.interactableId = interactableId;
 
-        dataElement.originalQuestId = originalQuestId;
+        elementData.originalQuestId = originalQuestId;
 
-        dataElement.originalInteractableId = originalInteractableId;       
+        elementData.originalInteractableId = originalInteractableId;       
     }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var worldInteractableDataSource = (WorldInteractableDataElement)dataSource;
+        var worldInteractableDataSource = (WorldInteractableElementData)dataSource;
 
         type = worldInteractableDataSource.type;
 

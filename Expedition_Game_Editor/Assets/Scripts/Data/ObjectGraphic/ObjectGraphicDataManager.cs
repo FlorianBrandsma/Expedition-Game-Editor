@@ -18,19 +18,19 @@ public class ObjectGraphicDataManager : IDataManager
         this.DataController = objectGraphicController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectGraphic>().First();
 
         GetObjectGraphicData(searchParameters);
 
-        if (objectGraphicDataList.Count == 0) return new List<IDataElement>();
+        if (objectGraphicDataList.Count == 0) return new List<IElementData>();
 
         GetIconData();
 
         var list = (from objectGraphicData  in objectGraphicDataList
                     join iconData           in iconDataList on objectGraphicData.iconId equals iconData.Id
-                    select new ObjectGraphicDataElement()
+                    select new ObjectGraphicElementData()
                     {
                         Id = objectGraphicData.Id,
 
@@ -50,7 +50,7 @@ public class ObjectGraphicDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetObjectGraphicData(Search.ObjectGraphic searchParameters)

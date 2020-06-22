@@ -6,11 +6,11 @@ public class DataController : IDataController
 {
     public IDataManager DataManager { get; set; }
 
-    private List<IDataElement> dataList = new List<IDataElement>();
+    private List<IElementData> dataList = new List<IElementData>();
 
     public SegmentController SegmentController { get; set; }
     
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
         get { return dataList; }
         set { dataList = value; }
@@ -36,26 +36,26 @@ public class DataController : IDataController
 
     public void InitializeController() { }
 
-    public void SetData(DataElement searchElement, IDataElement resultDataElement)
+    public void SetData(DataElement searchElement, IElementData resultElementData)
     {
         switch(DataType)
         {
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableData(searchElement, resultDataElement); break;
-            case Enums.DataType.WorldObject:        SetWorldObjectData(searchElement, resultDataElement);       break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableData(searchElement, resultElementData); break;
+            case Enums.DataType.WorldObject:        SetWorldObjectData(searchElement, resultElementData);       break;
 
             default: Debug.Log("CASE MISSING: " + DataType); break;
         }
     }
 
-    public void SetWorldInteractableData(DataElement searchElement, IDataElement resultDataElement)
+    public void SetWorldInteractableData(DataElement searchElement, IElementData resultElementData)
     {
-        var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
+        var worldInteractableData = (WorldInteractableElementData)searchElement.data.elementData;
 
-        switch (resultDataElement.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var interactableData = (InteractableDataElement)resultDataElement;
+                var interactableData = (InteractableElementData)resultElementData;
 
                 worldInteractableData.InteractableId = interactableData.Id;
 
@@ -71,15 +71,15 @@ public class DataController : IDataController
         }
     }
 
-    public void SetWorldObjectData(DataElement searchElement, IDataElement resultDataElement)
+    public void SetWorldObjectData(DataElement searchElement, IElementData resultElementData)
     {
-        var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
+        var worldObjectData = (WorldObjectElementData)searchElement.data.elementData;
 
-        switch (resultDataElement.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.ObjectGraphic:
 
-                var objectGraphicData = (ObjectGraphicDataElement)resultDataElement;
+                var objectGraphicData = (ObjectGraphicElementData)resultElementData;
 
                 worldObjectData.ObjectGraphicId = objectGraphicData.Id;
 

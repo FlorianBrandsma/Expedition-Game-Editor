@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ObjectiveSaveEditor : MonoBehaviour, IEditor
 {
-    public ObjectiveSaveDataElement ObjectiveSaveData { get { return (ObjectiveSaveDataElement)Data.dataElement; } }
+    public ObjectiveSaveElementData ObjectiveSaveData { get { return (ObjectiveSaveElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -14,16 +14,16 @@ public class ObjectiveSaveEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ObjectiveSaveData).Concat(new[] { ObjectiveSaveData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(ObjectiveSaveData).Concat(new[] { ObjectiveSaveData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -48,14 +48,14 @@ public class ObjectiveSaveEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         ObjectiveSaveData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ObjectiveSaveData))
                 x.Copy(ObjectiveSaveData);
@@ -71,7 +71,7 @@ public class ObjectiveSaveEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

@@ -69,7 +69,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void SetOverlay()
     {
-        if (DataElement.data.dataElement == null) return;
+        if (DataElement.data.elementData == null) return;
 
         if (child != null)
             child.SetOverlay();
@@ -82,7 +82,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         if (selectionStatus == Enums.SelectionStatus.None) return;
         
-        if (selectionStatus == DataElement.data.dataElement.SelectionStatus || DataElement.data.dataElement.SelectionStatus == Enums.SelectionStatus.Both)
+        if (selectionStatus == DataElement.data.elementData.SelectionStatus || DataElement.data.elementData.SelectionStatus == Enums.SelectionStatus.Both)
             glow.SetActive(true);
     }
 
@@ -145,16 +145,16 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
             case SelectionManager.Property.Get:
 
-                var dataElement = DataElement.data.dataElement;
+                var elementData = DataElement.data.elementData;
 
                 RenderManager.Render(editorPath.path);
 
-                SelectionManager.SelectSearch(dataElement);
+                SelectionManager.SelectSearch(elementData);
 
                 break;
 
             case SelectionManager.Property.Set:
-                SelectionManager.SelectSet(DataElement.data.dataElement);
+                SelectionManager.SelectSet(DataElement.data.elementData);
                 break;
 
             case SelectionManager.Property.Enter:
@@ -193,7 +193,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     
     public void CloseElement()
     {
-        if (DataElement.data.dataElement == null) return;
+        if (DataElement.data.elementData == null) return;
 
         ResetStatus();
 
@@ -221,9 +221,9 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void CancelSelection()
     {
-        if (DataElement.data.dataElement == null) return;
+        if (DataElement.data.elementData == null) return;
 
-        DataElement.data.dataElement.SelectionStatus = Enums.SelectionStatus.None;
+        DataElement.data.elementData.SelectionStatus = Enums.SelectionStatus.None;
 
         if (glow != null)
             glow.SetActive(false);

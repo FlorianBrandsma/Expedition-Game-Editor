@@ -14,16 +14,16 @@ public class ObjectiveDataManager : IDataManager
         DataController = objectiveController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
         
         GetObjectiveData(searchParameters);
 
-        if (objectiveDataList.Count == 0) return new List<IDataElement>();
+        if (objectiveDataList.Count == 0) return new List<IElementData>();
 
         var list = (from objectiveData in objectiveDataList
-                    select new ObjectiveDataElement()
+                    select new ObjectiveElementData()
                     {
                         Id = objectiveData.Id,
                         Index = objectiveData.Index,
@@ -37,7 +37,7 @@ public class ObjectiveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetObjectiveData(Search.Objective searchParameters)

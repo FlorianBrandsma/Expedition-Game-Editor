@@ -33,7 +33,7 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionDataElement>().ToList();
+        var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionElementData>().ToList();
         phaseRegionList.ForEach(x => PhaseEditor.RegionDataList.Add(x));
     }
 
@@ -47,5 +47,5 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

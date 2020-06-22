@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ChapterSaveEditor : MonoBehaviour, IEditor
 {
-    public ChapterSaveDataElement ChapterSaveData { get { return (ChapterSaveDataElement)Data.dataElement; } }
+    public ChapterSaveElementData ChapterSaveData { get { return (ChapterSaveElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -14,16 +14,16 @@ public class ChapterSaveEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ChapterSaveData).Concat(new[] { ChapterSaveData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(ChapterSaveData).Concat(new[] { ChapterSaveData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -48,14 +48,14 @@ public class ChapterSaveEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         ChapterSaveData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ChapterSaveData))
                 x.Copy(ChapterSaveData);
@@ -71,7 +71,7 @@ public class ChapterSaveEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

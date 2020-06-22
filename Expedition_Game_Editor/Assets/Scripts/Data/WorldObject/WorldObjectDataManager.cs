@@ -19,13 +19,13 @@ public class WorldObjectDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
 
         GetWorldObjectData(searchParameters);
         
-        if (worldObjectDataList.Count == 0) return new List<IDataElement>();
+        if (worldObjectDataList.Count == 0) return new List<IElementData>();
 
         GetObjectGraphicData();
         GetIconData();
@@ -33,7 +33,7 @@ public class WorldObjectDataManager : IDataManager
         var list = (from worldObjectData    in worldObjectDataList
                     join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.Id
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
-                    select new WorldObjectDataElement()
+                    select new WorldObjectElementData()
                     {
                         Id = worldObjectData.Id,
                         Index = worldObjectData.Index,
@@ -68,7 +68,7 @@ public class WorldObjectDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetWorldObjectData(Search.WorldObject searchParameters)

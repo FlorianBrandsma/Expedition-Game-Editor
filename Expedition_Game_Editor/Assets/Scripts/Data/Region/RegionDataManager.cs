@@ -19,7 +19,7 @@ public class RegionDataManager : IDataManager
         DataController = regionController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var regionController = (RegionController)DataController;
 
@@ -27,7 +27,7 @@ public class RegionDataManager : IDataManager
 
         GetRegionData(searchParameters);
 
-        if (regionDataList.Count == 0) return new List<IDataElement>();
+        if (regionDataList.Count == 0) return new List<IElementData>();
 
         GetTileSetData();
         GetTileData();
@@ -38,7 +38,7 @@ public class RegionDataManager : IDataManager
                     join leftJoin in (from tileData in tileDataList
                                       select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
 
-                    select new RegionDataElement()
+                    select new RegionElementData()
                     {
                         Id = regionData.Id,
                         Index = regionData.Index,
@@ -61,7 +61,7 @@ public class RegionDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetRegionData(Search.Region searchParameters)

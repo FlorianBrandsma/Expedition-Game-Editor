@@ -4,11 +4,11 @@ using System.Linq;
 
 public class ObjectiveEditor : MonoBehaviour, IEditor
 {
-    public ObjectiveDataElement ObjectiveData { get { return (ObjectiveDataElement)Data.dataElement; } }
+    public ObjectiveElementData ObjectiveData { get { return (ObjectiveElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<WorldInteractableDataElement> worldInteractableDataList = new List<WorldInteractableDataElement>();
+    public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -16,16 +16,16 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(ObjectiveData).Concat(new[] { ObjectiveData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(ObjectiveData).Concat(new[] { ObjectiveData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -52,14 +52,14 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         ObjectiveData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(ObjectiveData))
                 x.Copy(ObjectiveData);
@@ -75,7 +75,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

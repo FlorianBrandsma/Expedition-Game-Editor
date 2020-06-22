@@ -149,7 +149,7 @@ public class Path
     {
         route.ForEach(r => 
         {
-            if (r.GeneralData.DataType == ((GeneralData)data.dataElement).DataType)
+            if (r.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
                 r.data = data;
         });
     }

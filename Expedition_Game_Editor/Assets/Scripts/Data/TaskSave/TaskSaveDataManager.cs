@@ -18,19 +18,19 @@ public class TaskSaveDataManager : IDataManager
         DataController = taskController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.TaskSave>().First();
 
         GetTaskSaveData(searchParameters);
 
-        if (taskSaveDataList.Count == 0) return new List<IDataElement>();
+        if (taskSaveDataList.Count == 0) return new List<IElementData>();
 
         GetTaskData();
 
         var list = (from taskSaveData   in taskSaveDataList
                     join taskData       in taskDataList on taskSaveData.taskId equals taskData.Id
-                    select new TaskSaveDataElement()
+                    select new TaskSaveElementData()
                     {
                         Id = taskSaveData.Id,
 
@@ -47,7 +47,7 @@ public class TaskSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetTaskSaveData(Search.TaskSave searchParameters)

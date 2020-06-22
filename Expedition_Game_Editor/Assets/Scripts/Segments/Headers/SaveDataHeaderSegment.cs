@@ -51,7 +51,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterSaveData()
     {
-        var chapterSaveData = (ChapterSaveDataElement)DataEditor.Data.dataElement;
+        var chapterSaveData = (ChapterSaveElementData)DataEditor.Data.elementData;
 
         id = chapterSaveData.Id;
         index = chapterSaveData.Index;
@@ -60,7 +60,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseSaveData()
     {
-        var phaseSaveData = (PhaseSaveDataElement)DataEditor.Data.dataElement;
+        var phaseSaveData = (PhaseSaveElementData)DataEditor.Data.elementData;
 
         id = phaseSaveData.Id;
         index = phaseSaveData.Index;
@@ -69,7 +69,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeQuestSaveData()
     {
-        var questSaveData = (QuestSaveDataElement)DataEditor.Data.dataElement;
+        var questSaveData = (QuestSaveElementData)DataEditor.Data.elementData;
 
         id = questSaveData.Id;
         index = questSaveData.Index;
@@ -78,7 +78,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeObjectiveSaveData()
     {
-        var objectiveSaveData = (ObjectiveSaveDataElement)DataEditor.Data.dataElement;
+        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.Data.elementData;
 
         id = objectiveSaveData.Id;
         index = objectiveSaveData.Index;
@@ -87,7 +87,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskSaveData()
     {
-        var taskSaveData = (TaskSaveDataElement)DataEditor.Data.dataElement;
+        var taskSaveData = (TaskSaveElementData)DataEditor.Data.elementData;
 
         id = taskSaveData.Id;
         index = taskSaveData.Index;
@@ -96,7 +96,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionSaveData()
     {
-        var interactionSaveData = (InteractionSaveDataElement)DataEditor.Data.dataElement;
+        var interactionSaveData = (InteractionSaveElementData)DataEditor.Data.elementData;
 
         id = interactionSaveData.Id;
         index = interactionSaveData.Index;
@@ -116,6 +116,6 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

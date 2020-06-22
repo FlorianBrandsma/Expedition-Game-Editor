@@ -33,7 +33,7 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberDataElement>().ToList();
+        var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberElementData>().ToList();
         partyMemberList.ForEach(x => ChapterEditor.partyMemberDataList.Add(x));
     }
 
@@ -62,7 +62,7 @@ public class ChapterGeneralPartyMemberSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
 

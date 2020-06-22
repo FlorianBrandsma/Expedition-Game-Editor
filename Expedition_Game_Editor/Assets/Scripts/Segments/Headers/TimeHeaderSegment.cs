@@ -37,14 +37,14 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereDataElement)DataEditor.Data.dataElement;
+                    var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
                     atmosphereData.StartTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+                    var interactionData = (InteractionElementData)DataEditor.Data.elementData;
                     interactionData.StartTime = value;
 
                     break;
@@ -63,14 +63,14 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereDataElement)DataEditor.Data.dataElement;
+                    var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
                     atmosphereData.EndTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+                    var interactionData = (InteractionElementData)DataEditor.Data.elementData;
                     interactionData.EndTime = value;
 
                     break;
@@ -100,20 +100,20 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void CheckTime()
     {
-        var timeConflict = TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.Data.dataElement);
+        var timeConflict = TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.Data.elementData);
 
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Atmosphere:
 
-                var atmosphereData = (AtmosphereDataElement)DataEditor.Data.dataElement;
+                var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
                 atmosphereData.timeConflict = timeConflict;
 
                 break;
 
             case Enums.DataType.Interaction:
 
-                var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+                var interactionData = (InteractionElementData)DataEditor.Data.elementData;
                 interactionData.timeConflict = timeConflict;
 
                 break;
@@ -153,7 +153,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeAtmosphereData()
     {
-        var atmosphereData = (AtmosphereDataElement)DataEditor.Data.dataElement;
+        var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
 
         id          = atmosphereData.Id;
         index       = atmosphereData.Index;
@@ -166,7 +166,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionDataElement)DataEditor.Data.dataElement;
+        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
         id          = interactionData.Id;
         index       = interactionData.Index;
@@ -198,6 +198,6 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

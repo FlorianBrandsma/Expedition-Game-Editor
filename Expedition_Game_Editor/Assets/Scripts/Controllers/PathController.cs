@@ -135,8 +135,8 @@ public class PathController : MonoBehaviour
         if (layoutSection.dataEditor == null) return;
 
         layoutSection.previousEditor = layoutSection.dataEditor;
-        layoutSection.previousDataSource = layoutSection.dataEditor.Data.dataElement;
-        layoutSection.previousDataElements = layoutSection.dataEditor.DataElements.ToList();
+        layoutSection.previousDataSource = layoutSection.dataEditor.Data.elementData;
+        layoutSection.previousElementDataList = layoutSection.dataEditor.ElementDataList.ToList();
     }
 
     public bool GetComponents(Path path)

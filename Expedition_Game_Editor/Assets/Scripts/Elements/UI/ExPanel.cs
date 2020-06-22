@@ -143,18 +143,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetChapterElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ChapterDataElement)data.dataElement;
+        var elementData = (ChapterElementData)data.elementData;
 
         if(EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            description = dataElement.PublicNotes;
+            header      = elementData.Name;
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.originalName;
-            description = dataElement.originalPublicNotes;
+            header      = elementData.originalName;
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -162,12 +162,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetPartyMemberElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (PartyMemberDataElement)data.dataElement;
+        var elementData = (PartyMemberElementData)data.elementData;
 
-        header          = dataElement.interactableName;
-        iconPath        = dataElement.objectGraphicIconPath;
+        header          = elementData.interactableName;
+        iconPath        = elementData.objectGraphicIconPath;
 
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
 
         IconTexture     = Resources.Load<Texture2D>(iconPath);
@@ -176,12 +176,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetChapterInteractableElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ChapterInteractableDataElement)data.dataElement;
+        var elementData = (ChapterInteractableElementData)data.elementData;
 
-        header          = dataElement.interactableName;
-        iconPath        = dataElement.objectGraphicIconPath;
+        header          = elementData.interactableName;
+        iconPath        = elementData.objectGraphicIconPath;
 
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
 
         IconTexture     = Resources.Load<Texture2D>(iconPath);
@@ -190,32 +190,32 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetChapterRegionElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ChapterRegionDataElement)data.dataElement;
+        var elementData = (ChapterRegionElementData)data.elementData;
 
-        header          = dataElement.name;
+        header          = elementData.name;
 
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
 
-        iconPath        = dataElement.tileIconPath;
+        iconPath        = elementData.tileIconPath;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetPhaseElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (PhaseDataElement)data.dataElement;
+        var elementData = (PhaseElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            description = dataElement.PublicNotes;
+            header      = elementData.Name;
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.originalName;
-            description = dataElement.originalPublicNotes;
+            header      = elementData.originalName;
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -223,18 +223,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetQuestElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (QuestDataElement)data.dataElement;
+        var elementData = (QuestElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            description = dataElement.PublicNotes;
+            header      = elementData.Name;
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.originalName;
-            description = dataElement.originalPublicNotes;
+            header      = elementData.originalName;
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -242,18 +242,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetObjectiveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ObjectiveDataElement)data.dataElement;
+        var elementData = (ObjectiveElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            description = dataElement.PublicNotes;
+            header      = elementData.Name;
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.originalName;
-            description = dataElement.originalPublicNotes;
+            header      = elementData.originalName;
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -261,20 +261,20 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetWorldInteractableElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (WorldInteractableDataElement)data.dataElement;
+        var elementData = (WorldInteractableElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header = dataElement.interactableName;
-            iconPath = dataElement.objectGraphicIconPath;
+            header = elementData.interactableName;
+            iconPath = elementData.objectGraphicIconPath;
         } else {
-            header = dataElement.originalInteractableName;
-            iconPath = dataElement.originalObjectGraphicIconPath;
+            header = elementData.originalInteractableName;
+            iconPath = elementData.originalObjectGraphicIconPath;
         }
 
-        EditorElement.elementStatus = dataElement.elementStatus;
+        EditorElement.elementStatus = elementData.elementStatus;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
 
         IconTexture = Resources.Load<Texture2D>(iconPath);
@@ -283,18 +283,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetTaskElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (TaskDataElement)data.dataElement;
+        var elementData = (TaskElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            description = dataElement.PublicNotes;
+            header      = elementData.Name;
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.originalName;
-            description = dataElement.originalPublicNotes;
+            header      = elementData.originalName;
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -302,18 +302,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetInteractionElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (InteractionDataElement)data.dataElement;
+        var elementData = (InteractionElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Default ? "Default" : TimeManager.FormatTime(dataElement.StartTime, true) + " - " + TimeManager.FormatTime(dataElement.EndTime);
-            description = dataElement.PublicNotes;
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime, true) + " - " + TimeManager.FormatTime(elementData.EndTime);
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.Default ? "Default" : TimeManager.FormatTime(dataElement.originalStartTime, true) + " - " + TimeManager.FormatTime(dataElement.originalEndTime);
-            description = dataElement.originalPublicNotes;
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime, true) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -321,12 +321,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetOutcomeElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (OutcomeDataElement)data.dataElement;
+        var elementData = (OutcomeElementData)data.elementData;
 
-        header = Enum.GetName(typeof(Enums.OutcomeType), dataElement.type);
-        description = (Enums.OutcomeType)dataElement.type == Enums.OutcomeType.Positive ? "Requirements passed" : "Requirements failed";
+        header = Enum.GetName(typeof(Enums.OutcomeType), elementData.type);
+        description = (Enums.OutcomeType)elementData.type == Enums.OutcomeType.Positive ? "Requirements passed" : "Requirements failed";
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -334,18 +334,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetRegionElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (RegionDataElement)data.dataElement;
+        var elementData = (RegionElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            iconPath    = dataElement.tileIconPath;
+            header      = elementData.Name;
+            iconPath    = elementData.tileIconPath;
         } else {
-            header      = dataElement.originalName;
-            iconPath    = dataElement.originalTileIconPath;
+            header      = elementData.originalName;
+            iconPath    = elementData.originalTileIconPath;
         }
         
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -353,18 +353,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetAtmosphereElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (AtmosphereDataElement)data.dataElement;
+        var elementData = (AtmosphereElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Default ? "Default" : TimeManager.FormatTime(dataElement.StartTime, true) + " - " + TimeManager.FormatTime(dataElement.EndTime);
-            description = dataElement.PublicNotes;
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime, true) + " - " + TimeManager.FormatTime(elementData.EndTime);
+            description = elementData.PublicNotes;
         } else {
-            header      = dataElement.Default ? "Default" : TimeManager.FormatTime(dataElement.originalStartTime, true) + " - " + TimeManager.FormatTime(dataElement.originalEndTime);
-            description = dataElement.originalPublicNotes;
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime, true) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
+            description = elementData.originalPublicNotes;
         }
 
-        idText.text             = dataElement.Id.ToString();
+        idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
     }
@@ -372,12 +372,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetObjectGraphicElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ObjectGraphicDataElement)data.dataElement;
+        var elementData = (ObjectGraphicElementData)data.elementData;
         
-        header      = dataElement.Name;
-        iconPath    = dataElement.iconPath;
+        header      = elementData.Name;
+        iconPath    = elementData.iconPath;
         
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -385,18 +385,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetItemElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ItemDataElement)data.dataElement;
+        var elementData = (ItemElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            iconPath    = dataElement.objectGraphicIconPath;
+            header      = elementData.Name;
+            iconPath    = elementData.objectGraphicIconPath;
         } else {
-            header      = dataElement.originalName;
-            iconPath    = dataElement.originalObjectGraphicIconPath;
+            header      = elementData.originalName;
+            iconPath    = elementData.originalObjectGraphicIconPath;
         }
 
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -404,18 +404,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetInteractableElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (InteractableDataElement)data.dataElement;
+        var elementData = (InteractableElementData)data.elementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = dataElement.Name;
-            iconPath    = dataElement.objectGraphicIconPath;
+            header      = elementData.Name;
+            iconPath    = elementData.objectGraphicIconPath;
         } else {
-            header      = dataElement.originalName;
-            iconPath    = dataElement.originalObjectGraphicIconPath;
+            header      = elementData.originalName;
+            iconPath    = elementData.originalObjectGraphicIconPath;
         }
 
-        idText.text     = dataElement.Id.ToString();
+        idText.text     = elementData.Id.ToString();
         headerText.text = header;
         IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
@@ -423,23 +423,23 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (SaveDataElement)data.dataElement;
+        var elementData = (SaveElementData)data.elementData;
 
-        header = dataElement.name;
+        header = elementData.name;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
     }
 
     private void SetChapterSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ChapterSaveDataElement)data.dataElement;
+        var elementData = (ChapterSaveElementData)data.elementData;
 
-        header = dataElement.name;
-        description = dataElement.publicNotes;
+        header = elementData.name;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -447,12 +447,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetPhaseSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (PhaseSaveDataElement)data.dataElement;
+        var elementData = (PhaseSaveElementData)data.elementData;
 
-        header = dataElement.name;
-        description = dataElement.publicNotes;
+        header = elementData.name;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -460,12 +460,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetQuestSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (QuestSaveDataElement)data.dataElement;
+        var elementData = (QuestSaveElementData)data.elementData;
 
-        header = dataElement.name;
-        description = dataElement.publicNotes;
+        header = elementData.name;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -473,12 +473,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetObjectiveSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (ObjectiveSaveDataElement)data.dataElement;
+        var elementData = (ObjectiveSaveElementData)data.elementData;
 
-        header = dataElement.name;
-        description = dataElement.publicNotes;
+        header = elementData.name;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -486,12 +486,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetTaskSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (TaskSaveDataElement)data.dataElement;
+        var elementData = (TaskSaveElementData)data.elementData;
 
-        header = dataElement.name;
-        description = dataElement.publicNotes;
+        header = elementData.name;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }
@@ -499,13 +499,13 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     private void SetInteractionSaveElement()
     {
         var data = EditorElement.DataElement.data;
-        var dataElement = (InteractionSaveDataElement)data.dataElement;
+        var elementData = (InteractionSaveElementData)data.elementData;
 
-        header = dataElement.isDefault ? "Default" : TimeManager.FormatTime(dataElement.startTime, true) + " - " + TimeManager.FormatTime(dataElement.endTime);
+        header = elementData.isDefault ? "Default" : TimeManager.FormatTime(elementData.startTime, true) + " - " + TimeManager.FormatTime(elementData.endTime);
 
-        description = dataElement.publicNotes;
+        description = elementData.publicNotes;
 
-        idText.text = dataElement.Id.ToString();
+        idText.text = elementData.Id.ToString();
         headerText.text = header;
         descriptionText.text = description;
     }

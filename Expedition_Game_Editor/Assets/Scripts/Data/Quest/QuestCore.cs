@@ -138,9 +138,9 @@ public class QuestCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var questDataSource = (QuestDataElement)dataSource;
+        var questDataSource = (QuestElementData)dataSource;
 
         phaseId = questDataSource.phaseId;
 

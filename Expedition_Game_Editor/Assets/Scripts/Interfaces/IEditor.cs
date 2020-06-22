@@ -5,8 +5,8 @@ public interface IEditor
 {
     bool Loaded { get; set; }
     Route.Data Data { get; }
-    List<IDataElement> DataList { get; }
-    List<IDataElement> DataElements { get; }
+    List<IElementData> DataList { get; }
+    List<IElementData> ElementDataList { get; }
     List<SegmentController> EditorSegments { get; }
     bool Changed();
 

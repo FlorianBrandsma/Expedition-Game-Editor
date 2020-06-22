@@ -18,7 +18,7 @@ public class PhaseSaveDataManager : IDataManager
         DataController = phaseController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
 
@@ -35,13 +35,13 @@ public class PhaseSaveDataManager : IDataManager
                 break;
         }
         
-        if (phaseSaveDataList.Count == 0) return new List<IDataElement>();
+        if (phaseSaveDataList.Count == 0) return new List<IElementData>();
 
         GetPhaseData();
 
         var list = (from phaseSaveData  in phaseSaveDataList
                     join phaseData      in phaseDataList on phaseSaveData.phaseId equals phaseData.Id
-                    select new PhaseSaveDataElement()
+                    select new PhaseSaveElementData()
                     {
                         Id = phaseSaveData.Id,
 
@@ -58,7 +58,7 @@ public class PhaseSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     private void GetCustomPhaseSaveData(Search.PhaseSave searchParameters)

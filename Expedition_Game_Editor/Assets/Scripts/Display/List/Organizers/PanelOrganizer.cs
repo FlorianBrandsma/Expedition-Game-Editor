@@ -41,7 +41,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         ResetData(DataController.DataList);
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         ClearOrganizer();
 
@@ -53,13 +53,13 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         SetData(DataController.DataList);
     }
     
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IElementData> list)
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), PanelProperties.elementType);
 
         var prefab = Resources.Load<ExPanel>("Elements/UI/" + elementType);
 
-        foreach (IDataElement dataElement in list)
+        foreach (IElementData elementData in list)
         {
             var panel = (ExPanel)PoolManager.SpawnObject(prefab);
 
@@ -70,8 +70,8 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             ElementList.Add(panel.EditorElement);
 
-            dataElement.DataElement = panel.EditorElement.DataElement;
-            panel.EditorElement.DataElement.data = new DataElement.Data(DataController, dataElement);
+            elementData.DataElement = panel.EditorElement.DataElement;
+            panel.EditorElement.DataElement.data = new DataElement.Data(DataController, elementData);
             panel.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
 
             SetProperties(panel);
@@ -79,7 +79,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             panel.GetComponent<ExPanel>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)dataElement;
+            GeneralData generalData = (GeneralData)elementData;
             panel.name = generalData.DebugName + generalData.Id;
             //
 

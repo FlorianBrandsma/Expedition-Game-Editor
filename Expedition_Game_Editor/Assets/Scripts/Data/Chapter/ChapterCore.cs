@@ -128,9 +128,9 @@ public class ChapterCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var chapterDataSource = (ChapterDataElement)dataSource;
+        var chapterDataSource = (ChapterElementData)dataSource;
 
         name = chapterDataSource.name;
 

@@ -6,7 +6,7 @@ using System.Linq;
 
 public class TerrainHeaderSegment : MonoBehaviour, ISegment
 {
-    private TerrainDataElement TerrainData { get { return (TerrainDataElement)DataEditor.Data.dataElement; } }
+    private TerrainElementData TerrainData { get { return (TerrainElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -21,18 +21,18 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     #region Methods
     public void UpdateName()
     {
-        var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
+        var terrainData = (TerrainElementData)DataEditor.Data.elementData;
         terrainData.Name = inputField.text;
         
         DataEditor.UpdateEditor();
     }
 
-    private void UpdateIcon(IconDataElement iconDataElement)
+    private void UpdateIcon(IconElementData iconElementData)
     {
-        var terrainData = (TerrainDataElement)DataEditor.Data.dataElement;
+        var terrainData = (TerrainElementData)DataEditor.Data.elementData;
 
-        terrainData.IconId = iconDataElement.Id;
-        terrainData.iconPath = iconDataElement.Path;
+        terrainData.IconId = iconElementData.Id;
+        terrainData.iconPath = iconElementData.Path;
 
         DataEditor.UpdateEditor();
     }
@@ -62,16 +62,16 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         idText.text = TerrainData.Id.ToString();
         inputField.text = TerrainData.Name;
 
-        var iconDataElement = new IconDataElement();
+        var iconElementData = new IconElementData();
 
-        iconDataElement.Id              = TerrainData.IconId;
-        iconDataElement.Path            = TerrainData.iconPath;
-        iconDataElement.baseIconPath    = TerrainData.baseTilePath;
+        iconElementData.Id              = TerrainData.IconId;
+        iconElementData.Path            = TerrainData.iconPath;
+        iconElementData.baseIconPath    = TerrainData.baseTilePath;
 
-        iconDataElement.DataElement = editorElement.DataElement;
+        iconElementData.DataElement = editorElement.DataElement;
 
-        editorElement.DataElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
-        editorElement.DataElement.data.dataElement = iconDataElement;
+        editorElement.DataElement.data.dataController.DataList = new List<IElementData>() { iconElementData };
+        editorElement.DataElement.data.elementData = iconElementData;
 
         SelectionElementManager.Add(editorElement);
         SelectionManager.SelectData(editorElement.DataElement.data.dataController.DataList);
@@ -95,19 +95,19 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
-        switch (selectionElement.data.dataController.DataType)
+        switch (dataElement.data.dataController.DataType)
         {
             case Enums.DataType.Icon:
 
-                var iconDataElement = (IconDataElement)selectionElement.data.dataElement;
+                var iconElementData = (IconElementData)dataElement.data.elementData;
 
-                UpdateIcon(iconDataElement);
+                UpdateIcon(iconElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + selectionElement.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + dataElement.data.dataController.DataType); break;
         }
     }
     #endregion

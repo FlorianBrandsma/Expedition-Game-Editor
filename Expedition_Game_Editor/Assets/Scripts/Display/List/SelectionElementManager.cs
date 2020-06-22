@@ -23,27 +23,27 @@ static public class SelectionElementManager
     }
 
     //Reload the display of active elements that match the argument
-    static public void UpdateElements(IDataElement dataElement)
+    static public void UpdateElements(IElementData elementData)
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
-        var elementList = FindSelectionElements(activeElements, (GeneralData)dataElement);
+        var elementList = FindSelectionElements(activeElements, (GeneralData)elementData);
 
         var managerList = elementList.Select(x => x.DataElement.DisplayManager).Distinct().ToList();
 
         managerList.ForEach(x =>
         {
             x.UpdateData();
-            x.CorrectPosition(dataElement);
+            x.CorrectPosition(elementData);
         });
     }
     
-    static public List<IDataElement> FindDataElements(GeneralData generalData)
+    static public List<IElementData> FindElementData(GeneralData generalData)
     {
-        var dataElementList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), generalData)
-                                                   .Select(x => x.DataElement.data.dataElement).Distinct().ToList();
+        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), generalData)
+                                                   .Select(x => x.DataElement.data.elementData).Distinct().ToList();
 
-        return dataElementList;
+        return elementDataList;
     }
 
     static public List<EditorElement> FindSelectionElements(GeneralData generalData)
@@ -86,8 +86,8 @@ static public class SelectionElementManager
         elementList.Clear();
     }
 
-    static public bool SelectionActive(DataElement selectionElement)
+    static public bool SelectionActive(DataElement dataElement)
     {
-        return (selectionElement != null && selectionElement.gameObject.activeInHierarchy);
+        return (dataElement != null && dataElement.gameObject.activeInHierarchy);
     }
 }

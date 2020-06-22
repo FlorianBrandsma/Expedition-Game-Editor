@@ -4,11 +4,11 @@ using System.Linq;
 
 public class QuestEditor : MonoBehaviour, IEditor
 {
-    public QuestDataElement QuestData { get { return (QuestDataElement)Data.dataElement; } }
+    public QuestElementData QuestData { get { return (QuestElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<WorldInteractableDataElement> worldInteractableDataList = new List<WorldInteractableDataElement>();
+    public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -16,16 +16,16 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(QuestData).Concat(new[] { QuestData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(QuestData).Concat(new[] { QuestData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -52,14 +52,14 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         QuestData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(QuestData))
                 x.Copy(QuestData);
@@ -75,7 +75,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

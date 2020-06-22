@@ -47,14 +47,14 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
 
     private void SetItemElement()
     {
-        var data = (ItemDataElement)EditorElement.DataElement.data.dataElement;
+        var data = (ItemElementData)EditorElement.DataElement.data.elementData;
 
         label.text = data.originalName;
     }
 
     private void SetChapterRegionElement()
     {
-        var data = (ChapterRegionDataElement)EditorElement.DataElement.data.dataElement;
+        var data = (ChapterRegionElementData)EditorElement.DataElement.data.elementData;
 
         label.text = data.name;
     }

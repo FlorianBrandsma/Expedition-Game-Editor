@@ -56,15 +56,15 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldObjectElement()
     {
-        var dataElement = (WorldObjectDataElement)GameElement.DataElement.data.dataElement;
+        var elementData = (WorldObjectElementData)GameElement.DataElement.data.elementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
+        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.ObjectGraphicId);
 
-        position = new Vector3(dataElement.PositionX, dataElement.PositionY, dataElement.PositionZ);
-        rotation = new Vector3(dataElement.RotationX, dataElement.RotationY, dataElement.RotationZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = dataElement.ScaleMultiplier;
+        scaleMultiplier = elementData.ScaleMultiplier;
 
         SetObjectGraphic();
     }

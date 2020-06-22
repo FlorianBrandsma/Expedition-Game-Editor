@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChapterSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private ChapterSaveDataElement ChapterSaveData { get { return (ChapterSaveDataElement)DataEditor.Data.dataElement; } }
+    private ChapterSaveElementData ChapterSaveData { get { return (ChapterSaveElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -38,5 +38,5 @@ public class ChapterSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

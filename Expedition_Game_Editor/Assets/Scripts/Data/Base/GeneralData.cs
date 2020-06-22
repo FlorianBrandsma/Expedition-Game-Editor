@@ -58,18 +58,18 @@ public class GeneralData
         return true;
     }
 
-    public void CloneGeneralData(IDataElement dataElement)
+    public void CloneGeneralData(IElementData elementData)
     {
-        dataElement.SelectionStatus = SelectionStatus;
-        dataElement.DataType = DataType;
+        elementData.SelectionStatus = SelectionStatus;
+        elementData.DataType = DataType;
 
-        dataElement.Id = Id;
-        dataElement.Index = Index;
+        elementData.Id = Id;
+        elementData.Index = Index;
     }
 
-    public virtual void Copy(IDataElement dataSource)
+    public virtual void Copy(IElementData dataSource)
     {
-        var generalDataSource = (GeneralDataElement)dataSource;
+        var generalDataSource = (GeneralElementData)dataSource;
 
         selectionStatus = generalDataSource.selectionStatus;
         dataType = generalDataSource.dataType;

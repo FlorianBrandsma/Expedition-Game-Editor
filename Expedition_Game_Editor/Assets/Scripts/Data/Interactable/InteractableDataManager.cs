@@ -19,13 +19,13 @@ public class InteractableDataManager : IDataManager
         DataController = interactableController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
         
         GetInteractableData(searchParameters);
 
-        if (interactableDataList.Count == 0) return new List<IDataElement>();
+        if (interactableDataList.Count == 0) return new List<IElementData>();
 
         GetObjectGraphicData();
         GetIconData();
@@ -33,7 +33,7 @@ public class InteractableDataManager : IDataManager
         var list = (from interactableData   in interactableDataList
                     join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
-                    select new InteractableDataElement()
+                    select new InteractableElementData()
                     {
                         Id      = interactableData.Id,
                         Index   = interactableData.Index,
@@ -51,7 +51,7 @@ public class InteractableDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetInteractableData(Search.Interactable searchParameters)

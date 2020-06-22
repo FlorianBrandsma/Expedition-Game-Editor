@@ -439,63 +439,63 @@ public class InteractionCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(InteractionDataElement dataElement)
+    public void CloneCore(InteractionElementData elementData)
     {
-        CloneGeneralData(dataElement);
+        CloneGeneralData(elementData);
 
-        dataElement.taskId = taskId;
-        dataElement.regionId = regionId;
-        dataElement.terrainId = terrainId;
-        dataElement.terrainTileId = terrainTileId;
+        elementData.taskId = taskId;
+        elementData.regionId = regionId;
+        elementData.terrainId = terrainId;
+        elementData.terrainTileId = terrainTileId;
 
-        dataElement.isDefault = isDefault;
+        elementData.isDefault = isDefault;
 
-        dataElement.startTime = startTime;
-        dataElement.endTime = endTime;
+        elementData.startTime = startTime;
+        elementData.endTime = endTime;
 
-        dataElement.publicNotes = publicNotes;
-        dataElement.privateNotes = privateNotes;
+        elementData.publicNotes = publicNotes;
+        elementData.privateNotes = privateNotes;
 
-        dataElement.positionX = positionX;
-        dataElement.positionY = positionY;
-        dataElement.positionZ = positionZ;
+        elementData.positionX = positionX;
+        elementData.positionY = positionY;
+        elementData.positionZ = positionZ;
 
-        dataElement.rotationX = rotationX;
-        dataElement.rotationY = rotationY;
-        dataElement.rotationZ = rotationZ;
+        elementData.rotationX = rotationX;
+        elementData.rotationY = rotationY;
+        elementData.rotationZ = rotationZ;
 
-        dataElement.scaleMultiplier = scaleMultiplier;
+        elementData.scaleMultiplier = scaleMultiplier;
 
-        dataElement.animation = animation;
+        elementData.animation = animation;
 
         //Original
-        dataElement.originalRegionId = originalRegionId;
-        dataElement.originalTerrainId = originalTerrainId;
-        dataElement.originalTerrainTileId = originalTerrainTileId;
+        elementData.originalRegionId = originalRegionId;
+        elementData.originalTerrainId = originalTerrainId;
+        elementData.originalTerrainTileId = originalTerrainTileId;
 
-        dataElement.originalStartTime = originalStartTime;
-        dataElement.originalEndTime = originalEndTime;
+        elementData.originalStartTime = originalStartTime;
+        elementData.originalEndTime = originalEndTime;
 
-        dataElement.originalPublicNotes = originalPublicNotes;
-        dataElement.originalPrivateNotes = originalPrivateNotes;
+        elementData.originalPublicNotes = originalPublicNotes;
+        elementData.originalPrivateNotes = originalPrivateNotes;
 
-        dataElement.originalPositionX = originalPositionX;
-        dataElement.originalPositionY = originalPositionY;
-        dataElement.originalPositionZ = originalPositionZ;
+        elementData.originalPositionX = originalPositionX;
+        elementData.originalPositionY = originalPositionY;
+        elementData.originalPositionZ = originalPositionZ;
 
-        dataElement.originalRotationX = originalRotationX;
-        dataElement.originalRotationY = originalRotationY;
-        dataElement.originalRotationZ = originalRotationZ;
+        elementData.originalRotationX = originalRotationX;
+        elementData.originalRotationY = originalRotationY;
+        elementData.originalRotationZ = originalRotationZ;
 
-        dataElement.originalScaleMultiplier = originalScaleMultiplier;
+        elementData.originalScaleMultiplier = originalScaleMultiplier;
 
-        dataElement.originalAnimation = originalAnimation;
+        elementData.originalAnimation = originalAnimation;
     }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var interactionDataSource = (InteractionDataElement)dataSource;
+        var interactionDataSource = (InteractionElementData)dataSource;
 
         taskId = interactionDataSource.taskId;
         regionId = interactionDataSource.regionId;

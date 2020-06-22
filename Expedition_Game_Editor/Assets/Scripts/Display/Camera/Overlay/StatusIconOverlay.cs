@@ -57,7 +57,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
         statusIcon.transform.localEulerAngles = Vector3.zero;
         
         statusIcon.cam = cameraManager.cam;
-        statusIcon.targetDataElement = target.DataElement.data.dataElement;
+        statusIcon.targetElementData = target.DataElement.data.elementData;
         statusIcon.target = target.transform;
         statusIcon.parentRect = cameraManager.displayRect;
 

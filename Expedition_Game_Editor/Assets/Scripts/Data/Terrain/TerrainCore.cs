@@ -104,9 +104,9 @@ public class TerrainCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var terrainDataSource = (TerrainDataElement)dataSource;
+        var terrainDataSource = (TerrainElementData)dataSource;
 
         regionId = terrainDataSource.regionId;
         iconId = terrainDataSource.iconId;

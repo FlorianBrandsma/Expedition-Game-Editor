@@ -38,7 +38,7 @@ public class EditorWorldDataManager : IDataManager
         DataController = editorWorldController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.EditorWorld>().First();
 
@@ -46,7 +46,7 @@ public class EditorWorldDataManager : IDataManager
 
         GetRegionData(searchParameters);
 
-        if (regionDataList.Count == 0) return new List<IDataElement>();
+        if (regionDataList.Count == 0) return new List<IElementData>();
 
         GetTileSetData();
         GetTerrainData();
@@ -71,7 +71,7 @@ public class EditorWorldDataManager : IDataManager
         var list = (
             from regionData     in regionDataList
             join tileSetData    in tileSetDataList on regionData.tileSetId equals tileSetData.Id
-            select new EditorWorldDataElement
+            select new EditorWorldElementData
             {
                 Id = regionData.Id,
                 Index = regionData.Index,
@@ -85,7 +85,7 @@ public class EditorWorldDataManager : IDataManager
 
                 terrainDataList = (
                 from terrainData in terrainDataList
-                select new TerrainDataElement()
+                select new TerrainElementData()
                 {
                     Id = terrainData.Id,
                     Index = terrainData.Index,
@@ -97,7 +97,7 @@ public class EditorWorldDataManager : IDataManager
                     atmosphereDataList = (
                     from atmosphereData in atmosphereDataList
                     where atmosphereData.terrainId == terrainData.Id
-                    select new AtmosphereDataElement()
+                    select new AtmosphereElementData()
                     {
                         Id = atmosphereData.Id,
 
@@ -113,7 +113,7 @@ public class EditorWorldDataManager : IDataManager
                     terrainTileDataList = (
                     from terrainTileData in terrainTileDataList
                     where terrainTileData.terrainId == terrainData.Id
-                    select new TerrainTileDataElement()
+                    select new TerrainTileElementData()
                     {
                         Id = terrainTileData.Id,
                         Index = terrainTileData.Index,
@@ -135,7 +135,7 @@ public class EditorWorldDataManager : IDataManager
                     join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
 
                     where interactionData.terrainId == terrainData.Id
-                    select new WorldInteractableDataElement()
+                    select new WorldInteractableElementData()
                     {
                         Id = worldInteractableData.Id,
 
@@ -179,7 +179,7 @@ public class EditorWorldDataManager : IDataManager
                         startTime = interactionData.startTime,
                         endTime = interactionData.endTime,
 
-                    }).ToList() : new List<WorldInteractableDataElement>(),
+                    }).ToList() : new List<WorldInteractableElementData>(),
 
                     interactionDataList = regionType == Enums.RegionType.Interaction ? (
                     from interactionData        in interactionDataList
@@ -196,7 +196,7 @@ public class EditorWorldDataManager : IDataManager
                                       select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
 
                     where interactionData.terrainId == terrainData.Id
-                    select new InteractionDataElement()
+                    select new InteractionElementData()
                     {
                         Id = interactionData.Id,
                         Index = interactionData.Index,
@@ -242,14 +242,14 @@ public class EditorWorldDataManager : IDataManager
 
                         defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>()
 
-                    }).OrderBy(x => x.Index).ToList() : new List<InteractionDataElement>(),
+                    }).OrderBy(x => x.Index).ToList() : new List<InteractionElementData>(),
 
                     worldObjectDataList = (
                     from worldObjectData    in worldObjectDataList
                     join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.Id
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     where worldObjectData.terrainId == terrainData.Id
-                    select new WorldObjectDataElement()
+                    select new WorldObjectElementData()
                     {
                         Id = worldObjectData.Id,
                         TerrainId = worldObjectData.terrainId,
@@ -291,7 +291,7 @@ public class EditorWorldDataManager : IDataManager
                                   join iconData             in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                                   select new { partyMemberData, interactableData, objectGraphicData, iconData }) on chapterData.Id equals leftJoin.partyMemberData.chapterId into partyMemberData
 
-                select new PhaseDataElement()
+                select new PhaseElementData()
                 {
                     Id = phaseData.Id,
 
@@ -322,7 +322,7 @@ public class EditorWorldDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
     
     internal void GetRegionData(Search.EditorWorld searchData)

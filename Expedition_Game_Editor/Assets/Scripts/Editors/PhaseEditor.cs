@@ -4,10 +4,10 @@ using System.Linq;
 
 public class PhaseEditor : MonoBehaviour, IEditor
 {
-    public PhaseDataElement PhaseData { get { return (PhaseDataElement)Data.dataElement; } }
+    public PhaseElementData PhaseData { get { return (PhaseElementData)Data.elementData; } }
     
-    private List<RegionDataElement> regionDataList = new List<RegionDataElement>();
-    public List<RegionDataElement> RegionDataList { get { return regionDataList; } }
+    private List<RegionElementData> regionDataList = new List<RegionElementData>();
+    public List<RegionElementData> RegionDataList { get { return regionDataList; } }
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -15,16 +15,16 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public Route.Data Data { get { return PathController.route.data; } }
 
-    public List<IDataElement> DataList
+    public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindDataElements(PhaseData).Concat(new[] { PhaseData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(PhaseData).Concat(new[] { PhaseData }).Distinct().ToList(); }
     }
 
-    public List<IDataElement> DataElements
+    public List<IElementData> ElementDataList
     {
         get
         {
-            var list = new List<IDataElement>();
+            var list = new List<IElementData>();
 
             DataList.ForEach(x => list.Add(x));
 
@@ -37,7 +37,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        DataElements.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
+        ElementDataList.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
 
         SetEditor();
     }
@@ -49,14 +49,14 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return DataElements.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges()
     {
         PhaseData.Update();
 
-        DataElements.ForEach(x =>
+        ElementDataList.ForEach(x =>
         {
             if (((GeneralData)x).Equals(PhaseData))
                 x.Copy(PhaseData);
@@ -72,7 +72,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        DataElements.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

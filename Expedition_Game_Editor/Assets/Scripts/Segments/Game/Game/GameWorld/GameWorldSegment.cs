@@ -20,7 +20,7 @@ public class GameWorldSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var saveData = (SaveDataElement)SegmentController.Path.FindLastRoute(Enums.DataType.Save).data.dataElement;
+        var saveData = (SaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Save).data.elementData;
 
         GameManager.instance.LoadGameSaveData(saveData);
     }
@@ -32,5 +32,5 @@ public class GameWorldSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
 }

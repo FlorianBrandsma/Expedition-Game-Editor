@@ -24,13 +24,13 @@ public class AtmosphereDataManager : IDataManager
         DataController = dataController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
 
         GetAtmosphereData(searchParameters);
 
-        if (atmosphereDataList.Count == 0) return new List<IDataElement>();
+        if (atmosphereDataList.Count == 0) return new List<IElementData>();
 
         GetTerrainData();
 
@@ -51,7 +51,7 @@ public class AtmosphereDataManager : IDataManager
 
                     join iconData       in iconDataList     on terrainData.iconId       equals iconData.Id
 
-                    select new AtmosphereDataElement()
+                    select new AtmosphereElementData()
                     {
                         Id = atmosphereData.Id,
 
@@ -75,7 +75,7 @@ public class AtmosphereDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetAtmosphereData(Search.Atmosphere searchParameters)

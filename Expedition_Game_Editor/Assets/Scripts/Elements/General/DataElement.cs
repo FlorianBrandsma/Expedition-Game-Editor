@@ -7,7 +7,7 @@ public class DataElement : MonoBehaviour
     public class Data
     {
         public IDataController dataController;
-        public IDataElement dataElement;
+        public IElementData elementData;
         public SearchProperties searchProperties;
 
         public Data() { }
@@ -15,30 +15,30 @@ public class DataElement : MonoBehaviour
         public Data(Route.Data data)
         {
             dataController = data.dataController;
-            dataElement = data.dataElement;
+            elementData = data.elementData;
         }
 
         public Data(IDataController dataController)
         {
-            dataElement = new GeneralDataElement();
+            elementData = new GeneralElementData();
 
             if (dataController != null)
             {
                 this.dataController = dataController;
-                dataElement.DataType = dataController.DataType;
+                elementData.DataType = dataController.DataType;
             }
         }
         
-        public Data(IDataController dataController, IDataElement dataElement)
+        public Data(IDataController dataController, IElementData elementData)
         {
             this.dataController = dataController;
-            this.dataElement = dataElement;
+            this.elementData = elementData;
         }
 
-        public Data(IDataController dataController, IDataElement dataElement, SearchProperties searchProperties)
+        public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
         {
             this.dataController = dataController;
-            this.dataElement = dataElement;
+            this.elementData = elementData;
             this.searchProperties = searchProperties;
         }
     }
@@ -49,7 +49,7 @@ public class DataElement : MonoBehaviour
     public SegmentController segmentController;
     public GameObject displayParent;
 
-    public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
+    public GeneralData GeneralData { get { return (GeneralData)data.elementData; } }
 
     public IDisplayManager DisplayManager { get; set; }
 
@@ -96,7 +96,7 @@ public class DataElement : MonoBehaviour
             displayParent.GetComponent<IDisplay>().DataController = data.dataController;
     }
 
-    public void SetResult(IDataElement resultData)
+    public void SetResult(IElementData resultData)
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
@@ -106,7 +106,7 @@ public class DataElement : MonoBehaviour
         if(data.dataController.SearchProperties != null)
         {
             if (data.dataController.SearchProperties.autoUpdate)
-                data.dataElement.UpdateSearch();
+                data.elementData.UpdateSearch();
         }
         
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
@@ -114,8 +114,8 @@ public class DataElement : MonoBehaviour
     
     public void CancelDataSelection()
     {
-        if (data.dataElement == null) return;
+        if (data.elementData == null) return;
 
-        data.dataElement.SelectionStatus = Enums.SelectionStatus.None;
+        data.elementData.SelectionStatus = Enums.SelectionStatus.None;
     }
 }

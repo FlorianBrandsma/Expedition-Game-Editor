@@ -91,9 +91,9 @@ public class ObjectiveSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var objectiveSaveDataSource = (ObjectiveSaveDataElement)dataSource;
+        var objectiveSaveDataSource = (ObjectiveSaveElementData)dataSource;
 
         saveId = objectiveSaveDataSource.saveId;
         questSaveId = objectiveSaveDataSource.questSaveId;

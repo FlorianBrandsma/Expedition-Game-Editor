@@ -115,14 +115,14 @@ public class ListManager : MonoBehaviour, IDisplayManager
         overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(IDataElement dataElement)
+    public void CorrectPosition(IElementData elementData)
     {
         if (!listProperties.enablePositionCorrection) return;
 
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
 
-        var elementPosition = List.GetElementPosition(dataElement.Index);
+        var elementPosition = List.GetElementPosition(elementData.Index);
 
         var localElementPosition = new Vector2(elementPosition.x + listParent.localPosition.x,
                                                elementPosition.y + listParent.localPosition.y) * positionOffset;

@@ -14,16 +14,16 @@ public class IconDataManager : IDataManager
         DataController = iconController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
 
         GetIconData(searchParameters);
 
-        if (iconDataList.Count == 0) return new List<IDataElement>();
+        if (iconDataList.Count == 0) return new List<IElementData>();
 
         var list = (from iconData in iconDataList
-                    select new IconDataElement()
+                    select new IconElementData()
                     {
                         Id = iconData.Id,
                         Index = iconData.Index,
@@ -35,7 +35,7 @@ public class IconDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetIconData(Search.Icon searchParameters)

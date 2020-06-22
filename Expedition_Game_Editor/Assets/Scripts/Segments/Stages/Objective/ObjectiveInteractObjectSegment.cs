@@ -37,7 +37,7 @@ public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
 
-        var worldInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableDataElement>().ToList();
+        var worldInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableElementData>().ToList();
         worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableDataList.Add(x));
     }
 
@@ -53,7 +53,7 @@ public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
 

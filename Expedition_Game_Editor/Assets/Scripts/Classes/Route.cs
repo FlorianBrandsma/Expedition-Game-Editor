@@ -8,20 +8,20 @@ public class Route
     public class Data
     {
         public IDataController dataController;
-        public IDataElement dataElement;
+        public IElementData elementData;
         public SearchProperties searchProperties;
 
-        public List<IDataElement> dataList;
+        public List<IElementData> dataList;
 
         public Data()
         {
-            dataElement = new GeneralDataElement();
+            elementData = new GeneralElementData();
         }
         
         public Data(Data data)
         {
             dataController = data.dataController;
-            dataElement = data.dataElement;
+            elementData = data.elementData;
             searchProperties = data.searchProperties;
             
             if(data.dataList != null)
@@ -31,39 +31,39 @@ public class Route
             }
         }
 
-        public Data(DataElement.Data selectionData)
+        public Data(DataElement.Data data)
         {
-            dataController = selectionData.dataController;
-            dataElement = selectionData.dataElement;
-            searchProperties = selectionData.searchProperties;
+            dataController = data.dataController;
+            elementData = data.elementData;
+            searchProperties = data.searchProperties;
 
-            dataList = selectionData.dataController.DataList;
+            dataList = data.dataController.DataList;
         }
 
         public Data(IDataController dataController)
         {
             this.dataController = dataController;
-            dataElement = new GeneralDataElement();
+            elementData = new GeneralElementData();
         }
 
-        public Data(IDataController dataController, IDataElement dataElement)
+        public Data(IDataController dataController, IElementData elementData)
         {
             this.dataController = dataController;
-            this.dataElement = dataElement;
+            this.elementData = elementData;
         }
 
-        public Data(Data data, IDataElement dataElement)
+        public Data(Data data, IElementData elementData)
         {
             dataController = data.dataController;
-            this.dataElement = dataElement;
+            this.elementData = elementData;
 
             dataList = data.dataList;
         }
 
-        public Data(IDataController dataController, IDataElement dataElement, SearchProperties searchProperties)
+        public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
         {
             this.dataController = dataController;
-            this.dataElement = dataElement;
+            this.elementData = elementData;
             this.searchProperties = searchProperties;
         }
     }
@@ -74,14 +74,14 @@ public class Route
 
     public Enums.SelectionStatus selectionStatus;
 
-    public GeneralData GeneralData { get { return (GeneralData)data.dataElement; } }
+    public GeneralData GeneralData { get { return (GeneralData)data.elementData; } }
 
     public Route() { }
 
     public Route(Path path)
     {
         controller = 0;
-        data = new Data(null, new GeneralDataElement(), new SearchProperties(Enums.DataType.None));
+        data = new Data(null, new GeneralElementData(), new SearchProperties(Enums.DataType.None));
         this.path = path;
     }
 

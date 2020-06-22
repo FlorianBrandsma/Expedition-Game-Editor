@@ -20,13 +20,13 @@ public class PartyMemberDataManager : IDataManager
         DataController = partyMemberController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
 
         GetPartyMemberData(searchParameters);
 
-        if (partyMemberDataList.Count == 0) return new List<IDataElement>();
+        if (partyMemberDataList.Count == 0) return new List<IElementData>();
 
         GetInteractableData();
         GetObjectGraphicData();
@@ -36,7 +36,7 @@ public class PartyMemberDataManager : IDataManager
                     join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
                     join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
-                    select new PartyMemberDataElement()
+                    select new PartyMemberElementData()
                     {
                         Id = partyMemberData.Id,
                         Index = partyMemberData.Index,
@@ -51,7 +51,7 @@ public class PartyMemberDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     internal void GetPartyMemberData(Search.PartyMember searchParameters)

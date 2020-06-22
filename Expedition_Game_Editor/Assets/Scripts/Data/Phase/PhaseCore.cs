@@ -338,52 +338,52 @@ public class PhaseCore : GeneralData
 
     public void Delete() { }
 
-    public void CloneCore(PhaseDataElement dataElement)
+    public void CloneCore(PhaseElementData elementData)
     {
-        CloneGeneralData(dataElement);
+        CloneGeneralData(elementData);
 
-        dataElement.defaultPositionX = defaultPositionX;
+        elementData.defaultPositionX = defaultPositionX;
 
-        dataElement.name = name;
+        elementData.name = name;
 
-        dataElement.defaultRegionId = defaultRegionId;
+        elementData.defaultRegionId = defaultRegionId;
 
-        dataElement.defaultPositionX = defaultPositionX;
-        dataElement.defaultPositionY = defaultPositionY;
-        dataElement.defaultPositionZ = defaultPositionZ;
+        elementData.defaultPositionX = defaultPositionX;
+        elementData.defaultPositionY = defaultPositionY;
+        elementData.defaultPositionZ = defaultPositionZ;
 
-        dataElement.defaultRotationX = defaultRotationX;
-        dataElement.defaultRotationY = defaultRotationY;
-        dataElement.defaultRotationZ = defaultRotationZ;
+        elementData.defaultRotationX = defaultRotationX;
+        elementData.defaultRotationY = defaultRotationY;
+        elementData.defaultRotationZ = defaultRotationZ;
 
-        dataElement.defaultScaleMultiplier = defaultScaleMultiplier;
+        elementData.defaultScaleMultiplier = defaultScaleMultiplier;
 
-        dataElement.publicNotes = publicNotes;
-        dataElement.privateNotes = privateNotes;
+        elementData.publicNotes = publicNotes;
+        elementData.privateNotes = privateNotes;
 
         //Original
-        dataElement.originalName = originalName;
+        elementData.originalName = originalName;
 
-        dataElement.originalDefaultRegionId = originalDefaultRegionId;
+        elementData.originalDefaultRegionId = originalDefaultRegionId;
 
-        dataElement.originalDefaultPositionX = originalDefaultPositionX;
-        dataElement.originalDefaultPositionY = originalDefaultPositionY;
-        dataElement.originalDefaultPositionZ = originalDefaultPositionZ;
+        elementData.originalDefaultPositionX = originalDefaultPositionX;
+        elementData.originalDefaultPositionY = originalDefaultPositionY;
+        elementData.originalDefaultPositionZ = originalDefaultPositionZ;
 
-        dataElement.originalDefaultRotationX = originalDefaultRotationX;
-        dataElement.originalDefaultRotationY = originalDefaultRotationY;
-        dataElement.originalDefaultRotationZ = originalDefaultRotationZ;
+        elementData.originalDefaultRotationX = originalDefaultRotationX;
+        elementData.originalDefaultRotationY = originalDefaultRotationY;
+        elementData.originalDefaultRotationZ = originalDefaultRotationZ;
 
-        dataElement.originalDefaultScaleMultiplier = originalDefaultScaleMultiplier;
+        elementData.originalDefaultScaleMultiplier = originalDefaultScaleMultiplier;
 
-        dataElement.originalPublicNotes = originalPublicNotes;
-        dataElement.originalPrivateNotes = originalPrivateNotes;
+        elementData.originalPublicNotes = originalPublicNotes;
+        elementData.originalPrivateNotes = originalPrivateNotes;
     }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var phaseDataSource = (PhaseDataElement)dataSource;
+        var phaseDataSource = (PhaseElementData)dataSource;
 
         chapterId = phaseDataSource.chapterId;
 

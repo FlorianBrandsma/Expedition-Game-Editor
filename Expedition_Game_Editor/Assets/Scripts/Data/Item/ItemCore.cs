@@ -113,9 +113,9 @@ public class ItemCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var itemDataSource = (ItemDataElement)dataSource;
+        var itemDataSource = (ItemElementData)dataSource;
 
         objectGraphicId = itemDataSource.objectGraphicId;
 

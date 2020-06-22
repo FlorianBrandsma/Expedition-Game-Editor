@@ -25,11 +25,11 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             SetData(DataController.DataList);
     }
 
-    public void SetData(List<IDataElement> list)
+    public void SetData(List<IElementData> list)
     {
-        foreach (IDataElement data in list)
+        foreach (IElementData data in list)
         {
-            var objectGraphicData = (ObjectGraphicDataElement)data;
+            var objectGraphicData = (ObjectGraphicElementData)data;
 
             if (objectGraphicData.Id == 1) continue;
 
@@ -54,7 +54,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
-    public void ResetData(List<IDataElement> filter)
+    public void ResetData(List<IElementData> filter)
     {
         CloseOrganizer();
         SetData();

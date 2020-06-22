@@ -73,9 +73,9 @@ public class ObjectGraphicCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var objectGraphicDataSource = (ObjectGraphicDataElement)dataSource;
+        var objectGraphicDataSource = (ObjectGraphicElementData)dataSource;
 
         iconId = objectGraphicDataSource.iconId;
 

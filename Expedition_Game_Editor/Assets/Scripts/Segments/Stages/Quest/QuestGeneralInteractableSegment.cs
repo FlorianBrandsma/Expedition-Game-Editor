@@ -35,22 +35,22 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
         SetStatus(SegmentController.DataController.DataList);
 
-        var questInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableDataElement>().ToList();
+        var questInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableElementData>().ToList();
         questInteractableList.ForEach(x => QuestEditor.worldInteractableDataList.Add(x));
     }
 
-    private void SetStatus(List<IDataElement> dataList)
+    private void SetStatus(List<IElementData> dataList)
     {
         dataList.ForEach(x =>
         {
-            var worldInteractableDataElement = (WorldInteractableDataElement)x;
+            var worldInteractableElementData = (WorldInteractableElementData)x;
 
-            if (worldInteractableDataElement.QuestId == QuestEditor.QuestData.Id)
-                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Enabled;
-            else if (worldInteractableDataElement.QuestId == 0)
-                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Disabled;
+            if (worldInteractableElementData.QuestId == QuestEditor.QuestData.Id)
+                worldInteractableElementData.elementStatus = Enums.ElementStatus.Enabled;
+            else if (worldInteractableElementData.QuestId == 0)
+                worldInteractableElementData.elementStatus = Enums.ElementStatus.Disabled;
             else
-                worldInteractableDataElement.elementStatus = Enums.ElementStatus.Locked;
+                worldInteractableElementData.elementStatus = Enums.ElementStatus.Locked;
         });
     }
 
@@ -66,7 +66,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement)
+    public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
 

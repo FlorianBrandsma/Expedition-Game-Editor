@@ -18,19 +18,19 @@ public class ChapterSaveDataManager : IDataManager
         DataController = chapterController;
     }
 
-    public List<IDataElement> GetDataElements(SearchProperties searchProperties)
+    public List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterSave>().First();
 
         GetChapterSaveData(searchParameters);
 
-        if (chapterSaveDataList.Count == 0) return new List<IDataElement>();
+        if (chapterSaveDataList.Count == 0) return new List<IElementData>();
 
         GetChapterData();
 
         var list = (from chapterSaveData    in chapterSaveDataList
                     join chapterData        in chapterDataList on chapterSaveData.chapterId equals chapterData.Id
-                    select new ChapterSaveDataElement()
+                    select new ChapterSaveElementData()
                     {
                         Id = chapterSaveData.Id,
                         
@@ -47,7 +47,7 @@ public class ChapterSaveDataManager : IDataManager
 
         list.ForEach(x => x.SetOriginalValues());
 
-        return list.Cast<IDataElement>().ToList();
+        return list.Cast<IElementData>().ToList();
     }
 
     public void GetChapterSaveData(Search.ChapterSave searchParameters)

@@ -88,9 +88,9 @@ public class PartyMemberCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var partyMemberDataSource = (PartyMemberDataElement)dataSource;
+        var partyMemberDataSource = (PartyMemberElementData)dataSource;
 
         chapterId = partyMemberDataSource.chapterId;
         interactableId = partyMemberDataSource.interactableId;

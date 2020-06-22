@@ -6,7 +6,7 @@ using System.Linq;
 
 public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
 {
-    private AtmosphereDataElement AtmosphereData { get { return (AtmosphereDataElement)DataEditor.Data.dataElement; } }
+    private AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)DataEditor.Data.elementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -48,6 +48,6 @@ public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement selectionElement) { }
+    public void SetSearchResult(DataElement dataElement) { }
     #endregion
 }

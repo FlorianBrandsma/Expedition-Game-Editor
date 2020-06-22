@@ -91,9 +91,9 @@ public class InteractionSaveCore : GeneralData
     public void Delete() { }
     #endregion
 
-    new public virtual void Copy(IDataElement dataSource)
+    new public virtual void Copy(IElementData dataSource)
     {
-        var interactionSaveDataSource = (InteractionSaveDataElement)dataSource;
+        var interactionSaveDataSource = (InteractionSaveElementData)dataSource;
 
         saveId = interactionSaveDataSource.saveId;
         taskSaveId = interactionSaveDataSource.taskSaveId;

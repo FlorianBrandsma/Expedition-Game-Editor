@@ -4,7 +4,7 @@ using System.Collections;
 public class Tile : MonoBehaviour, IPoolable
 {
     public Enums.DataType DataType  { get; set; }
-    public IDataElement DataElement { get; set; }
+    public IElementData ElementData { get; set; }
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return Enums.ElementType.Tile; } }
@@ -25,14 +25,14 @@ public class Tile : MonoBehaviour, IPoolable
             default: Debug.Log("CASE MISSING: " + DataType); break;
         }
 
-        DataElement = null;
+        ElementData = null;
 
         gameObject.SetActive(false);
     }
 
     private void CloseTerrainTile()
     {
-        var terrainTileData = (TerrainTileDataElement)DataElement;
+        var terrainTileData = (TerrainTileElementData)ElementData;
 
         terrainTileData.active = false;
     }
