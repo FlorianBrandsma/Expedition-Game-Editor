@@ -82,7 +82,8 @@ GameObject:
   - component: {fileID: 222000010052549248}
   - component: {fileID: 114000013747611056}
   - component: {fileID: 114000012850680376}
-  - component: {fileID: 114000011866655536}
+  - component: {fileID: 114940428592210568}
+  - component: {fileID: 114388178388735168}
   - component: {fileID: 114000013095653996}
   m_Layer: 9
   m_Name: FormButton
@@ -186,7 +187,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &114000011866655536
+--- !u!114 &114940428592210568
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,6 +201,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+  selectionStatus: 0
+  selectionType: 0
+  selectionProperty: 0
+  elementStatus: 0
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0}
+  relatedColor: {r: 0, g: 0, b: 0, a: 0}
+  unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
+  hiddenColor: {r: 0, g: 0, b: 0, a: 0}
+  disableSpawn: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  glow: {fileID: 0}
+  lockIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &114388178388735168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011013635570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 0
   selectionType: 1
   selectionProperty: 0

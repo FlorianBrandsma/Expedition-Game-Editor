@@ -177,7 +177,7 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -241,6 +241,6 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

@@ -46,7 +46,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
         statusIconList.ForEach(x => x.UpdatePosition());
     }
 
-    public GameObject StatusIcon(SelectionElement target, StatusIconType statusIconType)
+    public GameObject StatusIcon(EditorElement target, StatusIconType statusIconType)
     {
         var prefab = Resources.Load<ExStatusIcon>("Elements/UI/StatusIcon");
 
@@ -57,7 +57,7 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
         statusIcon.transform.localEulerAngles = Vector3.zero;
         
         statusIcon.cam = cameraManager.cam;
-        statusIcon.targetDataElement = target.data.dataElement;
+        statusIcon.targetDataElement = target.DataElement.data.dataElement;
         statusIcon.target = target.transform;
         statusIcon.parentRect = cameraManager.displayRect;
 

@@ -51,11 +51,11 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Structure(SelectionElement selection, Route route) //Combine existing path with new route
+        public Structure(EditorElement editorElement, Route route) //Combine existing path with new route
         {
             this.route = route;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = editorElement.DataElement.segmentController.Path;
         }
 
         public Path Enter()
@@ -93,11 +93,11 @@ public class PathManager
     {
         Path path;
         Route route;
-        SelectionElement selectionElement;
+        DataElement selectionElement;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Interaction(SelectionElement selection, Route route)
+        public Interaction(DataElement selection, Route route)
         {
             this.route = route;
             selectionElement = selection;
@@ -120,7 +120,7 @@ public class PathManager
 
             route.controller = enter;
 
-            path = selectionElement.path;
+            path = selectionElement.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -133,7 +133,7 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Outcome(SelectionElement selection, Route route)
+        public Outcome(DataElement selection, Route route)
         {
             this.route = route;
 
@@ -155,7 +155,7 @@ public class PathManager
     #region Item
     public class Item
     {
-        SelectionElement selection;
+        EditorElement editorElement;
 
         Route route;
 
@@ -163,35 +163,35 @@ public class PathManager
         List<int> edit;
         List<int> get;
 
-        public Item(SelectionElement selection, Route route)
+        public Item(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
             this.route = route;
 
-            var itemDataElement = (ItemDataElement)selection.data.dataElement;
+            var itemDataElement = (ItemDataElement)editorElement.DataElement.data.dataElement;
 
-            enter = new List<int>() { 0, 0, 0, itemDataElement.Type };
-            edit = new List<int>() { 0, 1, 0, itemDataElement.Type };
-            get = new List<int>() { 1 };
+            enter   = new List<int>() { 0, 0, 0, itemDataElement.Type };
+            edit    = new List<int>() { 0, 1, 0, itemDataElement.Type };
+            get     = new List<int>() { 1 };
         }
 
         public Path Enter()
         {
             EditorForm form = RenderManager.layoutManager.forms[1];
-            return CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
         }
 
         public Path Edit()
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
-            return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
         }
 
         public Path Get()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(get, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(get, route, editorElement.selectionStatus), form);
         }
     }
     #endregion
@@ -199,7 +199,7 @@ public class PathManager
     #region Interactable
     public class Interactable
     {
-        SelectionElement selection;
+        EditorElement editorElement;
 
         Path path;
         Route route;
@@ -207,15 +207,15 @@ public class PathManager
         int enter;
         List<int> edit;
 
-        public Interactable(SelectionElement selection, Route route)
+        public Interactable(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = editorElement.DataElement.segmentController.Path;
 
             this.route = route;
 
-            var interactableDataElement = (InteractableDataElement)selection.data.dataElement;
+            var interactableDataElement = (InteractableDataElement)editorElement.DataElement.data.dataElement;
 
             enter = 0;
             edit = new List<int>() { 0, 2, 0, interactableDataElement.Type };
@@ -234,7 +234,7 @@ public class PathManager
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
 
-            return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
         }
 
         public Path OpenDataCharacters()
@@ -243,7 +243,7 @@ public class PathManager
 
             var controllers = new List<int> { 0, 1, 1, 0 };
 
-            Path newPath = CreatePath(CreateRoutes(controllers, route, selection.selectionStatus), form);
+            Path newPath = CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
             newPath.type = path.type;
 
             return newPath;
@@ -257,39 +257,11 @@ public class PathManager
 
     #endregion
 
-    #region ObjectGraphic
-
-    public class ObjectGraphic
-    {
-        SelectionElement selection;
-
-        Route route;
-
-        List<int> get;
-
-        public ObjectGraphic(SelectionElement selection, Route route)
-        {
-            this.selection = selection;
-
-            this.route = route;
-
-            get = new List<int>() { 1 };
-        }
-
-        public Path Get()
-        {
-            EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(get, route, selection.selectionStatus), form);
-        }
-    }
-
-    #endregion
-
     #region Region
 
     public class Region
     {
-        SelectionElement selection;
+        EditorElement editorElement;
         Path path;
         Route route;
 
@@ -300,16 +272,16 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Region(SelectionElement selection, Route route)
+        public Region(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
             this.route = route;
 
             regionDataElement = (RegionDataElement)route.data.dataElement;
 
-            if (selection.DisplayManager != null)
-                path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            if (editorElement.DataElement.DisplayManager != null)
+                path = editorElement.DataElement.segmentController.Path;
         }
 
         public Path Enter()
@@ -322,10 +294,10 @@ public class PathManager
             switch (regionDataElement.type)
             {
                 case Enums.RegionType.Base:
-                    path = CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
+                    path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
                     break;
                 case Enums.RegionType.Phase:
-                    routes = CreateRoutes(enter, route, selection.selectionStatus);
+                    routes = CreateRoutes(enter, route, editorElement.selectionStatus);
                     path = ExtendPath(path, routes);
                     break;
             }
@@ -337,16 +309,16 @@ public class PathManager
 
         public Path Edit()
         {
-            return CreatePath(CreateRoutes(edit, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
         }
 
         public Path Open()
         {
             List<int> open = new List<int>() { 1, (int)regionDataElement.type };
 
-            Route customRoute = new Route(1, route.data, selection.selectionStatus);
+            Route customRoute = new Route(1, route.data, editorElement.selectionStatus);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, selection.selectionStatus));
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
             path.type = Path.Type.New;
 
             return path;
@@ -356,9 +328,9 @@ public class PathManager
         {
             List<int> open = new List<int>() { 0, 1, 2, 0, 0 };
 
-            Route customRoute = new Route(1, route.data, selection.selectionStatus);
+            Route customRoute = new Route(1, route.data, editorElement.selectionStatus);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, selection.selectionStatus));
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
 
             return path;
         }
@@ -376,11 +348,11 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Atmosphere(SelectionElement selection, Route route) //Combine existing path with new route
+        public Atmosphere(EditorElement editorElement, Route route) //Combine existing path with new route
         {
             this.route = route;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = editorElement.DataElement.segmentController.Path;
         }
 
         public Path Enter()
@@ -399,15 +371,15 @@ public class PathManager
         int edit = 0;
         int enter = 1;
 
-        SelectionElement selection;
+        EditorElement editorElement;
         Path path;
         Route route;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Terrain(SelectionElement selection, Route route)
+        public Terrain(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
             this.route = route;
         }
 
@@ -415,7 +387,7 @@ public class PathManager
         {
             route.controller = enter;
 
-            path = selection.path;
+            path = editorElement.DataElement.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -424,7 +396,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = editorElement.DataElement.segmentController.Path;
 
             return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
@@ -432,16 +404,16 @@ public class PathManager
 
     public class WorldInteractable
     {
-        SelectionElement selection;
+        EditorElement editorElement;
         Path path;
         Route route;
         EditorForm form = RenderManager.layoutManager.forms[0];
 
         int enter = 0;
 
-        public WorldInteractable(SelectionElement selection, Route route)
+        public WorldInteractable(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
             this.route = route;
         }
@@ -450,7 +422,7 @@ public class PathManager
         {
             route.controller = enter;
 
-            path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            path = editorElement.DataElement.segmentController.Path;
 
             Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
             newPath.type = path.type;
@@ -485,7 +457,7 @@ public class PathManager
         Route route;
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public WorldObject(SelectionElement selection, Route route)
+        public WorldObject(EditorElement editorElement, Route route)
         {
             this.route = route;
         }
@@ -505,14 +477,14 @@ public class PathManager
     #region Options
     public class Option
     {
-        SelectionElement selection;
+        EditorElement editorElement;
         Route route;
 
         List<int> enter = new List<int>() { 0 };
 
-        public Option(SelectionElement selection, Route route)
+        public Option(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
             this.route = route;
         }
@@ -520,7 +492,7 @@ public class PathManager
         public Path Enter()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
         }
     }
     #endregion
@@ -528,23 +500,23 @@ public class PathManager
     #region Search
     public class Search
     {
-        SelectionElement selection;
+        EditorElement editorElement;
         Route route;
 
         List<int> controllers = new List<int>() { 1 };
 
-        public Search(SelectionElement selection, Route route)
+        public Search(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
             this.route = route;
 
-            route.data = new Route.Data(route.data.dataController, route.data.dataElement, selection.data.dataController.SearchProperties);
+            route.data = new Route.Data(route.data.dataController, route.data.dataElement, editorElement.DataElement.data.dataController.SearchProperties);
         }
 
         public Path Get()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(controllers, route, selection.selectionStatus), form);
+            return CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
         }
     }
     #endregion
@@ -578,7 +550,7 @@ public class PathManager
 
     public class Save
     {
-        SelectionElement selection;
+        EditorElement editorElement;
         Path path;
         Route route;
 
@@ -586,14 +558,14 @@ public class PathManager
 
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Save(SelectionElement selection, Route route)
+        public Save(EditorElement editorElement, Route route)
         {
-            this.selection = selection;
+            this.editorElement = editorElement;
 
             this.route = route;
 
-            if (selection.DisplayManager != null)
-                path = selection.DisplayManager.Display.DataController.SegmentController.Path;
+            if (editorElement.DataElement.DisplayManager != null)
+                path = editorElement.DataElement.segmentController.Path;
         }
 
         public Path EnterGame()
@@ -602,7 +574,7 @@ public class PathManager
 
             HistoryManager.ClearHistory();
             
-            path = CreatePath(CreateRoutes(enter, route, selection.selectionStatus), form);
+            path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
             path.type = Path.Type.New;
 
             return path;

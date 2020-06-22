@@ -5,8 +5,8 @@ using System.Linq;
 
 public class ChapterSaveDataElement : ChapterSaveCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
-    
+    public DataElement DataElement { get; set; }
+
     public ChapterSaveDataElement() : base()
     {
         DataType = Enums.DataType.ChapterSave;

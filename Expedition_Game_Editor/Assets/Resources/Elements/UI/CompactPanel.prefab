@@ -736,10 +736,11 @@ GameObject:
   m_Component:
   - component: {fileID: 224000012628073764}
   - component: {fileID: 114000013006022214}
-  - component: {fileID: 114000011030441874}
+  - component: {fileID: 1932360585601872754}
+  - component: {fileID: 8085241523234438040}
   - component: {fileID: 114000010634047418}
   m_Layer: 9
-  m_Name: Child_Button
+  m_Name: ChildButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -807,7 +808,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000011030441874}
+      - m_Target: {fileID: 8085241523234438040}
         m_MethodName: InvokeSelection
         m_Mode: 1
         m_Arguments:
@@ -818,7 +819,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &114000011030441874
+--- !u!114 &1932360585601872754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -832,6 +833,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+--- !u!114 &8085241523234438040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013690231908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 2
   selectionType: 1
   selectionProperty: 0
@@ -842,7 +855,7 @@ MonoBehaviour:
   unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}
   disableSpawn: 1
-  parent: {fileID: 114000012218608376}
+  parent: {fileID: 114750103952363034}
   child: {fileID: 0}
   glow: {fileID: 1000012079848206}
   lockIcon: {fileID: 0}
@@ -874,7 +887,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224000014043077508}
   - component: {fileID: 114000010234602908}
-  - component: {fileID: 114000012218608376}
+  - component: {fileID: 114110633367658858}
+  - component: {fileID: 114750103952363034}
   - component: {fileID: 114000014009476442}
   m_Layer: 5
   m_Name: CompactPanel
@@ -948,7 +962,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000012218608376}
+      - m_Target: {fileID: 114750103952363034}
         m_MethodName: InvokeSelection
         m_Mode: 1
         m_Arguments:
@@ -959,7 +973,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &114000012218608376
+--- !u!114 &114110633367658858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -973,18 +987,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+--- !u!114 &114750103952363034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014226526798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
   elementStatus: 0
   enabledColor: {r: 0.86274517, g: 0.86274517, b: 0.76470596, a: 1}
-  disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
+  disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.4901961, a: 1}
   relatedColor: {r: 0, g: 0, b: 0, a: 0}
   unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}
   disableSpawn: 0
   parent: {fileID: 0}
-  child: {fileID: 114000011030441874}
+  child: {fileID: 8085241523234438040}
   glow: {fileID: 1000011378201694}
   lockIcon: {fileID: 1000014272121678}
   OnSelection:
@@ -1025,7 +1051,7 @@ GameObject:
   - component: {fileID: 222000013230037964}
   - component: {fileID: 114000013448822146}
   m_Layer: 5
-  m_Name: Lock_Icon
+  m_Name: LockIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

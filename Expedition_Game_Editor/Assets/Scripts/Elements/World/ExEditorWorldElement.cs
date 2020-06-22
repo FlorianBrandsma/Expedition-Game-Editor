@@ -11,7 +11,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
     
     private float scaleMultiplier;
 
-    public SelectionElement Element         { get { return GetComponent<SelectionElement>(); } }
+    public EditorElement EditorElement   { get { return GetComponent<EditorElement>(); } }
 
     public Color ElementColor
     {
@@ -32,26 +32,31 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
     {
         var newElement = Instantiate(this);
 
-        SelectionElementManager.Add(newElement.Element);
+        SelectionElementManager.Add(newElement.EditorElement);
 
         return newElement;
     }
 
     public void InitializeElement() { }
 
+    public void UpdateElement()
+    {
+        SetElement();
+    }
+
     public void SetElement()
     {
         if (objectGraphic != null)
             objectGraphic.gameObject.SetActive(false);
 
-        switch (Element.GeneralData.DataType)
+        switch (EditorElement.DataElement.GeneralData.DataType)
         {
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
             case Enums.DataType.Interaction:        SetInteractionElement();        break;
             case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
             case Enums.DataType.Phase:              SetPartyElement();              break;
 
-            default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType);    break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.GeneralData.DataType);    break;
         }
 
         transform.localPosition     = new Vector3(position.x, position.y, -position.z);
@@ -61,7 +66,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldInteractableElement()
     {
-        var dataElement = (WorldInteractableDataElement)Element.data.dataElement;
+        var dataElement = (WorldInteractableDataElement)EditorElement.DataElement.data.dataElement;
         
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
@@ -76,7 +81,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetInteractionElement()
     {
-        var dataElement = (InteractionDataElement)Element.data.dataElement;
+        var dataElement = (InteractionDataElement)EditorElement.DataElement.data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
@@ -91,7 +96,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldObjectElement()
     {
-        var dataElement = (WorldObjectDataElement)Element.data.dataElement;
+        var dataElement = (WorldObjectDataElement)EditorElement.DataElement.data.dataElement;
 
         var prefab      = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
@@ -106,7 +111,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetPartyElement()
     {
-        var dataElement = (PhaseDataElement)Element.data.dataElement;
+        var dataElement = (PhaseDataElement)EditorElement.DataElement.data.dataElement;
 
         var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.objectGraphicId);
@@ -121,7 +126,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetObjectGraphic()
     {
-        objectGraphic.selectionElement = Element;
+        objectGraphic.EditorElement = EditorElement;
 
         objectGraphic.transform.SetParent(transform, false);
 
@@ -140,16 +145,16 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void CloseStatusIcons()
     {
-        if (Element.glow != null)
+        if (EditorElement.glow != null)
         {
-            Element.glow.SetActive(false);
-            Element.glow = null;
+            EditorElement.glow.SetActive(false);
+            EditorElement.glow = null;
         }
 
-        if (Element.lockIcon != null)
+        if (EditorElement.lockIcon != null)
         {
-            Element.lockIcon.SetActive(false);
-            Element.lockIcon = null;
+            EditorElement.lockIcon.SetActive(false);
+            EditorElement.lockIcon = null;
         }
     }
 

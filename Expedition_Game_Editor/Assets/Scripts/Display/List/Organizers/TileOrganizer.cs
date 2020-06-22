@@ -14,13 +14,13 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
     
-    public List<SelectionElement> ElementList { get; set; }
+    public List<EditorElement> ElementList { get; set; }
 
     public Vector2 ElementSize { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
-        ElementList = new List<SelectionElement>();
+        ElementList = new List<EditorElement>();
     }
 
     public void SelectData()
@@ -54,34 +54,34 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         {
             var tile = (ExTile)PoolManager.SpawnObject(prefab);
             
-            SelectionElementManager.InitializeElement(  tile.Element, ListManager.listParent,
+            SelectionElementManager.InitializeElement(  tile.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty);
-            ElementList.Add(tile.Element);
+            ElementList.Add(tile.EditorElement);
 
-            data.SelectionElement = tile.Element;
-            tile.Element.data = new SelectionElement.Data(DataController, data);
+            data.DataElement = tile.EditorElement.DataElement;
+            tile.EditorElement.DataElement.data = new DataElement.Data(DataController, data);
 
             //Debugging
             GeneralData generalData = (GeneralData)data;
             tile.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(tile.Element);
+            SetElement(tile.EditorElement);
         }
     }
 
-    private void SetElement(SelectionElement element)
+    private void SetElement(EditorElement element)
     {
         element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
 
-        element.SetElement();
+        element.DataElement.SetElement();
         element.SetOverlay();
     }
 
@@ -139,7 +139,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     
     public void ClearOrganizer()
     {
-        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.DataElement.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

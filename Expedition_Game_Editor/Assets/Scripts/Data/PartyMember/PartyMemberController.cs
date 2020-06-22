@@ -32,7 +32,7 @@ public class PartyMemberController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         var partyMemberData = (PartyMemberDataElement)searchElement.data.dataElement;
 
@@ -50,5 +50,5 @@ public class PartyMemberController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

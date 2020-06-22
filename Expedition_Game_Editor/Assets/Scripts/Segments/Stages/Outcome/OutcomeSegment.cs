@@ -37,5 +37,5 @@ public class OutcomeSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
 }

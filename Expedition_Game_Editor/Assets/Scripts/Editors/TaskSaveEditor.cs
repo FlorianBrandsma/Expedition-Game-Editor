@@ -62,8 +62,8 @@ public class TaskSaveEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if (SelectionElementManager.SelectionActive(x.SelectionElement))
-                x.SelectionElement.UpdateElement();
+            if (SelectionElementManager.SelectionActive(x.DataElement))
+                x.DataElement.UpdateElement();
         });
 
         UpdateEditor();

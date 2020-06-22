@@ -10,7 +10,7 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
     public RawImage icon;
 
     public Button Button                    { get { return GetComponent<Button>(); } }
-    private SelectionElement Element        { get { return GetComponent<SelectionElement>(); } }
+    private EditorElement EditorElement     { get { return GetComponent<EditorElement>(); } }
 
     public Color ElementColor               { set { } }
 
@@ -26,29 +26,35 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
 
     public void InitializeElement()
     {
-        icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + Element.selectionProperty.ToString());
+        icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/" + EditorElement.selectionProperty.ToString());
+    }
+
+    public void UpdateElement()
+    {
+        SetElement();
     }
 
     public void SetElement()
     {
-        switch (Element.data.dataController.DataType)
+        switch (EditorElement.DataElement.data.dataController.DataType)
         {
             case Enums.DataType.Item:           SetItemElement();           break;
             case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
-            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
+
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
         }
     }
 
     private void SetItemElement()
     {
-        var data = (ItemDataElement)Element.data.dataElement;
+        var data = (ItemDataElement)EditorElement.DataElement.data.dataElement;
 
         label.text = data.originalName;
     }
 
     private void SetChapterRegionElement()
     {
-        var data = (ChapterRegionDataElement)Element.data.dataElement;
+        var data = (ChapterRegionDataElement)EditorElement.DataElement.data.dataElement;
 
         label.text = data.name;
     }

@@ -13,7 +13,7 @@ public class ExInputText : MonoBehaviour, IEditorElement
 
     public RectTransform RectTransform  { get { return GetComponent<RectTransform>(); } }
     public InputField InputField        { get { return GetComponent<InputField>(); } }
-    public ExElement EditorElement  { get { return GetComponent<ExElement>(); } }
+    //public ExElement EditorElement  { get { return GetComponent<ExElement>(); } }
 
     public void InitializeElement()
     {

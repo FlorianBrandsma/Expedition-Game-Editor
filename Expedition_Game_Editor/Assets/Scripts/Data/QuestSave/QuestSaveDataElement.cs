@@ -5,7 +5,7 @@ using System.Linq;
 
 public class QuestSaveDataElement : QuestSaveCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public QuestSaveDataElement() : base()
     {

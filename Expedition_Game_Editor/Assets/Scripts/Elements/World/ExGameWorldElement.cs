@@ -13,7 +13,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private float scaleMultiplier;
     
-    public GameElement Element              { get { return GetComponent<GameElement>(); } }
+    public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
 
     public Color ElementColor               { set { } }
 
@@ -31,16 +31,22 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void InitializeElement() { }
 
+    public void UpdateElement()
+    {
+        SetElement();
+        GameElement.UpdateElement();
+    }
+
     public void SetElement()
     {
         if (objectGraphic != null)
             objectGraphic.gameObject.SetActive(false);
 
-        switch (Element.GeneralData.DataType)
+        switch (GameElement.DataElement.GeneralData.DataType)
         {
             case Enums.DataType.WorldObject: SetWorldObjectElement(); break;
 
-            default: Debug.Log("CASE MISSING: " + Element.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
         }
         
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
@@ -50,7 +56,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldObjectElement()
     {
-        var dataElement = (WorldObjectDataElement)Element.DataElement;
+        var dataElement = (WorldObjectDataElement)GameElement.DataElement.data.dataElement;
 
         var prefab = Resources.Load<ObjectGraphic>(dataElement.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, dataElement.ObjectGraphicId);
@@ -65,8 +71,6 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetObjectGraphic()
     {
-        //objectGraphic.selectionElement = Element;
-
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);

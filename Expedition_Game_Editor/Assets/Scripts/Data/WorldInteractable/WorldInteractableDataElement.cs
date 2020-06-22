@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public WorldInteractableDataElement() : base()
     {
@@ -94,8 +93,9 @@ public class WorldInteractableDataElement : WorldInteractableCore, IDataElement
     public IDataElement Clone()
     {
         var dataElement = new WorldInteractableDataElement();
-        
-        dataElement.SelectionElement = SelectionElement;
+
+        Debug.Log("Might not be necessary");
+        dataElement.DataElement = DataElement;
 
         dataElement.elementStatus = elementStatus;
 

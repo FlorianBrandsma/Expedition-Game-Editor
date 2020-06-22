@@ -147,8 +147,8 @@ public class LayoutSection : MonoBehaviour
         {
             previousDataElements.ForEach(x => x.ClearChanges());
 
-            previousDataElements.Where(x => x.SelectionElement != null && x.SelectionElement.gameObject.activeInHierarchy).ToList()
-                                .ForEach(x => x.SelectionElement.UpdateElement());
+            previousDataElements.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
+                                .ForEach(x => x.DataElement.UpdateElement());
         }
         
         if (!Active) dataEditor = null;

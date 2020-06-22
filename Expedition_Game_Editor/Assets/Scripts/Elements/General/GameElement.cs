@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameElement : MonoBehaviour
 {
-    public IDataElement DataElement { get; set; }
+    public DataElement DataElement { get { return GetComponent<DataElement>(); } }
 
-    public GeneralData GeneralData { get { return (GeneralData)DataElement; } }
-
-    public IPoolable Poolable { get { return GetComponent<IPoolable>(); } }
+    public void UpdateElement()
+    {
+        SetElement();
+    }
 
     public void SetElement()
     {

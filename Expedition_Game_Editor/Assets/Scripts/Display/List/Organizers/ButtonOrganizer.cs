@@ -14,13 +14,13 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
     
     private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
     
-    public List<SelectionElement> ElementList { get; set; }
+    public List<EditorElement> ElementList  { get; set; }
 
     public Vector2 ElementSize { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
-        ElementList = new List<SelectionElement>();
+        ElementList = new List<EditorElement>();
     }
 
     public void SelectData()
@@ -46,7 +46,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData(List<IDataElement> list)
     {
-        SelectionElement elementPrefab = Resources.Load<SelectionElement>("UI/Button");
+        DataElement elementPrefab = Resources.Load<DataElement>("UI/Button");
 
         foreach (IDataElement data in list)
         {
@@ -68,18 +68,18 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    private void SetElement(SelectionElement element)
+    private void SetElement(EditorElement element)
     {
         element.RectTransform.sizeDelta = new Vector2(element.RectTransform.sizeDelta.x, ElementSize.y);
 
         element.RectTransform.anchorMax = new Vector2(1, 1);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
 
-        element.SetElement();
+        element.DataElement.SetElement();
         element.SetOverlay();
     }
 

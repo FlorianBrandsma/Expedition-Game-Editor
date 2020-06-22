@@ -37,10 +37,10 @@ public class PhaseController : MonoBehaviour, IDataController
 
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         CreatePhaseElements();
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

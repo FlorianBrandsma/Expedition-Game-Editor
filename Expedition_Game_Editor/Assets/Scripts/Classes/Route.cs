@@ -31,7 +31,7 @@ public class Route
             }
         }
 
-        public Data(SelectionElement.Data selectionData)
+        public Data(DataElement.Data selectionData)
         {
             dataController = selectionData.dataController;
             dataElement = selectionData.dataElement;
@@ -94,12 +94,12 @@ public class Route
 
         path = route.path;
     }
-
-    public Route(SelectionElement selectionElement)
+    
+    public Route(EditorElement editorElement)
     {
-        data = new Data(selectionElement.data);
-        path = selectionElement.path;
-        selectionStatus = selectionElement.selectionStatus;
+        data = new Data(editorElement.DataElement.data);
+        path = editorElement.DataElement.Path;
+        selectionStatus = editorElement.selectionStatus;
     }
 
     public Route(int controller, Data data, Enums.SelectionStatus selectionStatus)

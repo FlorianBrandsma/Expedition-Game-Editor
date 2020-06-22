@@ -8,7 +8,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<WorldInteractableDataElement> worldInteractableDataList;
+    public List<WorldInteractableDataElement> worldInteractableDataList = new List<WorldInteractableDataElement>();
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -66,8 +66,8 @@ public class QuestEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if (SelectionElementManager.SelectionActive(x.SelectionElement))
-                x.SelectionElement.UpdateElement();
+            if (SelectionElementManager.SelectionActive(x.DataElement))
+                x.DataElement.UpdateElement();
         });
 
         UpdateEditor();

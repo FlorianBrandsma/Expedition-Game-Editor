@@ -13,11 +13,12 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
     public bool enableLimit;
     public bool invertOnOverextension;
     public float min, max;
-    
+
+    public Sprite enabledImage;
+    public Sprite disabledImage;
+
     public Image Image { get { return GetComponent<Image>(); } }
-
-    public ExElement EditorElement { get { return GetComponent<ExElement>(); } }
-
+    
     public bool InputInvalid
     {
         set
@@ -44,7 +45,7 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
 
     public void EnableElement(bool enable)
     {
-        Image.sprite = enable ? EditorElement.enabledImage : EditorElement.disabledImage;
+        Image.sprite = enable ? enabledImage : disabledImage;
 
         inputField.interactable = enable;
 

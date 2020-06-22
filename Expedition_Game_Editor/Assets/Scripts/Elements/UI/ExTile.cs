@@ -12,7 +12,7 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private string iconPath;
 
-    public SelectionElement Element         { get { return GetComponent<SelectionElement>(); } }
+    public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
 
     public Color ElementColor               { set { } }
 
@@ -25,16 +25,21 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
     {
         var newElement = Instantiate(this);
 
-        SelectionElementManager.Add(newElement.Element);
+        SelectionElementManager.Add(newElement.EditorElement);
 
         return newElement;
     }
 
     public void InitializeElement() { }
 
+    public void UpdateElement()
+    {
+        SetElement();
+    }
+
     public void SetElement()
     {
-        switch (Element.data.dataController.DataType)
+        switch (EditorElement.DataElement.data.dataController.DataType)
         {
             case Enums.DataType.Icon:               SetIconElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
@@ -44,15 +49,15 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
 
-            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
         }
     }
 
     private void SetIconElement()
     {
-        var dataElement = (IconDataElement)Element.data.dataElement;
+        var dataElement = (IconDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.Path;
         else
             iconPath = dataElement.originalPath;
@@ -65,9 +70,9 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetInteractableElement()
     {
-        var dataElement = (InteractableDataElement)Element.data.dataElement;
+        var dataElement = (InteractableDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
         else
             iconPath = dataElement.originalObjectGraphicIconPath;
@@ -77,9 +82,9 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetTerrainElement()
     {
-        var dataElement = (TerrainDataElement)Element.data.dataElement;
+        var dataElement = (TerrainDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.iconPath;
         else
             iconPath = dataElement.originalIconPath;
@@ -89,9 +94,9 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetTileElement()
     {
-        var dataElement = (TileDataElement)Element.data.dataElement;
+        var dataElement = (TileDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.icon;
         else
             iconPath = dataElement.icon;
@@ -101,9 +106,9 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetTerrainTileElement()
     {
-        var dataElement = (TerrainTileDataElement)Element.data.dataElement;
+        var dataElement = (TerrainTileDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.iconPath;
         else
             iconPath = dataElement.originalIconPath;
@@ -113,7 +118,7 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetObjectGraphicElement()
     {
-        var dataElement = (ObjectGraphicDataElement)Element.data.dataElement;
+        var dataElement = (ObjectGraphicDataElement)EditorElement.DataElement.data.dataElement;
         
         iconPath = dataElement.iconPath;
 
@@ -122,9 +127,9 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldInteractableElement()
     {
-        var dataElement = (WorldInteractableDataElement)Element.data.dataElement;
+        var dataElement = (WorldInteractableDataElement)EditorElement.DataElement.data.dataElement;
 
-        if (Element.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = dataElement.objectGraphicIconPath;
         else
             iconPath = dataElement.originalObjectGraphicIconPath;

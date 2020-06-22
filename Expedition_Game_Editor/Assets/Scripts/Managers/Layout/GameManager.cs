@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private float tempActiveRange = 2220.25f;
+    private float tempActiveRange = 222.25f;
     public float TempActiveRange { get { return tempActiveRange; } }
 
     private void Awake()
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
         searchParameters.saveId = new List<int>() { saveDataElement.Id };
-
+        Debug.Log(gameSaveController);
         gameSaveController.DataList = RenderManager.GetData(gameSaveController, searchProperties);
 
         gameSaveData = gameSaveController.DataList.Cast<GameSaveDataElement>().FirstOrDefault();

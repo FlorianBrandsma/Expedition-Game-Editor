@@ -21,6 +21,7 @@ public class InteractionDataManager : IDataManager
     private List<DataManager.QuestData> questDataList;
 
     private List<DataManager.RegionData> regionDataList;
+    private List<DataManager.TerrainData> terrainDataList;
 
     public InteractionDataManager(IDataController dataController)
     {
@@ -45,6 +46,7 @@ public class InteractionDataManager : IDataManager
         GetQuestData();
 
         GetRegionData();
+        GetTerrainData();
 
         var list = (from interactionData        in interactionDataList
                     join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.Id
@@ -101,12 +103,13 @@ public class InteractionDataManager : IDataManager
                         objectGraphicPath = objectGraphicData.path,
 
                         objectGraphicIconPath = iconData.path,
-
-                        regionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name : "",
                         
                         height = objectGraphicData.height,
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,
+
+                        interactableName = interactableData.name,
+                        locationName = regionData.FirstOrDefault() != null ? LocationName(regionData.First().regionData.Id, interactionData.positionX, interactionData.positionY, interactionData.positionZ) : "-",
 
                         defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>(),
 
@@ -225,6 +228,25 @@ public class InteractionDataManager : IDataManager
         searchParameters.id = interactionDataList.Select(x => x.regionId).Distinct().ToList();
 
         regionDataList = dataManager.GetRegionData(searchParameters);
+    }
+
+    internal void GetTerrainData()
+    {
+        var searchParameters = new Search.Terrain();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+
+        terrainDataList = dataManager.GetTerrainData(searchParameters);
+    }
+
+    internal string LocationName(int regionId, float positionX, float positionY, float positionZ)
+    {
+        var region = regionDataList.Where(x => x.Id == regionId).First();
+
+        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+
+        var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
+
+        return region.name + ", " + terrain.name;
     }
 
     internal List<int> DefaultTimes(int taskId)

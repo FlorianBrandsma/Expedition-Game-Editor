@@ -5,21 +5,21 @@ using System.Linq;
 
 static public class SelectionElementManager
 {
-    static public List<SelectionElement> elementPool = new List<SelectionElement>();
+    static public List<EditorElement> elementPool = new List<EditorElement>();
     
-    static public void InitializeElement(SelectionElement element, Transform parent, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    static public void InitializeElement(DataElement dataElement, Transform parent, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
-        element.InitializeElement(displayManager, selectionType, selectionProperty);
+        dataElement.InitializeElement(displayManager, selectionType, selectionProperty);
 
-        element.transform.SetParent(parent, false);
+        dataElement.transform.SetParent(parent, false);
     }
 
-    static public void Add(SelectionElement selectionElement)
+    static public void Add(EditorElement element)
     {
-        elementPool.Add(selectionElement);
+        elementPool.Add(element);
 
-        if (selectionElement.child != null)
-            Add(selectionElement.child);
+        if (element.child != null)
+            Add(element.child);
     }
 
     //Reload the display of active elements that match the argument
@@ -29,7 +29,7 @@ static public class SelectionElementManager
 
         var elementList = FindSelectionElements(activeElements, (GeneralData)dataElement);
 
-        var managerList = elementList.Select(x => x.DisplayManager).Distinct().ToList();
+        var managerList = elementList.Select(x => x.DataElement.DisplayManager).Distinct().ToList();
 
         managerList.ForEach(x =>
         {
@@ -41,33 +41,40 @@ static public class SelectionElementManager
     static public List<IDataElement> FindDataElements(GeneralData generalData)
     {
         var dataElementList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), generalData)
-                                                   .Select(x => x.data.dataElement).Distinct().ToList();
+                                                   .Select(x => x.DataElement.data.dataElement).Distinct().ToList();
 
         return dataElementList;
     }
 
-    static public List<SelectionElement> FindSelectionElements(GeneralData generalData)
+    static public List<EditorElement> FindSelectionElements(GeneralData generalData)
     {
         var elementList = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
         return FindSelectionElements(elementList, generalData);
     }
 
-    static public List<SelectionElement> FindSelectionElements(List<SelectionElement> selectionElements, GeneralData generalData)
+    static public List<EditorElement> FindSelectionElements(List<EditorElement> elementList, GeneralData generalData)
     {
-        return selectionElements.Where(x => x.selectionStatus == Enums.SelectionStatus.Main &&
-                                                        x.GeneralData != null)
-                                            .Where(x => x.GeneralData.Equals(generalData)).ToList();
+        return elementList.Where(x => x.selectionStatus == Enums.SelectionStatus.Main &&
+                                                        x.DataElement.GeneralData != null)
+                                            .Where(x => x.DataElement.GeneralData.Equals(generalData)).ToList();
     }
 
-    static public void CloseElement(SelectionElement selectionElement)
+    static public void CloseElement(DataElement dataElement)
     {
-        CloseElement(new List<SelectionElement>() { selectionElement });
+        var editorElement = (EditorElement)dataElement.SelectionElement;
+
+        CloseElement(editorElement);
     }
 
-    static public void CloseElement(List<SelectionElement> elementList)
+    static public void CloseElement(EditorElement editorElement)
     {
-        foreach (SelectionElement element in elementList)
+        CloseElement(new List<EditorElement>() { editorElement });
+    }
+
+    static public void CloseElement(List<EditorElement> elementList)
+    {
+        foreach (EditorElement element in elementList)
         {
             if (element.child != null)
                 CloseElement(element.child);
@@ -79,7 +86,7 @@ static public class SelectionElementManager
         elementList.Clear();
     }
 
-    static public bool SelectionActive(SelectionElement selectionElement)
+    static public bool SelectionActive(DataElement selectionElement)
     {
         return (selectionElement != null && selectionElement.gameObject.activeInHierarchy);
     }

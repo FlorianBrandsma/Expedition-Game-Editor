@@ -17,7 +17,7 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
     public Text stateText;
     public Text locationText;
 
-    public SelectionElement editButton;
+    public DataElement editButton;
     public RawImage buttonIcon;
     #endregion
 
@@ -34,12 +34,12 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
         var regionData = SegmentController.DataController.DataList.Cast<RegionDataElement>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Party;
 
-        editButton.path = SegmentController.editorController.PathController.route.path;
+        editButton.Path = SegmentController.EditorController.PathController.route.path;
 
         nameText.text = PhaseData.interactableName;
         locationText.text = PhaseData.locationName;
 
-        editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
+        editButton.data = new DataElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);
     }
 
@@ -48,7 +48,7 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -65,6 +65,6 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

@@ -25,7 +25,7 @@ public class WorldElementBehaviourAnimationSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
     public void InitializeSegment() { }
@@ -38,6 +38,6 @@ public class WorldElementBehaviourAnimationSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

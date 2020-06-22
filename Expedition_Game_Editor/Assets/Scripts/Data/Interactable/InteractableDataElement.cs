@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
 public class InteractableDataElement : InteractableCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public InteractableDataElement() : base()
     {

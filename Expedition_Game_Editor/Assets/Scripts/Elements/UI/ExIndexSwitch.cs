@@ -70,7 +70,7 @@ public class ExIndexSwitch : MonoBehaviour
         }
         
         if (dataElement.SelectionStatus == Enums.SelectionStatus.None)
-            dataElement.SelectionStatus = segment.SegmentController.editorController.PathController.route.selectionStatus;
+            dataElement.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
 
         SelectionElementManager.UpdateElements(dataElement);
         

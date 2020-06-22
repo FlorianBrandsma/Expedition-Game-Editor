@@ -18,7 +18,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.DataController == null) return;
         
-        var searchProperties = SegmentController.editorController.PathController.route.data.searchProperties;
+        var searchProperties = SegmentController.EditorController.PathController.route.data.searchProperties;
 
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
@@ -33,5 +33,5 @@ public class SearchResultSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
 }

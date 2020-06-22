@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 224000011342413274}
   - component: {fileID: 222000011516182704}
   - component: {fileID: 114000010693408432}
-  - component: {fileID: 114000011877858124}
+  - component: {fileID: 114610535785155106}
   - component: {fileID: 114000012723519820}
   m_Layer: 5
-  m_Name: EditorInputNumber
+  m_Name: InputNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &114000011877858124
+--- !u!114 &114610535785155106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,13 +87,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010560943974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enabledImage: {fileID: 21300000, guid: c5c8782c69b21dc43ba64a2b09e81a70, type: 3}
-  disabledImage: {fileID: 21300000, guid: e6295e927968f7e48aacda3444a07fe6, type: 3}
-  enabledColor: {r: 1, g: 1, b: 0.909804, a: 1}
+  selectionStatus: 0
+  selectionType: 0
+  selectionProperty: 0
+  elementStatus: 0
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
+  relatedColor: {r: 0, g: 0, b: 0, a: 0}
+  unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
+  hiddenColor: {r: 0, g: 0, b: 0, a: 0}
+  disableSpawn: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  glow: {fileID: 0}
+  lockIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &114000012723519820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +127,8 @@ MonoBehaviour:
   invertOnOverextension: 0
   min: 0
   max: 0
+  enabledImage: {fileID: 21300000, guid: c5c8782c69b21dc43ba64a2b09e81a70, type: 3}
+  disabledImage: {fileID: 21300000, guid: e6295e927968f7e48aacda3444a07fe6, type: 3}
 --- !u!1 &1000010757261214
 GameObject:
   m_ObjectHideFlags: 0

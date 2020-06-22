@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 224000013086219806}
   - component: {fileID: 222000011737801626}
   - component: {fileID: 114000014120787258}
-  - component: {fileID: 114000011375532892}
   - component: {fileID: 114462942295166030}
   - component: {fileID: 114000010633277046}
   m_Layer: 5
-  m_Name: EditorInputText
+  m_Name: InputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,22 +76,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &114000011375532892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010175877134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 513a60ebe2de77f4c997a79c657f90c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enabledImage: {fileID: 0}
-  disabledImage: {fileID: 0}
-  enabledColor: {r: 0.8627451, g: 0.8627451, b: 0.7647059, a: 1}
-  disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.49019608, a: 1}
 --- !u!114 &114462942295166030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78cf44e06b9cd246931d93cb1d30543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineMode: 0
 --- !u!114 &114000010633277046
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ using System.Linq;
 public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 {
 	private List<Tile> tileList = new List<Tile>();
-	private List<GameElement> elementList = new List<GameElement>();
 	
 	private GameWorldDataElement gameWorldData;
 	private RegionDataElement regionData;
@@ -46,7 +45,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
 		gameWorldData = (GameWorldDataElement)list.First();
 
-		InitializeCamera();
+		SetCameraPosition();
+		SetActiveRect();
 		
 		//var worldInteractables  = gameWorldData.regionDataList.SelectMany(x => x.terrainDataList.SelectMany(y => y.interactionDataList.Select(z => z.worldInteractableId))).Distinct().ToList();
 		//var interactions        = gameWorldData.regionDataList.SelectMany(x => x.terrainDataList.SelectMany(y => y.interactionDataList.Where(z => worldInteractables.Contains(z.worldInteractableId)))).ToList();
@@ -60,7 +60,12 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 			SetTerrain(terrainData);
 		}
 
-		GameManager.instance.localNavMeshBuilder.UpdateNavMesh();
+		//Set elements that are not bound to a tile
+		SetWorldObjects();
+
+		//GetActiveTerrain();
+
+		//GameManager.instance.localNavMeshBuilder.UpdateNavMesh();
 
 		//Spawn "agents" by going through ALL interaction data and add one as a world interactable when the interaction's world interactable is not found
 	}
@@ -75,12 +80,15 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
 			SetTerrainTile(terrainTileData);
 
-			var worldObjectList = terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).ToList();
-			
-			foreach(WorldObjectDataElement worldObjectData in worldObjectList)
-			{
-				SetWorldObject(worldObjectData);
-			}
+			//Set objects that are bound to this terrain tile
+			SetWorldObjects(terrainTileData.Id);
+
+			//var worldObjectList = terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).ToList();
+
+			//foreach(WorldObjectDataElement worldObjectData in worldObjectList)
+			//{
+			//	SetWorldObject(worldObjectData);
+			//}
 		}
 	}
 
@@ -102,23 +110,74 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		terrainTileData.active = true;
 	}
 
-	//Could be a general "SetWorldElement" like editor world organizer
-	private void SetWorldObject(WorldObjectDataElement worldObjectData)
+	private void SetWorldObjects(int terrainTileId = 0)
 	{
-		var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
-		elementList.Add(gameWorldElement.Element);
+		var worldObjectDataList = regionData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => y.TerrainTileId == terrainTileId)).Cast<IDataElement>().ToList();
 
-		gameWorldElement.Element.DataElement = worldObjectData;
-
-		gameWorldElement.Element.transform.SetParent(CameraManager.content, false);
-
-		//Debugging
-		GeneralData generalData = worldObjectData;
-		gameWorldElement.name = generalData.DebugName + generalData.Id;
-		//
-
-		SetElement(gameWorldElement.Element);
+		SetWorldElements(worldObjectDataList);
 	}
+
+	private void SetWorldElements(List<IDataElement> dataList)
+	{
+		if (dataList.Count == 0) return;
+		
+		foreach(IDataElement dataElement in dataList)
+		{
+			var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
+
+			gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
+
+			gameWorldElement.GameElement.DataElement.data.dataElement = dataElement;
+			
+			//Debugging
+			GeneralData generalData = (GeneralData)dataElement;
+			gameWorldElement.name = generalData.DebugName + generalData.Id;
+			//
+
+			dataElement.DataElement = gameWorldElement.GameElement.DataElement;
+
+			SetElement(gameWorldElement.GameElement);
+		}
+	}
+
+	//private void SetWorldElements(IDataController dataController, List<IDataElement> dataList)
+	//{
+	//    if (dataList.Count == 0) return;
+
+	//    var prefab = Resources.Load<ExEditorWorldElement>("Elements/World/EditorWorldElement");
+
+	//    foreach (IDataElement dataElement in dataList)
+	//    {
+	//        var worldElement = (ExEditorWorldElement)PoolManager.SpawnObject(prefab);
+
+	//        SelectionElementManager.InitializeElement(worldElement.Element, CameraManager.content,
+	//                                                    DisplayManager,
+	//                                                    DisplayManager.Display.SelectionType,
+	//                                                    DisplayManager.Display.SelectionProperty);
+
+	//        worldElement.Element.data.dataController = dataController;
+	//        worldElement.Element.data = new SelectionElement.Data(dataController, dataElement);
+
+	//        //Debugging
+	//        GeneralData generalData = (GeneralData)dataElement;
+	//        worldElement.name = generalData.DebugName + generalData.Id;
+	//        //
+
+	//        SetStatus(worldElement.Element);
+
+	//        if (worldElement.Element.elementStatus == Enums.ElementStatus.Hidden)
+	//        {
+	//            PoolManager.ClosePoolObject(worldElement.Element.Poolable);
+	//            SelectionElementManager.CloseElement(worldElement.Element);
+
+	//            continue;
+	//        }
+
+	//        dataElement.SelectionElement = worldElement.Element;
+
+	//        SetElement(worldElement.Element);
+	//    }
+	//}
 
 	private void SetElement(GameElement element)
 	{
@@ -130,22 +189,41 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	public void UpdateData()
 	{
 		Debug.Log("Update game data");
-
-		ClearOrganizer();
 		
-		SetData();
-	}
+		//if (ScrollRect.content.localPosition.x >= positionTracker.x + worldData.tileSize ||
+		//    ScrollRect.content.localPosition.x <= positionTracker.x - worldData.tileSize ||
+		//    ScrollRect.content.localPosition.y >= positionTracker.y + worldData.tileSize ||
+		//    ScrollRect.content.localPosition.y <= positionTracker.y - worldData.tileSize)
+		//{
+		CloseInactiveElements();
 
-	private void InitializeCamera()
+		SetData(DataController.DataList);
+		//}
+	}
+	
+	public void SetCameraPosition()
 	{
 		var cameraTransform = CameraManager.cam.transform;
 
 		cameraTransform.localPosition = new Vector3(gameWorldData.tempPlayerPosition.x, 10, gameWorldData.tempPlayerPosition.y - 10);
 
+		SetActiveRect();
+	}
+
+	private void SetActiveRect()
+	{
+		var cameraTransform = CameraManager.cam.transform;
+
 		var activeRangePosition = new Vector2(cameraTransform.localPosition.x - (GameManager.instance.TempActiveRange / 2), cameraTransform.localPosition.z + (GameManager.instance.TempActiveRange / 2));
 		var activeRangeSize = new Vector2(GameManager.instance.TempActiveRange, -GameManager.instance.TempActiveRange);
 
 		activeRect = new Rect(activeRangePosition, activeRangeSize);
+	}
+
+	private void CloseInactiveElements()
+	{
+		var inactiveTiles = tileList.Where(x => !activeRect.Overlaps(((TerrainTileDataElement)x.DataElement).gridElement.rect, true)).ToList();
+		ClearTiles(inactiveTiles);
 	}
 
 	public void ResetData(List<IDataElement> filter)
@@ -156,13 +234,61 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
 	public void ClearOrganizer()
 	{
-		tileList.ForEach(x => PoolManager.ClosePoolObject(x));
-		tileList.Clear();
+		ClearTiles(tileList);
 
-		elementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
-		elementList.Clear();
 		//SelectionElementManager.CloseElement(elementList);
 	}
+
+	private void ClearTiles(List<Tile> inactiveTileList)
+	{
+		inactiveTileList.ForEach(x =>
+		{
+			ClearTileElements((TerrainTileDataElement)x.DataElement);
+			PoolManager.ClosePoolObject(x);
+		});
+
+		tileList.RemoveAll(x => inactiveTileList.Contains(x));
+	}
+
+	private void ClearTileElements(TerrainTileDataElement terrainTileData)
+	{
+		ClearWorldObjects(terrainTileData);
+		//ClearWorldInteractableAgents(terrainTileData);
+		//ClearWorldInteractableObjects(terrainTileData);
+	}
+
+	private void ClearWorldObjects(TerrainTileDataElement terrainTileData)
+	{
+		var inactiveWorldObjectList = regionData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => y.TerrainTileId == terrainTileData.Id)).ToList();
+
+		inactiveWorldObjectList.ForEach(x =>
+		{
+			PoolManager.ClosePoolObject(x.DataElement.Poolable);
+			x.DataElement.Element.CloseElement();
+		});
+	}
+
+	//private void ClearWorldInteractableAgents(TerrainTileDataElement terrainTileData)
+	//{
+	//    var inactiveWorldInteractableAgentList = worldInteractableAgentElementList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
+
+	//    inactiveWorldInteractableAgentList.ForEach(x =>
+	//    {
+	//        PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
+	//        SelectionElementManager.CloseElement(x.SelectionElement);
+	//    });
+	//}
+
+	//private void ClearWorldInteractableObjects(TerrainTileDataElement terrainTileData)
+	//{
+	//    var inactiveWorldInteractableObjectList = worldInteractableObjectElementList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
+
+	//    inactiveWorldInteractableObjectList.ForEach(x =>
+	//    {
+	//        PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
+	//        SelectionElementManager.CloseElement(x.SelectionElement);
+	//    });
+	//}
 
 	public void CloseOrganizer()
 	{

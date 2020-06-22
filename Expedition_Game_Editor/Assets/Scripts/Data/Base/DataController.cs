@@ -36,7 +36,7 @@ public class DataController : IDataController
 
     public void InitializeController() { }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultDataElement)
+    public void SetData(DataElement searchElement, IDataElement resultDataElement)
     {
         switch(DataType)
         {
@@ -47,7 +47,7 @@ public class DataController : IDataController
         }
     }
 
-    public void SetWorldInteractableData(SelectionElement searchElement, IDataElement resultDataElement)
+    public void SetWorldInteractableData(DataElement searchElement, IDataElement resultDataElement)
     {
         var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
 
@@ -71,7 +71,7 @@ public class DataController : IDataController
         }
     }
 
-    public void SetWorldObjectData(SelectionElement searchElement, IDataElement resultDataElement)
+    public void SetWorldObjectData(DataElement searchElement, IDataElement resultDataElement)
     {
         var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
 
@@ -96,5 +96,5 @@ public class DataController : IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

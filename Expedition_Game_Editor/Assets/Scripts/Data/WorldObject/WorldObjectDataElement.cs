@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class WorldObjectDataElement : WorldObjectCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public WorldObjectDataElement() : base()
     {

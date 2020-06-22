@@ -42,7 +42,7 @@ public class WorldInteractableController : MonoBehaviour, IDataController
         SearchProperties.searchParameters = new[] { searchInteractable };
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         var worldInteractableData = (WorldInteractableDataElement)searchElement.data.dataElement;
 
@@ -67,10 +67,10 @@ public class WorldInteractableController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement)
+    public void ToggleElement(EditorElement editorElement)
     {
-        var worldInteractablesData = (WorldInteractableDataElement)dataElement;
-        var questData = (QuestDataElement)SegmentController.editorController.PathController.route.data.dataElement;
+        var worldInteractablesData = (WorldInteractableDataElement)editorElement.DataElement.data.dataElement;
+        var questData = (QuestDataElement)SegmentController.EditorController.PathController.route.data.dataElement;
 
         switch (worldInteractablesData.elementStatus)
         {
@@ -91,7 +91,7 @@ public class WorldInteractableController : MonoBehaviour, IDataController
 
         SegmentController.Segment.DataEditor.UpdateEditor();
 
-        dataElement.SelectionElement.elementStatus = worldInteractablesData.elementStatus;
-        dataElement.SelectionElement.SetStatus();
+        editorElement.elementStatus = worldInteractablesData.elementStatus;
+        editorElement.SetStatus();
     }
 }

@@ -32,7 +32,7 @@ public class ChapterRegionController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         var chapterRegionData = (ChapterRegionDataElement)searchElement.data.dataElement;
 
@@ -50,5 +50,5 @@ public class ChapterRegionController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

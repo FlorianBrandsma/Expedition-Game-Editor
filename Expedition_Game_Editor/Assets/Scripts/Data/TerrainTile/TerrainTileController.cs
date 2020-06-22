@@ -32,7 +32,7 @@ public class TerrainTileController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         var terrainTileData = (TerrainTileDataElement)searchElement.data.dataElement;
 
@@ -49,5 +49,5 @@ public class TerrainTileController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

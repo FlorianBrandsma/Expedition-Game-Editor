@@ -8,9 +8,9 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
-    public List<PartyMemberDataElement> partyMemberDataList;
-    public List<ChapterInteractableDataElement> chapterInteractableDataList;
-    public List<ChapterRegionDataElement> chapterRegionDataList;
+    public List<PartyMemberDataElement> partyMemberDataList                 = new List<PartyMemberDataElement>();
+    public List<ChapterInteractableDataElement> chapterInteractableDataList = new List<ChapterInteractableDataElement>();
+    public List<ChapterRegionDataElement> chapterRegionDataList             = new List<ChapterRegionDataElement>();
     
     private PathController PathController { get { return GetComponent<PathController>(); } }
 
@@ -72,8 +72,8 @@ public class ChapterEditor : MonoBehaviour, IEditor
             else
                 x.Update();
 
-            if(SelectionElementManager.SelectionActive(x.SelectionElement))
-                x.SelectionElement.UpdateElement();
+            if(SelectionElementManager.SelectionActive(x.DataElement))
+                x.DataElement.UpdateElement();
         });
         
         UpdateEditor();

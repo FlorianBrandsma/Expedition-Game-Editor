@@ -14,7 +14,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
     
-    public List<SelectionElement> ElementList { get; set; }
+    public List<EditorElement> ElementList  { get; set; }
 
     public Vector2 ElementSize
     {
@@ -28,7 +28,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void InitializeOrganizer()
     {
-        ElementList = new List<SelectionElement>();
+        ElementList = new List<EditorElement>();
     }
 
     public void SelectData()
@@ -63,16 +63,16 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         {
             var panel = (ExPanel)PoolManager.SpawnObject(prefab);
 
-            SelectionElementManager.InitializeElement(  panel.Element, ListManager.listParent,
+            SelectionElementManager.InitializeElement(  panel.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager, 
                                                         DisplayManager.Display.SelectionType, 
                                                         DisplayManager.Display.SelectionProperty);
 
-            ElementList.Add(panel.Element);
+            ElementList.Add(panel.EditorElement);
 
-            dataElement.SelectionElement = panel.Element;
-            panel.Element.data = new SelectionElement.Data(DataController, dataElement);
-            panel.Element.path = DisplayManager.Display.DataController.SegmentController.Path;
+            dataElement.DataElement = panel.EditorElement.DataElement;
+            panel.EditorElement.DataElement.data = new DataElement.Data(DataController, dataElement);
+            panel.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
 
             SetProperties(panel);
 
@@ -83,23 +83,23 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             panel.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(panel.Element);
+            SetElement(panel.EditorElement);
         }
     }
     
-    private void SetElement(SelectionElement element)
+    private void SetElement(EditorElement element)
     {
         element.RectTransform.sizeDelta = new Vector2(element.RectTransform.sizeDelta.x, ElementSize.y);
 
         element.RectTransform.offsetMin = new Vector2(0, element.RectTransform.offsetMin.y);
         element.RectTransform.offsetMax = new Vector2(0, element.RectTransform.offsetMax.y);
         
-        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
         element.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
         
-        element.SetElement();
+        element.DataElement.SetElement();
         element.SetOverlay();
     }
 
@@ -126,7 +126,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void ClearOrganizer()
     {
-        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.DataElement.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

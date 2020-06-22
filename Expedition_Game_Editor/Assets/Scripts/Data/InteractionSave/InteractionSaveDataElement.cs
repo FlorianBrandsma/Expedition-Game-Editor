@@ -5,7 +5,7 @@ using System.Linq;
 
 public class InteractionSaveDataElement : InteractionSaveCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public InteractionSaveDataElement() : base()
     {

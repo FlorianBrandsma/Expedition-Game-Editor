@@ -11,7 +11,7 @@ public class GameSaveDataElement : GeneralData, IDataElement
     public List<InteractionSaveDataElement> interactionSaveDataList;
 
     #region DataElement
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public bool Changed { get; set; }
 

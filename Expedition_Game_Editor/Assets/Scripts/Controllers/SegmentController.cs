@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SegmentController : MonoBehaviour
 {
-    public bool Loaded { get { return editorController.PathController.layoutSection.Loaded; } }
+    public bool Loaded { get { return EditorController.PathController.layoutSection.Loaded; } }
 
     public GameObject dataControllerParent;
     
@@ -16,15 +16,13 @@ public class SegmentController : MonoBehaviour
     public string segmentName;
     public Text header;
 
-    public SegmentController[] segmentGroup;
+    public List<SegmentController> segmentGroup;
+    public List<EditorElement> editorElements;
 
-    public ExElement[] editorElements;
+    public EditorController EditorController { get; set; }
 
-    [HideInInspector]
-    public EditorController editorController;
-
-    public Path Path { get { return editorController.PathController.route.path; } }
-    public Path MainPath { get { return editorController.PathController.layoutSection.EditorForm.activePath; } }
+    public Path Path        { get { return EditorController.PathController.route.path; } }
+    public Path MainPath    { get { return EditorController.PathController.layoutSection.EditorForm.activePath; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 
@@ -65,13 +63,13 @@ public class SegmentController : MonoBehaviour
 
     public void ToggleSegment()
     {
-        foreach(SegmentController segment in segmentGroup)
+        foreach (SegmentController segment in segmentGroup)
         {
             if (segment.editorToggle.Toggle.isOn != editorToggle.Toggle.isOn)
-                segment.editorToggle.Toggle.isOn  = editorToggle.Toggle.isOn;
+                segment.editorToggle.Toggle.isOn = editorToggle.Toggle.isOn;
         }
 
-        foreach (ExElement editorElement in editorElements)
+        foreach (EditorElement editorElement in editorElements)
             editorElement.GetComponent<IEditorElement>().EnableElement(editorToggle.Toggle.isOn);
     }
 
@@ -84,13 +82,13 @@ public class SegmentController : MonoBehaviour
     {
         editorToggle.EnableElement(enable);
 
-        foreach (ExElement editorElement in editorElements)
+        foreach (EditorElement editorElement in editorElements)
             editorElement.GetComponent<IEditorElement>().EnableElement(enable);
     }
 
     public void InitializeDependencies(EditorController editorController)
     {
-        this.editorController = editorController;
+        this.EditorController = editorController;
 
         DataControllerList.ForEach(x => x.InitializeController());
         
@@ -101,7 +99,7 @@ public class SegmentController : MonoBehaviour
     public void InitializeSegment(EditorController editorController)
     {
         //Necessary for shared segments
-        this.editorController = editorController;
+        this.EditorController = editorController;
         
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();

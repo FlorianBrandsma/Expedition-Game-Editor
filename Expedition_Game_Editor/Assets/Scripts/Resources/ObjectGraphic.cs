@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ObjectGraphic : MonoBehaviour, IPoolable
 {
-    public SelectionElement selectionElement;
+    public EditorElement EditorElement { get; set; }
 
     public GameObject model;
     public GameObject[] mesh;
@@ -13,13 +13,10 @@ public class ObjectGraphic : MonoBehaviour, IPoolable
     public Vector3 previewRotation;
     public Vector3 previewScale;
 
-    public Transform Transform { get { return GetComponent<Transform>(); } }
-
-    public Enums.ElementType ElementType { get { return Enums.ElementType.ObjectGraphic; } }
-
-    public int Id { get; set; }
-
-    public bool IsActive { get { return gameObject.activeInHierarchy; } }
+    public Transform Transform              { get { return GetComponent<Transform>(); } }
+    public Enums.ElementType ElementType    { get { return Enums.ElementType.ObjectGraphic; } }
+    public int Id                           { get; set; }
+    public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
     public Animator Animator { get { return GetComponent<Animator>(); } }
 

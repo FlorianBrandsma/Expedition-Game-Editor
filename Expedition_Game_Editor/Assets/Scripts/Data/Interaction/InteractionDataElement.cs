@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-[System.Serializable]
 public class InteractionDataElement : InteractionCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public InteractionDataElement() : base()
     {
@@ -20,12 +19,13 @@ public class InteractionDataElement : InteractionCore, IDataElement
     public string objectGraphicPath;
 
     public string objectGraphicIconPath;
-
-    public string regionName;
     
     public float height;
     public float width;
     public float depth;
+
+    public string interactableName;
+    public string locationName;
 
     public bool timeConflict;
     
@@ -76,12 +76,13 @@ public class InteractionDataElement : InteractionCore, IDataElement
         dataElement.objectGraphicPath = objectGraphicPath;
 
         dataElement.objectGraphicIconPath = objectGraphicIconPath;
-
-        dataElement.regionName = regionName;
         
         dataElement.height = height;
         dataElement.width = width;
         dataElement.depth = depth;
+
+        dataElement.interactableName = interactableName;
+        dataElement.locationName = locationName;
 
         CloneCore(dataElement);
 
@@ -106,12 +107,13 @@ public class InteractionDataElement : InteractionCore, IDataElement
         objectGraphicPath = interactionDataSource.objectGraphicPath;
 
         objectGraphicIconPath = interactionDataSource.objectGraphicIconPath;
-
-        regionName = interactionDataSource.regionName;
         
         height = interactionDataSource.height;
         width = interactionDataSource.width;
         depth = interactionDataSource.depth;
+
+        interactableName = interactionDataSource.interactableName;
+        locationName = interactionDataSource.locationName;
 
         SetOriginalValues();
     }

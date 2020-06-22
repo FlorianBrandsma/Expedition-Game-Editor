@@ -32,7 +32,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -106,6 +106,6 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

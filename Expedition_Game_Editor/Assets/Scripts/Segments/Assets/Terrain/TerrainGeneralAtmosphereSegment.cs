@@ -11,7 +11,7 @@ public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public SelectionElement editButton;
+    public EditorElement editButton;
     #endregion
 
     #region Data Variables
@@ -21,17 +21,17 @@ public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
     private void InitializeEditButton()
     {
         //Cut the path to the region
-        editButton.path = SegmentController.Path.TrimToLastType(Enums.DataType.Region);
+        editButton.DataElement.Path = SegmentController.Path.TrimToLastType(Enums.DataType.Region);
 
         //Take the data from the last selected terrain
-        editButton.InitializeElement(SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).data);
+        editButton.DataElement.InitializeElement(SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).data);
     }
     #endregion
 
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -48,6 +48,6 @@ public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

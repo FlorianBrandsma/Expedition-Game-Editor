@@ -11,7 +11,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     #region UI
     public ExIndexSwitch indexSwitch;
-    public SelectionElement selectionElement;
+    public EditorElement editorElement;
     public InputField inputField;
     public Text idText;
     #endregion
@@ -110,7 +110,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -118,16 +118,14 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        
-
-        selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
+        editorElement.DataElement.InitializeElement(editorElement.GetComponent<IDataController>());
 
         var objectGraphicDataElement = new ObjectGraphicDataElement();
         
-        objectGraphicDataElement.SelectionElement = selectionElement;
+        objectGraphicDataElement.DataElement = editorElement.DataElement;
 
-        selectionElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
-        selectionElement.data.dataElement = objectGraphicDataElement;
+        editorElement.DataElement.data.dataController.DataList = new List<IDataElement>() { objectGraphicDataElement };
+        editorElement.DataElement.data.dataElement = objectGraphicDataElement;
     }
     
     public void InitializeData()
@@ -185,17 +183,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         inputField.text = assetName;
 
-        var objectGraphicDataElement = (ObjectGraphicDataElement)selectionElement.data.dataElement;
+        var objectGraphicDataElement = (ObjectGraphicDataElement)editorElement.DataElement.data.dataElement;
 
         objectGraphicDataElement.Id         = objectGraphicId;
         objectGraphicDataElement.Path       = objectGraphicPath;
         objectGraphicDataElement.iconPath   = objectGraphicIconPath;
 
-        SelectionElementManager.Add(selectionElement);
-        SelectionManager.SelectData(selectionElement.data.dataController.DataList);
+        SelectionElementManager.Add(editorElement);
+        SelectionManager.SelectData(editorElement.DataElement.data.dataController.DataList);
 
-        selectionElement.SetElement();
-        selectionElement.SetOverlay();
+        editorElement.DataElement.SetElement();
+        editorElement.SetOverlay();
 
         gameObject.SetActive(true);
     }
@@ -205,12 +203,12 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Deactivate();
 
-        SelectionElementManager.elementPool.Remove(selectionElement);
+        SelectionElementManager.elementPool.Remove(editorElement);
 
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
+    public void SetSearchResult(DataElement selectionElement)
     {
         switch(selectionElement.data.dataController.DataType)
         {

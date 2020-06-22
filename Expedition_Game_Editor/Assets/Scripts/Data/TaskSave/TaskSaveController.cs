@@ -32,7 +32,7 @@ public class TaskSaveController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultDataElement) { }
+    public void SetData(DataElement searchElement, IDataElement resultDataElement) { }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

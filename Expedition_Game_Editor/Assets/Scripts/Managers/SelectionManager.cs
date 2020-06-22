@@ -82,7 +82,7 @@ static public class SelectionManager
         var dataElementList = SelectionElementManager.FindDataElements((GeneralData)getDataElement);
         
         //First set the result to all relevant elements
-        dataElementList.ForEach(x => x.SelectionElement.SetResult(setDataElement));
+        dataElementList.ForEach(x => x.DataElement.SetResult(setDataElement));
 
         //Cancelling selection will re-render the editor and visualize the selection
         CancelGetSelection();
@@ -104,8 +104,8 @@ static public class SelectionManager
     {
         dataList.ForEach(x => 
         {
-            if(x.SelectionElement != null)
-                x.SelectionElement.CancelSelection();
+            if(x.DataElement != null)
+                x.DataElement.SelectionElement.CancelSelection();
             else
                 x.SelectionStatus = Enums.SelectionStatus.None;
         });

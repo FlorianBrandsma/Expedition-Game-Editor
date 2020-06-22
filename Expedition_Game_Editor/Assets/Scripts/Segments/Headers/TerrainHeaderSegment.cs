@@ -13,7 +13,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
     
     #region UI
-    public SelectionElement selectionElement;
+    public EditorElement editorElement;
     public InputField inputField;
     public Text idText;
     #endregion
@@ -42,7 +42,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -50,7 +50,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        selectionElement.InitializeElement(selectionElement.GetComponent<IDataController>());
+        editorElement.DataElement.InitializeElement(editorElement.GetComponent<IDataController>());
     }
     
     public void InitializeData() { }
@@ -68,34 +68,34 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         iconDataElement.Path            = TerrainData.iconPath;
         iconDataElement.baseIconPath    = TerrainData.baseTilePath;
 
-        iconDataElement.SelectionElement = selectionElement;
+        iconDataElement.DataElement = editorElement.DataElement;
 
-        selectionElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
-        selectionElement.data.dataElement = iconDataElement;
+        editorElement.DataElement.data.dataController.DataList = new List<IDataElement>() { iconDataElement };
+        editorElement.DataElement.data.dataElement = iconDataElement;
 
-        SelectionElementManager.Add(selectionElement);
-        SelectionManager.SelectData(selectionElement.data.dataController.DataList);
+        SelectionElementManager.Add(editorElement);
+        SelectionManager.SelectData(editorElement.DataElement.data.dataController.DataList);
 
         var searchProperties = SegmentController.DataController.SearchProperties;
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
         searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().ToList();
 
-        selectionElement.data.searchProperties = searchProperties;
+        editorElement.DataElement.data.searchProperties = searchProperties;
 
-        selectionElement.SetElement();
+        editorElement.DataElement.SetElement();
 
-        selectionElement.SetOverlay(); 
+        editorElement.SetOverlay(); 
     }
 
     public void CloseSegment()
     {
-        SelectionElementManager.elementPool.Remove(selectionElement);
+        SelectionElementManager.elementPool.Remove(editorElement);
 
         gameObject.SetActive(false);
     }
 
-    public void SetSearchResult(SelectionElement selectionElement)
+    public void SetSearchResult(DataElement selectionElement)
     {
         switch (selectionElement.data.dataController.DataType)
         {

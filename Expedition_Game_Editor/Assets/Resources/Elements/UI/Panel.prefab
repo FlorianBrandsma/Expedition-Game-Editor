@@ -220,7 +220,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224000010617029212}
   - component: {fileID: 114000010954322312}
-  - component: {fileID: 114000014068437212}
+  - component: {fileID: 114782610802750430}
+  - component: {fileID: 114541649444023774}
   - component: {fileID: 114000010432765074}
   m_Layer: 5
   m_Name: Panel
@@ -295,7 +296,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000014068437212}
+      - m_Target: {fileID: 114541649444023774}
         m_MethodName: InvokeSelection
         m_Mode: 1
         m_Arguments:
@@ -306,7 +307,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &114000014068437212
+--- !u!114 &114782610802750430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -320,6 +321,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+--- !u!114 &114541649444023774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010305880210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
@@ -331,7 +344,7 @@ MonoBehaviour:
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}
   disableSpawn: 0
   parent: {fileID: 0}
-  child: {fileID: 114000013981185266}
+  child: {fileID: 350863772360494586}
   glow: {fileID: 1000011839947422}
   lockIcon: {fileID: 1000012670962318}
   OnSelection:
@@ -479,10 +492,11 @@ GameObject:
   m_Component:
   - component: {fileID: 224000011803399182}
   - component: {fileID: 114000011702642330}
-  - component: {fileID: 114000013981185266}
+  - component: {fileID: 3417864355370552922}
+  - component: {fileID: 350863772360494586}
   - component: {fileID: 114000013073093960}
   m_Layer: 9
-  m_Name: Child_Button
+  m_Name: ChildButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,7 +564,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000013981185266}
+      - m_Target: {fileID: 350863772360494586}
         m_MethodName: InvokeSelection
         m_Mode: 1
         m_Arguments:
@@ -561,7 +575,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &114000013981185266
+--- !u!114 &3417864355370552922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -575,6 +589,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+--- !u!114 &350863772360494586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011170592922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 2
   selectionType: 1
   selectionProperty: 0
@@ -585,7 +611,7 @@ MonoBehaviour:
   unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}
   disableSpawn: 1
-  parent: {fileID: 114000014068437212}
+  parent: {fileID: 114541649444023774}
   child: {fileID: 0}
   glow: {fileID: 1000013419032810}
   lockIcon: {fileID: 0}
@@ -959,7 +985,7 @@ GameObject:
   - component: {fileID: 222000011938735832}
   - component: {fileID: 114000010311302648}
   m_Layer: 5
-  m_Name: Lock_Icon
+  m_Name: LockIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

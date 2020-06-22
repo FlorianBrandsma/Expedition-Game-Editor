@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PhaseDataElement : PhaseCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public PhaseDataElement() : base()
     {
@@ -24,7 +24,6 @@ public class PhaseDataElement : PhaseCore, IDataElement
     public float depth;
 
     public string interactableName;
-
     public string locationName;
 
     public override void Update()
@@ -72,7 +71,6 @@ public class PhaseDataElement : PhaseCore, IDataElement
         dataElement.depth = depth;
 
         dataElement.interactableName = interactableName;
-
         dataElement.locationName = locationName;
 
         CloneCore(dataElement);
@@ -100,7 +98,6 @@ public class PhaseDataElement : PhaseCore, IDataElement
         depth = phaseDataSource.depth;
 
         interactableName = phaseDataSource.interactableName;
-
         locationName = phaseDataSource.locationName;
 
         SetOriginalValues();

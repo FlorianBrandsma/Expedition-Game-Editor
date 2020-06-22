@@ -91,7 +91,6 @@ public class PhaseDataManager : IDataManager
                         depth = partyMemberData.First().objectGraphicData.depth,
 
                         interactableName = partyMemberData.First().interactableData.name,
-
                         locationName = LocationName(phaseData.defaultRegionId, phaseData.defaultPositionX, phaseData.defaultPositionY, phaseData.defaultPositionZ)
                         
                     }).OrderBy(x => x.Index).ToList();

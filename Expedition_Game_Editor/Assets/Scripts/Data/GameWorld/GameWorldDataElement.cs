@@ -12,7 +12,7 @@ public class GameWorldDataElement : GeneralData, IDataElement
     public List<RegionDataElement> regionDataList;
 
     #region DataElement
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public bool Changed { get; set; }
 

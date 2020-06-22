@@ -18,8 +18,8 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     private PanelTileProperties properties;
 
-    public SelectionElement Element         { get { return GetComponent<SelectionElement>(); } }
-    private SelectionElement ElementChild   { get { return Element.child; } }
+    public EditorElement EditorElement  { get { return GetComponent<EditorElement>(); } }
+    private EditorElement ElementChild  { get { return EditorElement.child; } }
 
     public Color ElementColor
     {
@@ -41,13 +41,13 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
         }
     }
 
-    private SelectionElement.Data ChildButtonData
+    private DataElement.Data ChildButtonData
     {
-        get { return ElementChild.data; }
+        get { return ElementChild.DataElement.data; }
         set
         {
             InitializeEdit();
-            ElementChild.data = value;
+            ElementChild.DataElement.data = value;
         }
     }
 
@@ -55,20 +55,20 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     {
         var newElement = Instantiate(this);
 
-        SelectionElementManager.Add(newElement.Element);
+        SelectionElementManager.Add(newElement.EditorElement);
 
         return newElement;
     }
 
     public void InitializeElement()
     {
-        properties = (PanelTileProperties)Element.DisplayManager.Display.Properties;
+        properties = (PanelTileProperties)EditorElement.DataElement.DisplayManager.Display.Properties;
     }
 
     public void InitializeChildElement()
     {
         if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = Element.data;
+            ChildButtonData = EditorElement.DataElement.data;
     }
 
     private void InitializeIcon()
@@ -79,27 +79,33 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     private void InitializeEdit()
     {
-        ElementChild.InitializeElement(Element.DisplayManager, ElementChild.selectionType, properties.childProperty);
+        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, properties.childProperty);
 
         ElementChild.gameObject.SetActive(true);
 
         content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
     }
 
+    public void UpdateElement()
+    {
+        SetElement();
+    }
+
     public void SetElement()
     {
-        switch (Element.data.dataController.DataType)
+        switch (EditorElement.DataElement.data.dataController.DataType)
         {
-            case Enums.DataType.WorldInteractable:SetWorldInteractableElement();break;
-            case Enums.DataType.WorldObject:      SetWorldObjectElement();      break;
-            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();    break;
+            case Enums.DataType.WorldObject:        SetWorldObjectElement();          break;
+
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
         }
     }
 
     private void SetWorldInteractableElement()
     {
-        var data = Element.data;
-        WorldInteractableDataElement dataElement = (WorldInteractableDataElement)data.dataElement;
+        var data = EditorElement.DataElement.data;
+        var dataElement = (WorldInteractableDataElement)data.dataElement;
 
         idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.interactableName;
@@ -110,8 +116,8 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     private void SetWorldObjectElement()
     {
-        var data = Element.data;
-        WorldObjectDataElement dataElement = (WorldObjectDataElement)data.dataElement;
+        var data = EditorElement.DataElement.data;
+        var dataElement = (WorldObjectDataElement)data.dataElement;
 
         idText.text = dataElement.Id.ToString();
         headerText.text = dataElement.objectGraphicName;

@@ -13,6 +13,6 @@ public interface IDataController
     SearchProperties SearchProperties   { get; set; }
 
     void InitializeController();
-    void SetData(SelectionElement searchElement, IDataElement resultDataElement);
-    void ToggleElement(IDataElement dataElement);
+    void SetData(DataElement searchElement, IDataElement resultDataElement);
+    void ToggleElement(EditorElement editorElement);
 }

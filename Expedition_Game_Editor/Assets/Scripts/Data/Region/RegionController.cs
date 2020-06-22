@@ -34,7 +34,7 @@ public class RegionController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData) { }
+    public void SetData(DataElement searchElement, IDataElement resultData) { }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

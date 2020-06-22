@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011070767522}
   - component: {fileID: 114000010145823900}
+  - component: {fileID: 114579610613662984}
   - component: {fileID: 114000012417086156}
   m_Layer: 0
   m_Name: EditorWorldElement
@@ -49,7 +50,35 @@ MonoBehaviour:
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
-  elementType: 0
+  elementStatus: 0
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
+  relatedColor: {r: 0, g: 0, b: 0, a: 1}
+  unrelatedColor: {r: 0.4901961, g: 0.4901961, b: 0.4901961, a: 1}
+  hiddenColor: {r: 0, g: 0, b: 0, a: 0}
+  disableSpawn: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  glow: {fileID: 0}
+  lockIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &114579610613662984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012841250562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionStatus: 1
+  selectionType: 0
+  selectionProperty: 0
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 1, g: 1, b: 1, a: 1}

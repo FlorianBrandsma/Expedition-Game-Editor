@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 222000010579751322}
   - component: {fileID: 114000011342353290}
   m_Layer: 5
-  m_Name: Lock_Icon
+  m_Name: LockIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224000011475066136}
   - component: {fileID: 114000011695529132}
-  - component: {fileID: 114000010802806958}
+  - component: {fileID: 114531923037835864}
+  - component: {fileID: 114138708331907886}
   - component: {fileID: 114000013338593328}
   m_Layer: 5
   m_Name: CompactTile
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000010802806958}
+      - m_Target: {fileID: 114138708331907886}
         m_MethodName: InvokeSelection
         m_Mode: 1
         m_Arguments:
@@ -162,7 +163,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &114000010802806958
+--- !u!114 &114531923037835864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,12 +177,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
+--- !u!114 &114138708331907886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013153704842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
   elementStatus: 0
-  enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0}
   relatedColor: {r: 0, g: 0, b: 0, a: 0}
   unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}

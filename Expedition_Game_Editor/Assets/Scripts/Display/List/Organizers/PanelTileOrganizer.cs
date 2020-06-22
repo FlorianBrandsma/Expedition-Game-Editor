@@ -12,15 +12,15 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
     private PanelTileProperties panelTileProperties { get { return (PanelTileProperties)DisplayManager.Display.Properties; } }
 
-    private IDataController DataController { get { return DisplayManager.Display.DataController; } }
+    private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
 
-    public List<SelectionElement> ElementList { get; set; }
+    public List<EditorElement> ElementList  { get; set; }
 
     public Vector2 ElementSize { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
-        ElementList = new List<SelectionElement>();
+        ElementList = new List<EditorElement>();
     }
 
     public void SelectData()
@@ -48,41 +48,41 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         var prefab = Resources.Load<ExPanelTile>("Elements/UI/PanelTile");
 
-        foreach (IDataElement dataElement in list)
+        foreach (IDataElement elementData in list)
         {
             var panelTile = (ExPanelTile)PoolManager.SpawnObject(prefab);
 
-            SelectionElementManager.InitializeElement(  panelTile.Element, ListManager.listParent,
+            SelectionElementManager.InitializeElement(  panelTile.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty);
 
-            ElementList.Add(panelTile.Element);
+            ElementList.Add(panelTile.EditorElement);
 
-            dataElement.SelectionElement = panelTile.Element;
-            panelTile.Element.data = new SelectionElement.Data(DataController, dataElement);
+            elementData.DataElement = panelTile.EditorElement.DataElement;
+            panelTile.EditorElement.DataElement.data = new DataElement.Data(DataController, elementData);
 
             panelTile.GetComponent<ExPanelTile>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)dataElement;
+            GeneralData generalData = (GeneralData)elementData;
             panelTile.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(panelTile.Element);
+            SetElement(panelTile.EditorElement);
         }
     }
     
-    private void SetElement(SelectionElement element)
+    private void SetElement(EditorElement element)
     {
         element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
 
-        element.SetElement();
+        element.DataElement.SetElement();
         element.SetOverlay();
     }
 
@@ -137,7 +137,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     
     public void ClearOrganizer()
     {
-        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
+        ElementList.ForEach(x => PoolManager.ClosePoolObject(x.DataElement.Poolable));
         SelectionElementManager.CloseElement(ElementList);
     }
 

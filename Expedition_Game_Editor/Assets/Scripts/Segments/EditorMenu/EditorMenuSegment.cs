@@ -12,7 +12,7 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
 
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
     public void InitializeSegment() { }
@@ -46,5 +46,5 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
         gameButton.onClick.RemoveAllListeners();
     }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
 }

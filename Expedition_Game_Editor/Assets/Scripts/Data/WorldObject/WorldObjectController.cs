@@ -32,7 +32,7 @@ public class WorldObjectController : MonoBehaviour, IDataController
         SearchProperties.Initialize();
     }
 
-    public void SetData(SelectionElement searchElement, IDataElement resultData)
+    public void SetData(DataElement searchElement, IDataElement resultData)
     {
         var worldObjectData = (WorldObjectDataElement)searchElement.data.dataElement;
         
@@ -57,5 +57,5 @@ public class WorldObjectController : MonoBehaviour, IDataController
         }
     }
 
-    public void ToggleElement(IDataElement dataElement) { }
+    public void ToggleElement(EditorElement editorElement) { }
 }

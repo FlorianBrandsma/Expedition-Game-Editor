@@ -19,7 +19,7 @@ public class EditorWorldDataElement : GeneralData, IDataElement
     public List<PhaseDataElement> phaseDataList;
 
     #region DataElement
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public bool Changed { get; set; }
 

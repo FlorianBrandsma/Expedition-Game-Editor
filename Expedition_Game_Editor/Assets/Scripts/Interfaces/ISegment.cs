@@ -8,5 +8,5 @@
     void InitializeData();
     void OpenSegment();
     void CloseSegment();
-    void SetSearchResult(SelectionElement selectionlement);
+    void SetSearchResult(DataElement selectionlement);
 }

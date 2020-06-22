@@ -160,7 +160,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         if (Display.SelectionType == SelectionManager.Type.Automatic)
         {
-            SelectionElement element = List.ElementList.FirstOrDefault();
+            EditorElement element = List.ElementList.FirstOrDefault();
 
             element.InvokeSelection();
         }

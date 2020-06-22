@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class ChapterInteractableDataElement : ChapterInteractableCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public ChapterInteractableDataElement() : base()
     {
@@ -45,7 +44,8 @@ public class ChapterInteractableDataElement : ChapterInteractableCore, IDataElem
     {
         var dataElement = new ChapterInteractableDataElement();
 
-        dataElement.SelectionElement = SelectionElement;
+        Debug.Log("Probably remove this");
+        dataElement.DataElement = DataElement;
         
         CloneCore(dataElement);
 

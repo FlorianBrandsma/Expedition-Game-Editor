@@ -25,11 +25,11 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     private MultiGridProperties multiGridProperties;
 
-    private List<SelectionElement> elementList  = new List<SelectionElement>();
-    private List<IDataElement> dataList         = new List<IDataElement>();
+    private List<EditorElement> elementList = new List<EditorElement>();
+    private List<IDataElement> dataList     = new List<IDataElement>();
     private List<GeneralData> generalDataList;
 
-    public SelectionElement Element         { get { return GetComponent<SelectionElement>(); } }
+    public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
     
     public Color ElementColor               { set { } }
 
@@ -42,25 +42,31 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
     {
         var newElement = Instantiate(this);
 
-        SelectionElementManager.Add(newElement.Element);
+        SelectionElementManager.Add(newElement.EditorElement);
 
         return newElement;
     }
     
     public void InitializeElement()
     {
-        multiGridProperties = (MultiGridProperties)Element.DisplayManager.Display.Properties;
+        multiGridProperties = (MultiGridProperties)EditorElement.DataElement.DisplayManager.Display.Properties;
+    }
+
+    public void UpdateElement()
+    {
+        SetElement();
     }
 
     public void SetElement()
     {
-        innerGrid.sizeDelta = new Vector2(  Element.RectTransform.sizeDelta.x - multiGridProperties.margin, 
-                                            Element.RectTransform.sizeDelta.y - multiGridProperties.margin);
+        innerGrid.sizeDelta = new Vector2(  EditorElement.RectTransform.sizeDelta.x - multiGridProperties.margin, 
+                                            EditorElement.RectTransform.sizeDelta.y - multiGridProperties.margin);
 
-        switch (Element.data.dataController.DataType)
+        switch (EditorElement.DataElement.data.dataController.DataType)
         {
             case Enums.DataType.Terrain: SetTerrain(); break;
-            default: Debug.Log("CASE MISSING: " + Element.data.dataController.DataType); break;
+
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
         }
 
         if (idText != null)
@@ -78,8 +84,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     private void SetTerrain()
     {
-        var data = Element.data;
-        var dataElement = (TerrainDataElement)data.dataElement;
+        var dataElement = (TerrainDataElement)EditorElement.DataElement.data.dataElement;
 
         if(multiGridProperties.SecondaryDataController != null)
         {
@@ -92,7 +97,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
         if (icon != null)
         {
-            if (Element.selectionProperty == SelectionManager.Property.Get)
+            if (EditorElement.selectionProperty == SelectionManager.Property.Get)
                 iconPath = dataElement.iconPath;
             else
                 iconPath = dataElement.originalIconPath; 
@@ -129,47 +134,47 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         {
             var innerElement = (ExTile)PoolManager.SpawnObject(prefab);
 
-            SelectionElementManager.InitializeElement(  innerElement.Element, innerGrid,
-                                                        Element.DisplayManager,
+            SelectionElementManager.InitializeElement(  innerElement.EditorElement.DataElement, innerGrid,
+                                                        EditorElement.DataElement.DisplayManager,
                                                         multiGridProperties.innerSelectionType,
                                                         multiGridProperties.innerSelectionProperty);
 
-            innerElement.Element.parent = Element;
+            innerElement.EditorElement.parent = EditorElement;
 
-            elementList.Add(innerElement.Element);
+            elementList.Add(innerElement.EditorElement);
 
-            dataElement.SelectionElement = innerElement.Element;
-            innerElement.Element.data = new SelectionElement.Data(multiGridProperties.SecondaryDataController, dataElement, searchProperties);
+            dataElement.DataElement = innerElement.EditorElement.DataElement;
+            innerElement.EditorElement.DataElement.data = new DataElement.Data(multiGridProperties.SecondaryDataController, dataElement, searchProperties);
 
             //Overwrites dataController set by initialization
-            innerElement.Element.data.dataController = multiGridProperties.SecondaryDataController;
+            innerElement.EditorElement.DataElement.data.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
             GeneralData generalData = (GeneralData)dataElement;
             innerElement.name = generalData.DebugName + generalData.Id;
             //
 
-            SetElement(innerElement.Element);
+            SetElement(innerElement.EditorElement);
         }
     }
 
-    void SetElement(SelectionElement element)
+    void SetElement(EditorElement element)
     {
         element.RectTransform.sizeDelta = multiGridProperties.elementSize;
 
-        int index = generalDataList.FindIndex(x => x.Id == element.GeneralData.Id);
+        int index = generalDataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
         element.transform.localPosition = new Vector2( -((multiGridProperties.elementSize.x * 0.5f) * (Mathf.Sqrt(dataList.Count) - 1)) + (index % Mathf.Sqrt(dataList.Count) * multiGridProperties.elementSize.x),
                                                         -(multiGridProperties.elementSize.y * 0.5f) + (innerGrid.sizeDelta.y / 2f) - (Mathf.Floor(index / Mathf.Sqrt(dataList.Count)) * multiGridProperties.elementSize.y));
 
         element.gameObject.SetActive(true);
 
-        element.SetElement();
+        element.DataElement.SetElement();
         element.SetOverlay();
     }
 
     public void CloseElement()
     {
-        elementList.ForEach(x => PoolManager.ClosePoolObject(x.Poolable));
+        elementList.ForEach(x => PoolManager.ClosePoolObject(x.DataElement.Poolable));
         SelectionElementManager.CloseElement(elementList);
     }
 

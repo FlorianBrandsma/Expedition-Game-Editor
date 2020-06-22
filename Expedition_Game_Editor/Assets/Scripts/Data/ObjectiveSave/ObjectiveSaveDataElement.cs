@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ObjectiveSaveDataElement : ObjectiveSaveCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public ObjectiveSaveDataElement() : base()
     {

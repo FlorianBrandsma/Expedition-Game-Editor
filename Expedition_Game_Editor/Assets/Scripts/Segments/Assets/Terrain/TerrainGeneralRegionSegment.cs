@@ -11,7 +11,7 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
     public IEditor DataEditor { get; set; }
 
     #region UI
-    public SelectionElement editButton;
+    public DataElement editButton;
     #endregion
 
     #region Data Variables
@@ -20,10 +20,10 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
     #region Methods
     private void InitializeEditButton()
     {
-        editButton.path = SegmentController.Path;
+        editButton.Path = SegmentController.Path;
 
         var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
-        editButton.data = new SelectionElement.Data(data);
+        editButton.data = new DataElement.Data(data);
 
         var regionData = (RegionDataElement)data.dataElement;
         editButton.GetComponentInChildren<Text>().text = "Tiles, " + regionData.Name;
@@ -33,7 +33,7 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -50,6 +50,6 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

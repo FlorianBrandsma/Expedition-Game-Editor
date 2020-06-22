@@ -229,8 +229,9 @@ GameObject:
   m_Component:
   - component: {fileID: 224000013171308716}
   - component: {fileID: 114000012859123392}
+  - component: {fileID: 114727947755464360}
+  - component: {fileID: 114914438612127910}
   - component: {fileID: 114000012825601352}
-  - component: {fileID: 114000011852793538}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -312,22 +313,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 0
---- !u!114 &114000012825601352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000013544506498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c91b665768a0f94aa6b2af05148d171, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementType: 7
-  label: {fileID: 114000012904829640}
-  icon: {fileID: 114000013358529708}
---- !u!114 &114000011852793538
+--- !u!114 &114727947755464360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,6 +344,50 @@ MonoBehaviour:
   OnSelection:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &114914438612127910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013544506498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionStatus: 0
+  selectionType: 0
+  selectionProperty: 0
+  elementStatus: 0
+  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0}
+  relatedColor: {r: 0, g: 0, b: 0, a: 0}
+  unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
+  hiddenColor: {r: 0, g: 0, b: 0, a: 0}
+  disableSpawn: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  glow: {fileID: 1000014149556330}
+  lockIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &114000012825601352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013544506498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c91b665768a0f94aa6b2af05148d171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 7
+  label: {fileID: 114000012904829640}
+  icon: {fileID: 114000013358529708}
 --- !u!1 &1000014149556330
 GameObject:
   m_ObjectHideFlags: 0

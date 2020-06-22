@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class RegionDataElement : RegionCore, IDataElement
 {
-    public SelectionElement SelectionElement { get; set; }
+    public DataElement DataElement { get; set; }
 
     public RegionDataElement() : base()
     {
@@ -65,7 +64,8 @@ public class RegionDataElement : RegionCore, IDataElement
     {
         var dataElement = new RegionDataElement();
 
-        dataElement.SelectionElement = SelectionElement;
+        Debug.Log("probably remove this");
+        dataElement.DataElement = DataElement;
 
         dataElement.type = type;
 

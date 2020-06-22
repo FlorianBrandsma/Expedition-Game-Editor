@@ -17,7 +17,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
     public Text stateText;
     public Text locationText;
 
-    public SelectionElement editButton;
+    public DataElement editButton;
     public RawImage buttonIcon;
     #endregion
 
@@ -40,9 +40,12 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
         var regionData = SegmentController.DataController.DataList.Cast<RegionDataElement>().Where(x => x.Id == InteractionData.RegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Interaction;
 
-        editButton.path = SegmentController.editorController.PathController.route.path;
+        editButton.Path = SegmentController.EditorController.PathController.route.path;
 
-        editButton.data = new SelectionElement.Data(SegmentController.DataController, regionData);
+        nameText.text = InteractionData.interactableName;
+        locationText.text = InteractionData.locationName; 
+
+        editButton.data = new DataElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(InteractionData.objectGraphicIconPath);
     }
 
@@ -51,7 +54,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
     #region Segment
     public void InitializeDependencies()
     {
-        DataEditor = SegmentController.editorController.PathController.DataEditor;
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
@@ -68,6 +71,6 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(SelectionElement selectionElement) { }
+    public void SetSearchResult(DataElement selectionElement) { }
     #endregion
 }

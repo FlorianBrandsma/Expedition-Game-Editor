@@ -124,6 +124,7 @@ static public class RenderManager
     {
         //Cancel the selection of data that is about to be overwritten while it still has active elements.
         //Results in some double cancel calls, but necessary to do via DataList for selected data without elements
+
         if(dataController.DataList != null)
             SelectionManager.CancelSelection(dataController.DataList);
 
