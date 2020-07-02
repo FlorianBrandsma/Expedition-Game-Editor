@@ -137,7 +137,7 @@ public class EditorForm : MonoBehaviour
     public void ResetPath()
     {
         if (activeInPath)
-            RenderManager.Render(activePath);
+            RenderManager.Render(activePath);        
     }
     #endregion
 

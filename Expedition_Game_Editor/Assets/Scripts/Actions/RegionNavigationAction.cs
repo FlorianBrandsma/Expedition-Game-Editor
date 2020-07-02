@@ -24,12 +24,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             this.data.elementData = data.elementData.Clone();
         }
     }
-
-    private Enums.RegionType regionType;
-    public Enums.RegionType RegionType { get { return regionType; } }
-
-    public PathController PathController { get { return GetComponent<PathController>(); } }
-
+    
     public ActionProperties actionProperties;
 
     private List<ActionData> actionDataList = new List<ActionData>();
@@ -37,6 +32,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private List<Enums.DataType> structureList;
 
     private Route regionRoute;
+
+    public PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeAction(Path path)
     {
@@ -57,7 +54,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             if (RegionDisplayManager.activeDisplay == RegionDisplayManager.Display.World)
                 path.Add(regionRoute);
 
-            if(regionType == Enums.RegionType.Interaction)
+            if(RegionDisplayManager.regionType == Enums.RegionType.Interaction)
             {
                 var interactionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Interaction);
 
@@ -66,7 +63,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
                 path.Add(interactionRoute);
                 
-            } else if (regionType == Enums.RegionType.Party) {
+            } else if (RegionDisplayManager.regionType == Enums.RegionType.Party) {
 
                 var phaseRoute = PathController.route.path.FindLastRoute(Enums.DataType.Phase);
 
@@ -86,12 +83,12 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         InitializeStructureData();
 
+        var regionData = (RegionElementData)regionRoute.data.elementData;
+        RegionDisplayManager.regionType = regionData.type;
+
         if (PathController.route.path.type == Path.Type.New)
         {
-            var regionData = (RegionElementData)regionRoute.data.elementData;
-            regionType = regionData.type;
-
-            if (regionType == Enums.RegionType.Interaction || regionType == Enums.RegionType.Party)
+            if (RegionDisplayManager.regionType == Enums.RegionType.Interaction || RegionDisplayManager.regionType == Enums.RegionType.Party)
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.World;
             else
                 RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
@@ -575,6 +572,15 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             PathController.route.path.ReplaceAllData(actionData.data);
         } 
+    }
+
+    public void SelectInteraction()
+    {
+        var actionData = FindActionByDataType(Enums.DataType.Interaction);
+
+        SelectValidInteraction(actionData);
+        
+        InitializePath(actionData.data.elementData, actionDataList.IndexOf(actionData));
     }
 
     private void SelectValidInteraction(ActionData actionData)

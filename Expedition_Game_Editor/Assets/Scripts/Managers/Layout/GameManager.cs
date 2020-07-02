@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
+        
         if (!GlobalManager.loaded)
         {
             GlobalManager.programType = GlobalManager.Scenes.Game;
@@ -102,6 +102,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("The clock is ticking...");
 
+        TimeManager.activeTime++;
+
         CheckTime();
     }
 
@@ -117,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
         searchParameters.saveId = new List<int>() { saveElementData.Id };
-        Debug.Log(gameSaveController);
+
         gameSaveController.DataList = RenderManager.GetData(gameSaveController, searchProperties);
 
         gameSaveData = gameSaveController.DataList.Cast<GameSaveElementData>().FirstOrDefault();
@@ -130,14 +132,18 @@ public class GameManager : MonoBehaviour
         gameWorldController.Display.DataController = gameWorldController;
 
         DetermineActivePhase();
+
+        localNavMeshBuilder.UpdateNavMesh(true);
     }
 
     private void DetermineActivePhase()
     {
         Debug.Log("Determine active phase");
 
-        //Find the first unfinished phase of the first unfinished chapter
-        //Might have to take chapter and phase index into consideration
+        //1. Find the first chapter that has not been completed
+        //2. Find the first phase of that chapter that has not been completed
+        //(Might have to take chapter and phase index into consideration)
+
         var activeChapterSave = gameSaveData.chapterSaveDataList.Where(x => !x.Complete).First();
         var activePhaseSave = gameSaveData.phaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).First();
 
@@ -176,6 +182,37 @@ public class GameManager : MonoBehaviour
     {
         //Happens when phase is changed and after every interaction (can hopefully be limited)
         Debug.Log("Check what game data has been completed");
+
+        var activePhaseSave         = gameSaveData.phaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
+
+        var activeQuestSaves        = gameSaveData.questSaveDataList.Where(x => x.PhaseSaveId == activePhaseSave.Id).ToList();
+
+        var activeObjectiveSaves    = gameSaveData.objectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.Id)
+                                                                        .Contains(x.QuestSaveId) && !x.Complete)
+                                                                        .GroupBy(x => x.QuestSaveId)
+                                                                        .Select(x => x.First()).ToList();
+
+        var regionInteractions      = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0 && gameWorldData.regionDataList.Select(z => z.Id).Contains(y.RegionId))).ToList();
+        var worldTasks              = gameSaveData.taskSaveDataList.Where(x => regionInteractions.Select(y => y.TaskId).Contains(x.TaskId)).ToList();
+
+        var activeTaskSaves         = gameSaveData.taskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.Id).Contains(x.ObjectiveSaveId))
+                                                                   .Concat(worldTasks)
+                                                                   .GroupBy(x => new { x.WorldInteractableId, x.ObjectiveSaveId })
+                                                                   .Select(x => x.ToList())
+                                                                   .Select(x => x.Where(y => !y.Complete).First()).ToList();
+
+        Debug.Log(activeTaskSaves.Count);
+
+
+        //Spawn interactables: only those belonging to active tasks
+
+
+
+        //1. Find all quests that have not been completed which belong to the active phase
+        //2. For each quest, find the first objective which has not been completed
+        //3. For every interactable, find the first task which has not been completed
+
+        //Result: only show interactions of the first task that has not been completed
     }
 
     private void ChangeRegion()
@@ -187,14 +224,56 @@ public class GameManager : MonoBehaviour
         var tempWorldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
         gameWorldData.tempPlayerPosition = new Vector3(238.125f, -241.9375f, 0);
         //-238.125f -13.8125
-        gameWorldController.Display.DisplayManager.Organizer.UpdateData();
-
+        UpdateWorld();
+        
         CheckTime();
+    }
+
+    private void UpdateWorld()
+    {
+        gameWorldController.Display.DisplayManager.Organizer.UpdateData();
     }
 
     public void CheckTime()
     {
         Debug.Log("Check time to see which interactions and atmospheres are active");
+
+        //For every interactable, check which of their interactions contains the active time
+        ValidateInteractionTime();
+
+        UpdateWorld();
+    }
+
+    private void ValidateInteractionTime()
+    {
+        gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.GroupBy(y => y.TaskId)
+                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
+                                                                 .OrderBy(z => z.Default).First())).ToList()
+                                                                 .ForEach(x => 
+                                                                 {
+                                                                     x.containsActiveTime = true;
+                                                                     SetActiveInteraction(x);
+                                                                 });
+    }
+
+    private void SetActiveInteraction(InteractionElementData interactionData)
+    {
+        var worldInteractableData = gameWorldData.worldInteractableDataList.Where(x => x.Id == interactionData.worldInteractableId).First();
+        
+        //If the world interactable is not active and the region is the active region, set the terrain tile id and transform
+        if(worldInteractableData.DataElement == null)
+        {
+            worldInteractableData.terrainTileId = interactionData.TerrainTileId;
+
+        } else if(worldInteractableData.Type == (int)Enums.InteractableType.Agent) {
+
+            worldInteractableData.DataElement.Element.UpdateElement();
+        }
+
+        //If the world interactable is an active agent and the region is the active region, only set the destination
+        
+        //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out
+        //Possible better solution: all interactables should have an intro and outro animation based on their state which plays when they (de)activate
     }
 
     public void SaveData()

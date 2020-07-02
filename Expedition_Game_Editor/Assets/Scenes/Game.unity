@@ -10877,7 +10877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Tracked: {fileID: 1832129053}
   center: {x: 0, y: 0, z: 0}
-  m_Size: {x: 80, y: 80, z: 50}
+  m_Size: {x: 500, y: 500, z: 500}
 --- !u!1 &794742812
 GameObject:
   m_ObjectHideFlags: 0

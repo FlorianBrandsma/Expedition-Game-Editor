@@ -6,6 +6,7 @@ using System.Collections;
 public class GameDisplayAction : MonoBehaviour, IAction
 {
     public ActionProperties actionProperties;
+    private ExDropdown dropdown;
 
     private Path basePath;
 
@@ -36,7 +37,7 @@ public class GameDisplayAction : MonoBehaviour, IAction
     {
         //if (GlobalManager.programType == GlobalManager.Scenes.Game) return;
 
-        var dropdown = ActionManager.instance.AddDropdown(actionProperties);
+        dropdown = ActionManager.instance.AddDropdown(actionProperties);
         dropdown.Dropdown.captionText.text = Enum.GetName(typeof(GameDisplayManager.Display), GameDisplayManager.activeDisplay);
 
         foreach (var display in Enum.GetValues(typeof(GameDisplayManager.Display)))
@@ -45,9 +46,12 @@ public class GameDisplayAction : MonoBehaviour, IAction
         }
 
         dropdown.Dropdown.value = (int)GameDisplayManager.activeDisplay;
-
+        
         dropdown.Dropdown.onValueChanged.AddListener(delegate { GameDisplayManager.SetDisplay(dropdown.Dropdown.value, basePath); });
     }
 
-    public void CloseAction() { }
+    public void CloseAction()
+    {
+        dropdown.Dropdown.onValueChanged.RemoveAllListeners();
+    }
 }

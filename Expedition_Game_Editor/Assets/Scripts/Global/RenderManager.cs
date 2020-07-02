@@ -14,7 +14,6 @@ static public class RenderManager
     static public void Render(Path path)
     {
         //Debug.Log(PathString(path));
-
         SelectionManager.CancelGetSelection();
 
         //Set up data along the path
@@ -31,9 +30,7 @@ static public class RenderManager
 
         //Opening view only needs to initialize editors, so lists can be set
         ResetLayer(path);
-
-        //SortActions();
-
+        
         //Performed at the end so it doesn't interfere with the current (de)activation process
         InitializeSecondaryPaths(path);
     }

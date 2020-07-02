@@ -1,4 +1,7 @@
-﻿public class WorldObjectElementData : WorldObjectCore, IElementData
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+public class WorldObjectElementData : WorldObjectCore, IElementData
 {
     public DataElement DataElement { get; set; }
 
@@ -6,7 +9,7 @@
     {
         DataType = Enums.DataType.WorldObject;
     }
-
+    
     public string objectGraphicPath;
 
     public string objectGraphicName;
@@ -16,9 +19,10 @@
     public float width;
     public float depth;
 
+    //Original
     public string originalObjectGraphicName;
     public string originalObjectGraphicIconPath;
-
+    
     public override void Update()
     {
         if (!Changed) return;
@@ -42,7 +46,7 @@
 
         originalObjectGraphicName = objectGraphicName;
         originalObjectGraphicIconPath = objectGraphicIconPath;
-
+        
         ClearChanges();
     }
 

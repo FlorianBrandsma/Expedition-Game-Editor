@@ -20,18 +20,18 @@ public class LocalNavMeshBuilder : MonoBehaviour
     NavMeshDataInstance m_Instance;
     List<NavMeshBuildSource> m_Sources = new List<NavMeshBuildSource>();
 
-    IEnumerator Start()
-    {
-        while (true)
-        {
-            //Short delay to avoid excessive operations
-            yield return new WaitForSeconds(2);
+    //IEnumerator Start()
+    //{
+    //    while (true)
+    //    {
+    //        //Short delay to avoid excessive operations
+    //        yield return new WaitForSeconds(2);
 
-            UpdateNavMesh(true);
+    //        UpdateNavMesh(true);
             
-            yield return m_Operation;
-        }
-    }
+    //        yield return m_Operation;
+    //    }
+    //}
 
     void OnEnable()
     {
@@ -56,7 +56,7 @@ public class LocalNavMeshBuilder : MonoBehaviour
         //Don't do anything if the target area hasn't changed
         if (asyncUpdate && center == (m_Tracked ? m_Tracked.position : transform.position))
             return;
-        
+
         NavMeshSourceTag.Collect(ref m_Sources);
         var defaultBuildSettings = NavMesh.GetSettingsByIndex(0);
 

@@ -8,6 +8,9 @@ public class GameWorldElementData : GeneralData, IElementData
     public ChapterElementData chapterData;
     public PhaseElementData phaseData;
 
+    //Might have to go in terrain to preserve the possibility to generate terrains
+    public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
+
     public List<RegionElementData> regionDataList;
 
     public DataElement DataElement { get; set; }

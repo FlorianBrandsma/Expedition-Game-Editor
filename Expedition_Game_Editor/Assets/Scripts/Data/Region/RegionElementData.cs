@@ -63,7 +63,6 @@ public class RegionElementData : RegionCore, IElementData
     {
         var elementData = new RegionElementData();
 
-        Debug.Log("probably remove this");
         elementData.DataElement = DataElement;
 
         elementData.type = type;

@@ -85,7 +85,7 @@ public class TimeManager : MonoBehaviour
 
         SetLighting(activeTime);
 
-        //No need to reload data for time - it's there and filtered by the organizer
+        //No need to reload data for interactions - it's there and filtered by the organizer
         if (resetEditor)
             RenderManager.ResetPath(false);
     }

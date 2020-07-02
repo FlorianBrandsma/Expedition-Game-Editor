@@ -76,19 +76,22 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
 		foreach (TerrainTileElementData terrainTileData in terrainData.terrainTileDataList)
 		{
-			if (terrainTileData.active || !activeRect.Overlaps(terrainTileData.gridElement.rect, true)) continue;
+			if (activeRect.Overlaps(terrainTileData.gridElement.rect, true))
+            {
+                if(!terrainTileData.active)
+                {
+                    SetTerrainTile(terrainTileData);
 
-			SetTerrainTile(terrainTileData);
+                    //Set objects that are bound to this terrain tile
+                    SetWorldObjects(terrainTileData.Id);
+                }
+                
+                //Set world interactable agents that are bound to this tile by their first interaction
+                SetWorldInteractableAgents(terrainTileData.Id);
 
-			//Set objects that are bound to this terrain tile
-			SetWorldObjects(terrainTileData.Id);
-
-			//var worldObjectList = terrainData.worldObjectDataList.Where(x => x.TerrainTileId == terrainTileData.Id).ToList();
-
-			//foreach(WorldObjectDataElement worldObjectData in worldObjectList)
-			//{
-			//	SetWorldObject(worldObjectData);
-			//}
+                //Set world interactable objects that are bound to this tile by their first interaction
+                SetWorldInteractableObjects(terrainTileData.Id);
+            }
 		}
 	}
 
@@ -117,6 +120,24 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		SetWorldElements(worldObjectDataList);
 	}
 
+	private void SetWorldInteractableAgents(int terrainTileId)
+	{
+		var worldInteractableAgentDataList = gameWorldData.worldInteractableDataList.Where(x => x.DataElement == null && 
+                                                                                                x.Type == (int)Enums.InteractableType.Agent && 
+                                                                                                x.terrainTileId == terrainTileId).Cast<IElementData>().ToList();
+
+        SetWorldAgents(worldInteractableAgentDataList);
+	}
+
+	private void SetWorldInteractableObjects(int terrainTileId)
+	{
+		var worldInteractableObjectDataList = gameWorldData.worldInteractableDataList.Where(x => x.DataElement == null && 
+                                                                                                 x.Type == (int)Enums.InteractableType.Object && 
+                                                                                                 x.terrainTileId == terrainTileId).Cast<IElementData>().ToList();
+
+		SetWorldElements(worldInteractableObjectDataList);
+	}
+
 	private void SetWorldElements(List<IElementData> dataList)
 	{
 		if (dataList.Count == 0) return;
@@ -128,17 +149,36 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 			gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
 
 			gameWorldElement.GameElement.DataElement.data.elementData = elementData;
-			
+			elementData.DataElement = gameWorldElement.GameElement.DataElement;
+
 			//Debugging
 			GeneralData generalData = (GeneralData)elementData;
 			gameWorldElement.name = generalData.DebugName + generalData.Id;
 			//
-
-			elementData.DataElement = gameWorldElement.GameElement.DataElement;
-
+			
 			SetElement(gameWorldElement.GameElement);
 		}
 	}
+
+    private void SetWorldAgents(List<IElementData> dataList)
+    {
+        foreach (IElementData elementData in dataList)
+        {
+            var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab);
+
+            gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
+
+            gameWorldAgent.GameElement.DataElement.data.elementData = elementData;
+            elementData.DataElement = gameWorldAgent.GameElement.DataElement;
+
+            //Debugging
+            GeneralData generalData = (GeneralData)elementData;
+            gameWorldAgent.name = generalData.DebugName + "Agent" + generalData.Id;
+            //
+
+            SetElement(gameWorldAgent.GameElement);
+        }
+    }
 
 	//private void SetWorldElements(IDataController dataController, List<IDataElement> dataList)
 	//{
@@ -235,8 +275,6 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	public void ClearOrganizer()
 	{
 		ClearTiles(tileList);
-
-		//SelectionElementManager.CloseElement(elementList);
 	}
 
 	private void ClearTiles(List<Tile> inactiveTileList)
@@ -253,9 +291,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 	private void ClearTileElements(TerrainTileElementData terrainTileData)
 	{
 		ClearWorldObjects(terrainTileData);
-		//ClearWorldInteractableAgents(terrainTileData);
-		//ClearWorldInteractableObjects(terrainTileData);
-	}
+        ClearWorldInteractables(terrainTileData);
+    }
 
 	private void ClearWorldObjects(TerrainTileElementData terrainTileData)
 	{
@@ -268,29 +305,18 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 		});
 	}
 
-	//private void ClearWorldInteractableAgents(TerrainTileDataElement terrainTileData)
-	//{
-	//    var inactiveWorldInteractableAgentList = worldInteractableAgentElementList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
+    private void ClearWorldInteractables(TerrainTileElementData terrainTileData)
+    {
+        var inactiveWorldInteractableList = gameWorldData.worldInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
 
-	//    inactiveWorldInteractableAgentList.ForEach(x =>
-	//    {
-	//        PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
-	//        SelectionElementManager.CloseElement(x.SelectionElement);
-	//    });
-	//}
+        inactiveWorldInteractableList.ForEach(x =>
+        {
+            PoolManager.ClosePoolObject(x.DataElement.Poolable);
+            x.DataElement.Element.CloseElement();
+        });
+    }
 
-	//private void ClearWorldInteractableObjects(TerrainTileDataElement terrainTileData)
-	//{
-	//    var inactiveWorldInteractableObjectList = worldInteractableObjectElementList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
-
-	//    inactiveWorldInteractableObjectList.ForEach(x =>
-	//    {
-	//        PoolManager.ClosePoolObject(x.SelectionElement.Poolable);
-	//        SelectionElementManager.CloseElement(x.SelectionElement);
-	//    });
-	//}
-
-	public void CloseOrganizer()
+    public void CloseOrganizer()
 	{
 		ClearOrganizer();
 

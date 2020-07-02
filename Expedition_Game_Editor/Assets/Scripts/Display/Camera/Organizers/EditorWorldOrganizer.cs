@@ -177,7 +177,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ValidateAtmosphereTime();
 
         //Confirm which interactions's timeframes contain the active time
-        ValidateInteractionsTime();
+        ValidateInteractionTime();
 
         //Confirm which world interactable's timeframes contain the active time
         ValidateWorldInteractablesTime();
@@ -223,7 +223,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                                                                       .ForEach(x => x.containsActiveTime = true);
     }
 
-    private void ValidateInteractionsTime()
+    private void ValidateInteractionTime()
     {
         worldData.terrainDataList.ForEach(x => x.interactionDataList.ForEach(y => y.containsActiveTime = false));
 

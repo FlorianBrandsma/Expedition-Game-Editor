@@ -74,10 +74,7 @@ public class GameWorldDataManager : IDataManager
                 Id = chapterData.Id,
                 Index = chapterData.Index,
 
-                Name = chapterData.name,
-
-                PublicNotes = chapterData.publicNotes,
-                PrivateNotes = chapterData.privateNotes
+                Name = chapterData.name
             },
 
             phaseData = new PhaseElementData()
@@ -87,12 +84,67 @@ public class GameWorldDataManager : IDataManager
 
                 ChapterId = phaseData.chapterId,
 
-                Name = phaseData.name,
-
-                PublicNotes = phaseData.publicNotes,
-                PrivateNotes = phaseData.privateNotes
+                Name = phaseData.name
             },
-            
+
+            worldInteractableDataList = (
+            from worldInteractableData  in worldInteractableDataList
+            join interactableData       in interactableDataList     on worldInteractableData.interactableId equals interactableData.Id
+            join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
+            join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
+            select new WorldInteractableElementData()
+            {
+                Id = worldInteractableData.Id,
+
+                Type = worldInteractableData.type,
+
+                objectGraphicPath = objectGraphicData.path,
+
+                interactableName = interactableData.name,
+                objectGraphicIconPath = iconData.path,
+
+                interactionDataList = (
+                from interactionData    in interactionDataList
+                join taskData           in taskDataList on interactionData.taskId equals taskData.Id
+
+                where taskData.worldInteractableId == worldInteractableData.Id
+                select new InteractionElementData()
+                {
+                    Id = interactionData.Id,
+                    Index = interactionData.Index,
+                    
+                    TaskId = interactionData.taskId,
+                    RegionId = interactionData.regionId,
+                    TerrainTileId = interactionData.terrainTileId,
+
+                    Default = interactionData.isDefault,
+
+                    StartTime = interactionData.startTime,
+                    EndTime = interactionData.endTime,
+
+                    PositionX = interactionData.positionX,
+                    PositionY = interactionData.positionY,
+                    PositionZ = interactionData.positionZ,
+
+                    RotationX = interactionData.rotationX,
+                    RotationY = interactionData.rotationY,
+                    RotationZ = interactionData.rotationZ,
+
+                    ScaleMultiplier = interactionData.scaleMultiplier,
+
+                    Animation = interactionData.animation,
+
+                    objectiveId = taskData.objectiveId,
+                    worldInteractableId = taskData.worldInteractableId,
+
+                    height = objectGraphicData.height,
+                    width = objectGraphicData.width,
+                    depth = objectGraphicData.depth
+                    
+                }).ToList()
+
+            }).ToList(),
+
             regionDataList = (
             from regionData     in regionDataList
             join tileSetData    in tileSetDataList on regionData.tileSetId equals tileSetData.Id
@@ -115,7 +167,6 @@ public class GameWorldDataManager : IDataManager
                 select new TerrainElementData
                 {
                     Id = terrainData.Id,
-                    Index = terrainData.Index,
 
                     Name = terrainData.name,
 
@@ -143,7 +194,6 @@ public class GameWorldDataManager : IDataManager
                     select new TerrainTileElementData()
                     {
                         Id = terrainTileData.Id,
-                        Index = terrainTileData.Index,
 
                         TileId = terrainTileData.tileId,
 
@@ -151,68 +201,6 @@ public class GameWorldDataManager : IDataManager
 
                         gridElement = TileGridElement(terrainData.Index, terrainTileData.Index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize)
                         
-                    }).OrderBy(x => x.Index).ToList(),
-
-                    interactionDataList = (
-                    from interactionData        in interactionDataList
-                    join taskData               in taskDataList                 on interactionData.taskId               equals taskData.Id
-                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId         equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.interactableId equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId     equals objectGraphicData.Id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId             equals iconData.Id
-
-                    join leftJoin in (from objectiveData in objectiveDataList
-                                      select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
-
-                    join leftJoin in (from questData in questDataList
-                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
-
-                    where interactionData.terrainId == terrainData.Id
-                    select new InteractionElementData()
-                    {
-                        Id = interactionData.Id,
-                        Index = interactionData.Index,
-
-                        TaskId = interactionData.taskId,
-                        TerrainId = interactionData.terrainId,
-                        TerrainTileId = interactionData.terrainTileId,
-
-                        Default = interactionData.isDefault,
-
-                        StartTime = interactionData.startTime,
-                        EndTime = interactionData.endTime,
-
-                        PublicNotes = interactionData.publicNotes,
-                        PrivateNotes = interactionData.privateNotes,
-
-                        PositionX = interactionData.positionX,
-                        PositionY = interactionData.positionY,
-                        PositionZ = interactionData.positionZ,
-
-                        RotationX = interactionData.rotationX,
-                        RotationY = interactionData.rotationY,
-                        RotationZ = interactionData.rotationZ,
-
-                        ScaleMultiplier = interactionData.scaleMultiplier,
-
-                        Animation = interactionData.animation,
-
-                        worldInteractableId = taskData.worldInteractableId,
-                        objectiveId = taskData.objectiveId,
-                        questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId :
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
-
-                        objectGraphicId = objectGraphicData.Id,
-                        objectGraphicPath = objectGraphicData.path,
-
-                        objectGraphicIconPath = iconData.path,
-
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth,
-
-                        defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>()
-
                     }).OrderBy(x => x.Index).ToList(),
 
                     worldObjectDataList = (
@@ -223,8 +211,10 @@ public class GameWorldDataManager : IDataManager
                     select new WorldObjectElementData()
                     {
                         Id = worldObjectData.Id,
-                        TerrainId = worldObjectData.terrainId,
+
                         TerrainTileId = worldObjectData.terrainTileId,
+
+                        ObjectGraphicId = objectGraphicData.Id,
 
                         PositionX = worldObjectData.positionX,
                         PositionY = worldObjectData.positionY,
@@ -237,8 +227,7 @@ public class GameWorldDataManager : IDataManager
                         ScaleMultiplier = worldObjectData.scaleMultiplier,
 
                         Animation = worldObjectData.animation,
-
-                        ObjectGraphicId = objectGraphicData.Id,
+                        
                         objectGraphicPath = objectGraphicData.path,
 
                         objectGraphicName = objectGraphicData.name,
@@ -254,7 +243,7 @@ public class GameWorldDataManager : IDataManager
 
             }).ToList()
         };
-
+        
         return new List<IElementData>() { gameWorldData };
     }
 

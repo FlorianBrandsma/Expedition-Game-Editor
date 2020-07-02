@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+using System.Linq;
 
 public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 {
@@ -44,7 +44,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
         switch (GameElement.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldObject: SetWorldObjectElement(); break;
+            case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
         }
@@ -69,6 +70,24 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         SetObjectGraphic();
     }
 
+    private void SetWorldInteractableElement()
+    {
+        var elementData = (WorldInteractableElementData)GameElement.DataElement.data.elementData;
+
+        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+
+        //"Last" is a temporary measure until interactions take progression into account
+        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
+
+        position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
+        rotation = new Vector3(interactionData.RotationX, interactionData.RotationY, interactionData.RotationZ);
+
+        scaleMultiplier = interactionData.ScaleMultiplier;
+
+        SetObjectGraphic();
+    }
+
     private void SetObjectGraphic()
     {
         objectGraphic.transform.SetParent(transform, false);
@@ -76,7 +95,16 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         objectGraphic.gameObject.SetActive(true);
     }
 
-    public void CloseElement() { }
+    public void CloseElement()
+    {
+        GameElement.DataElement.data.elementData.DataElement = null;
+        GameElement.DataElement.data.elementData = null;
+
+        if (objectGraphic == null) return;
+
+        PoolManager.ClosePoolObject(objectGraphic);
+        objectGraphic = null;
+    }
 
     public void ClosePoolable()
     {

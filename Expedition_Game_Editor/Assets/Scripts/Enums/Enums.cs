@@ -140,7 +140,8 @@ public class Enums
         Header,
         PagingButton,
         FormButton,
-        GameWorldElement
+        GameWorldElement,
+        GameWorldAgent
     }
 
     public enum ElementStatus

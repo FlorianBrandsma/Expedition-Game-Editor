@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class WorldInteractableElementData : WorldInteractableCore, IElementData
 {
@@ -22,10 +23,7 @@ public class WorldInteractableElementData : WorldInteractableCore, IElementData
 
     public string interactableName;
     public string objectGraphicIconPath;
-
-    public string originalInteractableName;
-    public string originalObjectGraphicIconPath;
-
+    
     public float positionX;
     public float positionY;
     public float positionZ;
@@ -46,6 +44,13 @@ public class WorldInteractableElementData : WorldInteractableCore, IElementData
     public int endTime;
 
     public bool containsActiveTime;
+
+    //Original
+    public string originalInteractableName;
+    public string originalObjectGraphicIconPath;
+
+    //List
+    public List<InteractionElementData> interactionDataList = new List<InteractionElementData>();
 
     public override void Update()
     {
@@ -93,7 +98,6 @@ public class WorldInteractableElementData : WorldInteractableCore, IElementData
     {
         var elementData = new WorldInteractableElementData();
 
-        Debug.Log("Might not be necessary");
         elementData.DataElement = DataElement;
 
         elementData.elementStatus = elementStatus;
