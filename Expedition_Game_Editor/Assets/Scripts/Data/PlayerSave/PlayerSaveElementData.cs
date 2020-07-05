@@ -1,20 +1,33 @@
 ﻿using UnityEngine;
+using System;
 
-public class SaveElementData : SaveCore, IElementData
+public class PlayerSaveElementData : PlayerSaveCore, IElementData
 {
     public DataElement DataElement { get; set; }
 
-    public SaveElementData() : base()
+    public PlayerSaveElementData() : base()
     {
-        DataType = Enums.DataType.Save;
+        DataType = Enums.DataType.Interaction;
     }
+
+    public int objectGraphicId;
+    public string objectGraphicPath;
 
     public string objectGraphicIconPath;
 
-    public string name;
-    public string locationName;
-    
-    public string time;
+    public float height;
+    public float width;
+    public float depth;
+
+    public string interactableName;
+
+    public DateTime saveTime;
+
+    //Testing purposes
+    public DateTime testTime;
+    public TimeSpan passedTime { get { return  saveTime - testTime; } }
+    public float passedSeconds { get { return passedTime.Seconds; } }
+    //----------------
 
     public override void Update()
     {
@@ -45,9 +58,9 @@ public class SaveElementData : SaveCore, IElementData
 
     public IElementData Clone()
     {
-        var elementData = new SaveElementData();
+        var elementData = new PlayerSaveElementData();
 
-        CloneGeneralData(elementData);
+        CloneCore(elementData);
 
         return elementData;
     }
@@ -55,7 +68,7 @@ public class SaveElementData : SaveCore, IElementData
     public override void Copy(IElementData dataSource)
     {
         base.Copy(dataSource);
-
+        
         SetOriginalValues();
     }
 }

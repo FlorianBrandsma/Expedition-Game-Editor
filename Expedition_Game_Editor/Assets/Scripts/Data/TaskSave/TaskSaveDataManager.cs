@@ -41,6 +41,8 @@ public class TaskSaveDataManager : IDataManager
 
                         name = taskData.name,
 
+                        repeatable = taskData.repeatable,
+
                         publicNotes = taskData.publicNotes
 
                     }).OrderBy(x => x.Index).ToList();

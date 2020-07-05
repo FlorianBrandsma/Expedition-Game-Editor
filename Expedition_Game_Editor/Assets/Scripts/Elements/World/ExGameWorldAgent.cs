@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+using System.Collections;
 
 public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 {
@@ -15,6 +16,10 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     public NavMeshAgent NavMeshAgent        { get { return GetComponent<NavMeshAgent>(); } }
     public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
+
+    public bool allowMoving;
+
+    private bool Moving                     { get { return NavMeshAgent.velocity.x > 0.1f || NavMeshAgent.velocity.z > 0.1f; } }
 
     public Color ElementColor               { set { } }
 
@@ -68,8 +73,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        //"Last" is a temporary measure until interactions take progression into account
-        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
+        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
 
         position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
         rotation = new Vector3(interactionData.RotationX, interactionData.RotationY, interactionData.RotationZ);
@@ -83,8 +87,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (WorldInteractableElementData)GameElement.DataElement.data.elementData;
 
-        //"Last" is a temporary measure until interactions take progression into account
-        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
+        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
 
         position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
     }
@@ -96,8 +99,45 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         objectGraphic.gameObject.SetActive(true);
     }
 
+    private void Update()
+    {
+        if (!NavMeshAgent.isOnNavMesh) return;
+
+        if (NavMeshAgent.remainingDistance > 0 && !Moving)
+            allowMoving = true;
+
+        //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
+        if(allowMoving && NavMeshAgent.remainingDistance < NavMeshAgent.stoppingDistance && !Moving)
+            SettleAgent();
+    }
+
+    private void SettleAgent()
+    {
+        NavMeshAgent.destination = transform.localPosition;
+
+        StopAllCoroutines();
+        StartCoroutine(Rotate(rotation.y));
+
+        allowMoving = false;
+    }
+
+    IEnumerator Rotate(float angle)
+    {
+        var rotateSpeed = 10;
+
+        while(Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
     public void CloseElement()
     {
+        StopAllCoroutines();
+
+        allowMoving = false;
+        
         GameElement.DataElement.data.elementData.DataElement = null;
         GameElement.DataElement.data.elementData = null;
 

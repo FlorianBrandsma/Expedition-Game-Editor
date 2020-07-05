@@ -9,6 +9,8 @@
 
     public string name;
 
+    public bool repeatable;
+
     public string publicNotes;
     public string privateNotes;
 

@@ -297,6 +297,9 @@ public class DataManager
 
             data.name = task.name;
 
+            data.completeObjective = task.completeObjective;
+            data.repeatable = task.repeatable;
+
             data.publicNotes = task.publicNotes;
             data.privateNotes = task.privateNotes;
 
@@ -531,6 +534,40 @@ public class DataManager
 
             data.animation = worldObject.animation;
             
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
+    public List<PlayerSaveData> GetPlayerSaveData(Search.PlayerSave searchParameters)
+    {
+        var dataList = new List<PlayerSaveData>();
+
+        foreach(Fixtures.PlayerSave playerSave in Fixtures.playerSaveList)
+        {
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(playerSave.saveId)) continue;
+
+            var data = new PlayerSaveData();
+
+            data.Id = playerSave.Id;
+
+            data.saveId = playerSave.saveId;
+            data.regionId = playerSave.regionId;
+            data.partyMemberId = playerSave.partyMemberId;
+            
+            data.positionX = playerSave.positionX;
+            data.positionY = playerSave.positionY;
+            data.positionZ = playerSave.positionZ;
+
+            data.rotationX = playerSave.rotationX;
+            data.rotationY = playerSave.rotationY;
+            data.rotationZ = playerSave.rotationZ;
+
+            data.scaleMultiplier = playerSave.scaleMultiplier;
+
+            data.playedSeconds = playerSave.playedSeconds;
+
             dataList.Add(data);
         }
 
@@ -786,6 +823,9 @@ public class DataManager
 
         public string name;
 
+        public bool completeObjective;
+        public bool repeatable;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -883,6 +923,25 @@ public class DataManager
         public float scaleMultiplier;
 
         public int animation;
+    }
+
+    public class PlayerSaveData : GeneralData
+    {
+        public int saveId;
+        public int regionId;
+        public int partyMemberId;
+
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int playedSeconds;
     }
 
     public class ChapterSaveData : GeneralData

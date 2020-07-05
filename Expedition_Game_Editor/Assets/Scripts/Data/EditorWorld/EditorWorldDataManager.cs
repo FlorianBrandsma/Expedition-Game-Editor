@@ -228,8 +228,8 @@ public class EditorWorldDataManager : IDataManager
                         worldInteractableId = taskData.worldInteractableId,
 
                         objectiveId = taskData.objectiveId,
-                        questId = objectiveData.FirstOrDefault() != null ? objectiveData.FirstOrDefault().objectiveData.questId :
-                                  questData.FirstOrDefault() != null ? questData.FirstOrDefault().questData.Id : 0,
+                        questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId :
+                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
 
                         objectGraphicId = objectGraphicData.Id,
                         objectGraphicPath = objectGraphicData.path,

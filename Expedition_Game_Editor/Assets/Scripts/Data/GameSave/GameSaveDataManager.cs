@@ -9,6 +9,7 @@ public class GameSaveDataManager : IDataManager
     
     private DataManager dataManager = new DataManager();
 
+    private List<DataManager.PlayerSaveData> playerSaveDataList;
     private List<DataManager.ChapterSaveData> chapterSaveDataList;
     private List<DataManager.PhaseSaveData> phaseSaveDataList;
     private List<DataManager.QuestSaveData> questSaveDataList;
@@ -25,9 +26,11 @@ public class GameSaveDataManager : IDataManager
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
 
-        GetChapterSaveData(searchParameters);
+        GetPlayerSaveData(searchParameters);
         
-        if (chapterSaveDataList.Count == 0) return new List<IElementData>();
+        if (playerSaveDataList.Count == 0) return new List<IElementData>();
+
+        GetChapterSaveData(searchParameters);
 
         GetPhaseSaveData(searchParameters);
         GetQuestSaveData(searchParameters);
@@ -37,6 +40,29 @@ public class GameSaveDataManager : IDataManager
 
         var gameSaveDataElement = new GameSaveElementData()
         {
+            playerSaveData = (from playerSaveData in playerSaveDataList
+                              select new PlayerSaveElementData
+                              {
+                                  Id = playerSaveData.Id,
+
+                                  SaveId = playerSaveData.Id,
+                                  RegionId = playerSaveData.regionId,
+                                  PartyMemberId = playerSaveData.partyMemberId,
+
+                                  PositionX = playerSaveData.positionX,
+                                  PositionY = playerSaveData.positionY,
+                                  PositionZ = playerSaveData.positionZ,
+
+                                  RotationX = playerSaveData.rotationX,
+                                  RotationY = playerSaveData.rotationY,
+                                  RotationZ = playerSaveData.rotationZ,
+
+                                  ScaleMultiplier = playerSaveData.scaleMultiplier,
+
+                                  PlayedSeconds = playerSaveData.playedSeconds
+
+                              }).First(),
+
             chapterSaveDataList = (from chapterSaveData in chapterSaveDataList
                                    select new ChapterSaveElementData
                                    {
@@ -119,6 +145,14 @@ public class GameSaveDataManager : IDataManager
         gameSaveDataElement.SetOriginalValues();
 
         return new List<IElementData>() { gameSaveDataElement };
+    }
+
+    internal void GetPlayerSaveData(Search.GameSave searchData)
+    {
+        var searchParameters = new Search.PlayerSave();
+        searchParameters.saveId = searchData.saveId;
+
+        playerSaveDataList = dataManager.GetPlayerSaveData(searchParameters);
     }
 
     internal void GetChapterSaveData(Search.GameSave searchData)

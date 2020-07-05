@@ -52,8 +52,6 @@ public class TimeManager : MonoBehaviour
 
     private float dot;
 
-    static public Color test;
-
     public Color baseColor;
     public Gradient nightDayColor;
     public Gradient ambientColor;
@@ -115,6 +113,21 @@ public class TimeManager : MonoBehaviour
     public void SetCameraLight(Light light)
     {
         light.color = nightDayColor.Evaluate(dot);
+    }
+
+    static public string TimeFromSeconds(int seconds)
+    {
+        var time = TimeSpan.FromSeconds(seconds);
+
+        var hourFormat = "00";
+        var totalHours = Mathf.FloorToInt(Convert.ToSingle(time.TotalHours));
+
+        while (hourFormat.Length < totalHours.ToString().Length)
+            hourFormat += "0";
+
+        var timeString = string.Format("{0:" + hourFormat + "}:{1:00}:{2:00}", time.TotalHours, time.Minutes, time.Seconds);
+
+        return timeString;
     }
 
     static public string FormatTime(int time, bool isStart = false)

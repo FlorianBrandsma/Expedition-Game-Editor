@@ -9650,6 +9650,7 @@ MonoBehaviour:
   gameSaveController: {fileID: 1709052730}
   gameWorldController: {fileID: 848345540}
   localNavMeshBuilder: {fileID: 790280562}
+  gameLight: {fileID: 788754054}
 --- !u!4 &680479532
 Transform:
   m_ObjectHideFlags: 0
@@ -18811,7 +18812,7 @@ MonoBehaviour:
   referenceArea: {fileID: 1206349034}
   constantHeight: 0
   zigzag: 0
-  iconType: 0
+  iconType: 2
   childProperty: 0
 --- !u!114 &1217458132
 MonoBehaviour:
@@ -18829,7 +18830,7 @@ MonoBehaviour:
   listManager: {fileID: 46085798}
   selectionType: 1
   selectionProperty: 4
-  elementSize: {x: 0, y: 50}
+  elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
   enableAdding: 0

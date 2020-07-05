@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 public class GameWorldElementData : GeneralData, IElementData
 {
-    public Vector3 tempPlayerPosition;
-
     public ChapterElementData chapterData;
     public PhaseElementData phaseData;
-
+    
     //Might have to go in terrain to preserve the possibility to generate terrains
     public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
 

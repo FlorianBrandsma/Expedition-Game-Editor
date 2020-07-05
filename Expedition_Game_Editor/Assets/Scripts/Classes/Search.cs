@@ -391,6 +391,18 @@ public class Search
         public RequestType requestType;
     }
 
+    public class PlayerSave
+    {
+        public List<int> saveId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class ChapterSave
     {
         public List<int> id = new List<int>();

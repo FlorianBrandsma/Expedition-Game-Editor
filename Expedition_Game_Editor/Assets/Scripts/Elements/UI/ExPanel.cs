@@ -12,6 +12,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public Text idText;
     public Text headerText;
     public Text descriptionText;
+    public Text timeText;
     public RectTransform iconParent;
     public RawImage icon;
     public RawImage iconBase;
@@ -374,8 +375,8 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var data = EditorElement.DataElement.data;
         var elementData = (ObjectGraphicElementData)data.elementData;
         
-        header      = elementData.Name;
-        iconPath    = elementData.iconPath;
+        header          = elementData.Name;
+        iconPath        = elementData.iconPath;
         
         idText.text     = elementData.Id.ToString();
         headerText.text = header;
@@ -425,10 +426,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var data = EditorElement.DataElement.data;
         var elementData = (SaveElementData)data.elementData;
 
-        header = elementData.name;
+        header      = elementData.name;
+        description = elementData.locationName;
 
-        idText.text = elementData.Id.ToString();
-        headerText.text = header;
+        iconPath    = elementData.objectGraphicIconPath;
+        
+        headerText.text         = header;
+        descriptionText.text    = description;
+
+        IconTexture     = Resources.Load<Texture2D>(iconPath);
+
+        idText.text     = elementData.Id.ToString();
+        timeText.text   = elementData.time;
     }
 
     private void SetChapterSaveElement()
@@ -526,6 +535,9 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             description = string.Empty;
         }
 
+        if(timeText != null)
+            timeText.text = string.Empty;
+        
         if (iconType != Enums.IconType.None)
         {
             iconParent.gameObject.SetActive(false);

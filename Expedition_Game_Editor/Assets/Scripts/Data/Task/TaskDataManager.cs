@@ -32,7 +32,12 @@ public class TaskDataManager : IDataManager
                         ObjectiveId = taskData.objectiveId,
 
                         Name = taskData.name,
-                        PublicNotes = taskData.notes
+
+                        CompleteObjective = taskData.completeObjective,
+                        Repeatable = taskData.repeatable,
+
+                        PublicNotes = taskData.publicNotes,
+                        PrivateNotes = taskData.privateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -58,9 +63,15 @@ public class TaskDataManager : IDataManager
 
             taskData.worldInteractableId = task.worldInteractableId;
             taskData.objectiveId = task.objectiveId;
-            taskData.name = task.name;
-            taskData.notes = task.publicNotes;
 
+            taskData.name = task.name;
+
+            taskData.completeObjective = task.completeObjective;
+            taskData.repeatable = task.repeatable;
+
+            taskData.publicNotes = task.publicNotes;
+            taskData.privateNotes = task.privateNotes;
+            
             taskDataList.Add(taskData);
         }
     }
@@ -71,6 +82,11 @@ public class TaskDataManager : IDataManager
         public int objectiveId;
 
         public string name;
-        public string notes;
+
+        public bool completeObjective;
+        public bool repeatable;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 }

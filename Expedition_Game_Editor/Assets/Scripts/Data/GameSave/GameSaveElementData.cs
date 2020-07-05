@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class GameSaveElementData : GeneralData, IElementData
 {
+    public PlayerSaveElementData playerSaveData;
+
     public List<ChapterSaveElementData> chapterSaveDataList;
     public List<PhaseSaveElementData> phaseSaveDataList;
     public List<QuestSaveElementData> questSaveDataList;

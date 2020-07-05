@@ -55,6 +55,7 @@ static public class Fixtures
     static public List<Outcome>             outcomeList             = new List<Outcome>();
 
     static public List<Save>                saveList                = new List<Save>();
+    static public List<PlayerSave>          playerSaveList          = new List<PlayerSave>();
     static public List<ChapterSave>         chapterSaveList         = new List<ChapterSave>();
     static public List<PhaseSave>           phaseSaveList           = new List<PhaseSave>();
     static public List<QuestSave>           questSaveList           = new List<QuestSave>();
@@ -256,6 +257,10 @@ static public class Fixtures
         public int objectiveId;
 
         public string name;
+
+        public bool completeObjective;
+        public bool repeatable;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -307,6 +312,25 @@ static public class Fixtures
     public class Save : GeneralData
     {
         public int gameId;
+    }
+
+    public class PlayerSave : GeneralData
+    {
+        public int saveId;
+        public int regionId;
+        public int partyMemberId;
+        
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+
+        public float scaleMultiplier;
+
+        public int playedSeconds;
     }
 
     public class ChapterSave : GeneralData
@@ -762,10 +786,10 @@ static public class Fixtures
             //CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 75, 0));
+            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 75, 0), 5);
 
             /*Mage*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 295, 0));
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 295, 0), 5);
 
             /*Pool*/
             CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 0f, 242.375f), new Vector3(0, 180, 0));
@@ -779,7 +803,7 @@ static public class Fixtures
         }
     }
 
-    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int regionId, Vector3 position, Vector3 rotation, float randomVariance = 0)
     {
         var worldInteractable = new WorldInteractable();
 
@@ -793,13 +817,13 @@ static public class Fixtures
         
         for (int index = 0; index < baseTasks; index++)
         {
-            CreateTask(worldInteractable, 0, index, regionId, position, rotation);
+            CreateTask(worldInteractable, 0, index, regionId, position, rotation, randomVariance);
         }
         
         worldInteractableList.Add(worldInteractable);
     }
 
-    static public void CreateTask(WorldInteractable worldInteractable, int objectiveId, int taskIndex, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateTask(WorldInteractable worldInteractable, int objectiveId, int taskIndex, int regionId, Vector3 position, Vector3 rotation, float randomVariance = 0)
     {
         var task = new Task();
 
@@ -815,14 +839,14 @@ static public class Fixtures
 
         task.publicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
         
-        CreateInteraction(task, true, 0, 0, regionId, position, rotation);
-        CreateInteraction(task, false, 0, 4, regionId, position, rotation);
-        CreateInteraction(task, false, 9, 15, regionId, position, rotation);
+        CreateInteraction(task, true, 0, 0, regionId, position, rotation, randomVariance);
+        CreateInteraction(task, false, 0, 4, regionId, position, rotation, randomVariance);
+        CreateInteraction(task, false, 9, 15, regionId, position, rotation, 0);
         
         taskList.Add(task);
     }
 
-    static public void CreateInteraction(Task task, bool isDefault, int startTime, int endTime, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateInteraction(Task task, bool isDefault, int startTime, int endTime, int regionId, Vector3 position, Vector3 rotation, float randomVariance)
     {
         var interaction = new Interaction();
 
@@ -839,9 +863,9 @@ static public class Fixtures
 
         interaction.publicNotes = "These are public interaction notes";
 
-        interaction.positionX = position.x;
+        interaction.positionX = position.x + Random.Range(-randomVariance, randomVariance);
         interaction.positionY = position.y;
-        interaction.positionZ = position.z;
+        interaction.positionZ = position.z + Random.Range(-randomVariance, randomVariance);
 
         interaction.regionId = regionId;
         interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
@@ -912,7 +936,7 @@ static public class Fixtures
             chapter.Id = chapterId;
             chapter.Index = i;
 
-            chapter.name = "Chapter " + chapterId;
+            chapter.name = "Chapter " + chapterId + " Name";
             chapter.publicNotes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
             
             chapterList.Add(chapter);
@@ -1020,7 +1044,7 @@ static public class Fixtures
 
                 phase.chapterId = chapter.Id;
 
-                phase.name = "Phase " + (i + 1);
+                phase.name = "Phase " + (i + 1) + " Name";
 
                 foreach (ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
                 {
@@ -1246,7 +1270,7 @@ static public class Fixtures
                 quest.Index = i;
 
                 quest.phaseId = phase.Id;
-                quest.name = "Quest " + (i + 1);
+                quest.name = "Quest " + (i + 1) + " Name";
                 quest.publicNotes = "I belong to Phase " + phase.Id + ". This is definitely a test";
                 
                 questList.Add(quest);
@@ -1306,7 +1330,7 @@ static public class Fixtures
                 objective.Index = i;
 
                 objective.questId = quest.Id;
-                objective.name = "Objective " + (i + 1);
+                objective.name = "Objective " + (i + 1) + " Name";
                 objective.publicNotes = "I belong to Quest " + quest.Id + ". This is definitely a test";
                 
                 objectiveList.Add(objective);
@@ -1444,9 +1468,45 @@ static public class Fixtures
         save.Id = id;
         save.Index = saveList.Count;
 
+        CreatePlayerSave(save);
         CreateStageSaves(save);
 
         saveList.Add(save);
+    }
+
+    static private void CreatePlayerSave(Save save)
+    {
+        var playerSave = new PlayerSave();
+
+        int playerSaveId = playerSaveList.Count > 0 ? (playerSaveList[playerSaveList.Count - 1].Id + 1) : 1;
+
+        playerSave.Id = playerSaveId;
+
+        playerSave.saveId = save.Id;
+
+        var firstChapter        = chapterList.OrderBy(x => x.Index).First();
+        var firstPhase          = phaseList.Where(x => x.chapterId == firstChapter.Id).OrderBy(x => x.Index).First();
+        var firstPartyMember    = partyMemberList.Where(x => x.chapterId == firstChapter.Id).OrderBy(x => x.Index).First();
+
+        playerSave.regionId = firstPhase.defaultRegionId;
+        playerSave.partyMemberId = firstPartyMember.Id;
+
+        playerSave.positionX = firstPhase.defaultPositionX;
+        playerSave.positionY = firstPhase.defaultPositionY;
+        playerSave.positionZ = firstPhase.defaultPositionZ;
+
+        playerSave.rotationX = firstPhase.defaultRotationX;
+        playerSave.rotationY = firstPhase.defaultRotationY;
+        playerSave.rotationZ = firstPhase.defaultRotationZ;
+
+        //Test
+        //playerSave.playedSeconds = 123456;
+        //34 hours
+        //17 minutes
+        //36 seconds
+        //----
+
+        playerSaveList.Add(playerSave);
     }
 
     static private void CreateStageSaves(Save save)

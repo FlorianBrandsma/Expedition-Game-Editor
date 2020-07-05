@@ -8,17 +8,26 @@ public class TaskCore : GeneralData
 
     private string name;
 
+    private bool completeObjective;
+    private bool repeatable;
+
     private string publicNotes;
     private string privateNotes;
 
     //Original
     public string originalName;
 
+    private bool originalCompleteObjective;
+    private bool originalRepeatable;
+
     public string originalPublicNotes;
     public string originalPrivateNotes;
 
     //Changed
     private bool changedName;
+
+    private bool changedCompleteObjective;
+    private bool changedRepeatable;
 
     private bool changedPublicNotes;
     private bool changedPrivateNotes;
@@ -27,7 +36,7 @@ public class TaskCore : GeneralData
     {
         get
         {
-            return changedName || changedPublicNotes || changedPrivateNotes;
+            return changedName || changedCompleteObjective || changedRepeatable || changedPublicNotes || changedPrivateNotes;
         }
     }
 
@@ -54,6 +63,32 @@ public class TaskCore : GeneralData
             changedName = (value != originalName);
 
             name = value;
+        }
+    }
+
+    public bool CompleteObjective
+    {
+        get { return completeObjective; }
+        set
+        {
+            if (value == completeObjective) return;
+
+            changedCompleteObjective = (value != originalCompleteObjective);
+
+            completeObjective = value;
+        }
+    }
+
+    public bool Repeatable
+    {
+        get { return repeatable; }
+        set
+        {
+            if (value == repeatable) return;
+
+            changedRepeatable = (value != originalRepeatable);
+
+            repeatable = value;
         }
     }
 
@@ -94,6 +129,12 @@ public class TaskCore : GeneralData
         if (changedName)
             taskData.name = name;
 
+        if (changedCompleteObjective)
+            taskData.completeObjective = completeObjective;
+
+        if (changedRepeatable)
+            taskData.repeatable = repeatable;
+
         if (changedPublicNotes)
             taskData.publicNotes = publicNotes;
 
@@ -120,6 +161,9 @@ public class TaskCore : GeneralData
     {
         originalName = name;
 
+        originalCompleteObjective = completeObjective;
+        originalRepeatable = repeatable;
+
         originalPublicNotes = publicNotes;
         originalPrivateNotes = privateNotes;
     }
@@ -127,6 +171,9 @@ public class TaskCore : GeneralData
     public void GetOriginalValues()
     {
         name = originalName;
+
+        completeObjective = originalCompleteObjective;
+        repeatable = originalRepeatable;
 
         publicNotes = originalPublicNotes;
         privateNotes = originalPrivateNotes;
@@ -137,6 +184,9 @@ public class TaskCore : GeneralData
         GetOriginalValues();
 
         changedName = false;
+
+        changedCompleteObjective = false;
+        changedRepeatable = false;
 
         changedPublicNotes = false;
         changedPrivateNotes = false;
@@ -153,6 +203,9 @@ public class TaskCore : GeneralData
         objectiveId = taskDataSource.objectiveId;
 
         name = taskDataSource.name;
+
+        completeObjective = taskDataSource.completeObjective;
+        repeatable = taskDataSource.repeatable;
 
         publicNotes = taskDataSource.publicNotes;
         privateNotes = taskDataSource.privateNotes;
