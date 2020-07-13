@@ -20,7 +20,8 @@ public class Tile : MonoBehaviour, IPoolable
     {
         switch(DataType)
         {
-            case Enums.DataType.TerrainTile: CloseTerrainTile(); break;
+            case Enums.DataType.TerrainTile:        CloseTerrainTile();     break;
+            case Enums.DataType.GameTerrainTile:    CloseGameTerrainTile(); break;
 
             default: Debug.Log("CASE MISSING: " + DataType); break;
         }
@@ -33,6 +34,13 @@ public class Tile : MonoBehaviour, IPoolable
     private void CloseTerrainTile()
     {
         var terrainTileData = (TerrainTileElementData)ElementData;
+
+        terrainTileData.active = false;
+    }
+
+    private void CloseGameTerrainTile()
+    {
+        var terrainTileData = (GameTerrainTileElementData)ElementData;
 
         terrainTileData.active = false;
     }

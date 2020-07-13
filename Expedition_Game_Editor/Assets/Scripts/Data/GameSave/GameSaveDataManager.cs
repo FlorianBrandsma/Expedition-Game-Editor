@@ -53,10 +53,6 @@ public class GameSaveDataManager : IDataManager
                                   PositionY = playerSaveData.positionY,
                                   PositionZ = playerSaveData.positionZ,
 
-                                  RotationX = playerSaveData.rotationX,
-                                  RotationY = playerSaveData.rotationY,
-                                  RotationZ = playerSaveData.rotationZ,
-
                                   ScaleMultiplier = playerSaveData.scaleMultiplier,
 
                                   PlayedSeconds = playerSaveData.playedSeconds

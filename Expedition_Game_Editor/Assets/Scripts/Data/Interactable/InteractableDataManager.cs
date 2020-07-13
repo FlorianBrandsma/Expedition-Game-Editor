@@ -35,14 +35,18 @@ public class InteractableDataManager : IDataManager
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
                     select new InteractableElementData()
                     {
-                        Id      = interactableData.Id,
-                        Index   = interactableData.Index,
+                        Id = interactableData.Id,
+                        Index = interactableData.Index,
 
                         Type = interactableData.type,
 
                         ObjectGraphicId = interactableData.objectGraphicId,
 
-                        Name    = interactableData.name,
+                        Name = interactableData.name,
+
+
+
+
 
                         objectGraphicPath = objectGraphicData.path,
                         objectGraphicIconPath = iconData.path
@@ -74,6 +78,14 @@ public class InteractableDataManager : IDataManager
 
             interactableData.name = interactable.name;
 
+            interactableData.health = interactable.health;
+            interactableData.hunger = interactable.hunger;
+            interactableData.thirst = interactable.thirst;
+
+            interactableData.weight = interactable.weight;
+            interactableData.speed = interactable.speed;
+            interactableData.stamina = interactable.stamina;
+            
             interactableDataList.Add(interactableData);
         }
     }
@@ -102,5 +114,13 @@ public class InteractableDataManager : IDataManager
         public int objectGraphicId;
 
         public string name;
+
+        public int health;
+        public int hunger;
+        public int thirst;
+
+        public float weight;
+        public float speed;
+        public float stamina;
     }
 }

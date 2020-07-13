@@ -31,8 +31,6 @@ public class PlayerSaveElementData : PlayerSaveCore, IElementData
 
     public override void Update()
     {
-        if (!Changed) return;
-
         base.Update();
 
         SetOriginalValues();

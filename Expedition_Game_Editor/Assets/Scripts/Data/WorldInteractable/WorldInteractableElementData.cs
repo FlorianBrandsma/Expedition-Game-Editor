@@ -49,9 +49,6 @@ public class WorldInteractableElementData : WorldInteractableCore, IElementData
     public string originalInteractableName;
     public string originalObjectGraphicIconPath;
 
-    //List
-    public List<InteractionElementData> interactionDataList = new List<InteractionElementData>();
-
     public override void Update()
     {
         if (!Changed) return;

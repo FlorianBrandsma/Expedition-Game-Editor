@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using System.Linq;
 
 public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
@@ -44,8 +43,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
         switch (GameElement.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
+            case Enums.DataType.GameWorldObject:        SetGameWorldObjectElement();        break;
+            case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableElement();  break;
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
         }
@@ -55,24 +54,24 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
     }
 
-    private void SetWorldObjectElement()
+    private void SetGameWorldObjectElement()
     {
-        var elementData = (WorldObjectElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldObjectElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.ObjectGraphicId);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
-        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
+        position = new Vector3(elementData.positionX, elementData.positionY, elementData.positionZ);
+        rotation = new Vector3(elementData.rotationX, elementData.rotationY, elementData.rotationZ);
 
-        scaleMultiplier = elementData.ScaleMultiplier;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         SetObjectGraphic();
     }
 
-    private void SetWorldInteractableElement()
+    private void SetGameWorldInteractableElement()
     {
-        var elementData = (WorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
@@ -80,10 +79,10 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         //"Last" is a temporary measure until interactions take progression into account
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
 
-        position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
-        rotation = new Vector3(interactionData.RotationX, interactionData.RotationY, interactionData.RotationZ);
+        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
+        rotation = new Vector3(interactionData.rotationX, interactionData.rotationY, interactionData.rotationZ);
 
-        scaleMultiplier = interactionData.ScaleMultiplier;
+        scaleMultiplier = interactionData.scaleMultiplier;
 
         SetObjectGraphic();
     }

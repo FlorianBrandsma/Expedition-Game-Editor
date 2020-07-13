@@ -11,10 +11,6 @@ public class PlayerSaveCore : GeneralData
     private float positionY;
     private float positionZ;
 
-    private int rotationX;
-    private int rotationY;
-    private int rotationZ;
-
     private float scaleMultiplier;
     
     private int playedSeconds;
@@ -22,14 +18,6 @@ public class PlayerSaveCore : GeneralData
     //Original
     public int originalRegionId;
     public int originalPartyMemberId;
-    
-    public float originalPositionX;
-    public float originalPositionY;
-    public float originalPositionZ;
-
-    public int originalRotationX;
-    public int originalRotationY;
-    public int originalRotationZ;
 
     public float originalScaleMultiplier;
 
@@ -38,14 +26,6 @@ public class PlayerSaveCore : GeneralData
     //Changed
     private bool changedRegionId;
     private bool changedPartyMemberId;
-    
-    private bool changedPositionX;
-    private bool changedPositionY;
-    private bool changedPositionZ;
-
-    private bool changedRotationX;
-    private bool changedRotationY;
-    private bool changedRotationZ;
 
     private bool changedScaleMultiplier;
 
@@ -56,9 +36,7 @@ public class PlayerSaveCore : GeneralData
         get
         {
             return  changedRegionId         || changedPartyMemberId || 
-                    changedPositionX        || changedPositionY     || changedPositionZ     ||
-                    changedRotationX        || changedRotationY     || changedRotationZ     ||
-                    changedScaleMultiplier  || changedPlayedSeconds;
+                    changedScaleMultiplier;
         }
     }
 
@@ -98,79 +76,19 @@ public class PlayerSaveCore : GeneralData
     public float PositionX
     {
         get { return positionX; }
-        set
-        {
-            if (value == positionX) return;
-
-            changedPositionX = (value != originalPositionX);
-
-            positionX = value;
-        }
+        set { positionX = value; }
     }
 
     public float PositionY
     {
         get { return positionY; }
-        set
-        {
-            if (value == positionY) return;
-
-            changedPositionY = (value != originalPositionY);
-
-            positionY = value;
-        }
+        set { positionY = value; }
     }
 
     public float PositionZ
     {
         get { return positionZ; }
-        set
-        {
-            if (value == positionZ) return;
-
-            changedPositionZ = (value != originalPositionZ);
-
-            positionZ = value;
-        }
-    }
-
-    public int RotationX
-    {
-        get { return rotationX; }
-        set
-        {
-            if (value == rotationX) return;
-
-            changedRotationX = (value != originalRotationX);
-
-            rotationX = value;
-        }
-    }
-
-    public int RotationY
-    {
-        get { return rotationY; }
-        set
-        {
-            if (value == rotationY) return;
-
-            changedRotationY = (value != originalRotationY);
-
-            rotationY = value;
-        }
-    }
-
-    public int RotationZ
-    {
-        get { return rotationZ; }
-        set
-        {
-            if (value == rotationZ) return;
-
-            changedRotationZ = (value != originalRotationZ);
-
-            rotationZ = value;
-        }
+        set { positionZ = value; }
     }
 
     public float ScaleMultiplier
@@ -207,35 +125,19 @@ public class PlayerSaveCore : GeneralData
     {
         var playerSaveData = Fixtures.playerSaveList.Where(x => x.Id == Id).FirstOrDefault();
 
+        playerSaveData.positionX = positionX;
+        playerSaveData.positionY = positionY;
+        playerSaveData.positionZ = positionZ;
+
+        playerSaveData.playedSeconds = playedSeconds;
+
+        if (!Changed) return;
+
         if (changedRegionId)
             playerSaveData.regionId = regionId;
-
-        if (changedPartyMemberId)
-            playerSaveData.partyMemberId = partyMemberId;
         
-        if (changedPositionX)
-            playerSaveData.positionX = positionX;
-
-        if (changedPositionY)
-            playerSaveData.positionY = positionY;
-
-        if (changedPositionZ)
-            playerSaveData.positionZ = positionZ;
-
-        if (changedRotationX)
-            playerSaveData.rotationX = rotationX;
-
-        if (changedRotationY)
-            playerSaveData.rotationY = rotationY;
-
-        if (changedRotationZ)
-            playerSaveData.rotationZ = rotationZ;
-
         if (changedScaleMultiplier)
-            playerSaveData.scaleMultiplier = scaleMultiplier;
-
-        if (changedPlayedSeconds)
-            playerSaveData.playedSeconds = playedSeconds;
+            playerSaveData.scaleMultiplier = scaleMultiplier;  
     }
 
     public void UpdateSearch() { }
@@ -256,14 +158,6 @@ public class PlayerSaveCore : GeneralData
         originalRegionId = regionId;
         originalPartyMemberId = partyMemberId;
         
-        originalPositionX = positionX;
-        originalPositionY = positionY;
-        originalPositionZ = positionZ;
-
-        originalRotationX = rotationX;
-        originalRotationY = rotationY;
-        originalRotationZ = rotationZ;
-
         originalScaleMultiplier = scaleMultiplier;
 
         originalPlayedSeconds = playedSeconds;
@@ -273,14 +167,6 @@ public class PlayerSaveCore : GeneralData
     {
         regionId = originalRegionId;
         partyMemberId = originalPartyMemberId;
-        
-        positionX = originalPositionX;
-        positionY = originalPositionY;
-        positionZ = originalPositionZ;
-
-        rotationX = originalRotationX;
-        rotationY = originalRotationY;
-        rotationZ = originalRotationZ;
 
         scaleMultiplier = originalScaleMultiplier;
 
@@ -293,14 +179,6 @@ public class PlayerSaveCore : GeneralData
 
         changedRegionId = false;
         changedPartyMemberId = false;
-        
-        changedPositionX = false;
-        changedPositionY = false;
-        changedPositionZ = false;
-
-        changedRotationX = false;
-        changedRotationY = false;
-        changedRotationZ = false;
 
         changedScaleMultiplier = false;
 

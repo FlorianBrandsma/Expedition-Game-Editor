@@ -79,6 +79,14 @@ static public class Fixtures
         public int objectGraphicId;
         
         public string name;
+
+        public int health;
+        public int hunger;
+        public int thirst;
+
+        public float weight;
+        public float speed;
+        public float stamina;
     }
     
     public class WorldObject : GeneralData
@@ -323,10 +331,6 @@ static public class Fixtures
         public float positionX;
         public float positionY;
         public float positionZ;
-
-        public int rotationX;
-        public int rotationY;
-        public int rotationZ;
 
         public float scaleMultiplier;
 
@@ -647,6 +651,14 @@ static public class Fixtures
 
             interactable.name = "Interactable " + id;
 
+            interactable.health = 100;
+            interactable.hunger = 100;
+            interactable.thirst = 100;
+
+            interactable.weight = 80;
+            interactable.speed = 50;
+            interactable.stamina = 50;
+
             interactableList.Add(interactable);
         }
     }
@@ -786,10 +798,10 @@ static public class Fixtures
             //CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 75, 0), 5);
+            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 130, 0), 5);
 
             /*Mage*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 295, 0), 5);
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 255, 0), 5);
 
             /*Pool*/
             CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 0f, 242.375f), new Vector3(0, 180, 0));
@@ -1241,10 +1253,10 @@ static public class Fixtures
 
                 phase.defaultPositionX = 238.125f;
                 phase.defaultPositionY = 0.1f;
-                phase.defaultPositionZ = 239.875f;
+                phase.defaultPositionZ = 245.5f;
 
                 phase.defaultRotationX = 0;
-                phase.defaultRotationY = 180;
+                phase.defaultRotationY = 0;
                 phase.defaultRotationZ = 0;
 
                 phase.defaultScaleMultiplier = 1f;
@@ -1495,9 +1507,7 @@ static public class Fixtures
         playerSave.positionY = firstPhase.defaultPositionY;
         playerSave.positionZ = firstPhase.defaultPositionZ;
 
-        playerSave.rotationX = firstPhase.defaultRotationX;
-        playerSave.rotationY = firstPhase.defaultRotationY;
-        playerSave.rotationZ = firstPhase.defaultRotationZ;
+        playerSave.scaleMultiplier = 1;
 
         //Test
         //playerSave.playedSeconds = 123456;

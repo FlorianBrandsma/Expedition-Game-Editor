@@ -11,15 +11,17 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private Vector3 position;
     private Vector3 rotation;
-
+    
     private float scaleMultiplier;
 
-    public NavMeshAgent NavMeshAgent        { get { return GetComponent<NavMeshAgent>(); } }
+    private float speed;
+
+    public NavMeshAgent Agent               { get { return GetComponent<NavMeshAgent>(); } }
     public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
 
     public bool allowMoving;
 
-    private bool Moving                     { get { return NavMeshAgent.velocity.x > 0.1f || NavMeshAgent.velocity.z > 0.1f; } }
+    private bool Moving                     { get { return Agent.velocity.x > 0.1f || Agent.velocity.z > 0.1f; } }
 
     public Color ElementColor               { set { } }
 
@@ -32,6 +34,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         var newElement = Instantiate(this);
 
+        Agent.updatePosition = false;
+
         return newElement;
     }
 
@@ -41,12 +45,16 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         switch (GameElement.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldInteractable: SetAgentDestination(); break;
+            case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableDestination();  break;
+            case Enums.DataType.GamePartyMember:        SetGamePartyMemberDestination();        break;
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
         }
 
-        NavMeshAgent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
+        if (!Agent.isOnNavMesh) return;
+
+        Debug.Log("update destination");
+        Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
     }
 
     public void SetElement()
@@ -56,40 +64,81 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         switch (GameElement.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldInteractable: SetWorldInteractableAgent(); break;
+            case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableAgent();    break;
+            case Enums.DataType.GamePartyMember:        SetGamePartyMemberAgent();          break;
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
         }
-
+        
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
+
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
+
+        Agent.speed = speed;
     }
 
-    private void SetWorldInteractableAgent()
+    private void SetGameWorldInteractableAgent()
     {
-        var elementData = (WorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
 
-        position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
-        rotation = new Vector3(interactionData.RotationX, interactionData.RotationY, interactionData.RotationZ);
+        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
+        rotation = new Vector3(interactionData.rotationX, interactionData.rotationY, interactionData.rotationZ);
 
-        scaleMultiplier = interactionData.ScaleMultiplier;
+        scaleMultiplier = interactionData.scaleMultiplier;
+
+        speed = elementData.speed;
 
         SetObjectGraphic();
     }
 
-    private void SetAgentDestination()
+    private void SetGamePartyMemberAgent()
     {
-        var elementData = (WorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GamePartyMemberElementData)GameElement.DataElement.data.elementData;
+
+        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
+        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+
+        if(elementData == GameManager.instance.ActiveCharacter)
+        {
+            var playerData = GameManager.instance.gameSaveData.playerSaveData;
+
+            position = new Vector3(playerData.PositionX, playerData.PositionY, playerData.PositionZ);
+            rotation = Vector3.zero;
+
+            scaleMultiplier = playerData.ScaleMultiplier;
+        }
+
+        speed = elementData.speed;
+
+        SetObjectGraphic();
+    }
+
+    private void SetGameWorldInteractableDestination()
+    {
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
 
-        position = new Vector3(interactionData.PositionX, interactionData.PositionY, interactionData.PositionZ);
+        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
+    }
+
+    private void SetGamePartyMemberDestination()
+    {
+        var elementData = (GamePartyMemberElementData)GameElement.DataElement.data.elementData;
+
+        if (elementData == GameManager.instance.ActiveCharacter) return;
+
+        //{
+        //    var playerSaveData = GameManager.instance.gameSaveData.playerSaveData;
+
+        //    position = new Vector3(playerSaveData.PositionX, transform.localPosition.y, playerSaveData.PositionZ);
+        //}
     }
 
     private void SetObjectGraphic()
@@ -101,29 +150,40 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void Update()
     {
-        if (!NavMeshAgent.isOnNavMesh) return;
+        //if (!Agent.isOnNavMesh) return;
+        
+        //if (Agent.remainingDistance > 0 && !Moving)
+        //    allowMoving = true;
 
-        if (NavMeshAgent.remainingDistance > 0 && !Moving)
-            allowMoving = true;
-
-        //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
-        if(allowMoving && NavMeshAgent.remainingDistance < NavMeshAgent.stoppingDistance && !Moving)
-            SettleAgent();
+        ////Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
+        //if (allowMoving && Agent.remainingDistance < Agent.stoppingDistance && !Moving)
+        //    SettleAgent();
     }
 
     private void SettleAgent()
     {
-        NavMeshAgent.destination = transform.localPosition;
+        StopAgent();
 
-        StopAllCoroutines();
         StartCoroutine(Rotate(rotation.y));
+    }
+
+    private void StopAgent()
+    {
+        if (!Agent.isOnNavMesh) return;
 
         allowMoving = false;
+
+        StopAllCoroutines();
+
+        Agent.isStopped = true;
+        Agent.ResetPath();
     }
 
     IEnumerator Rotate(float angle)
     {
         var rotateSpeed = 10;
+
+        Debug.Log("Rotate me");
 
         while(Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
         {
@@ -134,9 +194,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     public void CloseElement()
     {
-        StopAllCoroutines();
-
-        allowMoving = false;
+        StopAgent();
         
         GameElement.DataElement.data.elementData.DataElement = null;
         GameElement.DataElement.data.elementData = null;

@@ -4,22 +4,52 @@ using System.Linq;
 public class InteractableCore : GeneralData
 {
     private int type;
+
     private int objectGraphicId;
+
     private string name;
+
+    private int health;
+    private int hunger;
+    private int thirst;
+
+    private float weight;
+    private float speed;
+    private float stamina;
 
     //Original
     public int originalObjectGraphicId;
+
     public string originalName;
+
+    public int originalHealth;
+    public int originalHunger;
+    public int originalThirst;
+
+    public float originalWeight;
+    public float originalSpeed;
+    public float originalStamina;
 
     //Changed
     private bool changedObjectGraphicId;
+
     private bool changedName;
+
+    private bool changedHealth;
+    private bool changedHunger;
+    private bool changedThirst;
+
+    private bool changedWeight;
+    private bool changedSpeed;
+    private bool changedStamina;
 
     public bool Changed
     {
         get
         {
-            return changedObjectGraphicId || changedName;
+            return  changedObjectGraphicId  || changedName      ||
+                    changedHealth           || changedHunger    || changedThirst ||
+                    changedWeight           || changedSpeed     || changedStamina;
         }
     }
 
@@ -28,6 +58,19 @@ public class InteractableCore : GeneralData
     {
         get { return type; }
         set { type = value; }
+    }
+
+    public int ObjectGraphicId
+    {
+        get { return objectGraphicId; }
+        set
+        {
+            if (value == objectGraphicId) return;
+
+            changedObjectGraphicId = (value != originalObjectGraphicId);
+
+            objectGraphicId = value;
+        }
     }
 
     public string Name
@@ -43,16 +86,81 @@ public class InteractableCore : GeneralData
         }
     }
 
-    public int ObjectGraphicId
+    public int Health
     {
-        get { return objectGraphicId; }
+        get { return health; }
         set
         {
-            if (value == objectGraphicId) return;
+            if (value == health) return;
 
-            changedObjectGraphicId = (value != originalObjectGraphicId);
+            changedHealth = (value != originalHealth);
 
-            objectGraphicId = value;
+            health = value;
+        }
+    }
+
+    public int Hunger
+    {
+        get { return hunger; }
+        set
+        {
+            if (value == hunger) return;
+
+            changedHunger = (value != originalHunger);
+
+            hunger = value;
+        }
+    }
+
+    public int Thirst
+    {
+        get { return thirst; }
+        set
+        {
+            if (value == thirst) return;
+
+            changedThirst = (value != originalThirst);
+
+            thirst = value;
+        }
+    }
+
+    public float Weight
+    {
+        get { return weight; }
+        set
+        {
+            if (value == weight) return;
+
+            changedWeight = (value != originalWeight);
+
+            weight = value;
+        }
+    }
+
+    public float Speed
+    {
+        get { return speed; }
+        set
+        {
+            if (value == speed) return;
+
+            changedSpeed = (value != originalSpeed);
+
+            speed = value;
+        }
+    }
+
+    public float Stamina
+    {
+        get { return stamina; }
+        set
+        {
+            if (value == stamina) return;
+
+            changedStamina = (value != originalStamina);
+
+            stamina = value;
         }
     }
     #endregion
@@ -63,12 +171,30 @@ public class InteractableCore : GeneralData
     public virtual void Update()
     {
         var interactableData = Fixtures.interactableList.Where(x => x.Id == Id).FirstOrDefault();
+        
+        if (changedObjectGraphicId)
+            interactableData.objectGraphicId = objectGraphicId;
 
         if (changedName)
             interactableData.name = name;
 
-        if (changedObjectGraphicId)
-            interactableData.objectGraphicId = objectGraphicId;
+        if (changedHealth)
+            interactableData.health = health;
+
+        if (changedHunger)
+            interactableData.hunger = hunger;
+
+        if (changedThirst)
+            interactableData.thirst = thirst;
+
+        if (changedWeight)
+            interactableData.weight = weight;
+
+        if (changedSpeed)
+            interactableData.speed = speed;
+
+        if (changedStamina)
+            interactableData.stamina = stamina;
     }
 
     public void UpdateSearch() { }
@@ -87,13 +213,31 @@ public class InteractableCore : GeneralData
     public virtual void SetOriginalValues()
     {
         originalObjectGraphicId = ObjectGraphicId;
+
         originalName = Name;
+
+        originalHealth = health;
+        originalHunger = hunger;
+        originalThirst = thirst;
+
+        originalWeight = weight;
+        originalSpeed = speed;
+        originalStamina = stamina;
     }
 
     public void GetOriginalValues()
     {
         objectGraphicId = originalObjectGraphicId;
+
         name = originalName;
+
+        health = originalHealth;
+        hunger = originalHunger;
+        thirst = originalThirst;
+
+        weight = originalWeight;
+        speed = originalSpeed;
+        stamina = originalStamina;
     }
 
     public virtual void ClearChanges()
@@ -101,7 +245,16 @@ public class InteractableCore : GeneralData
         GetOriginalValues();
 
         changedObjectGraphicId = false;
+
         changedName = false;
+
+        changedHealth = false;
+        changedHunger = false;
+        changedThirst = false;
+
+        changedWeight = false;
+        changedSpeed = false;
+        changedStamina = false;
     }
 
     public void Delete() { }
@@ -112,6 +265,15 @@ public class InteractableCore : GeneralData
         var interactableDataSource = (InteractableElementData)dataSource;
 
         objectGraphicId = interactableDataSource.objectGraphicId;
+
         name = interactableDataSource.name;
+
+        health = interactableDataSource.health;
+        hunger = interactableDataSource.hunger;
+        thirst = interactableDataSource.thirst;
+
+        weight = interactableDataSource.weight;
+        speed = interactableDataSource.speed;
+        stamina = interactableDataSource.stamina;
     }
 }

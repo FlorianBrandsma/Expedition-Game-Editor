@@ -32,6 +32,14 @@ public class Enums
         EditorWorld,
         Game,
         GameWorld,
+        GameRegion,
+        GameTerrain,
+        GameTerrainTile,
+        GameAtmosphere,
+        GameInteraction,
+        GameWorldInteractable,
+        GameWorldObject,
+        GamePartyMember,
         Save,
         GameSave,
         ChapterSave,
@@ -159,5 +167,12 @@ public class Enums
         Normal,
         Reload,
         Return
+    }
+
+    public enum ControlType
+    {
+        Controller,
+        Keyboard,
+        Touch
     }
 }

@@ -84,8 +84,17 @@ public class DataManager
             data.Id = interactable.Id;
 
             data.objectGraphicId = interactable.objectGraphicId;
-            data.name = interactable.name;
 
+            data.name = interactable.name;
+            
+            data.health = interactable.health;
+            data.hunger = interactable.hunger;
+            data.thirst = interactable.thirst;
+
+            data.weight = interactable.weight;
+            data.speed = interactable.speed;
+            data.stamina = interactable.stamina;
+            
             dataList.Add(data);
         }
 
@@ -560,10 +569,6 @@ public class DataManager
             data.positionY = playerSave.positionY;
             data.positionZ = playerSave.positionZ;
 
-            data.rotationX = playerSave.rotationX;
-            data.rotationY = playerSave.rotationY;
-            data.rotationZ = playerSave.rotationZ;
-
             data.scaleMultiplier = playerSave.scaleMultiplier;
 
             data.playedSeconds = playerSave.playedSeconds;
@@ -739,7 +744,16 @@ public class DataManager
     public class InteractableData : GeneralData
     {
         public int objectGraphicId;
+
         public string name;
+
+        public int health;
+        public int hunger;
+        public int thirst;
+
+        public float weight;
+        public float speed;
+        public float stamina;
     }
     
     public class ChapterData : GeneralData

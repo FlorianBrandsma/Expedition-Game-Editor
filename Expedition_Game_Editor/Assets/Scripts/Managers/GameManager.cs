@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     
     public GameSaveElementData gameSaveData;
     public GameWorldElementData gameWorldData;
+    public GameRegionElementData regionData;
 
     public GameSaveController gameSaveController;
     public GameWorldController gameWorldController;
@@ -16,8 +17,10 @@ public class GameManager : MonoBehaviour
     public LocalNavMeshBuilder localNavMeshBuilder;
 
     public Light gameLight;
-
+    
     private int activePhaseId;
+    private GamePartyMemberElementData activeCharacter;
+
     public int ActivePhaseId
     {
         get { return activePhaseId; }
@@ -32,18 +35,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private int activeRegionId;
     public int ActiveRegionId
     {
-        get { return activeRegionId; }
+        get { return gameSaveData.playerSaveData.RegionId; }
         set
         {
-            if (activeRegionId != value)
+            if (gameSaveData.playerSaveData.RegionId != value)
             {
-                activeRegionId = value;
+                gameSaveData.playerSaveData.RegionId = value;
 
                 ChangeRegion();
             }
+        }
+    }
+
+    public GamePartyMemberElementData ActiveCharacter
+    {
+        get { return activeCharacter; }
+        set
+        {
+            activeCharacter = value;
+
+            SwitchCharacter();
         }
     }
 
@@ -61,7 +74,7 @@ public class GameManager : MonoBehaviour
             GlobalManager.programType = GlobalManager.Scenes.Game;
 
             GlobalManager.OpenScene(GlobalManager.Scenes.Global);
-
+            
             return;
         }
     }
@@ -69,15 +82,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         RenderManager.Render(new PathManager.Game().Initialize());
+
+        PlayerControlManager.instance.ControlType = Enums.ControlType.Touch;
     }
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.P))
             ActivePhaseId++;
-
-        if (Input.GetKeyUp(KeyCode.R))
-            ActiveRegionId++;
 
         if (Input.GetKeyUp(KeyCode.I))
             InteractionTest();
@@ -109,6 +121,7 @@ public class GameManager : MonoBehaviour
         else
             TimeManager.activeTime = 0;
 
+        //Get time from save data
         TimeManager.instance.SetTime(TimeManager.activeTime);
         TimeManager.instance.SetCameraLight(gameLight);
 
@@ -121,11 +134,12 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Get save data");
 
-        Debug.Log("GET DATA FROM SAVE!");
-        Debug.Log("USE PHASE DEFAULTS IF PLAYER SAVE DATA DOES NOT 'WORK'");
-
+        //Reset values if opened from data
         activePhaseId = 0;
-        activeRegionId = 0;
+        gameSaveData = null;
+        gameWorldController.DataList = null;
+        //activeRegionId = 0;
+        //--------------------------------
 
         //Get save data
         var searchProperties = new SearchProperties(Enums.DataType.GameSave);
@@ -144,14 +158,14 @@ public class GameManager : MonoBehaviour
         //The closing of other forms triggers the reaction
         gameWorldController.Display.DataController = gameWorldController;
 
-        DetermineActivePhase();
+        InitializeLocalNavMesh();
 
-        localNavMeshBuilder.UpdateNavMesh(true);
-
+        InitializePhase();
+        
         TimeManager.instance.SetLighting();
     }
 
-    private void DetermineActivePhase()
+    private void InitializePhase()
     {
         Debug.Log("Determine active phase");
 
@@ -162,6 +176,8 @@ public class GameManager : MonoBehaviour
         var activePhaseSave = gameSaveData.phaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).OrderBy(x => x.Index).First();
 
         ActivePhaseId = activePhaseSave.PhaseId;
+
+        PlayerControlManager.Enabled = true;
     }
 
     private void ChangePhase()
@@ -169,17 +185,17 @@ public class GameManager : MonoBehaviour
         //Load all game data related to the active phase divided into regions and terrains
         LoadGameData();
 
+        //Set or switch the played character
+        InitializeCharacter();
+
         //Compare game data with save data to determine which task is active
         CheckCompletion();
-
-        //By now you should know what region is active, either from player save or from the phase
-        //The spawn position for each phase should be given in the editor
         
-        var regionData = gameWorldData.regionDataList.Where(x => x.PhaseId == ActivePhaseId).First();
-
-        ActiveRegionId = regionData.Id;
+        //If the saved region does not belong to the active phase, select the default region and transform
+        if(!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.RegionId))
+            SetPhaseDefaults();
     }
-
+    
     private void LoadGameData()
     {
         var searchProperties = new SearchProperties(Enums.DataType.GameWorld);
@@ -190,6 +206,17 @@ public class GameManager : MonoBehaviour
         gameWorldController.DataList = RenderManager.GetData(gameWorldController, searchProperties);
 
         gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
+        regionData = gameWorldData.regionDataList.Where(x => x.Id == ActiveRegionId).First();
+    }
+
+    private void InitializeCharacter()
+    {
+        ActiveCharacter = gameWorldData.partyMemberList.Where(x => x.Id == gameSaveData.playerSaveData.PartyMemberId).First();
+    }
+
+    public void SwitchCharacter()
+    {
+        PlayerControlManager.instance.SetPlayerCharacter();
     }
 
     private void CheckCompletion()
@@ -211,10 +238,10 @@ public class GameManager : MonoBehaviour
                                                                      .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : x.Last()).ToList();
 
         //Finds the region interactions: interactions that do not belong to an objective
-        var regionInteractions = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0 && gameWorldData.regionDataList.Select(z => z.Id).Contains(y.RegionId))).ToList();
+        var regionInteractions = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0 && gameWorldData.regionDataList.Select(z => z.Id).Contains(y.regionId))).ToList();
 
         //Finds the tasks of the region interactions
-        var regionTasks = gameSaveData.taskSaveDataList.Where(x => regionInteractions.Select(y => y.TaskId).Contains(x.TaskId)).Distinct().ToList();
+        var regionTasks = gameSaveData.taskSaveDataList.Where(x => regionInteractions.Select(y => y.taskId).Contains(x.TaskId)).Distinct().ToList();
 
         //Finds the task saves of the tasks belonging to the objective saves, combined with the region tasks
         //Groups the tasks by world interactable and by objective save, as some world interactables "belong" to multiple objectives and some to none
@@ -233,16 +260,9 @@ public class GameManager : MonoBehaviour
     private void ChangeRegion()
     {
         Debug.Log("The region was changed, so the organizer should update itself");
-
-        var regionData = gameWorldData.regionDataList.Where(x => x.PhaseId == ActivePhaseId).First();
-
         
+        PlayerControlManager.Enabled = false;
 
-        //var tempWorldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
-        //gameWorldData.tempPlayerPosition = new Vector3(238.125f, -241.9375f, 0);
-        //-238.125f -13.8125
-        //UpdateWorld();
-        
         CheckTime();
     }
     
@@ -261,9 +281,20 @@ public class GameManager : MonoBehaviour
         UpdateWorld();
     }
 
+    private void SetPhaseDefaults()
+    {
+        Debug.Log("Open the default region because the saved region does not belong to this phase");
+        ActiveRegionId = gameWorldData.phaseData.DefaultRegionId;
+    }
+
+    private void InitializeLocalNavMesh()
+    {
+        localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
+    }
+
     private void UpdateWorld()
     {
-        gameWorldController.Display.DisplayManager.Organizer.UpdateData();
+        gameWorldController.Display.DisplayManager.Organizer.SetData();
     }
 
     private void DeactivateInteractionTime()
@@ -277,9 +308,9 @@ public class GameManager : MonoBehaviour
     private void ValidateInteractionTime()
     {
         //Validate times of interactions which belong to the active task saves
-        gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId)).GroupBy(y => y.TaskId)
-                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
-                                                                 .OrderBy(z => z.Default).First())).ToList()
+        gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId)).GroupBy(y => y.taskId)
+                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.startTime, z.endTime) || z.isDefault)
+                                                                 .OrderBy(z => z.isDefault).First())).ToList()
                                                                  .ForEach(x => 
                                                                  {
                                                                      x.containsActiveTime = true;
@@ -293,7 +324,7 @@ public class GameManager : MonoBehaviour
         gameWorldData.worldInteractableDataList.ForEach(x => UpdateWorldInteractable(x));
     }
 
-    private void UpdateWorldInteractable(WorldInteractableElementData worldInteractableData)
+    private void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
     {
         var interactionData = worldInteractableData.interactionDataList.Where(x => x.containsActiveTime).FirstOrDefault();
         
@@ -306,7 +337,7 @@ public class GameManager : MonoBehaviour
 
             } else {
 
-                switch((Enums.InteractableType)worldInteractableData.Type)
+                switch((Enums.InteractableType)worldInteractableData.type)
                 {
                     case Enums.InteractableType.Agent:
 
@@ -317,7 +348,7 @@ public class GameManager : MonoBehaviour
                     case Enums.InteractableType.Object:
 
                         //World interactable objects can relocate instantly by changing the terrain tile id
-                        worldInteractableData.terrainTileId = interactionData.TerrainTileId;
+                        worldInteractableData.terrainTileId = interactionData.terrainTileId;
                         break;
                 }
             }
@@ -325,7 +356,7 @@ public class GameManager : MonoBehaviour
         } else if (interactionData != null) {
 
             //If the inactive world interactable contains an active time, activate it
-            worldInteractableData.terrainTileId = interactionData.TerrainTileId;
+            worldInteractableData.terrainTileId = interactionData.terrainTileId;
         }
         
         //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out
@@ -340,5 +371,10 @@ public class GameManager : MonoBehaviour
     public void PreviousPath()
     {
         RenderManager.PreviousPath();
+    }
+
+    public void CloseGame()
+    {
+        PlayerControlManager.Enabled = false;
     }
 }
