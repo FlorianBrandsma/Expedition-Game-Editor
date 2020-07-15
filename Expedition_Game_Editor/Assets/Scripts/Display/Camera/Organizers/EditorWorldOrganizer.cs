@@ -619,13 +619,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         if (element.glow != null && element.glow.activeInHierarchy) return;
 
-        var statusIconManager = CameraManager.overlayManager.GetComponent<StatusIconOverlay>();
+        var statusIconOverlay = CameraManager.overlayManager.StatusIconOverlay;
 
         if (element.elementStatus == Enums.ElementStatus.Locked)
-            element.lockIcon = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
+            element.lockIcon = statusIconOverlay.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
 
         if (element.DataElement.data.elementData.SelectionStatus != Enums.SelectionStatus.None)
-            element.glow = statusIconManager.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
+            element.glow = statusIconOverlay.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
     }
 
     public void ResetData(List<IElementData> filter) { }

@@ -86,7 +86,20 @@ public class GameWorldDataManager : IDataManager
 
                 ChapterId = phaseData.chapterId,
 
-                Name = phaseData.name
+                Name = phaseData.name,
+
+                DefaultRegionId = phaseData.defaultRegionId,
+
+                DefaultPositionX = phaseData.defaultPositionX,
+                DefaultPositionY = phaseData.defaultPositionY,
+                DefaultPositionZ = phaseData.defaultPositionZ,
+
+                DefaultRotationX = phaseData.defaultRotationX,
+                DefaultRotationY = phaseData.defaultRotationY,
+                DefaultRotationZ = phaseData.defaultRotationZ,
+
+                DefaultScaleMultiplier = phaseData.defaultScaleMultiplier
+                
             },
 
             partyMemberList = (
@@ -349,7 +362,7 @@ public class GameWorldDataManager : IDataManager
     {
         var searchParameters = new Search.Chapter();
         searchParameters.id = new List<int>() { phaseData.chapterId };
-
+        
         chapterData = dataManager.GetChapterData(searchParameters).First();
     }
 

@@ -6,7 +6,7 @@ public class HeaderOverlay : MonoBehaviour, IOverlay
 {
     private ExText headerText;
 
-    private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
+    private OverlayManager OverlayManager { get { return GetComponent<OverlayManager>(); } }
 
     private ListProperties listProperties;
 
@@ -20,7 +20,7 @@ public class HeaderOverlay : MonoBehaviour, IOverlay
         var prefab = Resources.Load<ExText>("Elements/UI/Text");
         headerText = (ExText)PoolManager.SpawnObject(prefab);
 
-        headerText.transform.SetParent(overlayManager.horizontal_min, false);
+        headerText.transform.SetParent(OverlayManager.horizontal_min, false);
         headerText.transform.localPosition = new Vector2(0, 0);
 
         headerText.gameObject.SetActive(true);

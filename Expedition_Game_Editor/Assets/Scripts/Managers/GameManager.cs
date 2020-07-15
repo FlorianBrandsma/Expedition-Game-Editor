@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameSaveElementData gameSaveData;
     public GameWorldElementData gameWorldData;
     public GameRegionElementData regionData;
+    public GamePartyMemberElementData partyMemberData;
 
     public GameSaveController gameSaveController;
     public GameWorldController gameWorldController;
@@ -19,7 +20,8 @@ public class GameManager : MonoBehaviour
     public Light gameLight;
     
     private int activePhaseId;
-    private GamePartyMemberElementData activeCharacter;
+    private int activeRegionId;
+    private int activePartyMemberId;
 
     public int ActivePhaseId
     {
@@ -37,11 +39,13 @@ public class GameManager : MonoBehaviour
 
     public int ActiveRegionId
     {
-        get { return gameSaveData.playerSaveData.RegionId; }
+        get { return activeRegionId; }
         set
         {
-            if (gameSaveData.playerSaveData.RegionId != value)
+            if (activeRegionId != value)
             {
+                activeRegionId = value;
+
                 gameSaveData.playerSaveData.RegionId = value;
 
                 ChangeRegion();
@@ -49,14 +53,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GamePartyMemberElementData ActiveCharacter
+    public int ActivePartyMemberId
     {
-        get { return activeCharacter; }
+
+        get { return activePartyMemberId; }
         set
         {
-            activeCharacter = value;
+            if (activePartyMemberId != value)
+            {
+                activePartyMemberId = value;
 
-            SwitchCharacter();
+                gameSaveData.playerSaveData.PartyMemberId = value;
+                
+                ChangePartyMember();
+            }
         }
     }
 
@@ -104,7 +114,7 @@ public class GameManager : MonoBehaviour
 
         //After the interaction, relevant save data is updated
 
-        CheckCompletion();
+        CheckProgress();
 
         //Completion of an interaction may cause a phase to change
         ActivePhaseId++;
@@ -136,9 +146,11 @@ public class GameManager : MonoBehaviour
 
         //Reset values if opened from data
         activePhaseId = 0;
+        activeRegionId = 0;
+        activePartyMemberId = 0;
+
         gameSaveData = null;
         gameWorldController.DataList = null;
-        //activeRegionId = 0;
         //--------------------------------
 
         //Get save data
@@ -185,15 +197,14 @@ public class GameManager : MonoBehaviour
         //Load all game data related to the active phase divided into regions and terrains
         LoadGameData();
 
-        //Set or switch the played character
-        InitializeCharacter();
+        //Set the active region based on the save data or else from the phase defaults
+        InitializeRegion();
+
+        //Set the active party member based on the save data or else from the phase defaults
+        InitializePartyMember();
 
         //Compare game data with save data to determine which task is active
-        CheckCompletion();
-        
-        //If the saved region does not belong to the active phase, select the default region and transform
-        if(!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.RegionId))
-            SetPhaseDefaults();
+        CheckProgress();
     }
     
     private void LoadGameData()
@@ -206,20 +217,44 @@ public class GameManager : MonoBehaviour
         gameWorldController.DataList = RenderManager.GetData(gameWorldController, searchProperties);
 
         gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
-        regionData = gameWorldData.regionDataList.Where(x => x.Id == ActiveRegionId).First();
     }
 
-    private void InitializeCharacter()
+    private void InitializeRegion()
     {
-        ActiveCharacter = gameWorldData.partyMemberList.Where(x => x.Id == gameSaveData.playerSaveData.PartyMemberId).First();
+        if (!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.RegionId))
+        {
+            gameSaveData.playerSaveData.PositionX = gameWorldData.phaseData.DefaultPositionX;
+            gameSaveData.playerSaveData.PositionY = gameWorldData.phaseData.DefaultPositionY;
+            gameSaveData.playerSaveData.PositionZ = gameWorldData.phaseData.DefaultPositionZ;
+            
+            gameSaveData.playerSaveData.ScaleMultiplier = gameWorldData.phaseData.DefaultScaleMultiplier;
+
+            ActiveRegionId = gameWorldData.phaseData.DefaultRegionId;
+            
+        } else {
+
+            ActiveRegionId = gameSaveData.playerSaveData.RegionId;
+        } 
     }
 
-    public void SwitchCharacter()
+    private void InitializePartyMember()
     {
+        //The first party member of a chapter is the default
+        if (!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.PartyMemberId))
+            ActivePartyMemberId = gameWorldData.partyMemberList.First().Id;
+        else
+            ActivePartyMemberId = gameSaveData.playerSaveData.PartyMemberId;
+    }
+
+    public void ChangePartyMember()
+    {
+        Debug.Log("Change party member");
+        partyMemberData = gameWorldData.partyMemberList.Where(x => x.Id == gameSaveData.playerSaveData.PartyMemberId).First();
+
         PlayerControlManager.instance.SetPlayerCharacter();
     }
 
-    private void CheckCompletion()
+    private void CheckProgress()
     {
         //Happens when phase is changed and after every interaction (can hopefully be limited)
         Debug.Log("Check what game data has been completed");
@@ -261,9 +296,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("The region was changed, so the organizer should update itself");
         
-        PlayerControlManager.Enabled = false;
+        //PlayerControlManager.Enabled = false;
 
-        CheckTime();
+        regionData = gameWorldData.regionDataList.Where(x => x.Id == ActiveRegionId).First();
+
+        //Something should happen here to reset the world when the region is changed manually
     }
     
     public void CheckTime()
@@ -278,13 +315,8 @@ public class GameManager : MonoBehaviour
         //Update all world interactables based on the new active times
         UpdateWorldInteractables();
 
-        UpdateWorld();
-    }
-
-    private void SetPhaseDefaults()
-    {
-        Debug.Log("Open the default region because the saved region does not belong to this phase");
-        ActiveRegionId = gameWorldData.phaseData.DefaultRegionId;
+        //(Re)build the world according to the active data
+        SetWorldData();
     }
 
     private void InitializeLocalNavMesh()
@@ -292,7 +324,7 @@ public class GameManager : MonoBehaviour
         localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
     }
 
-    private void UpdateWorld()
+    private void SetWorldData()
     {
         gameWorldController.Display.DisplayManager.Organizer.SetData();
     }

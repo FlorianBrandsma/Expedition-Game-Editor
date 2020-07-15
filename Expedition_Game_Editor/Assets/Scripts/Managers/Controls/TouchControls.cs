@@ -1,79 +1,82 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TouchControls : MonoBehaviour, IPlayerController
 {
-    private RawImage joystick;
-    private RawImage joystickDirection;
-
+    private TouchOverlay TouchOverlay { get { return PlayerControlManager.instance.cameraManager.overlayManager.TouchOverlay; } }
+    
     private float minSensitivity = 0.1f;
 
     private Vector2 mouseClickPos;
-    private Vector3 joystickPos;
+    private Vector3 joystickPosition;
     private Vector2 sensitivity;
 
     private float joystickOffset = 1.5f;
-    private float joystickSize = 2f;
+    private float joystickSize = 1.5f;
 
-    private void Awake()
-    {
-        //joystick = Resources.Load<RawImage>("Textures/Icons/Status/SelectIcon");
-        //joystickDirection = Resources.Load<RawImage>("Textures/Icons/Status/LockIcon");
-    }
+    private bool inputAllowed;
 
     void Update()
     {
         if (!PlayerControlManager.Enabled)
         {
-            DeactivateJoystick();
+            CancelInput();
             return;
         }
-
+        
         if (Input.GetMouseButtonDown(0))
         {
-            InitializeJoystick();
+            if (inputAllowed = AllowInput()) return;
+
+            InitializeInput();
         }
 
         if (Input.GetMouseButton(0))
         {
-            Move();
-            
+            if (inputAllowed) return;
+
+            MoveInput();     
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            DeactivateJoystick();
-            //playerCharacter.StopMoving();
+            CancelInput();
         }
     }
 
-    private void InitializeJoystick()
+    private bool AllowInput()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return true;
+
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId))
+                return true;
+        }
+
+        return false;
+    }
+
+    private void InitializeInput()
     {
         mouseClickPos.x = Input.mousePosition.x;
         mouseClickPos.y = Input.mousePosition.y;
 
-        joystickPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-                                  Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        joystickPosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+                                       Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
 
-        //joystick.transform.localScale   = new Vector3(joystickSize, joystickSize, 1);
-        //joystick.transform.position     = joystickPos
-
-        //joystick.gameObject.SetActive(true);
+        TouchOverlay.InitializeJoystick(joystickPosition, joystickSize);
     }
-
-    private void DeactivateJoystick()
+    
+    private void MoveInput()
     {
-        //joystick.gameObject.SetActive(false);
-    }
+        sensitivity.x = Mathf.Clamp(((Input.mousePosition.x - mouseClickPos.x) / (joystickSize * 100)) * joystickOffset, -1, 1);
+        sensitivity.y = Mathf.Clamp(((Input.mousePosition.y - mouseClickPos.y) / (joystickSize * 100)) * joystickOffset, -1, 1);
 
-    private void Move()
-    {
-        var joystickSize = 200;
-
-        sensitivity.x = Mathf.Clamp(((Input.mousePosition.x - mouseClickPos.x) / joystickSize) * joystickOffset, -1, 1);
-        sensitivity.y = Mathf.Clamp(((Input.mousePosition.y - mouseClickPos.y) / joystickSize) * joystickOffset, -1, 1);
+        TouchOverlay.UpdateOverlay();
 
         if (sensitivity.x > minSensitivity || sensitivity.y > minSensitivity || sensitivity.x < -minSensitivity || sensitivity.y < -minSensitivity)
         {
@@ -84,32 +87,17 @@ public class TouchControls : MonoBehaviour, IPlayerController
 
     private void Rotate()
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(joystickPos);
+        var screenPoint = Camera.main.WorldToScreenPoint(joystickPosition);
+        var angle = Mathf.Atan2(Input.mousePosition.x - screenPoint.x, Input.mousePosition.y - screenPoint.y) / (2 * Mathf.PI) * 360;
 
-        float angle = Mathf.Atan2(Input.mousePosition.x - screenPos.x, Input.mousePosition.y - screenPos.y) / (2 * Mathf.PI) * 360;
-
-        //joystickDirection.transform.eulerAngles = new Vector3(0, 0, -angle);
-
-        float newDist = Mathf.Clamp01(Vector3.Distance(screenPos, Input.mousePosition) / 65);
-
-        //joystickDirection.transform.localScale = new Vector3(0.5f + newDist / 2, 0.5f + newDist / 2, 1);
+        TouchOverlay.RotateJoystick(screenPoint, angle);
 
         PlayerControlManager.instance.RotatePlayerCharacter(-angle);
     }
 
-    private void RotateJoystickDirection()
+    private void CancelInput()
     {
-        
+        if(TouchOverlay != null)
+            TouchOverlay.DeactivateJoystick();
     }
-
-    private void RotateCharacter()
-    {
-        
-        
-    }
-
-    //static public void LockControls()
-    //{
-    //    Enabled = true;
-    //}
 }

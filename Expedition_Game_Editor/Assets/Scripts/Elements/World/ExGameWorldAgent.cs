@@ -76,6 +76,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
 
         Agent.speed = speed;
+
+        //Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
     }
 
     private void SetGameWorldInteractableAgent()
@@ -104,7 +106,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        if(elementData == GameManager.instance.ActiveCharacter)
+        if (elementData.Id == GameManager.instance.ActivePartyMemberId)
         {
             var playerData = GameManager.instance.gameSaveData.playerSaveData;
 
@@ -112,6 +114,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
             rotation = Vector3.zero;
 
             scaleMultiplier = playerData.ScaleMultiplier;
+
+            Agent.avoidancePriority = 0;
         }
 
         speed = elementData.speed;
@@ -132,7 +136,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (GamePartyMemberElementData)GameElement.DataElement.data.elementData;
 
-        if (elementData == GameManager.instance.ActiveCharacter) return;
+        if (elementData.Id == GameManager.instance.ActivePartyMemberId) return;
 
         //{
         //    var playerSaveData = GameManager.instance.gameSaveData.playerSaveData;
@@ -150,20 +154,39 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void Update()
     {
-        //if (!Agent.isOnNavMesh) return;
-        
-        //if (Agent.remainingDistance > 0 && !Moving)
-        //    allowMoving = true;
+        if (!Agent.isOnNavMesh) return;
 
-        ////Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
-        //if (allowMoving && Agent.remainingDistance < Agent.stoppingDistance && !Moving)
-        //    SettleAgent();
+        switch (GameElement.DataElement.GeneralData.DataType)
+        {
+            case Enums.DataType.GameWorldInteractable:  UpdateGameWorldInteractableAgent(); break;
+            case Enums.DataType.GamePartyMember:        UpdateGamePartyMemberAgent();       break;
+
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+        }
+    }
+
+    private void UpdateGameWorldInteractableAgent()
+    {
+        Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
+
+        if (Agent.remainingDistance > Agent.stoppingDistance && !Moving)
+            allowMoving = true;
+
+        //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
+        if (allowMoving && Agent.remainingDistance < Agent.stoppingDistance && !Moving)
+            SettleAgent();
+    }
+
+    private void UpdateGamePartyMemberAgent()
+    {
+
     }
 
     private void SettleAgent()
     {
-        StopAgent();
+        allowMoving = false;
 
+        StopAllCoroutines();
         StartCoroutine(Rotate(rotation.y));
     }
 
@@ -183,8 +206,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         var rotateSpeed = 10;
 
-        Debug.Log("Rotate me");
-
         while(Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * Time.deltaTime);
@@ -198,6 +219,11 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         
         GameElement.DataElement.data.elementData.DataElement = null;
         GameElement.DataElement.data.elementData = null;
+
+        position = new Vector3();
+        rotation = new Vector3();
+
+        scaleMultiplier = 0;
 
         if (objectGraphic == null) return;
 

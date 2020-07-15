@@ -14,6 +14,16 @@ public class OverlayManager : MonoBehaviour
                             vertical_max,
                             content;
 
+    public NumberOverlay NumberOverlay { get; set; }
+    public SliderOverlay SliderOverlay { get; set; }
+    public PagingOverlay PagingOverlay { get; set; }
+    public HeaderOverlay HeaderOverlay { get; set; }
+
+    public StatusIconOverlay StatusIconOverlay { get; set; }
+    public TerrainHeaderOverlay TerrainHeaderOverlay { get; set; }
+    public GameOverlay GameOverlay { get; set; }
+    public TouchOverlay TouchOverlay { get; set; }
+    
     public IDisplayManager  DisplayManager { get; set; }
 
     public void InitializeOverlay(IDisplayManager displayManager)
@@ -22,10 +32,17 @@ public class OverlayManager : MonoBehaviour
 
         mainList = DisplayManager.RectTransform;
 
-        horizontal_min.GetComponent<OverlayBorder>().Activate();
-        horizontal_max.GetComponent<OverlayBorder>().Activate();
-        vertical_min.GetComponent<OverlayBorder>().Activate();
-        vertical_max.GetComponent<OverlayBorder>().Activate();
+        if (horizontal_min != null)
+            horizontal_min.GetComponent<OverlayBorder>().Activate();
+
+        if (horizontal_max != null)
+            horizontal_max.GetComponent<OverlayBorder>().Activate();
+
+        if (vertical_min != null)
+            vertical_min.GetComponent<OverlayBorder>().Activate();
+
+        if (vertical_max != null)
+            vertical_max.GetComponent<OverlayBorder>().Activate();
     }
 
     public void SetOverlayProperties(IDisplay displayProperties)
@@ -45,16 +62,16 @@ public class OverlayManager : MonoBehaviour
         var listProperties = (ListProperties)displayProperties;
 
         if (listProperties.enableNumbers)
-            gameObject.AddComponent<NumberOverlay>();
+            NumberOverlay = gameObject.AddComponent<NumberOverlay>();
 
         if (listProperties.enableSliders)
-            gameObject.AddComponent<SliderOverlay>();
+            SliderOverlay = gameObject.AddComponent<SliderOverlay>();
 
         if (listProperties.enablePaging)
-            gameObject.AddComponent<PagingOverlay>();
+            PagingOverlay = gameObject.AddComponent<PagingOverlay>();
 
         if (listProperties.headerText.Length > 0)
-            gameObject.AddComponent<HeaderOverlay>();
+            HeaderOverlay = gameObject.AddComponent<HeaderOverlay>();
     }
 
     private void SetCameraOverlayProperties(IDisplay displayProperties)
@@ -62,10 +79,18 @@ public class OverlayManager : MonoBehaviour
         var cameraProperties = (CameraProperties)displayProperties;
 
         if (cameraProperties.enableStatusIcons)
-            gameObject.AddComponent<StatusIconOverlay>();
+            StatusIconOverlay = gameObject.AddComponent<StatusIconOverlay>();
 
         if (cameraProperties.enableTerrainInfo)
-            gameObject.AddComponent<TerrainHeaderOverlay>();
+            TerrainHeaderOverlay = gameObject.AddComponent<TerrainHeaderOverlay>();
+
+        if (cameraProperties.enableGameUI)
+        {
+            GameOverlay = gameObject.AddComponent<GameOverlay>();
+
+            if (PlayerControlManager.instance.ControlType == Enums.ControlType.Touch)
+                TouchOverlay = gameObject.AddComponent<TouchOverlay>();
+        }
     }
 
     public void ActivateOverlay(IOrganizer organizer)
@@ -129,10 +154,17 @@ public class OverlayManager : MonoBehaviour
         mainList.offsetMin = Vector2.zero;
         mainList.offsetMax = Vector2.zero;
 
-        horizontal_min.GetComponent<OverlayBorder>().Deactivate();
-        horizontal_max.GetComponent<OverlayBorder>().Deactivate();
-        vertical_min.GetComponent<OverlayBorder>().Deactivate();
-        vertical_max.GetComponent<OverlayBorder>().Deactivate();
+        if (horizontal_min != null)
+            horizontal_min.GetComponent<OverlayBorder>().Deactivate();
+
+        if (horizontal_max != null)
+            horizontal_max.GetComponent<OverlayBorder>().Deactivate();
+
+        if (vertical_min != null)
+            vertical_min.GetComponent<OverlayBorder>().Deactivate();
+
+        if (vertical_max != null)
+            vertical_max.GetComponent<OverlayBorder>().Deactivate();
   
         foreach (IOverlay overlay in GetComponents<IOverlay>())
             overlay.CloseOverlay();    

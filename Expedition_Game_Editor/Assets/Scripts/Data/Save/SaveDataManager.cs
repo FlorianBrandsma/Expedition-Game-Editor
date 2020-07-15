@@ -53,22 +53,22 @@ public class SaveDataManager : IDataManager
         var list = (from saveData in saveDataList
                     join playerSaveData     in playerSaveDataList       on saveData.Id                      equals playerSaveData.saveId
 
-                    join partyMemberData    in partyMemberDataList      on playerSaveData.partyMemberId     equals partyMemberData.Id
-                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                    join partyMemberData in partyMemberDataList on playerSaveData.partyMemberId equals partyMemberData.Id
+                    join interactableData in interactableDataList on partyMemberData.interactableId equals interactableData.Id
+                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
 
-                    join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.Id
+                    join regionData in regionDataList on playerSaveData.regionId equals regionData.Id
 
-                    join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.Id
-                    join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.Id
+                    join phaseData in phaseDataList on regionData.phaseId equals phaseData.Id
+                    join chapterData in chapterDataList on phaseData.chapterId equals chapterData.Id
                     select new SaveElementData()
                     {
                         Id = saveData.Id,
                         GameId = saveData.gameId,
 
                         objectGraphicIconPath = iconData.path,
-                        
+
                         name = "Ch. " + (chapterData.Index + 1) + ": " + chapterData.name,
                         locationName = LocationName(regionData.Id, playerSaveData.positionX, playerSaveData.positionY, playerSaveData.positionZ),
 

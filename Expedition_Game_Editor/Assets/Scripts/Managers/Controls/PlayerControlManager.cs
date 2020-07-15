@@ -9,7 +9,7 @@ public class PlayerControlManager : MonoBehaviour
     private IPlayerController playerController;
 
     private PlayerSaveElementData PlayerData { get { return GameManager.instance.gameSaveData.playerSaveData; } }
-    private GamePartyMemberElementData ActiveCharacter { get { return GameManager.instance.ActiveCharacter; } }
+    private GamePartyMemberElementData ActiveCharacter { get { return GameManager.instance.partyMemberData; } }
 
     private Enums.ControlType controlType;
     public Enums.ControlType ControlType
@@ -95,5 +95,6 @@ public class PlayerControlManager : MonoBehaviour
         cameraManager.cam.transform.localPosition = new Vector3(PlayerData.PositionX, cameraManager.cam.transform.localPosition.y, -PlayerData.PositionZ - cameraDistance);
 
         cameraManager.UpdateData();
+        cameraManager.overlayManager.GameOverlay.UpdateOverlay();
     }
 }

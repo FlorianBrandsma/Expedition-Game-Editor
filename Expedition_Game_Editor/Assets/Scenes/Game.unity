@@ -2769,7 +2769,7 @@ MonoBehaviour:
   cam: {fileID: 1832129054}
   content: {fileID: 684827318}
   overlayParent: {fileID: 0}
-  overlayManager: {fileID: 0}
+  overlayManager: {fileID: 667584425}
   cameraParent: {fileID: 0}
   displayRect: {fileID: 1658898467}
   leftBorder: {fileID: 0}
@@ -9356,7 +9356,7 @@ MonoBehaviour:
   vertical_min: {fileID: 0}
   horizontal_max: {fileID: 0}
   vertical_max: {fileID: 0}
-  content: {fileID: 1145896436}
+  content: {fileID: 667584424}
 --- !u!1001 &672374367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11766,6 +11766,7 @@ MonoBehaviour:
   enableScroll: 0
   enableStatusIcons: 0
   enableTerrainInfo: 0
+  enableGameUI: 1
 --- !u!114 &848345538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12941,6 +12942,7 @@ MonoBehaviour:
   enableScroll: 1
   enableStatusIcons: 1
   enableTerrainInfo: 1
+  enableGameUI: 0
 --- !u!114 &899072710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19530,6 +19532,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246982541}
         m_MethodName: UpdateData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1246982541}
+        m_MethodName: UpdateOverlay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26854,6 +26867,7 @@ MonoBehaviour:
   enableScroll: 0
   enableStatusIcons: 0
   enableTerrainInfo: 0
+  enableGameUI: 0
 --- !u!114 &1607548532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30058,6 +30072,7 @@ MonoBehaviour:
   enableScroll: 0
   enableStatusIcons: 0
   enableTerrainInfo: 0
+  enableGameUI: 0
 --- !u!1 &1791400065
 GameObject:
   m_ObjectHideFlags: 0

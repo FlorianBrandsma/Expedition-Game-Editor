@@ -149,7 +149,8 @@ public class Enums
         PagingButton,
         FormButton,
         GameWorldElement,
-        GameWorldAgent
+        GameWorldAgent,
+        Joystick
     }
 
     public enum ElementStatus

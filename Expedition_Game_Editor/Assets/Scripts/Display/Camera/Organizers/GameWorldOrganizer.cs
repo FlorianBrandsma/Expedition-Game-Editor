@@ -48,11 +48,13 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
         foreach (GameTerrainElementData terrainData in RegionData.terrainDataList)
             SetTerrain(terrainData);
-
+        
         //Set elements that are not bound to a tile
         SetWorldObjects();
         
         SetPartyMembers();
+
+        GameManager.instance.localNavMeshBuilder.UpdateNavMesh(false);
     }
     
     private void SetTerrain(GameTerrainElementData terrainData)
@@ -90,7 +92,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         tile.gameObject.SetActive(true);
 
         tile.transform.SetParent(CameraManager.content, false);
-        tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, 0, terrainTileData.gridElement.startPosition.y);
+        tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, tile.transform.localPosition.y, terrainTileData.gridElement.startPosition.y);
 
         tile.DataType = Enums.DataType.GameTerrainTile;
         tile.ElementData = terrainTileData;
@@ -203,8 +205,6 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
             cameraTransform.localPosition.z >= positionTracker.y + RegionData.tileSize ||
             cameraTransform.localPosition.z <= positionTracker.y - RegionData.tileSize)
         {
-            Debug.Log("Update game data");
-
             SetData(DataController.DataList);
 
             positionTracker = FixTrackerPosition(CameraManager.cam.transform.localPosition);
@@ -283,8 +283,10 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         ClearOrganizer();
         ClearPartyMembers();
 
-        GameManager.instance.CloseGame();
+        positionTracker = new Vector2();
 
+        GameManager.instance.CloseGame();
+        
         Debug.Log("Close for real");
         DestroyImmediate(this);
     }

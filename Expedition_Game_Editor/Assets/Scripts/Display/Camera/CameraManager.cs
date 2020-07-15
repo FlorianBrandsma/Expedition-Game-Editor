@@ -117,10 +117,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
     public void UpdateData()
     {
         Organizer.UpdateData();
-
-        UpdateOverlay();
     }
-
+    
     private void SetData()
     {
         Organizer.SetData();
