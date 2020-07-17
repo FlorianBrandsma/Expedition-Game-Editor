@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 using System.Linq;
 
@@ -9,6 +10,8 @@ public class ObjectGraphic : MonoBehaviour, IPoolable
     public GameObject model;
     public GameObject[] mesh;
     public ObjectProperties.Pivot pivot;
+
+    public NavMeshObstacleShape obstacleShape;
 
     public Vector3 previewRotation;
     public Vector3 previewScale;

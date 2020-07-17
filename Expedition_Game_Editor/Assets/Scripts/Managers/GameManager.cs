@@ -150,7 +150,12 @@ public class GameManager : MonoBehaviour
         activePartyMemberId = 0;
 
         gameSaveData = null;
+        gameWorldData = null;
+        regionData = null;
+        partyMemberData = null;
+
         gameWorldController.DataList = null;
+        gameSaveController.DataList = null;
         //--------------------------------
 
         //Get save data
@@ -234,7 +239,7 @@ public class GameManager : MonoBehaviour
         } else {
 
             ActiveRegionId = gameSaveData.playerSaveData.RegionId;
-        } 
+        }
     }
 
     private void InitializePartyMember()
@@ -301,6 +306,7 @@ public class GameManager : MonoBehaviour
         regionData = gameWorldData.regionDataList.Where(x => x.Id == ActiveRegionId).First();
 
         //Something should happen here to reset the world when the region is changed manually
+        //CheckTime();
     }
     
     public void CheckTime()
@@ -322,6 +328,11 @@ public class GameManager : MonoBehaviour
     private void InitializeLocalNavMesh()
     {
         localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
+
+        //This is such a dumb solution it's embarrassing that it works
+        //Ensures that the navigation mesh is built properly
+        localNavMeshBuilder.UpdateNavMesh(true);
+        localNavMeshBuilder.UpdateNavMesh();
     }
 
     private void SetWorldData()

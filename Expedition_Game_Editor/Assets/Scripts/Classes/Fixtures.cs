@@ -656,7 +656,7 @@ static public class Fixtures
             interactable.thirst = 100;
 
             interactable.weight = 80;
-            interactable.speed = 5;
+            interactable.speed = 5f;
             interactable.stamina = 50;
 
             interactableList.Add(interactable);

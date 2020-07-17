@@ -30,6 +30,7 @@ public class ExJoystick : MonoBehaviour, IPoolable
 
     public void ClosePoolable()
     {
+        direction.transform.localScale = Vector3.zero;
         gameObject.SetActive(false);
     }
 }

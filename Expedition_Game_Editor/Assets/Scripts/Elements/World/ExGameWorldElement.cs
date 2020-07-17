@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Linq;
 
 public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
@@ -10,8 +11,16 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     private Vector3 position;
     private Vector3 rotation;
 
+    private NavMeshObstacleShape shape;
+    private Vector3 center;
+    private Vector3 size;
+    private float radius;
+    private float height;
+
     private float scaleMultiplier;
     
+    public NavMeshObstacle Obstacle         { get { return GetComponent<NavMeshObstacle>(); } }
+
     public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
 
     public Color ElementColor               { set { } }
@@ -52,6 +61,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
+
+        SetObstacle();
     }
 
     private void SetGameWorldObjectElement()
@@ -65,7 +76,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         rotation = new Vector3(elementData.rotationX, elementData.rotationY, elementData.rotationZ);
 
         scaleMultiplier = elementData.scaleMultiplier;
-
+        
         SetObjectGraphic();
     }
 
@@ -92,6 +103,36 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);
+    }
+
+    private void SetObstacle()
+    {
+        switch(objectGraphic.obstacleShape)
+        {
+            case NavMeshObstacleShape.Box:      SetBoxObstacle();       break;
+            case NavMeshObstacleShape.Capsule:  SetCapsuleObstacle();   break;
+        }
+    }
+
+    private void SetBoxObstacle()
+    {
+        var collider = objectGraphic.GetComponent<BoxCollider>();
+
+        Obstacle.shape = objectGraphic.obstacleShape;
+
+        Obstacle.size = collider.size;
+        Obstacle.center = collider.center;
+    }
+
+    private void SetCapsuleObstacle()
+    {
+        var collider = objectGraphic.GetComponent<CapsuleCollider>();
+
+        Obstacle.shape = objectGraphic.obstacleShape;
+
+        Obstacle.center = collider.center;
+        Obstacle.radius = collider.radius;
+        Obstacle.height = collider.height;
     }
 
     public void CloseElement()

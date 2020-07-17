@@ -22,7 +22,7 @@ public class TouchControls : MonoBehaviour, IPlayerController
     {
         if (!PlayerControlManager.Enabled)
         {
-            CancelInput();
+            //CancelInput();
             return;
         }
         
@@ -82,6 +82,10 @@ public class TouchControls : MonoBehaviour, IPlayerController
         {
             Rotate();
             PlayerControlManager.instance.MovePlayerCharacter(Mathf.Abs(sensitivity.x) > Mathf.Abs(sensitivity.y) ? Mathf.Abs(sensitivity.x) : Mathf.Abs(sensitivity.y));
+
+        } else {
+
+            PlayerControlManager.instance.StopMovingPlayerCharacter();
         }
     }
 
@@ -99,5 +103,7 @@ public class TouchControls : MonoBehaviour, IPlayerController
     {
         if(TouchOverlay != null)
             TouchOverlay.DeactivateJoystick();
+
+        PlayerControlManager.instance.StopMovingPlayerCharacter();
     }
 }

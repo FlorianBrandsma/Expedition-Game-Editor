@@ -53,8 +53,6 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         SetWorldObjects();
         
         SetPartyMembers();
-
-        GameManager.instance.localNavMeshBuilder.UpdateNavMesh(false);
     }
     
     private void SetTerrain(GameTerrainElementData terrainData)
@@ -157,7 +155,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     {
         foreach (IElementData elementData in dataList)
         {
-            var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab);
+            //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
+            var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab, elementData.Id);
 
             gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
 

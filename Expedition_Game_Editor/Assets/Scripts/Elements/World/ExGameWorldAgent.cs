@@ -6,6 +6,7 @@ using System.Collections;
 public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 {
     private ObjectGraphic objectGraphic;
+    public Animator Animator { get { return objectGraphic.Animator; } }
 
     private Vector3 startPosition = Vector3.zero;
 
@@ -35,7 +36,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         var newElement = Instantiate(this);
 
         Agent.updatePosition = false;
-
+        
         return newElement;
     }
 
@@ -76,8 +77,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
 
         Agent.speed = speed;
-
-        //Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
     }
 
     private void SetGameWorldInteractableAgent()
@@ -170,22 +169,25 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
 
         if (Agent.remainingDistance > Agent.stoppingDistance && !Moving)
+        {
             allowMoving = true;
+
+            Animator.SetBool("IsMoving", true);
+            Animator.SetFloat("MoveSpeedSensitivity", Agent.speed);
+        }
 
         //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
         if (allowMoving && Agent.remainingDistance < Agent.stoppingDistance && !Moving)
             SettleAgent();
     }
 
-    private void UpdateGamePartyMemberAgent()
-    {
-
-    }
+    private void UpdateGamePartyMemberAgent() { }
 
     private void SettleAgent()
     {
         allowMoving = false;
-
+        Animator.SetBool("IsMoving", false);
+        
         StopAllCoroutines();
         StartCoroutine(Rotate(rotation.y));
     }
@@ -195,6 +197,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         if (!Agent.isOnNavMesh) return;
 
         allowMoving = false;
+        Animator.SetBool("IsMoving", false);
 
         StopAllCoroutines();
 

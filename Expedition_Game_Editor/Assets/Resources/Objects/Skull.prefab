@@ -322,12 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionElement: {fileID: 0}
   model: {fileID: 1000012939494006}
   mesh:
   - {fileID: 1000011618562582}
   - {fileID: 1000012958440802}
   - {fileID: 1000010549352318}
   pivot: 3
+  obstacleShape: 1
   previewRotation: {x: 350, y: 155, z: 0}
   previewScale: {x: 50, y: 50, z: 50}

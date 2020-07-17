@@ -324,7 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52483faf078520c4e8d8c942aff3bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionElement: {fileID: 0}
   model: {fileID: 1000011662793220}
   mesh:
   - {fileID: 1000012353372696}
@@ -332,6 +331,7 @@ MonoBehaviour:
   - {fileID: 1000011304019558}
   - {fileID: 1000012141023474}
   pivot: 3
+  colliderType: 1
   previewRotation: {x: 0, y: 180, z: 0}
   previewScale: {x: 40, y: 40, z: 40}
 --- !u!1 &1000012353372696

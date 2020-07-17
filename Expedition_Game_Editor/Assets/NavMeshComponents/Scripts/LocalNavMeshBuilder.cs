@@ -48,7 +48,7 @@ public class LocalNavMeshBuilder : MonoBehaviour
         var defaultBuildSettings = NavMesh.GetSettingsByIndex(0);
 
         defaultBuildSettings.overrideVoxelSize = true;
-        defaultBuildSettings.voxelSize = 0.4f;
+        defaultBuildSettings.voxelSize = 0.5f;
         defaultBuildSettings.overrideTileSize = true;
         defaultBuildSettings.tileSize = 16;
         

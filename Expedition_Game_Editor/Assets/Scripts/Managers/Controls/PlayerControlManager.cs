@@ -8,8 +8,9 @@ public class PlayerControlManager : MonoBehaviour
 
     private IPlayerController playerController;
 
-    private PlayerSaveElementData PlayerData { get { return GameManager.instance.gameSaveData.playerSaveData; } }
-    private GamePartyMemberElementData ActiveCharacter { get { return GameManager.instance.partyMemberData; } }
+    private PlayerSaveElementData PlayerData            { get { return GameManager.instance.gameSaveData.playerSaveData; } }
+    private GamePartyMemberElementData ActiveCharacter  { get { return GameManager.instance.partyMemberData; } }
+    private Animator ActiveAnimator                     { get { return ((ExGameWorldAgent)ActiveCharacter.DataElement.Element).Animator; } }
 
     private Enums.ControlType controlType;
     public Enums.ControlType ControlType
@@ -65,10 +66,8 @@ public class PlayerControlManager : MonoBehaviour
         
         ActiveCharacter.DataElement.transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
-        //animator.SetBool("IsWalking", true);
-        //animator.SetFloat("WalkSpeedSensitivity", speed);
-
-        //tempPos = new Vector3(tempPos.x, tempPos.y, tempPos.z - 1 * Time.deltaTime);
+        ActiveAnimator.SetBool("IsMoving", true);
+        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed);
 
         PlayerData.PositionX = ActiveCharacter.DataElement.transform.localPosition.x;
         PlayerData.PositionY = ActiveCharacter.DataElement.transform.localPosition.y;
@@ -80,21 +79,19 @@ public class PlayerControlManager : MonoBehaviour
     public void RotatePlayerCharacter(float angle)
     {
         ActiveCharacter.DataElement.transform.eulerAngles = new Vector3(0, -angle, 0);
-        //Debug.Log(angle);
-        //Probably wrong angle, but the it's the idea that matters
-
-        //transform.eulerAngles = new Vector3(0, -angle, 0);
     }
 
     private void MoveCamera()
     {
-        //Camera position is based on the saved player data
-        //saved player position is updated whenever the player is moving
-
         var cameraDistance = 10;     
         cameraManager.cam.transform.localPosition = new Vector3(PlayerData.PositionX, cameraManager.cam.transform.localPosition.y, -PlayerData.PositionZ - cameraDistance);
 
         cameraManager.UpdateData();
         cameraManager.overlayManager.GameOverlay.UpdateOverlay();
+    }
+
+    public void StopMovingPlayerCharacter()
+    {
+        ActiveAnimator.SetBool("IsMoving", false);
     }
 }
