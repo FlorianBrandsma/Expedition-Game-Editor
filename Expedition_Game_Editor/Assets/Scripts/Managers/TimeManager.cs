@@ -50,7 +50,11 @@ public class TimeManager : MonoBehaviour
 
     static public TimeManager instance;
 
-    private float dot;
+    static public bool active;
+
+    static public Light activeLight;
+
+    private float lightValue;
 
     public Color baseColor;
     public Gradient nightDayColor;
@@ -61,23 +65,116 @@ public class TimeManager : MonoBehaviour
     public float fogScale = 1f;
 
     static public int hoursInDay = 24;
+    static public int secondsInHour = 3600;
 
-    static public int defaultTime = 12;
-    static public int activeTime;
+    //24 = 1 game time cycle per real hour
+    //Too high speed messes with the navigation mesh updates
+    private int gameTimeSpeed = 240;
 
+    static public int defaultTime = (12 * 60 * 60);
+
+    private float activeTimeScale = 1;
+
+    private int activeHour;
+    private int activeTime;
+    
+    public float TimeScale
+    {
+        get { return Time.timeScale; }
+        set
+        {
+            Time.timeScale = value;
+
+            if(value > 0)
+                activeTimeScale = value;
+
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.gamePauseAction.UpdateAction();
+                GameManager.instance.gameSpeedAction.UpdateAction();
+            }
+        }
+    }
+
+    public bool Paused
+    {
+        get { return Time.timeScale == 0; }
+    }
+
+    public int ActiveTime
+    {
+        get { return activeTime; }
+        set
+        {
+            activeTime = value;
+            
+            SetLighting(activeTime);
+        }
+    }
+
+    private int ActiveHour
+    {
+        get { return activeHour; }
+        set
+        {
+            if (activeHour == value) return;
+            
+            GameManager.instance.CheckTime();
+
+            activeHour = value;
+        }
+    }
+    
     public void Awake()
     {
         instance = this;
 
+        TimeScale = 1;
+
         InitializeTime();
     }
 
+    private void Update()
+    {
+        if (active)
+        {
+            float counter = 1 * Time.deltaTime * gameTimeSpeed;
+            
+            if (ActiveTime + Mathf.FloorToInt(counter) < (hoursInDay * secondsInHour) - 1)
+                ActiveTime += Mathf.FloorToInt(counter);
+            else
+                ActiveTime = 0;
+
+            GameManager.instance.gameSaveData.playerSaveData.GameTime = ActiveTime;
+
+            //Might be better suited in ActiveTime property
+            if (GameManager.instance.gameTimeAction.Dropdown != null)
+            {
+                GameManager.instance.gameTimeAction.UpdateAction();
+
+            } else {
+
+                ActiveHour = ActiveTime / secondsInHour;
+            }
+        }
+    }
+    
     public void InitializeTime()
     {
         activeTime = defaultTime;
     }
 
-    public void SetTime(int time, bool resetEditor = false)
+    public void InitializeGameTime(int time)
+    {
+        ActiveTime = time;
+    }
+
+    public void PauseTime(bool pause)
+    {
+        TimeScale = pause ? 0 : activeTimeScale;
+    }
+    
+    public void SetEditorTime(int time, bool resetEditor = false)
     {
         activeTime = time;
 
@@ -88,31 +185,44 @@ public class TimeManager : MonoBehaviour
             RenderManager.ResetPath(false);
     }
 
+    public void SetGameTime(int time)
+    {
+        activeTime = time;
+
+        SetLighting(time);
+
+        GameManager.instance.CheckTime();
+    }
+
     public void SetLighting()
     {
         SetLighting(activeTime);
     }
 
-    public void ResetLighting(Light light)
+    public void ResetLighting()
     {
         SetLighting(defaultTime);
 
-        light.color = baseColor;
+        activeLight.color = baseColor;
     }
 
     public void SetLighting(int time)
     {
-        dot = Mathf.Clamp01((float)time / hoursInDay);
+        lightValue = Mathf.Clamp01((float)time / secondsInHour / hoursInDay);
 
-        RenderSettings.ambientLight = ambientColor.Evaluate(dot);
+        RenderSettings.ambientLight = ambientColor.Evaluate(lightValue);
 
-        RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
-        RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
+        RenderSettings.fogColor = nightDayFogColor.Evaluate(lightValue);
+        RenderSettings.fogDensity = fogDensityCurve.Evaluate(lightValue) * fogScale;
+
+        SetCameraLight(activeLight);
     }
 
     public void SetCameraLight(Light light)
     {
-        light.color = nightDayColor.Evaluate(dot);
+        if (light == null) return;
+
+        light.color = nightDayColor.Evaluate(lightValue);
     }
 
     static public string TimeFromSeconds(int seconds)
@@ -130,9 +240,11 @@ public class TimeManager : MonoBehaviour
         return timeString;
     }
 
-    static public string FormatTime(int time, bool isStart = false)
+    static public string FormatTime(int seconds)
     {
-        return time.ToString("D2") + (isStart ? ":00" : ":59");
+        var time = TimeSpan.FromSeconds(seconds);
+
+        return string.Format("{0:00}:{1:00}", time.Hours, time.Minutes);
     }
 
     static public bool TimeFramesAvailable(IDataController dataController)
@@ -167,9 +279,9 @@ public class TimeManager : MonoBehaviour
         return (usedFrames < hoursInDay);
     }
 
-    static public int DefaultTime(List<int> defaultTimes)
+    public int DefaultTime(List<int> defaultTimes)
     {
-        var defaultTime = defaultTimes.Contains(activeTime) ? activeTime : defaultTimes.First();
+        var defaultTime = defaultTimes.Contains(ActiveTime) ? ActiveTime : defaultTimes.First();
 
         return defaultTime;
     }
@@ -180,8 +292,8 @@ public class TimeManager : MonoBehaviour
 
         for (int i = 0; i < hoursInDay; i++)
         {
-            if (!timeFrameList.Any(x => TimeInFrame(i, x.StartTime, x.EndTime)))
-                availableTimes.Add(i);
+            if (!timeFrameList.Any(x => TimeInFrame(i * secondsInHour, x.StartTime, x.EndTime)))
+                availableTimes.Add(i * secondsInHour);
         }
 
         return availableTimes;
@@ -218,6 +330,7 @@ public class TimeManager : MonoBehaviour
                                                   {
                                                       StartTime = x.StartTime,
                                                       EndTime = x.EndTime
+
                                                   }).ToList();
 
                 var atmosphereData = (AtmosphereElementData)changedData;

@@ -190,6 +190,25 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
             }
         }
     }
+
+    public int Time
+    {
+        set
+        {
+            switch(DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultTime = value;
+                    });
+
+                    break;
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -234,6 +253,13 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
         DataEditor.UpdateEditor();
     }
+
+    public void UpdateTime()
+    {
+        Time = TimeManager.instance.ActiveTime;
+
+        DataEditor.UpdateEditor();
+    }
     #endregion
 
     #region Segment
@@ -244,24 +270,13 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
     }
-
-    public void InitializeSegment()
-    {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
-
-        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.tileSize,
-                                     regionData.RegionSize * regionData.TerrainSize * regionData.tileSize);
-
-        xInputField.max = regionSize.x;
-        yInputField.max = regionSize.y;
-    }
-
+    
     public void InitializeData()
     {
         InitializeDependencies();
-        
-        if (DataEditor.Loaded) return;
 
+        if (DataEditor.Loaded) return;
+        
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Interaction:    InitializeInteractionData();    break;
@@ -302,10 +317,25 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         positionY = phaseData.DefaultPositionY;
         positionZ = phaseData.DefaultPositionZ;
 
+        TimeManager.instance.ActiveTime = phaseData.DefaultTime;
+
         terrainTileId = phaseData.terrainTileId;
     }
 
     private void SetSearchParameters() { }
+
+    public void InitializeSegment()
+    {
+        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
+
+        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.tileSize,
+                                     regionData.RegionSize * regionData.TerrainSize * regionData.tileSize);
+
+        xInputField.max = regionSize.x;
+        yInputField.max = regionSize.y;
+
+        UpdateTime();
+    }
 
     public void OpenSegment()
     {

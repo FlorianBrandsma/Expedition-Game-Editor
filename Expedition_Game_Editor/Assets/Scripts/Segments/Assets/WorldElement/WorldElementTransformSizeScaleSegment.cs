@@ -66,6 +66,25 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
             }
         }
     }
+
+    public int Time
+    {
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultTime = value;
+                    });
+
+                    break;
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -83,6 +102,13 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
         heightText.text = (height * scaleMultiplier).ToString();
         widthText.text = (width * scaleMultiplier).ToString();
         depthText.text = (depth * scaleMultiplier).ToString();
+    }
+
+    public void UpdateTime()
+    {
+        Time = TimeManager.instance.ActiveTime;
+
+        DataEditor.UpdateEditor();
     }
     #endregion
 
@@ -135,6 +161,8 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
         var phaseData = (PhaseElementData)DataEditor.Data.elementData;
 
         scaleMultiplier = phaseData.DefaultScaleMultiplier;
+
+        TimeManager.instance.ActiveTime = phaseData.DefaultTime;
     }
 
     private void SetSearchParameters() { }

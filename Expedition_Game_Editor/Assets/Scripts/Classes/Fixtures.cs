@@ -209,10 +209,7 @@ static public class Fixtures
         public int chapterId;
 
         public string name;
-
-        public string publicNotes;
-        public string privateNotes;
-
+        
         public int defaultRegionId;
 
         public float defaultPositionX;
@@ -224,6 +221,11 @@ static public class Fixtures
         public int defaultRotationZ;
 
         public float defaultScaleMultiplier;
+
+        public int defaultTime;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class Quest : GeneralData
@@ -334,7 +336,8 @@ static public class Fixtures
 
         public float scaleMultiplier;
 
-        public int playedSeconds;
+        public int gameTime;
+        public int playedTime;
     }
 
     public class ChapterSave : GeneralData
@@ -726,8 +729,8 @@ static public class Fixtures
                 terrain.name = "Terrain " + (i + 1);
 
                 CreateAtmosphere(terrain, true, 0, 0);
-                CreateAtmosphere(terrain, false, 8, 12);
-                CreateAtmosphere(terrain, false, 16, 20);
+                CreateAtmosphere(terrain, false, 8 * TimeManager.secondsInHour, (13 * TimeManager.secondsInHour) - 1);
+                CreateAtmosphere(terrain, false, 16 * TimeManager.secondsInHour, (21 * TimeManager.secondsInHour) - 1);
 
                 terrainList.Add(terrain);
             }
@@ -745,8 +748,8 @@ static public class Fixtures
         atmosphere.terrainId = terrain.Id;
 
         atmosphere.isDefault = isDefault;
-
-        atmosphere.startTime = startTime;
+        
+        atmosphere.startTime = startTime ;
         atmosphere.endTime = endTime;
 
         atmosphereList.Add(atmosphere);
@@ -852,8 +855,8 @@ static public class Fixtures
         task.publicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
         
         CreateInteraction(task, true, 0, 0, regionId, position, rotation, randomVariance);
-        CreateInteraction(task, false, 0, 4, regionId, position, rotation, randomVariance);
-        CreateInteraction(task, false, 9, 15, regionId, position, rotation, 0);
+        CreateInteraction(task, false, 0, (5 * TimeManager.secondsInHour) - 1, regionId, position, rotation, randomVariance);
+        CreateInteraction(task, false, 9 * TimeManager.secondsInHour, (16 * TimeManager.secondsInHour) - 1, regionId, position, rotation, 0);
         
         taskList.Add(task);
     }
@@ -1261,6 +1264,8 @@ static public class Fixtures
 
                 phase.defaultScaleMultiplier = 1f;
 
+                phase.defaultTime = 7 * TimeManager.secondsInHour;
+
                 phase.publicNotes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
                 
                 phaseList.Add(phase);
@@ -1508,6 +1513,8 @@ static public class Fixtures
         playerSave.positionZ = firstPhase.defaultPositionZ;
 
         playerSave.scaleMultiplier = 1;
+
+        playerSave.gameTime = firstPhase.defaultTime;
 
         //Test
         //playerSave.playedSeconds = 123456;

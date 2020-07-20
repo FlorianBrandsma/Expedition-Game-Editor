@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -82,7 +83,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
     #region Methods
     public void UpdateStartTime()
     {
-        StartTime = int.Parse(startTimeInput.inputField.text);
+        StartTime = int.Parse(startTimeInput.inputField.text) * TimeManager.secondsInHour;
 
         CheckTime();
 
@@ -91,8 +92,8 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     public void UpdateEndTime()
     {
-        EndTime = int.Parse(endTimeInput.inputField.text);
-
+        EndTime = int.Parse(endTimeInput.inputField.text) * TimeManager.secondsInHour + (TimeManager.secondsInHour - 1);
+        
         CheckTime();
 
         DataEditor.UpdateEditor();
@@ -186,8 +187,8 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
         if(!isDefault)
         {
-            startTimeInput.inputField.text = startTime.ToString();
-            endTimeInput.inputField.text = endTime.ToString();
+            startTimeInput.inputField.text  = TimeSpan.FromSeconds(startTime).Hours.ToString();
+            endTimeInput.inputField.text    = TimeSpan.FromSeconds(endTime).Hours.ToString();
         }
 
         gameObject.SetActive(true);

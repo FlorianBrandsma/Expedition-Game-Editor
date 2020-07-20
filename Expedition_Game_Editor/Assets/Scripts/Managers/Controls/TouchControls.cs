@@ -20,7 +20,7 @@ public class TouchControls : MonoBehaviour, IPlayerController
 
     void Update()
     {
-        if (!PlayerControlManager.Enabled)
+        if (!PlayerControlManager.Enabled || TimeManager.instance.Paused)
         {
             //CancelInput();
             return;

@@ -18,12 +18,12 @@ public class TouchOverlay : MonoBehaviour, IOverlay
         var prefab = Resources.Load<ExJoystick>("Elements/UI/Joystick");
         joystick = (ExJoystick)PoolManager.SpawnObject(prefab);
 
+        joystick.gameObject.SetActive(true);
+
         joystick.transform.SetParent(OverlayManager.content, false);
 
         joystick.transform.localScale = new Vector3(joystickSize, joystickSize, 1);
         joystick.transform.position = joystickPosition;
-
-        joystick.gameObject.SetActive(true);
     }
 
     public void DeactivateJoystick()

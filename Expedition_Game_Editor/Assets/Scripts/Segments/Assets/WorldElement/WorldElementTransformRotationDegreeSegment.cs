@@ -149,6 +149,25 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
             }
         }
     }
+
+    public int Time
+    {
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Phase:
+
+                    var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
+                    phaseDataList.ForEach(phaseData =>
+                    {
+                        phaseData.DefaultTime = value;
+                    });
+
+                    break;
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -169,6 +188,13 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
     public void UpdateRotationZ()
     {
         RotationZ = (int)zInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateTime()
+    {
+        Time = TimeManager.instance.ActiveTime;
 
         DataEditor.UpdateEditor();
     }
@@ -226,6 +252,8 @@ public class WorldElementTransformRotationDegreeSegment : MonoBehaviour, ISegmen
         rotationX = phaseData.DefaultRotationX;
         rotationY = phaseData.DefaultRotationY;
         rotationZ = phaseData.DefaultRotationZ;
+
+        TimeManager.instance.ActiveTime = phaseData.DefaultTime;
     }
 
     private void SetSearchParameters() { }

@@ -34,6 +34,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public void InitializeCamera(CameraProperties cameraProperties)
     {
+        TimeManager.activeLight = directionalLight;
+
         transform.parent.gameObject.SetActive(true);
 
         Display = cameraProperties;
@@ -104,9 +106,9 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             overlayManager.SetOverlay();
 
         if (cameraProperties.timeBasedLighting)
-            TimeManager.instance.SetCameraLight(directionalLight);
+            TimeManager.instance.SetLighting(TimeManager.instance.ActiveTime);
         else
-            TimeManager.instance.ResetLighting(directionalLight);
+            TimeManager.instance.ResetLighting();
     }
 
     private void ResetListPosition()

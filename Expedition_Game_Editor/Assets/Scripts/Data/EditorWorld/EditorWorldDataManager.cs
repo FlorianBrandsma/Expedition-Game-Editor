@@ -314,7 +314,9 @@ public class EditorWorldDataManager : IDataManager
                     width = partyMemberData.First().objectGraphicData.width,
                     depth = partyMemberData.First().objectGraphicData.depth,
 
-                    DefaultScaleMultiplier = phaseData.defaultScaleMultiplier
+                    DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
+
+                    DefaultTime = phaseData.defaultTime
 
                 }).ToList()
 

@@ -147,11 +147,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var interactionData = (InteractionElementData)elementData;
 
-        var startTime   = interactionData.Default ? TimeManager.DefaultTime(interactionData.defaultTimes) : interactionData.StartTime;
-        var endTime     = interactionData.Default ? TimeManager.DefaultTime(interactionData.defaultTimes) : interactionData.EndTime;
-        
-        if (!TimeManager.TimeInFrame(TimeManager.activeTime, startTime, endTime))
-            TimeManager.instance.SetTime(startTime);  
+        var startTime   = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.defaultTimes) : interactionData.StartTime;
+        var endTime     = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.defaultTimes) : interactionData.EndTime;
+
+        if (!TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, startTime, endTime))
+            TimeManager.instance.SetEditorTime(startTime);
     }
     
     private void ResetData(ActionData actionData)
@@ -533,7 +533,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetInteractionOptions(ExDropdown dropdown, ActionData actionData)
     {
         var elementDataList = actionData.data.dataList.Cast<InteractionElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetRegionOptions(ExDropdown dropdown, ActionData actionData)
@@ -586,7 +586,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SelectValidInteraction(ActionData actionData)
     {
         var interactionDataList = actionData.data.dataList.Cast<InteractionElementData>().ToList();
-        var validInteraction = interactionDataList.Where(x => TimeManager.TimeInFrame(TimeManager.activeTime, x.StartTime, x.EndTime) || x.Default).OrderBy(x => x.Default).First();
+        var validInteraction = interactionDataList.Where(x => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, x.StartTime, x.EndTime) || x.Default).OrderBy(x => x.Default).First();
 
         actionData.data.elementData = validInteraction;
     }

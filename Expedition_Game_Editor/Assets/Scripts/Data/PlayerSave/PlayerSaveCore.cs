@@ -12,8 +12,10 @@ public class PlayerSaveCore : GeneralData
     private float positionZ;
 
     private float scaleMultiplier;
-    
-    private int playedSeconds;
+
+    //Recorded in seconds
+    private int gameTime;
+    private int playedTime;
 
     //Original
     public int originalRegionId;
@@ -35,8 +37,7 @@ public class PlayerSaveCore : GeneralData
     {
         get
         {
-            return  changedRegionId         || changedPartyMemberId || 
-                    changedScaleMultiplier;
+            return  changedRegionId || changedPartyMemberId || changedScaleMultiplier;
         }
     }
 
@@ -104,16 +105,25 @@ public class PlayerSaveCore : GeneralData
         }
     }
 
-    public int PlayedSeconds
+    public int GameTime
     {
-        get { return playedSeconds; }
+        get { return gameTime; }
         set
         {
-            if (value == playedSeconds) return;
+            if (value == gameTime) return;
 
-            changedPlayedSeconds = (value != originalPlayedSeconds);
+            gameTime = value;
+        }
+    }
 
-            playedSeconds = value;
+    public int PlayedTime
+    {
+        get { return playedTime; }
+        set
+        {
+            if (value == playedTime) return;
+
+            playedTime = value;
         }
     }
     #endregion
@@ -129,7 +139,8 @@ public class PlayerSaveCore : GeneralData
         playerSaveData.positionY = positionY;
         playerSaveData.positionZ = positionZ;
 
-        playerSaveData.playedSeconds = playedSeconds;
+        playerSaveData.gameTime = gameTime;
+        playerSaveData.playedTime = playedTime;
 
         if (!Changed) return;
 
@@ -160,7 +171,7 @@ public class PlayerSaveCore : GeneralData
         
         originalScaleMultiplier = scaleMultiplier;
 
-        originalPlayedSeconds = playedSeconds;
+        originalPlayedSeconds = playedTime;
     }
 
     public void GetOriginalValues()
@@ -170,7 +181,7 @@ public class PlayerSaveCore : GeneralData
 
         scaleMultiplier = originalScaleMultiplier;
 
-        playedSeconds = originalPlayedSeconds;
+        playedTime = originalPlayedSeconds;
     }
 
     public virtual void ClearChanges()

@@ -97,7 +97,7 @@ public class StageNavigationAction : MonoBehaviour, IAction
     private void SetInteractionOptions()
     {
         var elementDataList = data.dataList.Cast<InteractionElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime, true) + " - " + TimeManager.FormatTime(x.EndTime))));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetTerrainOptions()

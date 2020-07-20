@@ -36,6 +36,8 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         get { return editorSegments; }
     }
 
+    public void InitializeEditor() { }
+
     public void UpdateEditor()
     {
         SetEditor();

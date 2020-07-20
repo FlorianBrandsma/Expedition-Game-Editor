@@ -75,7 +75,7 @@ public class PathController : MonoBehaviour
                 controller.history.group = history.group;
         }
 
-        InitializeComponents(mainPath);
+        InitializeActions(mainPath);
 
         if (EditorController != null)
             layoutSection.TargetController = EditorController;
@@ -156,7 +156,7 @@ public class PathController : MonoBehaviour
             controllers[path.route[step].controller].SetSubControllers(path);
     }
 
-    private void InitializeComponents(Path path)
+    private void InitializeActions(Path path)
     {
         foreach (IAction action in GetComponents<IAction>())
             action.InitializeAction(path);

@@ -218,7 +218,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldData.terrainDataList.ForEach(x => x.atmosphereDataList.ForEach(y => y.containsActiveTime = false));
 
         worldData.terrainDataList.SelectMany(x => x.atmosphereDataList.GroupBy(y => y.TerrainId)
-                                                                      .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
+                                                                      .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
                                                                       .OrderBy(z => z.Default).First())).ToList()
                                                                       .ForEach(x => x.containsActiveTime = true);
     }
@@ -228,7 +228,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldData.terrainDataList.ForEach(x => x.interactionDataList.ForEach(y => y.containsActiveTime = false));
 
         worldData.terrainDataList.SelectMany(x => x.interactionDataList.GroupBy(y => y.TaskId)
-                                                                       .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.StartTime, z.EndTime) || z.Default)
+                                                                       .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
                                                                        .OrderBy(z => z.Default).First())).ToList()
                                                                        .ForEach(x => x.containsActiveTime = true);
     }
@@ -238,7 +238,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldData.terrainDataList.ForEach(x => x.worldInteractableDataList.ForEach(y => y.containsActiveTime = false));
 
         worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.GroupBy(y => y.taskGroup)
-                                                                             .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.startTime, z.endTime) || z.isDefault)
+                                                                             .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.startTime, z.endTime) || z.isDefault)
                                                                              .OrderBy(z => z.isDefault).First())).ToList()
                                                                              .ForEach(x => x.containsActiveTime = true);
     }

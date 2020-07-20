@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ExInputNumber : MonoBehaviour, IEditorElement
+public class ExInputNumber : MonoBehaviour, IEditorElement, IPoolable
 {
     private float inputValue;
+
+    public Text valueType;
 
     public InputField inputField;
     public Button minusButton;
@@ -17,8 +19,18 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
     public Sprite enabledImage;
     public Sprite disabledImage;
 
-    public Image Image { get { return GetComponent<Image>(); } }
-    
+    public Image Image                      { get { return GetComponent<Image>(); } }
+
+    public Transform Transform              { get { return GetComponent<Transform>(); } }
+    public Enums.ElementType ElementType    { get { return Enums.ElementType.InputNumber; } }
+    public int Id                           { get; set; }
+    public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
+
+    public IPoolable Instantiate()
+    {
+        return Instantiate(this);
+    }
+
     public bool InputInvalid
     {
         set
@@ -36,8 +48,13 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
             inputField.text = inputValue.ToString();
         }
     }
+    
+    private void OnEnable()
+    {
+        InitializeElement();
+    }
 
-    private void Awake()
+    public void InitializeElement()
     {
         if (enableLimit)
             inputField.placeholder.GetComponent<Text>().text = min + "-" + max;
@@ -64,7 +81,13 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
 
     public void OnValueChanged()
     {
-        if (inputField.text.Length == 0) return;
+        if (inputField.text.Length == 0)
+        {
+            if (enableLimit)
+                inputField.text = min.ToString();
+            else
+                inputField.text = "0";
+        }
 
         //Allow writing negative numbers
         if (inputField.text.Length == 1 && inputField.text == "-") return;
@@ -86,5 +109,10 @@ public class ExInputNumber : MonoBehaviour, IEditorElement
 
         inputValue = float.Parse(inputField.text);
         inputField.text = inputValue.ToString();
+    }
+
+    public void ClosePoolable()
+    {
+        gameObject.SetActive(false);
     }
 }

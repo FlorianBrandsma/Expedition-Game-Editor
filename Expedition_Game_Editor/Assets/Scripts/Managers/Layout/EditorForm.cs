@@ -8,6 +8,8 @@ using System.Linq;
 
 public class EditorForm : MonoBehaviour
 {
+    public bool pauseTime;
+
     public EditorLayer editorLayer;
 
     [HideInInspector]
@@ -57,6 +59,8 @@ public class EditorForm : MonoBehaviour
 
         if (activePath.route.Count == 0) return;
 
+        TimeManager.instance.PauseTime(pauseTime);
+        
         //Flesh out the path and determine the target controller
         baseController.OpenPath(path, path.start);
 
@@ -238,6 +242,9 @@ public class EditorForm : MonoBehaviour
     public void CloseForm()
     {
         if (!activeInPath) return;
+
+        if(pauseTime)
+            TimeManager.instance.PauseTime(false);
 
         RenderManager.Render(new Path(new List<Route>(), this));
     }

@@ -54,7 +54,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         if (!Agent.isOnNavMesh) return;
 
-        Debug.Log("update destination");
         Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
     }
 
@@ -172,8 +171,12 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         {
             allowMoving = true;
 
-            Animator.SetBool("IsMoving", true);
-            Animator.SetFloat("MoveSpeedSensitivity", Agent.speed);
+            //TEMPORARY MEASURE TO PREVENT ERRORS WHILE OBJECTS LIKE POOLS ARE SPAWNED AS AGENTS
+            if(Animator != null)
+            {
+                Animator.SetBool("IsMoving", true);
+                Animator.SetFloat("MoveSpeedSensitivity", Agent.speed);
+            }
         }
 
         //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
@@ -186,8 +189,13 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     private void SettleAgent()
     {
         allowMoving = false;
-        Animator.SetBool("IsMoving", false);
-        
+
+        //TEMPORARY MEASURE TO PREVENT ERRORS WHILE OBJECTS LIKE POOLS ARE SPAWNED AS AGENTS
+        if (Animator != null)
+        {
+            Animator.SetBool("IsMoving", false);
+        }
+
         StopAllCoroutines();
         StartCoroutine(Rotate(rotation.y));
     }
@@ -197,7 +205,12 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         if (!Agent.isOnNavMesh) return;
 
         allowMoving = false;
-        Animator.SetBool("IsMoving", false);
+
+        //TEMPORARY MEASURE TO PREVENT ERRORS WHILE OBJECTS LIKE POOLS ARE SPAWNED AS AGENTS
+        if (Animator != null)
+        {
+            Animator.SetBool("IsMoving", false);
+        }
 
         StopAllCoroutines();
 

@@ -14,6 +14,8 @@ public class GameDisplayAction : MonoBehaviour, IAction
 
     public void InitializeAction(Path path)
     {
+        //if (GlobalManager.programType == GlobalManager.Scenes.Game) return;
+
         int index = 0;
         
         if (PathController.route.path.type == Path.Type.New)
@@ -52,6 +54,7 @@ public class GameDisplayAction : MonoBehaviour, IAction
 
     public void CloseAction()
     {
-        dropdown.Dropdown.onValueChanged.RemoveAllListeners();
+        if(dropdown != null)
+            dropdown.Dropdown.onValueChanged.RemoveAllListeners();
     }
 }

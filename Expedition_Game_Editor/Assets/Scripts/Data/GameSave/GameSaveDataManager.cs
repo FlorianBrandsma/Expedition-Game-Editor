@@ -55,7 +55,8 @@ public class GameSaveDataManager : IDataManager
 
                                   ScaleMultiplier = playerSaveData.scaleMultiplier,
 
-                                  PlayedSeconds = playerSaveData.playedSeconds
+                                  GameTime = playerSaveData.gameTime,
+                                  PlayedTime = playerSaveData.playedSeconds
 
                               }).First(),
 

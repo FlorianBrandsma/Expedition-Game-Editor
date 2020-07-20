@@ -10,16 +10,12 @@ public class PlayerSaveElementData : PlayerSaveCore, IElementData
         DataType = Enums.DataType.Interaction;
     }
 
-    public int objectGraphicId;
-    public string objectGraphicPath;
+    //public int objectGraphicId;
 
-    public string objectGraphicIconPath;
+    //public string objectGraphicPath;
+    //public string objectGraphicIconPath;
 
-    public float height;
-    public float width;
-    public float depth;
-
-    public string interactableName;
+    //public string interactableName;
 
     public DateTime saveTime;
 

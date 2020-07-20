@@ -1503,7 +1503,6 @@ MonoBehaviour:
   actionProperties:
     anchor: 0
     width: 35
-  icon: {fileID: 2800000, guid: a6f283db2f5a3b74f98cc6b6c79b2bd8, type: 3}
 --- !u!114 &78246134 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114000012628092190, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -2227,7 +2226,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: Z
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -5078,7 +5077,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: '*'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -7300,7 +7299,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: Y
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -9616,6 +9615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTime: 1
   editorLayer: {fileID: 1322216632}
   loaded: 0
   activeInPath: 0
@@ -9703,7 +9703,9 @@ MonoBehaviour:
   gameSaveController: {fileID: 1709052730}
   gameWorldController: {fileID: 848345540}
   localNavMeshBuilder: {fileID: 790280562}
-  gameLight: {fileID: 788754054}
+  gamePauseAction: {fileID: 1751448743}
+  gameTimeAction: {fileID: 1751448742}
+  gameSpeedAction: {fileID: 1751448744}
 --- !u!4 &680479532
 Transform:
   m_ObjectHideFlags: 0
@@ -10793,6 +10795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTime: 1
   editorLayer: {fileID: 1322216632}
   loaded: 0
   activeInPath: 0
@@ -11942,7 +11945,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: X
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -19779,6 +19782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTime: 0
   editorLayer: {fileID: 995570910}
   loaded: 0
   activeInPath: 0
@@ -22521,7 +22525,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: X
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -22883,6 +22887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTime: 0
   editorLayer: {fileID: 1762460843}
   loaded: 0
   activeInPath: 0
@@ -25331,7 +25336,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: Z
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -29733,6 +29738,9 @@ GameObject:
   - component: {fileID: 1751448739}
   - component: {fileID: 1751448740}
   - component: {fileID: 1751448741}
+  - component: {fileID: 1751448743}
+  - component: {fileID: 1751448742}
+  - component: {fileID: 1751448744}
   m_Layer: 5
   m_Name: Game (controller)
   m_TagString: Untagged
@@ -29800,6 +29808,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segments:
   - {fileID: 848345538}
+--- !u!114 &1751448742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751448737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce063d5e15626542a00166cf31a43f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 65
+--- !u!114 &1751448743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751448737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4c42d4ba03fcd48b73fe8041d2a69a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 35
+--- !u!114 &1751448744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751448737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ace8f734b3569418592177de21ea97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 100
 --- !u!1 &1762460840
 GameObject:
   m_ObjectHideFlags: 0
@@ -30659,7 +30712,7 @@ PrefabInstance:
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
       propertyPath: valueType
-      value: Y
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000012723519820, guid: c57266b83ca1cc94fa7f74f73a3f76bf,
         type: 3}
@@ -33969,6 +34022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdd0ead214da34c8b9189b5568d301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTime: 0
   editorLayer: {fileID: 1762460843}
   loaded: 0
   activeInPath: 0

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
+public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 {
     private PhaseElementData PhaseData { get { return (PhaseElementData)DataEditor.Data.elementData; } }
 
@@ -16,6 +16,7 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
     public Text nameText;
     public Text stateText;
     public Text locationText;
+    public Text timeText;
 
     public DataElement editButton;
     public RawImage buttonIcon;
@@ -38,6 +39,7 @@ public class PhasePartyDefaultStatusSegment : MonoBehaviour, ISegment
 
         nameText.text = PhaseData.interactableName;
         locationText.text = PhaseData.locationName;
+        timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
 
         editButton.data = new DataElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);

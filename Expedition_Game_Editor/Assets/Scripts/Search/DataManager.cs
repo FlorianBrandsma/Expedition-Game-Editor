@@ -198,6 +198,8 @@ public class DataManager
 
             data.defaultScaleMultiplier = phase.defaultScaleMultiplier;
 
+            data.defaultTime = phase.defaultTime;
+
             data.publicNotes = phase.publicNotes;
             data.privateNotes = phase.privateNotes;
 
@@ -571,7 +573,8 @@ public class DataManager
 
             data.scaleMultiplier = playerSave.scaleMultiplier;
 
-            data.playedSeconds = playerSave.playedSeconds;
+            data.gameTime = playerSave.gameTime;
+            data.playedSeconds = playerSave.playedTime;
 
             dataList.Add(data);
         }
@@ -796,6 +799,8 @@ public class DataManager
         public int defaultRotationZ;
 
         public float defaultScaleMultiplier;
+
+        public int defaultTime;
     }
 
     public class QuestData : GeneralData
@@ -955,6 +960,7 @@ public class DataManager
 
         public float scaleMultiplier;
 
+        public int gameTime;
         public int playedSeconds;
     }
 

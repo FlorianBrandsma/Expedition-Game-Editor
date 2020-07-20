@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609dd464a941b3542a595a25bcca4142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueType: {fileID: 114000010794011776}
   inputField: {fileID: 114000012641264022}
   minusButton: {fileID: 114000012494981308}
   plusButton: {fileID: 114000013076060600}

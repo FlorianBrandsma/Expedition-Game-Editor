@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
 
     public LocalNavMeshBuilder localNavMeshBuilder;
 
-    public Light gameLight;
-    
+    public GamePauseAction gamePauseAction;
+    public GameTimeAction gameTimeAction;
+    public GameSpeedAction gameSpeedAction;
+
     private int activePhaseId;
     private int activeRegionId;
     private int activePartyMemberId;
@@ -126,38 +128,20 @@ public class GameManager : MonoBehaviour
 
     private void TimeTest()
     {
-        if (TimeManager.activeTime < TimeManager.hoursInDay - 1)
-            TimeManager.activeTime++;
+        if (TimeManager.instance.ActiveTime < TimeManager.hoursInDay - 1)
+            TimeManager.instance.ActiveTime++;
         else
-            TimeManager.activeTime = 0;
+            TimeManager.instance.ActiveTime = 0;
 
-        //Get time from save data
-        TimeManager.instance.SetTime(TimeManager.activeTime);
-        TimeManager.instance.SetCameraLight(gameLight);
-
-        Debug.Log("The time is " + TimeManager.activeTime + ":00");
-
+        gameTimeAction.SetTime(TimeManager.instance.ActiveTime);
+        
         CheckTime();
     }
 
     public void LoadGameSaveData(SaveElementData saveElementData)
     {
         Debug.Log("Get save data");
-
-        //Reset values if opened from data
-        activePhaseId = 0;
-        activeRegionId = 0;
-        activePartyMemberId = 0;
-
-        gameSaveData = null;
-        gameWorldData = null;
-        regionData = null;
-        partyMemberData = null;
-
-        gameWorldController.DataList = null;
-        gameSaveController.DataList = null;
-        //--------------------------------
-
+        
         //Get save data
         var searchProperties = new SearchProperties(Enums.DataType.GameSave);
 
@@ -178,7 +162,11 @@ public class GameManager : MonoBehaviour
         InitializeLocalNavMesh();
 
         InitializePhase();
-        
+
+        localNavMeshBuilder.UpdateNavMesh();
+
+        TimeManager.active = true;
+
         TimeManager.instance.SetLighting();
     }
 
@@ -208,6 +196,9 @@ public class GameManager : MonoBehaviour
         //Set the active party member based on the save data or else from the phase defaults
         InitializePartyMember();
 
+        //Set the time based on the save data or else from the phase defaults, which is already set
+        TimeManager.instance.InitializeGameTime(gameSaveData.playerSaveData.GameTime);
+        
         //Compare game data with save data to determine which task is active
         CheckProgress();
     }
@@ -226,6 +217,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeRegion()
     {
+        //Must be a new phase if the saved region is not listed
         if (!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.RegionId))
         {
             gameSaveData.playerSaveData.PositionX = gameWorldData.phaseData.DefaultPositionX;
@@ -233,6 +225,8 @@ public class GameManager : MonoBehaviour
             gameSaveData.playerSaveData.PositionZ = gameWorldData.phaseData.DefaultPositionZ;
             
             gameSaveData.playerSaveData.ScaleMultiplier = gameWorldData.phaseData.DefaultScaleMultiplier;
+
+            gameSaveData.playerSaveData.GameTime = gameWorldData.phaseData.DefaultTime;
 
             ActiveRegionId = gameWorldData.phaseData.DefaultRegionId;
             
@@ -311,7 +305,12 @@ public class GameManager : MonoBehaviour
     
     public void CheckTime()
     {
-        Debug.Log("Check time to see which interactions and atmospheres are active");
+        Debug.Log("Don't forget about these time comments!");
+        //This could be optimized to only check the time when the time matches that of a known interaction
+        //Interaction times would be gathered when the game data is loaded
+        //This would allow minute based interactions, since the game would otherwise reload every game minute
+        
+        //Check time to see which interactions and atmospheres are active
         
         DeactivateInteractionTime();
 
@@ -323,16 +322,13 @@ public class GameManager : MonoBehaviour
 
         //(Re)build the world according to the active data
         SetWorldData();
+
+        localNavMeshBuilder.UpdateNavMesh(true);
     }
 
     private void InitializeLocalNavMesh()
     {
         localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
-
-        //This is such a dumb solution it's embarrassing that it works
-        //Ensures that the navigation mesh is built properly
-        localNavMeshBuilder.UpdateNavMesh(true);
-        localNavMeshBuilder.UpdateNavMesh();
     }
 
     private void SetWorldData()
@@ -352,7 +348,7 @@ public class GameManager : MonoBehaviour
     {
         //Validate times of interactions which belong to the active task saves
         gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId)).GroupBy(y => y.taskId)
-                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.activeTime, z.startTime, z.endTime) || z.isDefault)
+                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.startTime, z.endTime) || z.isDefault)
                                                                  .OrderBy(z => z.isDefault).First())).ToList()
                                                                  .ForEach(x => 
                                                                  {
@@ -418,6 +414,22 @@ public class GameManager : MonoBehaviour
 
     public void CloseGame()
     {
+        Debug.Log("Close game");
+        
+        activePhaseId = 0;
+        activeRegionId = 0;
+        activePartyMemberId = 0;
+
+        gameWorldData = null;
+        regionData = null;
+        partyMemberData = null;
+
+        gameWorldController.DataList = null;
+        gameSaveController.DataList = null;
+
+        TimeManager.active = false;
+        TimeManager.instance.TimeScale = 1;
+
         PlayerControlManager.Enabled = false;
     }
 }

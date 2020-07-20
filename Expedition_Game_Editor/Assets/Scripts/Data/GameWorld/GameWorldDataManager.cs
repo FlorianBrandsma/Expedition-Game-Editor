@@ -98,7 +98,9 @@ public class GameWorldDataManager : IDataManager
                 DefaultRotationY = phaseData.defaultRotationY,
                 DefaultRotationZ = phaseData.defaultRotationZ,
 
-                DefaultScaleMultiplier = phaseData.defaultScaleMultiplier
+                DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
+
+                DefaultTime = phaseData.defaultTime
                 
             },
 

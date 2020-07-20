@@ -20,6 +20,7 @@ public class ObjectGraphicDataManager : IDataManager
 
     public List<IElementData> GetData(SearchProperties searchProperties)
     {
+        Debug.Log(searchProperties);
         var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectGraphic>().First();
 
         GetObjectGraphicData(searchParameters);

@@ -8,8 +8,6 @@ public class HomeAction : MonoBehaviour, IAction
 {
     public ActionProperties actionProperties;
 
-    public Texture2D icon;
-
     private ExButton actionButton;
 
     private PathController PathController { get { return GetComponent<PathController>(); } }
@@ -25,7 +23,7 @@ public class HomeAction : MonoBehaviour, IAction
     {
         actionButton = ActionManager.instance.AddButton(actionProperties);
 
-        actionButton.icon.texture = icon;
+        actionButton.icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/Home");
 
         Path newPath = PathController.route.path.Trim(PathController.route.path.route.Count - 1);
 

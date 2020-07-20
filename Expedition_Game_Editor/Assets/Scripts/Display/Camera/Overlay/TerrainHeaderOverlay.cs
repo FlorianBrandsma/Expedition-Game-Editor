@@ -42,7 +42,7 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
         //The atmosphere part is only temporary for debugging
         terrainInfoText.Text.text = worldOrganizer.activeTerrainData.Name + " (Atmosphere: " + (activeAtmosphere.Default ? 
             "Default" :
-            TimeManager.FormatTime(activeAtmosphere.StartTime, true) + 
+            TimeManager.FormatTime(activeAtmosphere.StartTime) + 
             " - " + 
             TimeManager.FormatTime(activeAtmosphere.EndTime)) + ")";
 

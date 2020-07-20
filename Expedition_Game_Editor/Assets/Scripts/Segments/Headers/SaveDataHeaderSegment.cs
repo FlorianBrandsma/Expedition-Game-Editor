@@ -100,7 +100,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
         id = interactionSaveData.Id;
         index = interactionSaveData.Index;
-        name = interactionSaveData.isDefault ? "Default" : TimeManager.FormatTime(interactionSaveData.startTime, true) + " - " + TimeManager.FormatTime(interactionSaveData.endTime); ;
+        name = interactionSaveData.isDefault ? "Default" : TimeManager.FormatTime(interactionSaveData.startTime) + " - " + TimeManager.FormatTime(interactionSaveData.endTime);
     }
 
     public void OpenSegment()

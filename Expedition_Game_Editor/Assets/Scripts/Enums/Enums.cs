@@ -150,7 +150,8 @@ public class Enums
         FormButton,
         GameWorldElement,
         GameWorldAgent,
-        Joystick
+        Joystick,
+        InputNumber
     }
 
     public enum ElementStatus

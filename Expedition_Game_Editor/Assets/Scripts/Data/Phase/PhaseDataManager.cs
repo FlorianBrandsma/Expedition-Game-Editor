@@ -74,6 +74,8 @@ public class PhaseDataManager : IDataManager
 
                         DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
 
+                        DefaultTime = phaseData.defaultTime,
+
                         PublicNotes = phaseData.publicNotes,
                         PrivateNotes = phaseData.privateNotes,
 
@@ -129,6 +131,8 @@ public class PhaseDataManager : IDataManager
             phaseData.defaultRotationZ = phase.defaultRotationZ;
 
             phaseData.defaultScaleMultiplier = phase.defaultScaleMultiplier;
+
+            phaseData.defaultTime = phase.defaultTime;
 
             phaseData.publicNotes = phase.publicNotes;
             phaseData.privateNotes = phase.privateNotes;
@@ -242,6 +246,8 @@ public class PhaseDataManager : IDataManager
         public int defaultRotationZ;
 
         public float defaultScaleMultiplier;
+
+        public int defaultTime;
 
         public string publicNotes;
         public string privateNotes;

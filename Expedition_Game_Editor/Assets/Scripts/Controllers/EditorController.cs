@@ -40,6 +40,8 @@ public class EditorController : MonoBehaviour
 
         ResetEditorData();
 
+        //PathController.DataEditor.InitializeEditor();
+
         PathController.DataEditor.EditorSegments.ForEach(x => 
         {
             x.Segment.InitializeData();

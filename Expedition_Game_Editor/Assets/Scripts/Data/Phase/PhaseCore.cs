@@ -19,6 +19,8 @@ public class PhaseCore : GeneralData
 
     private float defaultScaleMultiplier;
 
+    private int defaultTime;
+
     private string publicNotes;
     private string privateNotes;
 
@@ -36,6 +38,8 @@ public class PhaseCore : GeneralData
     private int originalDefaultRotationZ;
 
     private float originalDefaultScaleMultiplier;
+
+    private int originalDefaultTime;
 
     public string originalPublicNotes;
     public string originalPrivateNotes;
@@ -55,6 +59,8 @@ public class PhaseCore : GeneralData
 
     private bool changedDefaultScaleMultiplier;
 
+    private bool changedDefaultTime;
+    
     private bool changedPublicNotes;
     private bool changedPrivateNotes;
 
@@ -65,7 +71,8 @@ public class PhaseCore : GeneralData
             return  changedName                     || changedDefaultRegionId   || 
                     changedDefaultPositionX         || changedDefaultPositionY  || changedDefaultPositionZ ||
                     changedDefaultRotationX         || changedDefaultRotationY  || changedDefaultRotationZ || 
-                    changedDefaultScaleMultiplier   || changedPublicNotes       || changedPrivateNotes;
+                    changedDefaultScaleMultiplier   || changedDefaultTime       || 
+                    changedPublicNotes              || changedPrivateNotes;
         }
     }
 
@@ -193,6 +200,19 @@ public class PhaseCore : GeneralData
         }
     }
 
+    public int DefaultTime
+    {
+        get { return defaultTime; }
+        set
+        {
+            if (value == defaultTime) return;
+
+            changedDefaultTime = (value != originalDefaultTime);
+
+            defaultTime = value;
+        }
+    }
+
     public string PublicNotes
     {
         get { return publicNotes; }
@@ -254,6 +274,9 @@ public class PhaseCore : GeneralData
         if (changedDefaultScaleMultiplier)
             phaseData.defaultScaleMultiplier = defaultScaleMultiplier;
 
+        if (changedDefaultTime)
+            phaseData.defaultTime = defaultTime;
+
         if (changedPublicNotes)
             phaseData.publicNotes = publicNotes;
 
@@ -290,6 +313,8 @@ public class PhaseCore : GeneralData
 
         originalDefaultScaleMultiplier = defaultScaleMultiplier;
 
+        originalDefaultTime = defaultTime;
+
         originalPublicNotes = publicNotes;
         originalPrivateNotes = privateNotes;
     }
@@ -309,6 +334,8 @@ public class PhaseCore : GeneralData
         defaultRotationZ = originalDefaultRotationZ;
 
         defaultScaleMultiplier = originalDefaultScaleMultiplier;
+
+        defaultTime = originalDefaultTime;
 
         publicNotes = originalPublicNotes;
         privateNotes = originalPrivateNotes;
@@ -331,6 +358,8 @@ public class PhaseCore : GeneralData
         changedDefaultRotationZ = false;
 
         changedDefaultScaleMultiplier = false;
+
+        changedDefaultTime = false;
 
         changedPublicNotes = false;
         changedPrivateNotes = false;
@@ -358,6 +387,8 @@ public class PhaseCore : GeneralData
 
         elementData.defaultScaleMultiplier = defaultScaleMultiplier;
 
+        elementData.defaultTime = defaultTime;
+
         elementData.publicNotes = publicNotes;
         elementData.privateNotes = privateNotes;
 
@@ -375,6 +406,8 @@ public class PhaseCore : GeneralData
         elementData.originalDefaultRotationZ = originalDefaultRotationZ;
 
         elementData.originalDefaultScaleMultiplier = originalDefaultScaleMultiplier;
+
+        elementData.originalDefaultTime = originalDefaultTime;
 
         elementData.originalPublicNotes = originalPublicNotes;
         elementData.originalPrivateNotes = originalPrivateNotes;
@@ -400,6 +433,8 @@ public class PhaseCore : GeneralData
         defaultRotationZ = phaseDataSource.defaultRotationZ;
 
         defaultScaleMultiplier = phaseDataSource.defaultScaleMultiplier;
+
+        defaultTime = phaseDataSource.defaultTime;
 
         publicNotes = phaseDataSource.publicNotes;
         privateNotes = phaseDataSource.privateNotes;

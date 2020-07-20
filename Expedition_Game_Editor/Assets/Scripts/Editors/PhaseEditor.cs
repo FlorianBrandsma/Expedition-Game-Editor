@@ -35,6 +35,8 @@ public class PhaseEditor : MonoBehaviour, IEditor
     private List<SegmentController> editorSegments = new List<SegmentController>();
     public List<SegmentController> EditorSegments { get { return editorSegments; } }
 
+    public void InitializeEditor() { }
+
     public void UpdateEditor()
     {
         ElementDataList.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());

@@ -205,6 +205,19 @@ public class ActionManager : MonoBehaviour
         return button;
     }
 
+    public ExInputNumber AddInputNumber(ActionProperties actionProperties)
+    {
+        var inputNumber = SpawnInputNumber();
+
+        inputNumber.minusButton.onClick.RemoveAllListeners();
+        inputNumber.plusButton.onClick.RemoveAllListeners();
+        inputNumber.inputField.onEndEdit.RemoveAllListeners();
+
+        AddAction(inputNumber.GetComponent<RectTransform>(), actionProperties);
+
+        return inputNumber;
+    }
+
     private void AddAction(RectTransform element, ActionProperties actionProperties)
     {
         if (element.GetComponent<ActionElement>() == null)
@@ -275,6 +288,16 @@ public class ActionManager : MonoBehaviour
         button.gameObject.SetActive(true);
 
         return button;
+    }
+
+    private ExInputNumber SpawnInputNumber()
+    {
+        var prefab = Resources.Load<ExInputNumber>("Elements/UI/InputNumber");
+        var inputNumber = (ExInputNumber)PoolManager.SpawnObject(prefab);
+
+        inputNumber.gameObject.SetActive(true);
+
+        return inputNumber;
     }
     #endregion
 }

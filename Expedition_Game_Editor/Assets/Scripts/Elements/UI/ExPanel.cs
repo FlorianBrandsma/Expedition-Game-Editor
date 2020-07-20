@@ -264,20 +264,14 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var data = EditorElement.DataElement.data;
         var elementData = (WorldInteractableElementData)data.elementData;
 
-        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-        {
-            header = elementData.interactableName;
-            iconPath = elementData.objectGraphicIconPath;
-        } else {
-            header = elementData.originalInteractableName;
-            iconPath = elementData.originalObjectGraphicIconPath;
-        }
-
+        header = elementData.interactableName;
+        
         EditorElement.elementStatus = elementData.elementStatus;
 
         idText.text = elementData.Id.ToString();
         headerText.text = header;
 
+        iconPath = elementData.objectGraphicIconPath;
         IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
@@ -307,10 +301,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime, true) + " - " + TimeManager.FormatTime(elementData.EndTime);
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime) + " - " + TimeManager.FormatTime(elementData.EndTime);
             description = elementData.PublicNotes;
         } else {
-            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime, true) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
             description = elementData.originalPublicNotes;
         }
 
@@ -358,10 +352,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
-            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime, true) + " - " + TimeManager.FormatTime(elementData.EndTime);
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime) + " - " + TimeManager.FormatTime(elementData.EndTime);
             description = elementData.PublicNotes;
         } else {
-            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime, true) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
+            header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.originalStartTime) + " - " + TimeManager.FormatTime(elementData.originalEndTime);
             description = elementData.originalPublicNotes;
         }
 
@@ -510,7 +504,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var data = EditorElement.DataElement.data;
         var elementData = (InteractionSaveElementData)data.elementData;
 
-        header = elementData.isDefault ? "Default" : TimeManager.FormatTime(elementData.startTime, true) + " - " + TimeManager.FormatTime(elementData.endTime);
+        header = elementData.isDefault ? "Default" : TimeManager.FormatTime(elementData.startTime) + " - " + TimeManager.FormatTime(elementData.endTime);
 
         description = elementData.publicNotes;
 
