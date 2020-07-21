@@ -146,6 +146,10 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
     {
         var interactionData = (InteractionElementData)DataEditor.Data.elementData;
 
+        height = interactionData.height;
+        width = interactionData.width;
+        depth = interactionData.depth;
+
         scaleMultiplier = interactionData.ScaleMultiplier;
     }
 
@@ -153,12 +157,20 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
     {
         var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
 
+        height = worldObjectData.height;
+        width = worldObjectData.width;
+        depth = worldObjectData.depth;
+
         scaleMultiplier = worldObjectData.ScaleMultiplier;
     }
 
     private void InitializePhaseData()
     {
         var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+
+        height = phaseData.height;
+        width = phaseData.width;
+        depth = phaseData.depth;
 
         scaleMultiplier = phaseData.DefaultScaleMultiplier;
 
@@ -169,50 +181,9 @@ public class WorldElementTransformSizeScaleSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        GetSizeData();
+        SetSizeValues();
 
         inputField.Value = ScaleMultiplier;
-    }
-
-    private void GetSizeData()
-    {
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Interaction:    GetInteractionSizeData();   break;
-            case Enums.DataType.WorldObject:    GetWorldObjectSizeData();   break;
-            case Enums.DataType.Phase:          GetPhaseSizeData();         break;
-
-            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
-        }
-
-        SetSizeValues();
-    }
-
-    private void GetInteractionSizeData()
-    {
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
-
-        height = interactionData.height;
-        width = interactionData.width;
-        depth = interactionData.depth;
-    }
-
-    private void GetWorldObjectSizeData()
-    {
-        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
-
-        height = worldObjectData.height;
-        width = worldObjectData.width;
-        depth = worldObjectData.depth;
-    }
-
-    private void GetPhaseSizeData()
-    {
-        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
-
-        height = phaseData.height;
-        width = phaseData.width;
-        depth = phaseData.depth;
     }
 
     public void CloseSegment() { }

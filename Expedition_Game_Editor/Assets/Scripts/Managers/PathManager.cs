@@ -237,28 +237,14 @@ public class PathManager
             return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
         }
 
-        public Path OpenDataCharacters()
-        {
-            EditorForm form = RenderManager.layoutManager.forms[0];
-
-            var controllers = new List<int> { 0, 1, 1, 0 };
-
-            Path newPath = CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
-            newPath.type = path.type;
-
-            return newPath;
-        }
-
         public Path Get()
         {
             return null;
         }
     }
-
     #endregion
 
     #region Region
-
     public class Region
     {
         EditorElement editorElement;
@@ -335,7 +321,6 @@ public class PathManager
             return path;
         }
     }
-
     #endregion
 
     #region Atmosphere
@@ -365,7 +350,6 @@ public class PathManager
     #endregion
 
     #region Terrain
-
     public class Terrain
     {
         int edit = 0;
@@ -471,7 +455,6 @@ public class PathManager
             return new Path(form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes), form, form.activePath.start);
         }
     }
-
     #endregion
 
     #region Options
@@ -580,6 +563,36 @@ public class PathManager
             return path;
         }
     }
+
+    public class InteractableSave
+    {
+        EditorElement editorElement;
+
+        Path path;
+        Route route;
+
+        public InteractableSave(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+
+            path = editorElement.DataElement.segmentController.Path;
+
+            this.route = route;
+        }
+
+        public Path Edit()
+        {
+            EditorForm form = RenderManager.layoutManager.forms[0];
+
+            var controllers = new List<int> { 0, 1, 1, 0 };
+
+            Path newPath = CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
+            newPath.type = path.type;
+
+            return newPath;
+        }
+    }
+
     #endregion
 
     #endregion

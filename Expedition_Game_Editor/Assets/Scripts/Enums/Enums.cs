@@ -42,6 +42,7 @@ public class Enums
         GamePartyMember,
         Save,
         GameSave,
+        InteractableSave,
         ChapterSave,
         PhaseSave,
         QuestSave,

@@ -23,7 +23,6 @@ static public class SelectionManager
         Toggle,
         OpenOutcomeEditor,
         LoadSave,
-        OpenDataCharacters,
         OpenPhaseSaveRegion,
         OpenPhaseSaveRegionWorldInteractable
     }

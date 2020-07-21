@@ -200,9 +200,6 @@ public class EditorPath
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = interactable.Edit();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.OpenDataCharacters)
-                    path = interactable.OpenDataCharacters();
-
                 break;
 
             case Enums.DataType.Option:
@@ -220,6 +217,15 @@ public class EditorPath
 
                 if (editorElement.selectionProperty == SelectionManager.Property.Enter)
                     path = save.EnterGame();
+
+                break;
+
+            case Enums.DataType.InteractableSave:
+
+                PathManager.InteractableSave interactableSave = new PathManager.InteractableSave(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                    path = interactableSave.Edit();
 
                 break;
 

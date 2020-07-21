@@ -175,10 +175,6 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
                 break;
 
-            case SelectionManager.Property.OpenDataCharacters:
-                RenderManager.Render(editorPath.path);
-                break;
-
             case SelectionManager.Property.OpenPhaseSaveRegion:
                 RenderManager.Render(editorPath.path);
                 break;

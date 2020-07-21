@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InteractableObjectGraphicSegment : MonoBehaviour, ISegment
 {
+    private ObjectGraphicElementData objectGraphicElementData;
+
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor { get; set; }
 
@@ -20,16 +23,28 @@ public class InteractableObjectGraphicSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.ObjectGraphic);
 
-        var interactableElementData = (InteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Interactable).data.elementData;
+        var dataType = SegmentController.Path.GetLastRoute().GeneralData.DataType;
 
-        var objectGraphicElementData = new ObjectGraphicElementData()
+        switch (dataType)
         {
-            Id = interactableElementData.ObjectGraphicId,
-            Path = interactableElementData.objectGraphicPath,
-            iconPath = interactableElementData.objectGraphicIconPath
-        };
+            case Enums.DataType.InteractableSave: InitializeInteractableSaveData(); break;
 
+            default: Debug.Log("CASE MISSING: " + dataType); break;
+        }
+        
         SegmentController.DataController.DataList = new List<IElementData>() { objectGraphicElementData };
+    }
+
+    private void InitializeInteractableSaveData()
+    {
+        var interactableSaveElementData = (InteractableSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.InteractableSave).data.elementData;
+
+        objectGraphicElementData = new ObjectGraphicElementData()
+        {
+            Id = interactableSaveElementData.objectGraphicId,
+            Path = interactableSaveElementData.objectGraphicPath,
+            iconPath = interactableSaveElementData.objectGraphicIconPath
+        };
     }
 
     public void OpenSegment()

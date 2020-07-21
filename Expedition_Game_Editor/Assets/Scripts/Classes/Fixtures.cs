@@ -56,6 +56,7 @@ static public class Fixtures
 
     static public List<Save>                saveList                = new List<Save>();
     static public List<PlayerSave>          playerSaveList          = new List<PlayerSave>();
+    static public List<InteractableSave>    interactableSaveList    = new List<InteractableSave>();
     static public List<ChapterSave>         chapterSaveList         = new List<ChapterSave>();
     static public List<PhaseSave>           phaseSaveList           = new List<PhaseSave>();
     static public List<QuestSave>           questSaveList           = new List<QuestSave>();
@@ -338,6 +339,12 @@ static public class Fixtures
 
         public int gameTime;
         public int playedTime;
+    }
+
+    public class InteractableSave : GeneralData
+    {
+        public int saveId;
+        public int interactableId;
     }
 
     public class ChapterSave : GeneralData
@@ -658,9 +665,9 @@ static public class Fixtures
             interactable.hunger = 100;
             interactable.thirst = 100;
 
-            interactable.weight = 80;
+            interactable.weight = 80f;
             interactable.speed = 5f;
-            interactable.stamina = 50;
+            interactable.stamina = 50f;
 
             interactableList.Add(interactable);
         }
@@ -1486,6 +1493,7 @@ static public class Fixtures
         save.Index = saveList.Count;
 
         CreatePlayerSave(save);
+        CreateInteractableSaves(save);
         CreateStageSaves(save);
 
         saveList.Add(save);
@@ -1524,6 +1532,23 @@ static public class Fixtures
         //----
 
         playerSaveList.Add(playerSave);
+    }
+
+    static private void CreateInteractableSaves(Save save)
+    {
+        foreach(Interactable interactable in interactableList)
+        {
+            var interactableSave = new InteractableSave();
+
+            int interactableSaveId = interactableSaveList.Count > 0 ? (interactableSaveList[interactableSaveList.Count - 1].Id + 1) : 1;
+
+            interactableSave.Id = interactableSaveId;
+
+            interactableSave.saveId = save.Id;
+            interactableSave.interactableId = interactable.Id;
+
+            interactableSaveList.Add(interactableSave);
+        }
     }
 
     static private void CreateStageSaves(Save save)

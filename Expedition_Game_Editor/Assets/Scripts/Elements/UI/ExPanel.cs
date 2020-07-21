@@ -122,6 +122,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
 
             case Enums.DataType.Save:               SetSaveElement();               break;
+            case Enums.DataType.InteractableSave:   SetInteractableSaveElement();   break;
             case Enums.DataType.ChapterSave:        SetChapterSaveElement();        break;
             case Enums.DataType.PhaseSave:          SetPhaseSaveElement();          break;
             case Enums.DataType.QuestSave:          SetQuestSaveElement();          break;
@@ -432,6 +433,20 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         idText.text     = elementData.Id.ToString();
         timeText.text   = elementData.time;
+    }
+
+    private void SetInteractableSaveElement()
+    {
+        var data = EditorElement.DataElement.data;
+        var elementData = (InteractableSaveElementData)data.elementData;
+
+        header = elementData.interactableName;
+        
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+
+        iconPath = elementData.objectGraphicIconPath;
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetChapterSaveElement()

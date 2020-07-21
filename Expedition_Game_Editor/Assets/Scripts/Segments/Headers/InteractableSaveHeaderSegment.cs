@@ -47,18 +47,18 @@ public class InteractableSaveHeaderSegment : MonoBehaviour, ISegment
         if (DataEditor.Loaded) return;
     }
 
-    private void InitializeInteractableData()
+    private void InitializeInteractableSaveData()
     {
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableSaveData = (InteractableSaveElementData)DataEditor.Data.elementData;
 
-        id = interactableData.Id;
-        header = interactableData.Name;
-        objectGraphicIconPath = interactableData.objectGraphicIconPath;
+        id = interactableSaveData.Id;
+        header = interactableSaveData.interactableName;
+        objectGraphicIconPath = interactableSaveData.objectGraphicIconPath;
     }
 
     public void OpenSegment()
     {
-        InitializeInteractableData();
+        InitializeInteractableSaveData();
 
         icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);
         headerText.text = header;

@@ -43,11 +43,15 @@ public class InteractableDataManager : IDataManager
                         ObjectGraphicId = interactableData.objectGraphicId,
 
                         Name = interactableData.name,
+                        
+                        Health = interactableData.health,
+                        Hunger = interactableData.hunger,
+                        Thirst = interactableData.thirst,
 
-
-
-
-
+                        Weight = interactableData.weight,
+                        Speed = interactableData.speed,
+                        Stamina = interactableData.stamina,
+                        
                         objectGraphicPath = objectGraphicData.path,
                         objectGraphicIconPath = iconData.path
 

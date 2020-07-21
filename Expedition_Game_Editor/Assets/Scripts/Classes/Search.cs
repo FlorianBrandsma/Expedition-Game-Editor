@@ -403,6 +403,20 @@ public class Search
         public RequestType requestType;
     }
 
+    public class InteractableSave
+    {
+        public List<int> saveId = new List<int>();
+
+        public List<int> type = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class ChapterSave
     {
         public List<int> id = new List<int>();
