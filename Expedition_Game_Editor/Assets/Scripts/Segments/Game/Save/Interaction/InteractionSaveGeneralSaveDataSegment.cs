@@ -25,10 +25,10 @@ public class InteractionSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
         completeToggle.Toggle.isOn = InteractionSaveData.Complete;

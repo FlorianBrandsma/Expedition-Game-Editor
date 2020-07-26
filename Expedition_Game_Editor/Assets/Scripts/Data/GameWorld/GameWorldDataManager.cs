@@ -177,6 +177,22 @@ public class GameWorldDataManager : IDataManager
                     startTime = interactionData.startTime,
                     endTime = interactionData.endTime,
 
+                    triggerAutomatically = interactionData.triggerAutomatically,
+                    beNearDestination = interactionData.beNearDestination,
+                    faceAgent = interactionData.faceAgent,
+                    facePartyLeader = interactionData.facePartyLeader,
+                    hideInteractionIndicator = interactionData.hideInteractionIndicator,
+
+                    interactionRange = interactionData.interactionRange,
+
+                    delayMethod = interactionData.delayMethod,
+                    delayDuration = interactionData.delayDuration,
+                    hideDelayIndicator = interactionData.hideDelayIndicator,
+
+                    cancelDelayOnInput = interactionData.cancelDelayOnInput,
+                    cancelDelayOnMovement = interactionData.cancelDelayOnMovement,
+                    cancelDelayOnHit = interactionData.cancelDelayOnHit,
+
                     positionX = interactionData.positionX,
                     positionY = interactionData.positionY,
                     positionZ = interactionData.positionZ,

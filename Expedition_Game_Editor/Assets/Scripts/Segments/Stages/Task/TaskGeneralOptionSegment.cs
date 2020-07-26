@@ -76,8 +76,6 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         if (DataEditor.Loaded) return;
@@ -88,6 +86,8 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
         repeatable = taskData.Repeatable;
     }
 
+    public void InitializeSegment() { }
+    
     private void SetSearchParameters() { }
 
     public void OpenSegment()

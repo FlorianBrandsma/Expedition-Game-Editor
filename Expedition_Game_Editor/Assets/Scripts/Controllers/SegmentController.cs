@@ -8,15 +8,10 @@ public class SegmentController : MonoBehaviour
     public bool Loaded { get { return EditorController.PathController.layoutSection.Loaded; } }
 
     public GameObject dataControllerParent;
-    
-    public bool enableToggle;
-
-    public ExToggle editorToggle;
 
     public string segmentName;
     public Text header;
 
-    public List<SegmentController> segmentGroup;
     public List<EditorElement> editorElements;
 
     public EditorController EditorController { get; set; }
@@ -57,31 +52,10 @@ public class SegmentController : MonoBehaviour
         if (header == null) return;
 
         header.text = segmentName;
-
-        EnableToggle();
     }
-
-    public void ToggleSegment()
-    {
-        foreach (SegmentController segment in segmentGroup)
-        {
-            if (segment.editorToggle.Toggle.isOn != editorToggle.Toggle.isOn)
-                segment.editorToggle.Toggle.isOn = editorToggle.Toggle.isOn;
-        }
-
-        foreach (EditorElement editorElement in editorElements)
-            editorElement.GetComponent<IEditorElement>().EnableElement(editorToggle.Toggle.isOn);
-    }
-
-    private void EnableToggle()
-    {
-        editorToggle.EnableElement(enableToggle);
-    }
-
+    
     public void EnableSegment(bool enable)
     {
-        editorToggle.EnableElement(enable);
-
         foreach (EditorElement editorElement in editorElements)
             editorElement.GetComponent<IEditorElement>().EnableElement(enable);
     }

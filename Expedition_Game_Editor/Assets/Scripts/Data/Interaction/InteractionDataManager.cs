@@ -78,8 +78,21 @@ public class InteractionDataManager : IDataManager
                         StartTime = interactionData.startTime,
                         EndTime = interactionData.endTime,
 
-                        PublicNotes = interactionData.publicNotes,
-                        PrivateNotes = interactionData.privateNotes,
+                        TriggerAutomatically = interactionData.triggerAutomatically,
+                        BeNearDestination = interactionData.beNearDestination,
+                        FaceAgent = interactionData.faceAgent,
+                        FacePartyLeader = interactionData.facePartyLeader,
+                        HideInteractionIndicator = interactionData.hideInteractionIndicator,
+
+                        InteractionRange = interactionData.interactionRange,
+
+                        DelayMethod = interactionData.delayMethod,
+                        DelayDuration = interactionData.delayDuration,
+                        HideDelayIndicator = interactionData.hideDelayIndicator,
+
+                        CancelDelayOnInput = interactionData.cancelDelayOnInput,
+                        CancelDelayOnMovement = interactionData.cancelDelayOnMovement,
+                        CancelDelayOnHit = interactionData.cancelDelayOnHit,
 
                         PositionX = interactionData.positionX,
                         PositionY = interactionData.positionY,
@@ -92,7 +105,10 @@ public class InteractionDataManager : IDataManager
                         ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
-                        
+
+                        PublicNotes = interactionData.publicNotes,
+                        PrivateNotes = interactionData.privateNotes,
+
                         worldInteractableId = worldInteractableData.Id,
 
                         objectiveId = taskData.objectiveId,
@@ -143,9 +159,22 @@ public class InteractionDataManager : IDataManager
             interactionData.startTime = interaction.startTime;
             interactionData.endTime = interaction.endTime;
 
-            interactionData.publicNotes = interaction.publicNotes;
-            interactionData.privateNotes = interaction.privateNotes;
+            interactionData.triggerAutomatically = interaction.triggerAutomatically;
+            interactionData.beNearDestination = interaction.beNearDestination;
+            interactionData.faceAgent = interaction.faceAgent;
+            interactionData.facePartyLeader = interaction.facePartyLeader;
+            interactionData.hideInteractionIndicator = interaction.hideInteractionIndicator;
 
+            interactionData.interactionRange = interaction.interactionRange;
+
+            interactionData.delayMethod = interaction.delayMethod;
+            interactionData.delayDuration = interaction.delayDuration;
+            interactionData.hideDelayIndicator = interaction.hideDelayIndicator;
+
+            interactionData.cancelDelayOnInput = interaction.cancelDelayOnInput;
+            interactionData.cancelDelayOnMovement = interaction.cancelDelayOnMovement;
+            interactionData.cancelDelayOnHit = interaction.cancelDelayOnHit;
+            
             interactionData.positionX = interaction.positionX;
             interactionData.positionY = interaction.positionY;
             interactionData.positionZ = interaction.positionZ;
@@ -157,6 +186,9 @@ public class InteractionDataManager : IDataManager
             interactionData.scaleMultiplier = interaction.scaleMultiplier;
 
             interactionData.animation = interaction.animation;
+
+            interactionData.publicNotes = interaction.publicNotes;
+            interactionData.privateNotes = interaction.privateNotes;
 
             interactionDataList.Add(interactionData);
         }
@@ -269,6 +301,7 @@ public class InteractionDataManager : IDataManager
     internal class InteractionData : GeneralData
     {
         public int taskId;
+
         public int regionId;
         public int terrainId;
         public int terrainTileId;
@@ -278,8 +311,21 @@ public class InteractionDataManager : IDataManager
         public int startTime;
         public int endTime;
 
-        public string publicNotes;
-        public string privateNotes;
+        public bool triggerAutomatically;
+        public bool beNearDestination;
+        public bool faceAgent;
+        public bool facePartyLeader;
+        public bool hideInteractionIndicator;
+
+        public float interactionRange;
+
+        public int delayMethod;
+        public int delayDuration;
+        public bool hideDelayIndicator;
+
+        public bool cancelDelayOnInput;
+        public bool cancelDelayOnMovement;
+        public bool cancelDelayOnHit;
 
         public float positionX;
         public float positionY;
@@ -292,5 +338,8 @@ public class InteractionDataManager : IDataManager
         public float scaleMultiplier;
 
         public int animation;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 }

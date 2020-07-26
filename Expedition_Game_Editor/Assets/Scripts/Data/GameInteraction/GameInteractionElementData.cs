@@ -22,6 +22,22 @@ public class GameInteractionElementData : GeneralData, IElementData
     public int startTime;
     public int endTime;
 
+    public bool triggerAutomatically;
+    public bool beNearDestination;
+    public bool faceAgent;
+    public bool facePartyLeader;
+    public bool hideInteractionIndicator;
+
+    public float interactionRange;
+
+    public int delayMethod;
+    public int delayDuration;
+    public bool hideDelayIndicator;
+
+    public bool cancelDelayOnInput;
+    public bool cancelDelayOnMovement;
+    public bool cancelDelayOnHit;
+
     public float positionX;
     public float positionY;
     public float positionZ;

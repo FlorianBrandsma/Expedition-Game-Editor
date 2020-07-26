@@ -52,6 +52,7 @@ static public class Fixtures
     static public List<WorldInteractable>   worldInteractableList   = new List<WorldInteractable>();
     static public List<Task>                taskList                = new List<Task>();
     static public List<Interaction>         interactionList         = new List<Interaction>();
+    static public List<InteractionDestination> interactionDestinationList = new List<InteractionDestination>();
     static public List<Outcome>             outcomeList             = new List<Outcome>();
 
     static public List<Save>                saveList                = new List<Save>();
@@ -280,18 +281,34 @@ static public class Fixtures
     {
         public int taskId;
 
+        //Remove (?)
         public int regionId;
         public int terrainId;
         public int terrainTileId;
+        //
 
         public bool isDefault;
 
         public int startTime;
         public int endTime;
+        
+        public bool triggerAutomatically;
+        public bool beNearDestination;
+        public bool faceAgent;
+        public bool facePartyLeader;
+        public bool hideInteractionIndicator;
 
-        public string publicNotes;
-        public string privateNotes;
+        public float interactionRange;
 
+        public int delayMethod;
+        public int delayDuration;
+        public bool hideDelayIndicator;
+
+        public bool cancelDelayOnInput;
+        public bool cancelDelayOnMovement;
+        public bool cancelDelayOnHit;
+
+        //Remove
         public float positionX;
         public float positionY;
         public float positionZ;
@@ -303,6 +320,54 @@ static public class Fixtures
         public float scaleMultiplier;
 
         public int animation;
+        //
+
+        public string publicNotes;
+        public string privateNotes;
+    }
+
+    public class InteractionDestination : GeneralData
+    {
+        //Tab hierarchy:
+        //Destination
+        //-Position
+        //--Coordinates
+        //-Random
+        //--Range
+        //Arrival
+        //-Behaviour
+        //--Animation
+        //--Patience
+        //-Rotation
+        //--Degrees
+
+        //Size really shouldn't change for every destination
+
+        public int interactionId;
+
+        //All of these?
+        public int regionId;
+        public int terrainId;
+        public int terrainTileId;
+        
+        //Temp comment, transform tab
+        public float positionX;
+        public float positionY;
+        public float positionZ;
+
+        public float randomRange;
+
+        public int rotationX;
+        public int rotationY;
+        public int rotationZ;
+        //Free rotation variable
+
+
+        //Temp comment, arrival tab
+        public int animation;
+
+        //How long agent stays at destination
+        public int duration;
     }
 
     public class Outcome : GeneralData
@@ -312,9 +377,7 @@ static public class Fixtures
         public int interactionId;
     }
 
-
     #region Save data
-
     public class Game : GeneralData
     {
         public string name;
@@ -883,7 +946,21 @@ static public class Fixtures
         interaction.startTime = startTime;
         interaction.endTime = endTime;
 
-        interaction.publicNotes = "These are public interaction notes";
+        interaction.triggerAutomatically = false;
+        interaction.beNearDestination = true;
+        interaction.faceAgent = true;
+        interaction.facePartyLeader = false;
+        interaction.hideInteractionIndicator = false;
+
+        interaction.interactionRange = 2;
+
+        interaction.delayMethod = 0;
+        interaction.delayDuration = 0;
+        interaction.hideDelayIndicator = true;
+
+        interaction.cancelDelayOnInput = true;
+        interaction.cancelDelayOnMovement = true;
+        interaction.cancelDelayOnHit = false;
 
         interaction.positionX = position.x + Random.Range(-randomVariance, randomVariance);
         interaction.positionY = position.y;
@@ -898,7 +975,9 @@ static public class Fixtures
         interaction.rotationZ = (int)rotation.z;
 
         interaction.scaleMultiplier = 1;
-        
+
+        interaction.publicNotes = "These are public interaction notes";
+
         CreateOutcome(interaction, Enums.OutcomeType.Positive);
 
         interactionList.Add(interaction);
@@ -1186,8 +1265,21 @@ static public class Fixtures
                                 interaction.startTime = interactionSource.startTime;
                                 interaction.endTime = interactionSource.endTime;
 
-                                interaction.publicNotes = interactionSource.publicNotes;
-                                interaction.privateNotes = interactionSource.privateNotes;
+                                interaction.triggerAutomatically = interactionSource.triggerAutomatically;
+                                interaction.beNearDestination = interactionSource.beNearDestination;
+                                interaction.faceAgent = interactionSource.faceAgent;
+                                interaction.facePartyLeader = interactionSource.facePartyLeader;
+                                interaction.hideInteractionIndicator = interactionSource.hideInteractionIndicator;
+
+                                interaction.interactionRange = interactionSource.interactionRange;
+
+                                interaction.delayMethod = interactionSource.delayMethod;
+                                interaction.delayDuration = interactionSource.delayDuration;
+                                interaction.hideDelayIndicator = interactionSource.hideDelayIndicator;
+
+                                interaction.cancelDelayOnInput = interactionSource.cancelDelayOnInput;
+                                interaction.cancelDelayOnMovement = interactionSource.cancelDelayOnMovement;
+                                interaction.cancelDelayOnHit = interactionSource.cancelDelayOnHit;
 
                                 interaction.positionX = interactionSource.positionX;
                                 interaction.positionY = interactionSource.positionY;
@@ -1201,6 +1293,9 @@ static public class Fixtures
                                 interaction.rotationZ = interactionSource.rotationZ;
 
                                 interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+
+                                interaction.publicNotes = interactionSource.publicNotes;
+                                interaction.privateNotes = interactionSource.privateNotes;
 
                                 var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
 

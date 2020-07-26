@@ -101,7 +101,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void CheckTime()
     {
-        var timeConflict = TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.Data.elementData);
+        var timeConflict = isDefault ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.Data.elementData);
 
         switch (DataEditor.Data.dataController.DataType)
         {
@@ -134,11 +134,6 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        CheckTime();
-    }
-
     public void InitializeData()
     {
         InitializeDependencies();
@@ -147,11 +142,16 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Atmosphere:     InitializeAtmosphereData();     break;
-            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
-        } 
+            case Enums.DataType.Atmosphere: InitializeAtmosphereData(); break;
+            case Enums.DataType.Interaction: InitializeInteractionData(); break;
+        }
     }
 
+    public void InitializeSegment()
+    {
+        CheckTime();
+    }
+    
     private void InitializeAtmosphereData()
     {
         var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;

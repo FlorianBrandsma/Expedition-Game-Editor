@@ -13,8 +13,21 @@ public class InteractionCore : GeneralData
     private int startTime;
     private int endTime;
 
-    private string publicNotes;
-    private string privateNotes;
+    private bool triggerAutomatically;
+    private bool beNearDestination;
+    private bool faceAgent;
+    private bool facePartyLeader;
+    private bool hideInteractionIndicator;
+
+    private float interactionRange;
+
+    private int delayMethod;
+    private int delayDuration;
+    private bool hideDelayIndicator;
+
+    private bool cancelDelayOnInput;
+    private bool cancelDelayOnMovement;
+    private bool cancelDelayOnHit;
 
     private float positionX;
     private float positionY;
@@ -27,7 +40,10 @@ public class InteractionCore : GeneralData
     private float scaleMultiplier;
 
     private int animation;
-    
+
+    private string publicNotes;
+    private string privateNotes;
+
     //Original
     public int originalRegionId;
     public int originalTerrainId;
@@ -36,9 +52,22 @@ public class InteractionCore : GeneralData
     public int originalStartTime;
     public int originalEndTime;
 
-    public string originalPublicNotes;
-    public string originalPrivateNotes;
+    public bool originalTriggerAutomatically;
+    public bool originalBeNearDestination;
+    public bool originalFaceAgent;
+    public bool originalFacePartyLeader;
+    public bool originalHideInteractionIndicator;
 
+    public float originalInteractionRange;
+
+    public int originalDelayMethod;
+    public int originalDelayDuration;
+    public bool originalHideDelayIndicator;
+
+    public bool originalCancelDelayOnInput;
+    public bool originalCancelDelayOnMovement;
+    public bool originalCancelDelayOnHit;
+    
     public float originalPositionX;
     public float originalPositionY;
     public float originalPositionZ;
@@ -51,6 +80,9 @@ public class InteractionCore : GeneralData
 
     public int originalAnimation;
 
+    public string originalPublicNotes;
+    public string originalPrivateNotes;
+
     //Original
     private bool changedRegionId;
     private bool changedTerrainId;
@@ -59,8 +91,21 @@ public class InteractionCore : GeneralData
     public bool changedStartTime;
     public bool changedEndTime;
 
-    private bool changedPublicNotes;
-    private bool changedPrivateNotes;
+    private bool changedTriggerAutomatically;
+    private bool changedBeNearDestination;
+    private bool changedFaceAgent;
+    private bool changedFacePartyLeader;
+    private bool changedHideInteractionIndicator;
+
+    private bool changedInteractionRange;
+
+    private bool changedDelayMethod;
+    private bool changedDelayDuration;
+    private bool changedHideDelayIndicator;
+
+    private bool changedCancelDelayOnInput;
+    private bool changedCancelDelayOnMovement;
+    private bool changedCancelDelayOnHit;
 
     private bool changedPositionX;
     private bool changedPositionY;
@@ -74,14 +119,24 @@ public class InteractionCore : GeneralData
 
     private bool changedAnimation;
 
+    private bool changedPublicNotes;
+    private bool changedPrivateNotes;
+
     public bool Changed
     {
         get
         {
-            return  changedRegionId     || changedTerrainId         || changedTerrainTileId || changedStartTime ||
-                    changedEndTime      || changedPublicNotes       || changedPrivateNotes  || changedPositionX || 
-                    changedPositionY    || changedPositionZ         || changedRotationX     || changedRotationY || 
-                    changedRotationZ    || changedScaleMultiplier   || changedAnimation;
+            return  changedRegionId             || changedTerrainId                 || changedTerrainTileId         || 
+                    changedStartTime            || changedEndTime                   || 
+                    changedTriggerAutomatically || changedBeNearDestination         || changedFaceAgent             || 
+                    changedFacePartyLeader      || changedHideInteractionIndicator  || changedInteractionRange      || 
+                    changedDelayMethod          || changedDelayDuration             ||
+                    changedHideDelayIndicator   || changedCancelDelayOnInput        || changedCancelDelayOnMovement ||
+                    changedCancelDelayOnHit     ||
+                    changedPositionX            || changedPositionY                 || changedPositionZ             || 
+                    changedRotationX            || changedRotationY                 || 
+                    changedRotationZ            || changedScaleMultiplier           || changedAnimation             ||
+                    changedPublicNotes          || changedPrivateNotes;
         }
     }
 
@@ -163,29 +218,159 @@ public class InteractionCore : GeneralData
         }
     }
 
-    public string PublicNotes
+    public bool TriggerAutomatically
     {
-        get { return publicNotes; }
+        get { return triggerAutomatically; }
         set
         {
-            if (value == publicNotes) return;
+            if (value == triggerAutomatically) return;
 
-            changedPublicNotes = (value != originalPublicNotes);
+            changedTriggerAutomatically = (value != originalTriggerAutomatically);
 
-            publicNotes = value;
+            triggerAutomatically = value;
         }
     }
 
-    public string PrivateNotes
+    public bool BeNearDestination
     {
-        get { return privateNotes; }
+        get { return beNearDestination; }
         set
         {
-            if (value == privateNotes) return;
+            if (value == beNearDestination) return;
 
-            changedPrivateNotes = (value != originalPrivateNotes);
+            changedBeNearDestination = (value != originalBeNearDestination);
 
-            privateNotes = value;
+            beNearDestination = value;
+        }
+    }
+
+    public bool FaceAgent
+    {
+        get { return faceAgent; }
+        set
+        {
+            if (value == faceAgent) return;
+
+            changedFaceAgent = (value != originalFaceAgent);
+
+            faceAgent = value;
+        }
+    }
+
+    public bool FacePartyLeader
+    {
+        get { return facePartyLeader; }
+        set
+        {
+            if (value == facePartyLeader) return;
+
+            changedFacePartyLeader = (value != originalFacePartyLeader);
+
+            facePartyLeader = value;
+        }
+    }
+
+    public bool HideInteractionIndicator
+    {
+        get { return hideInteractionIndicator; }
+        set
+        {
+            if (value == hideInteractionIndicator) return;
+
+            changedHideInteractionIndicator = (value != originalHideInteractionIndicator);
+
+            hideInteractionIndicator = value;
+        }
+    }
+
+    public float InteractionRange
+    {
+        get { return interactionRange; }
+        set
+        {
+            if (value == interactionRange) return;
+
+            changedInteractionRange = (value != originalInteractionRange);
+
+            interactionRange = value;
+        }
+    }
+
+    public int DelayMethod
+    {
+        get { return delayMethod; }
+        set
+        {
+            if (value == delayMethod) return;
+
+            changedDelayMethod = (value != originalDelayMethod);
+
+            delayMethod = value;
+        }
+    }
+
+    public int DelayDuration
+    {
+        get { return delayDuration; }
+        set
+        {
+            if (value == delayDuration) return;
+
+            changedDelayDuration = (value != originalDelayDuration);
+
+            delayDuration = value;
+        }
+    }
+
+    public bool HideDelayIndicator
+    {
+        get { return hideDelayIndicator; }
+        set
+        {
+            if (value == hideDelayIndicator) return;
+
+            changedHideDelayIndicator = (value != originalHideDelayIndicator);
+
+            hideDelayIndicator = value;
+        }
+    }
+
+    public bool CancelDelayOnInput
+    {
+        get { return cancelDelayOnInput; }
+        set
+        {
+            if (value == cancelDelayOnInput) return;
+
+            changedCancelDelayOnInput = (value != originalCancelDelayOnInput);
+
+            cancelDelayOnInput = value;
+        }
+    }
+
+    public bool CancelDelayOnMovement
+    {
+        get { return cancelDelayOnMovement; }
+        set
+        {
+            if (value == cancelDelayOnMovement) return;
+
+            changedCancelDelayOnMovement = (value != originalCancelDelayOnMovement);
+
+            cancelDelayOnMovement = value;
+        }
+    }
+
+    public bool CancelDelayOnHit
+    {
+        get { return cancelDelayOnHit; }
+        set
+        {
+            if (value == cancelDelayOnHit) return;
+
+            changedCancelDelayOnHit = (value != originalCancelDelayOnHit);
+
+            cancelDelayOnHit = value;
         }
     }
 
@@ -292,6 +477,32 @@ public class InteractionCore : GeneralData
             animation = value;
         }
     }
+
+    public string PublicNotes
+    {
+        get { return publicNotes; }
+        set
+        {
+            if (value == publicNotes) return;
+
+            changedPublicNotes = (value != originalPublicNotes);
+
+            publicNotes = value;
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return privateNotes; }
+        set
+        {
+            if (value == privateNotes) return;
+
+            changedPrivateNotes = (value != originalPrivateNotes);
+
+            privateNotes = value;
+        }
+    }
     #endregion
 
     #region Methods
@@ -316,11 +527,41 @@ public class InteractionCore : GeneralData
         if (changedEndTime)
             interactionData.endTime = endTime;
 
-        if (changedPublicNotes)
-            interactionData.publicNotes = publicNotes;
+        if (changedTriggerAutomatically)
+            interactionData.triggerAutomatically = triggerAutomatically;
 
-        if (changedPrivateNotes)
-            interactionData.privateNotes = privateNotes;
+        if (changedBeNearDestination)
+            interactionData.beNearDestination = beNearDestination;
+
+        if (changedFaceAgent)
+            interactionData.faceAgent = faceAgent;
+
+        if (changedFacePartyLeader)
+            interactionData.facePartyLeader = facePartyLeader;
+
+        if (changedHideInteractionIndicator)
+            interactionData.hideInteractionIndicator = hideInteractionIndicator;
+
+        if (changedInteractionRange)
+            interactionData.interactionRange = interactionRange;
+
+        if (changedDelayMethod)
+            interactionData.delayMethod = delayMethod;
+
+        if (changedDelayDuration)
+            interactionData.delayDuration = delayDuration;
+
+        if (changedHideDelayIndicator)
+            interactionData.hideDelayIndicator = hideDelayIndicator;
+
+        if (changedCancelDelayOnInput)
+            interactionData.cancelDelayOnInput = cancelDelayOnInput;
+
+        if (changedCancelDelayOnMovement)
+            interactionData.cancelDelayOnMovement = cancelDelayOnMovement;
+
+        if (changedCancelDelayOnHit)
+            interactionData.cancelDelayOnHit = cancelDelayOnHit;
 
         if (changedPositionX)
             interactionData.positionX = positionX;
@@ -345,6 +586,12 @@ public class InteractionCore : GeneralData
 
         if (changedAnimation)
             interactionData.animation = animation;
+
+        if (changedPublicNotes)
+            interactionData.publicNotes = publicNotes;
+
+        if (changedPrivateNotes)
+            interactionData.privateNotes = privateNotes;
     }
 
     public void UpdateSearch() { }
@@ -369,8 +616,21 @@ public class InteractionCore : GeneralData
         originalStartTime = startTime;
         originalEndTime = endTime;
 
-        originalPublicNotes = publicNotes;
-        originalPrivateNotes = privateNotes;
+        originalTriggerAutomatically = triggerAutomatically;
+        originalBeNearDestination = beNearDestination;
+        originalFaceAgent = faceAgent;
+        originalFacePartyLeader = facePartyLeader;
+        originalHideInteractionIndicator = hideInteractionIndicator;
+
+        originalInteractionRange = interactionRange;
+
+        originalDelayMethod = delayMethod;
+        originalDelayDuration = delayDuration;
+        originalHideDelayIndicator = hideDelayIndicator;
+
+        originalCancelDelayOnInput = cancelDelayOnInput;
+        originalCancelDelayOnMovement = cancelDelayOnMovement;
+        originalCancelDelayOnHit = cancelDelayOnHit;
 
         originalPositionX = positionX;
         originalPositionY = positionY;
@@ -383,6 +643,9 @@ public class InteractionCore : GeneralData
         originalScaleMultiplier = scaleMultiplier;
 
         originalAnimation = animation;
+
+        originalPublicNotes = publicNotes;
+        originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
@@ -394,8 +657,21 @@ public class InteractionCore : GeneralData
         startTime = originalStartTime;
         endTime = originalEndTime;
 
-        publicNotes = originalPublicNotes;
-        privateNotes = originalPrivateNotes;
+        triggerAutomatically = originalTriggerAutomatically;
+        beNearDestination = originalBeNearDestination;
+        faceAgent = originalFaceAgent;
+        facePartyLeader = originalFacePartyLeader;
+        hideInteractionIndicator = originalHideInteractionIndicator;
+
+        interactionRange = originalInteractionRange;
+
+        delayMethod = originalDelayMethod;
+        delayDuration = originalDelayDuration;
+        hideDelayIndicator = originalHideDelayIndicator;
+
+        cancelDelayOnInput = originalCancelDelayOnInput;
+        cancelDelayOnMovement = originalCancelDelayOnMovement;
+        cancelDelayOnHit = originalCancelDelayOnHit;
 
         positionX = originalPositionX;
         positionY = originalPositionY;
@@ -408,6 +684,9 @@ public class InteractionCore : GeneralData
         scaleMultiplier = originalScaleMultiplier;
 
         animation = originalAnimation;
+
+        publicNotes = originalPublicNotes;
+        privateNotes = originalPrivateNotes;
     }
 
     public virtual void ClearChanges()
@@ -421,8 +700,21 @@ public class InteractionCore : GeneralData
         changedStartTime = false;
         changedEndTime = false;
 
-        changedPublicNotes = false;
-        changedPrivateNotes = false;
+        changedTriggerAutomatically = false;
+        changedBeNearDestination = false;
+        changedFaceAgent = false;
+        changedFacePartyLeader = false;
+        changedHideInteractionIndicator = false;
+
+        changedInteractionRange = false;
+
+        changedDelayMethod = false;
+        changedDelayDuration = false;
+        changedHideDelayIndicator = false;
+
+        changedCancelDelayOnInput = false;
+        changedCancelDelayOnMovement = false;
+        changedCancelDelayOnHit = false;
 
         changedPositionX = false;
         changedPositionY = false;
@@ -435,6 +727,9 @@ public class InteractionCore : GeneralData
         changedScaleMultiplier = false;
 
         changedAnimation = false;
+
+        changedPublicNotes = false;
+        changedPrivateNotes = false;
     }
 
     public void Delete() { }
@@ -453,8 +748,21 @@ public class InteractionCore : GeneralData
         elementData.startTime = startTime;
         elementData.endTime = endTime;
 
-        elementData.publicNotes = publicNotes;
-        elementData.privateNotes = privateNotes;
+        elementData.triggerAutomatically = triggerAutomatically;
+        elementData.beNearDestination = beNearDestination;
+        elementData.faceAgent = faceAgent;
+        elementData.facePartyLeader = facePartyLeader;
+        elementData.hideInteractionIndicator = hideInteractionIndicator;
+
+        elementData.interactionRange = interactionRange;
+
+        elementData.delayMethod = delayMethod;
+        elementData.delayDuration = delayDuration;
+        elementData.hideDelayIndicator = hideDelayIndicator;
+
+        elementData.cancelDelayOnInput = cancelDelayOnInput;
+        elementData.cancelDelayOnMovement = cancelDelayOnMovement;
+        elementData.cancelDelayOnHit = cancelDelayOnHit;
 
         elementData.positionX = positionX;
         elementData.positionY = positionY;
@@ -468,6 +776,9 @@ public class InteractionCore : GeneralData
 
         elementData.animation = animation;
 
+        elementData.publicNotes = publicNotes;
+        elementData.privateNotes = privateNotes;
+
         //Original
         elementData.originalRegionId = originalRegionId;
         elementData.originalTerrainId = originalTerrainId;
@@ -476,8 +787,21 @@ public class InteractionCore : GeneralData
         elementData.originalStartTime = originalStartTime;
         elementData.originalEndTime = originalEndTime;
 
-        elementData.originalPublicNotes = originalPublicNotes;
-        elementData.originalPrivateNotes = originalPrivateNotes;
+        elementData.originalTriggerAutomatically = originalTriggerAutomatically;
+        elementData.originalBeNearDestination = originalBeNearDestination;
+        elementData.originalFaceAgent = originalFaceAgent;
+        elementData.originalFacePartyLeader = originalFacePartyLeader;
+        elementData.originalHideInteractionIndicator = originalHideInteractionIndicator;
+
+        elementData.originalInteractionRange = originalInteractionRange;
+
+        elementData.originalDelayMethod = originalDelayMethod;
+        elementData.originalDelayDuration = originalDelayDuration;
+        elementData.originalHideDelayIndicator = originalHideDelayIndicator;
+
+        elementData.originalCancelDelayOnInput = originalCancelDelayOnInput;
+        elementData.originalCancelDelayOnMovement = originalCancelDelayOnMovement;
+        elementData.originalCancelDelayOnHit = originalCancelDelayOnHit;
 
         elementData.originalPositionX = originalPositionX;
         elementData.originalPositionY = originalPositionY;
@@ -490,6 +814,9 @@ public class InteractionCore : GeneralData
         elementData.originalScaleMultiplier = originalScaleMultiplier;
 
         elementData.originalAnimation = originalAnimation;
+
+        elementData.originalPublicNotes = originalPublicNotes;
+        elementData.originalPrivateNotes = originalPrivateNotes;
     }
     #endregion
 
@@ -507,9 +834,22 @@ public class InteractionCore : GeneralData
         startTime = interactionDataSource.startTime;
         endTime = interactionDataSource.endTime;
 
-        publicNotes = interactionDataSource.publicNotes;
-        privateNotes = interactionDataSource.privateNotes;
+        triggerAutomatically = interactionDataSource.triggerAutomatically;
+        beNearDestination = interactionDataSource.beNearDestination;
+        faceAgent = interactionDataSource.faceAgent;
+        facePartyLeader = interactionDataSource.facePartyLeader;
+        hideInteractionIndicator = interactionDataSource.hideInteractionIndicator;
 
+        interactionRange = interactionDataSource.interactionRange;
+
+        delayMethod = interactionDataSource.delayMethod;
+        delayDuration = interactionDataSource.delayDuration;
+        hideDelayIndicator = interactionDataSource.hideDelayIndicator;
+
+        cancelDelayOnInput = interactionDataSource.cancelDelayOnInput;
+        cancelDelayOnMovement = interactionDataSource.cancelDelayOnMovement;
+        cancelDelayOnHit = interactionDataSource.cancelDelayOnHit;
+        
         positionX = interactionDataSource.positionX;
         positionY = interactionDataSource.positionY;
         positionZ = interactionDataSource.positionZ;
@@ -521,5 +861,8 @@ public class InteractionCore : GeneralData
         scaleMultiplier = interactionDataSource.scaleMultiplier;
 
         animation = interactionDataSource.animation;
+
+        publicNotes = interactionDataSource.publicNotes;
+        privateNotes = interactionDataSource.privateNotes;
     }
 }

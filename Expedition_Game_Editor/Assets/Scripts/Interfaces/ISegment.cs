@@ -4,8 +4,8 @@
 
     IEditor DataEditor { get; }
     void InitializeDependencies();
-    void InitializeSegment();
     void InitializeData();
+    void InitializeSegment();
     void OpenSegment();
     void CloseSegment();
     void SetSearchResult(DataElement dataElement);

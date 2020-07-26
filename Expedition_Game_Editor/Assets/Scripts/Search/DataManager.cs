@@ -346,8 +346,21 @@ public class DataManager
             data.startTime = interaction.startTime;
             data.endTime = interaction.endTime;
 
-            data.publicNotes = interaction.publicNotes;
-            data.privateNotes = interaction.privateNotes;
+            data.triggerAutomatically = interaction.triggerAutomatically;
+            data.beNearDestination = interaction.beNearDestination;
+            data.faceAgent = interaction.faceAgent;
+            data.facePartyLeader = interaction.facePartyLeader;
+            data.hideInteractionIndicator = interaction.hideInteractionIndicator;
+
+            data.interactionRange = interaction.interactionRange;
+
+            data.delayMethod = interaction.delayMethod;
+            data.delayDuration = interaction.delayDuration;
+            data.hideDelayIndicator = interaction.hideDelayIndicator;
+
+            data.cancelDelayOnInput = interaction.cancelDelayOnInput;
+            data.cancelDelayOnMovement = interaction.cancelDelayOnMovement;
+            data.cancelDelayOnHit = interaction.cancelDelayOnHit;
 
             data.positionX = interaction.positionX;
             data.positionY = interaction.positionY;
@@ -360,7 +373,10 @@ public class DataManager
             data.scaleMultiplier = interaction.scaleMultiplier;
 
             data.animation = interaction.animation;
-            
+
+            data.publicNotes = interaction.publicNotes;
+            data.privateNotes = interaction.privateNotes;
+
             dataList.Add(data);
         }
 
@@ -861,9 +877,22 @@ public class DataManager
         public int startTime;
         public int endTime;
 
-        public string publicNotes;
-        public string privateNotes;
+        public bool triggerAutomatically;
+        public bool beNearDestination;
+        public bool faceAgent;
+        public bool facePartyLeader;
+        public bool hideInteractionIndicator;
 
+        public float interactionRange;
+
+        public int delayMethod;
+        public int delayDuration;
+        public bool hideDelayIndicator;
+
+        public bool cancelDelayOnInput;
+        public bool cancelDelayOnMovement;
+        public bool cancelDelayOnHit;
+        
         public float positionX;
         public float positionY;
         public float positionZ;
@@ -875,6 +904,9 @@ public class DataManager
         public float scaleMultiplier;
 
         public int animation;
+
+        public string publicNotes;
+        public string privateNotes;
     }
 
     public class TileSetData : GeneralData
