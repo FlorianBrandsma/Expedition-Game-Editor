@@ -184,11 +184,14 @@ public class GameManager : MonoBehaviour
 
         PlayerControlManager.Enabled = true;
     }
-
+    
     private void ChangePhase()
     {
         //Load all game data related to the active phase divided into regions and terrains
         LoadGameData();
+
+        //Set the time speed as a real time multiplier
+        SetChapterTimeSpeed();
 
         //Set the active region based on the save data or else from the phase defaults
         InitializeRegion();
@@ -215,6 +218,11 @@ public class GameManager : MonoBehaviour
         gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
     }
 
+    private void SetChapterTimeSpeed()
+    {
+        TimeManager.gameTimeSpeed = gameWorldData.chapterData.TimeSpeed;
+    }
+
     private void InitializeRegion()
     {
         //Must be a new phase if the saved region is not listed
@@ -223,8 +231,6 @@ public class GameManager : MonoBehaviour
             gameSaveData.playerSaveData.PositionX = gameWorldData.phaseData.DefaultPositionX;
             gameSaveData.playerSaveData.PositionY = gameWorldData.phaseData.DefaultPositionY;
             gameSaveData.playerSaveData.PositionZ = gameWorldData.phaseData.DefaultPositionZ;
-            
-            gameSaveData.playerSaveData.ScaleMultiplier = gameWorldData.phaseData.DefaultScaleMultiplier;
 
             gameSaveData.playerSaveData.GameTime = gameWorldData.phaseData.DefaultTime;
 

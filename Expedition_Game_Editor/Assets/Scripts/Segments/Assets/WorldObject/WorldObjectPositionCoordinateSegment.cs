@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISegment
+public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -239,6 +239,8 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
 
     public void UpdateTile()
     {
+        if (bindToTile == null) return;
+
         if(bindToTile.Toggle.isOn)
         {
             var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).GeneralData.Id;
@@ -343,10 +345,11 @@ public class WorldElementTransformPositionCoordinateSegment : MonoBehaviour, ISe
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
 
-        bindToTile.Toggle.isOn = terrainTileId != 0;
+        if(bindToTile != null)
+            bindToTile.Toggle.isOn = terrainTileId != 0;
 
         //Objects that are bound to tiles only load when the tile loads
-        bindToTile.EnableElement(DataEditor.Data.elementData.DataType == Enums.DataType.WorldObject);
+        //bindToTile.EnableElement(DataEditor.Data.elementData.DataType == Enums.DataType.WorldObject);
 
         gameObject.SetActive(true);
     }

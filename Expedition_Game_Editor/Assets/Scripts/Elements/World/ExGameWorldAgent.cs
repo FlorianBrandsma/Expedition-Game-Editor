@@ -111,7 +111,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
             position = new Vector3(playerData.PositionX, playerData.PositionY, playerData.PositionZ);
             rotation = Vector3.zero;
 
-            scaleMultiplier = playerData.ScaleMultiplier;
+            scaleMultiplier = elementData.scaleMultiplier;
 
             Agent.avoidancePriority = 0;
         }
@@ -175,7 +175,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
             if(Animator != null)
             {
                 Animator.SetBool("IsMoving", true);
-                Animator.SetFloat("MoveSpeedSensitivity", Agent.speed);
+                Animator.SetFloat("MoveSpeedSensitivity", Agent.speed / scaleMultiplier);
             }
         }
 

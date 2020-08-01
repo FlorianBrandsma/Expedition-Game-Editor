@@ -5,17 +5,23 @@ public class ChapterCore : GeneralData
 {
     private string name;
 
+    private float timeSpeed;
+
     private string publicNotes;
     private string privateNotes;
 
     //Original
     public string originalName;
 
+    public float originalTimeSpeed;
+
     public string originalPublicNotes;
     public string originalPrivateNotes;
 
     //Changed
     private bool changedName;
+
+    private bool changedTimeSpeed;
 
     private bool changedPublicNotes;
     private bool changedPrivateNotes;
@@ -24,7 +30,7 @@ public class ChapterCore : GeneralData
     {
         get
         {
-            return changedName || changedPublicNotes || changedPrivateNotes;
+            return changedName || changedTimeSpeed || changedPublicNotes || changedPrivateNotes;
         }
     }
 
@@ -39,6 +45,19 @@ public class ChapterCore : GeneralData
             changedName = (value != originalName);
 
             name = value;
+        }
+    }
+
+    public float TimeSpeed
+    {
+        get { return timeSpeed; }
+        set
+        {
+            if (value == timeSpeed) return;
+
+            changedTimeSpeed = (value != originalTimeSpeed);
+
+            timeSpeed = value;
         }
     }
 
@@ -79,6 +98,9 @@ public class ChapterCore : GeneralData
         if (changedName)
             chapterData.name = name;
 
+        if (changedTimeSpeed)
+            chapterData.timeSpeed = timeSpeed;
+
         if (changedPublicNotes)
             chapterData.publicNotes = publicNotes;
 
@@ -103,6 +125,8 @@ public class ChapterCore : GeneralData
     {
         originalName = name;
 
+        originalTimeSpeed = timeSpeed;
+
         originalPublicNotes = publicNotes;
         originalPrivateNotes = privateNotes;
     }
@@ -110,6 +134,8 @@ public class ChapterCore : GeneralData
     public void GetOriginalValues()
     {
         name = originalName;
+
+        timeSpeed = originalTimeSpeed;
 
         publicNotes = originalPublicNotes;
         privateNotes = originalPrivateNotes;
@@ -120,6 +146,8 @@ public class ChapterCore : GeneralData
         GetOriginalValues();
 
         changedName = false;
+
+        changedTimeSpeed = false;
 
         changedPublicNotes = false;
         changedPrivateNotes = false;
@@ -133,6 +161,8 @@ public class ChapterCore : GeneralData
         var chapterDataSource = (ChapterElementData)dataSource;
 
         name = chapterDataSource.name;
+
+        timeSpeed = chapterDataSource.timeSpeed;
 
         publicNotes = chapterDataSource.publicNotes;
         privateNotes = chapterDataSource.privateNotes;

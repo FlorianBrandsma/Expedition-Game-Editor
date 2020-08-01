@@ -69,7 +69,7 @@ public class TimeManager : MonoBehaviour
 
     //24 = 1 game time cycle per real hour
     //Too high speed messes with the navigation mesh updates
-    private int gameTimeSpeed = 240;
+    static public float gameTimeSpeed;
 
     static public int defaultTime = (12 * 60 * 60);
 

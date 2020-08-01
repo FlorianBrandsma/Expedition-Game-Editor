@@ -11,8 +11,6 @@ public class PlayerSaveCore : GeneralData
     private float positionY;
     private float positionZ;
 
-    private float scaleMultiplier;
-
     //Recorded in seconds
     private int gameTime;
     private int playedTime;
@@ -21,15 +19,11 @@ public class PlayerSaveCore : GeneralData
     public int originalRegionId;
     public int originalPartyMemberId;
 
-    public float originalScaleMultiplier;
-
     private int originalPlayedSeconds;
 
     //Changed
     private bool changedRegionId;
     private bool changedPartyMemberId;
-
-    private bool changedScaleMultiplier;
 
     private bool changedPlayedSeconds;
     
@@ -37,7 +31,7 @@ public class PlayerSaveCore : GeneralData
     {
         get
         {
-            return  changedRegionId || changedPartyMemberId || changedScaleMultiplier;
+            return  changedRegionId || changedPartyMemberId;
         }
     }
 
@@ -92,19 +86,6 @@ public class PlayerSaveCore : GeneralData
         set { positionZ = value; }
     }
 
-    public float ScaleMultiplier
-    {
-        get { return scaleMultiplier; }
-        set
-        {
-            if (value == scaleMultiplier) return;
-
-            changedScaleMultiplier = (value != originalScaleMultiplier);
-
-            scaleMultiplier = value;
-        }
-    }
-
     public int GameTime
     {
         get { return gameTime; }
@@ -146,9 +127,6 @@ public class PlayerSaveCore : GeneralData
 
         if (changedRegionId)
             playerSaveData.regionId = regionId;
-        
-        if (changedScaleMultiplier)
-            playerSaveData.scaleMultiplier = scaleMultiplier;  
     }
 
     public void UpdateSearch() { }
@@ -168,8 +146,6 @@ public class PlayerSaveCore : GeneralData
     {
         originalRegionId = regionId;
         originalPartyMemberId = partyMemberId;
-        
-        originalScaleMultiplier = scaleMultiplier;
 
         originalPlayedSeconds = playedTime;
     }
@@ -178,8 +154,6 @@ public class PlayerSaveCore : GeneralData
     {
         regionId = originalRegionId;
         partyMemberId = originalPartyMemberId;
-
-        scaleMultiplier = originalScaleMultiplier;
 
         playedTime = originalPlayedSeconds;
     }
@@ -190,8 +164,6 @@ public class PlayerSaveCore : GeneralData
 
         changedRegionId = false;
         changedPartyMemberId = false;
-
-        changedScaleMultiplier = false;
 
         changedPlayedSeconds = false;
     }

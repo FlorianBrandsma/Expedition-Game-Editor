@@ -10,6 +10,10 @@
     public string objectGraphicPath;
     public string objectGraphicIconPath;
 
+    public float height;
+    public float width;
+    public float depth;
+
     public string originalObjectGraphicPath;
     public string originalObjectGraphicIconPath;
 

@@ -89,7 +89,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = elementData.ScaleMultiplier;
+        scaleMultiplier = 1;
 
         SetObjectGraphic();
     }
@@ -119,7 +119,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
         rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
 
-        scaleMultiplier = elementData.DefaultScaleMultiplier;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         SetObjectGraphic();
     }

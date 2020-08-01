@@ -67,7 +67,7 @@ public class PlayerControlManager : MonoBehaviour
         ActiveCharacter.DataElement.transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         ActiveAnimator.SetBool("IsMoving", true);
-        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed);
+        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacter.scaleMultiplier);
 
         PlayerData.PositionX = ActiveCharacter.DataElement.transform.localPosition.x;
         PlayerData.PositionY = ActiveCharacter.DataElement.transform.localPosition.y;

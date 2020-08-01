@@ -17,6 +17,8 @@ public class GamePartyMemberElementData : GeneralData, IElementData
 
     public string interactableName;
 
+    public float scaleMultiplier;
+
     public int health;
     public int hunger;
     public int thirst;

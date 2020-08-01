@@ -9,6 +9,8 @@ public class InteractableCore : GeneralData
 
     private string name;
 
+    private float scaleMultiplier;
+
     private int health;
     private int hunger;
     private int thirst;
@@ -21,6 +23,8 @@ public class InteractableCore : GeneralData
     public int originalObjectGraphicId;
 
     public string originalName;
+
+    public float originalScaleMultiplier;
 
     public int originalHealth;
     public int originalHunger;
@@ -35,6 +39,8 @@ public class InteractableCore : GeneralData
 
     private bool changedName;
 
+    private bool changedScaleMultiplier;
+
     private bool changedHealth;
     private bool changedHunger;
     private bool changedThirst;
@@ -47,8 +53,8 @@ public class InteractableCore : GeneralData
     {
         get
         {
-            return  changedObjectGraphicId  || changedName      ||
-                    changedHealth           || changedHunger    || changedThirst ||
+            return  changedObjectGraphicId  || changedName      || changedScaleMultiplier   ||
+                    changedHealth           || changedHunger    || changedThirst            ||
                     changedWeight           || changedSpeed     || changedStamina;
         }
     }
@@ -83,6 +89,19 @@ public class InteractableCore : GeneralData
             changedName = (value != originalName);
 
             name = value;
+        }
+    }
+
+    public float ScaleMultiplier
+    {
+        get { return scaleMultiplier; }
+        set
+        {
+            if (value == scaleMultiplier) return;
+
+            changedScaleMultiplier = (value != originalScaleMultiplier);
+
+            scaleMultiplier = value;
         }
     }
 
@@ -178,6 +197,9 @@ public class InteractableCore : GeneralData
         if (changedName)
             interactableData.name = name;
 
+        if (changedScaleMultiplier)
+            interactableData.scaleMultiplier = scaleMultiplier;
+
         if (changedHealth)
             interactableData.health = health;
 
@@ -216,6 +238,8 @@ public class InteractableCore : GeneralData
 
         originalName = Name;
 
+        originalScaleMultiplier = scaleMultiplier;
+
         originalHealth = health;
         originalHunger = hunger;
         originalThirst = thirst;
@@ -230,6 +254,8 @@ public class InteractableCore : GeneralData
         objectGraphicId = originalObjectGraphicId;
 
         name = originalName;
+
+        scaleMultiplier = originalScaleMultiplier;
 
         health = originalHealth;
         hunger = originalHunger;
@@ -247,6 +273,8 @@ public class InteractableCore : GeneralData
         changedObjectGraphicId = false;
 
         changedName = false;
+
+        changedScaleMultiplier = false;
 
         changedHealth = false;
         changedHunger = false;
@@ -267,6 +295,8 @@ public class InteractableCore : GeneralData
         objectGraphicId = interactableDataSource.objectGraphicId;
 
         name = interactableDataSource.name;
+
+        scaleMultiplier = interactableDataSource.scaleMultiplier;
 
         health = interactableDataSource.health;
         hunger = interactableDataSource.hunger;

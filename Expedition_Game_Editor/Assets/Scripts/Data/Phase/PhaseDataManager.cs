@@ -72,7 +72,7 @@ public class PhaseDataManager : IDataManager
                         DefaultRotationY = phaseData.defaultRotationY,
                         DefaultRotationZ = phaseData.defaultRotationZ,
 
-                        DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
+                        scaleMultiplier = partyMemberData.First().interactableData.scaleMultiplier,
 
                         DefaultTime = phaseData.defaultTime,
 
@@ -129,8 +129,6 @@ public class PhaseDataManager : IDataManager
             phaseData.defaultRotationX = phase.defaultRotationX;
             phaseData.defaultRotationY = phase.defaultRotationY;
             phaseData.defaultRotationZ = phase.defaultRotationZ;
-
-            phaseData.defaultScaleMultiplier = phase.defaultScaleMultiplier;
 
             phaseData.defaultTime = phase.defaultTime;
 

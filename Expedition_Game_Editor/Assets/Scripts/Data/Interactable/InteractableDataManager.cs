@@ -44,6 +44,8 @@ public class InteractableDataManager : IDataManager
 
                         Name = interactableData.name,
                         
+                        ScaleMultiplier = interactableData.scaleMultiplier,
+
                         Health = interactableData.health,
                         Hunger = interactableData.hunger,
                         Thirst = interactableData.thirst,
@@ -53,7 +55,11 @@ public class InteractableDataManager : IDataManager
                         Stamina = interactableData.stamina,
                         
                         objectGraphicPath = objectGraphicData.path,
-                        objectGraphicIconPath = iconData.path
+                        objectGraphicIconPath = iconData.path,
+
+                        height = objectGraphicData.height,
+                        width = objectGraphicData.width,
+                        depth = objectGraphicData.depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -81,6 +87,8 @@ public class InteractableDataManager : IDataManager
             interactableData.objectGraphicId = interactable.objectGraphicId;
 
             interactableData.name = interactable.name;
+
+            interactableData.scaleMultiplier = interactable.scaleMultiplier;
 
             interactableData.health = interactable.health;
             interactableData.hunger = interactable.hunger;
@@ -118,6 +126,8 @@ public class InteractableDataManager : IDataManager
         public int objectGraphicId;
 
         public string name;
+
+        public float scaleMultiplier;
 
         public int health;
         public int hunger;

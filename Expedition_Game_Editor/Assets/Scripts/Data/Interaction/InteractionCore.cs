@@ -37,8 +37,6 @@ public class InteractionCore : GeneralData
     private int rotationY;
     private int rotationZ;
 
-    private float scaleMultiplier;
-
     private int animation;
 
     private string publicNotes;
@@ -75,8 +73,6 @@ public class InteractionCore : GeneralData
     public int originalRotationX;
     public int originalRotationY;
     public int originalRotationZ;
-
-    public float originalScaleMultiplier;
 
     public int originalAnimation;
 
@@ -115,8 +111,6 @@ public class InteractionCore : GeneralData
     private bool changedRotationY;
     private bool changedRotationZ;
 
-    private bool changedScaleMultiplier;
-
     private bool changedAnimation;
 
     private bool changedPublicNotes;
@@ -135,7 +129,7 @@ public class InteractionCore : GeneralData
                     changedCancelDelayOnHit     ||
                     changedPositionX            || changedPositionY                 || changedPositionZ             || 
                     changedRotationX            || changedRotationY                 || 
-                    changedRotationZ            || changedScaleMultiplier           || changedAnimation             ||
+                    changedRotationZ            || changedAnimation                 ||
                     changedPublicNotes          || changedPrivateNotes;
         }
     }
@@ -452,19 +446,6 @@ public class InteractionCore : GeneralData
         }
     }
 
-    public float ScaleMultiplier
-    {
-        get { return scaleMultiplier; }
-        set
-        {
-            if (value == scaleMultiplier) return;
-
-            changedScaleMultiplier = (value != originalScaleMultiplier);
-
-            scaleMultiplier = value;
-        }
-    }
-
     public int Animation
     {
         get { return animation; }
@@ -581,9 +562,6 @@ public class InteractionCore : GeneralData
         if (changedRotationZ)
             interactionData.rotationZ = rotationZ;
 
-        if (changedScaleMultiplier)
-            interactionData.scaleMultiplier = scaleMultiplier;
-
         if (changedAnimation)
             interactionData.animation = animation;
 
@@ -640,8 +618,6 @@ public class InteractionCore : GeneralData
         originalRotationY = rotationY;
         originalRotationZ = rotationZ;
 
-        originalScaleMultiplier = scaleMultiplier;
-
         originalAnimation = animation;
 
         originalPublicNotes = publicNotes;
@@ -680,8 +656,6 @@ public class InteractionCore : GeneralData
         rotationX = originalRotationX;
         rotationY = originalRotationY;
         rotationZ = originalRotationZ;
-
-        scaleMultiplier = originalScaleMultiplier;
 
         animation = originalAnimation;
 
@@ -723,8 +697,6 @@ public class InteractionCore : GeneralData
         changedRotationX = false;
         changedRotationY = false;
         changedRotationZ = false;
-
-        changedScaleMultiplier = false;
 
         changedAnimation = false;
 
@@ -772,8 +744,6 @@ public class InteractionCore : GeneralData
         elementData.rotationY = rotationY;
         elementData.rotationZ = rotationZ;
 
-        elementData.scaleMultiplier = scaleMultiplier;
-
         elementData.animation = animation;
 
         elementData.publicNotes = publicNotes;
@@ -810,8 +780,6 @@ public class InteractionCore : GeneralData
         elementData.originalRotationX = originalRotationX;
         elementData.originalRotationY = originalRotationY;
         elementData.originalRotationZ = originalRotationZ;
-
-        elementData.originalScaleMultiplier = originalScaleMultiplier;
 
         elementData.originalAnimation = originalAnimation;
 
@@ -857,8 +825,6 @@ public class InteractionCore : GeneralData
         rotationX = interactionDataSource.rotationX;
         rotationY = interactionDataSource.rotationY;
         rotationZ = interactionDataSource.rotationZ;
-
-        scaleMultiplier = interactionDataSource.scaleMultiplier;
 
         animation = interactionDataSource.animation;
 

@@ -76,7 +76,9 @@ public class GameWorldDataManager : IDataManager
                 Id = chapterData.Id,
                 Index = chapterData.Index,
 
-                Name = chapterData.name
+                Name = chapterData.name,
+
+                TimeSpeed = chapterData.timeSpeed
             },
 
             phaseData = new PhaseElementData()
@@ -98,8 +100,6 @@ public class GameWorldDataManager : IDataManager
                 DefaultRotationY = phaseData.defaultRotationY,
                 DefaultRotationZ = phaseData.defaultRotationZ,
 
-                DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
-
                 DefaultTime = phaseData.defaultTime
                 
             },
@@ -120,6 +120,8 @@ public class GameWorldDataManager : IDataManager
                 
                 interactableName = interactableData.name,
                 
+                scaleMultiplier = interactableData.scaleMultiplier,
+
                 health = interactableData.health,
                 hunger = interactableData.hunger,
                 thirst = interactableData.thirst,
@@ -201,7 +203,7 @@ public class GameWorldDataManager : IDataManager
                     rotationY = interactionData.rotationY,
                     rotationZ = interactionData.rotationZ,
 
-                    scaleMultiplier = interactionData.scaleMultiplier,
+                    scaleMultiplier = interactableData.scaleMultiplier,
 
                     animation = interactionData.animation,
 

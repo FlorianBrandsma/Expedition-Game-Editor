@@ -5,9 +5,8 @@ using System.Linq;
 
 public class InteractableSurvivalPhysiqueWeightSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
     #region UI
     public ExInputNumber weightInputNumber;

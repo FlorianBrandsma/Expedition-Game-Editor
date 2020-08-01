@@ -179,12 +179,6 @@ public class Enums
         Touch
     }
 
-    public enum InteractionTriggerMethod
-    {
-        Manual,
-        Automatic
-    }
-
     public enum InteractionDelayMethod
     {
         Wait

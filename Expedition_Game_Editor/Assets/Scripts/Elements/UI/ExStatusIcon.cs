@@ -69,9 +69,9 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		var interactionData = (InteractionElementData)targetElementData;
 
-		height = interactionData.height * interactionData.ScaleMultiplier;
-		width  = interactionData.width  * interactionData.ScaleMultiplier;
-		depth  = interactionData.depth  * interactionData.ScaleMultiplier;
+		height = interactionData.height * 1;
+		width  = interactionData.width  * 1;
+		depth  = interactionData.depth  * 1;
 	}
 
 	private void InitializeWorldObjectData()
@@ -87,9 +87,9 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		var phaseData = (PhaseElementData)targetElementData;
 
-		height = phaseData.height   * phaseData.DefaultScaleMultiplier;
-		width = phaseData.width     * phaseData.DefaultScaleMultiplier;
-		depth = phaseData.depth     * phaseData.DefaultScaleMultiplier;
+		height = phaseData.height   * phaseData.scaleMultiplier;
+		width = phaseData.width     * phaseData.scaleMultiplier;
+		depth = phaseData.depth     * phaseData.scaleMultiplier;
 	}
 
 	private void UpdateSelectionPosition()

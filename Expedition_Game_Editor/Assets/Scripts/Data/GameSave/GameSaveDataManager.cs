@@ -53,8 +53,6 @@ public class GameSaveDataManager : IDataManager
                                   PositionY = playerSaveData.positionY,
                                   PositionZ = playerSaveData.positionZ,
 
-                                  ScaleMultiplier = playerSaveData.scaleMultiplier,
-
                                   GameTime = playerSaveData.gameTime,
                                   PlayedTime = playerSaveData.playedSeconds
 

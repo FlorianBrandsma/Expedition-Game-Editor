@@ -17,8 +17,6 @@ public class PhaseCore : GeneralData
     private int defaultRotationY;
     private int defaultRotationZ;
 
-    private float defaultScaleMultiplier;
-
     private int defaultTime;
 
     private string publicNotes;
@@ -36,8 +34,6 @@ public class PhaseCore : GeneralData
     private int originalDefaultRotationX;
     private int originalDefaultRotationY;
     private int originalDefaultRotationZ;
-
-    private float originalDefaultScaleMultiplier;
 
     private int originalDefaultTime;
 
@@ -57,8 +53,6 @@ public class PhaseCore : GeneralData
     private bool changedDefaultRotationY;
     private bool changedDefaultRotationZ;
 
-    private bool changedDefaultScaleMultiplier;
-
     private bool changedDefaultTime;
     
     private bool changedPublicNotes;
@@ -71,8 +65,7 @@ public class PhaseCore : GeneralData
             return  changedName                     || changedDefaultRegionId   || 
                     changedDefaultPositionX         || changedDefaultPositionY  || changedDefaultPositionZ ||
                     changedDefaultRotationX         || changedDefaultRotationY  || changedDefaultRotationZ || 
-                    changedDefaultScaleMultiplier   || changedDefaultTime       || 
-                    changedPublicNotes              || changedPrivateNotes;
+                    changedDefaultTime              ||  changedPublicNotes      || changedPrivateNotes;
         }
     }
 
@@ -187,19 +180,6 @@ public class PhaseCore : GeneralData
         }
     }
 
-    public float DefaultScaleMultiplier
-    {
-        get { return defaultScaleMultiplier; }
-        set
-        {
-            if (value == defaultScaleMultiplier) return;
-
-            changedDefaultScaleMultiplier = (value != originalDefaultScaleMultiplier);
-
-            defaultScaleMultiplier = value;
-        }
-    }
-
     public int DefaultTime
     {
         get { return defaultTime; }
@@ -271,9 +251,6 @@ public class PhaseCore : GeneralData
         if (changedDefaultRotationZ)
             phaseData.defaultRotationZ = defaultRotationZ;
 
-        if (changedDefaultScaleMultiplier)
-            phaseData.defaultScaleMultiplier = defaultScaleMultiplier;
-
         if (changedDefaultTime)
             phaseData.defaultTime = defaultTime;
 
@@ -311,8 +288,6 @@ public class PhaseCore : GeneralData
         originalDefaultRotationY = defaultRotationY;
         originalDefaultRotationZ = defaultRotationZ;
 
-        originalDefaultScaleMultiplier = defaultScaleMultiplier;
-
         originalDefaultTime = defaultTime;
 
         originalPublicNotes = publicNotes;
@@ -332,8 +307,6 @@ public class PhaseCore : GeneralData
         defaultRotationX = originalDefaultRotationX;
         defaultRotationY = originalDefaultRotationY;
         defaultRotationZ = originalDefaultRotationZ;
-
-        defaultScaleMultiplier = originalDefaultScaleMultiplier;
 
         defaultTime = originalDefaultTime;
 
@@ -356,8 +329,6 @@ public class PhaseCore : GeneralData
         changedDefaultRotationX = false;
         changedDefaultRotationY = false;
         changedDefaultRotationZ = false;
-
-        changedDefaultScaleMultiplier = false;
 
         changedDefaultTime = false;
 
@@ -385,8 +356,6 @@ public class PhaseCore : GeneralData
         elementData.defaultRotationY = defaultRotationY;
         elementData.defaultRotationZ = defaultRotationZ;
 
-        elementData.defaultScaleMultiplier = defaultScaleMultiplier;
-
         elementData.defaultTime = defaultTime;
 
         elementData.publicNotes = publicNotes;
@@ -404,8 +373,6 @@ public class PhaseCore : GeneralData
         elementData.originalDefaultRotationX = originalDefaultRotationX;
         elementData.originalDefaultRotationY = originalDefaultRotationY;
         elementData.originalDefaultRotationZ = originalDefaultRotationZ;
-
-        elementData.originalDefaultScaleMultiplier = originalDefaultScaleMultiplier;
 
         elementData.originalDefaultTime = originalDefaultTime;
 
@@ -431,8 +398,6 @@ public class PhaseCore : GeneralData
         defaultRotationX = phaseDataSource.defaultRotationX;
         defaultRotationY = phaseDataSource.defaultRotationY;
         defaultRotationZ = phaseDataSource.defaultRotationZ;
-
-        defaultScaleMultiplier = phaseDataSource.defaultScaleMultiplier;
 
         defaultTime = phaseDataSource.defaultTime;
 

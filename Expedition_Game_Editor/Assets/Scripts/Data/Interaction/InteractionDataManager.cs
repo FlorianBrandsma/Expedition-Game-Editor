@@ -102,8 +102,6 @@ public class InteractionDataManager : IDataManager
                         RotationY = interactionData.rotationY,
                         RotationZ = interactionData.rotationZ,
 
-                        ScaleMultiplier = interactionData.scaleMultiplier,
-
                         Animation = interactionData.animation,
 
                         PublicNotes = interactionData.publicNotes,
@@ -182,8 +180,6 @@ public class InteractionDataManager : IDataManager
             interactionData.rotationX = interaction.rotationX;
             interactionData.rotationY = interaction.rotationY;
             interactionData.rotationZ = interaction.rotationZ;
-
-            interactionData.scaleMultiplier = interaction.scaleMultiplier;
 
             interactionData.animation = interaction.animation;
 
@@ -334,8 +330,6 @@ public class InteractionDataManager : IDataManager
         public int rotationX;
         public int rotationY;
         public int rotationZ;
-
-        public float scaleMultiplier;
 
         public int animation;
 

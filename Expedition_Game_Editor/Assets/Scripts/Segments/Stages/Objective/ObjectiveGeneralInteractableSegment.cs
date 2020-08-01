@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveInteractObjectSegment : MonoBehaviour, ISegment
+public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 {
     private ObjectiveEditor ObjectiveEditor { get { return (ObjectiveEditor)DataEditor; } }
 

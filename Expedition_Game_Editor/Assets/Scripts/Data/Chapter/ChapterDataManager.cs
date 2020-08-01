@@ -30,6 +30,8 @@ public class ChapterDataManager : IDataManager
 
                         Name = chapterData.name,
 
+                        TimeSpeed = chapterData.timeSpeed,
+
                         PublicNotes = chapterData.publicNotes,
                         PrivateNotes = chapterData.privateNotes
 
@@ -55,6 +57,8 @@ public class ChapterDataManager : IDataManager
 
             chapterData.name = chapter.name;
 
+            chapterData.timeSpeed = chapter.timeSpeed;
+
             chapterData.publicNotes = chapter.publicNotes;
             chapterData.privateNotes = chapter.privateNotes;
             
@@ -65,6 +69,8 @@ public class ChapterDataManager : IDataManager
     internal class ChapterData : GeneralData
     {
         public string name;
+
+        public float timeSpeed;
 
         public string publicNotes;
         public string privateNotes;

@@ -167,7 +167,7 @@ public class EditorWorldDataManager : IDataManager
                         width = objectGraphicData.width,
                         depth = objectGraphicData.depth,
 
-                        scaleMultiplier = interactionData.scaleMultiplier,
+                        scaleMultiplier = interactableData.scaleMultiplier,
 
                         animation = interactionData.animation,
 
@@ -220,8 +220,6 @@ public class EditorWorldDataManager : IDataManager
                         RotationX = interactionData.rotationX,
                         RotationY = interactionData.rotationY,
                         RotationZ = interactionData.rotationZ,
-
-                        ScaleMultiplier = interactionData.scaleMultiplier,
 
                         Animation = interactionData.animation,
 
@@ -314,7 +312,7 @@ public class EditorWorldDataManager : IDataManager
                     width = partyMemberData.First().objectGraphicData.width,
                     depth = partyMemberData.First().objectGraphicData.depth,
 
-                    DefaultScaleMultiplier = phaseData.defaultScaleMultiplier,
+                    scaleMultiplier = partyMemberData.First().interactableData.scaleMultiplier,
 
                     DefaultTime = phaseData.defaultTime
 

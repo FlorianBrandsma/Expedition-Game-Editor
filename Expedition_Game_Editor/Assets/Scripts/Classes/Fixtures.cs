@@ -31,39 +31,39 @@ static public class Fixtures
 
     static public int saves = 1;
 
-    static public List<Icon>                iconList                = new List<Icon>();
-    static public List<ObjectGraphic>       objectGraphicList       = new List<ObjectGraphic>();
-    static public List<Item>                itemList                = new List<Item>();
-    static public List<Interactable>        interactableList        = new List<Interactable>();
-    static public List<TileSet>             tileSetList             = new List<TileSet>();
-    static public List<Tile>                tileList                = new List<Tile>();
-    static public List<Region>              regionList              = new List<Region>();
-    static public List<Atmosphere>          atmosphereList          = new List<Atmosphere>();
-    static public List<WorldObject>         worldObjectList         = new List<WorldObject>();
-    static public List<Terrain>             terrainList             = new List<Terrain>();
-    static public List<TerrainTile>         terrainTileList         = new List<TerrainTile>();
-    static public List<Chapter>             chapterList             = new List<Chapter>();
-    static public List<PartyMember>         partyMemberList         = new List<PartyMember>();
-    static public List<ChapterInteractable> chapterInteractableList = new List<ChapterInteractable>();
-    static public List<ChapterRegion>       chapterRegionList       = new List<ChapterRegion>();
-    static public List<Phase>               phaseList               = new List<Phase>();
-    static public List<Quest>               questList               = new List<Quest>();
-    static public List<Objective>           objectiveList           = new List<Objective>();
-    static public List<WorldInteractable>   worldInteractableList   = new List<WorldInteractable>();
-    static public List<Task>                taskList                = new List<Task>();
-    static public List<Interaction>         interactionList         = new List<Interaction>();
-    static public List<InteractionDestination> interactionDestinationList = new List<InteractionDestination>();
-    static public List<Outcome>             outcomeList             = new List<Outcome>();
+    static public List<Icon>                    iconList                    = new List<Icon>();
+    static public List<ObjectGraphic>           objectGraphicList           = new List<ObjectGraphic>();
+    static public List<Item>                    itemList                    = new List<Item>();
+    static public List<Interactable>            interactableList            = new List<Interactable>();
+    static public List<TileSet>                 tileSetList                 = new List<TileSet>();
+    static public List<Tile>                    tileList                    = new List<Tile>();
+    static public List<Region>                  regionList                  = new List<Region>();
+    static public List<Atmosphere>              atmosphereList              = new List<Atmosphere>();
+    static public List<WorldObject>             worldObjectList             = new List<WorldObject>();
+    static public List<Terrain>                 terrainList                 = new List<Terrain>();
+    static public List<TerrainTile>             terrainTileList             = new List<TerrainTile>();
+    static public List<Chapter>                 chapterList                 = new List<Chapter>();
+    static public List<PartyMember>             partyMemberList             = new List<PartyMember>();
+    static public List<ChapterInteractable>     chapterInteractableList     = new List<ChapterInteractable>();
+    static public List<ChapterRegion>           chapterRegionList           = new List<ChapterRegion>();
+    static public List<Phase>                   phaseList                   = new List<Phase>();
+    static public List<Quest>                   questList                   = new List<Quest>();
+    static public List<Objective>               objectiveList               = new List<Objective>();
+    static public List<WorldInteractable>       worldInteractableList       = new List<WorldInteractable>();
+    static public List<Task>                    taskList                    = new List<Task>();
+    static public List<Interaction>             interactionList             = new List<Interaction>();
+    static public List<InteractionDestination>  interactionDestinationList  = new List<InteractionDestination>();
+    static public List<Outcome>                 outcomeList                 = new List<Outcome>();
 
-    static public List<Save>                saveList                = new List<Save>();
-    static public List<PlayerSave>          playerSaveList          = new List<PlayerSave>();
-    static public List<InteractableSave>    interactableSaveList    = new List<InteractableSave>();
-    static public List<ChapterSave>         chapterSaveList         = new List<ChapterSave>();
-    static public List<PhaseSave>           phaseSaveList           = new List<PhaseSave>();
-    static public List<QuestSave>           questSaveList           = new List<QuestSave>();
-    static public List<ObjectiveSave>       objectiveSaveList       = new List<ObjectiveSave>();
-    static public List<TaskSave>            taskSaveList            = new List<TaskSave>();
-    static public List<InteractionSave>     interactionSaveList     = new List<InteractionSave>();
+    static public List<Save>                    saveList                    = new List<Save>();
+    static public List<PlayerSave>              playerSaveList              = new List<PlayerSave>();
+    static public List<InteractableSave>        interactableSaveList        = new List<InteractableSave>();
+    static public List<ChapterSave>             chapterSaveList             = new List<ChapterSave>();
+    static public List<PhaseSave>               phaseSaveList               = new List<PhaseSave>();
+    static public List<QuestSave>               questSaveList               = new List<QuestSave>();
+    static public List<ObjectiveSave>           objectiveSaveList           = new List<ObjectiveSave>();
+    static public List<TaskSave>                taskSaveList                = new List<TaskSave>();
+    static public List<InteractionSave>         interactionSaveList         = new List<InteractionSave>();
 
     public class Item : GeneralData
     {
@@ -81,6 +81,8 @@ static public class Fixtures
         public int objectGraphicId;
         
         public string name;
+
+        public float scaleMultiplier;
 
         public int health;
         public int hunger;
@@ -183,6 +185,8 @@ static public class Fixtures
     {
         public string name;
 
+        public float timeSpeed;
+
         public string publicNotes;
         public string privateNotes;
     }
@@ -221,8 +225,6 @@ static public class Fixtures
         public int defaultRotationX;
         public int defaultRotationY;
         public int defaultRotationZ;
-
-        public float defaultScaleMultiplier;
 
         public int defaultTime;
 
@@ -317,10 +319,8 @@ static public class Fixtures
         public int rotationY;
         public int rotationZ;
 
-        public float scaleMultiplier;
-
         public int animation;
-        //
+        //------
 
         public string publicNotes;
         public string privateNotes;
@@ -328,46 +328,28 @@ static public class Fixtures
 
     public class InteractionDestination : GeneralData
     {
-        //Tab hierarchy:
-        //Destination
-        //-Position
-        //--Coordinates
-        //-Random
-        //--Range
-        //Arrival
-        //-Behaviour
-        //--Animation
-        //--Patience
-        //-Rotation
-        //--Degrees
-
-        //Size really shouldn't change for every destination
-
         public int interactionId;
 
         //All of these?
         public int regionId;
         public int terrainId;
         public int terrainTileId;
-        
-        //Temp comment, transform tab
+        //
+
         public float positionX;
         public float positionY;
         public float positionZ;
 
-        public float randomRange;
+        public float positionVariance;
+
+        public bool freeRotation;
 
         public int rotationX;
         public int rotationY;
         public int rotationZ;
-        //Free rotation variable
-
-
-        //Temp comment, arrival tab
+        
         public int animation;
-
-        //How long agent stays at destination
-        public int duration;
+        public int patience;
     }
 
     public class Outcome : GeneralData
@@ -724,6 +706,8 @@ static public class Fixtures
 
             interactable.name = "Interactable " + id;
 
+            interactable.scaleMultiplier = 1;
+
             interactable.health = 100;
             interactable.hunger = 100;
             interactable.thirst = 100;
@@ -754,6 +738,8 @@ static public class Fixtures
             interactable.objectGraphicId = objectList[i];
 
             interactable.name = "Interactable " + id;
+
+            interactable.scaleMultiplier = 1;
 
             interactableList.Add(interactable);
         }
@@ -974,8 +960,6 @@ static public class Fixtures
         interaction.rotationY = (int)rotation.y;
         interaction.rotationZ = (int)rotation.z;
 
-        interaction.scaleMultiplier = 1;
-
         interaction.publicNotes = "These are public interaction notes";
 
         CreateOutcome(interaction, Enums.OutcomeType.Positive);
@@ -1038,6 +1022,9 @@ static public class Fixtures
             chapter.Index = i;
 
             chapter.name = "Chapter " + chapterId + " Name";
+
+            chapter.timeSpeed = 240;
+
             chapter.publicNotes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
             
             chapterList.Add(chapter);
@@ -1292,8 +1279,6 @@ static public class Fixtures
                                 interaction.rotationY = interactionSource.rotationY;
                                 interaction.rotationZ = interactionSource.rotationZ;
 
-                                interaction.scaleMultiplier = interactionSource.scaleMultiplier;
-
                                 interaction.publicNotes = interactionSource.publicNotes;
                                 interaction.privateNotes = interactionSource.privateNotes;
 
@@ -1363,8 +1348,6 @@ static public class Fixtures
                 phase.defaultRotationX = 0;
                 phase.defaultRotationY = 0;
                 phase.defaultRotationZ = 0;
-
-                phase.defaultScaleMultiplier = 1f;
 
                 phase.defaultTime = 7 * TimeManager.secondsInHour;
 

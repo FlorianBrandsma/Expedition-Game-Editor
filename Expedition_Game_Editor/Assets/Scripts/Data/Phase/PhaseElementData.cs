@@ -20,6 +20,8 @@
     public float width;
     public float depth;
 
+    public float scaleMultiplier;
+
     public string interactableName;
     public string locationName;
 
@@ -67,6 +69,8 @@
         elementData.width = width;
         elementData.depth = depth;
 
+        elementData.scaleMultiplier = scaleMultiplier;
+
         elementData.interactableName = interactableName;
         elementData.locationName = locationName;
 
@@ -93,6 +97,8 @@
         height = phaseDataSource.height;
         width = phaseDataSource.width;
         depth = phaseDataSource.depth;
+
+        scaleMultiplier = phaseDataSource.scaleMultiplier;
 
         interactableName = phaseDataSource.interactableName;
         locationName = phaseDataSource.locationName;

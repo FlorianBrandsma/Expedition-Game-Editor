@@ -86,7 +86,9 @@ public class DataManager
             data.objectGraphicId = interactable.objectGraphicId;
 
             data.name = interactable.name;
-            
+
+            data.scaleMultiplier = interactable.scaleMultiplier;
+
             data.health = interactable.health;
             data.hunger = interactable.hunger;
             data.thirst = interactable.thirst;
@@ -115,6 +117,8 @@ public class DataManager
             data.Index = chapter.Index;
 
             data.name = chapter.name;
+
+            data.timeSpeed = chapter.timeSpeed;
 
             data.publicNotes = chapter.publicNotes;
             data.privateNotes = chapter.privateNotes;
@@ -195,8 +199,6 @@ public class DataManager
             data.defaultRotationX = phase.defaultRotationX;
             data.defaultRotationY = phase.defaultRotationY;
             data.defaultRotationZ = phase.defaultRotationZ;
-
-            data.defaultScaleMultiplier = phase.defaultScaleMultiplier;
 
             data.defaultTime = phase.defaultTime;
 
@@ -369,8 +371,6 @@ public class DataManager
             data.rotationX = interaction.rotationX;
             data.rotationY = interaction.rotationY;
             data.rotationZ = interaction.rotationZ;
-
-            data.scaleMultiplier = interaction.scaleMultiplier;
 
             data.animation = interaction.animation;
 
@@ -587,8 +587,6 @@ public class DataManager
             data.positionY = playerSave.positionY;
             data.positionZ = playerSave.positionZ;
 
-            data.scaleMultiplier = playerSave.scaleMultiplier;
-
             data.gameTime = playerSave.gameTime;
             data.playedSeconds = playerSave.playedTime;
 
@@ -766,6 +764,8 @@ public class DataManager
 
         public string name;
 
+        public float scaleMultiplier;
+
         public int health;
         public int hunger;
         public int thirst;
@@ -778,6 +778,8 @@ public class DataManager
     public class ChapterData : GeneralData
     {
         public string name;
+
+        public float timeSpeed;
 
         public string publicNotes;
         public string privateNotes;
@@ -813,8 +815,6 @@ public class DataManager
         public int defaultRotationX;
         public int defaultRotationY;
         public int defaultRotationZ;
-
-        public float defaultScaleMultiplier;
 
         public int defaultTime;
     }
@@ -900,8 +900,6 @@ public class DataManager
         public int rotationX;
         public int rotationY;
         public int rotationZ;
-
-        public float scaleMultiplier;
 
         public int animation;
 
@@ -989,8 +987,6 @@ public class DataManager
         public int rotationX;
         public int rotationY;
         public int rotationZ;
-
-        public float scaleMultiplier;
 
         public int gameTime;
         public int playedSeconds;
