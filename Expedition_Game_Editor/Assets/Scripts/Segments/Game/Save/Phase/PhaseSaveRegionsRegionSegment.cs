@@ -34,8 +34,6 @@ public class PhaseSaveRegionsRegionSegment : MonoBehaviour, ISegment
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)

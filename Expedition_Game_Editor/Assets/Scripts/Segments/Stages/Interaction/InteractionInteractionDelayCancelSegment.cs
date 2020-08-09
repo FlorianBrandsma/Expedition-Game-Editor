@@ -100,8 +100,6 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
     }
 
     public void InitializeSegment() { }
-    
-    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {

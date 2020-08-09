@@ -11,11 +11,11 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     public TerrainElementData activeTerrainData;
 
-    private List<WorldObjectElementData> selectedWorldObjects                   = new List<WorldObjectElementData>();
-    private List<WorldInteractableElementData> selectedWorldInteractableAgents  = new List<WorldInteractableElementData>();
-    private List<WorldInteractableElementData> selectedWorldInteractableObjects = new List<WorldInteractableElementData>();
-    private List<InteractionElementData> selectedInteractions                   = new List<InteractionElementData>();
-    private List<PhaseElementData> selectedParty                                = new List<PhaseElementData>();
+    private List<WorldObjectElementData> selectedWorldObjects                       = new List<WorldObjectElementData>();
+    private List<WorldInteractableElementData> selectedWorldInteractableAgents      = new List<WorldInteractableElementData>();
+    private List<WorldInteractableElementData> selectedWorldInteractableObjects     = new List<WorldInteractableElementData>();
+    private List<InteractionDestinationElementData> selectedInteractionDestinations = new List<InteractionDestinationElementData>();
+    private List<PhaseElementData> selectedParty                                    = new List<PhaseElementData>();
     
     private List<IElementData> selectableDataList;
     
@@ -37,7 +37,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private DataController worldObjectController                = new DataController(Enums.DataType.WorldObject);
     private DataController worldInteractableAgentController     = new DataController(Enums.DataType.WorldInteractable);
     private DataController worldInteractableObjectController    = new DataController(Enums.DataType.WorldInteractable);
-    private DataController interactionController                = new DataController(Enums.DataType.Interaction);
+    private DataController interactionDestinationController     = new DataController(Enums.DataType.InteractionDestination);
     private DataController partyController                      = new DataController(Enums.DataType.Phase);
     
     private ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
@@ -81,8 +81,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData = (EditorWorldElementData)DataController.DataList.FirstOrDefault();
 
-        //Get selected interaction
-        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.Interaction);
+        //Get selected interaction destinations
+        GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.InteractionDestination);
         
         //Get selected interactable agents
         GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldInteractable, Enums.InteractableType.Agent);
@@ -115,10 +115,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         switch (dataType)
         {
-            case Enums.DataType.WorldObject:        GetSelectedWorldObjects(routes);                            break;
-            case Enums.DataType.WorldInteractable:  GetSelectedWorldInteractables(routes, interactableType);    break;
-            case Enums.DataType.Interaction:        GetSelectedInteractions(routes);                            break;
-            case Enums.DataType.Phase:              GetSelectedPhases(routes);                                  break;
+            case Enums.DataType.WorldObject:            GetSelectedWorldObjects(routes);                            break;
+            case Enums.DataType.WorldInteractable:      GetSelectedWorldInteractables(routes, interactableType);    break;
+            case Enums.DataType.InteractionDestination: GetSelectedInteractionDestinations(routes);                 break;
+            case Enums.DataType.Phase:                  GetSelectedPhases(routes);                                  break;
         }
     }
 
@@ -142,9 +142,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    private void GetSelectedInteractions(List<Route> routes)
+    private void GetSelectedInteractionDestinations(List<Route> routes)
     {
-        selectedInteractions = worldData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
+        selectedInteractionDestinations = worldData.terrainDataList.SelectMany(x => x.interactionDestinationDataList.Where(y => routes.Select(z => z.GeneralData.Id).Contains(y.Id))).Distinct().ToList();
     }
 
     private void GetSelectedPhases(List<Route> routes)
@@ -157,12 +157,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldObjectController.SegmentController             = DataController.SegmentController;
         worldInteractableAgentController.SegmentController  = DataController.SegmentController;
         worldInteractableObjectController.SegmentController = DataController.SegmentController;
-        interactionController.SegmentController             = DataController.SegmentController;
+        interactionDestinationController.SegmentController  = DataController.SegmentController;
         partyController.SegmentController                   = DataController.SegmentController;
         
         worldInteractableAgentController.DataCategory   = Enums.DataCategory.Navigation;
         worldInteractableObjectController.DataCategory  = Enums.DataCategory.Navigation;
-        interactionController.DataCategory              = Enums.DataCategory.Navigation;
+        interactionDestinationController.DataCategory   = Enums.DataCategory.Navigation;
         partyController.DataCategory                    = Enums.DataCategory.Navigation;
 
         GetData();
@@ -170,17 +170,19 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void GetData()
     {
+        //Is this necessary?
         FixLostInteractions();
         FixLostWorldObjects();
+        //-----------------
 
         //Confirm which atmosphere's timeframes contain the active time
         ValidateAtmosphereTime();
 
         //Confirm which interactions's timeframes contain the active time
-        ValidateInteractionTime();
+        ValidateInteractionDestinationTime();
 
         //Confirm which world interactable's timeframes contain the active time
-        ValidateWorldInteractablesTime();
+        ValidateWorldInteractableTime();
 
         worldObjectController.DataList = worldData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => !selectedWorldObjects.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList();
 
@@ -192,17 +194,17 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldInteractableObjectController.DataList = FilterWorldInteractables(worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object &&
                                                                                                                         !selectedWorldInteractableObjects.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList());
 
-        interactionController.DataList = worldData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => !selectedInteractions.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList();
+        interactionDestinationController.DataList = worldData.terrainDataList.SelectMany(x => x.interactionDestinationDataList.Where(y => !selectedInteractionDestinations.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList();
 
         partyController.DataList = worldData.phaseDataList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id)).Cast<IElementData>().ToList();
     }
 
     private void FixLostInteractions()
     {
-        var lostInteractions = worldData.terrainDataList.SelectMany(x => x.interactionDataList.Where(y => y.TerrainId != x.Id)).ToList();
+        var lostInteractions = worldData.terrainDataList.SelectMany(x => x.interactionDestinationDataList.Where(y => y.TerrainId != x.Id)).ToList();
 
-        worldData.terrainDataList.ForEach(x => x.interactionDataList.RemoveAll(y => lostInteractions.Select(z => z.TerrainId).Contains(y.TerrainId)));
-        worldData.terrainDataList.ForEach(x => x.interactionDataList.AddRange(lostInteractions.Where(y => y.TerrainId == x.Id)));
+        worldData.terrainDataList.ForEach(x => x.interactionDestinationDataList.RemoveAll(y => lostInteractions.Select(z => z.TerrainId).Contains(y.TerrainId)));
+        worldData.terrainDataList.ForEach(x => x.interactionDestinationDataList.AddRange(lostInteractions.Where(y => y.TerrainId == x.Id)));
     }
 
     private void FixLostWorldObjects()
@@ -223,17 +225,27 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                                                                       .ForEach(x => x.containsActiveTime = true);
     }
 
-    private void ValidateInteractionTime()
+    private void ValidateInteractionDestinationTime()
     {
-        worldData.terrainDataList.ForEach(x => x.interactionDataList.ForEach(y => y.containsActiveTime = false));
+        worldData.terrainDataList.ForEach(x => x.interactionDestinationDataList.ForEach(y => y.containsActiveTime = false));
 
-        worldData.terrainDataList.SelectMany(x => x.interactionDataList.GroupBy(y => y.TaskId)
-                                                                       .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
-                                                                       .OrderBy(z => z.Default).First())).ToList()
-                                                                       .ForEach(x => x.containsActiveTime = true);
+        //Create groups of interaction destinations as interactions, using destination values that were taken from their parent interaction
+        var interactionGroup = worldData.terrainDataList.SelectMany(x => x.interactionDestinationDataList.GroupBy(y => y.InteractionId)
+                                                                                                         .Select(grp => new
+                                                                                                         {
+                                                                                                             TaskId = grp.First().taskId,
+                                                                                                             StartTime = grp.First().startTime,
+                                                                                                             EndTime = grp.First().endTime,
+                                                                                                             Default = grp.First().isDefault,
+                                                                                                             InteractionDestinationList = grp.ToList()
+                                                                                                         })).ToList();
+
+        interactionGroup.GroupBy(x => x.TaskId).Select(x => x.Where(y => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, y.StartTime, y.EndTime) || y.Default)
+                                                                         .OrderBy(y => y.Default).First()).ToList()
+                                                                         .ForEach(y => y.InteractionDestinationList.ForEach(z => z.containsActiveTime = true));
     }
 
-    private void ValidateWorldInteractablesTime()
+    private void ValidateWorldInteractableTime()
     {
         worldData.terrainDataList.ForEach(x => x.worldInteractableDataList.ForEach(y => y.containsActiveTime = false));
 
@@ -247,7 +259,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         selectableDataList =    worldData.terrainDataList.SelectMany(x => x.worldObjectDataList).Cast<IElementData>().Concat(
                                 worldData.terrainDataList.SelectMany(x => x.worldInteractableDataList).Cast<IElementData>()).Concat(
-                                worldData.terrainDataList.SelectMany(x => x.interactionDataList).Cast<IElementData>()).Concat(
+                                worldData.terrainDataList.SelectMany(x => x.interactionDestinationDataList).Cast<IElementData>()).Concat(
                                 worldData.phaseDataList.Cast<IElementData>()).ToList();
         
         SelectionManager.SelectData(selectableDataList, DisplayManager);
@@ -314,8 +326,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
 
         //Selected elements only spawn once on start up
-        if (selectedInteractions.Count > 0)
-            SetWorldElements(interactionController, selectedInteractions.Cast<IElementData>().ToList());
+        if (selectedInteractionDestinations.Count > 0)
+            SetWorldElements(interactionDestinationController, selectedInteractionDestinations.Cast<IElementData>().ToList());
         
         if (selectedWorldInteractableAgents.Count > 0)
             SetWorldElements(worldInteractableAgentController, selectedWorldInteractableAgents.Cast<IElementData>().ToList());
@@ -380,7 +392,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             SetWorldInteractableObjects(terrainTileData.Id);
 
             //Set interactions that are bound to this terrain tile
-            SetInteractions(terrainTileData.Id);
+            SetInteractionDestinations(terrainTileData.Id);
 
             //Set default party representation of the active phase if it is bound to this tile 
             SetParty(terrainTileData.Id);
@@ -426,11 +438,11 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         SetWorldElements(worldInteractableObjectController, worldInteractableObjectDataList);
     }
 
-    private void SetInteractions(int terrainTileId)
+    private void SetInteractionDestinations(int terrainTileId)
     {
-        var interactionDataList = interactionController.DataList.Where(x => ((InteractionElementData)x).TerrainTileId == terrainTileId).ToList();
+        var interactionDestinationDataList = interactionDestinationController.DataList.Where(x => ((InteractionDestinationElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        SetWorldElements(interactionController, interactionDataList);
+        SetWorldElements(interactionDestinationController, interactionDestinationDataList);
     }
 
     private void SetParty(int terrainTileId)
@@ -483,10 +495,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         switch (element.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldObject:        SetWorldObjectStatus(element);          break;
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableStatus(element);    break;
-            case Enums.DataType.Interaction:        SetInteractionStatus(element);          break;
-            case Enums.DataType.Phase:              SetPartyStatus(element);                break;
+            case Enums.DataType.WorldObject:            SetWorldObjectStatus(element);              break;
+            case Enums.DataType.WorldInteractable:      SetWorldInteractableStatus(element);        break;
+            case Enums.DataType.InteractionDestination: SetInteractionDestinationStatus(element);   break;
+            case Enums.DataType.Phase:                  SetPartyStatus(element);                    break;
             
             default: Debug.Log("CASE MISSING: " + element.DataElement.GeneralData.DataType); break;
         }
@@ -494,7 +506,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetWorldObjectStatus(EditorElement element)
     {
-        if (worldData.regionType == Enums.RegionType.Interaction || worldData.regionType == Enums.RegionType.Party || worldData.regionType == Enums.RegionType.Game)
+        if (worldData.regionType == Enums.RegionType.InteractionDestination || worldData.regionType == Enums.RegionType.Party || worldData.regionType == Enums.RegionType.Game)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -520,13 +532,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    private void SetInteractionStatus(EditorElement element)
+    private void SetInteractionDestinationStatus(EditorElement element)
     {
-        var selectedInteraction = selectedInteractions.FirstOrDefault();
+        var selectedInteractionDestination = selectedInteractionDestinations.FirstOrDefault();
 
-        if (selectedInteraction == null) return;
+        if (selectedInteractionDestination == null) return;
 
-        var interactionDataElement = (InteractionElementData)element.DataElement.data.elementData;
+        var interactionDestinationDataElement = (InteractionDestinationElementData)element.DataElement.data.elementData;
 
         //Locked when editing default party transform
         if (worldData.regionType == Enums.RegionType.Party)
@@ -542,48 +554,48 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         //            interactionData.objectiveId + "/" + interactionDataElement.objectiveId);
 
         //Hidden: Interactions where the active time is not within its timeframe
-        if (!interactionDataElement.containsActiveTime)
+        if (!interactionDestinationDataElement.containsActiveTime)
         {
             element.elementStatus = Enums.ElementStatus.Hidden;
             return;
         }
 
         //Hidden: Interactions belonging to the same world interactable and objective
-        if (interactionDataElement.Id != selectedInteraction.Id &&
-            interactionDataElement.worldInteractableId == selectedInteraction.worldInteractableId &&
-            interactionDataElement.objectiveId == selectedInteraction.objectiveId)
+        if (interactionDestinationDataElement.Id != selectedInteractionDestination.Id &&
+            interactionDestinationDataElement.worldInteractableId == selectedInteractionDestination.worldInteractableId &&
+            interactionDestinationDataElement.objectiveId == selectedInteractionDestination.objectiveId)
         {
             element.elementStatus = Enums.ElementStatus.Hidden;
             return;
         }
 
         //Locked: Interactions that aren't selected and don't belong to a quest, only when an interaction with a quest is selected
-        if (interactionDataElement.Id != selectedInteraction.Id &&
-            selectedInteraction.objectiveId != 0 && interactionDataElement.objectiveId == 0)
+        if (interactionDestinationDataElement.Id != selectedInteractionDestination.Id &&
+            selectedInteractionDestination.objectiveId != 0 && interactionDestinationDataElement.objectiveId == 0)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
         }
 
         //Enabled: Interactions belonging to a different interactable, but same objective
-        if (interactionDataElement.worldInteractableId != selectedInteraction.worldInteractableId &&
-            interactionDataElement.objectiveId == selectedInteraction.objectiveId)
+        if (interactionDestinationDataElement.worldInteractableId != selectedInteractionDestination.worldInteractableId &&
+            interactionDestinationDataElement.objectiveId == selectedInteractionDestination.objectiveId)
         {
             element.elementStatus = Enums.ElementStatus.Enabled;
             return;
         }
         
         //Related: Interactions belonging to a different interactable, different objective but same quest
-        if (interactionDataElement.worldInteractableId != selectedInteraction.worldInteractableId &&
-            interactionDataElement.questId == selectedInteraction.questId)
+        if (interactionDestinationDataElement.worldInteractableId != selectedInteractionDestination.worldInteractableId &&
+            interactionDestinationDataElement.questId == selectedInteractionDestination.questId)
         {
             element.elementStatus = Enums.ElementStatus.Related;
             return;
         }
         
         //Unrelated: Interactions belonging to a different quest
-        if (interactionDataElement.questId > 0 &&
-            interactionDataElement.questId != selectedInteraction.questId)
+        if (interactionDestinationDataElement.questId > 0 &&
+            interactionDestinationDataElement.questId != selectedInteractionDestination.questId)
         {
             element.elementStatus = Enums.ElementStatus.Unrelated;
             return;
@@ -667,9 +679,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             });
         }
 
-        if (selectedInteractions.Count > 0)
+        if (selectedInteractionDestinations.Count > 0)
         {
-            selectedInteractions.ForEach(x =>
+            selectedInteractionDestinations.ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -702,7 +714,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ClearWorldObjects(terrainTileData);
         ClearWorldInteractableAgents(terrainTileData);
         ClearWorldInteractableObjects(terrainTileData);
-        ClearInteractions(terrainTileData);
+        ClearInteractionDestinations(terrainTileData);
         ClearParty(terrainTileData);
     }
 
@@ -748,12 +760,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         });
     }
 
-    private void ClearInteractions(TerrainTileElementData terrainTileData)
+    private void ClearInteractionDestinations(TerrainTileElementData terrainTileData)
     {
-        var interactionElementList = interactionController.DataList.Cast<InteractionElementData>().Where(x => x.DataElement != null).ToList();
+        var interactionDestinationElementList = interactionDestinationController.DataList.Cast<InteractionDestinationElementData>().Where(x => x.DataElement != null).ToList();
 
-        var inactiveInteractionList = interactionElementList.Where(x => !selectedInteractions.Select(y => y.Id).Contains(x.Id) && 
-                                                                        x.TerrainTileId == terrainTileData.Id).ToList();
+        var inactiveInteractionList = interactionDestinationElementList.Where(x => !selectedInteractionDestinations.Select(y => y.Id).Contains(x.Id) && 
+                                                                              x.TerrainTileId == terrainTileData.Id).ToList();
 
         inactiveInteractionList.ForEach(x => 
         {

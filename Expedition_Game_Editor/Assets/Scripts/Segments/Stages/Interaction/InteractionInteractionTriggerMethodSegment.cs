@@ -151,8 +151,6 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         triggerAutomaticallyToggle.Toggle.isOn = triggerAutomatically;

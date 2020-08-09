@@ -25,7 +25,10 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.EditorWorld>().First();
 
         var regionData = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
-        searchParameters.regionType = ((RegionController)regionData.dataController).regionType;
+
+        var test = (RegionElementData)regionData.elementData;
+
+        searchParameters.regionType = test.type; //((RegionController)regionData.dataController).regionType;
 
         var regionElementData = (RegionElementData)regionData.elementData;
         searchParameters.regionId = new List<int>() { regionElementData.Id };

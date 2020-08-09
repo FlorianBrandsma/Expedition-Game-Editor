@@ -63,8 +63,6 @@ public class InteractableSurvivalCapacityThirstSegment : MonoBehaviour, ISegment
         thirst = interactableData.Thirst;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         thirstInputNumber.Value = Thirst;

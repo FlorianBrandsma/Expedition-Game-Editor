@@ -51,8 +51,6 @@ public class InteractableSaveStatusSurvivalPhysiqueSegment : MonoBehaviour, ISeg
         stamina = interactableSaveData.stamina;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment() { }
 
     public void CloseSegment() { }

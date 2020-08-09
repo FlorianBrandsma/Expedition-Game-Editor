@@ -12,8 +12,6 @@ public class GameInteractionElementData : GeneralData, IElementData
     }
 
     public int taskId;
-    public int regionId;
-    public int terrainTileId;
 
     public bool isDefault;
 
@@ -38,24 +36,10 @@ public class GameInteractionElementData : GeneralData, IElementData
     public bool cancelDelayOnMovement;
     public bool cancelDelayOnHit;
 
-    public float positionX;
-    public float positionY;
-    public float positionZ;
-
-    public float rotationX;
-    public float rotationY;
-    public float rotationZ;
-
-    public float scaleMultiplier;
-
-    public int animation;
-
     public int objectiveId;
     public int worldInteractableId;
-
-    public float height;
-    public float width;
-    public float depth;
+    
+    public List<GameInteractionDestinationElementData> interactionDestinationDataList;
 
     #region ElementData
     public bool Changed { get { return false; } }

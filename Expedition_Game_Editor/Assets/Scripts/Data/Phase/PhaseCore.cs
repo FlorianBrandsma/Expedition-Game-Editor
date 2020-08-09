@@ -342,8 +342,6 @@ public class PhaseCore : GeneralData
     {
         CloneGeneralData(elementData);
 
-        elementData.defaultPositionX = defaultPositionX;
-
         elementData.name = name;
 
         elementData.defaultRegionId = defaultRegionId;

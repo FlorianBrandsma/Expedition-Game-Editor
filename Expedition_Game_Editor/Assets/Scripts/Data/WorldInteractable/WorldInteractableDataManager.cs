@@ -119,9 +119,10 @@ public class WorldInteractableDataManager : IDataManager
     {
         worldInteractableDataList = new List<WorldInteractableData>();
 
-        var interactionList         = Fixtures.interactionList.Where(x => searchParameters.regionId.Contains(x.regionId)).Distinct().ToList();
-        var taskList                = Fixtures.taskList.Where(x => interactionList.Select(y => y.taskId).Contains(x.Id) && searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList();
-        var worldInteractableList   = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
+        var interactionDestinationList  = Fixtures.interactionDestinationList.Where(x => searchParameters.regionId.Contains(x.regionId)).Distinct().ToList();
+        var interactionList             = Fixtures.interactionList.Where(x => interactionDestinationList.Select(y => y.interactionId).Contains(x.Id)).Distinct().ToList();
+        var taskList                    = Fixtures.taskList.Where(x => interactionList.Select(y => y.taskId).Contains(x.Id) && searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList();
+        var worldInteractableList       = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
 
         foreach (Fixtures.WorldInteractable worldInteractable in worldInteractableList)
         {

@@ -38,10 +38,10 @@ public class TimeAction : MonoBehaviour, IAction
         
         //There might be an underlying issue with resetting the editor which should be addressed
         //if time-changing related issues continue to arise
-        if (RegionDisplayManager.regionType == Enums.RegionType.Interaction)
+        if (RegionDisplayManager.regionType == Enums.RegionType.InteractionDestination)
             regionNavigationAction.SelectInteraction();
         
-        TimeManager.instance.SetEditorTime(selectedHour * TimeManager.secondsInHour, RegionDisplayManager.regionType != Enums.RegionType.Interaction);
+        TimeManager.instance.SetEditorTime(selectedHour * TimeManager.secondsInHour, RegionDisplayManager.regionType != Enums.RegionType.InteractionDestination);
     }
 
     public void CloseAction() { }

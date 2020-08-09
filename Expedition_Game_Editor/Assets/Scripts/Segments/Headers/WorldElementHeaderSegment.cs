@@ -3,33 +3,17 @@ using UnityEngine.UI;
 
 public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public RawImage icon;
     public Text headerText;
     public Text idText;
-    #endregion
 
-    #region Data Variables
     private string objectGraphicIconPath;
     private string header;
     private int id;
-    #endregion
 
-    #region Properties
-    #endregion
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor { get; set; }
 
-    #region Methods
-    public void UpdateDescription()
-    {
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -38,8 +22,6 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         InitializeDependencies();
@@ -47,18 +29,26 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         if (DataEditor.Loaded) return;
     }
 
-    private void InitializeInteractionData()
+    public void InitializeSegment() { }
+    
+    public void OpenSegment()
     {
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        switch (DataEditor.Data.dataController.DataType)
+        {
+            case Enums.DataType.WorldObject:            InitializeWorldObjectData();            break;
+            case Enums.DataType.Phase:                  InitializePhaseData();                  break;
+            case Enums.DataType.InteractionDestination: InitializeInteractionDestinationData(); break;
 
-        id = interactionData.Id;
-        header = interactionData.PublicNotes;
-        objectGraphicIconPath = interactionData.objectGraphicIconPath;
+            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
+        }
+        
+        icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);
+        headerText.text = header;
+        idText.text = id.ToString();
 
-        headerText.fontSize = StyleManager.baseFontSize;
-        headerText.resizeTextMaxSize = StyleManager.baseFontSize;
+        gameObject.SetActive(true);
     }
-
+    
     private void InitializeWorldObjectData()
     {
         var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
@@ -83,22 +73,16 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         headerText.resizeTextMaxSize = StyleManager.headerFontSize;
     }
 
-    public void OpenSegment()
+    private void InitializeInteractionDestinationData()
     {
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Interaction:    InitializeInteractionData();    break;
-            case Enums.DataType.WorldObject:    InitializeWorldObjectData();    break;
-            case Enums.DataType.Phase:          InitializePhaseData();          break;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
 
-            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
-        }
-        
-        icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);
-        headerText.text = header;
-        idText.text = id.ToString();
+        id = interactionDestinationData.Id;
+        header = interactionDestinationData.interactableName;
+        objectGraphicIconPath = interactionDestinationData.objectGraphicIconPath;
 
-        gameObject.SetActive(true);
+        headerText.fontSize = StyleManager.headerFontSize;
+        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
     }
 
     public void CloseSegment()
@@ -107,5 +91,4 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     }
 
     public void SetSearchResult(DataElement dataElement) { }
-    #endregion
 }

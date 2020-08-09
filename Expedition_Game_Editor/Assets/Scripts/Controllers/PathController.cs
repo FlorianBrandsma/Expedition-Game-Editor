@@ -150,24 +150,7 @@ public class PathController : MonoBehaviour
     public void SetSubControllers(Path path)
     {
         if (subControllerManager != null)
-        {
             subControllerManager.SetTabs(this, path);
-
-        //    if(GetComponent<RectTransform>() != null)
-        //    {
-        //        GetComponent<RectTransform>().offsetMin = new Vector2(GetComponent<RectTransform>().offsetMin.x, 0);
-        //        GetComponent<RectTransform>().offsetMax = new Vector2(GetComponent<RectTransform>().offsetMax.x, 30);
-        //    }
-                
-        //} else
-        //{
-        //    if (GetComponent<RectTransform>() != null)
-        //    {
-        //        GetComponent<RectTransform>().offsetMin = new Vector2(GetComponent<RectTransform>().offsetMin.x, 0);
-        //        GetComponent<RectTransform>().offsetMax = new Vector2(GetComponent<RectTransform>().offsetMax.x, 0);
-        //    }
-        }
-            
 
         if (step < path.route.Count)
             controllers[path.route[step].controller].SetSubControllers(path);
@@ -204,7 +187,9 @@ public class PathController : MonoBehaviour
             layoutSection.TargetView = GetComponent<LayoutDependency>();
 
         if (step < path.route.Count)
+        {
             controllers[path.route[step].controller].GetTargetLayout(path, layoutStep);
+        }
     }
 
     public void ClosePath(Path path)

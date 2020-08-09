@@ -63,8 +63,6 @@ public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
         health = interactableData.Health;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         healthInputNumber.Value = Health;

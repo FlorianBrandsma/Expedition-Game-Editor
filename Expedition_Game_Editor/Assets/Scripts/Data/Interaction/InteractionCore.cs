@@ -4,9 +4,6 @@ using System.Linq;
 public class InteractionCore : GeneralData
 {
     private int taskId;
-    private int regionId;
-    private int terrainId;
-    private int terrainTileId;
 
     private bool isDefault;
 
@@ -29,24 +26,10 @@ public class InteractionCore : GeneralData
     private bool cancelDelayOnMovement;
     private bool cancelDelayOnHit;
 
-    private float positionX;
-    private float positionY;
-    private float positionZ;
-
-    private int rotationX;
-    private int rotationY;
-    private int rotationZ;
-
-    private int animation;
-
     private string publicNotes;
     private string privateNotes;
 
     //Original
-    public int originalRegionId;
-    public int originalTerrainId;
-    public int originalTerrainTileId;
-
     public int originalStartTime;
     public int originalEndTime;
 
@@ -65,25 +48,11 @@ public class InteractionCore : GeneralData
     public bool originalCancelDelayOnInput;
     public bool originalCancelDelayOnMovement;
     public bool originalCancelDelayOnHit;
-    
-    public float originalPositionX;
-    public float originalPositionY;
-    public float originalPositionZ;
-
-    public int originalRotationX;
-    public int originalRotationY;
-    public int originalRotationZ;
-
-    public int originalAnimation;
 
     public string originalPublicNotes;
     public string originalPrivateNotes;
 
     //Original
-    private bool changedRegionId;
-    private bool changedTerrainId;
-    private bool changedTerrainTileId;
-
     public bool changedStartTime;
     public bool changedEndTime;
 
@@ -103,16 +72,6 @@ public class InteractionCore : GeneralData
     private bool changedCancelDelayOnMovement;
     private bool changedCancelDelayOnHit;
 
-    private bool changedPositionX;
-    private bool changedPositionY;
-    private bool changedPositionZ;
-
-    private bool changedRotationX;
-    private bool changedRotationY;
-    private bool changedRotationZ;
-
-    private bool changedAnimation;
-
     private bool changedPublicNotes;
     private bool changedPrivateNotes;
 
@@ -120,16 +79,12 @@ public class InteractionCore : GeneralData
     {
         get
         {
-            return  changedRegionId             || changedTerrainId                 || changedTerrainTileId         || 
-                    changedStartTime            || changedEndTime                   || 
+            return  changedStartTime            || changedEndTime                   || 
                     changedTriggerAutomatically || changedBeNearDestination         || changedFaceAgent             || 
                     changedFacePartyLeader      || changedHideInteractionIndicator  || changedInteractionRange      || 
                     changedDelayMethod          || changedDelayDuration             ||
                     changedHideDelayIndicator   || changedCancelDelayOnInput        || changedCancelDelayOnMovement ||
                     changedCancelDelayOnHit     ||
-                    changedPositionX            || changedPositionY                 || changedPositionZ             || 
-                    changedRotationX            || changedRotationY                 || 
-                    changedRotationZ            || changedAnimation                 ||
                     changedPublicNotes          || changedPrivateNotes;
         }
     }
@@ -139,45 +94,6 @@ public class InteractionCore : GeneralData
     {
         get { return taskId; }
         set { taskId = value; }
-    }
-
-    public int RegionId
-    {
-        get { return regionId; }
-        set
-        {
-            if (value == regionId) return;
-
-            changedRegionId = (value != originalRegionId);
-
-            regionId = value;
-        }
-    }
-
-    public int TerrainId
-    {
-        get { return terrainId; }
-        set
-        {
-            if (value == terrainId) return;
-
-            changedTerrainId = (value != originalTerrainId);
-
-            terrainId = value;
-        }
-    }
-
-    public int TerrainTileId
-    {
-        get { return terrainTileId; }
-        set
-        {
-            if (value == terrainTileId) return;
-
-            changedTerrainTileId = (value != originalTerrainTileId);
-
-            terrainTileId = value;
-        }
     }
 
     public bool Default
@@ -367,98 +283,7 @@ public class InteractionCore : GeneralData
             cancelDelayOnHit = value;
         }
     }
-
-    public float PositionX
-    {
-        get { return positionX; }
-        set
-        {
-            if (value == positionX) return;
-
-            changedPositionX = (value != originalPositionX);
-
-            positionX = value;
-        }
-    }
-
-    public float PositionY
-    {
-        get { return positionY; }
-        set
-        {
-            if (value == positionY) return;
-
-            changedPositionY = (value != originalPositionY);
-
-            positionY = value;
-        }
-    }
-
-    public float PositionZ
-    {
-        get { return positionZ; }
-        set
-        {
-            if (value == positionZ) return;
-
-            changedPositionZ = (value != originalPositionZ);
-
-            positionZ = value;
-        }
-    }
-
-    public int RotationX
-    {
-        get { return rotationX; }
-        set
-        {
-            if (value == rotationX) return;
-
-            changedRotationX = (value != originalRotationX);
-
-            rotationX = value;
-        }
-    }
-
-    public int RotationY
-    {
-        get { return rotationY; }
-        set
-        {
-            if (value == rotationY) return;
-
-            changedRotationY = (value != originalRotationY);
-
-            rotationY = value;
-        }
-    }
-
-    public int RotationZ
-    {
-        get { return rotationZ; }
-        set
-        {
-            if (value == rotationZ) return;
-
-            changedRotationZ = (value != originalRotationZ);
-
-            rotationZ = value;
-        }
-    }
-
-    public int Animation
-    {
-        get { return animation; }
-        set
-        {
-            if (value == animation) return;
-
-            changedAnimation = (value != originalAnimation);
-
-            animation = value;
-        }
-    }
-
+    
     public string PublicNotes
     {
         get { return publicNotes; }
@@ -492,15 +317,6 @@ public class InteractionCore : GeneralData
     public virtual void Update()
     {
         var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
-        
-        if (changedRegionId)
-            interactionData.regionId = regionId;
-
-        if (changedTerrainId)
-            interactionData.terrainId = terrainId;
-        
-        if (changedTerrainTileId)
-            interactionData.terrainTileId = terrainTileId;
 
         if (changedStartTime)
             interactionData.startTime = startTime;
@@ -544,27 +360,6 @@ public class InteractionCore : GeneralData
         if (changedCancelDelayOnHit)
             interactionData.cancelDelayOnHit = cancelDelayOnHit;
 
-        if (changedPositionX)
-            interactionData.positionX = positionX;
-
-        if (changedPositionY)
-            interactionData.positionY = positionY;
-
-        if (changedPositionZ)
-            interactionData.positionZ = positionZ;
-
-        if (changedRotationX)
-            interactionData.rotationX = rotationX;
-
-        if (changedRotationY)
-            interactionData.rotationY = rotationY;
-
-        if (changedRotationZ)
-            interactionData.rotationZ = rotationZ;
-
-        if (changedAnimation)
-            interactionData.animation = animation;
-
         if (changedPublicNotes)
             interactionData.publicNotes = publicNotes;
 
@@ -587,10 +382,6 @@ public class InteractionCore : GeneralData
 
     public virtual void SetOriginalValues()
     {
-        originalRegionId = regionId;
-        originalTerrainId = terrainId;
-        originalTerrainTileId = terrainTileId;
-
         originalStartTime = startTime;
         originalEndTime = endTime;
 
@@ -610,26 +401,12 @@ public class InteractionCore : GeneralData
         originalCancelDelayOnMovement = cancelDelayOnMovement;
         originalCancelDelayOnHit = cancelDelayOnHit;
 
-        originalPositionX = positionX;
-        originalPositionY = positionY;
-        originalPositionZ = positionZ;
-
-        originalRotationX = rotationX;
-        originalRotationY = rotationY;
-        originalRotationZ = rotationZ;
-
-        originalAnimation = animation;
-
         originalPublicNotes = publicNotes;
         originalPrivateNotes = privateNotes;
     }
 
     public void GetOriginalValues()
     {
-        regionId = originalRegionId;
-        terrainId = originalTerrainId;
-        terrainTileId = originalTerrainTileId;
-
         startTime = originalStartTime;
         endTime = originalEndTime;
 
@@ -649,16 +426,6 @@ public class InteractionCore : GeneralData
         cancelDelayOnMovement = originalCancelDelayOnMovement;
         cancelDelayOnHit = originalCancelDelayOnHit;
 
-        positionX = originalPositionX;
-        positionY = originalPositionY;
-        positionZ = originalPositionZ;
-
-        rotationX = originalRotationX;
-        rotationY = originalRotationY;
-        rotationZ = originalRotationZ;
-
-        animation = originalAnimation;
-
         publicNotes = originalPublicNotes;
         privateNotes = originalPrivateNotes;
     }
@@ -666,10 +433,6 @@ public class InteractionCore : GeneralData
     public virtual void ClearChanges()
     {
         GetOriginalValues();
-        
-        changedRegionId = false;
-        changedTerrainId = false;
-        changedTerrainTileId = false;
 
         changedStartTime = false;
         changedEndTime = false;
@@ -690,16 +453,6 @@ public class InteractionCore : GeneralData
         changedCancelDelayOnMovement = false;
         changedCancelDelayOnHit = false;
 
-        changedPositionX = false;
-        changedPositionY = false;
-        changedPositionZ = false;
-
-        changedRotationX = false;
-        changedRotationY = false;
-        changedRotationZ = false;
-
-        changedAnimation = false;
-
         changedPublicNotes = false;
         changedPrivateNotes = false;
     }
@@ -711,9 +464,6 @@ public class InteractionCore : GeneralData
         CloneGeneralData(elementData);
 
         elementData.taskId = taskId;
-        elementData.regionId = regionId;
-        elementData.terrainId = terrainId;
-        elementData.terrainTileId = terrainTileId;
 
         elementData.isDefault = isDefault;
 
@@ -736,24 +486,10 @@ public class InteractionCore : GeneralData
         elementData.cancelDelayOnMovement = cancelDelayOnMovement;
         elementData.cancelDelayOnHit = cancelDelayOnHit;
 
-        elementData.positionX = positionX;
-        elementData.positionY = positionY;
-        elementData.positionZ = positionZ;
-
-        elementData.rotationX = rotationX;
-        elementData.rotationY = rotationY;
-        elementData.rotationZ = rotationZ;
-
-        elementData.animation = animation;
-
         elementData.publicNotes = publicNotes;
         elementData.privateNotes = privateNotes;
 
         //Original
-        elementData.originalRegionId = originalRegionId;
-        elementData.originalTerrainId = originalTerrainId;
-        elementData.originalTerrainTileId = originalTerrainTileId;
-
         elementData.originalStartTime = originalStartTime;
         elementData.originalEndTime = originalEndTime;
 
@@ -773,16 +509,6 @@ public class InteractionCore : GeneralData
         elementData.originalCancelDelayOnMovement = originalCancelDelayOnMovement;
         elementData.originalCancelDelayOnHit = originalCancelDelayOnHit;
 
-        elementData.originalPositionX = originalPositionX;
-        elementData.originalPositionY = originalPositionY;
-        elementData.originalPositionZ = originalPositionZ;
-
-        elementData.originalRotationX = originalRotationX;
-        elementData.originalRotationY = originalRotationY;
-        elementData.originalRotationZ = originalRotationZ;
-
-        elementData.originalAnimation = originalAnimation;
-
         elementData.originalPublicNotes = originalPublicNotes;
         elementData.originalPrivateNotes = originalPrivateNotes;
     }
@@ -793,9 +519,6 @@ public class InteractionCore : GeneralData
         var interactionDataSource = (InteractionElementData)dataSource;
 
         taskId = interactionDataSource.taskId;
-        regionId = interactionDataSource.regionId;
-        terrainId = interactionDataSource.terrainId;
-        terrainTileId = interactionDataSource.terrainTileId;
 
         isDefault = interactionDataSource.isDefault;
 
@@ -817,16 +540,6 @@ public class InteractionCore : GeneralData
         cancelDelayOnInput = interactionDataSource.cancelDelayOnInput;
         cancelDelayOnMovement = interactionDataSource.cancelDelayOnMovement;
         cancelDelayOnHit = interactionDataSource.cancelDelayOnHit;
-        
-        positionX = interactionDataSource.positionX;
-        positionY = interactionDataSource.positionY;
-        positionZ = interactionDataSource.positionZ;
-
-        rotationX = interactionDataSource.rotationX;
-        rotationY = interactionDataSource.rotationY;
-        rotationZ = interactionDataSource.rotationZ;
-
-        animation = interactionDataSource.animation;
 
         publicNotes = interactionDataSource.publicNotes;
         privateNotes = interactionDataSource.privateNotes;

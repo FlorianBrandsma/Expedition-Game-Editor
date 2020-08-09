@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
                                                                      .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : x.Last()).ToList();
 
         //Finds the region interactions: interactions that do not belong to an objective
-        var regionInteractions = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0 && gameWorldData.regionDataList.Select(z => z.Id).Contains(y.regionId))).ToList();
+        var regionInteractions = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0)).ToList();
 
         //Finds the tasks of the region interactions
         var regionTasks = gameSaveData.taskSaveDataList.Where(x => regionInteractions.Select(y => y.taskId).Contains(x.TaskId)).Distinct().ToList();
@@ -381,7 +381,7 @@ public class GameManager : MonoBehaviour
                 worldInteractableData.terrainTileId = 0;
 
             } else {
-
+                
                 switch((Enums.InteractableType)worldInteractableData.type)
                 {
                     case Enums.InteractableType.Agent:
@@ -393,7 +393,7 @@ public class GameManager : MonoBehaviour
                     case Enums.InteractableType.Object:
 
                         //World interactable objects can relocate instantly by changing the terrain tile id
-                        worldInteractableData.terrainTileId = interactionData.terrainTileId;
+                        worldInteractableData.terrainTileId = interactionData.interactionDestinationDataList.First().terrainTileId;
                         break;
                 }
             }
@@ -401,7 +401,7 @@ public class GameManager : MonoBehaviour
         } else if (interactionData != null) {
 
             //If the inactive world interactable contains an active time, activate it
-            worldInteractableData.terrainTileId = interactionData.terrainTileId;
+            worldInteractableData.terrainTileId = interactionData.interactionDestinationDataList.First().terrainTileId;
         }
         
         //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out

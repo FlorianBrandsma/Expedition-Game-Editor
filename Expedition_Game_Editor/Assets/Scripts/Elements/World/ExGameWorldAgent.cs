@@ -73,7 +73,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
 
-        transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
+        transform.localScale        = new Vector3(scaleMultiplier, scaleMultiplier, scaleMultiplier);
 
         Agent.speed = speed;
     }
@@ -86,11 +86,12 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
+        var interactionDestinationData = interactionData.interactionDestinationDataList.First();
 
-        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
-        rotation = new Vector3(interactionData.rotationX, interactionData.rotationY, interactionData.rotationZ);
+        position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
+        rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
 
-        scaleMultiplier = interactionData.scaleMultiplier;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         speed = elementData.speed;
 
@@ -126,8 +127,9 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).First();
+        var interactionDestinationData = interactionData.interactionDestinationDataList.First();
 
-        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
+        position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
     }
 
     private void SetGamePartyMemberDestination()

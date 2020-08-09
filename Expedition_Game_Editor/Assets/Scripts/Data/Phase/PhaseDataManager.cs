@@ -243,8 +243,6 @@ public class PhaseDataManager : IDataManager
         public int defaultRotationY;
         public int defaultRotationZ;
 
-        public float defaultScaleMultiplier;
-
         public int defaultTime;
 
         public string publicNotes;

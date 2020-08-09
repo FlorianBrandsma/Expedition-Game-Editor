@@ -37,8 +37,6 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
         phaseRegionList.ForEach(x => PhaseEditor.RegionDataList.Add(x));
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)

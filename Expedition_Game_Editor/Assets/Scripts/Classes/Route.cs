@@ -60,6 +60,11 @@ public class Route
             dataList = data.dataList;
         }
 
+        public Data(IElementData elementData)
+        {
+            this.elementData = elementData;
+        }
+
         public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
         {
             this.dataController = dataController;

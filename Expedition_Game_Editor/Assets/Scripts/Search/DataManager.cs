@@ -329,7 +329,6 @@ public class DataManager
         foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
         {
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id))               continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(interaction.regionId))   continue;
             if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.taskId))       continue;
             
             var data = new InteractionData();
@@ -338,11 +337,7 @@ public class DataManager
             data.Index = interaction.Index;
 
             data.taskId = interaction.taskId;
-
-            data.regionId = interaction.regionId;
-            data.terrainId = interaction.terrainId;
-            data.terrainTileId = interaction.terrainTileId;
-
+            
             data.isDefault = interaction.isDefault;
 
             data.startTime = interaction.startTime;
@@ -364,16 +359,6 @@ public class DataManager
             data.cancelDelayOnMovement = interaction.cancelDelayOnMovement;
             data.cancelDelayOnHit = interaction.cancelDelayOnHit;
 
-            data.positionX = interaction.positionX;
-            data.positionY = interaction.positionY;
-            data.positionZ = interaction.positionZ;
-
-            data.rotationX = interaction.rotationX;
-            data.rotationY = interaction.rotationY;
-            data.rotationZ = interaction.rotationZ;
-
-            data.animation = interaction.animation;
-
             data.publicNotes = interaction.publicNotes;
             data.privateNotes = interaction.privateNotes;
 
@@ -382,7 +367,49 @@ public class DataManager
 
         return dataList;
     }
-    
+
+    public List<InteractionDestinationData> GetInteractionDestinationData(Search.InteractionDestination searchParameters)
+    {
+        var dataList = new List<InteractionDestinationData>();
+
+        foreach (Fixtures.InteractionDestination interactionDestination in Fixtures.interactionDestinationList)
+        {
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.Id))                        continue;
+            if (searchParameters.regionId.Count         > 0 && !searchParameters.regionId.Contains(interactionDestination.regionId))            continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.interactionId))  continue;
+
+            var data = new InteractionDestinationData();
+
+            data.Id = interactionDestination.Id;
+            data.Index = interactionDestination.Index;
+
+            data.interactionId = interactionDestination.interactionId;
+
+            data.regionId = interactionDestination.regionId;
+            data.terrainId = interactionDestination.terrainId;
+            data.terrainTileId = interactionDestination.terrainTileId;
+
+            data.positionX = interactionDestination.positionX;
+            data.positionY = interactionDestination.positionY;
+            data.positionZ = interactionDestination.positionZ;
+
+            data.positionVariance = interactionDestination.positionVariance;
+
+            data.rotationX = interactionDestination.rotationX;
+            data.rotationY = interactionDestination.rotationY;
+            data.rotationZ = interactionDestination.rotationZ;
+
+            data.freeRotation = interactionDestination.freeRotation;
+
+            data.animation = interactionDestination.animation;
+            data.patience = interactionDestination.patience;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     public List<TileSetData> GetTileSetData()
     {
         return GetTileSetData(new Search.TileSet());
@@ -434,7 +461,8 @@ public class DataManager
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
-            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(terrainTile.Id))               continue;
+            if (searchParameters.terrainId.Count    > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
 
             var data = new TerrainTileData();
 
@@ -864,13 +892,10 @@ public class DataManager
         public string publicNotes;
         public string privateNotes;
     }
-
+    
     public class InteractionData : GeneralData
     {
         public int taskId;
-        public int regionId;
-        public int terrainId;
-        public int terrainTileId;
 
         public bool isDefault;
 
@@ -893,18 +918,32 @@ public class DataManager
         public bool cancelDelayOnMovement;
         public bool cancelDelayOnHit;
         
+        public string publicNotes;
+        public string privateNotes;
+    }
+
+    public class InteractionDestinationData : GeneralData
+    {
+        public int interactionId;
+
+        public int regionId;
+        public int terrainId;
+        public int terrainTileId;
+
         public float positionX;
         public float positionY;
         public float positionZ;
+
+        public float positionVariance;
 
         public int rotationX;
         public int rotationY;
         public int rotationZ;
 
-        public int animation;
+        public bool freeRotation;
 
-        public string publicNotes;
-        public string privateNotes;
+        public int animation;
+        public float patience;
     }
 
     public class TileSetData : GeneralData

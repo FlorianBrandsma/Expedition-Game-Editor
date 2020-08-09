@@ -23,7 +23,7 @@ public class TerrainElementData : TerrainCore, IElementData
     public List<AtmosphereElementData> atmosphereDataList = new List<AtmosphereElementData>();
     public List<TerrainTileElementData> terrainTileDataList = new List<TerrainTileElementData>();
     public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
-    public List<InteractionElementData> interactionDataList = new List<InteractionElementData>();
+    public List<InteractionDestinationElementData> interactionDestinationDataList = new List<InteractionDestinationElementData>();
     public List<WorldObjectElementData> worldObjectDataList = new List<WorldObjectElementData>();
 
     public override void Update()
@@ -44,7 +44,7 @@ public class TerrainElementData : TerrainCore, IElementData
         atmosphereDataList.ForEach(x => x.SetOriginalValues());
         terrainTileDataList.ForEach(x => x.SetOriginalValues());
         worldInteractableDataList.ForEach(x => x.SetOriginalValues());
-        interactionDataList.ForEach(x => x.SetOriginalValues());
+        interactionDestinationDataList.ForEach(x => x.SetOriginalValues());
         worldObjectDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
@@ -102,10 +102,10 @@ public class TerrainElementData : TerrainCore, IElementData
             worldInteractableDataList[i].Copy(worldInteractableDataSource);
         }
 
-        for (int i = 0; i < interactionDataList.Count; i++)
+        for (int i = 0; i < interactionDestinationDataList.Count; i++)
         {
-            var interactionDataSource = terrainDataSource.interactionDataList[i];
-            interactionDataList[i].Copy(interactionDataSource);
+            var interactionDataSource = terrainDataSource.interactionDestinationDataList[i];
+            interactionDestinationDataList[i].Copy(interactionDataSource);
         }
 
         for (int i = 0; i < worldObjectDataList.Count; i++)

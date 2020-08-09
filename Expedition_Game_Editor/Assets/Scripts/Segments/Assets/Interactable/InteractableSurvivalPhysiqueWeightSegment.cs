@@ -62,8 +62,6 @@ public class InteractableSurvivalPhysiqueWeightSegment : MonoBehaviour, ISegment
         weight = interactableData.Weight;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         weightInputNumber.Value = Weight;

@@ -149,8 +149,50 @@ public class PathManager
             return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
         }
     }
-
     #endregion
+
+    public class InteractionDestination
+    {
+        EditorElement editorElement;
+        Path path;
+        Route route;
+
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public InteractionDestination(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+
+            this.route = route;
+
+            if (editorElement.DataElement.DisplayManager != null)
+                path = editorElement.DataElement.segmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            List<int> open = new List<int>() { 1, (int)Enums.RegionType.InteractionDestination };
+
+            Route customRoute = new Route(1, route.data, editorElement.selectionStatus);
+
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            path.type = Path.Type.New;
+
+            return path;
+        }
+
+        public Path Open()
+        {
+            int open = 0;
+
+            route.controller = open;
+
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            newPath.type = path.type;
+
+            return newPath;
+        }
+    }
 
     #region Item
     public class Item
@@ -253,6 +295,7 @@ public class PathManager
 
         RegionElementData regionElementData;
 
+        int interactionDestinationController = 0;
         List<int> enter = new List<int>() { 0, 3 };
         List<int> edit = new List<int>() { 0, 4 };
 
@@ -282,9 +325,15 @@ public class PathManager
                 case Enums.RegionType.Base:
                     path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
                     break;
+
                 case Enums.RegionType.Phase:
                     routes = CreateRoutes(enter, route, editorElement.selectionStatus);
                     path = ExtendPath(path, routes);
+                    break;
+
+                case Enums.RegionType.InteractionDestination:
+                    route.controller = interactionDestinationController;
+                    path = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
                     break;
             }
 

@@ -16,6 +16,8 @@ public class SegmentController : MonoBehaviour
 
     public EditorController EditorController { get; set; }
 
+    public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
+
     public Path Path        { get { return EditorController.PathController.route.path; } }
     public Path MainPath    { get { return EditorController.PathController.layoutSection.EditorForm.activePath; } }
 
@@ -99,11 +101,11 @@ public class SegmentController : MonoBehaviour
 
     public bool AutoSelectElement()
     {
-        if (GetComponent<ListProperties>() != null)
+        if (ListProperties != null)
         {  
-            if (GetComponent<ListProperties>().selectionType == SelectionManager.Type.Automatic)
+            if (ListProperties.selectionType == SelectionManager.Type.Automatic)
             {
-                GetComponent<ListProperties>().AutoSelectElement();
+                ListProperties.AutoSelectElement();
 
                 return true;
             }            

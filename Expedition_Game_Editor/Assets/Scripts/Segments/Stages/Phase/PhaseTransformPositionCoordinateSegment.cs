@@ -161,8 +161,6 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         xInputField.Value = PositionX;

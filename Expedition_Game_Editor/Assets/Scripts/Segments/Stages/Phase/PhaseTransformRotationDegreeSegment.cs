@@ -120,8 +120,6 @@ public class PhaseTransformRotationDegreeSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-    
-    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {

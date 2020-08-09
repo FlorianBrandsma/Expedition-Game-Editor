@@ -51,8 +51,6 @@ public class InteractableSaveStatusSurvivalCapacitySegment : MonoBehaviour, ISeg
         thirst = interactableSaveData.thirst;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment() { }
     
     public void CloseSegment() { }

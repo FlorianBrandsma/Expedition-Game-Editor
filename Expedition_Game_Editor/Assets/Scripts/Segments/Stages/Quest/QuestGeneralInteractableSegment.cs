@@ -54,12 +54,8 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         });
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
-        SetSearchParameters();
-
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
@@ -69,7 +65,5 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
     public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
-
-        SetSearchParameters();
     }
 }

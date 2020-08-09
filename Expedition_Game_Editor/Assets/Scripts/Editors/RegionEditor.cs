@@ -100,7 +100,7 @@ public class RegionEditor : MonoBehaviour, IEditor
         
         terrainTiles.ForEach(x => x.tileId = firstTile.Id);
         
-        var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
+        //var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
 
         //Fixtures.worldInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.worldInteractableId).Contains(x.Id));
         //Fixtures.worldObjectList.RemoveAll(x => regions.Select(y => y.Id).Contains(x.regionId));

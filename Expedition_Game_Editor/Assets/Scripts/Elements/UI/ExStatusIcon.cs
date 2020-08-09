@@ -47,10 +47,10 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		switch(targetElementData.DataType)
 		{
-			case Enums.DataType.WorldInteractable:  InitializeWorldInteractableData();  break;
-			case Enums.DataType.Interaction:        InitializeInteractionData();        break;
-			case Enums.DataType.WorldObject:        InitializeWorldObjectData();        break;
-			case Enums.DataType.Phase:              InitializePhaseData();              break;
+			case Enums.DataType.WorldInteractable:      InitializeWorldInteractableData();      break;
+			case Enums.DataType.InteractionDestination: InitializeInteractionDestinationData(); break;
+			case Enums.DataType.WorldObject:            InitializeWorldObjectData();            break;
+			case Enums.DataType.Phase:                  InitializePhaseData();                  break;
 
 			default: Debug.Log("CASE MISSING: " + targetElementData.DataType); break;
 		}
@@ -65,13 +65,13 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		depth  = worldInteractableData.depth  * worldInteractableData.scaleMultiplier;
 	}
 
-	private void InitializeInteractionData()
+	private void InitializeInteractionDestinationData()
 	{
-		var interactionData = (InteractionElementData)targetElementData;
+		var interactionDestinationData = (InteractionDestinationElementData)targetElementData;
 
-		height = interactionData.height * 1;
-		width  = interactionData.width  * 1;
-		depth  = interactionData.depth  * 1;
+		height = interactionDestinationData.height * 1;
+		width  = interactionDestinationData.width  * 1;
+		depth  = interactionDestinationData.depth  * 1;
 	}
 
 	private void InitializeWorldObjectData()

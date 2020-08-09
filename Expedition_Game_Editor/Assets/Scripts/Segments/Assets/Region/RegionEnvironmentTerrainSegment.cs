@@ -34,8 +34,6 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 
     public void InitializeData() { }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         SetDropdown(RegionDataElement.TileSetId);

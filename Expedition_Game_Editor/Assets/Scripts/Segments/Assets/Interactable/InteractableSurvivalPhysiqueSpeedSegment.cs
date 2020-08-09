@@ -63,8 +63,6 @@ public class InteractableSurvivalPhysiqueSpeedSegment : MonoBehaviour, ISegment
         speed = interactableData.Speed;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         speedInputNumber.Value = Speed;

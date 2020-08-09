@@ -63,8 +63,6 @@ public class InteractableSurvivalCapacityHungerSegment : MonoBehaviour, ISegment
         hunger = interactableData.Hunger;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         hungerInputNumber.Value = Hunger;

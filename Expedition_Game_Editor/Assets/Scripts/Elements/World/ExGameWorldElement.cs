@@ -89,11 +89,12 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
         //"Last" is a temporary measure until interactions take progression into account
         var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
+        var interactionDestinationData = interactionData.interactionDestinationDataList.First();
 
-        position = new Vector3(interactionData.positionX, interactionData.positionY, interactionData.positionZ);
-        rotation = new Vector3(interactionData.rotationX, interactionData.rotationY, interactionData.rotationZ);
+        position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
+        rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
 
-        scaleMultiplier = interactionData.scaleMultiplier;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         SetObjectGraphic();
     }

@@ -121,6 +121,18 @@ public class EditorPath
 
                 break;
 
+            case Enums.DataType.InteractionDestination:
+
+                PathManager.InteractionDestination interactionDestination = new PathManager.InteractionDestination(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                    path = interactionDestination.Enter();
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                    path = interactionDestination.Open();
+
+                break;
+
             case Enums.DataType.Outcome:
 
                 PathManager.Structure outcome = new PathManager.Structure(editorElement, route);
@@ -239,9 +251,6 @@ public class EditorPath
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = chapterSave.Edit();
 
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
-
                 break;
 
             case Enums.DataType.PhaseSave:
@@ -253,9 +262,6 @@ public class EditorPath
 
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = phaseSave.Edit();
-
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
 
                 break;
 
@@ -269,9 +275,6 @@ public class EditorPath
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = questSave.Edit();
 
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
-
                 break;
 
             case Enums.DataType.ObjectiveSave:
@@ -283,9 +286,6 @@ public class EditorPath
 
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = objectiveSave.Edit();
-
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
 
                 break;
 
@@ -299,9 +299,6 @@ public class EditorPath
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = taskSave.Edit();
 
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
-
                 break;
 
             case Enums.DataType.InteractionSave:
@@ -313,9 +310,6 @@ public class EditorPath
 
                 if (editorElement.selectionProperty == SelectionManager.Property.Edit)
                     path = interactionSave.Edit();
-
-                //if (selection.selectionProperty == SelectionManager.Property.Open)
-                //    path = chapterSave.Open();
 
                 break;
 

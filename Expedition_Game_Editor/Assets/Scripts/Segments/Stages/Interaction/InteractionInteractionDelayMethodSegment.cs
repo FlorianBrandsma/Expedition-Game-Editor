@@ -101,8 +101,6 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         delayMethodDropdown.Dropdown.value = delayMethod;

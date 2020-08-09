@@ -41,12 +41,8 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
         worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableDataList.Add(x));
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
-        SetSearchParameters();
-
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
@@ -56,7 +52,5 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
     public void SetSearchResult(DataElement dataElement)
     {
         DataEditor.UpdateEditor();
-
-        SetSearchParameters();
     }
 }

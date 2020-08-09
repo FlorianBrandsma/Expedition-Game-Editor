@@ -282,13 +282,7 @@ static public class Fixtures
     public class Interaction : GeneralData
     {
         public int taskId;
-
-        //Remove (?)
-        public int regionId;
-        public int terrainId;
-        public int terrainTileId;
-        //
-
+        
         public bool isDefault;
 
         public int startTime;
@@ -310,18 +304,6 @@ static public class Fixtures
         public bool cancelDelayOnMovement;
         public bool cancelDelayOnHit;
 
-        //Remove
-        public float positionX;
-        public float positionY;
-        public float positionZ;
-
-        public int rotationX;
-        public int rotationY;
-        public int rotationZ;
-
-        public int animation;
-        //------
-
         public string publicNotes;
         public string privateNotes;
     }
@@ -330,12 +312,10 @@ static public class Fixtures
     {
         public int interactionId;
 
-        //All of these?
         public int regionId;
         public int terrainId;
         public int terrainTileId;
-        //
-
+        
         public float positionX;
         public float positionY;
         public float positionZ;
@@ -349,7 +329,7 @@ static public class Fixtures
         public int rotationZ;
         
         public int animation;
-        public int patience;
+        public float patience;
     }
 
     public class Outcome : GeneralData
@@ -857,13 +837,62 @@ static public class Fixtures
             //CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
 
             /*Ranger*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, new Vector3(235.625f, 0.2f, 242.375f), new Vector3(0, 130, 0), 5);
+            var rangerDestinationList = new List<InteractionDestination>()
+            {
+                new InteractionDestination()
+                {
+                    positionX = 235.625f,
+                    positionY = 0.2f,
+                    positionZ = 242.375f,
+
+                    rotationX = 0,
+                    rotationY = 130,
+                    rotationZ = 0,
+
+                    positionVariance = 0
+                }
+            };
+
+            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, rangerDestinationList);
 
             /*Mage*/
-            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, new Vector3(240.625f, 0f, 242.375f), new Vector3(0, 255, 0), 5);
+            var mageDestinationList = new List<InteractionDestination>()
+            {
+                new InteractionDestination()
+                {
+                    positionX = 240.625f,
+                    positionY = 0f,
+                    positionZ = 242.375f,
+
+                    rotationX = 0,
+                    rotationY = 255,
+                    rotationZ = 0,
+
+                    positionVariance = 5,
+                    patience = 3
+                }
+            };
+
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
 
             /*Pool*/
-            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, new Vector3(238.125f, 0f, 242.375f), new Vector3(0, 180, 0));
+            var poolDestinationList = new List<InteractionDestination>()
+            {
+                new InteractionDestination()
+                {
+                    positionX = 238.125f,
+                    positionY = 0f,
+                    positionZ = 242.375f,
+
+                    rotationX = 0,
+                    rotationY = 180,
+                    rotationZ = 0,
+
+                    positionVariance = 0
+                }
+            };
+
+            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
 
             var regionSize = GetRegionSize(region.Id);
 
@@ -874,7 +903,7 @@ static public class Fixtures
         }
     }
 
-    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int regionId, Vector3 position, Vector3 rotation, float randomVariance = 0)
+    static public void CreateWorldInteractable(Enums.InteractableType type, int interactableId, int regionId, List<InteractionDestination> interactionDestinationList)
     {
         var worldInteractable = new WorldInteractable();
 
@@ -888,13 +917,13 @@ static public class Fixtures
         
         for (int index = 0; index < baseTasks; index++)
         {
-            CreateTask(worldInteractable, 0, index, regionId, position, rotation, randomVariance);
+            CreateTask(worldInteractable, 0, index, regionId, interactionDestinationList);
         }
         
         worldInteractableList.Add(worldInteractable);
     }
 
-    static public void CreateTask(WorldInteractable worldInteractable, int objectiveId, int taskIndex, int regionId, Vector3 position, Vector3 rotation, float randomVariance = 0)
+    static public void CreateTask(WorldInteractable worldInteractable, int objectiveId, int taskIndex, int regionId, List<InteractionDestination> interactionDestinationList)
     {
         var task = new Task();
 
@@ -910,14 +939,14 @@ static public class Fixtures
 
         task.publicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
         
-        CreateInteraction(task, true, 0, 0, regionId, position, rotation, randomVariance);
-        CreateInteraction(task, false, 0, (5 * TimeManager.secondsInHour) - 1, regionId, position, rotation, randomVariance);
-        CreateInteraction(task, false, 9 * TimeManager.secondsInHour, (16 * TimeManager.secondsInHour) - 1, regionId, position, rotation, 0);
+        CreateInteraction(task, true, 0, 0, regionId, interactionDestinationList);
+        CreateInteraction(task, false, 0, (5 * TimeManager.secondsInHour) - 1, regionId, interactionDestinationList);
+        CreateInteraction(task, false, 9 * TimeManager.secondsInHour, (16 * TimeManager.secondsInHour) - 1, regionId, interactionDestinationList);
         
         taskList.Add(task);
     }
 
-    static public void CreateInteraction(Task task, bool isDefault, int startTime, int endTime, int regionId, Vector3 position, Vector3 rotation, float randomVariance)
+    static public void CreateInteraction(Task task, bool isDefault, int startTime, int endTime, int regionId, List<InteractionDestination> interactionDestinationList)
     {
         var interaction = new Interaction();
 
@@ -948,23 +977,49 @@ static public class Fixtures
         interaction.cancelDelayOnMovement = true;
         interaction.cancelDelayOnHit = false;
 
-        interaction.positionX = position.x + Random.Range(-randomVariance, randomVariance);
-        interaction.positionY = position.y;
-        interaction.positionZ = position.z + Random.Range(-randomVariance, randomVariance);
-
-        interaction.regionId = regionId;
-        interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
-        interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
-
-        interaction.rotationX = (int)rotation.x;
-        interaction.rotationY = (int)rotation.y;
-        interaction.rotationZ = (int)rotation.z;
-
         interaction.publicNotes = "These are public interaction notes";
 
+        interactionDestinationList.ForEach(interactionDestination =>
+        {
+            CreateInteractionDestination(interaction, regionId, interactionDestination);
+        });
+        
         CreateOutcome(interaction, Enums.OutcomeType.Positive);
 
         interactionList.Add(interaction);
+    }
+
+    static public void CreateInteractionDestination(Interaction interaction, int regionId, InteractionDestination interactionDestinationSource)
+    {
+        var interactionDestination = new InteractionDestination();
+
+        int id = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
+
+        interactionDestination.Id = id;
+
+        interactionDestination.interactionId = interaction.Id;
+        
+        interactionDestination.positionX = interactionDestinationSource.positionX;
+        interactionDestination.positionY = interactionDestinationSource.positionY;
+        interactionDestination.positionZ = interactionDestinationSource.positionZ;
+
+        interactionDestination.positionVariance = interactionDestinationSource.positionVariance;
+
+        interactionDestination.regionId = regionId;
+
+        interactionDestination.terrainId = GetTerrain(interactionDestination.regionId, interactionDestination.positionX, interactionDestination.positionZ);
+        interactionDestination.terrainTileId = GetTerrainTile(interactionDestination.terrainId, interactionDestination.positionX, interactionDestination.positionZ);
+
+        interactionDestination.freeRotation = interactionDestinationSource.freeRotation;
+
+        interactionDestination.rotationX = interactionDestinationSource.rotationX;
+        interactionDestination.rotationY = interactionDestinationSource.rotationY;
+        interactionDestination.rotationZ = interactionDestinationSource.rotationZ;
+
+        interactionDestination.animation = interactionDestinationSource.animation;
+        interactionDestination.patience = interactionDestinationSource.patience;
+
+        interactionDestinationList.Add(interactionDestination);
     }
 
     static public void CreateOutcome(Interaction interaction, Enums.OutcomeType type)
@@ -1156,7 +1211,8 @@ static public class Fixtures
                     regionList.Add(region);
 
                     //Get all world interactables belonging to this region
-                    var tempInteractionSourceList = interactionList.Where(x => x.regionId == regionSource.Id);
+                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.regionId == regionSource.Id);
+                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.interactionId).Contains(x.Id));
                     var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id));
                     var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
 
@@ -1242,9 +1298,7 @@ static public class Fixtures
 
                                 interaction.Id = interactionId;
                                 interaction.taskId = task.Id;
-
-                                interaction.regionId = region.Id;
-
+                                
                                 interaction.Index = interactionSource.Index;
 
                                 interaction.isDefault = interactionSource.isDefault;
@@ -1267,20 +1321,44 @@ static public class Fixtures
                                 interaction.cancelDelayOnInput = interactionSource.cancelDelayOnInput;
                                 interaction.cancelDelayOnMovement = interactionSource.cancelDelayOnMovement;
                                 interaction.cancelDelayOnHit = interactionSource.cancelDelayOnHit;
-
-                                interaction.positionX = interactionSource.positionX;
-                                interaction.positionY = interactionSource.positionY;
-                                interaction.positionZ = interactionSource.positionZ;
-
-                                interaction.terrainId = GetTerrain(interaction.regionId, interaction.positionX, interaction.positionZ);
-                                interaction.terrainTileId = GetTerrainTile(interaction.terrainId, interaction.positionX, interaction.positionZ);
-
-                                interaction.rotationX = interactionSource.rotationX;
-                                interaction.rotationY = interactionSource.rotationY;
-                                interaction.rotationZ = interactionSource.rotationZ;
-
+                                
                                 interaction.publicNotes = interactionSource.publicNotes;
                                 interaction.privateNotes = interactionSource.privateNotes;
+
+                                var interactionDestinationSourceList = interactionDestinationList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                                foreach(InteractionDestination interactionDestinationSource in interactionDestinationSourceList)
+                                {
+                                    var interactionDestination = new InteractionDestination();
+
+                                    int interactionDestinationId = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
+
+                                    interactionDestination.Id = interactionDestinationId;
+
+                                    interactionDestination.interactionId = interaction.Id;
+
+                                    interactionDestination.positionX = interactionDestinationSource.positionX;
+                                    interactionDestination.positionY = interactionDestinationSource.positionY;
+                                    interactionDestination.positionZ = interactionDestinationSource.positionZ;
+
+                                    interactionDestination.positionVariance = interactionDestinationSource.positionVariance;
+
+                                    interactionDestination.regionId = region.Id;
+
+                                    interactionDestination.terrainId = GetTerrain(interactionDestination.regionId, interactionDestination.positionX, interactionDestination.positionZ);
+                                    interactionDestination.terrainTileId = GetTerrainTile(interactionDestination.terrainId, interactionDestination.positionX, interactionDestination.positionZ);
+
+                                    interactionDestination.freeRotation = interactionDestinationSource.freeRotation;
+
+                                    interactionDestination.rotationX = interactionDestinationSource.rotationX;
+                                    interactionDestination.rotationY = interactionDestinationSource.rotationY;
+                                    interactionDestination.rotationZ = interactionDestinationSource.rotationZ;
+
+                                    interactionDestination.animation = interactionDestinationSource.animation;
+                                    interactionDestination.patience = interactionDestinationSource.patience;
+
+                                    interactionDestinationList.Add(interactionDestination);
+                                }
 
                                 var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
 
@@ -1492,7 +1570,23 @@ static public class Fixtures
                     var randomPosition = new Vector3(Random.Range(0, (regionSize - 1)), 0, Random.Range(0, (regionSize - 1)));
                     var rotation = new Vector3(0, 180, 0);
 
-                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomPosition, rotation);
+                    var randomDestinationList = new List<InteractionDestination>()
+                    {
+                        new InteractionDestination()
+                        {
+                            positionX = randomPosition.x,
+                            positionY = randomPosition.y,
+                            positionZ = randomPosition.z,
+
+                            rotationX = 0,
+                            rotationY = 180,
+                            rotationZ = 0,
+
+                            positionVariance = 0
+                        }
+                    };
+
+                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
                 }
             }
         }
@@ -1682,10 +1776,11 @@ static public class Fixtures
 
             foreach (Region phaseRegionSource in phaseRegionSourceList)
             {
-                var interactionIdList = interactionList.Where(x => x.regionId == phaseRegionSource.Id).Select(x => x.taskId).ToList();
-                var taskSourceIdList = taskList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.worldInteractableId).ToList();
-                var worldInteractableSourceList = worldInteractableList.Where(x => taskSourceIdList.Contains(x.Id)).Distinct().ToList();
-
+                var interactionIdList = interactionDestinationList.Where(x => x.regionId == phaseRegionSource.Id).Select(x => x.interactionId).ToList();
+                var taskIdList = interactionList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.taskId).ToList();
+                var worldInteractableIdList = taskList.Where(x => taskIdList.Contains(x.Id)).Select(x => x.worldInteractableId).ToList();
+                var worldInteractableSourceList = worldInteractableList.Where(x => worldInteractableIdList.Contains(x.Id)).Distinct().ToList();
+                
                 foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
                 {
                     LoadWorldInteractableTaskSaves(worldInteractableSource, phaseSave);

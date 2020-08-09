@@ -32,14 +32,14 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
         
+        nameText.text = PhaseData.interactableName;
+        locationText.text = PhaseData.locationName;
+        timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
+
         var regionData = SegmentController.DataController.DataList.Cast<RegionElementData>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Party;
 
         editButton.Path = SegmentController.EditorController.PathController.route.path;
-
-        nameText.text = PhaseData.interactableName;
-        locationText.text = PhaseData.locationName;
-        timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
 
         editButton.data = new DataElement.Data(SegmentController.DataController, regionData);
         buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);

@@ -144,10 +144,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         
         switch(elementData.DataType)
         {
-            case Enums.DataType.Interaction:
+            case Enums.DataType.InteractionDestination:
 
-                var interactionData = (InteractionElementData)elementData;
-                elementPosition = new Vector3(interactionData.PositionX, interactionData.PositionY, -interactionData.PositionZ);
+                var interactionDestinationData = (InteractionDestinationElementData)elementData;
+                elementPosition = new Vector3(interactionDestinationData.PositionX, interactionDestinationData.PositionY, -interactionDestinationData.PositionZ);
 
                 break;
 

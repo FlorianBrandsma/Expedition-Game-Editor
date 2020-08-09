@@ -63,8 +63,6 @@ public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegmen
         stamina = interactableData.Stamina;
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         staminaInputNumber.Value = Stamina;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class WorldInteractionEditor : MonoBehaviour, IEditor
+public class InteractionDestinationEditor : MonoBehaviour, IEditor
 {
-    public InteractionElementData InteractionData { get { return (InteractionElementData)Data.elementData; } }
+    public InteractionDestinationElementData InteractionDestinationData { get { return (InteractionDestinationElementData)Data.elementData; } }
 
     private List<SegmentController> editorSegments = new List<SegmentController>();
 
@@ -16,7 +16,7 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
 
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(InteractionData).Concat(new[] { InteractionData }).Distinct().ToList(); }
+        get { return SelectionElementManager.FindElementData(InteractionDestinationData).Concat(new[] { InteractionDestinationData }).Distinct().ToList(); }
     }
 
     public List<IElementData> ElementDataList
@@ -61,12 +61,12 @@ public class WorldInteractionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        InteractionData.Update();
+        InteractionDestinationData.Update();
 
         ElementDataList.ForEach(x =>
         {
-            if (((GeneralData)x).Equals(InteractionData))
-                x.Copy(InteractionData);
+            if (((GeneralData)x).Equals(InteractionDestinationData))
+                x.Copy(InteractionDestinationData);
             else
                 x.Update();
 

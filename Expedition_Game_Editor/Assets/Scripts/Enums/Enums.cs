@@ -28,6 +28,7 @@ public class Enums
         WorldInteractable,
         Task,
         Interaction,
+        InteractionDestination,
         Outcome,
         EditorWorld,
         Game,
@@ -37,6 +38,7 @@ public class Enums
         GameTerrainTile,
         GameAtmosphere,
         GameInteraction,
+        GameInteractionDestination,
         GameWorldInteractable,
         GameWorldObject,
         GamePartyMember,
@@ -101,13 +103,13 @@ public class Enums
         Base,
         Phase,
         Party,
-        Interaction,
+        InteractionDestination,
         Game
     }
 
     public enum WorldSelectionType
     {
-        Interaction,
+        InteractionDestination,
         Object,
         Party
     }

@@ -26,6 +26,8 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public string headerText;
 
+    public int autoSelectId = 0;
+
     private IDataController dataController;
     
     public IDataController DataController
@@ -82,6 +84,6 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public void AutoSelectElement()
     {
-        listManager.AutoSelectElement();
+        listManager.AutoSelectElement(autoSelectId);
     }  
 }

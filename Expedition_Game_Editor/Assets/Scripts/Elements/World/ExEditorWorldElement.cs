@@ -51,17 +51,17 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
         switch (EditorElement.DataElement.GeneralData.DataType)
         {
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
-            case Enums.DataType.Interaction:        SetInteractionElement();        break;
-            case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
-            case Enums.DataType.Phase:              SetPartyElement();              break;
+            case Enums.DataType.WorldInteractable:      SetWorldInteractableElement();      break;
+            case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
+            case Enums.DataType.WorldObject:            SetWorldObjectElement();            break;
+            case Enums.DataType.Phase:                  SetPartyElement();                  break;
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.GeneralData.DataType);    break;
         }
 
         transform.localPosition     = new Vector3(position.x, position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
-        transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
+        transform.localScale        = new Vector3(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     }
 
     private void SetWorldInteractableElement()
@@ -79,9 +79,9 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         SetObjectGraphic();
     }
 
-    private void SetInteractionElement()
+    private void SetInteractionDestinationElement()
     {
-        var elementData = (InteractionElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (InteractionDestinationElementData)EditorElement.DataElement.data.elementData;
 
         var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
@@ -89,7 +89,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = 1;
+        scaleMultiplier = elementData.scaleMultiplier;
 
         SetObjectGraphic();
     }

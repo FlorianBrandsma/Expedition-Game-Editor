@@ -38,9 +38,8 @@ public class EditorController : MonoBehaviour
     {
         if (PathController.DataEditor == null) return;
 
-        ResetEditorData();
-
-        //PathController.DataEditor.InitializeEditor();
+        //Probably made as a fix for the cloned element editting issue
+        //ResetEditorData();
 
         PathController.DataEditor.EditorSegments.ForEach(x => 
         {
@@ -54,7 +53,9 @@ public class EditorController : MonoBehaviour
         
         var data = PathController.DataEditor.Data;
 
-        var elementData = data.dataController.DataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
+        //Data controller data list somehow didn't match the data's data list? phase default is still broken
+        var elementData = data.dataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
+        //var elementData = data.dataController.DataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
 
         if (elementData != null)
             data.elementData = elementData;

@@ -59,8 +59,6 @@ public class InteractionInteractionTriggerRangeSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment() { }
 
     public void CloseSegment() { }

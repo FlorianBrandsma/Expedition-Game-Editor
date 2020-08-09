@@ -21,6 +21,7 @@ public class GameWorldDataManager : IDataManager
     private List<DataManager.WorldObjectData> worldObjectDataList;
     private List<DataManager.TaskData> taskDataList;
     private List<DataManager.InteractionData> interactionDataList;
+    private List<DataManager.InteractionDestinationData> interactionDestinationDataList;
 
     private List<DataManager.WorldInteractableData> worldInteractableDataList;
     private List<DataManager.InteractableData> interactableDataList;
@@ -59,6 +60,7 @@ public class GameWorldDataManager : IDataManager
 
         GetWorldObjectData();
 
+        GetInteractionDestinationData();
         GetInteractionData();
         GetTaskData();
         GetWorldInteractableData();
@@ -159,7 +161,13 @@ public class GameWorldDataManager : IDataManager
                 weight = interactableData.weight,
                 speed = interactableData.speed,
                 stamina = interactableData.stamina,
-                
+
+                height = objectGraphicData.height,
+                width = objectGraphicData.width,
+                depth = objectGraphicData.depth,
+
+                scaleMultiplier = interactableData.scaleMultiplier,
+
                 interactionDataList = (
                 from interactionData    in interactionDataList
                 join taskData           in taskDataList on interactionData.taskId equals taskData.Id
@@ -171,8 +179,6 @@ public class GameWorldDataManager : IDataManager
                     Index = interactionData.Index,
                     
                     taskId = interactionData.taskId,
-                    regionId = interactionData.regionId,
-                    terrainTileId = interactionData.terrainTileId,
 
                     isDefault = interactionData.isDefault,
 
@@ -195,24 +201,36 @@ public class GameWorldDataManager : IDataManager
                     cancelDelayOnMovement = interactionData.cancelDelayOnMovement,
                     cancelDelayOnHit = interactionData.cancelDelayOnHit,
 
-                    positionX = interactionData.positionX,
-                    positionY = interactionData.positionY,
-                    positionZ = interactionData.positionZ,
-
-                    rotationX = interactionData.rotationX,
-                    rotationY = interactionData.rotationY,
-                    rotationZ = interactionData.rotationZ,
-
-                    scaleMultiplier = interactableData.scaleMultiplier,
-
-                    animation = interactionData.animation,
-
                     objectiveId = taskData.objectiveId,
                     worldInteractableId = taskData.worldInteractableId,
 
-                    height = objectGraphicData.height,
-                    width = objectGraphicData.width,
-                    depth = objectGraphicData.depth
+                    interactionDestinationDataList = (
+                    from interactionDestinationData in interactionDestinationDataList
+                    where interactionData.Id == interactionDestinationData.interactionId
+                    select new GameInteractionDestinationElementData()
+                    {
+                        Id = interactionDestinationData.Id,
+                        
+                        regionId = interactionDestinationData.regionId,
+                        terrainId = interactionDestinationData.terrainId,
+                        terrainTileId = interactionDestinationData.terrainTileId,
+
+                        positionX = interactionDestinationData.positionX,
+                        positionY = interactionDestinationData.positionY,
+                        positionZ = interactionDestinationData.positionZ,
+
+                        positionVariance = interactionDestinationData.positionVariance,
+
+                        rotationX = interactionDestinationData.rotationX,
+                        rotationY = interactionDestinationData.rotationY,
+                        rotationZ = interactionDestinationData.rotationZ,
+
+                        freeRotation = interactionDestinationData.freeRotation,
+
+                        animation = interactionDestinationData.animation,
+                        patience = interactionDestinationData.patience
+
+                    }).ToList()
                     
                 }).ToList()
 
@@ -433,21 +451,29 @@ public class GameWorldDataManager : IDataManager
 
         terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
     }
-
-    internal void GetInteractionData()
-    {
-        var interactionSearchParameters = new Search.Interaction();
-        interactionSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
-
-        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
-    }
-
+    
     internal void GetWorldObjectData()
     {
         var worldObjectSearchParameters = new Search.WorldObject();
         worldObjectSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
         worldObjectDataList = dataManager.GetWorldObjectData(worldObjectSearchParameters);
+    }
+
+    internal void GetInteractionDestinationData()
+    {
+        var interactionDestinationSearchParameters = new Search.InteractionDestination();
+        interactionDestinationSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+
+        interactionDestinationDataList = dataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+    }
+
+    internal void GetInteractionData()
+    {
+        var interactionSearchParameters = new Search.Interaction();
+        interactionSearchParameters.id = interactionDestinationDataList.Select(x => x.interactionId).Distinct().ToList();
+
+        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
     }
 
     internal void GetTaskData()

@@ -1,4 +1,6 @@
-﻿public class OutcomeElementData : OutcomeCore, IElementData
+﻿using UnityEngine;
+
+public class OutcomeElementData : OutcomeCore, IElementData
 {
     public DataElement DataElement { get; set; }
 

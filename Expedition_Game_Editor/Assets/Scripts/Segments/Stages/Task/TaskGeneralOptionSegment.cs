@@ -87,8 +87,6 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
     }
 
     public void InitializeSegment() { }
-    
-    private void SetSearchParameters() { }
 
     public void OpenSegment()
     {

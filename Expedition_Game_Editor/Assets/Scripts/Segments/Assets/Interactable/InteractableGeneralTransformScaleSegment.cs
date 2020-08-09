@@ -72,8 +72,6 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         SetSizeValues();

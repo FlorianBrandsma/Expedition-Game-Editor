@@ -147,9 +147,9 @@ public class ActionManager : MonoBehaviour
     {
         scrollRect.enabled = true;
 
-        SetSlider();
-
         scrollRect.horizontalNormalizedPosition = 1f;
+
+        SetSlider();
     }
 
     public void SetSlider()

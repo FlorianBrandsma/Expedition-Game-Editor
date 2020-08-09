@@ -152,7 +152,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
         }
     }
 
-    public void AutoSelectElement()
+    public void AutoSelectElement(int autoSelectId)
     {
         if (Organizer == null) return;
         
@@ -160,7 +160,10 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         if (Display.SelectionType == SelectionManager.Type.Automatic)
         {
-            EditorElement element = List.ElementList.FirstOrDefault();
+            EditorElement element = List.ElementList.Where(x => x.DataElement.data.elementData.Id == autoSelectId).FirstOrDefault();
+
+            if(element == null)
+                element = List.ElementList.FirstOrDefault();
 
             element.InvokeSelection();
         }

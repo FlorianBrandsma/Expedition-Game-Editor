@@ -14,6 +14,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public Text descriptionText;
     public Text timeText;
     public RectTransform iconParent;
+    public RawImage infoIcon;
     public RawImage icon;
     public RawImage iconBase;
     public RectTransform content;
@@ -21,7 +22,9 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     
     private string header;
     private string description;
+    private string infoIconPath;
     private string iconPath;
+    private string iconBasePath;
 
     public EditorElement EditorElement  { get { return GetComponent<EditorElement>(); } }
     private EditorElement ElementChild  { get { return EditorElement.child; } }
@@ -36,20 +39,37 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public int Id                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
     
+    private Texture InfoIconTexture
+    {
+        get { return infoIcon.texture; }
+        set
+        {
+            InitializeIcon();
+
+            infoIcon.gameObject.SetActive(true);
+            infoIcon.texture = value;
+        }
+    }
+
     private Texture IconTexture
     {
         get { return icon.texture; }
         set
         {
-            if (iconType == Enums.IconType.None) return;
-
             InitializeIcon();
 
-            if (iconType == Enums.IconType.Base)
-                iconBase.texture = value;
+            icon.texture = value;
+        }
+    }
 
-            if (iconType == Enums.IconType.Icon)
-                icon.texture = value;
+    private Texture IconBaseTexture
+    {
+        get { return iconBase.texture; }
+        set
+        {
+            InitializeIcon();
+
+            iconBase.texture = value;
         }
     }
 
@@ -104,31 +124,32 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         switch (EditorElement.DataElement.data.dataController.DataType)
         {
-            case Enums.DataType.Chapter:            SetChapterElement();            break;
-            case Enums.DataType.PartyMember:        SetPartyMemberElement();        break;
-            case Enums.DataType.ChapterInteractable:SetChapterInteractableElement();break;
-            case Enums.DataType.ChapterRegion:      SetChapterRegionElement();      break;
-            case Enums.DataType.Phase:              SetPhaseElement();              break;
-            case Enums.DataType.Quest:              SetQuestElement();              break;
-            case Enums.DataType.Objective:          SetObjectiveElement();          break;
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
-            case Enums.DataType.Task:               SetTaskElement();               break;
-            case Enums.DataType.Interaction:        SetInteractionElement();        break;
-            case Enums.DataType.Outcome:            SetOutcomeElement();            break;
-            case Enums.DataType.Region:             SetRegionElement();             break;
-            case Enums.DataType.Atmosphere:         SetAtmosphereElement();         break;
-            case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
-            case Enums.DataType.Item:               SetItemElement();               break;
-            case Enums.DataType.Interactable:       SetInteractableElement();       break;
+            case Enums.DataType.Chapter:                SetChapterElement();                break;
+            case Enums.DataType.PartyMember:            SetPartyMemberElement();            break;
+            case Enums.DataType.ChapterInteractable:    SetChapterInteractableElement();    break;
+            case Enums.DataType.ChapterRegion:          SetChapterRegionElement();          break;
+            case Enums.DataType.Phase:                  SetPhaseElement();                  break;
+            case Enums.DataType.Quest:                  SetQuestElement();                  break;
+            case Enums.DataType.Objective:              SetObjectiveElement();              break;
+            case Enums.DataType.WorldInteractable:      SetWorldInteractableElement();      break;
+            case Enums.DataType.Task:                   SetTaskElement();                   break;
+            case Enums.DataType.Interaction:            SetInteractionElement();            break;
+            case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
+            case Enums.DataType.Outcome:                SetOutcomeElement();                break;
+            case Enums.DataType.Region:                 SetRegionElement();                 break;
+            case Enums.DataType.Atmosphere:             SetAtmosphereElement();             break;
+            case Enums.DataType.ObjectGraphic:          SetObjectGraphicElement();          break;
+            case Enums.DataType.Item:                   SetItemElement();                   break;
+            case Enums.DataType.Interactable:           SetInteractableElement();           break;
 
-            case Enums.DataType.Save:               SetSaveElement();               break;
-            case Enums.DataType.InteractableSave:   SetInteractableSaveElement();   break;
-            case Enums.DataType.ChapterSave:        SetChapterSaveElement();        break;
-            case Enums.DataType.PhaseSave:          SetPhaseSaveElement();          break;
-            case Enums.DataType.QuestSave:          SetQuestSaveElement();          break;
-            case Enums.DataType.ObjectiveSave:      SetObjectiveSaveElement();      break;
-            case Enums.DataType.TaskSave:           SetTaskSaveElement();           break;
-            case Enums.DataType.InteractionSave:    SetInteractionSaveElement();    break;
+            case Enums.DataType.Save:                   SetSaveElement();                   break;
+            case Enums.DataType.InteractableSave:       SetInteractableSaveElement();       break;
+            case Enums.DataType.ChapterSave:            SetChapterSaveElement();            break;
+            case Enums.DataType.PhaseSave:              SetPhaseSaveElement();              break;
+            case Enums.DataType.QuestSave:              SetQuestSaveElement();              break;
+            case Enums.DataType.ObjectiveSave:          SetObjectiveSaveElement();          break;
+            case Enums.DataType.TaskSave:               SetTaskSaveElement();               break;
+            case Enums.DataType.InteractionSave:        SetInteractionSaveElement();        break;
             
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType);  break;
         }
@@ -200,7 +221,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         headerText.text = header;
 
         iconPath        = elementData.tileIconPath;
-        IconTexture     = Resources.Load<Texture2D>(iconPath);
+        IconBaseTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetPhaseElement()
@@ -314,6 +335,27 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         descriptionText.text    = description;
     }
 
+    private void SetInteractionDestinationElement()
+    {
+        var data = EditorElement.DataElement.data;
+        var elementData = (InteractionDestinationElementData)data.elementData;
+
+        header = elementData.locationName;
+        description = elementData.interactableStatus;
+        
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+
+        iconBasePath = elementData.tileIconPath;
+        IconBaseTexture = Resources.Load<Texture2D>(iconBasePath);
+
+        infoIconPath = "Textures/Icons/Status/SelectIcon";
+        InfoIconTexture = Resources.Load<Texture2D>(infoIconPath);
+
+        infoIcon.color = Color.green;
+    }
+
     private void SetOutcomeElement()
     {
         var data = EditorElement.DataElement.data;
@@ -343,7 +385,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         
         idText.text     = elementData.Id.ToString();
         headerText.text = header;
-        IconTexture     = Resources.Load<Texture2D>(iconPath);
+        IconBaseTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetAtmosphereElement()
@@ -547,16 +589,13 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if(timeText != null)
             timeText.text = string.Empty;
         
-        if (iconType != Enums.IconType.None)
-        {
-            iconParent.gameObject.SetActive(false);
+        iconParent.gameObject.SetActive(false);
 
-            if(iconType == Enums.IconType.Base)
-                iconBase.texture = Resources.Load<Texture2D>("Textures/Icons/Nothing");
-
-            if (iconType == Enums.IconType.Icon)
-                icon.texture = Resources.Load<Texture2D>("Textures/Icons/Objects/Nothing");
-        }
+        iconBase.texture = Resources.Load<Texture2D>("Textures/Icons/Nothing");
+        icon.texture = Resources.Load<Texture2D>("Textures/Icons/Objects/Nothing");
+        
+        if (infoIcon != null)
+            infoIcon.gameObject.SetActive(false);
     }
 
     public void ClosePoolable()

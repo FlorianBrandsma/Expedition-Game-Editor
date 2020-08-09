@@ -75,8 +75,6 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         SetSizeValues();

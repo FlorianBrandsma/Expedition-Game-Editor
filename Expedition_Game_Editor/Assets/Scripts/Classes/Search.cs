@@ -233,6 +233,20 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> taskId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class InteractionDestination
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> interactionId = new List<int>();
         public List<int> regionId = new List<int>();
 
         public enum RequestType

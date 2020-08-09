@@ -39,8 +39,6 @@ public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 
     public void InitializeData() { }
 
-    private void SetSearchParameters() { }
-
     public void OpenSegment()
     {
         SegmentController.EnableSegment(false);
