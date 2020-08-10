@@ -47,16 +47,16 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         //The region route only gets added at the end when the action is initialized
         if (path.route.Count < (PathController.route.path.route.Count + 1))
         {
-            int index = (int)RegionDisplayManager.activeDisplay;
+            int index = (int)RegionManager.activeDisplay;
 
             regionRoute.controller = index;
 
-            if (RegionDisplayManager.activeDisplay == RegionDisplayManager.Display.World)
+            if (RegionManager.activeDisplay == RegionManager.Display.World)
             {
                 path.Add(regionRoute);
             }
                 
-            if (RegionDisplayManager.regionType == Enums.RegionType.InteractionDestination)
+            if (RegionManager.regionType == Enums.RegionType.InteractionDestination)
             {
                 //Must copy route or the source will have its values changed
                 var interactionDestinationRoute = PathController.route.path.FindLastRoute(Enums.DataType.InteractionDestination).Copy();
@@ -66,7 +66,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
                 path.Add(interactionDestinationRoute);
 
-            } else if (RegionDisplayManager.regionType == Enums.RegionType.Party) {
+            } else if (RegionManager.regionType == Enums.RegionType.Party) {
 
                 var phaseRoute = PathController.route.path.FindLastRoute(Enums.DataType.Phase).Copy();
 
@@ -87,14 +87,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         InitializeStructureData();
 
         var regionData = (RegionElementData)regionRoute.data.elementData;
-        RegionDisplayManager.regionType = regionData.type;
+        RegionManager.regionType = regionData.type;
 
         if (PathController.route.path.type == Path.Type.New)
         {
-            if (RegionDisplayManager.regionType == Enums.RegionType.InteractionDestination || RegionDisplayManager.regionType == Enums.RegionType.Party)
-                RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.World;
+            if (RegionManager.regionType == Enums.RegionType.InteractionDestination || RegionManager.regionType == Enums.RegionType.Party)
+                RegionManager.activeDisplay = RegionManager.Display.World;
             else
-                RegionDisplayManager.activeDisplay = RegionDisplayManager.Display.Tiles;
+                RegionManager.activeDisplay = RegionManager.Display.Tiles;
         }
     }
 

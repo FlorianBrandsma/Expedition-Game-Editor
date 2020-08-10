@@ -162,10 +162,6 @@ public class GameWorldDataManager : IDataManager
                 speed = interactableData.speed,
                 stamina = interactableData.stamina,
 
-                height = objectGraphicData.height,
-                width = objectGraphicData.width,
-                depth = objectGraphicData.depth,
-
                 scaleMultiplier = interactableData.scaleMultiplier,
 
                 interactionDataList = (

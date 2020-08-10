@@ -13,19 +13,19 @@ public class RegionDisplayAction : MonoBehaviour, IAction
 
     public void SetAction(Path path)
     {
-        RegionDisplayManager.activeDisplay = (RegionDisplayManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
+        RegionManager.activeDisplay = (RegionManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
 
         var dropdown = ActionManager.instance.AddDropdown(actionProperties);
-        dropdown.Dropdown.captionText.text = Enum.GetName(typeof(RegionDisplayManager.Display), RegionDisplayManager.activeDisplay);
+        dropdown.Dropdown.captionText.text = Enum.GetName(typeof(RegionManager.Display), RegionManager.activeDisplay);
 
-        foreach (var display in Enum.GetValues(typeof(RegionDisplayManager.Display)))
+        foreach (var display in Enum.GetValues(typeof(RegionManager.Display)))
         {
             dropdown.Dropdown.options.Add(new Dropdown.OptionData(display.ToString()));
         }
 
-        dropdown.Dropdown.value = (int)RegionDisplayManager.activeDisplay;
+        dropdown.Dropdown.value = (int)RegionManager.activeDisplay;
 
-        dropdown.Dropdown.onValueChanged.AddListener(delegate { RegionDisplayManager.SetDisplay(dropdown.Dropdown.value, pathController.route.path); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { RegionManager.SetDisplay(dropdown.Dropdown.value, pathController.route.path); });
     }
 
     public void CloseAction() {}

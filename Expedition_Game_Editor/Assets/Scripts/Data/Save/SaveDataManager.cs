@@ -20,6 +20,7 @@ public class SaveDataManager : IDataManager
 
     private List<DataManager.RegionData> regionDataList;
     private List<DataManager.TerrainData> terrainDataList;
+    private List<DataManager.TileSetData> tileSetDataList;
 
     private List<DataManager.PhaseData> phaseDataList;
     private List<DataManager.ChapterData> chapterDataList;
@@ -46,22 +47,23 @@ public class SaveDataManager : IDataManager
 
         GetRegionData();
         GetTerrainData();
-
+        GetTileSetData();
+        
         GetPhaseData();
         GetChapterData();
 
         var list = (from saveData in saveDataList
                     join playerSaveData     in playerSaveDataList       on saveData.Id                      equals playerSaveData.saveId
 
-                    join partyMemberData in partyMemberDataList on playerSaveData.partyMemberId equals partyMemberData.Id
-                    join interactableData in interactableDataList on partyMemberData.interactableId equals interactableData.Id
-                    join objectGraphicData in objectGraphicDataList on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData in iconDataList on objectGraphicData.iconId equals iconData.Id
+                    join partyMemberData    in partyMemberDataList      on playerSaveData.partyMemberId     equals partyMemberData.Id
+                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
 
-                    join regionData in regionDataList on playerSaveData.regionId equals regionData.Id
+                    join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.Id
 
-                    join phaseData in phaseDataList on regionData.phaseId equals phaseData.Id
-                    join chapterData in chapterDataList on phaseData.chapterId equals chapterData.Id
+                    join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.Id
+                    join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.Id
                     select new SaveElementData()
                     {
                         Id = saveData.Id,
@@ -70,7 +72,7 @@ public class SaveDataManager : IDataManager
                         objectGraphicIconPath = iconData.path,
 
                         name = "Ch. " + (chapterData.Index + 1) + ": " + chapterData.name,
-                        locationName = LocationName(regionData.Id, playerSaveData.positionX, playerSaveData.positionY, playerSaveData.positionZ),
+                        locationName = LocationName(regionData.Id, playerSaveData.positionX, playerSaveData.positionZ),
 
                         time = TimeManager.TimeFromSeconds(playerSaveData.playedSeconds)
 
@@ -156,6 +158,14 @@ public class SaveDataManager : IDataManager
         terrainDataList = dataManager.GetTerrainData(searchParameters);
     }
 
+    private void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+
+        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+    }
+
     internal void GetPhaseData()
     {
         var searchParameters = new Search.Phase();
@@ -172,11 +182,20 @@ public class SaveDataManager : IDataManager
         chapterDataList = dataManager.GetChapterData(searchParameters);
     }
 
-    internal string LocationName(int regionId, float positionX, float positionY, float positionZ)
+    internal string LocationName(int regionId, float positionX, float positionZ)
     {
-        var region = regionDataList.Where(x => x.Id == regionId).First();
+        var region = regionDataList.Where(x => x.Id == regionId).First();   
+        var tileSet = tileSetDataList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainDataList.Where(x => x.regionId == region.Id).Distinct().ToList();
 
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+        var terrainSize = region.terrainSize * tileSet.tileSize;
+
+        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / terrainSize),
+                                             Mathf.Floor(positionZ / terrainSize));
+
+        var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
+
+        var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
 
         var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
 

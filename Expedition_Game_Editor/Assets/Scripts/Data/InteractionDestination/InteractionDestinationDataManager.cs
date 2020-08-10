@@ -69,7 +69,8 @@ public class InteractionDestinationDataManager : IDataManager
                                       select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
 
                     join leftJoin in (from regionData in regionDataList
-                                      select new { regionData }) on interactionDestinationData.regionId equals leftJoin.regionData.Id into regionData
+                                      join terrainData in terrainDataList on regionData.Id equals terrainData.regionId
+                                      select new { regionData, terrainData }) on interactionDestinationData.regionId equals leftJoin.regionData.Id into regionData
 
                     join leftJoin in (from terrainTileData in terrainTileDataList
                                       join tileData in tileDataList on terrainTileData.tileId equals tileData.Id
@@ -120,7 +121,9 @@ public class InteractionDestinationDataManager : IDataManager
 
                         scaleMultiplier = interactableData.scaleMultiplier,
 
-                        locationName = LocationName(interactionDestinationData.regionId, interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ),
+                        locationName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name + ", " + 
+                                                                             regionData.FirstOrDefault().terrainData.name : "-",
+
                         interactableStatus = "Idle, " + interactableData.name,
 
                         tileIconPath = tileData.FirstOrDefault() != null ? tileData.First().tileData.iconPath : "Textures/Icons/Nothing",
@@ -274,17 +277,6 @@ public class InteractionDestinationDataManager : IDataManager
         tileSearchParameters.id = terrainTileDataList.Select(x => x.tileId).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
-    }
-
-    internal string LocationName(int regionId, float positionX, float positionY, float positionZ)
-    {
-        var region = regionDataList.Where(x => x.Id == regionId).First();
-
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
-
-        var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
-
-        return region.name + ", " + terrain.name;
     }
 
     internal class InteractionDestinationData : GeneralData

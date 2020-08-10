@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-static public class RegionDisplayManager
+static public class RegionManager
 {
     public enum Display
     {

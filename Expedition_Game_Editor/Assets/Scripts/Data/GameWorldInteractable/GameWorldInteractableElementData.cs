@@ -28,10 +28,6 @@ public class GameWorldInteractableElementData : GeneralData, IElementData
     public float speed;
     public float stamina;
 
-    public float height;
-    public float width;
-    public float depth;
-
     public float scaleMultiplier;
 
     public List<GameInteractionElementData> interactionDataList;

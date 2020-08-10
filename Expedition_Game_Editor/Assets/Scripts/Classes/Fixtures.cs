@@ -1210,12 +1210,11 @@ static public class Fixtures
 
                     regionList.Add(region);
 
-                    //Get all world interactables belonging to this region
-                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.regionId == regionSource.Id);
-                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.interactionId).Contains(x.Id));
-                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id));
-                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
-
+                    //Get all world interactables belonging to this region                
+                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.regionId == regionSource.Id).ToList();
+                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.interactionId).Contains(x.Id)).ToList();
+                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id)).ToList();
+                    
                     var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
                     foreach (Terrain terrainSource in terrainSourceList)
@@ -1260,6 +1259,8 @@ static public class Fixtures
                         terrainList.Add(terrain);
                     }
 
+                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
+
                     foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
                     {
                         var worldInteractable = new WorldInteractable();
@@ -1298,7 +1299,7 @@ static public class Fixtures
 
                                 interaction.Id = interactionId;
                                 interaction.taskId = task.Id;
-                                
+
                                 interaction.Index = interactionSource.Index;
 
                                 interaction.isDefault = interactionSource.isDefault;
@@ -1321,13 +1322,13 @@ static public class Fixtures
                                 interaction.cancelDelayOnInput = interactionSource.cancelDelayOnInput;
                                 interaction.cancelDelayOnMovement = interactionSource.cancelDelayOnMovement;
                                 interaction.cancelDelayOnHit = interactionSource.cancelDelayOnHit;
-                                
+
                                 interaction.publicNotes = interactionSource.publicNotes;
                                 interaction.privateNotes = interactionSource.privateNotes;
 
                                 var interactionDestinationSourceList = interactionDestinationList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
-                                foreach(InteractionDestination interactionDestinationSource in interactionDestinationSourceList)
+                                foreach (InteractionDestination interactionDestinationSource in interactionDestinationSourceList)
                                 {
                                     var interactionDestination = new InteractionDestination();
 
