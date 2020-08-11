@@ -28,9 +28,9 @@ public class InteractionDestinationElementData : InteractionDestinationCore, IEl
     public float scaleMultiplier;
 
     public string tileIconPath;
+    public float tileSize;
 
-    public float localPositionX;
-    public float localPositionZ;
+    public Vector2 localPosition;
 
     public string locationName;
     public string interactableStatus;
@@ -92,10 +92,10 @@ public class InteractionDestinationElementData : InteractionDestinationCore, IEl
         elementData.scaleMultiplier = scaleMultiplier;
 
         elementData.tileIconPath = tileIconPath;
+        elementData.tileSize = tileSize;
 
-        elementData.localPositionX = localPositionX;
-        elementData.localPositionZ = localPositionZ;
-
+        elementData.localPosition = localPosition;
+        
         elementData.locationName = locationName;
         elementData.interactableStatus = interactableStatus;
 
@@ -136,10 +136,10 @@ public class InteractionDestinationElementData : InteractionDestinationCore, IEl
         scaleMultiplier = interactionDestinationDataSource.scaleMultiplier;
 
         tileIconPath = interactionDestinationDataSource.tileIconPath;
+        tileSize = interactionDestinationDataSource.tileSize;
 
-        localPositionX = interactionDestinationDataSource.localPositionX;
-        localPositionZ = interactionDestinationDataSource.localPositionZ;
-
+        localPosition = interactionDestinationDataSource.localPosition;
+        
         locationName = interactionDestinationDataSource.locationName;
         interactableStatus = interactionDestinationDataSource.interactableStatus;
 

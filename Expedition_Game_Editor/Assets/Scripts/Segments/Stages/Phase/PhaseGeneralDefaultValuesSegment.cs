@@ -7,12 +7,7 @@ using System.Linq;
 public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 {
     private PhaseElementData PhaseData { get { return (PhaseElementData)DataEditor.Data.elementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
+    
     public Text nameText;
     public Text stateText;
     public Text locationText;
@@ -20,9 +15,10 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 
     public DataElement editButton;
     public RawImage buttonIcon;
-    #endregion
 
-    #region Data Methods
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+
     private void InitializeEditButton()
     {
         var searchProperties = new SearchProperties(Enums.DataType.Region);
@@ -32,10 +28,6 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         
         SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
         
-        nameText.text = PhaseData.interactableName;
-        locationText.text = PhaseData.locationName;
-        timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
-
         var regionData = SegmentController.DataController.DataList.Cast<RegionElementData>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
         regionData.type = Enums.RegionType.Party;
 
@@ -45,9 +37,6 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);
     }
 
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -58,6 +47,10 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
+        nameText.text = PhaseData.interactableName;
+        locationText.text = PhaseData.locationName;
+        timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
+
         InitializeEditButton();
     }
 
@@ -68,5 +61,4 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
     public void CloseSegment() { }
 
     public void SetSearchResult(DataElement dataElement) { }
-    #endregion
 }

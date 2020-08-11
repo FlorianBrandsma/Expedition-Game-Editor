@@ -93,7 +93,7 @@ public class PhaseDataManager : IDataManager
                         depth = partyMemberData.First().objectGraphicData.depth,
 
                         interactableName = partyMemberData.First().interactableData.name,
-                        locationName = LocationName(phaseData.defaultRegionId, phaseData.defaultPositionX, phaseData.defaultPositionY, phaseData.defaultPositionZ)
+                        locationName = RegionManager.LocationName(phaseData.defaultRegionId, phaseData.defaultPositionX, phaseData.defaultPositionZ, regionDataList, tileSetDataList, terrainDataList)
                         
                     }).OrderBy(x => x.Index).ToList();
 
@@ -214,17 +214,6 @@ public class PhaseDataManager : IDataManager
         var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
 
         return terrainTileId;
-    }
-
-    internal string LocationName(int regionId, float positionX, float positionY, float positionZ)
-    {
-        var region = regionDataList.Where(x => x.Id == regionId).First();
-
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
-
-        var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
-        
-        return region.name + ", " + terrain.name;
     }
 
     internal class PhaseData : GeneralData

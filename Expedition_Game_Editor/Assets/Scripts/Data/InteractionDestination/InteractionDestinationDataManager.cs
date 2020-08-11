@@ -24,7 +24,8 @@ public class InteractionDestinationDataManager : IDataManager
     private List<DataManager.TerrainData> terrainDataList;
     private List<DataManager.TerrainTileData> terrainTileDataList;
     private List<DataManager.TileData> tileDataList;
-    
+    private List<DataManager.TileSetData> tileSetDataList;
+
     public InteractionDestinationDataManager(IDataController dataController)
     {
         DataController = dataController;
@@ -50,9 +51,9 @@ public class InteractionDestinationDataManager : IDataManager
 
         GetRegionData();
         GetTerrainData();
-
         GetTerrainTileData();
         GetTileData();
+        GetTileSetData();
 
         var list = (from interactionDestinationData in interactionDestinationDataList
                     join interactionData            in interactionDataList          on interactionDestinationData.interactionId equals interactionData.Id
@@ -62,19 +63,17 @@ public class InteractionDestinationDataManager : IDataManager
                     join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
                     join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
 
+                    join regionData                 in regionDataList               on interactionDestinationData.regionId      equals regionData.Id
+                    join terrainData                in terrainDataList              on regionData.Id                            equals terrainData.regionId
+                    join terrainTileData            in terrainTileDataList          on terrainData.Id                           equals terrainTileData.terrainId
+                    join tileData                   in tileDataList                 on terrainTileData.tileId                   equals tileData.Id
+                    join tileSetData                in tileSetDataList              on regionData.tileSetId                     equals tileSetData.Id
+
                     join leftJoin in (from objectiveData in objectiveDataList
                                       select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
 
                     join leftJoin in (from questData in questDataList
                                       select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
-
-                    join leftJoin in (from regionData in regionDataList
-                                      join terrainData in terrainDataList on regionData.Id equals terrainData.regionId
-                                      select new { regionData, terrainData }) on interactionDestinationData.regionId equals leftJoin.regionData.Id into regionData
-
-                    join leftJoin in (from terrainTileData in terrainTileDataList
-                                      join tileData in tileDataList on terrainTileData.tileId equals tileData.Id
-                                      select new { terrainTileData, tileData }) on interactionDestinationData.terrainTileId equals leftJoin.terrainTileData.Id into tileData
 
                     select new InteractionDestinationElementData()
                     {
@@ -121,13 +120,15 @@ public class InteractionDestinationDataManager : IDataManager
 
                         scaleMultiplier = interactableData.scaleMultiplier,
 
-                        locationName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.name + ", " + 
-                                                                             regionData.FirstOrDefault().terrainData.name : "-",
+                        tileIconPath = tileData.iconPath,
+                        tileSize = tileSetData.tileSize,
+
+                        localPosition = RegionManager.PositionOnTile(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize, interactionDestinationData.positionX, interactionDestinationData.positionZ),
+
+                        locationName = regionData.name + ", " + terrainData.name,
 
                         interactableStatus = "Idle, " + interactableData.name,
-
-                        tileIconPath = tileData.FirstOrDefault() != null ? tileData.First().tileData.iconPath : "Textures/Icons/Nothing",
-
+                        
                         isDefault = interactionData.isDefault,
 
                         startTime = interactionData.startTime,
@@ -277,6 +278,14 @@ public class InteractionDestinationDataManager : IDataManager
         tileSearchParameters.id = terrainTileDataList.Select(x => x.tileId).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
+    }
+
+    private void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+
+        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
     }
 
     internal class InteractionDestinationData : GeneralData

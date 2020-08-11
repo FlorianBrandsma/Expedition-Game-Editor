@@ -9,7 +9,12 @@ public class InteractionElementData : InteractionCore, IElementData
     {
         DataType = Enums.DataType.Interaction;
     }
-    
+
+    public string objectGraphicIconPath;
+
+    public string interactableName;
+    public string locationName;
+
     public bool timeConflict;  
     public List<int> defaultTimes;
 
@@ -44,6 +49,11 @@ public class InteractionElementData : InteractionCore, IElementData
     {
         var elementData = new InteractionElementData();
 
+        elementData.objectGraphicIconPath = objectGraphicIconPath;
+
+        elementData.interactableName = interactableName;
+        elementData.locationName = locationName;
+
         elementData.timeConflict = timeConflict;
         elementData.defaultTimes = defaultTimes.ToList();
 
@@ -57,6 +67,11 @@ public class InteractionElementData : InteractionCore, IElementData
         base.Copy(dataSource);
 
         var interactionDataSource = (InteractionElementData)dataSource;
+
+        objectGraphicIconPath = interactionDataSource.objectGraphicIconPath;
+
+        interactableName = interactionDataSource.interactableName;
+        locationName = interactionDataSource.locationName;
 
         timeConflict = interactionDataSource.timeConflict;
         defaultTimes = interactionDataSource.defaultTimes.ToList();

@@ -352,7 +352,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         infoIconPath = "Textures/Icons/Status/SelectIcon";
         InfoIconTexture = Resources.Load<Texture2D>(infoIconPath);
-
+        
+        var offset = 0.6f;
+        var iconScale = ((iconParent.rect.width * offset) / elementData.tileSize);
+        
+        infoIcon.transform.localPosition = elementData.localPosition * iconScale;
+        
         infoIcon.color = Color.green;
     }
 
