@@ -55,7 +55,7 @@ public class DataManager
 
             data.name = objectGraphic.name;
             data.path = objectGraphic.path;
-            
+
             data.height = objectGraphic.height;
             data.width = objectGraphic.width;
             data.depth = objectGraphic.depth;

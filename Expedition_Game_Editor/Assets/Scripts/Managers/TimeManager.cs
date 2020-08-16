@@ -78,6 +78,10 @@ public class TimeManager : MonoBehaviour
     private int activeHour;
     private int activeTime;
     
+    static public List<int> interactionTimeList;
+    static public List<GameInteractionElementData> activeInteractionList;
+    static public List<GameWorldInteractableElementData> activeWorldInteractableList;
+
     public float TimeScale
     {
         get { return Time.timeScale; }
@@ -111,15 +115,17 @@ public class TimeManager : MonoBehaviour
             SetLighting(activeTime);
         }
     }
-
+    
     private int ActiveHour
     {
         get { return activeHour; }
         set
         {
             if (activeHour == value) return;
-            
-            GameManager.instance.CheckTime();
+
+            Debug.Log("Check time");
+
+            GameManager.instance.UpdateWorld();
 
             activeHour = value;
         }
@@ -138,10 +144,12 @@ public class TimeManager : MonoBehaviour
     {
         if (active)
         {
-            float counter = 1 * Time.deltaTime * gameTimeSpeed;
-            
-            if (ActiveTime + Mathf.FloorToInt(counter) < (hoursInDay * secondsInHour) - 1)
-                ActiveTime += Mathf.FloorToInt(counter);
+            float counter = 1 * Time.deltaTime;
+
+            float gameTimeCounter = counter * gameTimeSpeed;
+
+            if (ActiveTime + Mathf.FloorToInt(gameTimeCounter) < (hoursInDay * secondsInHour) - 1)
+                ActiveTime += Mathf.FloorToInt(gameTimeCounter);
             else
                 ActiveTime = 0;
 
@@ -156,6 +164,26 @@ public class TimeManager : MonoBehaviour
 
                 ActiveHour = ActiveTime / secondsInHour;
             }
+
+            activeWorldInteractableList.Where(x => x.ActiveInteraction.arrived).ToList().ForEach(x =>
+            {
+                if (x.ActiveInteraction.interactionDestinationDataList.Count > 1 || x.ActiveInteraction.currentPatience > 0)
+                {
+                    x.ActiveInteraction.currentPatience -= counter;
+
+                    if (x.ActiveInteraction.currentPatience <= 0)
+                    {
+                        x.ActiveInteraction.ActiveDestinationIndex++;
+
+                        //if (x.DataElement != null)
+                        //    Debug.Log(x.DataElement);
+
+                        GameManager.instance.UpdateWorldInteractable(x);
+
+                        //Debug.Log("Move " + x.interactableName);
+                    }
+                }
+            });
         }
     }
     
@@ -167,6 +195,11 @@ public class TimeManager : MonoBehaviour
     public void InitializeGameTime(int time)
     {
         ActiveTime = time;
+    }
+
+    public void ResetInteractionTimes()
+    {
+        interactionTimeList = new List<int>();
     }
 
     public void PauseTime(bool pause)
@@ -189,9 +222,10 @@ public class TimeManager : MonoBehaviour
     {
         activeTime = time;
 
-        SetLighting(time);
-
-        GameManager.instance.CheckTime();
+        SetLighting(activeTime);
+        
+        if(interactionTimeList.Contains(activeTime))
+            GameManager.instance.UpdateWorld();
     }
 
     public void SetLighting()
@@ -360,5 +394,15 @@ public class TimeManager : MonoBehaviour
                         dataList.Any(x => changedTimeFrame.CheckTimeConflict(x));
 
         return conflict;
+    }
+
+    static public void AddInteractionTimeEvent(GameInteractionElementData interactionData)
+    {
+        //Add new time event to list if time does not yet exist
+        if (!interactionTimeList.Contains(interactionData.startTime))
+            interactionTimeList.Add(interactionData.startTime);
+
+        if (!interactionTimeList.Contains(interactionData.endTime + 1))
+            interactionTimeList.Add(interactionData.endTime + 1);
     }
 }

@@ -37,7 +37,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     public void InitializeAction(Path path)
     {
-        structureList = path.route.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
+        structureList = path.routeList.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
                                   .Select(x => x.data.dataController.DataType).Distinct().ToList();
         
         regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
@@ -45,7 +45,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         InitializeData();
 
         //The region route only gets added at the end when the action is initialized
-        if (path.route.Count < (PathController.route.path.route.Count + 1))
+        if (path.routeList.Count < (PathController.route.path.routeList.Count + 1))
         {
             int index = (int)RegionManager.activeDisplay;
 

@@ -850,6 +850,30 @@ static public class Fixtures
                     rotationZ = 0,
 
                     positionVariance = 0
+                },
+                new InteractionDestination()
+                {
+                    positionX = 230f,
+                    positionY = 0.2f,
+                    positionZ = 235f,
+
+                    rotationX = 0,
+                    rotationY = 130,
+                    rotationZ = 0,
+
+                    positionVariance = 0
+                },
+                new InteractionDestination()
+                {
+                    positionX = 223f,
+                    positionY = 0.2f,
+                    positionZ = 246f,
+
+                    rotationX = 0,
+                    rotationY = 130,
+                    rotationZ = 0,
+
+                    positionVariance = 0
                 }
             };
 
@@ -863,6 +887,8 @@ static public class Fixtures
                     positionX = 240.625f,
                     positionY = 0f,
                     positionZ = 242.375f,
+
+                    freeRotation = true,
 
                     rotationX = 0,
                     rotationY = 255,

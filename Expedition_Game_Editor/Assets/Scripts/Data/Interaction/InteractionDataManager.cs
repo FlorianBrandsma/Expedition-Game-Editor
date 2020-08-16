@@ -55,8 +55,8 @@ public class InteractionDataManager : IDataManager
 
                     join leftJoin in (from interactionDestinationData   in interactionDestinationDataList
                                       join regionData                   in regionDataList   on interactionDestinationData.regionId  equals regionData.Id
-                                      join terrainData                  in terrainDataList  on regionData.Id                        equals terrainData.regionId
-                                      select new { interactionDestinationData, regionData, terrainData }) on interactionData.Id equals leftJoin.interactionDestinationData.interactionId into interactionDestinationData
+                                      join tileSetData                  in tileSetDataList  on regionData.tileSetId                 equals tileSetData.Id
+                                      select new { interactionDestinationData, regionData, tileSetData }) on interactionData.Id equals leftJoin.interactionDestinationData.interactionId into interactionDestinationData
 
                     select new InteractionElementData()
                     {
@@ -91,10 +91,11 @@ public class InteractionDataManager : IDataManager
                         objectGraphicIconPath = iconData.path,
 
                         interactableName = interactableData.name,
-                        locationName = interactionDestinationData.FirstOrDefault() != null ? RegionManager.LocationName(interactionDestinationData.FirstOrDefault().regionData.Id, 
-                                                                                                                        interactionDestinationData.FirstOrDefault().interactionDestinationData.positionX, 
-                                                                                                                        interactionDestinationData.FirstOrDefault().interactionDestinationData.positionZ, 
-                                                                                                                        regionDataList, tileSetDataList, terrainDataList) : "-",
+                        locationName = interactionDestinationData.FirstOrDefault() != null ? RegionManager.LocationName(interactionDestinationData.FirstOrDefault().interactionDestinationData.positionX, 
+                                                                                                                        interactionDestinationData.FirstOrDefault().interactionDestinationData.positionZ,
+                                                                                                                        interactionDestinationData.FirstOrDefault().tileSetData.tileSize,
+                                                                                                                        interactionDestinationData.FirstOrDefault().regionData, 
+                                                                                                                        terrainDataList) : "-",
 
                         defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.Id) : new List<int>(),
 
@@ -226,8 +227,6 @@ public class InteractionDataManager : IDataManager
 
     internal List<int> DefaultTimes(int taskId)
     {
-        var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
-
         var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
                              select new TimeManager.TimeFrame()
                              {

@@ -11,6 +11,8 @@ public class GameInteractionElementData : GeneralData, IElementData
         DataType = Enums.DataType.GameInteraction;
     }
 
+    public GameWorldInteractableElementData gameWorldInteractableData;
+
     public int taskId;
 
     public bool isDefault;
@@ -38,8 +40,38 @@ public class GameInteractionElementData : GeneralData, IElementData
 
     public int objectiveId;
     public int worldInteractableId;
+
+    public float currentPatience;
+
+    public bool arrived;
+
+    private int activeDestinationIndex = -1;
     
     public List<GameInteractionDestinationElementData> interactionDestinationDataList;
+
+    public int ActiveDestinationIndex
+    {
+        get { return activeDestinationIndex; }
+        set
+        {
+            arrived = false;
+
+            if (value >= interactionDestinationDataList.Count)
+                value = 0;
+
+            currentPatience = interactionDestinationDataList[value].patience;
+            
+            activeDestinationIndex = value;
+        }
+    }
+
+    public GameInteractionDestinationElementData ActiveInteractionDestination
+    {
+        get
+        {
+            return interactionDestinationDataList[ActiveDestinationIndex];
+        }
+    }
 
     #region ElementData
     public bool Changed { get { return false; } }

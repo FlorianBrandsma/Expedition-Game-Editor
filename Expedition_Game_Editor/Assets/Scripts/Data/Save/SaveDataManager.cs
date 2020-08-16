@@ -61,6 +61,7 @@ public class SaveDataManager : IDataManager
                     join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
 
                     join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.Id
+                    join tileSetData        in tileSetDataList          on regionData.tileSetId             equals tileSetData.Id
 
                     join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.Id
                     join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.Id
@@ -72,7 +73,7 @@ public class SaveDataManager : IDataManager
                         objectGraphicIconPath = iconData.path,
 
                         name = "Ch. " + (chapterData.Index + 1) + ": " + chapterData.name,
-                        locationName = LocationName(regionData.Id, playerSaveData.positionX, playerSaveData.positionZ),
+                        locationName = RegionManager.LocationName(playerSaveData.positionX, playerSaveData.positionZ, tileSetData.tileSize, regionData, terrainDataList),
 
                         time = TimeManager.TimeFromSeconds(playerSaveData.playedSeconds)
 
@@ -180,26 +181,6 @@ public class SaveDataManager : IDataManager
         searchParameters.id = phaseDataList.Select(x => x.chapterId).Distinct().ToList();
 
         chapterDataList = dataManager.GetChapterData(searchParameters);
-    }
-
-    internal string LocationName(int regionId, float positionX, float positionZ)
-    {
-        var region = regionDataList.Where(x => x.Id == regionId).First();   
-        var tileSet = tileSetDataList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainDataList.Where(x => x.regionId == region.Id).Distinct().ToList();
-
-        var terrainSize = region.terrainSize * tileSet.tileSize;
-
-        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / terrainSize),
-                                             Mathf.Floor(positionZ / terrainSize));
-
-        var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
-
-        var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
-
-        var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
-
-        return region.name + ", " + terrain.name;
     }
 
     internal class SaveData : GeneralData

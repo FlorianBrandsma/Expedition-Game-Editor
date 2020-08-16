@@ -135,13 +135,13 @@ static public class RenderManager
     {
         string str = "route: ";
 
-        for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].controller + "/";
+        for (int i = 0; i < path.routeList.Count; i++)
+            str += path.routeList[i].controller + "/";
 
         str += "\n";
 
-        for (int i = 0; i < path.route.Count; i++)
-            str += path.route[i].GeneralData.DataType + "-" + path.route[i].GeneralData.Id + "/";
+        for (int i = 0; i < path.routeList.Count; i++)
+            str += path.routeList[i].GeneralData.DataType + "-" + path.routeList[i].GeneralData.Id + "/";
 
         return str;
     }

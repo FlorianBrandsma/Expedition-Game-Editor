@@ -81,6 +81,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                     interactableData.ObjectGraphicId = value.Id;
                     interactableData.objectGraphicPath = value.Path;
                     interactableData.objectGraphicIconPath = value.iconPath;
+
+                    interactableData.height = value.Height;
+                    interactableData.width = value.Width;
+                    interactableData.depth = value.Depth;
                     
                     break;
             }
@@ -217,7 +221,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 var objectGraphicElementData = (ObjectGraphicElementData)dataElement.data.elementData;
 
                 UpdateObjectGraphic(objectGraphicElementData);
-
+                
                 break;
 
             default: Debug.Log("CASE MISSING"); break;

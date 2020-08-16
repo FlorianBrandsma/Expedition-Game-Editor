@@ -72,7 +72,7 @@ public class PathManager
         {
             route.controller = edit;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
             newPath.type = path.type;
 
             return newPath;
@@ -82,7 +82,7 @@ public class PathManager
         {
             route.controller = open;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
             newPath.type = path.type;
 
             return newPath;
@@ -146,7 +146,7 @@ public class PathManager
 
             route.controller = open;
 
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
         }
     }
     #endregion
@@ -187,7 +187,7 @@ public class PathManager
 
             route.controller = open;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form, path.start);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
             newPath.type = path.type;
 
             return newPath;
@@ -269,7 +269,7 @@ public class PathManager
             //Looks convoluted
             
             EditorForm form = RenderManager.layoutManager.forms[0];
-            return new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+            return new Path(path.CombineRoute(new List<Route>() { route }), form);
         }
 
         public Path Edit()
@@ -457,7 +457,7 @@ public class PathManager
 
             path = editorElement.DataElement.segmentController.Path;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { new Route(route) }), form);
+            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form);
             newPath.type = path.type;
 
             return newPath;
@@ -668,14 +668,14 @@ public class PathManager
         path.form   = form;
 
         foreach (Route route in routes)
-            path.Add(new Route(route));
+            path.Add(route);
 
         return path;
     }
 
     static public Path ExtendPath(Path head, List<Route> tail)
     {
-        Path path = new Path(head.CombineRoute(tail), head.form, head.route.Count);
+        Path path = new Path(head.CombineRoute(tail), head.form, head.routeList.Count);
 
         path.type = head.type;
 
@@ -688,9 +688,9 @@ public class PathManager
 
         newPath.form = path.form;
 
-        path.route.ForEach(x => newPath.Add(x.Copy()));
+        path.routeList.ForEach(x => newPath.Add(x.Copy()));
 
-        newPath.route.Last().data = data;
+        newPath.routeList.Last().data = data;
 
         newPath.start = path.start;
 

@@ -82,6 +82,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetGameWorldInteractableElement()
     {
+        SetActiveInteraction();
+
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
@@ -104,6 +106,12 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);
+    }
+
+    private void SetActiveInteraction()
+    {
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
+        elementData.ActiveInteractionIndex = elementData.interactionDataList.FindIndex(x => x.containsActiveTime);
     }
 
     private void SetObstacle()

@@ -40,29 +40,12 @@ public class Route
             dataList = data.dataController.DataList;
         }
 
-        public Data(IDataController dataController)
-        {
-            this.dataController = dataController;
-            elementData = new GeneralElementData();
-        }
-
-        public Data(IDataController dataController, IElementData elementData)
-        {
-            this.dataController = dataController;
-            this.elementData = elementData;
-        }
-
         public Data(Data data, IElementData elementData)
         {
             dataController = data.dataController;
             this.elementData = elementData;
 
             dataList = data.dataList;
-        }
-
-        public Data(IElementData elementData)
-        {
-            this.elementData = elementData;
         }
 
         public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
@@ -93,7 +76,7 @@ public class Route
     public Route(Route route)
     {
         controller = route.controller;
-        data = new Data(route.data);
+        data = route.data;
 
         selectionStatus = route.selectionStatus;
 

@@ -25,7 +25,7 @@ public class HomeAction : MonoBehaviour, IAction
 
         actionButton.icon.texture = Resources.Load<Texture2D>("Textures/Icons/UI/Home");
 
-        Path newPath = PathController.route.path.Trim(PathController.route.path.route.Count - 1);
+        Path newPath = PathController.route.path.Trim(PathController.route.path.routeList.Count - 1);
 
         actionButton.Button.onClick.AddListener(delegate { InitializePath(newPath); });
     }

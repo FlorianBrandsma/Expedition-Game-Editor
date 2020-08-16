@@ -57,7 +57,7 @@ public class EditorForm : MonoBehaviour
         previousPath = activePath;
         activePath = path;
 
-        if (activePath.route.Count == 0) return;
+        if (activePath.routeList.Count == 0) return;
 
         TimeManager.instance.PauseTime(pauseTime);
         
@@ -85,7 +85,7 @@ public class EditorForm : MonoBehaviour
         
         activeViewPath = activePath;
 
-        if (activeViewPath.route.Count == 0) return;
+        if (activeViewPath.routeList.Count == 0) return;
 
         //Get the controller that must be visualized
         baseController.GetTargetLayout(activeViewPath, activeViewPath.start);
@@ -121,7 +121,7 @@ public class EditorForm : MonoBehaviour
 
     public void FinalizePath()
     {
-        if (activePath.route.Count == 0) return;
+        if (activePath.routeList.Count == 0) return;
 
         baseController.FinalizePath(activePath);
     }

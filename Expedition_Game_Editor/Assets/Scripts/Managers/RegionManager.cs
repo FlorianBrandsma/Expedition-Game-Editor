@@ -17,8 +17,6 @@ static public class RegionManager
 
     static public Vector2 PositionOnTile(int regionSize, int terrainSize, float tileSize, float posX, float posZ)
     {
-        var worldSize = regionSize * terrainSize * tileSize;
-
         var tilePosition = new Vector2(Mathf.FloorToInt(posX / tileSize) * tileSize + tileSize / 2, 
                                        Mathf.FloorToInt(posZ / tileSize) * tileSize + tileSize / 2);
 
@@ -27,25 +25,16 @@ static public class RegionManager
         return positionOnTile;
     }
 
-    static public string LocationName(int regionId, float positionX, float positionZ,
-                                      List<DataManager.RegionData> regionDataList, List<DataManager.TileSetData> tileSetDataList, List<DataManager.TerrainData> terrainDataList)
+    static public string LocationName(float positionX, float positionZ, float tileSize, DataManager.RegionData regionData, List<DataManager.TerrainData> terrainDataList)
     {
-        var region = regionDataList.Where(x => x.Id == regionId).First();
-        var tileSet = tileSetDataList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainDataList.Where(x => x.regionId == region.Id).Distinct().ToList();
+        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / (regionData.terrainSize * tileSize)),
+                                             Mathf.Floor(positionZ / (regionData.terrainSize * tileSize)));
 
-        var terrainSize = region.terrainSize * tileSet.tileSize;
+        var terrainIndex = (regionData.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / terrainSize),
-                                             Mathf.Floor(positionZ / terrainSize));
+        var terrainData = terrainDataList.Where(x => x.regionId == regionData.Id && x.Index == terrainIndex).FirstOrDefault();
 
-        var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
-
-        var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
-
-        var terrain = terrainDataList.Where(x => x.Id == terrainId).FirstOrDefault();
-        
-        return region.name + ", " + terrain.name;
+        return regionData.name + ", " + terrainData.name;
     }
 
     static public void SetDisplay(int display, Path path)

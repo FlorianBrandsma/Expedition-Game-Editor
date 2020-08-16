@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameWorldInteractableElementData : GeneralData, IElementData
 {
@@ -30,7 +31,36 @@ public class GameWorldInteractableElementData : GeneralData, IElementData
 
     public float scaleMultiplier;
 
+    //public float currentPatience;
+
     public List<GameInteractionElementData> interactionDataList;
+    
+    private int activeInteractionIndex = -1;
+
+    public int ActiveInteractionIndex
+    {
+        get { return activeInteractionIndex; }
+        set
+        {
+            if (activeInteractionIndex == value) return;
+
+            interactionDataList[value].ActiveDestinationIndex = 0;
+
+            activeInteractionIndex = value;
+        }
+    }
+
+    public GameInteractionElementData ActiveInteraction
+    {
+        get
+        {
+            //TEMPORARY
+            if (activeInteractionIndex == -1)
+                activeInteractionIndex = 0;
+
+            return interactionDataList[ActiveInteractionIndex];
+        }
+    }
 
     #region ElementData
     public bool Changed { get { return false; } }

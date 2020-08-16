@@ -28,7 +28,7 @@ public class GameDisplayAction : MonoBehaviour, IAction
 
         index = (int)GameDisplayManager.activeDisplay;
         
-        if (path.route.Count < (PathController.route.path.route.Count + 1))
+        if (path.routeList.Count < (PathController.route.path.routeList.Count + 1))
         {
             path.Add(index);
             path.Add(0);

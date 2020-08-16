@@ -12,7 +12,7 @@ public class Path
         Loaded
     }
 
-    public List<Route> route;
+    public List<Route> routeList;
     public EditorForm form;
     public Type type;
 
@@ -20,18 +20,18 @@ public class Path
 
     public Path()
     {
-        route   = new List<Route>();
+        routeList   = new List<Route>();
     }
 
-    public Path(List<Route> route, EditorForm form)
+    public Path(List<Route> routeList, EditorForm form)
     {
-        this.route  = route;
+        this.routeList  = routeList;
         this.form   = form;
     }
 
-    public Path(List<Route> route, EditorForm form, int start)
+    public Path(List<Route> routeList, EditorForm form, int start)
     {
-        this.route  = route;
+        this.routeList  = routeList;
         this.form   = form;
 
         this.start  = start;
@@ -41,30 +41,30 @@ public class Path
     public void Add()
     {
         //Use last used step as base
-        if (route.Count > 0)
-            Add(0, route.LastOrDefault().data, route.LastOrDefault().selectionStatus);
+        if (routeList.Count > 0)
+            Add(0, routeList.LastOrDefault().data, routeList.LastOrDefault().selectionStatus);
          else
             Add(new Route(this));
     }
 
     public void Add(int index)
     {
-        if (route.Count > 0)
-            Add(index, route.LastOrDefault().data, route.LastOrDefault().selectionStatus);
+        if (routeList.Count > 0)
+            Add(index, routeList.LastOrDefault().data, routeList.LastOrDefault().selectionStatus);
         else
             Add(index, new Route.Data(), Enums.SelectionStatus.Main);
     }
 
     public void Add(int controller, Route.Data data, Enums.SelectionStatus selectionGroup)
     {
-        route.Add(new Route(controller, data, selectionGroup));
+        routeList.Add(new Route(controller, data, selectionGroup));
 
         data = new Route.Data();
     }
 
     public void Add(Route route)
     {
-        this.route.Add(route);
+        this.routeList.Add(route);
     }
     #endregion
 
@@ -72,7 +72,7 @@ public class Path
     {
         Path path = new Path();
 
-        route.ForEach(x => path.Add(x));
+        routeList.ForEach(x => path.Add(x));
 
         path.form = form;
         path.start = start;
@@ -87,7 +87,7 @@ public class Path
         Path path = new Path();
 
         for (int i = 0; i < step; i++)
-            path.route.Add(route[i]);
+            path.routeList.Add(routeList[i]);
 
         path.form = form;
         path.start = start;
@@ -99,24 +99,24 @@ public class Path
 
     public Path TrimToFirstType(Enums.DataType dataType)
     {
-        var index = route.FindIndex(x => x.GeneralData.DataType == dataType);
+        var index = routeList.FindIndex(x => x.GeneralData.DataType == dataType);
 
         return Trim(index + 1);
     }
 
     public Path TrimToLastType(Enums.DataType dataType)
     {
-        var index = route.FindLastIndex(x => x.GeneralData.DataType == dataType);
+        var index = routeList.FindLastIndex(x => x.GeneralData.DataType == dataType);
 
         return Trim(index + 1);
     }
 
     public Route FindFirstRoute(Enums.DataType dataType)
     {
-        foreach(Route r in route)
+        foreach(Route route in routeList)
         {
-            if (r.GeneralData.DataType == dataType)
-                return r;
+            if (route.GeneralData.DataType == dataType)
+                return route;
         }
 
         return null;
@@ -124,33 +124,33 @@ public class Path
 
     public Route FindLastRoute(Enums.DataType dataType)
     {
-        return route.FindLast(x => x.GeneralData.DataType == dataType);
+        return routeList.FindLast(x => x.GeneralData.DataType == dataType);
     }
 
     public Route GetLastRoute()
     {
-        return route[route.Count - 1];
+        return routeList[routeList.Count - 1];
     }
 
     public List<Route> CombineRoute(List<Route> addedRoute)
     {
         List<Route> newRoute = new List<Route>();
         
-        foreach (Route r in route)
-            newRoute.Add(new Route(r));
+        foreach (Route route in routeList)
+            newRoute.Add(route);
 
-        foreach (Route r in addedRoute)
-            newRoute.Add(new Route(r));
+        foreach (Route route in addedRoute)
+            newRoute.Add(route);
 
         return newRoute;
     }
 
     public void ReplaceAllData(Route.Data data)
     {
-        route.ForEach(r => 
+        routeList.ForEach(route => 
         {
-            if (r.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
-                r.data = data;
+            if (route.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
+                route.data = data;
         });
     }
 }

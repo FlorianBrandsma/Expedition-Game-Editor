@@ -7,13 +7,10 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
     public Text heightText, widthText, depthText;
     public ExInputNumber inputField;
 
-    private float height;
-    private float width;
-    private float depth;
     private float scaleMultiplier;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
     public float ScaleMultiplier
     {
@@ -44,10 +41,6 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 
         var interactableData = (InteractableElementData)DataEditor.Data.elementData;
 
-        height = interactableData.height;
-        width = interactableData.width;
-        depth = interactableData.depth;
-
         scaleMultiplier = interactableData.ScaleMultiplier;
     }
 
@@ -58,9 +51,11 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 
     public void SetSizeValues()
     {
-        heightText.text = (height * scaleMultiplier).ToString();
-        widthText.text = (width * scaleMultiplier).ToString();
-        depthText.text = (depth * scaleMultiplier).ToString();
+        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+
+        heightText.text = (interactableData.height * scaleMultiplier).ToString();
+        widthText.text = (interactableData.width * scaleMultiplier).ToString();
+        depthText.text = (interactableData.depth * scaleMultiplier).ToString();
     }
 
     public void UpdateScaleMultiplier()

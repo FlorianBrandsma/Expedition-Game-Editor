@@ -38,8 +38,10 @@ public class EditorController : MonoBehaviour
     {
         if (PathController.DataEditor == null) return;
 
-        //Probably made as a fix for the cloned element editting issue
-        //ResetEditorData();
+        //Re-assigns the loaded element to an editor in case you return to an opened editor
+        //Example: change an object graphic of an interactable with the interaction interactable status editor open
+        //When data is obtained, old data still exists; it is not replaced where it was used
+        ResetEditorData();
 
         PathController.DataEditor.EditorSegments.ForEach(x => 
         {
@@ -53,9 +55,7 @@ public class EditorController : MonoBehaviour
         
         var data = PathController.DataEditor.Data;
 
-        //Data controller data list somehow didn't match the data's data list? phase default is still broken
-        var elementData = data.dataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
-        //var elementData = data.dataController.DataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
+        var elementData = data.dataController.DataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
 
         if (elementData != null)
             data.elementData = elementData;

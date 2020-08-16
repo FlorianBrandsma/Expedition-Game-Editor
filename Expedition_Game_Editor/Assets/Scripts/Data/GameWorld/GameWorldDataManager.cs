@@ -103,7 +103,6 @@ public class GameWorldDataManager : IDataManager
                 DefaultRotationZ = phaseData.defaultRotationZ,
 
                 DefaultTime = phaseData.defaultTime
-                
             },
 
             partyMemberList = (
@@ -199,7 +198,7 @@ public class GameWorldDataManager : IDataManager
 
                     objectiveId = taskData.objectiveId,
                     worldInteractableId = taskData.worldInteractableId,
-
+                    
                     interactionDestinationDataList = (
                     from interactionDestinationData in interactionDestinationDataList
                     where interactionData.Id == interactionDestinationData.interactionId
@@ -317,11 +316,7 @@ public class GameWorldDataManager : IDataManager
                         objectGraphicPath = objectGraphicData.path,
 
                         objectGraphicName = objectGraphicData.name,
-                        objectGraphicIconPath = iconData.path,
-
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth,
+                        objectGraphicIconPath = iconData.path
 
                     }).ToList()
 
@@ -526,22 +521,5 @@ public class GameWorldDataManager : IDataManager
         questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
 
         questDataList = dataManager.GetQuestData(questSearchParameters);
-    }
-
-    internal List<int> DefaultTimes(int taskId)
-    {
-        var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
-
-        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
-                             select new TimeManager.TimeFrame()
-                             {
-                                 StartTime = interactionData.startTime,
-                                 EndTime = interactionData.endTime
-
-                             }).ToList();
-
-        var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
-
-        return defaultTimes;
     }
 }

@@ -50,7 +50,7 @@ public class LocalNavMeshBuilder : MonoBehaviour
         defaultBuildSettings.overrideVoxelSize = true;
         defaultBuildSettings.voxelSize = 0.5f;
         defaultBuildSettings.overrideTileSize = true;
-        defaultBuildSettings.tileSize = 16;
+        defaultBuildSettings.tileSize = 64;
         
         var bounds = QuantizedBounds();
 

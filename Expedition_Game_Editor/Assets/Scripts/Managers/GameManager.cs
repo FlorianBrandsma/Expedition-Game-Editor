@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public GameSaveController gameSaveController;
     public GameWorldController gameWorldController;
-
+    
     public LocalNavMeshBuilder localNavMeshBuilder;
 
     public GamePauseAction gamePauseAction;
@@ -72,6 +72,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public GameWorldOrganizer Organizer { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
+
     public List<TaskSaveElementData> activeTaskSaveList = new List<TaskSaveElementData>();
 
     private float tempActiveRange = 222.25f;
@@ -105,9 +107,6 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.I))
             InteractionTest();
-
-        if (Input.GetKeyUp(KeyCode.T))
-            TimeTest();
     }
 
     private void InteractionTest()
@@ -124,18 +123,6 @@ public class GameManager : MonoBehaviour
         //The following function should only be performed if the phase hasn't changed
         //In this test, it always changes
         //CheckTime();
-    }
-
-    private void TimeTest()
-    {
-        if (TimeManager.instance.ActiveTime < TimeManager.hoursInDay - 1)
-            TimeManager.instance.ActiveTime++;
-        else
-            TimeManager.instance.ActiveTime = 0;
-
-        gameTimeAction.SetTime(TimeManager.instance.ActiveTime);
-        
-        CheckTime();
     }
 
     public void LoadGameSaveData(SaveElementData saveElementData)
@@ -201,7 +188,7 @@ public class GameManager : MonoBehaviour
 
         //Set the time based on the save data or else from the phase defaults, which is already set
         TimeManager.instance.InitializeGameTime(gameSaveData.playerSaveData.GameTime);
-        
+
         //Compare game data with save data to determine which task is active
         CheckProgress();
     }
@@ -293,8 +280,15 @@ public class GameManager : MonoBehaviour
                                                           .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : 
                                                                                                  x.Last().repeatable ? x.Last() : 
                                                                                                                        null).ToList();
+        
 
-        CheckTime();
+        TimeManager.activeWorldInteractableList = gameWorldData.worldInteractableDataList.Where(x => x.interactionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId))).ToList();
+        
+        TimeManager.activeInteractionList = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId))).ToList();
+        
+        GetInteractionTimes();
+
+        UpdateWorld();
     }
 
     private void ChangeRegion()
@@ -309,15 +303,19 @@ public class GameManager : MonoBehaviour
         //CheckTime();
     }
     
-    public void CheckTime()
+    private void GetInteractionTimes()
     {
-        Debug.Log("Don't forget about these time comments!");
-        //This could be optimized to only check the time when the time matches that of a known interaction
-        //Interaction times would be gathered when the game data is loaded
-        //This would allow minute based interactions, since the game would otherwise reload every game minute
-        
+        TimeManager.interactionTimeList = new List<int>();
+
+        TimeManager.activeWorldInteractableList.SelectMany(x => x.interactionDataList.Where(y => !y.isDefault)).ToList().ForEach(x => TimeManager.AddInteractionTimeEvent(x));
+    }
+
+    public void UpdateWorld()
+    {
+        Debug.Log("Check time and update world");
+
         //Check time to see which interactions and atmospheres are active
-        
+
         DeactivateInteractionTime();
 
         //For every interactable, check which of their interactions contains the active time
@@ -325,6 +323,9 @@ public class GameManager : MonoBehaviour
         
         //Update all world interactables based on the new active times
         UpdateWorldInteractables();
+
+        //Here's the deal: only update the world if any interactable came from a tile that isn't active or when it's going to a tile that isn't active
+        //Collect the active terrains when building the world
 
         //(Re)build the world according to the active data
         SetWorldData();
@@ -339,7 +340,7 @@ public class GameManager : MonoBehaviour
 
     private void SetWorldData()
     {
-        gameWorldController.Display.DisplayManager.Organizer.SetData();
+        Organizer.SetData();
     }
 
     private void DeactivateInteractionTime()
@@ -353,15 +354,13 @@ public class GameManager : MonoBehaviour
     private void ValidateInteractionTime()
     {
         //Validate times of interactions which belong to the active task saves
-        gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId)).GroupBy(y => y.taskId)
-                                                                 .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.startTime, z.endTime) || z.isDefault)
-                                                                 .OrderBy(z => z.isDefault).First())).ToList()
-                                                                 .ForEach(x => 
-                                                                 {
-                                                                     x.containsActiveTime = true;
-                                                                 });
-
-        //Debug.Log(gameWorldData.worldInteractableDataList.Sum(x => x.interactionDataList.Where(y => y.containsActiveTime).ToList().Count));
+        TimeManager.activeWorldInteractableList.SelectMany(x => x.interactionDataList).GroupBy(y => y.taskId)
+                                               .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.startTime, z.endTime) || z.isDefault)
+                                               .OrderBy(z => z.isDefault).First()).ToList()
+                                               .ForEach(x => 
+                                               {
+                                                   x.containsActiveTime = true;
+                                               });
     }
 
     private void UpdateWorldInteractables()
@@ -369,7 +368,7 @@ public class GameManager : MonoBehaviour
         gameWorldData.worldInteractableDataList.ForEach(x => UpdateWorldInteractable(x));
     }
 
-    private void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
+    public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
     {
         var interactionData = worldInteractableData.interactionDataList.Where(x => x.containsActiveTime).FirstOrDefault();
         

@@ -14938,7 +14938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 17
+    group: 0
   layoutSection: {fileID: 1685155425}
   subControllerManager: {fileID: 0}
   controllers: []
@@ -20922,7 +20922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 17
+    group: 0
   layoutSection: {fileID: 1685155425}
   subControllerManager: {fileID: 1370224109}
   controllers:
@@ -35297,7 +35297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 17
+    group: 0
   layoutSection: {fileID: 1685155425}
   subControllerManager: {fileID: 0}
   controllers: []
@@ -57518,7 +57518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   history:
-    group: 17
+    group: 0
   layoutSection: {fileID: 1685155425}
   subControllerManager: {fileID: 0}
   controllers: []
@@ -63818,7 +63818,7 @@ PrefabInstance:
     - target: {fileID: 114000012151447944, guid: 1edf8863d79636e4299025edda3aeeeb,
         type: 3}
       propertyPath: m_Text
-      value: 'Leader:'
+      value: 'Name:'
       objectReference: {fileID: 0}
     - target: {fileID: 224000013933741858, guid: 1edf8863d79636e4299025edda3aeeeb,
         type: 3}

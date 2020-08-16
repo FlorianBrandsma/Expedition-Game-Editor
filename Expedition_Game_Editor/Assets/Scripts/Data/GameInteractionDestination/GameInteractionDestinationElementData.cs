@@ -29,7 +29,7 @@ public class GameInteractionDestinationElementData : GeneralData, IElementData
 
     public int animation;
     public float patience;
-
+    
     #region ElementData
     public bool Changed { get { return false; } }
     public void Create() { }

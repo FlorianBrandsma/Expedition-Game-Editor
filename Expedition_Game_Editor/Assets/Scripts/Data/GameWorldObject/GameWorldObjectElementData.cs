@@ -29,10 +29,6 @@ public class GameWorldObjectElementData : GeneralData, IElementData
 
     public float scaleMultiplier;
 
-    public float height;
-    public float width;
-    public float depth;
-
     #region ElementData
     public bool Changed { get { return false; } }
     public void Create() { }

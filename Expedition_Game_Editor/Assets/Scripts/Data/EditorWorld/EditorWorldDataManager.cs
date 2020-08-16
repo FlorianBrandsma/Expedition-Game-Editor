@@ -205,7 +205,7 @@ public class EditorWorldDataManager : IDataManager
                         Id = interactionDestinationData.Id,
                         Index = interactionDestinationData.Index,
                         
-                        InteractionId = interactionDestinationData.Id,
+                        InteractionId = interactionDestinationData.interactionId,
 
                         RegionId = interactionDestinationData.regionId,
                         TerrainId = interactionDestinationData.terrainId,
@@ -532,23 +532,6 @@ public class EditorWorldDataManager : IDataManager
                                         terrainStartPosition.y - (tileSize * (Mathf.Floor(tileIndex / terrainSize))));
 
         return startPosition;
-    }
-
-    internal List<int> DefaultTimes(int taskId)
-    {
-        var dataList = interactionDataList.Where(x => x.taskId == taskId && !x.isDefault).ToList();
-
-        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
-                             select new TimeManager.TimeFrame()
-                             {
-                                 StartTime = interactionData.startTime,
-                                 EndTime = interactionData.endTime
-
-                             }).ToList();
-        
-        var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
-
-        return defaultTimes;
     }
 
     internal int TerrainTileId(int regionId, float positionX, float positionZ)

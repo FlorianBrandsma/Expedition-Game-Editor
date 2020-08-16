@@ -46,8 +46,13 @@ public class ObjectGraphicController : MonoBehaviour, IDataController
                 objectGraphicData.IconId = resultElementData.IconId;
                 objectGraphicData.Path = resultElementData.Path;
                 objectGraphicData.Name = resultElementData.Name;
-                objectGraphicData.iconPath = resultElementData.iconPath;
 
+                objectGraphicData.Height = resultElementData.Height;
+                objectGraphicData.Width = resultElementData.Width;
+                objectGraphicData.Depth = resultElementData.Depth;
+
+                objectGraphicData.iconPath = resultElementData.iconPath;
+                
                 break;
         }
     }

@@ -45,7 +45,10 @@ public class PhaseDataManager : IDataManager
         GetTerrainData();
 
         var list = (from phaseData      in phaseDataList
-                    join chapterData    in chapterDataList on phaseData.chapterId equals chapterData.Id
+                    join chapterData    in chapterDataList  on phaseData.chapterId          equals chapterData.Id
+
+                    join regionData     in regionDataList   on phaseData.defaultRegionId    equals regionData.Id
+                    join tileSetData    in tileSetDataList  on regionData.tileSetId         equals tileSetData.Id
 
                     join leftJoin in (from partyMemberData      in partyMemberDataList
                                       join interactableData     in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
@@ -93,7 +96,7 @@ public class PhaseDataManager : IDataManager
                         depth = partyMemberData.First().objectGraphicData.depth,
 
                         interactableName = partyMemberData.First().interactableData.name,
-                        locationName = RegionManager.LocationName(phaseData.defaultRegionId, phaseData.defaultPositionX, phaseData.defaultPositionZ, regionDataList, tileSetDataList, terrainDataList)
+                        locationName = RegionManager.LocationName(phaseData.defaultPositionX, phaseData.defaultPositionZ, tileSetData.tileSize, regionData, terrainDataList)
                         
                     }).OrderBy(x => x.Index).ToList();
 
