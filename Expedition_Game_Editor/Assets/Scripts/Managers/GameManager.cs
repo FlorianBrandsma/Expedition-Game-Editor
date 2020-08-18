@@ -361,6 +361,8 @@ public class GameManager : MonoBehaviour
                                                {
                                                    x.containsActiveTime = true;
                                                });
+
+        TimeManager.activeWorldInteractableList.ForEach(x => x.ActiveInteraction = x.interactionDataList.Where(y => y.containsActiveTime).First());
     }
 
     private void UpdateWorldInteractables()
@@ -370,7 +372,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
     {
-        var interactionData = worldInteractableData.interactionDataList.Where(x => x.containsActiveTime).FirstOrDefault();
+        var interactionData = worldInteractableData.ActiveInteraction;
         
         if(worldInteractableData.DataElement != null)
         {

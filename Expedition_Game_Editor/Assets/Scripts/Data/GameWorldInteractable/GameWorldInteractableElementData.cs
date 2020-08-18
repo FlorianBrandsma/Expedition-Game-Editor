@@ -35,30 +35,15 @@ public class GameWorldInteractableElementData : GeneralData, IElementData
 
     public List<GameInteractionElementData> interactionDataList;
     
-    private int activeInteractionIndex = -1;
-
-    public int ActiveInteractionIndex
-    {
-        get { return activeInteractionIndex; }
-        set
-        {
-            if (activeInteractionIndex == value) return;
-
-            interactionDataList[value].ActiveDestinationIndex = 0;
-
-            activeInteractionIndex = value;
-        }
-    }
-
+    private GameInteractionElementData activeInteraction;
     public GameInteractionElementData ActiveInteraction
     {
-        get
+        get { return activeInteraction; }
+        set
         {
-            //TEMPORARY
-            if (activeInteractionIndex == -1)
-                activeInteractionIndex = 0;
+            activeInteraction = value;
 
-            return interactionDataList[ActiveInteractionIndex];
+            activeInteraction.ActiveDestinationIndex = 0;
         }
     }
 

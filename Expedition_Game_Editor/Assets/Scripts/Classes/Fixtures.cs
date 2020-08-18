@@ -1005,23 +1005,24 @@ static public class Fixtures
 
         interaction.publicNotes = "These are public interaction notes";
 
-        interactionDestinationList.ForEach(interactionDestination =>
+        for(int i = 0; i < interactionDestinationList.Count; i++)
         {
-            CreateInteractionDestination(interaction, regionId, interactionDestination);
-        });
+            CreateInteractionDestination(i, interaction, regionId, interactionDestinationList[i]);
+        }
         
         CreateOutcome(interaction, Enums.OutcomeType.Positive);
 
         interactionList.Add(interaction);
     }
 
-    static public void CreateInteractionDestination(Interaction interaction, int regionId, InteractionDestination interactionDestinationSource)
+    static public void CreateInteractionDestination(int index, Interaction interaction, int regionId, InteractionDestination interactionDestinationSource)
     {
         var interactionDestination = new InteractionDestination();
 
         int id = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
 
         interactionDestination.Id = id;
+        interactionDestination.Index = index;
 
         interactionDestination.interactionId = interaction.Id;
         
@@ -1361,6 +1362,7 @@ static public class Fixtures
                                     int interactionDestinationId = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
 
                                     interactionDestination.Id = interactionDestinationId;
+                                    interactionDestination.Index = interactionDestinationSource.Index;
 
                                     interactionDestination.interactionId = interaction.Id;
 

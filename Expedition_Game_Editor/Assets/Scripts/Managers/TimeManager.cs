@@ -171,16 +171,11 @@ public class TimeManager : MonoBehaviour
                 {
                     x.ActiveInteraction.currentPatience -= counter;
 
-                    if (x.ActiveInteraction.currentPatience <= 0)
+                    if (x.ActiveInteraction.currentPatience < 0)
                     {
                         x.ActiveInteraction.ActiveDestinationIndex++;
-
-                        //if (x.DataElement != null)
-                        //    Debug.Log(x.DataElement);
-
+                        
                         GameManager.instance.UpdateWorldInteractable(x);
-
-                        //Debug.Log("Move " + x.interactableName);
                     }
                 }
             });

@@ -205,6 +205,7 @@ public class GameWorldDataManager : IDataManager
                     select new GameInteractionDestinationElementData()
                     {
                         Id = interactionDestinationData.Id,
+                        Index = interactionDestinationData.Index,
                         
                         regionId = interactionDestinationData.regionId,
                         terrainId = interactionDestinationData.terrainId,

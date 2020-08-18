@@ -82,16 +82,13 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetGameWorldInteractableElement()
     {
-        SetActiveInteraction();
-
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        //"Last" is a temporary measure until interactions take progression into account
-        var interactionData = elementData.interactionDataList.Where(x => x.containsActiveTime).Last();
-        var interactionDestinationData = interactionData.interactionDestinationDataList.First();
+        var interactionData = elementData.ActiveInteraction;
+        var interactionDestinationData = interactionData.ActiveInteractionDestination;
 
         position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
         rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
@@ -106,12 +103,6 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);
-    }
-
-    private void SetActiveInteraction()
-    {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
-        elementData.ActiveInteractionIndex = elementData.interactionDataList.FindIndex(x => x.containsActiveTime);
     }
 
     private void SetObstacle()

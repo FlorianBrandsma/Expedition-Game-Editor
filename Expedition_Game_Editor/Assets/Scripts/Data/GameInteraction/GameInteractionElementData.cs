@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 public class GameInteractionElementData : GeneralData, IElementData
 {
@@ -69,7 +69,7 @@ public class GameInteractionElementData : GeneralData, IElementData
     {
         get
         {
-            return interactionDestinationDataList[ActiveDestinationIndex];
+            return interactionDestinationDataList.Where(x => x.Index == ActiveDestinationIndex).First();
         }
     }
 

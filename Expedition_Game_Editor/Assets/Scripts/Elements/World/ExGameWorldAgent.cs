@@ -65,15 +65,13 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     
     private void SetGameWorldInteractableAgent()
     {
-        SetActiveInteraction();
-
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
         objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
 
-        var interactionData = elementData.interactionDataList[elementData.ActiveInteractionIndex];
-        var interactionDestinationData = interactionData.interactionDestinationDataList[interactionData.ActiveDestinationIndex];
+        var interactionData = elementData.ActiveInteraction;
+        var interactionDestinationData = interactionData.ActiveInteractionDestination;
         
         position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
         rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
@@ -128,8 +126,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void SetGameWorldInteractableDestination()
     {
-        SetActiveInteraction();
-
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
 
         var interactionData = elementData.ActiveInteraction;
@@ -157,12 +153,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         objectGraphic.transform.SetParent(transform, false);
 
         objectGraphic.gameObject.SetActive(true);
-    }
-
-    private void SetActiveInteraction()
-    {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
-        elementData.ActiveInteractionIndex = elementData.interactionDataList.FindIndex(x => x.containsActiveTime);
     }
 
     private void Update()
@@ -237,7 +227,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         interactionData.arrived = true;
 
         //Debug.Log("Agent has arrived");
-        if (!destinationData.freeRotation)
+        if (!destinationData.freeRotation && destinationData.patience > 0)
         {
             StopAllCoroutines();
             StartCoroutine(Rotate(rotation.y));
@@ -268,7 +258,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         while(Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * Time.deltaTime);
+            //Take destination's patience into account: rotation must always be stopped when patience runs out
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * TimeManager.gameTimeSpeed * Time.deltaTime);
             yield return null;
         }
     }
