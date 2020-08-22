@@ -31,12 +31,11 @@ public class WorldObjectDataManager : IDataManager
         GetIconData();
 
         var list = (from worldObjectData    in worldObjectDataList
-                    join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                    join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
                     select new WorldObjectElementData()
                     {
-                        Id = worldObjectData.Id,
-                        Index = worldObjectData.Index,
+                        Id = worldObjectData.id,
 
                         ObjectGraphicId = worldObjectData.objectGraphicId,
                         RegionId = worldObjectData.regionId,
@@ -77,13 +76,12 @@ public class WorldObjectDataManager : IDataManager
 
         foreach (Fixtures.WorldObject worldObject in Fixtures.worldObjectList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.regionId)) continue;
 
             var worldObjectData = new WorldObjectData();
 
-            worldObjectData.Id = worldObject.Id;
-            worldObjectData.Index = worldObject.Index;
+            worldObjectData.id = worldObject.id;
 
             worldObjectData.objectGraphicId = worldObject.objectGraphicId;
             worldObjectData.regionId = worldObject.regionId;
@@ -123,8 +121,10 @@ public class WorldObjectDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class WorldObjectData : GeneralData
+    internal class WorldObjectData
     {
+        public int id;
+
         public int objectGraphicId;
         public int regionId;
         public int terrainId;

@@ -46,7 +46,7 @@ public class TerrainTileCore : GeneralData
 
     public virtual void Update()
     {
-        var terrainTileData = Fixtures.terrainTileList.Where(x => x.Id == Id).FirstOrDefault();
+        var terrainTileData = Fixtures.terrainTileList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedTileId)
             terrainTileData.tileId = tileId;

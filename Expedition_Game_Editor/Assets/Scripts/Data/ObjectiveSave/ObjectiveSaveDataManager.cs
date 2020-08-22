@@ -29,10 +29,10 @@ public class ObjectiveSaveDataManager : IDataManager
         GetObjectiveData();
 
         var list = (from objectiveSaveData  in objectiveSaveDataList
-                    join objectiveData      in objectiveDataList on objectiveSaveData.objectiveId equals objectiveData.Id
+                    join objectiveData      in objectiveDataList on objectiveSaveData.objectiveId equals objectiveData.id
                     select new ObjectiveSaveElementData()
                     {
-                        Id = objectiveSaveData.Id,
+                        Id = objectiveSaveData.id,
 
                         QuestSaveId = objectiveSaveData.questSaveId,
                         ObjectiveId = objectiveSaveData.objectiveId,
@@ -56,12 +56,12 @@ public class ObjectiveSaveDataManager : IDataManager
 
         foreach (Fixtures.ObjectiveSave objectiveSave in Fixtures.objectiveSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.Id))                     continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.id))                     continue;
             if (searchParameters.questSaveId.Count  > 0 && !searchParameters.questSaveId.Contains(objectiveSave.questSaveId))   continue;
 
             var objectiveSaveData = new ObjectiveSaveData();
 
-            objectiveSaveData.Id = objectiveSave.Id;
+            objectiveSaveData.id = objectiveSave.id;
 
             objectiveSaveData.questSaveId = objectiveSave.questSaveId;
             objectiveSaveData.objectiveId = objectiveSave.objectiveId;
@@ -80,8 +80,11 @@ public class ObjectiveSaveDataManager : IDataManager
         objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
     }
 
-    internal class ObjectiveSaveData : GeneralData
+    internal class ObjectiveSaveData
     {
+        public int id;
+        public int index;
+
         public int questSaveId;
         public int objectiveId;
 

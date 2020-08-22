@@ -61,7 +61,7 @@ public class InteractionSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var interactionSaveData = Fixtures.interactionSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactionSaveData = Fixtures.interactionSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             interactionSaveData.complete = complete;

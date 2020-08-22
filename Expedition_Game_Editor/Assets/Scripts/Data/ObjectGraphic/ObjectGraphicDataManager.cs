@@ -29,10 +29,10 @@ public class ObjectGraphicDataManager : IDataManager
         GetIconData();
 
         var list = (from objectGraphicData  in objectGraphicDataList
-                    join iconData           in iconDataList on objectGraphicData.iconId equals iconData.Id
+                    join iconData           in iconDataList on objectGraphicData.iconId equals iconData.id
                     select new ObjectGraphicElementData()
                     {
-                        Id = objectGraphicData.Id,
+                        Id = objectGraphicData.id,
 
                         IconId = objectGraphicData.iconId,
                         
@@ -59,11 +59,11 @@ public class ObjectGraphicDataManager : IDataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
 
             var objectGraphicData = new ObjectGraphicData();
 
-            objectGraphicData.Id = objectGraphic.Id;
+            objectGraphicData.id = objectGraphic.id;
 
             objectGraphicData.name = objectGraphic.name;
             objectGraphicData.path = objectGraphic.path;
@@ -85,11 +85,16 @@ public class ObjectGraphicDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class ObjectGraphicData : GeneralData
+    internal class ObjectGraphicData
     {
+        public int id;
+
         public int iconId;
+
         public string name;
+
         public string path;
+
         public float height;
         public float width;
         public float depth;

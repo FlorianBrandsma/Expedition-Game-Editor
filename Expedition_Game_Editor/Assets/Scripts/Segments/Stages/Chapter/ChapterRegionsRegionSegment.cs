@@ -46,7 +46,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         var idList = ChapterEditor.chapterRegionDataList.Select(x => x.RegionId).Distinct().ToList();
 
         //Find interactables where id is not in the list
-        var regionList = dataManager.GetRegionData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
+        var regionList = dataManager.GetRegionData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
         searchParameters.id = regionList;
         searchParameters.phaseId = new List<int>() { 0 };

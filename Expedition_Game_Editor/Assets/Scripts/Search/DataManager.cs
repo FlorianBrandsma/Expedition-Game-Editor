@@ -5,18 +5,6 @@ using System.Collections.Generic;
 
 public class DataManager
 {
-    #region Methods
-    static public void SetIndex(List<GeneralData> dataList)
-    {
-        for (int index = 0; index < dataList.Count; index++)
-        {
-            var data = dataList[index];
-
-            data.Index = index;
-        }
-    }
-    #endregion
-
     #region Functions
     public List<IconData> GetIconData(Search.Icon searchParameters)
     {
@@ -24,11 +12,11 @@ public class DataManager
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.id)) continue;
 
             var data = new IconData();
 
-            data.Id = icon.Id;
+            data.id = icon.id;
 
             data.category = icon.category;
             data.path = icon.path;
@@ -45,11 +33,11 @@ public class DataManager
 
         foreach(Fixtures.ObjectGraphic objectGraphic in Fixtures.objectGraphicList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objectGraphic.id)) continue;
 
             var data = new ObjectGraphicData();
 
-            data.Id = objectGraphic.Id;
+            data.id = objectGraphic.id;
 
             data.iconId = objectGraphic.iconId;
 
@@ -77,11 +65,12 @@ public class DataManager
 
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
 
             var data = new InteractableData();
             
-            data.Id = interactable.Id;
+            data.id = interactable.id;
+            data.index = interactable.index;
 
             data.objectGraphicId = interactable.objectGraphicId;
 
@@ -109,12 +98,12 @@ public class DataManager
 
         foreach (Fixtures.Chapter chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.id)) continue;
 
             var data = new ChapterData();
 
-            data.Id = chapter.Id;
-            data.Index = chapter.Index;
+            data.id = chapter.id;
+            data.index = chapter.index;
 
             data.name = chapter.name;
 
@@ -140,7 +129,7 @@ public class DataManager
 
             var data = new PartyMemberData();
 
-            data.Id = partyMember.Id;
+            data.id = partyMember.id;
 
             data.chapterId = partyMember.chapterId;
             data.interactableId = partyMember.interactableId;
@@ -162,7 +151,7 @@ public class DataManager
 
             var data = new ChapterInteractableData();
 
-            data.Id = chapterInteractable.Id;
+            data.id = chapterInteractable.id;
 
             data.chapterId = chapterInteractable.chapterId;
             data.interactableId = chapterInteractable.interactableId;
@@ -179,13 +168,15 @@ public class DataManager
 
         foreach (Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phase.Id))                             continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phase.id))                             continue;
             if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(phase.chapterId))               continue;
             if (searchParameters.defaultRegionId.Count  > 0 && !searchParameters.defaultRegionId.Contains(phase.defaultRegionId))   continue;
 
             var data = new PhaseData();
 
-            data.Id = phase.Id;
+            data.id = phase.id;
+            data.index = phase.index;
+
             data.chapterId = phase.chapterId;
 
             data.name = phase.name;
@@ -217,11 +208,12 @@ public class DataManager
 
         foreach (Fixtures.Quest quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.id)) continue;
 
             var data = new QuestData();
 
-            data.Id = quest.Id;
+            data.id = quest.id;
+            data.index = quest.index;
 
             data.phaseId = quest.phaseId;
 
@@ -242,11 +234,12 @@ public class DataManager
 
         foreach (Fixtures.Objective objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.id)) continue;
 
             var data = new ObjectiveData();
 
-            data.Id = objective.Id;
+            data.id = objective.id;
+            data.index = objective.index;
 
             data.questId = objective.questId;
 
@@ -267,13 +260,14 @@ public class DataManager
 
         foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.id))                             continue;
             if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.type))                         continue;
             if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))           continue;
 
             var data = new WorldInteractableData();
 
-            data.Id = worldInteractable.Id;
+            data.id = worldInteractable.id;
+            data.index = worldInteractable.index;
 
             data.type = worldInteractable.type;
 
@@ -296,14 +290,14 @@ public class DataManager
 
         foreach(Fixtures.Task task in Fixtures.taskList)
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.id))                                      continue;
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId))    continue;
             if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.objectiveId))                    continue;
 
             var data = new TaskData();
 
-            data.Id = task.Id;
-            data.Index = task.Index;
+            data.id = task.id;
+            data.index = task.index;
 
             data.worldInteractableId = task.worldInteractableId;
             data.objectiveId = task.objectiveId;
@@ -328,13 +322,12 @@ public class DataManager
 
         foreach (Fixtures.Interaction interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id))               continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.id))               continue;
             if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.taskId))       continue;
             
             var data = new InteractionData();
 
-            data.Id = interaction.Id;
-            data.Index = interaction.Index;
+            data.id = interaction.id;
 
             data.taskId = interaction.taskId;
             
@@ -374,14 +367,13 @@ public class DataManager
 
         foreach (Fixtures.InteractionDestination interactionDestination in Fixtures.interactionDestinationList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.Id))                        continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.id))                        continue;
             if (searchParameters.regionId.Count         > 0 && !searchParameters.regionId.Contains(interactionDestination.regionId))            continue;
             if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.interactionId))  continue;
 
             var data = new InteractionDestinationData();
 
-            data.Id = interactionDestination.Id;
-            data.Index = interactionDestination.Index;
+            data.id = interactionDestination.id;
 
             data.interactionId = interactionDestination.interactionId;
 
@@ -421,11 +413,11 @@ public class DataManager
 
         foreach(Fixtures.TileSet tileSet in Fixtures.tileSetList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tileSet.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tileSet.id)) continue;
 
             var data = new TileSetData();
 
-            data.Id = tileSet.Id;
+            data.id = tileSet.id;
             data.name = tileSet.name;
             data.tileSize = tileSet.tileSize;
 
@@ -441,11 +433,11 @@ public class DataManager
 
         foreach (Fixtures.Tile tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.id)) continue;
 
             var data = new TileData();
 
-            data.Id = tile.Id;
+            data.id = tile.id;
             data.tileSetId = tile.tileSetId;
             data.iconPath = tile.iconPath;
 
@@ -461,13 +453,13 @@ public class DataManager
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(terrainTile.Id))               continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(terrainTile.id))               continue;
             if (searchParameters.terrainId.Count    > 0 && !searchParameters.terrainId.Contains(terrainTile.terrainId)) continue;
 
             var data = new TerrainTileData();
 
-            data.Id = terrainTile.Id;
-            data.Index = terrainTile.Index;
+            data.id = terrainTile.id;
+            data.index = terrainTile.index;
 
             data.terrainId = terrainTile.terrainId;
             data.tileId = terrainTile.tileId;
@@ -484,12 +476,12 @@ public class DataManager
 
         foreach(Fixtures.Atmosphere atmosphere in Fixtures.atmosphereList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.id)) continue;
             if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.terrainId)) continue;
 
             var data = new AtmosphereData();
 
-            data.Id = atmosphere.Id;
+            data.id = atmosphere.id;
 
             data.terrainId = atmosphere.terrainId;
 
@@ -510,13 +502,13 @@ public class DataManager
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
 
             var data = new TerrainData();
 
-            data.Id = terrain.Id;
-            data.Index = terrain.Index;
+            data.id = terrain.id;
+            data.index = terrain.index;
 
             data.regionId = terrain.regionId;
             data.iconId = terrain.iconId;
@@ -540,12 +532,12 @@ public class DataManager
 
         foreach (Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(region.Id))            continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(region.id))            continue;
             if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(region.phaseId))  continue;
 
             var data = new RegionData();
             
-            data.Id = region.Id;
+            data.id = region.id;
 
             data.phaseId = region.phaseId;
             data.tileSetId = region.tileSetId;
@@ -571,7 +563,8 @@ public class DataManager
 
             var data = new WorldObjectData();
 
-            data.Id = worldObject.Id;
+            data.id = worldObject.id;
+
             data.objectGraphicId = worldObject.objectGraphicId;
             data.regionId = worldObject.regionId;
             data.terrainId = worldObject.terrainId;
@@ -605,7 +598,7 @@ public class DataManager
 
             var data = new PlayerSaveData();
 
-            data.Id = playerSave.Id;
+            data.id = playerSave.id;
 
             data.saveId = playerSave.saveId;
             data.regionId = playerSave.regionId;
@@ -634,7 +627,7 @@ public class DataManager
 
             var data = new ChapterSaveData();
 
-            data.Id = chapterSave.Id;
+            data.id = chapterSave.id;
 
             data.saveId = chapterSave.saveId;
             data.chapterId = chapterSave.chapterId;
@@ -657,7 +650,7 @@ public class DataManager
 
             var data = new PhaseSaveData();
 
-            data.Id = phaseSave.Id;
+            data.id = phaseSave.id;
 
             data.saveId = phaseSave.saveId;
             data.chapterSaveId = phaseSave.chapterSaveId;
@@ -681,7 +674,7 @@ public class DataManager
 
             var data = new QuestSaveData();
 
-            data.Id = questSave.Id;
+            data.id = questSave.id;
 
             data.saveId = questSave.saveId;
             data.phaseSaveId = questSave.phaseSaveId;
@@ -705,7 +698,7 @@ public class DataManager
 
             var data = new ObjectiveSaveData();
 
-            data.Id = objectiveSave.Id;
+            data.id = objectiveSave.id;
 
             data.saveId = objectiveSave.saveId;
             data.questSaveId = objectiveSave.questSaveId;
@@ -729,7 +722,7 @@ public class DataManager
 
             var data = new TaskSaveData();
 
-            data.Id = taskSave.Id;
+            data.id = taskSave.id;
 
             data.saveId = taskSave.saveId;
             data.worldInteractableId = taskSave.worldInteractableId;
@@ -754,7 +747,7 @@ public class DataManager
 
             var data = new InteractionSaveData();
 
-            data.Id = interactionSave.Id;
+            data.id = interactionSave.id;
 
             data.saveId = interactionSave.saveId;
             data.taskSaveId = interactionSave.taskSaveId;
@@ -770,24 +763,34 @@ public class DataManager
     #endregion
 
     #region Classes
-    public class IconData : GeneralData
+    public class IconData
     {
+        public int id;
+        
         public int category;
         public string path;
     }
 
-    public class ObjectGraphicData : GeneralData
+    public class ObjectGraphicData
     {
+        public int id;
+
         public int iconId;
+
         public string name;
+
         public string path;
+
         public float height;
         public float width;
         public float depth;
     }
 
-    public class InteractableData : GeneralData
+    public class InteractableData
     {
+        public int id;
+        public int index;
+
         public int objectGraphicId;
 
         public string name;
@@ -803,8 +806,11 @@ public class DataManager
         public float stamina;
     }
     
-    public class ChapterData : GeneralData
+    public class ChapterData
     {
+        public int id;
+        public int index;
+
         public string name;
 
         public float timeSpeed;
@@ -813,20 +819,27 @@ public class DataManager
         public string privateNotes;
     }
 
-    public class PartyMemberData : GeneralData
+    public class PartyMemberData
     {
+        public int id;
+
         public int chapterId;
         public int interactableId;
     }
 
-    public class ChapterInteractableData : GeneralData
+    public class ChapterInteractableData
     {
+        public int id;
+
         public int chapterId;
         public int interactableId;
     }
 
-    public class PhaseData : GeneralData
+    public class PhaseData
     {
+        public int id;
+        public int index;
+
         public int chapterId;
 
         public string name;
@@ -847,8 +860,11 @@ public class DataManager
         public int defaultTime;
     }
 
-    public class QuestData : GeneralData
+    public class QuestData
     {
+        public int id;
+        public int index;
+
         public int phaseId;
 
         public string name;
@@ -857,8 +873,11 @@ public class DataManager
         public string privateNotes;
     }
 
-    public class ObjectiveData : GeneralData
+    public class ObjectiveData
     {
+        public int id;
+        public int index;
+
         public int questId;
 
         public string name;
@@ -867,8 +886,11 @@ public class DataManager
         public string privateNotes;
     }
 
-    public class WorldInteractableData : GeneralData
+    public class WorldInteractableData
     {
+        public int id;
+        public int index;
+
         public int type;
         
         public int phaseId;
@@ -879,8 +901,11 @@ public class DataManager
         public int interactableId;
     }
 
-    public class TaskData : GeneralData
+    public class TaskData
     {
+        public int id;
+        public int index;
+
         public int worldInteractableId;
         public int objectiveId;
 
@@ -893,8 +918,10 @@ public class DataManager
         public string privateNotes;
     }
     
-    public class InteractionData : GeneralData
+    public class InteractionData
     {
+        public int id;
+
         public int taskId;
 
         public bool isDefault;
@@ -922,8 +949,10 @@ public class DataManager
         public string privateNotes;
     }
 
-    public class InteractionDestinationData : GeneralData
+    public class InteractionDestinationData
     {
+        public int id;
+
         public int interactionId;
 
         public int regionId;
@@ -946,21 +975,27 @@ public class DataManager
         public float patience;
     }
 
-    public class TileSetData : GeneralData
+    public class TileSetData
     {
+        public int id;
+
         public string name;
         public float tileSize;
     }
 
-    public class TileData : GeneralData
+    public class TileData
     {
+        public int id;
+
         public int tileSetId;
 
         public string iconPath;
     }
 
-    public class RegionData : GeneralData
+    public class RegionData
     {
+        public int id;
+
         public int phaseId;
         public int tileSetId;
 
@@ -970,15 +1005,20 @@ public class DataManager
         public string name;
     }
 
-    public class TerrainData : GeneralData
+    public class TerrainData
     {
+        public int id;
+        public int index;
+
         public int regionId;
         public int iconId;
         public string name;
     }
 
-    public class AtmosphereData : GeneralData
+    public class AtmosphereData
     {
+        public int id;
+
         public int terrainId;
 
         public bool isDefault;
@@ -987,14 +1027,19 @@ public class DataManager
         public int endTime;
     }
 
-    public class TerrainTileData : GeneralData
+    public class TerrainTileData
     {
+        public int id;
+        public int index;
+
         public int terrainId;
         public int tileId;
     }
     
-    public class WorldObjectData : GeneralData
+    public class WorldObjectData
     {
+        public int id;
+
         public int objectGraphicId;
         public int regionId;
         public int terrainId;
@@ -1013,8 +1058,10 @@ public class DataManager
         public int animation;
     }
 
-    public class PlayerSaveData : GeneralData
+    public class PlayerSaveData
     {
+        public int id;
+
         public int saveId;
         public int regionId;
         public int partyMemberId;
@@ -1031,16 +1078,20 @@ public class DataManager
         public int playedSeconds;
     }
 
-    public class ChapterSaveData : GeneralData
+    public class ChapterSaveData
     {
+        public int id;
+
         public int saveId;
         public int chapterId;
 
         public bool complete;
     }
 
-    public class PhaseSaveData : GeneralData
+    public class PhaseSaveData
     {
+        public int id;
+
         public int saveId;
         public int chapterSaveId;
         public int phaseId;
@@ -1048,8 +1099,10 @@ public class DataManager
         public bool complete;
     }
 
-    public class QuestSaveData : GeneralData
+    public class QuestSaveData
     {
+        public int id;
+
         public int saveId;
         public int phaseSaveId;
         public int questId;
@@ -1057,8 +1110,10 @@ public class DataManager
         public bool complete;
     }
 
-    public class ObjectiveSaveData : GeneralData
+    public class ObjectiveSaveData
     {
+        public int id;
+
         public int saveId;
         public int questSaveId;
         public int objectiveId;
@@ -1066,8 +1121,10 @@ public class DataManager
         public bool complete;
     }
 
-    public class TaskSaveData : GeneralData
+    public class TaskSaveData
     {
+        public int id;
+
         public int saveId;
         public int worldInteractableId;
         public int objectiveSaveId;
@@ -1076,8 +1133,10 @@ public class DataManager
         public bool complete;
     }
 
-    public class InteractionSaveData : GeneralData
+    public class InteractionSaveData
     {
+        public int id;
+
         public int saveId;
         public int taskSaveId;
         public int interactionId;

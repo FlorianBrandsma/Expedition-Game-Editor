@@ -31,12 +31,12 @@ public class ItemDataManager : IDataManager
         GetIconData();
 
         var list = (from itemData           in itemDataList
-                    join objectGraphicData  in objectGraphicDataList    on itemData.objectGraphicId equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId equals iconData.Id
+                    join objectGraphicData  in objectGraphicDataList    on itemData.objectGraphicId equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId equals iconData.id
                     select new ItemElementData()
                     {
-                        Id = itemData.Id,
-                        Index = itemData.Index,
+                        Id = itemData.id,
+                        Index = itemData.index,
 
                         Type = itemData.type,
 
@@ -60,13 +60,13 @@ public class ItemDataManager : IDataManager
 
         foreach(Fixtures.Item item in Fixtures.itemList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(item.Id)) continue;
+            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.id)) continue;
             if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
 
             var itemData = new ItemData();
 
-            itemData.Id = item.Id;
-            itemData.Index = item.Index;
+            itemData.id = item.id;
+            itemData.index = item.index;
 
             itemData.type = item.type;
 
@@ -95,10 +95,15 @@ public class ItemDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class ItemData : GeneralData
+    internal class ItemData
     {
+        public int id;
+        public int index;
+
         public int type;
+
         public string name;
+
         public int objectGraphicId;
     }
 }

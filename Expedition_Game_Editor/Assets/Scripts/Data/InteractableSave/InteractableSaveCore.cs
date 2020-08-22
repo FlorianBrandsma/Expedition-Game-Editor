@@ -33,7 +33,7 @@ public class InteractableSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var interactableSaveData = Fixtures.interactableSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactableSaveData = Fixtures.interactableSaveList.Where(x => x.id == Id).FirstOrDefault();
     }
 
     public void UpdateSearch() { }

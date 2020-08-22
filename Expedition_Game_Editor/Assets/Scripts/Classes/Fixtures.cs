@@ -65,8 +65,11 @@ static public class Fixtures
     static public List<TaskSave>                taskSaveList                = new List<TaskSave>();
     static public List<InteractionSave>         interactionSaveList         = new List<InteractionSave>();
 
-    public class Item : GeneralData
+    public class Item
     {
+        public int id;
+        public int index;
+        
         public int type;
 
         public int objectGraphicId;
@@ -74,8 +77,11 @@ static public class Fixtures
         public string name;
     }
 
-    public class Interactable : GeneralData
+    public class Interactable
     {
+        public int id;
+        public int index;
+
         public int type;
 
         public int objectGraphicId;
@@ -93,8 +99,10 @@ static public class Fixtures
         public float stamina;
     }
     
-    public class WorldObject : GeneralData
+    public class WorldObject
     {
+        public int id;
+
         public int objectGraphicId;
         public int regionId;
         public int terrainId;
@@ -113,8 +121,10 @@ static public class Fixtures
         public int animation;
     }
     
-    public class ObjectGraphic : GeneralData
+    public class ObjectGraphic
     {
+        public int id;
+
         public int iconId;
 
         public string name;
@@ -125,26 +135,35 @@ static public class Fixtures
         public float depth;
     }
 
-    public class Icon : GeneralData
+    public class Icon
     {
+        public int id;
+        
         public int category;
         public string path;
     }
 
-    public class TileSet : GeneralData
+    public class TileSet
     {
+        public int id;
+        
         public string name;
         public float tileSize;
     }
 
-    public class Tile : GeneralData
+    public class Tile
     {
+        public int id;
+
         public int tileSetId;
         public string iconPath;
     }
     
-    public class Region : GeneralData
+    public class Region
     {
+        public int id;
+        public int index;
+
         public int chapterRegionId;
         public int phaseId;
         public int tileSetId;
@@ -154,8 +173,10 @@ static public class Fixtures
         public int terrainSize;
     }
 
-    public class Atmosphere : GeneralData
+    public class Atmosphere
     {
+        public int id;
+
         public int terrainId;
 
         public bool isDefault;
@@ -167,22 +188,31 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class Terrain : GeneralData
+    public class Terrain
     {
+        public int id;
+        public int index;
+
         public int regionId;
         public int iconId;
 
         public string name;
     }
 
-    public class TerrainTile : GeneralData
+    public class TerrainTile
     {
+        public int id;
+        public int index;
+
         public int terrainId;
         public int tileId;
     }
 
-    public class Chapter : GeneralData
+    public class Chapter
     {
+        public int id;
+        public int index;
+
         public string name;
 
         public float timeSpeed;
@@ -192,26 +222,36 @@ static public class Fixtures
     }
 
     //Party member might be merged with ChapterInteractable and sorted by type
-    public class PartyMember : GeneralData
+    public class PartyMember
     {
+        public int id;
+
         public int chapterId;
         public int interactableId;
     }
 
-    public class ChapterInteractable : GeneralData
+    public class ChapterInteractable
     {
+        public int id;
+        
         public int chapterId;
         public int interactableId;
     }
 
-    public class ChapterRegion : GeneralData
+    public class ChapterRegion
     {
+        public int id;
+        public int index;
+        
         public int chapterId;
         public int regionId;
     }
 
-    public class Phase : GeneralData
+    public class Phase
     {
+        public int id;
+        public int index;
+
         public int chapterId;
 
         public string name;
@@ -232,8 +272,11 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class Quest : GeneralData
+    public class Quest
     {
+        public int id;
+        public int index;
+
         public int phaseId;
 
         public string name;
@@ -242,8 +285,11 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class Objective : GeneralData
+    public class Objective
     {
+        public int id;
+        public int index;
+
         public int questId;
 
         public string name;
@@ -253,8 +299,11 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class WorldInteractable : GeneralData
+    public class WorldInteractable
     {
+        public int id;
+        public int index;
+        
         public int type;
         
         public int phaseId;
@@ -265,8 +314,11 @@ static public class Fixtures
         public int interactableId;
     }
 
-    public class Task : GeneralData
+    public class Task
     {
+        public int id;
+        public int index;
+
         public int worldInteractableId;
         public int objectiveId;
 
@@ -279,8 +331,10 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class Interaction : GeneralData
+    public class Interaction
     {
+        public int id;
+        
         public int taskId;
         
         public bool isDefault;
@@ -308,8 +362,10 @@ static public class Fixtures
         public string privateNotes;
     }
 
-    public class InteractionDestination : GeneralData
+    public class InteractionDestination
     {
+        public int id;
+        
         public int interactionId;
 
         public int regionId;
@@ -332,26 +388,35 @@ static public class Fixtures
         public float patience;
     }
 
-    public class Outcome : GeneralData
+    public class Outcome
     {
+        public int id;
+        
         public int type;
 
         public int interactionId;
     }
 
     #region Save data
-    public class Game : GeneralData
+    public class Game
     {
+        public int id;
+        
         public string name;
     }
 
-    public class Save : GeneralData
+    public class Save
     {
+        public int id;
+        public int index;
+
         public int gameId;
     }
 
-    public class PlayerSave : GeneralData
+    public class PlayerSave
     {
+        public int id;
+        
         public int saveId;
         public int regionId;
         public int partyMemberId;
@@ -366,22 +431,31 @@ static public class Fixtures
         public int playedTime;
     }
 
-    public class InteractableSave : GeneralData
+    public class InteractableSave
     {
+        public int id;
+        public int index;
+        
         public int saveId;
         public int interactableId;
     }
 
-    public class ChapterSave : GeneralData
+    public class ChapterSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int chapterId;
 
         public bool complete;
     }
 
-    public class PhaseSave : GeneralData
+    public class PhaseSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int chapterSaveId;
         public int phaseId;
@@ -389,8 +463,11 @@ static public class Fixtures
         public bool complete;
     }
 
-    public class QuestSave : GeneralData
+    public class QuestSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int phaseSaveId;
         public int questId;
@@ -398,8 +475,11 @@ static public class Fixtures
         public bool complete;
     }
 
-    public class ObjectiveSave : GeneralData
+    public class ObjectiveSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int questSaveId;
         public int objectiveId;
@@ -407,8 +487,11 @@ static public class Fixtures
         public bool complete;
     }
 
-    public class TaskSave : GeneralData
+    public class TaskSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int worldInteractableId;
         public int objectiveSaveId;
@@ -417,8 +500,11 @@ static public class Fixtures
         public bool complete;
     }
 
-    public class InteractionSave : GeneralData
+    public class InteractionSave
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int taskSaveId;
         public int interactionId;
@@ -484,9 +570,9 @@ static public class Fixtures
     {
         var icon = new Icon();
 
-        int id = iconList.Count > 0 ? (iconList[iconList.Count - 1].Id + 1) : 1;
+        int id = iconList.Count > 0 ? (iconList[iconList.Count - 1].id + 1) : 1;
 
-        icon.Id = id;
+        icon.id = id;
         icon.category = (int)category;
         icon.path = path;
 
@@ -527,9 +613,9 @@ static public class Fixtures
     {
         var objectGraphic = new ObjectGraphic();
 
-        int id = objectGraphicList.Count > 0 ? (objectGraphicList[objectGraphicList.Count - 1].Id + 1) : 1;
+        int id = objectGraphicList.Count > 0 ? (objectGraphicList[objectGraphicList.Count - 1].id + 1) : 1;
 
-        objectGraphic.Id = id;
+        objectGraphic.id = id;
         objectGraphic.iconId = iconId;
         objectGraphic.name = name;
         objectGraphic.path = "Objects/" + name;
@@ -551,9 +637,9 @@ static public class Fixtures
     {
         var tileSet = new TileSet();
 
-        int id = tileSetList.Count > 0 ? (tileSetList[tileSetList.Count - 1].Id + 1) : 1;
+        int id = tileSetList.Count > 0 ? (tileSetList[tileSetList.Count - 1].id + 1) : 1;
 
-        tileSet.Id = id;
+        tileSet.id = id;
         tileSet.name = name;
         tileSet.tileSize = 31.75f;
 
@@ -570,10 +656,10 @@ static public class Fixtures
             {
                 var tile = new Tile();
 
-                int id = tileList.Count > 0 ? (tileList[tileList.Count - 1].Id + 1) : 1;
+                int id = tileList.Count > 0 ? (tileList[tileList.Count - 1].id + 1) : 1;
 
-                tile.Id = id;
-                tile.tileSetId = tileSet.Id;
+                tile.id = id;
+                tile.tileSetId = tileSet.id;
                 tile.iconPath = "Textures/Tiles/" + tileSet.name + "/" + i;
 
                 tileList.Add(tile);
@@ -598,10 +684,10 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
 
-            item.Id = id;
-            item.Index = index;
+            item.id = id;
+            item.index = index;
 
             item.type = (int)Enums.ItemType.Supplies;
             
@@ -625,10 +711,10 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
 
-            item.Id = id;
-            item.Index = index;
+            item.id = id;
+            item.index = index;
 
             item.type = (int)Enums.ItemType.Gear;
             
@@ -650,10 +736,10 @@ static public class Fixtures
         {
             var item = new Item();
 
-            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
+            int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].id + 1) : 1;
 
-            item.Id = id;
-            item.Index = index;
+            item.id = id;
+            item.index = index;
 
             item.type = (int)Enums.ItemType.Spoils;
             
@@ -675,10 +761,10 @@ static public class Fixtures
         {
             var interactable = new Interactable();
 
-            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
+            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].id + 1) : 1;
 
-            interactable.Id = id;
-            interactable.Index = i;
+            interactable.id = id;
+            interactable.index = i;
 
             interactable.type = (int)Enums.InteractableType.Agent;
 
@@ -708,10 +794,10 @@ static public class Fixtures
         {
             var interactable = new Interactable();
 
-            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
+            int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].id + 1) : 1;
 
-            interactable.Id = id;
-            interactable.Index = i;
+            interactable.id = id;
+            interactable.index = i;
 
             interactable.type = (int)Enums.InteractableType.Object;
 
@@ -731,10 +817,10 @@ static public class Fixtures
         {
             var region = new Region();
 
-            int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
+            int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
 
-            region.Id = id;
-            region.Index = i;
+            region.id = id;
+            region.index = i;
 
             region.chapterRegionId = 0;
             region.phaseId = 0;
@@ -755,12 +841,12 @@ static public class Fixtures
             {
                 var terrain = new Terrain();
 
-                int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
+                int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
 
-                terrain.Id = id;
-                terrain.Index = i;
+                terrain.id = id;
+                terrain.index = i;
 
-                terrain.regionId = region.Id;
+                terrain.regionId = region.id;
                 terrain.iconId = 1;
                 terrain.name = "Terrain " + (i + 1);
 
@@ -777,11 +863,11 @@ static public class Fixtures
     {
         var atmosphere = new Atmosphere();
 
-        int id = atmosphereList.Count > 0 ? (atmosphereList[atmosphereList.Count - 1].Id + 1) : 1;
+        int id = atmosphereList.Count > 0 ? (atmosphereList[atmosphereList.Count - 1].id + 1) : 1;
 
-        atmosphere.Id = id;
+        atmosphere.id = id;
 
-        atmosphere.terrainId = terrain.Id;
+        atmosphere.terrainId = terrain.id;
 
         atmosphere.isDefault = isDefault;
         
@@ -795,20 +881,20 @@ static public class Fixtures
     {
         foreach(Terrain terrain in terrainList)
         {
-            var regionData = regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
+            var regionData = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
             var tileData = tileList.Where(x => x.tileSetId == regionData.tileSetId).ToList();
 
             for (int i = 0; i < (regionData.terrainSize * regionData.terrainSize); i++)
             {
                 var terrainTile = new TerrainTile();
 
-                int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
+                int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
 
-                terrainTile.Id = id;
-                terrainTile.Index = i;
+                terrainTile.id = id;
+                terrainTile.index = i;
 
-                terrainTile.terrainId = terrain.Id;
-                terrainTile.tileId = tileData.FirstOrDefault().Id;
+                terrainTile.terrainId = terrain.id;
+                terrainTile.tileId = tileData.FirstOrDefault().id;
 
                 terrainTileList.Add(terrainTile);
             }
@@ -819,19 +905,19 @@ static public class Fixtures
     {
         foreach (Region region in regionList)
         {
-            var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
+            var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
             var middleTerrain = terrains[terrains.Count / 2];
-            var terrainTiles = terrainTileList.Where(x => x.terrainId == (middleTerrain.Id)).Distinct().ToList();
+            var terrainTiles = terrainTileList.Where(x => x.terrainId == (middleTerrain.id)).Distinct().ToList();
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateWorldObject(16, 0, region.Id, new Vector3(245f, -0.2f, 236.5f), new Vector3(355, 155, 0));
+            CreateWorldObject(16, region.id, new Vector3(245f, -0.2f, 236.5f), new Vector3(355, 155, 0));
 
             /*Rock*/
-            CreateWorldObject(17, 1, region.Id, new Vector3(230f, 0f, 241.75f), new Vector3(0, 180, 0));
+            CreateWorldObject(17, region.id, new Vector3(230f, 0f, 241.75f), new Vector3(0, 180, 0));
 
             /*Cactus*/
-            CreateWorldObject(18, 2, region.Id, new Vector3(246.5f, 0f, 236.75f), new Vector3(0, 180, 0));
+            CreateWorldObject(18, region.id, new Vector3(246.5f, 0f, 236.75f), new Vector3(0, 180, 0));
 
             /*Red warrior*/
             //CreateWorldInteractable(Enums.InteractableType.Agent, 1, region.Id, new Vector3(238.125f, 0.1f, 239.875f), new Vector3(0, 180, 0));
@@ -877,7 +963,7 @@ static public class Fixtures
                 }
             };
 
-            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.Id, rangerDestinationList);
+            CreateWorldInteractable(Enums.InteractableType.Agent, 4, region.id, rangerDestinationList);
 
             /*Mage*/
             var mageDestinationList = new List<InteractionDestination>()
@@ -899,7 +985,7 @@ static public class Fixtures
                 }
             };
 
-            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.id, mageDestinationList);
 
             /*Pool*/
             var poolDestinationList = new List<InteractionDestination>()
@@ -918,13 +1004,13 @@ static public class Fixtures
                 }
             };
 
-            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
+            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.id, poolDestinationList);
 
-            var regionSize = GetRegionSize(region.Id);
+            var regionSize = GetRegionSize(region.id);
 
             for (int i = 3; i < objectsInWorld; i++)
             {
-                CreateWorldObject(Random.Range(16, 21), i, region.Id, new Vector3(Random.Range(0, (regionSize - 1)), 0f, Random.Range(0, (regionSize - 1))), new Vector3(0, Random.Range(0, 359), 0));
+                CreateWorldObject(Random.Range(16, 21), region.id, new Vector3(Random.Range(0, (regionSize - 1)), 0f, Random.Range(0, (regionSize - 1))), new Vector3(0, Random.Range(0, 359), 0));
             }
         }
     }
@@ -933,9 +1019,9 @@ static public class Fixtures
     {
         var worldInteractable = new WorldInteractable();
 
-        int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+        int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].id + 1) : 1;
 
-        worldInteractable.Id = id;
+        worldInteractable.id = id;
 
         worldInteractable.type = (int)type;
 
@@ -953,17 +1039,17 @@ static public class Fixtures
     {
         var task = new Task();
 
-        int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].Id + 1) : 1;
+        int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].id + 1) : 1;
 
-        task.Id = id;
-        task.Index = taskIndex;
+        task.id = id;
+        task.index = taskIndex;
 
-        task.worldInteractableId = worldInteractable.Id;
+        task.worldInteractableId = worldInteractable.id;
         task.objectiveId = objectiveId;
         
         task.name = "Just a task" + (objectiveId == 0 ? "" : " with an objective " + task.objectiveId);
 
-        task.publicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
+        task.publicNotes = "I belong to Interactable " + worldInteractable.id + ". This is definitely a test";
         
         CreateInteraction(task, true, 0, 0, regionId, interactionDestinationList);
         CreateInteraction(task, false, 0, (5 * TimeManager.secondsInHour) - 1, regionId, interactionDestinationList);
@@ -976,11 +1062,11 @@ static public class Fixtures
     {
         var interaction = new Interaction();
 
-        int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
+        int id = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
         
-        interaction.Id = id;
+        interaction.id = id;
 
-        interaction.taskId = task.Id;
+        interaction.taskId = task.id;
 
         interaction.isDefault = isDefault;
 
@@ -1005,26 +1091,25 @@ static public class Fixtures
 
         interaction.publicNotes = "These are public interaction notes";
 
-        for(int i = 0; i < interactionDestinationList.Count; i++)
+        interactionDestinationList.ForEach(interactionDestination =>
         {
-            CreateInteractionDestination(i, interaction, regionId, interactionDestinationList[i]);
-        }
-        
+            CreateInteractionDestination(interaction, regionId, interactionDestination);
+        });
+
         CreateOutcome(interaction, Enums.OutcomeType.Positive);
 
         interactionList.Add(interaction);
     }
 
-    static public void CreateInteractionDestination(int index, Interaction interaction, int regionId, InteractionDestination interactionDestinationSource)
+    static public void CreateInteractionDestination(Interaction interaction, int regionId, InteractionDestination interactionDestinationSource)
     {
         var interactionDestination = new InteractionDestination();
 
-        int id = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
+        int id = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].id + 1) : 1;
 
-        interactionDestination.Id = id;
-        interactionDestination.Index = index;
+        interactionDestination.id = id;
 
-        interactionDestination.interactionId = interaction.Id;
+        interactionDestination.interactionId = interaction.id;
         
         interactionDestination.positionX = interactionDestinationSource.positionX;
         interactionDestination.positionY = interactionDestinationSource.positionY;
@@ -1053,25 +1138,24 @@ static public class Fixtures
     {
         var outcome = new Outcome();
 
-        int id = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
+        int id = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].id + 1) : 1;
 
-        outcome.Id = id;
+        outcome.id = id;
 
         outcome.type = (int)type;
 
-        outcome.interactionId = interaction.Id;
+        outcome.interactionId = interaction.id;
 
         outcomeList.Add(outcome);
     }
 
-    static public void CreateWorldObject(int objectGraphicId, int index, int regionId, Vector3 position, Vector3 rotation)
+    static public void CreateWorldObject(int objectGraphicId, int regionId, Vector3 position, Vector3 rotation)
     {
         var worldObject = new WorldObject();
 
-        int id = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].Id + 1) : 1;
+        int id = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].id + 1) : 1;
 
-        worldObject.Id = id;
-        worldObject.Index = index;
+        worldObject.id = id;
 
         worldObject.objectGraphicId = objectGraphicId;
         worldObject.regionId = regionId;
@@ -1100,8 +1184,8 @@ static public class Fixtures
 
             int chapterId = (i + 1);
 
-            chapter.Id = chapterId;
-            chapter.Index = i;
+            chapter.id = chapterId;
+            chapter.index = i;
 
             chapter.name = "Chapter " + chapterId + " Name";
 
@@ -1121,12 +1205,11 @@ static public class Fixtures
             {
                 var partyMember = new PartyMember();
 
-                int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].Id + 1) : 1;
+                int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].id + 1) : 1;
 
-                partyMember.Id = id;
-                partyMember.Index = i;
+                partyMember.id = id;
 
-                partyMember.chapterId = chapter.Id;
+                partyMember.chapterId = chapter.id;
 
                 var partyMemberInteractableId = 1;
                 partyMember.interactableId = partyMemberInteractableId;
@@ -1142,19 +1225,18 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var partyMemberIds = partyMemberList.Where(x => x.chapterId == chapter.Id).Select(x => x.interactableId).Distinct().ToList();
-            interactableList.Where(x => !partyMemberIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
+            var partyMemberIds = partyMemberList.Where(x => x.chapterId == chapter.id).Select(x => x.interactableId).Distinct().ToList();
+            interactableList.Where(x => !partyMemberIds.Contains(x.id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.id));
 
             for (int i = 0; i < chapterInteractablesInChapter; i++)
             {
                 var chapterInteractable = new ChapterInteractable();
 
-                int id = chapterInteractableList.Count > 0 ? (chapterInteractableList[chapterInteractableList.Count - 1].Id + 1) : 1;
+                int id = chapterInteractableList.Count > 0 ? (chapterInteractableList[chapterInteractableList.Count - 1].id + 1) : 1;
 
-                chapterInteractable.Id = id;
-                chapterInteractable.Index = i;
+                chapterInteractable.id = id;
 
-                chapterInteractable.chapterId = chapter.Id;
+                chapterInteractable.chapterId = chapter.id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
 
@@ -1173,7 +1255,7 @@ static public class Fixtures
         {
             List<int> randomRegions = new List<int>();
 
-            regionList.ForEach(x => randomRegions.Add(x.Id));
+            regionList.ForEach(x => randomRegions.Add(x.id));
 
             //int randomRegionAmount = Random.Range(1, regionList.Count + 1);
 
@@ -1181,12 +1263,12 @@ static public class Fixtures
             {
                 var chapterRegion = new ChapterRegion();
 
-                int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].Id + 1) : 1;
+                int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].id + 1) : 1;
 
-                chapterRegion.Id = id;
-                chapterRegion.Index = i;
+                chapterRegion.id = id;
+                chapterRegion.index = i;
 
-                chapterRegion.chapterId = chapter.Id;
+                chapterRegion.chapterId = chapter.id;
 
                 int randomRegion = Random.Range(0, randomRegions.Count);
 
@@ -1207,28 +1289,28 @@ static public class Fixtures
             {
                 var phase = new Phase();
 
-                int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].Id + 1) : 1;
+                int id = phaseList.Count > 0 ? (phaseList[phaseList.Count - 1].id + 1) : 1;
 
-                phase.Id = id;
-                phase.Index = i;
+                phase.id = id;
+                phase.index = i;
 
-                phase.chapterId = chapter.Id;
+                phase.chapterId = chapter.id;
 
                 phase.name = "Phase " + (i + 1) + " Name";
 
                 foreach (ChapterRegion chapterRegion in chapterRegionList.Where(x => x.chapterId == phase.chapterId).Distinct().ToList())
                 {
-                    var regionSource = regionList.Where(x => x.Id == chapterRegion.regionId).FirstOrDefault();
+                    var regionSource = regionList.Where(x => x.id == chapterRegion.regionId).FirstOrDefault();
 
                     var region = new Region();
 
-                    int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
+                    int regionId = regionList.Count > 0 ? (regionList[regionList.Count - 1].id + 1) : 1;
 
-                    region.Id = regionId;
-                    region.phaseId = phase.Id;
-                    region.chapterRegionId = chapterRegion.Id;
+                    region.id = regionId;
+                    region.phaseId = phase.id;
+                    region.chapterRegionId = chapterRegion.id;
 
-                    region.Index = chapterRegion.Index;
+                    region.index = chapterRegion.index;
                     region.tileSetId = regionSource.tileSetId;
 
                     region.name = regionSource.name;
@@ -1238,45 +1320,45 @@ static public class Fixtures
                     regionList.Add(region);
 
                     //Get all world interactables belonging to this region                
-                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.regionId == regionSource.Id).ToList();
-                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.interactionId).Contains(x.Id)).ToList();
-                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.Id)).ToList();
+                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.regionId == regionSource.id).ToList();
+                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.interactionId).Contains(x.id)).ToList();
+                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.taskId).Contains(x.id)).ToList();
                     
-                    var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+                    var terrainSourceList = terrainList.Where(x => x.regionId == regionSource.id).OrderBy(x => x.index).Distinct().ToList();
 
                     foreach (Terrain terrainSource in terrainSourceList)
                     {
                         var terrain = new Terrain();
 
-                        int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
+                        int terrainId = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].id + 1) : 1;
 
-                        terrain.Id = terrainId;
-                        terrain.regionId = region.Id;
+                        terrain.id = terrainId;
+                        terrain.regionId = region.id;
 
-                        terrain.Index = terrainSource.Index;
+                        terrain.index = terrainSource.index;
 
                         terrain.iconId = terrainSource.iconId;
                         terrain.name = terrainSource.name;
 
-                        var atmosphereSourceList = atmosphereList.Where(x => x.terrainId == terrainSource.Id).OrderByDescending(x => x.isDefault).ThenBy(x => x.startTime).ToList();
+                        var atmosphereSourceList = atmosphereList.Where(x => x.terrainId == terrainSource.id).OrderByDescending(x => x.isDefault).ThenBy(x => x.startTime).ToList();
 
                         foreach (Atmosphere atmosphereSource in atmosphereSourceList)
                         {
                             CreateAtmosphere(terrain, atmosphereSource.isDefault, atmosphereSource.startTime, atmosphereSource.endTime);
                         }
 
-                        var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+                        var terrainTileSourceList = terrainTileList.Where(x => x.terrainId == terrainSource.id).OrderBy(x => x.index).Distinct().ToList();
 
                         foreach (TerrainTile terrainTileSource in terrainTileSourceList)
                         {
                             var terrainTile = new TerrainTile();
 
-                            int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
+                            int terrainTileId = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].id + 1) : 1;
 
-                            terrainTile.Id = terrainTileId;
-                            terrainTile.terrainId = terrain.Id;
+                            terrainTile.id = terrainTileId;
+                            terrainTile.terrainId = terrain.id;
 
-                            terrainTile.Index = terrainTileSource.Index;
+                            terrainTile.index = terrainTileSource.index;
 
                             terrainTile.tileId = terrainTileSource.tileId;
 
@@ -1286,48 +1368,46 @@ static public class Fixtures
                         terrainList.Add(terrain);
                     }
 
-                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
+                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.worldInteractableId).Contains(x.id)).Distinct().ToList();
 
                     foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
                     {
                         var worldInteractable = new WorldInteractable();
 
-                        int worldInteractableId = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+                        int worldInteractableId = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].id + 1) : 1;
 
-                        worldInteractable.Id = worldInteractableId;
+                        worldInteractable.id = worldInteractableId;
 
                         worldInteractable.type = worldInteractableSource.type;
 
                         worldInteractable.interactableId = worldInteractableSource.interactableId;
 
-                        var taskSourceList = taskList.Where(x => x.worldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+                        var taskSourceList = taskList.Where(x => x.worldInteractableId == worldInteractableSource.id).OrderBy(x => x.index).Distinct().ToList();
 
                         foreach (Task taskSource in taskSourceList)
                         {
                             var task = new Task();
 
-                            int taskId = taskList.Count > 0 ? (taskList[taskList.Count - 1].Id + 1) : 1;
+                            int taskId = taskList.Count > 0 ? (taskList[taskList.Count - 1].id + 1) : 1;
 
-                            task.Id = taskId;
-                            task.Index = taskSource.Index;
+                            task.id = taskId;
+                            task.index = taskSource.index;
 
-                            task.worldInteractableId = worldInteractable.Id;
+                            task.worldInteractableId = worldInteractable.id;
                             task.objectiveId = taskSource.objectiveId;
 
                             task.name = "Just a task" + (taskSource.objectiveId == 0 ? "" : " with an objective " + task.objectiveId);
 
-                            var interactionSourceList = interactionList.Where(x => x.taskId == taskSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+                            var interactionSourceList = interactionList.Where(x => x.taskId == taskSource.id).OrderBy(x => x.isDefault).ThenBy(x => x.startTime).Distinct().ToList();
 
                             foreach (Interaction interactionSource in interactionSourceList)
                             {
                                 var interaction = new Interaction();
 
-                                int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].Id + 1) : 1;
+                                int interactionId = interactionList.Count > 0 ? (interactionList[interactionList.Count - 1].id + 1) : 1;
 
-                                interaction.Id = interactionId;
-                                interaction.taskId = task.Id;
-
-                                interaction.Index = interactionSource.Index;
+                                interaction.id = interactionId;
+                                interaction.taskId = task.id;
 
                                 interaction.isDefault = interactionSource.isDefault;
 
@@ -1353,18 +1433,17 @@ static public class Fixtures
                                 interaction.publicNotes = interactionSource.publicNotes;
                                 interaction.privateNotes = interactionSource.privateNotes;
 
-                                var interactionDestinationSourceList = interactionDestinationList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+                                var interactionDestinationSourceList = interactionDestinationList.Where(x => x.interactionId == interactionSource.id).Distinct().ToList();
 
                                 foreach (InteractionDestination interactionDestinationSource in interactionDestinationSourceList)
                                 {
                                     var interactionDestination = new InteractionDestination();
 
-                                    int interactionDestinationId = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].Id + 1) : 1;
+                                    int interactionDestinationId = interactionDestinationList.Count > 0 ? (interactionDestinationList[interactionDestinationList.Count - 1].id + 1) : 1;
 
-                                    interactionDestination.Id = interactionDestinationId;
-                                    interactionDestination.Index = interactionDestinationSource.Index;
+                                    interactionDestination.id = interactionDestinationId;
 
-                                    interactionDestination.interactionId = interaction.Id;
+                                    interactionDestination.interactionId = interaction.id;
 
                                     interactionDestination.positionX = interactionDestinationSource.positionX;
                                     interactionDestination.positionY = interactionDestinationSource.positionY;
@@ -1372,7 +1451,7 @@ static public class Fixtures
 
                                     interactionDestination.positionVariance = interactionDestinationSource.positionVariance;
 
-                                    interactionDestination.regionId = region.Id;
+                                    interactionDestination.regionId = region.id;
 
                                     interactionDestination.terrainId = GetTerrain(interactionDestination.regionId, interactionDestination.positionX, interactionDestination.positionZ);
                                     interactionDestination.terrainTileId = GetTerrainTile(interactionDestination.terrainId, interactionDestination.positionX, interactionDestination.positionZ);
@@ -1389,19 +1468,19 @@ static public class Fixtures
                                     interactionDestinationList.Add(interactionDestination);
                                 }
 
-                                var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.Id).OrderBy(x => x.type).Distinct().ToList();
+                                var outcomeSourceList = outcomeList.Where(x => x.interactionId == interactionSource.id).OrderBy(x => x.type).Distinct().ToList();
 
                                 foreach (Outcome outcomeSource in outcomeSourceList)
                                 {
                                     var outcome = new Outcome();
 
-                                    int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
+                                    int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].id + 1) : 1;
 
-                                    outcome.Id = outcomeId;
+                                    outcome.id = outcomeId;
 
                                     outcome.type = outcomeSource.type;
 
-                                    outcome.interactionId = interaction.Id;
+                                    outcome.interactionId = interaction.id;
 
                                     outcomeList.Add(outcome);
                                 }
@@ -1415,16 +1494,16 @@ static public class Fixtures
                         worldInteractableList.Add(worldInteractable);
                     }
 
-                    var worldObjectSourceList = worldObjectList.Where(x => x.regionId == regionSource.Id).Distinct().ToList();
+                    var worldObjectSourceList = worldObjectList.Where(x => x.regionId == regionSource.id).Distinct().ToList();
 
                     foreach (WorldObject worldObjectSource in worldObjectSourceList)
                     {
                         var worldObject = new WorldObject();
 
-                        int worldObjectId = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].Id + 1) : 1;
+                        int worldObjectId = worldObjectList.Count > 0 ? (worldObjectList[worldObjectList.Count - 1].id + 1) : 1;
 
-                        worldObject.Id = worldObjectId;
-                        worldObject.regionId = region.Id;
+                        worldObject.id = worldObjectId;
+                        worldObject.regionId = region.id;
 
                         worldObject.positionX = worldObjectSource.positionX;
                         worldObject.positionY = worldObjectSource.positionY;
@@ -1439,14 +1518,13 @@ static public class Fixtures
 
                         worldObject.scaleMultiplier = worldObjectSource.scaleMultiplier;
 
-                        worldObject.Index = worldObjectSource.Index;
                         worldObject.objectGraphicId = worldObjectSource.objectGraphicId;
 
                         worldObjectList.Add(worldObject);
                     }
                 }
                 
-                phase.defaultRegionId = regionList.Where(x => x.phaseId == phase.Id).First().Id;
+                phase.defaultRegionId = regionList.Where(x => x.phaseId == phase.id).First().id;
 
                 phase.defaultPositionX = 238.125f;
                 phase.defaultPositionY = 0.1f;
@@ -1458,7 +1536,7 @@ static public class Fixtures
 
                 phase.defaultTime = 7 * TimeManager.secondsInHour;
 
-                phase.publicNotes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
+                phase.publicNotes = "I belong to Chapter " + chapter.id + ". This is definitely a test";
                 
                 phaseList.Add(phase);
             }
@@ -1473,14 +1551,14 @@ static public class Fixtures
             {
                 var quest = new Quest();
 
-                int id = questList.Count > 0 ? (questList[questList.Count - 1].Id + 1) : 1;
+                int id = questList.Count > 0 ? (questList[questList.Count - 1].id + 1) : 1;
 
-                quest.Id = id;
-                quest.Index = i;
+                quest.id = id;
+                quest.index = i;
 
-                quest.phaseId = phase.Id;
+                quest.phaseId = phase.id;
                 quest.name = "Quest " + (i + 1) + " Name";
-                quest.publicNotes = "I belong to Phase " + phase.Id + ". This is definitely a test";
+                quest.publicNotes = "I belong to Phase " + phase.id + ". This is definitely a test";
                 
                 questList.Add(quest);
             }
@@ -1491,25 +1569,25 @@ static public class Fixtures
     {
         foreach (Chapter chapter in chapterList)
         {
-            foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.Id).Distinct().ToList())
+            foreach (Phase phase in phaseList.Where(x => x.chapterId == chapter.id).Distinct().ToList())
             {
-                var chapterInteractables = chapterInteractableList.Where(x => x.chapterId == chapter.Id).Distinct().ToList();
-                var questIds = questList.Where(x => x.phaseId == phase.Id).Select(x => x.Id).Distinct().ToList();
+                var chapterInteractables = chapterInteractableList.Where(x => x.chapterId == chapter.id).Distinct().ToList();
+                var questIds = questList.Where(x => x.phaseId == phase.id).Select(x => x.id).Distinct().ToList();
 
                 for (int i = 0; i < chapterInteractables.Count; i++)
                 {
                     var worldInteractable = new WorldInteractable();
 
-                    int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+                    int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].id + 1) : 1;
 
-                    worldInteractable.Id = id;
+                    worldInteractable.id = id;
 
                     worldInteractable.type = (int)Enums.InteractableType.Agent;
 
                     var chapterInteractable = chapterInteractables[i];
 
-                    worldInteractable.chapterInteractableId = chapterInteractable.Id;
-                    worldInteractable.phaseId = phase.Id;
+                    worldInteractable.chapterInteractableId = chapterInteractable.id;
+                    worldInteractable.phaseId = phase.id;
                     
                     int randomQuestId = Random.Range(0, questIds.Count);
 
@@ -1533,14 +1611,14 @@ static public class Fixtures
             {
                 var objective = new Objective();
 
-                int id = objectiveList.Count > 0 ? (objectiveList[objectiveList.Count - 1].Id + 1) : 1;
+                int id = objectiveList.Count > 0 ? (objectiveList[objectiveList.Count - 1].id + 1) : 1;
 
-                objective.Id = id;
-                objective.Index = i;
+                objective.id = id;
+                objective.index = i;
 
-                objective.questId = quest.Id;
+                objective.questId = quest.id;
                 objective.name = "Objective " + (i + 1) + " Name";
-                objective.publicNotes = "I belong to Quest " + quest.Id + ". This is definitely a test";
+                objective.publicNotes = "I belong to Quest " + quest.id + ". This is definitely a test";
                 
                 objectiveList.Add(objective);
             }
@@ -1553,20 +1631,20 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            interactableList.ForEach(x => randomInteractables.Add(x.Id));
+            interactableList.ForEach(x => randomInteractables.Add(x.id));
 
             for (int i = 0; i < interactablesInObjective; i++)
             {
                 var worldInteractable = new WorldInteractable();
 
-                int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
+                int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].id + 1) : 1;
 
-                worldInteractable.Id = id;
-                worldInteractable.Index = i;
+                worldInteractable.id = id;
+                worldInteractable.index = i;
 
                 worldInteractable.type = (int)Enums.InteractableType.Object;
 
-                worldInteractable.objectiveId = objective.Id;
+                worldInteractable.objectiveId = objective.id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
                 worldInteractable.interactableId = randomInteractables[randomInteractable];
@@ -1581,11 +1659,11 @@ static public class Fixtures
         foreach (Objective objective in objectiveList)
         {
             var questWorldInteractables = worldInteractableList.Where(x => x.questId == objective.questId).Distinct().ToList();
-            var objectiveWorldInteractables = worldInteractableList.Where(x => x.objectiveId == objective.Id).Distinct().ToList();
+            var objectiveWorldInteractables = worldInteractableList.Where(x => x.objectiveId == objective.id).Distinct().ToList();
             
             var worldInteractables = questWorldInteractables.Concat(objectiveWorldInteractables);
 
-            var phaseId = phaseList.Where(x => questList.Where(y => y.Id == objective.questId).Select(y => y.phaseId).Contains(x.Id)).Select(x => x.Id).FirstOrDefault();
+            var phaseId = phaseList.Where(x => questList.Where(y => y.id == objective.questId).Select(y => y.phaseId).Contains(x.id)).Select(x => x.id).FirstOrDefault();
             var regions = regionList.Where(x => x.phaseId == phaseId).Distinct().ToList();
             
             foreach (WorldInteractable worldInteractable in worldInteractables)
@@ -1594,7 +1672,7 @@ static public class Fixtures
                 {
                     var randomRegion = regions[Random.Range(0, regions.Count)];
 
-                    var regionSize = GetRegionSize(randomRegion.Id);
+                    var regionSize = GetRegionSize(randomRegion.id);
 
                     var randomPosition = new Vector3(Random.Range(0, (regionSize - 1)), 0, Random.Range(0, (regionSize - 1)));
                     var rotation = new Vector3(0, 180, 0);
@@ -1615,7 +1693,7 @@ static public class Fixtures
                         }
                     };
 
-                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
+                    CreateTask(worldInteractable, objective.id, index, randomRegion.id, randomDestinationList);
                 }
             }
         }
@@ -1623,9 +1701,9 @@ static public class Fixtures
     
     static public float GetRegionSize(int regionId)
     {
-        var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
+        var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
 
         var regionSize = region.regionSize * region.terrainSize * tileSet.tileSize;
 
@@ -1634,9 +1712,9 @@ static public class Fixtures
 
     static public int GetTerrain(int regionId, float posX, float posZ)
     {
-        var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
-        var terrains = terrainList.Where(x => x.regionId == region.Id).Distinct().ToList();
+        var region = regionList.Where(x => x.id == regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
+        var terrains = terrainList.Where(x => x.regionId == region.id).Distinct().ToList();
 
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
@@ -1645,16 +1723,16 @@ static public class Fixtures
 
         var terrainIndex = (region.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
+        var terrainId = terrains.Where(x => x.index == terrainIndex).Select(x => x.id).FirstOrDefault();
 
         return terrainId;
     }
 
     static public int GetTerrainTile(int terrainId, float posX, float posZ)
     {
-        var terrain = terrainList.Where(x => x.Id == terrainId).FirstOrDefault();
-        var region = regionList.Where(x => x.Id == terrain.regionId).FirstOrDefault();
-        var tileSet = tileSetList.Where(x => x.Id == region.tileSetId).FirstOrDefault();
+        var terrain = terrainList.Where(x => x.id == terrainId).FirstOrDefault();
+        var region = regionList.Where(x => x.id == terrain.regionId).FirstOrDefault();
+        var tileSet = tileSetList.Where(x => x.id == region.tileSetId).FirstOrDefault();
         
         var terrainSize = region.terrainSize * tileSet.tileSize;
 
@@ -1674,7 +1752,7 @@ static public class Fixtures
 
         var tileIndex = (region.terrainSize * tileCoordinates.y) + tileCoordinates.x;
 
-        var terrainTileId = terrainTiles.Where(x => x.Index == tileIndex).Select(x => x.Id).FirstOrDefault();
+        var terrainTileId = terrainTiles.Where(x => x.index == tileIndex).Select(x => x.id).FirstOrDefault();
 
         return terrainTileId;
     }
@@ -1688,10 +1766,10 @@ static public class Fixtures
     {
         var save = new Save();
 
-        int id = saveList.Count > 0 ? (saveList[saveList.Count - 1].Id + 1) : 1;
+        int id = saveList.Count > 0 ? (saveList[saveList.Count - 1].id + 1) : 1;
 
-        save.Id = id;
-        save.Index = saveList.Count;
+        save.id = id;
+        save.index = saveList.Count;
 
         CreatePlayerSave(save);
         CreateInteractableSaves(save);
@@ -1704,18 +1782,18 @@ static public class Fixtures
     {
         var playerSave = new PlayerSave();
 
-        int playerSaveId = playerSaveList.Count > 0 ? (playerSaveList[playerSaveList.Count - 1].Id + 1) : 1;
+        int playerSaveId = playerSaveList.Count > 0 ? (playerSaveList[playerSaveList.Count - 1].id + 1) : 1;
 
-        playerSave.Id = playerSaveId;
+        playerSave.id = playerSaveId;
 
-        playerSave.saveId = save.Id;
+        playerSave.saveId = save.id;
 
-        var firstChapter        = chapterList.OrderBy(x => x.Index).First();
-        var firstPhase          = phaseList.Where(x => x.chapterId == firstChapter.Id).OrderBy(x => x.Index).First();
-        var firstPartyMember    = partyMemberList.Where(x => x.chapterId == firstChapter.Id).OrderBy(x => x.Index).First();
+        var firstChapter        = chapterList.OrderBy(x => x.index).First();
+        var firstPhase          = phaseList.Where(x => x.chapterId == firstChapter.id).OrderBy(x => x.index).First();
+        var firstPartyMember    = partyMemberList.Where(x => x.chapterId == firstChapter.id).First();
 
         playerSave.regionId = firstPhase.defaultRegionId;
-        playerSave.partyMemberId = firstPartyMember.Id;
+        playerSave.partyMemberId = firstPartyMember.id;
 
         playerSave.positionX = firstPhase.defaultPositionX;
         playerSave.positionY = firstPhase.defaultPositionY;
@@ -1741,12 +1819,13 @@ static public class Fixtures
         {
             var interactableSave = new InteractableSave();
 
-            int interactableSaveId = interactableSaveList.Count > 0 ? (interactableSaveList[interactableSaveList.Count - 1].Id + 1) : 1;
+            int interactableSaveId = interactableSaveList.Count > 0 ? (interactableSaveList[interactableSaveList.Count - 1].id + 1) : 1;
 
-            interactableSave.Id = interactableSaveId;
+            interactableSave.id = interactableSaveId;
+            interactableSave.index = interactable.index;
 
-            interactableSave.saveId = save.Id;
-            interactableSave.interactableId = interactable.Id;
+            interactableSave.saveId = save.id;
+            interactableSave.interactableId = interactable.id;
 
             interactableSaveList.Add(interactableSave);
         }
@@ -1764,12 +1843,12 @@ static public class Fixtures
         {
             var chapterSave = new ChapterSave();
 
-            int chapterSaveId = chapterSaveList.Count > 0 ? (chapterSaveList[chapterSaveList.Count - 1].Id + 1) : 1;
+            int chapterSaveId = chapterSaveList.Count > 0 ? (chapterSaveList[chapterSaveList.Count - 1].id + 1) : 1;
 
-            chapterSave.Id = chapterSaveId;
+            chapterSave.id = chapterSaveId;
 
-            chapterSave.saveId = save.Id;
-            chapterSave.chapterId = chapter.Id;
+            chapterSave.saveId = save.id;
+            chapterSave.chapterId = chapter.id;
 
             LoadPhaseSaves(chapter, chapterSave);
 
@@ -1779,17 +1858,17 @@ static public class Fixtures
 
     static public void LoadPhaseSaves(Chapter chapter, ChapterSave chapterSave)
     {
-        foreach(Phase phase in phaseList.Where(x => x.chapterId == chapter.Id))
+        foreach(Phase phase in phaseList.Where(x => x.chapterId == chapter.id))
         {
             var phaseSave = new PhaseSave();
 
-            int id = phaseSaveList.Count > 0 ? (phaseSaveList[phaseSaveList.Count - 1].Id + 1) : 1;
+            int id = phaseSaveList.Count > 0 ? (phaseSaveList[phaseSaveList.Count - 1].id + 1) : 1;
 
-            phaseSave.Id = id;
+            phaseSave.id = id;
 
             phaseSave.saveId = chapterSave.saveId;
-            phaseSave.chapterSaveId = chapterSave.Id;
-            phaseSave.phaseId = phase.Id;
+            phaseSave.chapterSaveId = chapterSave.id;
+            phaseSave.phaseId = phase.id;
 
             LoadQuestSaves(phase, phaseSave);
 
@@ -1805,10 +1884,10 @@ static public class Fixtures
 
             foreach (Region phaseRegionSource in phaseRegionSourceList)
             {
-                var interactionIdList = interactionDestinationList.Where(x => x.regionId == phaseRegionSource.Id).Select(x => x.interactionId).ToList();
-                var taskIdList = interactionList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.taskId).ToList();
-                var worldInteractableIdList = taskList.Where(x => taskIdList.Contains(x.Id)).Select(x => x.worldInteractableId).ToList();
-                var worldInteractableSourceList = worldInteractableList.Where(x => worldInteractableIdList.Contains(x.Id)).Distinct().ToList();
+                var interactionIdList = interactionDestinationList.Where(x => x.regionId == phaseRegionSource.id).Select(x => x.interactionId).ToList();
+                var taskIdList = interactionList.Where(x => interactionIdList.Contains(x.id)).Select(x => x.taskId).ToList();
+                var worldInteractableIdList = taskList.Where(x => taskIdList.Contains(x.id)).Select(x => x.worldInteractableId).ToList();
+                var worldInteractableSourceList = worldInteractableList.Where(x => worldInteractableIdList.Contains(x.id)).Distinct().ToList();
                 
                 foreach (WorldInteractable worldInteractableSource in worldInteractableSourceList)
                 {
@@ -1820,17 +1899,17 @@ static public class Fixtures
 
     static public void LoadWorldInteractableTaskSaves(WorldInteractable worldInteractable, PhaseSave phaseSave)
     {
-        foreach (Task task in taskList.Where(x => x.worldInteractableId == worldInteractable.Id))
+        foreach (Task task in taskList.Where(x => x.worldInteractableId == worldInteractable.id))
         {
             var taskSave = new TaskSave();
 
-            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].Id + 1) : 1;
+            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].id + 1) : 1;
 
-            taskSave.Id = id;
+            taskSave.id = id;
 
             taskSave.saveId = phaseSave.saveId;
-            taskSave.worldInteractableId = worldInteractable.Id;
-            taskSave.taskId = task.Id;
+            taskSave.worldInteractableId = worldInteractable.id;
+            taskSave.taskId = task.id;
 
             LoadInteractionSaves(task, taskSave);
 
@@ -1840,17 +1919,17 @@ static public class Fixtures
 
     static public void LoadQuestSaves(Phase phase, PhaseSave phaseSave)
     {
-        foreach (Quest quest in questList.Where(x => x.phaseId == phase.Id))
+        foreach (Quest quest in questList.Where(x => x.phaseId == phase.id))
         {
             var questSave = new QuestSave();
 
-            int id = questSaveList.Count > 0 ? (questSaveList[questSaveList.Count - 1].Id + 1) : 1;
+            int id = questSaveList.Count > 0 ? (questSaveList[questSaveList.Count - 1].id + 1) : 1;
 
-            questSave.Id = id;
+            questSave.id = id;
 
             questSave.saveId = phaseSave.saveId;
-            questSave.phaseSaveId = phaseSave.Id;
-            questSave.questId = quest.Id;
+            questSave.phaseSaveId = phaseSave.id;
+            questSave.questId = quest.id;
 
             LoadObjectiveSaves(quest, questSave);
 
@@ -1860,17 +1939,17 @@ static public class Fixtures
 
     static public void LoadObjectiveSaves(Quest quest, QuestSave questSave)
     {
-        foreach (Objective objective in objectiveList.Where(x => x.questId == quest.Id))
+        foreach (Objective objective in objectiveList.Where(x => x.questId == quest.id))
         {
             var objectiveSave = new ObjectiveSave();
 
-            int id = objectiveSaveList.Count > 0 ? (objectiveSaveList[objectiveSaveList.Count - 1].Id + 1) : 1;
+            int id = objectiveSaveList.Count > 0 ? (objectiveSaveList[objectiveSaveList.Count - 1].id + 1) : 1;
 
-            objectiveSave.Id = id;
+            objectiveSave.id = id;
 
             objectiveSave.saveId = questSave.saveId;
-            objectiveSave.questSaveId = questSave.Id;
-            objectiveSave.objectiveId = objective.Id;
+            objectiveSave.questSaveId = questSave.id;
+            objectiveSave.objectiveId = objective.id;
             
             LoadObjectiveTaskSaves(objective, objectiveSave);
 
@@ -1880,18 +1959,18 @@ static public class Fixtures
 
     static public void LoadObjectiveTaskSaves(Objective objective, ObjectiveSave objectiveSave)
     {
-        foreach (Task task in taskList.Where(x => x.objectiveId == objective.Id))
+        foreach (Task task in taskList.Where(x => x.objectiveId == objective.id))
         {
             var taskSave = new TaskSave();
 
-            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].Id + 1) : 1;
+            int id = taskSaveList.Count > 0 ? (taskSaveList[taskSaveList.Count - 1].id + 1) : 1;
 
-            taskSave.Id = id;
+            taskSave.id = id;
 
             taskSave.saveId = objectiveSave.saveId;
             taskSave.worldInteractableId = task.worldInteractableId;
-            taskSave.objectiveSaveId = objectiveSave.Id;
-            taskSave.taskId = task.Id;
+            taskSave.objectiveSaveId = objectiveSave.id;
+            taskSave.taskId = task.id;
 
             LoadInteractionSaves(task, taskSave);
 
@@ -1901,17 +1980,17 @@ static public class Fixtures
     
     static public void LoadInteractionSaves(Task task, TaskSave taskSave)
     {
-        foreach (Interaction interaction in interactionList.Where(x => x.taskId == task.Id))
+        foreach (Interaction interaction in interactionList.Where(x => x.taskId == task.id))
         {
             var interactionSave = new InteractionSave();
 
-            int id = interactionSaveList.Count > 0 ? (interactionSaveList[interactionSaveList.Count - 1].Id + 1) : 1;
+            int id = interactionSaveList.Count > 0 ? (interactionSaveList[interactionSaveList.Count - 1].id + 1) : 1;
 
-            interactionSave.Id = id;
+            interactionSave.id = id;
 
             interactionSave.saveId = taskSave.saveId;
-            interactionSave.taskSaveId = taskSave.Id;
-            interactionSave.interactionId = interaction.Id;
+            interactionSave.taskSaveId = taskSave.id;
+            interactionSave.interactionId = interaction.id;
 
             interactionSaveList.Add(interactionSave);
         }

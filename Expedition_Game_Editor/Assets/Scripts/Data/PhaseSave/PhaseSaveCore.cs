@@ -61,7 +61,7 @@ public class PhaseSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var phaseSaveData = Fixtures.phaseSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var phaseSaveData = Fixtures.phaseSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             phaseSaveData.complete = complete;

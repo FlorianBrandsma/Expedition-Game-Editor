@@ -25,8 +25,8 @@ public class ChapterDataManager : IDataManager
         var list = (from chapterData in chapterDataList
                     select new ChapterElementData()
                     {
-                        Id = chapterData.Id,
-                        Index = chapterData.Index,
+                        Id = chapterData.id,
+                        Index = chapterData.index,
 
                         Name = chapterData.name,
 
@@ -48,12 +48,12 @@ public class ChapterDataManager : IDataManager
 
         foreach(Fixtures.Chapter chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) return;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.id)) return;
 
             var chapterData = new ChapterData();
             
-            chapterData.Id = chapter.Id;
-            chapterData.Index = chapter.Index;
+            chapterData.id = chapter.id;
+            chapterData.index = chapter.index;
 
             chapterData.name = chapter.name;
 
@@ -66,8 +66,11 @@ public class ChapterDataManager : IDataManager
         }
     }
 
-    internal class ChapterData : GeneralData
+    internal class ChapterData
     {
+        public int id;
+        public int index;
+
         public string name;
 
         public float timeSpeed;

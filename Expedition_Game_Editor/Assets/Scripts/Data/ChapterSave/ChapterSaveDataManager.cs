@@ -29,10 +29,11 @@ public class ChapterSaveDataManager : IDataManager
         GetChapterData();
 
         var list = (from chapterSaveData    in chapterSaveDataList
-                    join chapterData        in chapterDataList on chapterSaveData.chapterId equals chapterData.Id
+                    join chapterData        in chapterDataList on chapterSaveData.chapterId equals chapterData.id
                     select new ChapterSaveElementData()
                     {
-                        Id = chapterSaveData.Id,
+                        Id = chapterSaveData.id,
+                        Index = chapterSaveData.index,
                         
                         SaveId = chapterSaveData.saveId,
                         ChapterId = chapterSaveData.chapterId,
@@ -56,12 +57,13 @@ public class ChapterSaveDataManager : IDataManager
 
         foreach (Fixtures.ChapterSave chapterSave in Fixtures.chapterSaveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.Id))           continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.id))           continue;
             if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.saveId))   continue;
 
             var chapterSaveData = new ChapterSaveData();
 
-            chapterSaveData.Id = chapterSave.Id;
+            chapterSaveData.id = chapterSave.id;
+            chapterSaveData.index = chapterSave.index;
 
             chapterSaveData.saveId = chapterSave.saveId;
             chapterSaveData.chapterId = chapterSave.chapterId;
@@ -80,8 +82,11 @@ public class ChapterSaveDataManager : IDataManager
         chapterDataList = dataManager.GetChapterData(chapterSearchParameters);
     }
 
-    internal class ChapterSaveData : GeneralData
+    internal class ChapterSaveData
     {
+        public int id;
+        public int index;
+
         public int saveId;
         public int chapterId;
 

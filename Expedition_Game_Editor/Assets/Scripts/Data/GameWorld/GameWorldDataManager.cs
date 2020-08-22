@@ -75,8 +75,8 @@ public class GameWorldDataManager : IDataManager
         {
             chapterData = new ChapterElementData()
             {
-                Id = chapterData.Id,
-                Index = chapterData.Index,
+                Id = chapterData.id,
+                Index = chapterData.index,
 
                 Name = chapterData.name,
 
@@ -85,8 +85,8 @@ public class GameWorldDataManager : IDataManager
 
             phaseData = new PhaseElementData()
             {
-                Id = phaseData.Id,
-                Index = phaseData.Index,
+                Id = phaseData.id,
+                Index = phaseData.index,
 
                 ChapterId = phaseData.chapterId,
 
@@ -107,14 +107,14 @@ public class GameWorldDataManager : IDataManager
 
             partyMemberList = (
             from partyMemberData    in partyMemberDataList
-            join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
-            join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-            join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+            join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
+            join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
+            join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
             select new GamePartyMemberElementData()
             {
-                Id = partyMemberData.Id,
+                Id = partyMemberData.id,
 
-                objectGraphicId = objectGraphicData.Id,
+                objectGraphicId = objectGraphicData.id,
 
                 objectGraphicPath = objectGraphicData.path,
                 objectGraphicIconPath = iconData.path,
@@ -135,18 +135,18 @@ public class GameWorldDataManager : IDataManager
 
             worldInteractableDataList = (
             from worldInteractableData  in worldInteractableDataList
-            join interactableData       in interactableDataList     on worldInteractableData.interactableId equals interactableData.Id
-            join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.Id
-            join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.Id
+            join interactableData       in interactableDataList     on worldInteractableData.interactableId equals interactableData.id
+            join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.id
+            join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.id
             select new GameWorldInteractableElementData()
             {
-                Id = worldInteractableData.Id,
+                Id = worldInteractableData.id,
                 
                 type = worldInteractableData.type,
 
                 terrainTileId = 0,
 
-                objectGraphicId = objectGraphicData.Id,
+                objectGraphicId = objectGraphicData.id,
 
                 objectGraphicPath = objectGraphicData.path,
                 objectGraphicIconPath = iconData.path,
@@ -165,14 +165,13 @@ public class GameWorldDataManager : IDataManager
 
                 interactionDataList = (
                 from interactionData    in interactionDataList
-                join taskData           in taskDataList on interactionData.taskId equals taskData.Id
+                join taskData           in taskDataList on interactionData.taskId equals taskData.id
 
-                where taskData.worldInteractableId == worldInteractableData.Id
+                where taskData.worldInteractableId == worldInteractableData.id
                 select new GameInteractionElementData()
                 {
-                    Id = interactionData.Id,
-                    Index = interactionData.Index,
-                    
+                    Id = interactionData.id,
+
                     taskId = interactionData.taskId,
 
                     isDefault = interactionData.isDefault,
@@ -201,12 +200,11 @@ public class GameWorldDataManager : IDataManager
                     
                     interactionDestinationDataList = (
                     from interactionDestinationData in interactionDestinationDataList
-                    where interactionData.Id == interactionDestinationData.interactionId
+                    where interactionData.id == interactionDestinationData.interactionId
                     select new GameInteractionDestinationElementData()
                     {
-                        Id = interactionDestinationData.Id,
-                        Index = interactionDestinationData.Index,
-                        
+                        Id = interactionDestinationData.id,
+
                         regionId = interactionDestinationData.regionId,
                         terrainId = interactionDestinationData.terrainId,
                         terrainTileId = interactionDestinationData.terrainTileId,
@@ -234,10 +232,10 @@ public class GameWorldDataManager : IDataManager
 
             regionDataList = (
             from regionData     in regionDataList
-            join tileSetData    in tileSetDataList on regionData.tileSetId equals tileSetData.Id
+            join tileSetData    in tileSetDataList on regionData.tileSetId equals tileSetData.id
             select new GameRegionElementData
             {
-                Id = regionData.Id,
+                Id = regionData.id,
                 
                 phaseId = regionData.phaseId,
 
@@ -249,21 +247,21 @@ public class GameWorldDataManager : IDataManager
                 tileSize = tileSetData.tileSize,
 
                 terrainDataList = (
-                from terrainData in terrainDataList.Where(x => x.regionId == regionData.Id)
+                from terrainData in terrainDataList.Where(x => x.regionId == regionData.id)
                 select new GameTerrainElementData
                 {
-                    Id = terrainData.Id,
+                    Id = terrainData.id,
 
                     name = terrainData.name,
 
-                    gridElement = TerrainGridElement(terrainData.Index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
+                    gridElement = TerrainGridElement(terrainData.index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize),
                     
                     atmosphereDataList = (
                     from atmosphereData in atmosphereDataList
-                    where atmosphereData.terrainId == terrainData.Id
+                    where atmosphereData.terrainId == terrainData.id
                     select new GameAtmosphereElementData()
                     {
-                        Id = atmosphereData.Id,
+                        Id = atmosphereData.id,
                         
                         terrainId = atmosphereData.terrainId,
 
@@ -276,31 +274,31 @@ public class GameWorldDataManager : IDataManager
 
                     terrainTileDataList = (
                     from terrainTileData in terrainTileDataList
-                    where terrainTileData.terrainId == terrainData.Id
+                    where terrainTileData.terrainId == terrainData.id
                     select new GameTerrainTileElementData()
                     {
-                        Id = terrainTileData.Id,
+                        Id = terrainTileData.id,
 
                         tileId = terrainTileData.tileId,
 
                         active = false,
 
-                        gridElement = TileGridElement(terrainData.Index, terrainTileData.Index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize)
+                        gridElement = TileGridElement(terrainData.index, terrainTileData.index, regionData.regionSize, regionData.terrainSize, tileSetData.tileSize)
                         
                     }).OrderBy(x => x.Index).ToList(),
 
                     worldObjectDataList = (
                     from worldObjectData    in worldObjectDataList
-                    join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
-                    where worldObjectData.terrainId == terrainData.Id
+                    join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                    where worldObjectData.terrainId == terrainData.id
                     select new GameWorldObjectElementData()
                     {
-                        Id = worldObjectData.Id,
+                        Id = worldObjectData.id,
 
                         terrainTileId = worldObjectData.terrainTileId,
 
-                        objectGraphicId = objectGraphicData.Id,
+                        objectGraphicId = objectGraphicData.id,
 
                         positionX = worldObjectData.positionX,
                         positionY = worldObjectData.positionY,
@@ -399,7 +397,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetPartyMemberData()
     {
         var searchParameters = new Search.PartyMember();
-        searchParameters.chapterId = new List<int>() { chapterData.Id };
+        searchParameters.chapterId = new List<int>() { chapterData.id };
 
         partyMemberDataList = dataManager.GetPartyMemberData(searchParameters);
     }
@@ -407,7 +405,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetRegionData()
     {
         var searchParameters = new Search.Region();
-        searchParameters.phaseId = new List<int>() { phaseData.Id };
+        searchParameters.phaseId = new List<int>() { phaseData.id };
 
         regionDataList = dataManager.GetRegionData(searchParameters);
     }
@@ -423,7 +421,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetTerrainData()
     {
         var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
     }
@@ -431,7 +429,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetAtmosphereData()
     {
         var atmosphereSearchParameters = new Search.Atmosphere();
-        atmosphereSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+        atmosphereSearchParameters.terrainId = terrainDataList.Select(x => x.id).Distinct().ToList();
 
         atmosphereDataList = dataManager.GetAtmosphereData(atmosphereSearchParameters);
     }
@@ -439,7 +437,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetTerrainTileData()
     {
         var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.id).Distinct().ToList();
 
         terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
     }
@@ -447,7 +445,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetWorldObjectData()
     {
         var worldObjectSearchParameters = new Search.WorldObject();
-        worldObjectSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        worldObjectSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         worldObjectDataList = dataManager.GetWorldObjectData(worldObjectSearchParameters);
     }
@@ -455,7 +453,7 @@ public class GameWorldDataManager : IDataManager
     internal void GetInteractionDestinationData()
     {
         var interactionDestinationSearchParameters = new Search.InteractionDestination();
-        interactionDestinationSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        interactionDestinationSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         interactionDestinationDataList = dataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
     }

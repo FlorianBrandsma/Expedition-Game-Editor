@@ -56,29 +56,28 @@ public class InteractionDestinationDataManager : IDataManager
         GetTileSetData();
 
         var list = (from interactionDestinationData in interactionDestinationDataList
-                    join interactionData            in interactionDataList          on interactionDestinationData.interactionId equals interactionData.Id
-                    join taskData                   in taskDataList                 on interactionData.taskId                   equals taskData.Id
-                    join worldInteractableData      in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.Id
-                    join interactableData           in interactableDataList         on worldInteractableData.interactableId     equals interactableData.Id
-                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.Id
-                    join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.Id
+                    join interactionData            in interactionDataList          on interactionDestinationData.interactionId equals interactionData.id
+                    join taskData                   in taskDataList                 on interactionData.taskId                   equals taskData.id
+                    join worldInteractableData      in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.id
+                    join interactableData           in interactableDataList         on worldInteractableData.interactableId     equals interactableData.id
+                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.id
+                    join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.id
 
-                    join regionData                 in regionDataList               on interactionDestinationData.regionId      equals regionData.Id
-                    join terrainData                in terrainDataList              on regionData.Id                            equals terrainData.regionId
-                    join terrainTileData            in terrainTileDataList          on terrainData.Id                           equals terrainTileData.terrainId
-                    join tileData                   in tileDataList                 on terrainTileData.tileId                   equals tileData.Id
-                    join tileSetData                in tileSetDataList              on regionData.tileSetId                     equals tileSetData.Id
+                    join regionData                 in regionDataList               on interactionDestinationData.regionId      equals regionData.id
+                    join terrainData                in terrainDataList              on regionData.id                            equals terrainData.regionId
+                    join terrainTileData            in terrainTileDataList          on terrainData.id                           equals terrainTileData.terrainId
+                    join tileData                   in tileDataList                 on terrainTileData.tileId                   equals tileData.id
+                    join tileSetData                in tileSetDataList              on regionData.tileSetId                     equals tileSetData.id
 
                     join leftJoin in (from objectiveData in objectiveDataList
-                                      select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.Id into objectiveData
+                                      select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.id into objectiveData
 
                     join leftJoin in (from questData in questDataList
-                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.Id into questData
+                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.id into questData
 
                     select new InteractionDestinationElementData()
                     {
-                        Id = interactionDestinationData.Id,
-                        Index = interactionDestinationData.Index,
+                        Id = interactionDestinationData.id,
 
                         InteractionId = interactionDestinationData.interactionId,
 
@@ -102,12 +101,12 @@ public class InteractionDestinationDataManager : IDataManager
                         Patience = interactionDestinationData.patience,
                         
                         questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId :
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.id : 0,
                         objectiveId = taskData.objectiveId,
                         worldInteractableId = taskData.worldInteractableId,
                         taskId = interactionData.taskId,
                         
-                        objectGraphicId = objectGraphicData.Id,
+                        objectGraphicId = objectGraphicData.id,
                         objectGraphicPath = objectGraphicData.path,
 
                         objectGraphicIconPath = iconData.path,
@@ -147,12 +146,12 @@ public class InteractionDestinationDataManager : IDataManager
 
         foreach (Fixtures.InteractionDestination interactionDestination in Fixtures.interactionDestinationList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.Id)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.id)) continue;
             if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.interactionId)) continue;
 
             var interactionDestinationData = new InteractionDestinationData();
 
-            interactionDestinationData.Id = interactionDestination.Id;
+            interactionDestinationData.id = interactionDestination.id;
 
             interactionDestinationData.interactionId = interactionDestination.interactionId;
 
@@ -259,7 +258,7 @@ public class InteractionDestinationDataManager : IDataManager
     internal void GetTerrainData()
     {
         var searchParameters = new Search.Terrain();
-        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         terrainDataList = dataManager.GetTerrainData(searchParameters);
     }
@@ -288,8 +287,10 @@ public class InteractionDestinationDataManager : IDataManager
         tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    internal class InteractionDestinationData : GeneralData
+    internal class InteractionDestinationData
     {
+        public int id;
+
         public int interactionId;
 
         public int regionId;

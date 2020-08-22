@@ -124,7 +124,7 @@ public class TaskCore : GeneralData
 
     public virtual void Update()
     {
-        var taskData = Fixtures.taskList.Where(x => x.Id == Id).FirstOrDefault();
+        var taskData = Fixtures.taskList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedName)
             taskData.name = name;
@@ -150,9 +150,9 @@ public class TaskCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var taskData = Fixtures.taskList.Where(x => x.Id == Id).FirstOrDefault();
+        var taskData = Fixtures.taskList.Where(x => x.id == Id).FirstOrDefault();
 
-        taskData.Index = Index;
+        taskData.index = Index;
 
         changedIndex = false;
     }

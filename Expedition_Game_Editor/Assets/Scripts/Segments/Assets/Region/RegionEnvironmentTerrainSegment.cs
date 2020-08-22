@@ -49,17 +49,17 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         foreach (DataManager.TileSetData tileSetData in tileSetList)
             tileSetDropdown.options.Add(new Dropdown.OptionData(tileSetData.name));
 
-        int selectedIndex = tileSetList.FindIndex(x => x.Id == RegionDataElement.TileSetId);
+        int selectedIndex = tileSetList.FindIndex(x => x.id == RegionDataElement.TileSetId);
 
         tileSetDropdown.value = selectedIndex;
         tileSetDropdown.captionText.text = tileSetDropdown.options[selectedIndex].text;
 
-        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].Id); });
+        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].id); });
     }
 
     public void SetDropdown(int tileSetId)
     {
-        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].Id;
+        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].id;
 
         DataEditor.UpdateEditor();
 

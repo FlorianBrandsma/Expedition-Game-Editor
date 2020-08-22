@@ -33,15 +33,15 @@ public class RegionDataManager : IDataManager
         GetTileData();
 
         var list = (from regionData in regionDataList
-                    join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.Id
+                    join tileSetData in tileSetDataList on regionData.tileSetId equals tileSetData.id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
 
                     select new RegionElementData()
                     {
-                        Id = regionData.Id,
-                        Index = regionData.Index,
+                        Id = regionData.id,
+                        Index = regionData.index,
 
                         ChapterRegionId = regionData.chapterRegionId,
                         PhaseId = regionData.phaseId,
@@ -70,13 +70,13 @@ public class RegionDataManager : IDataManager
 
         foreach(Fixtures.Region region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(region.id)) continue;
             if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(region.phaseId)) continue;
 
             var regionData = new RegionData();
 
-            regionData.Id = region.Id;
-            regionData.Index = region.Index;
+            regionData.id = region.id;
+            regionData.index = region.index;
 
             regionData.chapterRegionId = region.chapterRegionId;
             regionData.phaseId = region.phaseId;
@@ -100,17 +100,22 @@ public class RegionDataManager : IDataManager
     private void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
-    internal class RegionData : GeneralData
+    internal class RegionData
     {
+        public int id;
+        public int index;
+
         public int chapterRegionId;
         public int phaseId;
         public int tileSetId;
+
         public string name;
+
         public int regionSize;
         public int terrainSize;
     }

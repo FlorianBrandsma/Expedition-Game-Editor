@@ -80,7 +80,7 @@ public class RegionEditor : MonoBehaviour, IEditor
     private void ChangedName()
     {
         var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == RegionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.chapterRegionId)).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
 
         regions.ForEach(x => x.name = RegionData.Name);
     }
@@ -88,17 +88,17 @@ public class RegionEditor : MonoBehaviour, IEditor
     private void ChangedTileSet()
     {
         var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == RegionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.chapterRegionId)).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
 
         regions.ForEach(x => x.tileSetId = RegionData.TileSetId);
 
-        regions.Add(Fixtures.regionList.Where(x => x.Id == RegionData.Id).FirstOrDefault());
+        regions.Add(Fixtures.regionList.Where(x => x.id == RegionData.Id).FirstOrDefault());
 
-        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.Id).Distinct().ToList().Contains(x.regionId)).Distinct().ToList();
-        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.Id).Distinct().ToList().Contains(x.terrainId)).Distinct().ToList();
+        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.id).Distinct().ToList().Contains(x.regionId)).Distinct().ToList();
+        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.id).Distinct().ToList().Contains(x.terrainId)).Distinct().ToList();
         var firstTile = Fixtures.tileList.Where(x => x.tileSetId == RegionData.TileSetId).FirstOrDefault();
         
-        terrainTiles.ForEach(x => x.tileId = firstTile.Id);
+        terrainTiles.ForEach(x => x.tileId = firstTile.id);
         
         //var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
 

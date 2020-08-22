@@ -56,14 +56,14 @@ static public class SelectionManager
         {
             foreach (Route route in routeList)
             {
-                //Debug.Log(dataElement.DataType + ":" + dataElement.Id + ":" + route.GeneralData.DataType + ":" + route.GeneralData.Id);
+                //Debug.Log(elementData.DataType + ":" + elementData.Id + ":" + route.GeneralData.DataType + ":" + route.GeneralData.Id);
                 if (((GeneralData)elementData).Equals(route.GeneralData))
                 {
                     if (elementData.SelectionStatus == Enums.SelectionStatus.None)
                         elementData.SelectionStatus = route.selectionStatus;
                     else
                         elementData.SelectionStatus = Enums.SelectionStatus.Both;
-                    
+
                     if (displayManager != null)
                         displayManager.CorrectPosition(elementData);                 
                 }

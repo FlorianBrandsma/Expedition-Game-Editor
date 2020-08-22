@@ -47,7 +47,7 @@ public class ChapterCharactersConstantInteractableSegment : MonoBehaviour, ISegm
                      ChapterEditor.chapterInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
         
         //Find interactables where id is not in the list
-        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
+        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
 
         searchParameters.id = list;
     }

@@ -37,18 +37,18 @@ public class TerrainDataManager : IDataManager
         GetIconData();
         
         var list = (from terrainData    in terrainDataList
-                    join regionData     in regionDataList   on terrainData.regionId equals regionData.Id
-                    join tileSetData    in tileSetDataList  on regionData.tileSetId equals tileSetData.Id
+                    join regionData     in regionDataList   on terrainData.regionId equals regionData.id
+                    join tileSetData    in tileSetDataList  on regionData.tileSetId equals tileSetData.id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
 
-                    join iconData       in iconDataList     on terrainData.iconId   equals iconData.Id
+                    join iconData       in iconDataList     on terrainData.iconId   equals iconData.id
 
                     select new TerrainElementData()
                     {
-                        Id = terrainData.Id,
-                        Index = terrainData.Index,
+                        Id = terrainData.id,
+                        Index = terrainData.index,
 
                         RegionId = terrainData.regionId,
                         IconId = terrainData.iconId,
@@ -72,13 +72,13 @@ public class TerrainDataManager : IDataManager
 
         foreach (Fixtures.Terrain terrain in Fixtures.terrainList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(terrain.id)) continue;
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.regionId)) continue;
             
             var terrainData = new TerrainData();
 
-            terrainData.Id = terrain.Id;
-            terrainData.Index = terrain.Index;
+            terrainData.id = terrain.id;
+            terrainData.index = terrain.index;
 
             terrainData.regionId = terrain.regionId;
             terrainData.iconId = terrain.iconId;
@@ -107,7 +107,7 @@ public class TerrainDataManager : IDataManager
     private void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
@@ -120,10 +120,14 @@ public class TerrainDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class TerrainData : GeneralData
+    internal class TerrainData
     {
+        public int id;
+        public int index;
+
         public int regionId;
         public int iconId;
+
         public string name;
     }
 }

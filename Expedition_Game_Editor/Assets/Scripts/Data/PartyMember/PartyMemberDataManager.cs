@@ -33,14 +33,13 @@ public class PartyMemberDataManager : IDataManager
         GetIconData();
 
         var list = (from partyMemberData    in partyMemberDataList
-                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
                     select new PartyMemberElementData()
                     {
-                        Id = partyMemberData.Id,
-                        Index = partyMemberData.Index,
-                        
+                        Id = partyMemberData.id,
+
                         ChapterId = partyMemberData.chapterId,
                         InteractableId = partyMemberData.interactableId,
 
@@ -60,13 +59,12 @@ public class PartyMemberDataManager : IDataManager
 
         foreach (Fixtures.PartyMember partyMember in Fixtures.partyMemberList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(partyMember.Id)) continue;
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(partyMember.chapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(partyMember.id)) continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(partyMember.chapterId)) continue;
 
             var partyMemberData = new PartyMemberData();
 
-            partyMemberData.Id = partyMember.Id;
-            partyMemberData.Index = partyMember.Index;
+            partyMemberData.id = partyMember.id;
 
             partyMemberData.chapterId = partyMember.chapterId;
             partyMemberData.interactableId = partyMember.interactableId;
@@ -101,8 +99,10 @@ public class PartyMemberDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class PartyMemberData : GeneralData
+    internal class PartyMemberData
     {
+        public int id;
+
         public int chapterId;
         public int interactableId;
     }

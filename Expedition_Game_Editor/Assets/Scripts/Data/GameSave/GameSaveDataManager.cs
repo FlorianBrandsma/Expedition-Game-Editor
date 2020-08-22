@@ -43,9 +43,9 @@ public class GameSaveDataManager : IDataManager
             playerSaveData = (from playerSaveData in playerSaveDataList
                               select new PlayerSaveElementData
                               {
-                                  Id = playerSaveData.Id,
+                                  Id = playerSaveData.id,
 
-                                  SaveId = playerSaveData.Id,
+                                  SaveId = playerSaveData.id,
                                   RegionId = playerSaveData.regionId,
                                   PartyMemberId = playerSaveData.partyMemberId,
 
@@ -61,7 +61,7 @@ public class GameSaveDataManager : IDataManager
             chapterSaveDataList = (from chapterSaveData in chapterSaveDataList
                                    select new ChapterSaveElementData
                                    {
-                                       Id = chapterSaveData.Id,
+                                       Id = chapterSaveData.id,
 
                                        SaveId = chapterSaveData.saveId,
                                        ChapterId = chapterSaveData.chapterId,
@@ -73,7 +73,7 @@ public class GameSaveDataManager : IDataManager
             phaseSaveDataList = (from phaseSaveData in phaseSaveDataList
                                  select new PhaseSaveElementData
                                  {
-                                     Id = phaseSaveData.Id,
+                                     Id = phaseSaveData.id,
 
                                      SaveId = phaseSaveData.saveId,
                                      ChapterSaveId = phaseSaveData.chapterSaveId,
@@ -86,7 +86,7 @@ public class GameSaveDataManager : IDataManager
             questSaveDataList = (from questSaveData in questSaveDataList
                                  select new QuestSaveElementData
                                  {
-                                     Id = questSaveData.Id,
+                                     Id = questSaveData.id,
 
                                      SaveId = questSaveData.saveId,
                                      PhaseSaveId = questSaveData.phaseSaveId,
@@ -99,7 +99,7 @@ public class GameSaveDataManager : IDataManager
             objectiveSaveDataList = (from objectiveSaveData in objectiveSaveDataList
                                      select new ObjectiveSaveElementData
                                      {
-                                         Id = objectiveSaveData.Id,
+                                         Id = objectiveSaveData.id,
 
                                          SaveId = objectiveSaveData.saveId,
                                          QuestSaveId = objectiveSaveData.questSaveId,
@@ -112,7 +112,7 @@ public class GameSaveDataManager : IDataManager
             taskSaveDataList = (from taskSaveData in taskSaveDataList
                                 select new TaskSaveElementData
                                 {
-                                    Id = taskSaveData.Id,
+                                    Id = taskSaveData.id,
 
                                     SaveId = taskSaveData.saveId,
                                     WorldInteractableId = taskSaveData.worldInteractableId,
@@ -126,7 +126,7 @@ public class GameSaveDataManager : IDataManager
             interactionSaveDataList = (from interactionSaveData in interactionSaveDataList
                                        select new InteractionSaveElementData
                                        {
-                                           Id = interactionSaveData.Id,
+                                           Id = interactionSaveData.id,
 
                                            SaveId = interactionSaveData.saveId,
                                            TaskSaveId = interactionSaveData.taskSaveId,

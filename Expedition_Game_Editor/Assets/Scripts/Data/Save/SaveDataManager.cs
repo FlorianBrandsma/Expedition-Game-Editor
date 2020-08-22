@@ -53,26 +53,26 @@ public class SaveDataManager : IDataManager
         GetChapterData();
 
         var list = (from saveData in saveDataList
-                    join playerSaveData     in playerSaveDataList       on saveData.Id                      equals playerSaveData.saveId
+                    join playerSaveData     in playerSaveDataList       on saveData.id                      equals playerSaveData.saveId
 
-                    join partyMemberData    in partyMemberDataList      on playerSaveData.partyMemberId     equals partyMemberData.Id
-                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                    join partyMemberData    in partyMemberDataList      on playerSaveData.partyMemberId     equals partyMemberData.id
+                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
 
-                    join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.Id
-                    join tileSetData        in tileSetDataList          on regionData.tileSetId             equals tileSetData.Id
+                    join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.id
+                    join tileSetData        in tileSetDataList          on regionData.tileSetId             equals tileSetData.id
 
-                    join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.Id
-                    join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.Id
+                    join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.id
+                    join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.id
                     select new SaveElementData()
                     {
-                        Id = saveData.Id,
+                        Id = saveData.id,
                         GameId = saveData.gameId,
 
                         objectGraphicIconPath = iconData.path,
 
-                        name = "Ch. " + (chapterData.Index + 1) + ": " + chapterData.name,
+                        name = "Ch. " + (chapterData.index + 1) + ": " + chapterData.name,
                         locationName = RegionManager.LocationName(playerSaveData.positionX, playerSaveData.positionZ, tileSetData.tileSize, regionData, terrainDataList),
 
                         time = TimeManager.TimeFromSeconds(playerSaveData.playedSeconds)
@@ -90,12 +90,12 @@ public class SaveDataManager : IDataManager
 
         foreach (Fixtures.Save save in Fixtures.saveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.Id))          continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.id))          continue;
             if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.gameId))  continue;
 
             var saveData = new SaveData();
 
-            saveData.Id = save.Id;
+            saveData.id = save.id;
 
             saveData.gameId = save.gameId;
 
@@ -106,7 +106,7 @@ public class SaveDataManager : IDataManager
     internal void GetPlayerSaveData()
     {
         var searchParameters = new Search.PlayerSave();
-        searchParameters.saveId = saveDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.saveId = saveDataList.Select(x => x.id).Distinct().ToList();
 
         playerSaveDataList = dataManager.GetPlayerSaveData(searchParameters);
     }
@@ -154,7 +154,7 @@ public class SaveDataManager : IDataManager
     internal void GetTerrainData()
     {
         var searchParameters = new Search.Terrain();
-        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         terrainDataList = dataManager.GetTerrainData(searchParameters);
     }
@@ -183,8 +183,11 @@ public class SaveDataManager : IDataManager
         chapterDataList = dataManager.GetChapterData(searchParameters);
     }
 
-    internal class SaveData : GeneralData
+    internal class SaveData
     {
+        public int id;
+        public int index;
+
         public int gameId;
     }
 }

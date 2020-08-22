@@ -189,7 +189,7 @@ public class InteractableCore : GeneralData
 
     public virtual void Update()
     {
-        var interactableData = Fixtures.interactableList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactableData = Fixtures.interactableList.Where(x => x.id == Id).FirstOrDefault();
         
         if (changedObjectGraphicId)
             interactableData.objectGraphicId = objectGraphicId;
@@ -225,9 +225,9 @@ public class InteractableCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var interactableData = Fixtures.interactableList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactableData = Fixtures.interactableList.Where(x => x.id == Id).FirstOrDefault();
 
-        interactableData.Index = Index;
+        interactableData.index = Index;
 
         changedIndex = false;
     }

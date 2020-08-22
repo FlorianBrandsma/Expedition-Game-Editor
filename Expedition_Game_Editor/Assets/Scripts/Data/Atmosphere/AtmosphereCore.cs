@@ -106,7 +106,7 @@ public class AtmosphereCore : GeneralData
 
     public virtual void Update()
     {
-        var atmosphereData = Fixtures.atmosphereList.Where(x => x.Id == Id).FirstOrDefault();
+        var atmosphereData = Fixtures.atmosphereList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedStartTime)
             atmosphereData.startTime = startTime;
@@ -126,10 +126,6 @@ public class AtmosphereCore : GeneralData
     public void UpdateIndex()
     {
         if (!changedIndex) return;
-
-        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
-
-        interactionData.Index = Index;
 
         changedIndex = false;
     }

@@ -29,10 +29,11 @@ public class TaskSaveDataManager : IDataManager
         GetTaskData();
 
         var list = (from taskSaveData   in taskSaveDataList
-                    join taskData       in taskDataList on taskSaveData.taskId equals taskData.Id
+                    join taskData       in taskDataList on taskSaveData.taskId equals taskData.id
                     select new TaskSaveElementData()
                     {
-                        Id = taskSaveData.Id,
+                        Id = taskSaveData.id,
+                        Index = taskSaveData.index,
 
                         ObjectiveSaveId = taskSaveData.objectiveSaveId,
                         TaskId = taskSaveData.taskId,
@@ -58,13 +59,14 @@ public class TaskSaveDataManager : IDataManager
 
         foreach (Fixtures.TaskSave taskSave in Fixtures.taskSaveList)
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(taskSave.Id))                                      continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(taskSave.id))                                      continue;
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.worldInteractableId))    continue;
             if (searchParameters.objectiveSaveId.Count      > 0 && !searchParameters.objectiveSaveId.Contains(taskSave.objectiveSaveId))            continue;
 
             var taskSaveData = new TaskSaveData();
 
-            taskSaveData.Id = taskSave.Id;
+            taskSaveData.id = taskSave.id;
+            taskSaveData.index = taskSave.index;
 
             taskSaveData.worldInteractableId = taskSave.worldInteractableId;
             taskSaveData.objectiveSaveId = taskSave.objectiveSaveId;
@@ -84,8 +86,11 @@ public class TaskSaveDataManager : IDataManager
         taskDataList = dataManager.GetTaskData(taskSearchParameters);
     }
 
-    internal class TaskSaveData : GeneralData
+    internal class TaskSaveData
     {
+        public int id;
+        public int index;
+
         public int worldInteractableId;
         public int objectiveSaveId;
         public int taskId;

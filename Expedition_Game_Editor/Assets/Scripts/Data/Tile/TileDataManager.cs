@@ -30,8 +30,7 @@ public class TileDataManager : IDataManager
 
                     select new TileElementData()
                     {
-                        Id = tileData.Id,
-                        Index = tileData.Index,
+                        Id = tileData.id,
 
                         icon = tileData.iconPath
                         
@@ -48,13 +47,12 @@ public class TileDataManager : IDataManager
 
         foreach (Fixtures.Tile tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.Id)) continue;
-            if (searchParameters.tileSetId.Count > 0 && !searchParameters.tileSetId.Contains(tile.tileSetId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.id)) continue;
+            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.tileSetId)) continue;
 
             var tileData = new TileData();
 
-            tileData.Id = tile.Id;
-            tileData.Index = tile.Index;
+            tileData.id = tile.id;
 
             tileData.tileSetId = tile.tileSetId;
             tileData.iconPath = tile.iconPath;
@@ -63,8 +61,10 @@ public class TileDataManager : IDataManager
         }
     }
 
-    internal class TileData : GeneralData
+    internal class TileData
     {
+        public int id;
+
         public int tileSetId;
         public string iconPath;
     }

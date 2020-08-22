@@ -65,7 +65,7 @@ public class ItemCore : GeneralData
 
     public virtual void Update()
     {
-        var itemData = Fixtures.itemList.Where(x => x.Id == Id).FirstOrDefault();
+        var itemData = Fixtures.itemList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedObjectGraphicId)
             itemData.objectGraphicId = objectGraphicId;
@@ -80,9 +80,9 @@ public class ItemCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var itemData = Fixtures.itemList.Where(x => x.Id == Id).FirstOrDefault();
+        var itemData = Fixtures.itemList.Where(x => x.id == Id).FirstOrDefault();
         
-        itemData.Index = Index;
+        itemData.index = Index;
 
         changedIndex = false;
     }

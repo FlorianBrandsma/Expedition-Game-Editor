@@ -61,7 +61,7 @@ public class QuestSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var questSaveData = Fixtures.questSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var questSaveData = Fixtures.questSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             questSaveData.complete = complete;

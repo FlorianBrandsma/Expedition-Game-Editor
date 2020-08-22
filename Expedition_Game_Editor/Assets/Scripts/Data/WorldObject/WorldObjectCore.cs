@@ -230,7 +230,7 @@ public class WorldObjectCore : GeneralData
 
     public virtual void Update()
     {
-        var worldObjectData = Fixtures.worldObjectList.Where(x => x.Id == Id).FirstOrDefault();
+        var worldObjectData = Fixtures.worldObjectList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedRegionId)
             worldObjectData.regionId = regionId;
@@ -268,7 +268,7 @@ public class WorldObjectCore : GeneralData
 
     public virtual void UpdateSearch()
     {
-        var worldObjectData = Fixtures.worldObjectList.Where(x => x.Id == Id).FirstOrDefault();
+        var worldObjectData = Fixtures.worldObjectList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedObjectGraphicId)
             worldObjectData.objectGraphicId = objectGraphicId;

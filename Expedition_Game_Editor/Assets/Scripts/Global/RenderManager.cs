@@ -127,7 +127,17 @@ static public class RenderManager
             SelectionManager.CancelSelection(dataController.DataList);
 
         var dataList = dataController.DataManager.GetData(searchProperties);
-        
+
+        //Debug.Log(dataController.DataType);
+
+        //An editor might be forced to reload, but it might not reload other lists of the same type,
+        //which are at least used by the region navigation (example: changing time)
+        //if (dataController.SegmentController != null)
+        //{
+        //    var segmentController = dataController.SegmentController;
+        //    segmentController.MainPath.ReplaceDataLists(segmentController.EditorController.PathController.step, dataController.DataType, dataList);
+        //}
+
         return dataList;
     }
 

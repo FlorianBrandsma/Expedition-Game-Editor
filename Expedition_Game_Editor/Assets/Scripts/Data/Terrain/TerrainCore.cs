@@ -65,7 +65,7 @@ public class TerrainCore : GeneralData
 
     public virtual void Update()
     {
-        var terrainData = Fixtures.terrainList.Where(x => x.Id == Id).FirstOrDefault();
+        var terrainData = Fixtures.terrainList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedIconId)
             terrainData.iconId = iconId;

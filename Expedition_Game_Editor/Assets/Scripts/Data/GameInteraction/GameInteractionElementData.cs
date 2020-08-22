@@ -69,7 +69,7 @@ public class GameInteractionElementData : GeneralData, IElementData
     {
         get
         {
-            return interactionDestinationDataList.Where(x => x.Index == ActiveDestinationIndex).First();
+            return interactionDestinationDataList[ActiveDestinationIndex];
         }
     }
 

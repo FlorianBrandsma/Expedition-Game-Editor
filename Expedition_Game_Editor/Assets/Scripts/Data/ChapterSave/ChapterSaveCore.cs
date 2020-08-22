@@ -54,7 +54,7 @@ public class ChapterSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var chapterSaveData = Fixtures.chapterSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var chapterSaveData = Fixtures.chapterSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             chapterSaveData.complete = complete;

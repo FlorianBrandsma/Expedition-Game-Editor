@@ -33,13 +33,12 @@ public class ChapterInteractableDataManager : IDataManager
         GetIconData();
 
         var list = (from chapterInteractableData    in chapterInteractableDataList
-                    join interactableData           in interactableDataList     on chapterInteractableData.interactableId   equals interactableData.Id
-                    join objectGraphicData          in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
-                    join iconData                   in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
+                    join interactableData           in interactableDataList     on chapterInteractableData.interactableId   equals interactableData.id
+                    join objectGraphicData          in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.id
+                    join iconData                   in iconDataList             on objectGraphicData.iconId                 equals iconData.id
                     select new ChapterInteractableElementData()
                     {
-                        Id = chapterInteractableData.Id,
-                        Index = chapterInteractableData.Index,
+                        Id = chapterInteractableData.id,
 
                         ChapterId = chapterInteractableData.chapterId,
                         InteractableId = chapterInteractableData.interactableId,
@@ -60,14 +59,13 @@ public class ChapterInteractableDataManager : IDataManager
 
         foreach (Fixtures.ChapterInteractable chapterInteractable in Fixtures.chapterInteractableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterInteractable.Id)) continue;
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId)) continue;
-            if (searchParameters.interactableId.Count > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(chapterInteractable.id)) continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId)) continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId)) continue;
 
             var chapterInteractableData = new ChapterInteractableData();
 
-            chapterInteractableData.Id = chapterInteractable.Id;
-            chapterInteractableData.Index = chapterInteractable.Index;
+            chapterInteractableData.id = chapterInteractable.id;
 
             chapterInteractableData.chapterId = chapterInteractable.chapterId;
             chapterInteractableData.interactableId = chapterInteractable.interactableId;
@@ -102,8 +100,10 @@ public class ChapterInteractableDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class ChapterInteractableData : GeneralData
+    internal class ChapterInteractableData
     {
+        public int id;
+
         public int chapterId;
         public int interactableId;
     }

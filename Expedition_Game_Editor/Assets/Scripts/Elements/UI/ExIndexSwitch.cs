@@ -68,7 +68,7 @@ public class ExIndexSwitch : MonoBehaviour
             dataList[i].Index = i;
             dataList[i].UpdateIndex();
         }
-        
+
         if (elementData.SelectionStatus == Enums.SelectionStatus.None)
             elementData.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
 

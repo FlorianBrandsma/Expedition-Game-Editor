@@ -29,11 +29,11 @@ public class TerrainTileDataManager : IDataManager
         GetTileData();
 
         var list = (from terrainTileData in terrainTileDataList
-                    join tileData in tileDataList on terrainTileData.tileId equals tileData.Id
+                    join tileData in tileDataList on terrainTileData.tileId equals tileData.id
                     select new TerrainTileElementData()
                     {
-                        Id = terrainTileData.Id,
-                        Index = terrainTileData.Index,
+                        Id = terrainTileData.id,
+                        Index = terrainTileData.index,
 
                         TerrainId = terrainTileData.terrainId,
                         TileId = terrainTileData.tileId,
@@ -53,18 +53,18 @@ public class TerrainTileDataManager : IDataManager
 
         foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.id)) continue;
             if (searchParameters.regionId.Count > 0)
             {
-                var terrain = Fixtures.terrainList.Where(x => x.Id == terrainTile.terrainId).FirstOrDefault();
+                var terrain = Fixtures.terrainList.Where(x => x.id == terrainTile.terrainId).FirstOrDefault();
 
                 if(!searchParameters.regionId.Contains(terrain.regionId)) continue;
             }
 
             var terrainTileData = new TerrainTileData();
 
-            terrainTileData.Id = terrainTile.Id;
-            terrainTileData.Index = terrainTile.Index;
+            terrainTileData.id = terrainTile.id;
+            terrainTileData.index = terrainTile.index;
 
             terrainTileData.terrainId = terrainTile.terrainId;
             terrainTileData.tileId = terrainTile.tileId;
@@ -81,8 +81,11 @@ public class TerrainTileDataManager : IDataManager
         tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
-    internal class TerrainTileData : GeneralData
+    internal class TerrainTileData
     {
+        public int id;
+        public int index;
+
         public int terrainId;
         public int tileId;
     }

@@ -68,7 +68,7 @@ public class TaskSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var taskSaveData = Fixtures.taskSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var taskSaveData = Fixtures.taskSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             taskSaveData.complete = complete;

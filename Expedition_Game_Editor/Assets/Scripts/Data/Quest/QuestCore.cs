@@ -82,7 +82,7 @@ public class QuestCore : GeneralData
 
     public virtual void Update()
     {
-        var questData = Fixtures.questList.Where(x => x.Id == Id).FirstOrDefault();
+        var questData = Fixtures.questList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedName)
             questData.name = name;
@@ -102,9 +102,9 @@ public class QuestCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var questData = Fixtures.questList.Where(x => x.Id == Id).FirstOrDefault();
+        var questData = Fixtures.questList.Where(x => x.id == Id).FirstOrDefault();
 
-        questData.Index = Index;
+        questData.index = Index;
 
         changedIndex = false;
     }

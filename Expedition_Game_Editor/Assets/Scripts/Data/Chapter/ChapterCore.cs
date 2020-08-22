@@ -93,7 +93,7 @@ public class ChapterCore : GeneralData
 
     public virtual void Update()
     {
-        var chapterData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
+        var chapterData = Fixtures.chapterList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedName)
             chapterData.name = name;
@@ -114,9 +114,9 @@ public class ChapterCore : GeneralData
     {
         if (!changedIndex) return;
         
-        var chapterData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
+        var chapterData = Fixtures.chapterList.Where(x => x.id == Id).FirstOrDefault();
 
-        chapterData.Index = Index;
+        chapterData.index = Index;
 
         changedIndex = false;
     }

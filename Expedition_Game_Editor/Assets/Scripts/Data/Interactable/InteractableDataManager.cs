@@ -31,12 +31,12 @@ public class InteractableDataManager : IDataManager
         GetIconData();
 
         var list = (from interactableData   in interactableDataList
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.Id
+                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
+                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
                     select new InteractableElementData()
                     {
-                        Id = interactableData.Id,
-                        Index = interactableData.Index,
+                        Id = interactableData.id,
+                        Index = interactableData.index,
 
                         Type = interactableData.type,
 
@@ -74,13 +74,13 @@ public class InteractableDataManager : IDataManager
         
         foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
             if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactable.type)) continue;
 
             var interactableData = new InteractableData();
 
-            interactableData.Id = interactable.Id;
-            interactableData.Index = interactable.Index;
+            interactableData.id = interactable.id;
+            interactableData.index = interactable.index;
 
             interactableData.type = interactable.type;
 
@@ -119,8 +119,11 @@ public class InteractableDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class InteractableData : GeneralData
+    internal class InteractableData
     {
+        public int id;
+        public int index;
+
         public int type;
 
         public int objectGraphicId;

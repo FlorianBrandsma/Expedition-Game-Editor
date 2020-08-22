@@ -29,10 +29,10 @@ public class InteractionSaveDataManager : IDataManager
         GetInteractionData();
 
         var list = (from interactionSaveData    in interactionSaveDataList
-                    join interactionData        in interactionDataList on interactionSaveData.interactionId equals interactionData.Id
+                    join interactionData        in interactionDataList on interactionSaveData.interactionId equals interactionData.id
                     select new InteractionSaveElementData()
                     {
-                        Id = interactionSaveData.Id,
+                        Id = interactionSaveData.id,
 
                         TaskSaveId = interactionSaveData.taskSaveId,
                         InteractionId = interactionSaveData.interactionId,
@@ -59,12 +59,12 @@ public class InteractionSaveDataManager : IDataManager
 
         foreach (Fixtures.InteractionSave interactionSave in Fixtures.interactionSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactionSave.Id))                   continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactionSave.id))                   continue;
             if (searchParameters.taskSaveId.Count   > 0 && !searchParameters.taskSaveId.Contains(interactionSave.taskSaveId))   continue;
             
             var interactionSaveData = new InteractionSaveData();
 
-            interactionSaveData.Id = interactionSave.Id;
+            interactionSaveData.id = interactionSave.id;
 
             interactionSaveData.taskSaveId = interactionSave.taskSaveId;
             interactionSaveData.interactionId = interactionSave.interactionId;
@@ -83,8 +83,10 @@ public class InteractionSaveDataManager : IDataManager
         interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
     }
 
-    internal class InteractionSaveData : GeneralData
+    internal class InteractionSaveData
     {
+        public int id;
+
         public int taskSaveId;
         public int interactionId;
 

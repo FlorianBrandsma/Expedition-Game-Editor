@@ -122,7 +122,7 @@ public class RegionCore : GeneralData
 
     public virtual void Update()
     {
-        var regionData = Fixtures.regionList.Where(x => x.Id == Id).FirstOrDefault();
+        var regionData = Fixtures.regionList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedTileSetId)
             regionData.tileSetId = tileSetId;
@@ -143,9 +143,9 @@ public class RegionCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var regionData = Fixtures.regionList.Where(x => x.Id == Id).FirstOrDefault();
+        var regionData = Fixtures.regionList.Where(x => x.id == Id).FirstOrDefault();
 
-        regionData.Index = Index;
+        regionData.index = Index;
 
         changedIndex = false;
     }

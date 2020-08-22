@@ -38,7 +38,7 @@ public class OutcomeCore : GeneralData
 
     public virtual void Update()
     {
-        var outcomeData = Fixtures.outcomeList.Where(x => x.Id == Id).FirstOrDefault();
+        var outcomeData = Fixtures.outcomeList.Where(x => x.id == Id).FirstOrDefault();
         
         SetOriginalValues();
     }

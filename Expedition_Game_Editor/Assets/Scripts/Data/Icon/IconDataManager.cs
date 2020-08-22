@@ -25,8 +25,7 @@ public class IconDataManager : IDataManager
         var list = (from iconData in iconDataList
                     select new IconElementData()
                     {
-                        Id = iconData.Id,
-                        Index = iconData.Index,
+                        Id = iconData.id,
 
                         Path = iconData.path,
                         baseIconPath = ""
@@ -44,13 +43,12 @@ public class IconDataManager : IDataManager
 
         foreach (Fixtures.Icon icon in Fixtures.iconList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.id)) continue;
             if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.category)) continue;
 
             var iconData = new IconData();
 
-            iconData.Id = icon.Id;
-            iconData.Index = icon.Index;
+            iconData.id = icon.id;
 
             iconData.path = icon.path;
 
@@ -58,8 +56,10 @@ public class IconDataManager : IDataManager
         }
     }
 
-    internal class IconData : GeneralData
+    internal class IconData
     {
+        public int id;
+
         public string path;
     }
 }

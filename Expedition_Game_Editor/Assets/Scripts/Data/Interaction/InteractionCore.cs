@@ -316,7 +316,7 @@ public class InteractionCore : GeneralData
 
     public virtual void Update()
     {
-        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactionData = Fixtures.interactionList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedStartTime)
             interactionData.startTime = startTime;
@@ -372,10 +372,6 @@ public class InteractionCore : GeneralData
     public void UpdateIndex()
     {
         if (!changedIndex) return;
-
-        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
-
-        interactionData.Index = Index;
 
         changedIndex = false;
     }

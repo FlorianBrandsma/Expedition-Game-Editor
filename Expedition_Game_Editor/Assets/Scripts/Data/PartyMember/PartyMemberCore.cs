@@ -55,7 +55,7 @@ public class PartyMemberCore : GeneralData
 
     public virtual void Update()
     {
-        var partyElementData = Fixtures.partyMemberList.Where(x => x.Id == Id).FirstOrDefault();
+        var partyElementData = Fixtures.partyMemberList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedInteractableId)
             partyElementData.interactableId = interactableId;

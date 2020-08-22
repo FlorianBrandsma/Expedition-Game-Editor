@@ -47,7 +47,7 @@ public class ChapterRegionCore : GeneralData
 
     public virtual void Update()
     {
-        var regionData = Fixtures.chapterRegionList.Where(x => x.Id == Id).FirstOrDefault();
+        var regionData = Fixtures.chapterRegionList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedRegionId)
             regionData.regionId = regionId;
@@ -59,9 +59,9 @@ public class ChapterRegionCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var regionData = Fixtures.chapterList.Where(x => x.Id == Id).FirstOrDefault();
+        var regionData = Fixtures.chapterList.Where(x => x.id == Id).FirstOrDefault();
 
-        regionData.Index = Index;
+        regionData.index = Index;
 
         changedIndex = false; 
     }

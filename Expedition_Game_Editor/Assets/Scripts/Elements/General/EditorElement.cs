@@ -80,10 +80,14 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     private void SetSelection()
     {
-        if (selectionStatus == Enums.SelectionStatus.None) return;
-        
+        if (selectionStatus == Enums.SelectionStatus.None || glow == null) return;
+
+        //Kind of a band-aid fix, but it works (for now)
+        //Cancelling selection after changing index cancels all selections
         if (selectionStatus == DataElement.data.elementData.SelectionStatus || DataElement.data.elementData.SelectionStatus == Enums.SelectionStatus.Both)
             glow.SetActive(true);
+        else
+            glow.SetActive(false);
     }
 
     public void SetStatus()

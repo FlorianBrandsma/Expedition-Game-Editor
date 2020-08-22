@@ -42,18 +42,18 @@ public class AtmosphereDataManager : IDataManager
         GetIconData();
         
         var list = (from atmosphereData in atmosphereDataList
-                    join terrainData    in terrainDataList  on atmosphereData.terrainId equals terrainData.Id
-                    join regionData     in regionDataList   on terrainData.regionId     equals regionData.Id
-                    join tileSetData    in tileSetDataList  on regionData.tileSetId     equals tileSetData.Id
+                    join terrainData    in terrainDataList  on atmosphereData.terrainId equals terrainData.id
+                    join regionData     in regionDataList   on terrainData.regionId     equals regionData.id
+                    join tileSetData    in tileSetDataList  on regionData.tileSetId     equals tileSetData.id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
 
-                    join iconData       in iconDataList     on terrainData.iconId       equals iconData.Id
+                    join iconData       in iconDataList     on terrainData.iconId       equals iconData.id
 
                     select new AtmosphereElementData()
                     {
-                        Id = atmosphereData.Id,
+                        Id = atmosphereData.id,
 
                         TerrainId = atmosphereData.terrainId,
 
@@ -84,12 +84,12 @@ public class AtmosphereDataManager : IDataManager
 
         foreach (Fixtures.Atmosphere atmosphere in Fixtures.atmosphereList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.id)) continue;
             if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.terrainId)) continue;
 
             var atmosphereData = new AtmosphereData();
 
-            atmosphereData.Id = atmosphere.Id;
+            atmosphereData.id = atmosphere.id;
 
             atmosphereData.terrainId = atmosphere.terrainId;
 
@@ -132,7 +132,7 @@ public class AtmosphereDataManager : IDataManager
     private void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
@@ -145,8 +145,10 @@ public class AtmosphereDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
     
-    internal class AtmosphereData : GeneralData
+    internal class AtmosphereData
     {
+        public int id;
+
         public int terrainId;
 
         public bool isDefault;

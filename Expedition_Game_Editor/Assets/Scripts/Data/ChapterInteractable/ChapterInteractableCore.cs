@@ -47,7 +47,7 @@ public class ChapterInteractableCore : GeneralData
 
     public virtual void Update()
     {
-        var chapterInteractableData = Fixtures.chapterInteractableList.Where(x => x.Id == Id).FirstOrDefault();
+        var chapterInteractableData = Fixtures.chapterInteractableList.Where(x => x.id == Id).FirstOrDefault();
         
         if (changedInteractableId)
             chapterInteractableData.interactableId = interactableId;

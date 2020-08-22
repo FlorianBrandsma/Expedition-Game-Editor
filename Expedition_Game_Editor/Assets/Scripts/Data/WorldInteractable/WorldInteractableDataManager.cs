@@ -45,21 +45,23 @@ public class WorldInteractableDataManager : IDataManager
         
         if (worldInteractableDataList.Count == 0) return new List<IElementData>();
 
-        DataManager.SetIndex(worldInteractableDataList.Cast<GeneralData>().ToList());
+        //for(int i = 0; i < worldInteractableDataList.Count; i++)
+        //{
+        //    worldInteractableDataList[i].index = i;
+        //}
 
         GetInteractableData();
         GetObjectGraphicData();
         GetIconData();
 
         var list = (from worldInteractableData  in worldInteractableDataList
-                    join interactableData       in interactableDataList     on worldInteractableData.interactableId     equals interactableData.Id
-                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.Id
-                    join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.Id
+                    join interactableData       in interactableDataList     on worldInteractableData.interactableId     equals interactableData.id
+                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.id
+                    join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.id
 
                     select new WorldInteractableElementData()
                     {
-                        Id = worldInteractableData.Id,
-                        Index = worldInteractableData.Index,
+                        Id = worldInteractableData.id,
 
                         Type = worldInteractableData.type,
 
@@ -90,7 +92,7 @@ public class WorldInteractableDataManager : IDataManager
         
         foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
+            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.id))                                         continue;
             if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.type))                                     continue;
             if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.chapterInteractableId))   continue;
             if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.phaseId))                               continue;
@@ -100,7 +102,7 @@ public class WorldInteractableDataManager : IDataManager
 
             var worldInteractableData = new WorldInteractableData();
 
-            worldInteractableData.Id = worldInteractable.Id;
+            worldInteractableData.id = worldInteractable.id;
 
             worldInteractableData.type = worldInteractable.type;
             
@@ -120,13 +122,13 @@ public class WorldInteractableDataManager : IDataManager
         worldInteractableDataList = new List<WorldInteractableData>();
 
         var interactionDestinationList  = Fixtures.interactionDestinationList.Where(x => searchParameters.regionId.Contains(x.regionId)).Distinct().ToList();
-        var interactionList             = Fixtures.interactionList.Where(x => interactionDestinationList.Select(y => y.interactionId).Contains(x.Id)).Distinct().ToList();
-        var taskList                    = Fixtures.taskList.Where(x => interactionList.Select(y => y.taskId).Contains(x.Id) && searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList();
-        var worldInteractableList       = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.worldInteractableId).Contains(x.Id)).Distinct().ToList();
+        var interactionList             = Fixtures.interactionList.Where(x => interactionDestinationList.Select(y => y.interactionId).Contains(x.id)).Distinct().ToList();
+        var taskList                    = Fixtures.taskList.Where(x => interactionList.Select(y => y.taskId).Contains(x.id) && searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList();
+        var worldInteractableList       = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.worldInteractableId).Contains(x.id)).Distinct().ToList();
 
         foreach (Fixtures.WorldInteractable worldInteractable in worldInteractableList)
         {
-            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
+            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.id))                                         continue;
             if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.type))                                     continue;
             if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.chapterInteractableId))   continue;
             if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.phaseId))                               continue;
@@ -136,7 +138,7 @@ public class WorldInteractableDataManager : IDataManager
 
             var worldInteractableData = new WorldInteractableData();
 
-            worldInteractableData.Id = worldInteractable.Id;
+            worldInteractableData.id = worldInteractable.id;
 
             worldInteractableData.type = worldInteractable.type;
             
@@ -164,7 +166,7 @@ public class WorldInteractableDataManager : IDataManager
         {
             var worldInteractableData = new WorldInteractableData();
 
-            worldInteractableData.Id = worldInteractable.Id;
+            worldInteractableData.id = worldInteractable.id;
 
             worldInteractableData.type = worldInteractable.type;
 
@@ -205,8 +207,10 @@ public class WorldInteractableDataManager : IDataManager
         iconDataList = dataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class WorldInteractableData : GeneralData
+    internal class WorldInteractableData
     {
+        public int id;
+
         public int type;
         
         public int phaseId;

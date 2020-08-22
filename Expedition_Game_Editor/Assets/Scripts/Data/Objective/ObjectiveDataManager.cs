@@ -25,8 +25,8 @@ public class ObjectiveDataManager : IDataManager
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveElementData()
                     {
-                        Id = objectiveData.Id,
-                        Index = objectiveData.Index,
+                        Id = objectiveData.id,
+                        Index = objectiveData.index,
 
                         QuestId = objectiveData.questId,
                         Name = objectiveData.name,
@@ -46,13 +46,13 @@ public class ObjectiveDataManager : IDataManager
 
         foreach(Fixtures.Objective objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;
-            if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.id)) continue;
+            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
 
             var objectiveData = new ObjectiveData();
             
-            objectiveData.Id = objective.Id;
-            objectiveData.Index = objective.Index;
+            objectiveData.id = objective.id;
+            objectiveData.index = objective.index;
 
             objectiveData.questId = objective.questId;
             objectiveData.name = objective.name;
@@ -63,9 +63,13 @@ public class ObjectiveDataManager : IDataManager
         }
     }
 
-    internal class ObjectiveData : GeneralData
+    internal class ObjectiveData
     {
+        public int id;
+        public int index;
+
         public int questId;
+
         public string name;
         public string journal;
         public string notes;

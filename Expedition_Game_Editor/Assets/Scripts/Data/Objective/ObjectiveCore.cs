@@ -98,7 +98,7 @@ public class ObjectiveCore : GeneralData
 
     public virtual void Update()
     {
-        var objectiveData = Fixtures.objectiveList.Where(x => x.Id == Id).FirstOrDefault();
+        var objectiveData = Fixtures.objectiveList.Where(x => x.id == Id).FirstOrDefault();
 
         if(changedName)
             objectiveData.name = name;
@@ -119,9 +119,9 @@ public class ObjectiveCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var objectiveData = Fixtures.objectiveList.Where(x => x.Id == Id).FirstOrDefault();
+        var objectiveData = Fixtures.objectiveList.Where(x => x.id == Id).FirstOrDefault();
 
-        objectiveData.Index = Index;
+        objectiveData.index = Index;
 
         changedIndex = false;
     }

@@ -45,21 +45,21 @@ public class PhaseDataManager : IDataManager
         GetTerrainData();
 
         var list = (from phaseData      in phaseDataList
-                    join chapterData    in chapterDataList  on phaseData.chapterId          equals chapterData.Id
+                    join chapterData    in chapterDataList  on phaseData.chapterId          equals chapterData.id
 
-                    join regionData     in regionDataList   on phaseData.defaultRegionId    equals regionData.Id
-                    join tileSetData    in tileSetDataList  on regionData.tileSetId         equals tileSetData.Id
+                    join regionData     in regionDataList   on phaseData.defaultRegionId    equals regionData.id
+                    join tileSetData    in tileSetDataList  on regionData.tileSetId         equals tileSetData.id
 
                     join leftJoin in (from partyMemberData      in partyMemberDataList
-                                      join interactableData     in interactableDataList     on partyMemberData.interactableId   equals interactableData.Id
-                                      join objectGraphicData    in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.Id
-                                      join iconData             in iconDataList             on objectGraphicData.iconId         equals iconData.Id
-                                      select new { partyMemberData, interactableData, objectGraphicData, iconData }) on chapterData.Id equals leftJoin.partyMemberData.chapterId into partyMemberData
+                                      join interactableData     in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
+                                      join objectGraphicData    in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
+                                      join iconData             in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                                      select new { partyMemberData, interactableData, objectGraphicData, iconData }) on chapterData.id equals leftJoin.partyMemberData.chapterId into partyMemberData
 
                     select new PhaseElementData()
                     {
-                        Id = phaseData.Id,
-                        Index = phaseData.Index,
+                        Id = phaseData.id,
+                        Index = phaseData.index,
 
                         ChapterId = phaseData.chapterId,
 
@@ -84,9 +84,9 @@ public class PhaseDataManager : IDataManager
 
                         terrainTileId = TerrainTileId(phaseData.defaultRegionId, phaseData.defaultPositionX, phaseData.defaultPositionZ),
 
-                        partyMemberId = partyMemberData.First().partyMemberData.Id,
+                        partyMemberId = partyMemberData.First().partyMemberData.id,
                         
-                        objectGraphicId = partyMemberData.First().objectGraphicData.Id,
+                        objectGraphicId = partyMemberData.First().objectGraphicData.id,
                         objectGraphicPath = partyMemberData.First().objectGraphicData.path,
 
                         objectGraphicIconPath = partyMemberData.First().iconData.path,
@@ -111,13 +111,13 @@ public class PhaseDataManager : IDataManager
 
         foreach(Fixtures.Phase phase in Fixtures.phaseList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.Id)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.id)) continue;
             if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(phase.chapterId)) continue;
 
             var phaseData = new PhaseData();
 
-            phaseData.Id = phase.Id;
-            phaseData.Index = phase.Index;
+            phaseData.id = phase.id;
+            phaseData.index = phase.index;
 
             phaseData.chapterId = phase.chapterId;
 
@@ -155,7 +155,7 @@ public class PhaseDataManager : IDataManager
     {
         var partyMemberSearchParameters = new Search.PartyMember();
 
-        partyMemberSearchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
+        partyMemberSearchParameters.chapterId = chapterDataList.Select(x => x.id).Distinct().ToList();
 
         partyMemberDataList = dataManager.GetPartyMemberData(partyMemberSearchParameters);
     }
@@ -205,7 +205,7 @@ public class PhaseDataManager : IDataManager
     internal void GetTerrainData()
     {
         var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
 
         terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
     }
@@ -219,8 +219,11 @@ public class PhaseDataManager : IDataManager
         return terrainTileId;
     }
 
-    internal class PhaseData : GeneralData
+    internal class PhaseData
     {
+        public int id;
+        public int index;
+
         public int chapterId;
 
         public string name;

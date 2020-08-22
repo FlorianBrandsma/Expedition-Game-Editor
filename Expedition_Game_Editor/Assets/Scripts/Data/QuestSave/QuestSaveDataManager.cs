@@ -29,10 +29,11 @@ public class QuestSaveDataManager : IDataManager
         GetQuestData();
 
         var list = (from questSaveData  in questSaveDataList
-                    join questData      in questDataList on questSaveData.questId equals questData.Id
+                    join questData      in questDataList on questSaveData.questId equals questData.id
                     select new QuestSaveElementData()
                     {
-                        Id = questSaveData.Id,
+                        Id = questSaveData.id,
+                        Index = questSaveData.index,
 
                         PhaseSaveId = questSaveData.phaseSaveId,
                         QuestId = questSaveData.questId,
@@ -56,12 +57,13 @@ public class QuestSaveDataManager : IDataManager
 
         foreach (Fixtures.QuestSave questSave in Fixtures.questSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.Id))                     continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.id))                     continue;
             if (searchParameters.phaseSaveId.Count  > 0 && !searchParameters.phaseSaveId.Contains(questSave.phaseSaveId))   continue;
 
             var questSaveData = new QuestSaveData();
 
-            questSaveData.Id = questSave.Id;
+            questSaveData.id = questSave.id;
+            questSaveData.index = questSave.index;
 
             questSaveData.phaseSaveId = questSave.phaseSaveId;
             questSaveData.questId = questSave.questId;
@@ -80,8 +82,11 @@ public class QuestSaveDataManager : IDataManager
         questDataList = dataManager.GetQuestData(questSearchParameters);
     }
 
-    internal class QuestSaveData : GeneralData
+    internal class QuestSaveData
     {
+        public int id;
+        public int index;
+
         public int phaseSaveId;
         public int questId;
 

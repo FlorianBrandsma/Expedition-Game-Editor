@@ -61,7 +61,7 @@ public class ObjectiveSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var objectiveSaveData = Fixtures.objectiveSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var objectiveSaveData = Fixtures.objectiveSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedComplete)
             objectiveSaveData.complete = complete;

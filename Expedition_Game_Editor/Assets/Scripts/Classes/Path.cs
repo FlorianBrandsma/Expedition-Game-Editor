@@ -20,21 +20,21 @@ public class Path
 
     public Path()
     {
-        routeList   = new List<Route>();
+        routeList = new List<Route>();
     }
 
     public Path(List<Route> routeList, EditorForm form)
     {
-        this.routeList  = routeList;
-        this.form   = form;
+        this.routeList = routeList;
+        this.form = form;
     }
 
     public Path(List<Route> routeList, EditorForm form, int start)
     {
-        this.routeList  = routeList;
-        this.form   = form;
+        this.routeList = routeList;
+        this.form = form;
 
-        this.start  = start;
+        this.start = start;
     }
 
     #region Add
@@ -150,7 +150,39 @@ public class Path
         routeList.ForEach(route => 
         {
             if (route.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
+            {
+                //var oldDataController = route.data.dataController;
+                //if (data.dataController.DataType == Enums.DataType.Region)
+                //{
+                //    Debug.Log(((RegionController)data.dataController).regionType);
+                //}
+                    
+                
+                //This overwrites the data controller, which should NOT happen
                 route.data = data;
+
+                //route.data.dataList = data.dataList;
+                //route.data.dataController.DataList = data.dataController.DataList;
+                //route.data.elementData = data.elementData;
+
+                //route.data.dataController = oldDataController;
+            }
+
+        });
+    }
+
+    public void ReplaceDataLists(int start, Enums.DataType dataType, List<IElementData> dataList, IElementData elementData = null)
+    {
+        routeList.ForEach(route =>
+        {
+            if (route.GeneralData.DataType == dataType)
+            {
+                route.data.dataList = dataList;
+                route.data.dataController.DataList = dataList;
+
+                if (elementData != null)
+                    route.data.elementData = elementData;
+            }
         });
     }
 }

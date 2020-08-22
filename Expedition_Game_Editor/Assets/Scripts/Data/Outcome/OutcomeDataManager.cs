@@ -25,7 +25,7 @@ public class OutcomeDataManager : IDataManager
         var list = (from outcomeData in outcomeDataList
                     select new OutcomeElementData()
                     {
-                        Id = outcomeData.Id,
+                        Id = outcomeData.id,
 
                         Type = outcomeData.type,
 
@@ -44,12 +44,12 @@ public class OutcomeDataManager : IDataManager
 
         foreach (Fixtures.Outcome outcome in Fixtures.outcomeList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(outcome.Id)) continue;
-            if (searchParameters.interactionId.Count > 0 && !searchParameters.interactionId.Contains(outcome.interactionId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(outcome.id)) continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(outcome.interactionId)) continue;
             
             var outcomeData = new OutcomeData();
 
-            outcomeData.Id = outcome.Id;
+            outcomeData.id = outcome.id;
 
             outcomeData.type = outcome.type;
 
@@ -59,8 +59,10 @@ public class OutcomeDataManager : IDataManager
         }
     }
 
-    internal class OutcomeData : GeneralData
+    internal class OutcomeData
     {
+        public int id;
+
         public int type;
 
         public int interactionId;

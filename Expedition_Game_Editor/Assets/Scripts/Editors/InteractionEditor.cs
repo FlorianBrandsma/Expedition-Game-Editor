@@ -63,6 +63,8 @@ public class InteractionEditor : MonoBehaviour, IEditor
         //Elements don't need to be updated as the reset takes care of that.
         if (changedTime)
         {
+            
+            //RenderManager.PreviousPath();
             RenderManager.ResetPath(true);
 
         } else {

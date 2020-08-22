@@ -85,7 +85,7 @@ public class WorldInteractableCore : GeneralData
 
     public virtual void Update()
     {
-        var worldInteractableData = Fixtures.worldInteractableList.Where(x => x.Id == Id).FirstOrDefault();
+        var worldInteractableData = Fixtures.worldInteractableList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedInteractableId)
             worldInteractableData.interactableId = interactableId;

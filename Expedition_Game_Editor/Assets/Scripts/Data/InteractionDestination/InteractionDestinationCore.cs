@@ -257,7 +257,7 @@ public class InteractionDestinationCore : GeneralData
 
     public virtual void Update()
     {
-        var interactionDestinationData = Fixtures.interactionDestinationList.Where(x => x.Id == Id).FirstOrDefault();
+        var interactionDestinationData = Fixtures.interactionDestinationList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedRegionId)
             interactionDestinationData.regionId = regionId;

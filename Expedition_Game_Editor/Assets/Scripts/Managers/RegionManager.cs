@@ -32,7 +32,7 @@ static public class RegionManager
 
         var terrainIndex = (regionData.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainData = terrainDataList.Where(x => x.regionId == regionData.Id && x.Index == terrainIndex).FirstOrDefault();
+        var terrainData = terrainDataList.Where(x => x.regionId == regionData.id && x.index == terrainIndex).FirstOrDefault();
 
         return regionData.name + ", " + terrainData.name;
     }

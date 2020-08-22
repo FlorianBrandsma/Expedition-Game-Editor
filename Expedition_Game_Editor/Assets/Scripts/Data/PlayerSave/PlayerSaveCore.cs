@@ -114,7 +114,7 @@ public class PlayerSaveCore : GeneralData
 
     public virtual void Update()
     {
-        var playerSaveData = Fixtures.playerSaveList.Where(x => x.Id == Id).FirstOrDefault();
+        var playerSaveData = Fixtures.playerSaveList.Where(x => x.id == Id).FirstOrDefault();
 
         playerSaveData.positionX = positionX;
         playerSaveData.positionY = positionY;
@@ -131,16 +131,7 @@ public class PlayerSaveCore : GeneralData
 
     public void UpdateSearch() { }
 
-    public void UpdateIndex()
-    {
-        if (!changedIndex) return;
-
-        var interactionData = Fixtures.interactionList.Where(x => x.Id == Id).FirstOrDefault();
-
-        interactionData.Index = Index;
-
-        changedIndex = false;
-    }
+    public void UpdateIndex() { }
 
     public virtual void SetOriginalValues()
     {

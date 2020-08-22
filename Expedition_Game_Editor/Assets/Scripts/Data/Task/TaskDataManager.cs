@@ -25,8 +25,8 @@ public class TaskDataManager : IDataManager
         var list = (from taskData in taskDataList
                     select new TaskElementData()
                     {
-                        Id = taskData.Id,
-                        Index = taskData.Index,
+                        Id = taskData.id,
+                        Index = taskData.index,
 
                         WorldInteractableId = taskData.worldInteractableId,
                         ObjectiveId = taskData.objectiveId,
@@ -52,14 +52,14 @@ public class TaskDataManager : IDataManager
         
         foreach (Fixtures.Task task in Fixtures.taskList)
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.id))                                      continue;
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId))    continue;
             if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.objectiveId))                    continue;
 
             var taskData = new TaskData();
 
-            taskData.Id = task.Id;
-            taskData.Index = task.Index;
+            taskData.id = task.id;
+            taskData.index = task.index;
 
             taskData.worldInteractableId = task.worldInteractableId;
             taskData.objectiveId = task.objectiveId;
@@ -76,8 +76,11 @@ public class TaskDataManager : IDataManager
         }
     }
 
-    internal class TaskData : GeneralData
+    internal class TaskData
     {
+        public int id;
+        public int index;
+
         public int worldInteractableId;
         public int objectiveId;
 

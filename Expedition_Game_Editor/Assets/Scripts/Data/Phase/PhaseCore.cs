@@ -225,7 +225,7 @@ public class PhaseCore : GeneralData
 
     public virtual void Update()
     {
-        var phaseData = Fixtures.phaseList.Where(x => x.Id == Id).FirstOrDefault();
+        var phaseData = Fixtures.phaseList.Where(x => x.id == Id).FirstOrDefault();
 
         if (changedName)
             phaseData.name = name;
@@ -267,9 +267,9 @@ public class PhaseCore : GeneralData
     {
         if (!changedIndex) return;
 
-        var phaseData = Fixtures.phaseList.Where(x => x.Id == Id).FirstOrDefault();
+        var phaseData = Fixtures.phaseList.Where(x => x.id == Id).FirstOrDefault();
 
-        phaseData.Index = Index;
+        phaseData.index = Index;
 
         changedIndex = false;
     }

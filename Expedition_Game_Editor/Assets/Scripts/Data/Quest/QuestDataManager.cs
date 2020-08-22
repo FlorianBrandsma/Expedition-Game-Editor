@@ -25,8 +25,8 @@ public class QuestDataManager : IDataManager
         var list = (from questData in questDataList
                     select new QuestElementData()
                     {
-                        Id = questData.Id,
-                        Index = questData.Index,
+                        Id = questData.id,
+                        Index = questData.index,
 
                         PhaseId = questData.phaseId,
                         Name = questData.name,
@@ -45,13 +45,13 @@ public class QuestDataManager : IDataManager
 
         foreach(Fixtures.Quest quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.Id)) continue;
-            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(quest.id)) continue;
+            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
 
             var questData = new QuestData();
 
-            questData.Id = quest.Id;
-            questData.Index = quest.Index;
+            questData.id = quest.id;
+            questData.index = quest.index;
 
             questData.phaseId = quest.phaseId;
             questData.name = quest.name;
@@ -61,9 +61,13 @@ public class QuestDataManager : IDataManager
         }
     }
 
-    internal class QuestData : GeneralData
+    internal class QuestData
     {
+        public int id;
+        public int index;
+
         public int phaseId;
+
         public string name;
         public string notes;
     }

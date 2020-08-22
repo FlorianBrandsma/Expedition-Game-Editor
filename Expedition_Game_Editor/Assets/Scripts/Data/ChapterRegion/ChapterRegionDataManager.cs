@@ -33,16 +33,15 @@ public class ChapterRegionDataManager : IDataManager
         GetTileData();
 
         var list = (from chapterRegionData  in chapterRegionDataList
-                    join regionData         in regionDataList       on chapterRegionData.regionId   equals regionData.Id
-                    join tileSetData        in tileSetDataList      on regionData.tileSetId         equals tileSetData.Id
+                    join regionData         in regionDataList       on chapterRegionData.regionId   equals regionData.id
+                    join tileSetData        in tileSetDataList      on regionData.tileSetId         equals tileSetData.id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
 
                     select new ChapterRegionElementData()
                     {
-                        Id = chapterRegionData.Id,
-                        Index = chapterRegionData.Index,
+                        Id = chapterRegionData.id,
 
                         ChapterId = chapterRegionData.chapterId,
                         RegionId = chapterRegionData.regionId,
@@ -64,14 +63,13 @@ public class ChapterRegionDataManager : IDataManager
 
         foreach(Fixtures.ChapterRegion chapterRegion in Fixtures.chapterRegionList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapterRegion.Id)) continue;
-            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterRegion.id)) continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
 
             var chapterRegionData = new ChapterRegionData();
 
-            chapterRegionData.Id = chapterRegion.Id;
-            chapterRegionData.Index = chapterRegion.Id;
-            
+            chapterRegionData.id = chapterRegion.id;
+
             chapterRegionData.chapterId = chapterRegion.chapterId;
             chapterRegionData.regionId = chapterRegion.regionId;
 
@@ -98,13 +96,15 @@ public class ChapterRegionDataManager : IDataManager
     private void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
 
         tileDataList = dataManager.GetTileData(tileSearchParameters);
     }
 
-    internal class ChapterRegionData : GeneralData
+    internal class ChapterRegionData
     {
+        public int id;
+
         public int chapterId;
         public int regionId;
     }
