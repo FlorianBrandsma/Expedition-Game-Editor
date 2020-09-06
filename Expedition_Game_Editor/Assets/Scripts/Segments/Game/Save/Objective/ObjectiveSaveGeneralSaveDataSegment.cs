@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class ObjectiveSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private ObjectiveSaveElementData ObjectiveSaveData { get { return (ObjectiveSaveElementData)DataEditor.Data.elementData; } }
+    private ObjectiveSaveElementData ObjectiveSaveData { get { return (ObjectiveSaveElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     //UI

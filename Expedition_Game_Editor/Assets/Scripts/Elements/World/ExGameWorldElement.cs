@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 {
-    private ObjectGraphic objectGraphic;
+    private Model model;
 
     private Vector3 startPosition = Vector3.zero;
 
@@ -17,7 +17,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     private float radius;
     private float height;
 
-    private float scaleMultiplier;
+    private float scale;
     
     public NavMeshObstacle Obstacle         { get { return GetComponent<NavMeshObstacle>(); } }
 
@@ -47,67 +47,67 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        if (objectGraphic != null)
-            objectGraphic.gameObject.SetActive(false);
+        if (model != null)
+            model.gameObject.SetActive(false);
 
-        switch (GameElement.DataElement.GeneralData.DataType)
+        switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldObject:        SetGameWorldObjectElement();        break;
             case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableElement();  break;
 
-            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
         
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
-        transform.localScale        = new Vector3(1 * scaleMultiplier, 1 * scaleMultiplier, 1 * scaleMultiplier);
+        transform.localScale        = new Vector3(1 * scale, 1 * scale, 1 * scale);
 
         SetObstacle();
     }
 
     private void SetGameWorldObjectElement()
     {
-        var elementData = (GameWorldObjectElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldObjectElementData)GameElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
-        position = new Vector3(elementData.positionX, elementData.positionY, elementData.positionZ);
-        rotation = new Vector3(elementData.rotationX, elementData.rotationY, elementData.rotationZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        scale = elementData.Scale;
         
-        SetObjectGraphic();
+        SetModel();
     }
 
     private void SetGameWorldInteractableElement()
     {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveInteractionDestination;
 
-        position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
-        rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
+        position = new Vector3(interactionDestinationData.PositionX, interactionDestinationData.PositionY, interactionDestinationData.PositionZ);
+        rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        scale = elementData.Scale;
 
-        SetObjectGraphic();
+        SetModel();
     }
 
-    private void SetObjectGraphic()
+    private void SetModel()
     {
-        objectGraphic.transform.SetParent(transform, false);
+        model.transform.SetParent(transform, false);
 
-        objectGraphic.gameObject.SetActive(true);
+        model.gameObject.SetActive(true);
     }
 
     private void SetObstacle()
     {
-        switch(objectGraphic.obstacleShape)
+        switch(model.obstacleShape)
         {
             case NavMeshObstacleShape.Box:      SetBoxObstacle();       break;
             case NavMeshObstacleShape.Capsule:  SetCapsuleObstacle();   break;
@@ -116,9 +116,9 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetBoxObstacle()
     {
-        var collider = objectGraphic.GetComponent<BoxCollider>();
+        var collider = model.GetComponent<BoxCollider>();
 
-        Obstacle.shape = objectGraphic.obstacleShape;
+        Obstacle.shape = model.obstacleShape;
 
         Obstacle.size = collider.size;
         Obstacle.center = collider.center;
@@ -126,9 +126,9 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetCapsuleObstacle()
     {
-        var collider = objectGraphic.GetComponent<CapsuleCollider>();
+        var collider = model.GetComponent<CapsuleCollider>();
 
-        Obstacle.shape = objectGraphic.obstacleShape;
+        Obstacle.shape = model.obstacleShape;
 
         Obstacle.center = collider.center;
         Obstacle.radius = collider.radius;
@@ -137,13 +137,13 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void CloseElement()
     {
-        GameElement.DataElement.data.elementData.DataElement = null;
-        GameElement.DataElement.data.elementData = null;
+        GameElement.DataElement.ElementData.DataElement = null;
+        //GameElement.DataElement.ElementData = null;
 
-        if (objectGraphic == null) return;
+        if (model == null) return;
 
-        PoolManager.ClosePoolObject(objectGraphic);
-        objectGraphic = null;
+        PoolManager.ClosePoolObject(model);
+        model = null;
     }
 
     public void ClosePoolable()

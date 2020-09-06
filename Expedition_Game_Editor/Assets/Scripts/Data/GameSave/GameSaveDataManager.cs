@@ -3,26 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameSaveDataManager : IDataManager
+public static class GameSaveDataManager
 {
-    public IDataController DataController { get; set; }
-    
-    private DataManager dataManager = new DataManager();
+    private static List<PlayerSaveBaseData> playerSaveDataList;
+    private static List<ChapterSaveBaseData> chapterSaveDataList;
+    private static List<PhaseSaveBaseData> phaseSaveDataList;
+    private static List<QuestSaveBaseData> questSaveDataList;
+    private static List<ObjectiveSaveBaseData> objectiveSaveDataList;
+    private static List<TaskSaveBaseData> taskSaveDataList;
+    private static List<InteractionSaveBaseData> interactionSaveDataList;
 
-    private List<DataManager.PlayerSaveData> playerSaveDataList;
-    private List<DataManager.ChapterSaveData> chapterSaveDataList;
-    private List<DataManager.PhaseSaveData> phaseSaveDataList;
-    private List<DataManager.QuestSaveData> questSaveDataList;
-    private List<DataManager.ObjectiveSaveData> objectiveSaveDataList;
-    private List<DataManager.TaskSaveData> taskSaveDataList;
-    private List<DataManager.InteractionSaveData> interactionSaveDataList;
-
-    public GameSaveDataManager(GameSaveController gameSaveController)
-    {
-        DataController = gameSaveController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
 
@@ -40,99 +31,99 @@ public class GameSaveDataManager : IDataManager
 
         var gameSaveDataElement = new GameSaveElementData()
         {
-            playerSaveData = (from playerSaveData in playerSaveDataList
+            PlayerSaveData = (from playerSaveData in playerSaveDataList
                               select new PlayerSaveElementData
                               {
-                                  Id = playerSaveData.id,
+                                  Id = playerSaveData.Id,
 
-                                  SaveId = playerSaveData.id,
-                                  RegionId = playerSaveData.regionId,
-                                  PartyMemberId = playerSaveData.partyMemberId,
+                                  SaveId = playerSaveData.Id,
+                                  RegionId = playerSaveData.RegionId,
+                                  PartyMemberId = playerSaveData.PartyMemberId,
 
-                                  PositionX = playerSaveData.positionX,
-                                  PositionY = playerSaveData.positionY,
-                                  PositionZ = playerSaveData.positionZ,
+                                  PositionX = playerSaveData.PositionX,
+                                  PositionY = playerSaveData.PositionY,
+                                  PositionZ = playerSaveData.PositionZ,
 
-                                  GameTime = playerSaveData.gameTime,
-                                  PlayedTime = playerSaveData.playedSeconds
+                                  GameTime = playerSaveData.GameTime,
+                                  PlayedTime = playerSaveData.PlayedTime
 
                               }).First(),
 
-            chapterSaveDataList = (from chapterSaveData in chapterSaveDataList
+            ChapterSaveDataList = (from chapterSaveData in chapterSaveDataList
                                    select new ChapterSaveElementData
                                    {
-                                       Id = chapterSaveData.id,
+                                       Id = chapterSaveData.Id,
 
-                                       SaveId = chapterSaveData.saveId,
-                                       ChapterId = chapterSaveData.chapterId,
+                                       SaveId = chapterSaveData.SaveId,
+                                       ChapterId = chapterSaveData.ChapterId,
 
-                                       Complete = chapterSaveData.complete
+                                       Complete = chapterSaveData.Complete
 
                                    }).ToList(),
 
-            phaseSaveDataList = (from phaseSaveData in phaseSaveDataList
+            PhaseSaveDataList = (from phaseSaveData in phaseSaveDataList
                                  select new PhaseSaveElementData
                                  {
-                                     Id = phaseSaveData.id,
+                                     Id = phaseSaveData.Id,
 
-                                     SaveId = phaseSaveData.saveId,
-                                     ChapterSaveId = phaseSaveData.chapterSaveId,
-                                     PhaseId = phaseSaveData.phaseId,
+                                     SaveId = phaseSaveData.SaveId,
+                                     ChapterSaveId = phaseSaveData.ChapterSaveId,
+                                     PhaseId = phaseSaveData.PhaseId,
 
-                                     Complete = phaseSaveData.complete
+                                     Complete = phaseSaveData.Complete
 
                                  }).ToList(),
 
-            questSaveDataList = (from questSaveData in questSaveDataList
+            QuestSaveDataList = (from questSaveData in questSaveDataList
                                  select new QuestSaveElementData
                                  {
-                                     Id = questSaveData.id,
+                                     Id = questSaveData.Id,
 
-                                     SaveId = questSaveData.saveId,
-                                     PhaseSaveId = questSaveData.phaseSaveId,
-                                     QuestId = questSaveData.questId,
+                                     SaveId = questSaveData.SaveId,
+                                     PhaseSaveId = questSaveData.PhaseSaveId,
+                                     QuestId = questSaveData.QuestId,
 
-                                     Complete = questSaveData.complete
+                                     Complete = questSaveData.Complete
 
                                  }).ToList(),
 
-            objectiveSaveDataList = (from objectiveSaveData in objectiveSaveDataList
+            ObjectiveSaveDataList = (from objectiveSaveData in objectiveSaveDataList
                                      select new ObjectiveSaveElementData
                                      {
-                                         Id = objectiveSaveData.id,
+                                         Id = objectiveSaveData.Id,
 
-                                         SaveId = objectiveSaveData.saveId,
-                                         QuestSaveId = objectiveSaveData.questSaveId,
-                                         ObjectiveId = objectiveSaveData.objectiveId,
+                                         SaveId = objectiveSaveData.SaveId,
+                                         QuestSaveId = objectiveSaveData.QuestSaveId,
+                                         ObjectiveId = objectiveSaveData.ObjectiveId,
 
-                                         Complete = objectiveSaveData.complete
+                                         Complete = objectiveSaveData.Complete
 
                                      }).ToList(),
 
-            taskSaveDataList = (from taskSaveData in taskSaveDataList
+            TaskSaveDataList = (from taskSaveData in taskSaveDataList
                                 select new TaskSaveElementData
                                 {
-                                    Id = taskSaveData.id,
+                                    Id = taskSaveData.Id,
 
-                                    SaveId = taskSaveData.saveId,
-                                    WorldInteractableId = taskSaveData.worldInteractableId,
-                                    ObjectiveSaveId = taskSaveData.objectiveSaveId,
-                                    TaskId = taskSaveData.taskId,
+                                    SaveId = taskSaveData.SaveId,
+                                    WorldInteractableId = taskSaveData.WorldInteractableId,
+                                    ObjectiveSaveId = taskSaveData.ObjectiveSaveId,
+                                    TaskId = taskSaveData.TaskId,
 
-                                    Complete = taskSaveData.complete
+                                    Complete = taskSaveData.Complete
 
                                 }).ToList(),
 
-            interactionSaveDataList = (from interactionSaveData in interactionSaveDataList
+            InteractionSaveDataList = (from interactionSaveData in interactionSaveDataList
                                        select new InteractionSaveElementData
                                        {
-                                           Id = interactionSaveData.id,
+                                           Id = interactionSaveData.Id,
 
-                                           SaveId = interactionSaveData.saveId,
-                                           TaskSaveId = interactionSaveData.taskSaveId,
-                                           InteractionId = interactionSaveData.interactionId,
+                                           SaveId = interactionSaveData.SaveId,
+                                           TaskSaveId = interactionSaveData.TaskSaveId,
+                                           InteractionId = interactionSaveData.InteractionId,
 
-                                           Complete = interactionSaveData.complete
+                                           Complete = interactionSaveData.Complete
 
                                        }).ToList()
         };
@@ -142,59 +133,64 @@ public class GameSaveDataManager : IDataManager
         return new List<IElementData>() { gameSaveDataElement };
     }
 
-    internal void GetPlayerSaveData(Search.GameSave searchData)
+    private static void GetPlayerSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.PlayerSave();
         searchParameters.saveId = searchData.saveId;
 
-        playerSaveDataList = dataManager.GetPlayerSaveData(searchParameters);
+        playerSaveDataList = DataManager.GetPlayerSaveData(searchParameters);
     }
 
-    internal void GetChapterSaveData(Search.GameSave searchData)
+    private static void GetChapterSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.ChapterSave();
         searchParameters.saveId = searchData.saveId;
 
-        chapterSaveDataList = dataManager.GetChapterSaveData(searchParameters);
+        chapterSaveDataList = DataManager.GetChapterSaveData(searchParameters);
     }
 
-    internal void GetPhaseSaveData(Search.GameSave searchData)
+    private static void GetPhaseSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.PhaseSave();
         searchParameters.saveId = searchData.saveId;
 
-        phaseSaveDataList = dataManager.GetPhaseSaveData(searchParameters);
+        phaseSaveDataList = DataManager.GetPhaseSaveData(searchParameters);
     }
 
-    internal void GetQuestSaveData(Search.GameSave searchData)
+    private static void GetQuestSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.QuestSave();
         searchParameters.saveId = searchData.saveId;
 
-        questSaveDataList = dataManager.GetQuestSaveData(searchParameters);
+        questSaveDataList = DataManager.GetQuestSaveData(searchParameters);
     }
 
-    internal void GetObjectiveSaveData(Search.GameSave searchData)
+    private static void GetObjectiveSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.ObjectiveSave();
         searchParameters.saveId = searchData.saveId;
 
-        objectiveSaveDataList = dataManager.GetObjectiveSaveData(searchParameters);
+        objectiveSaveDataList = DataManager.GetObjectiveSaveData(searchParameters);
     }
 
-    internal void GetTaskSaveData(Search.GameSave searchData)
+    private static void GetTaskSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.TaskSave();
         searchParameters.saveId = searchData.saveId;
 
-        taskSaveDataList = dataManager.GetTaskSaveData(searchParameters);
+        taskSaveDataList = DataManager.GetTaskSaveData(searchParameters);
     }
 
-    internal void GetInteractionSaveData(Search.GameSave searchData)
+    private static void GetInteractionSaveData(Search.GameSave searchData)
     {
         var searchParameters = new Search.InteractionSave();
         searchParameters.saveId = searchData.saveId;
 
-        interactionSaveDataList = dataManager.GetInteractionSaveData(searchParameters);
+        interactionSaveDataList = DataManager.GetInteractionSaveData(searchParameters);
+    }
+
+    public static void UpdateData(GameSaveElementData elementData)
+    {
+
     }
 }

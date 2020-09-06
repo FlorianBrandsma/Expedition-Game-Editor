@@ -153,7 +153,7 @@ public class TimeManager : MonoBehaviour
             else
                 ActiveTime = 0;
 
-            GameManager.instance.gameSaveData.playerSaveData.GameTime = ActiveTime;
+            GameManager.instance.gameSaveData.PlayerSaveData.GameTime = ActiveTime;
 
             //Might be better suited in ActiveTime property
             if (GameManager.instance.gameTimeAction.Dropdown != null)
@@ -165,13 +165,13 @@ public class TimeManager : MonoBehaviour
                 ActiveHour = ActiveTime / secondsInHour;
             }
 
-            activeWorldInteractableList.Where(x => x.ActiveInteraction.arrived).ToList().ForEach(x =>
+            activeWorldInteractableList.Where(x => x.ActiveInteraction.Arrived).ToList().ForEach(x =>
             {
-                if (x.ActiveInteraction.interactionDestinationDataList.Count > 1 || x.ActiveInteraction.currentPatience > 0)
+                if (x.ActiveInteraction.InteractionDestinationDataList.Count > 1 || x.ActiveInteraction.CurrentPatience > 0)
                 {
-                    x.ActiveInteraction.currentPatience -= counter;
+                    x.ActiveInteraction.CurrentPatience -= counter;
 
-                    if (x.ActiveInteraction.currentPatience < 0)
+                    if (x.ActiveInteraction.CurrentPatience < 0)
                     {
                         x.ActiveInteraction.ActiveDestinationIndex++;
                         
@@ -286,13 +286,13 @@ public class TimeManager : MonoBehaviour
         {
             case Enums.DataType.Atmosphere:
 
-                timeFrameList = dataController.DataList.Cast<AtmosphereElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.Data.dataList.Cast<AtmosphereElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
 
                 break;
 
             case Enums.DataType.Interaction:
                 
-                timeFrameList = dataController.DataList.Cast<InteractionElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
+                timeFrameList = dataController.Data.dataList.Cast<InteractionElementData>().Where(x => !x.Default).Select(x => new TimeFrame() { StartTime = x.StartTime, EndTime = x.EndTime }).ToList();
         
                 break;  
         }
@@ -353,14 +353,14 @@ public class TimeManager : MonoBehaviour
         {
             case Enums.DataType.Atmosphere:
 
-                dataList = dataController.DataList.Cast<AtmosphereElementData>()
-                                                  .Where(x => x.Id != changedData.Id && !x.Default)
-                                                  .Select(x => new TimeFrame()
-                                                  {
-                                                      StartTime = x.StartTime,
-                                                      EndTime = x.EndTime
+                dataList = dataController.Data.dataList.Cast<AtmosphereElementData>()
+                                                       .Where(x => x.Id != changedData.Id && !x.Default)
+                                                       .Select(x => new TimeFrame()
+                                                       {
+                                                           StartTime = x.StartTime,
+                                                           EndTime = x.EndTime
 
-                                                  }).ToList();
+                                                       }).ToList();
 
                 var atmosphereData = (AtmosphereElementData)changedData;
 
@@ -370,13 +370,13 @@ public class TimeManager : MonoBehaviour
 
             case Enums.DataType.Interaction:
 
-                dataList = dataController.DataList.Cast<InteractionElementData>()
-                                                  .Where(x => x.Id != changedData.Id && !x.Default)
-                                                  .Select(x => new TimeFrame()
-                                                  {
-                                                      StartTime = x.StartTime,
-                                                      EndTime = x.EndTime
-                                                  }).ToList();
+                dataList = dataController.Data.dataList.Cast<InteractionElementData>()
+                                                       .Where(x => x.Id != changedData.Id && !x.Default)
+                                                       .Select(x => new TimeFrame()
+                                                       {
+                                                           StartTime = x.StartTime,
+                                                           EndTime = x.EndTime
+                                                       }).ToList();
 
                 var interactionData = (InteractionElementData)changedData;
 
@@ -394,10 +394,10 @@ public class TimeManager : MonoBehaviour
     static public void AddInteractionTimeEvent(GameInteractionElementData interactionData)
     {
         //Add new time event to list if time does not yet exist
-        if (!interactionTimeList.Contains(interactionData.startTime))
-            interactionTimeList.Add(interactionData.startTime);
+        if (!interactionTimeList.Contains(interactionData.StartTime))
+            interactionTimeList.Add(interactionData.StartTime);
 
-        if (!interactionTimeList.Contains(interactionData.endTime + 1))
-            interactionTimeList.Add(interactionData.endTime + 1);
+        if (!interactionTimeList.Contains(interactionData.EndTime + 1))
+            interactionTimeList.Add(interactionData.EndTime + 1);
     }
 }

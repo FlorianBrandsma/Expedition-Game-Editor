@@ -10,7 +10,7 @@ public class PathController : MonoBehaviour
     public int step         { get; set; }
     public int layoutStep   { get; set; }
 
-    public HistoryElement   history;
+    public Enums.HistoryGroup historyGroup;
 
     public LayoutSection    layoutSection;
 
@@ -72,7 +72,7 @@ public class PathController : MonoBehaviour
             InitializeTabs(mainPath);
 
             foreach (PathController controller in controllers)
-                controller.history.group = history.group;
+                controller.historyGroup = historyGroup;
         }
 
         InitializeActions(mainPath);
@@ -82,7 +82,7 @@ public class PathController : MonoBehaviour
 
         if (step < mainPath.routeList.Count)
         {
-            controllers[mainPath.routeList[step].controller].OpenPath(mainPath, step + 1, this);
+            controllers[mainPath.routeList[step].controllerIndex].OpenPath(mainPath, step + 1, this);
         }
     }
 
@@ -107,42 +107,41 @@ public class PathController : MonoBehaviour
                 DataEditor = parentController.DataEditor;
         }
     }
-
-    private void SetHistory()
-    {
-        if (history.group != HistoryManager.Group.None)
-            history.AddHistory(route.path);   
-    }
-
+    
     public void FinalizePath(Path path)
     {
         route.path.type = Path.Type.Loaded;
 
         if (step < path.routeList.Count)
         {
-            controllers[path.routeList[step].controller].FinalizePath(path);
+            controllers[path.routeList[step].controllerIndex].FinalizePath(path);
         } else {
 
             SetPreviousEditor();
-            SetHistory();
+            SetHistory(path);
 
             layoutSection.TargetController.FinalizeController();
         }
     }
-
+    
     private void SetPreviousEditor()
     {
         if (layoutSection.dataEditor == null) return;
 
         layoutSection.previousEditor = layoutSection.dataEditor;
-        layoutSection.previousDataSource = layoutSection.dataEditor.Data.elementData;
+        layoutSection.previousDataSource = layoutSection.dataEditor.ElementData;
         layoutSection.previousElementDataList = layoutSection.dataEditor.ElementDataList.ToList();
+    }
+
+    private void SetHistory(Path path)
+    {
+        path.historyGroup = historyGroup;
     }
 
     public bool GetComponents(Path path)
     {
         if (step < path.routeList.Count)
-            controllers[path.routeList[step].controller].GetComponents(path);
+            controllers[path.routeList[step].controllerIndex].GetComponents(path);
 
         return GetComponents<IAction>().Count() > 0;
     }
@@ -153,7 +152,7 @@ public class PathController : MonoBehaviour
             subControllerManager.SetTabs(this, path);
 
         if (step < path.routeList.Count)
-            controllers[path.routeList[step].controller].SetSubControllers(path);
+            controllers[path.routeList[step].controllerIndex].SetSubControllers(path);
     }
 
     private void InitializeActions(Path path)
@@ -168,7 +167,7 @@ public class PathController : MonoBehaviour
             action.SetAction(path);
 
         if (step < path.routeList.Count)
-            controllers[path.routeList[step].controller].SetActions(path);
+            controllers[path.routeList[step].controllerIndex].SetActions(path);
     }
 
     void InitializeTabs(Path path)
@@ -176,8 +175,6 @@ public class PathController : MonoBehaviour
         if (step == path.routeList.Count)
             path.Add();      
     }
-
-    public void FilterRows(List<GeneralData> list) { }
 
     public void GetTargetLayout(Path path, int layoutStep)
     {
@@ -188,7 +185,7 @@ public class PathController : MonoBehaviour
 
         if (step < path.routeList.Count)
         {
-            controllers[path.routeList[step].controller].GetTargetLayout(path, layoutStep);
+            controllers[path.routeList[step].controllerIndex].GetTargetLayout(path, layoutStep);
         }
     }
 
@@ -198,7 +195,7 @@ public class PathController : MonoBehaviour
             action.CloseAction();
 
         if (step < path.routeList.Count)
-            controllers[path.routeList[step].controller].ClosePath(path);
+            controllers[path.routeList[step].controllerIndex].ClosePath(path);
     }
 
     public void CloseTabs(Path path)
@@ -207,6 +204,6 @@ public class PathController : MonoBehaviour
             subControllerManager.CloseTabs();
 
         if (layoutStep < path.routeList.Count)
-            controllers[path.routeList[layoutStep].controller].CloseTabs(path);
+            controllers[path.routeList[layoutStep].controllerIndex].CloseTabs(path);
     }
 }

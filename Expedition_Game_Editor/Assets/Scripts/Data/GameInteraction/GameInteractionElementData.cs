@@ -1,67 +1,31 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
-public class GameInteractionElementData : GeneralData, IElementData
+public class GameInteractionElementData : GameInteractionData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameInteractionElementData() : base()
-    {
-        DataType = Enums.DataType.GameInteraction;
-    }
+    public GameInteractionData OriginalData         { get; set; }
 
-    public GameWorldInteractableElementData gameWorldInteractableData;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameInteraction; } }
 
-    public int taskId;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public bool isDefault;
-
-    public bool containsActiveTime;
-
-    public int startTime;
-    public int endTime;
-
-    public bool triggerAutomatically;
-    public bool beNearDestination;
-    public bool faceAgent;
-    public bool facePartyLeader;
-    public bool hideInteractionIndicator;
-
-    public float interactionRange;
-
-    public int delayMethod;
-    public int delayDuration;
-    public bool hideDelayIndicator;
-
-    public bool cancelDelayOnInput;
-    public bool cancelDelayOnMovement;
-    public bool cancelDelayOnHit;
-
-    public int objectiveId;
-    public int worldInteractableId;
-
-    public float currentPatience;
-
-    public bool arrived;
-
-    private int activeDestinationIndex = -1;
-    
-    public List<GameInteractionDestinationElementData> interactionDestinationDataList;
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     public int ActiveDestinationIndex
     {
-        get { return activeDestinationIndex; }
+        get { return DestinationIndex; }
         set
         {
-            arrived = false;
+            Arrived = false;
 
-            if (value >= interactionDestinationDataList.Count)
+            if (value >= InteractionDestinationDataList.Count)
                 value = 0;
 
-            currentPatience = interactionDestinationDataList[value].patience;
-            
-            activeDestinationIndex = value;
+            CurrentPatience = InteractionDestinationDataList[value].Patience;
+
+            DestinationIndex = value;
         }
     }
 
@@ -69,27 +33,47 @@ public class GameInteractionElementData : GeneralData, IElementData
     {
         get
         {
-            return interactionDestinationDataList[ActiveDestinationIndex];
+            return InteractionDestinationDataList[ActiveDestinationIndex];
         }
     }
 
-    #region ElementData
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameInteractionElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameInteractionElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

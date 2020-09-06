@@ -1,52 +1,76 @@
-﻿public class QuestElementData : QuestCore, IElementData
+﻿using UnityEngine;
+using System;
+
+public class QuestElementData : QuestData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public QuestElementData() : base()
+    public QuestData OriginalData                   { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Quest; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedName
     {
-        DataType = Enums.DataType.Quest;
+        get { return Name != OriginalData.Name; }
     }
 
-    public override void Update()
+    public bool ChangedPublicNotes
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return PublicNotes != OriginalData.PublicNotes; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedPrivateNotes
     {
-        base.SetOriginalValues();
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedName || ChangedPublicNotes || ChangedPrivateNotes;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new QuestElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new QuestElementData();
 
-        SetOriginalValues();
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
     }
 }

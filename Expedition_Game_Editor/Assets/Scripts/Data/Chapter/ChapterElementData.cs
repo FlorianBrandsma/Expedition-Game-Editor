@@ -1,52 +1,102 @@
-﻿public class ChapterElementData : ChapterCore, IElementData
-{
-    public DataElement DataElement { get; set; }
+﻿using UnityEngine;
+using System;
 
-    public ChapterElementData() : base()
+public class ChapterElementData : ChapterData, IElementData
+{
+    public DataElement DataElement                  { get; set; }
+
+    public ChapterData OriginalData                 { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Chapter; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedIndex
     {
-        DataType = Enums.DataType.Chapter;
+        get { return Index != OriginalData.Index; }
     }
 
-    public override void Update()
+    public bool ChangedName
+    {
+        get { return Name != OriginalData.Name; }
+    }
+
+    public bool ChangedTimeSpeed
+    {
+        get { return TimeSpeed != OriginalData.TimeSpeed; }
+    }
+
+    public bool ChangedPublicNotes
+    {
+        get { return PublicNotes != OriginalData.PublicNotes; }
+    }
+
+    public bool ChangedPrivateNotes
+    {
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedName || ChangedTimeSpeed || ChangedPublicNotes || ChangedPrivateNotes;
+        }
+    }
+    #endregion
+
+    public void Update()
     {
         if (!Changed) return;
 
-        base.Update();
+        ChapterDataManager.UpdateData(this);
 
         SetOriginalValues();
     }
 
-    public override void SetOriginalValues()
+    public void UpdateIndex()
     {
-        base.SetOriginalValues();
+        if (!ChangedIndex) return;
+
+        ChapterDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new ChapterElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new ChapterElementData();
 
-        SetOriginalValues();
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
     }
 }

@@ -1,155 +1,129 @@
 ﻿using UnityEngine;
+using System;
 
-public class InteractionDestinationElementData : InteractionDestinationCore, IElementData
+public class InteractionDestinationElementData : InteractionDestinationData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public InteractionDestinationElementData() : base()
+    public InteractionDestinationData OriginalData  { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.InteractionDestination; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedRegionId
     {
-        DataType = Enums.DataType.InteractionDestination;
+        get { return RegionId != OriginalData.RegionId; }
     }
 
-    public int questId;
-    public int objectiveId;
-    public int worldInteractableId;
-    public int taskId;
-
-    public int objectGraphicId;
-    public string objectGraphicPath;
-
-    public string objectGraphicIconPath;
-
-    public string interactableName;
-
-    public float height;
-    public float width;
-    public float depth;
-    
-    public float scaleMultiplier;
-
-    public string tileIconPath;
-    public float tileSize;
-
-    public Vector2 localPosition;
-
-    public string locationName;
-    public string interactableStatus;
-
-    public bool isDefault;
-
-    public int startTime;
-    public int endTime;
-
-    public bool containsActiveTime;
-
-    public override void Update()
+    public bool ChangedTerrainId
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return TerrainId != OriginalData.TerrainId; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedTerrainTileId
     {
-        base.SetOriginalValues();
+        get { return TerrainTileId != OriginalData.TerrainTileId; }
+    }
+
+    public bool ChangedPositionX
+    {
+        get { return PositionX != OriginalData.PositionX; }
+    }
+
+    public bool ChangedPositionY
+    {
+        get { return PositionY != OriginalData.PositionY; }
+    }
+
+    public bool ChangedPositionZ
+    {
+        get { return PositionZ != OriginalData.PositionZ; }
+    }
+
+    public bool ChangedPositionVariance
+    {
+        get { return PositionVariance != OriginalData.PositionVariance; }
+    }
+
+    public bool ChangedRotationX
+    {
+        get { return RotationX != OriginalData.RotationX; }
+    }
+
+    public bool ChangedRotationY
+    {
+        get { return RotationY != OriginalData.RotationY; }
+    }
+
+    public bool ChangedRotationZ
+    {
+        get { return RotationZ != OriginalData.RotationZ; }
+    }
+
+    public bool ChangedFreeRotation
+    {
+        get { return FreeRotation != OriginalData.FreeRotation; }
+    }
+
+    public bool ChangedAnimation
+    {
+        get { return Animation != OriginalData.Animation; }
+    }
+
+    public bool ChangedPatience
+    {
+        get { return Patience != OriginalData.Patience; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return  ChangedRegionId     || ChangedTerrainId || ChangedTerrainTileId ||
+                    ChangedPositionX    || ChangedPositionY || ChangedPositionZ     || ChangedPositionVariance  ||
+                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ     || ChangedFreeRotation      ||
+                    ChangedAnimation    || ChangedPatience;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new InteractionDestinationElementData();
-
-        elementData.questId = questId;
-        elementData.objectiveId = objectiveId;
-        elementData.worldInteractableId = worldInteractableId;
-        elementData.taskId = taskId;
-
-        elementData.objectGraphicId = objectGraphicId;
-        elementData.objectGraphicPath = objectGraphicPath;
-        
-        elementData.objectGraphicIconPath = objectGraphicIconPath;
-
-        elementData.interactableName = interactableName;
-
-        elementData.height = height;
-        elementData.width = width;
-        elementData.depth = depth;
-
-        elementData.scaleMultiplier = scaleMultiplier;
-
-        elementData.tileIconPath = tileIconPath;
-        elementData.tileSize = tileSize;
-
-        elementData.localPosition = localPosition;
-        
-        elementData.locationName = locationName;
-        elementData.interactableStatus = interactableStatus;
-
-        elementData.isDefault = isDefault;
-
-        elementData.startTime = startTime;
-        elementData.endTime = endTime;
-
-        elementData.containsActiveTime = containsActiveTime;
-
-        CloneCore(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new InteractionDestinationElementData();
 
-        var interactionDestinationDataSource = (InteractionDestinationElementData)dataSource;
-        
-        questId = interactionDestinationDataSource.questId;
-        objectiveId = interactionDestinationDataSource.objectiveId;
-        worldInteractableId = interactionDestinationDataSource.worldInteractableId;
-        taskId = interactionDestinationDataSource.taskId;
+        data.DataElement = DataElement;
 
-        objectGraphicId = interactionDestinationDataSource.objectGraphicId;
-        objectGraphicPath = interactionDestinationDataSource.objectGraphicPath;
+        data.OriginalData = OriginalData.Clone();
 
-        objectGraphicIconPath = interactionDestinationDataSource.objectGraphicIconPath;
+        base.Clone(data);
 
-        interactableName = interactionDestinationDataSource.interactableName;
-
-        height = interactionDestinationDataSource.height;
-        width = interactionDestinationDataSource.width;
-        depth = interactionDestinationDataSource.depth;
-
-        scaleMultiplier = interactionDestinationDataSource.scaleMultiplier;
-
-        tileIconPath = interactionDestinationDataSource.tileIconPath;
-        tileSize = interactionDestinationDataSource.tileSize;
-
-        localPosition = interactionDestinationDataSource.localPosition;
-        
-        locationName = interactionDestinationDataSource.locationName;
-        interactableStatus = interactionDestinationDataSource.interactableStatus;
-
-        isDefault = interactionDestinationDataSource.isDefault;
-
-        startTime = interactionDestinationDataSource.startTime;
-        endTime = interactionDestinationDataSource.endTime;
-
-        containsActiveTime = interactionDestinationDataSource.containsActiveTime;
-
-        SetOriginalValues();
+        return data;
     }
 }

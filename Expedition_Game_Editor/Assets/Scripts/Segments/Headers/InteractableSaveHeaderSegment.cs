@@ -14,7 +14,7 @@ public class InteractableSaveHeaderSegment : MonoBehaviour, ISegment
     #endregion
 
     #region Data Variables
-    private string objectGraphicIconPath;
+    private string modelIconPath;
     private string header;
     private int id;
     #endregion
@@ -49,18 +49,18 @@ public class InteractableSaveHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractableSaveData()
     {
-        var interactableSaveData = (InteractableSaveElementData)DataEditor.Data.elementData;
+        var interactableSaveData = (InteractableSaveElementData)DataEditor.ElementData;
 
         id = interactableSaveData.Id;
-        header = interactableSaveData.interactableName;
-        objectGraphicIconPath = interactableSaveData.objectGraphicIconPath;
+        header = interactableSaveData.InteractableName;
+        modelIconPath = interactableSaveData.ModelIconPath;
     }
 
     public void OpenSegment()
     {
         InitializeInteractableSaveData();
 
-        icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);
+        icon.texture = Resources.Load<Texture2D>(modelIconPath);
         headerText.text = header;
         idText.text = id.ToString();
 

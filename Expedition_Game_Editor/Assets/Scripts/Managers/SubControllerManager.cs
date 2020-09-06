@@ -55,7 +55,7 @@ public class SubControllerManager : MonoBehaviour
                 newTab.gameObject.SetActive(true);
             }
 
-            SelectTab(main_path.Trim(pathController.step + 1).routeList[pathController.step].controller);
+            SelectTab(main_path.Trim(pathController.step + 1).routeList[pathController.step].controllerIndex);
 
         } else if(controllers.Length == 1) {
 

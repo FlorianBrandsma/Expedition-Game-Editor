@@ -37,7 +37,7 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 
     private void SetText()
     {
-        var activeAtmosphere = worldOrganizer.activeTerrainData.atmosphereDataList.Where(x => x.containsActiveTime).First();
+        var activeAtmosphere = worldOrganizer.activeTerrainData.AtmosphereDataList.Where(x => x.ContainsActiveTime).First();
 
         //The atmosphere part is only temporary for debugging
         terrainInfoText.Text.text = worldOrganizer.activeTerrainData.Name + " (Atmosphere: " + (activeAtmosphere.Default ? 

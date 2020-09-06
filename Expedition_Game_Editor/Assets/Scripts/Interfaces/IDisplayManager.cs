@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public interface IDisplayManager
 {
@@ -9,5 +9,5 @@ public interface IDisplayManager
 
     void UpdateData();
     void UpdateOverlay();
-    void CorrectPosition(IElementData data);
+    void CorrectPosition(IElementData data, List<IElementData> dataList);
 }

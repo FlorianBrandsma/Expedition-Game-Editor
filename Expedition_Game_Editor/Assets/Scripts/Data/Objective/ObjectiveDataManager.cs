@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveDataManager : IDataManager
+public static class ObjectiveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ObjectiveBaseData> objectiveDataList;
 
-    private List<ObjectiveData> objectiveDataList;
-
-    public ObjectiveDataManager(ObjectiveController objectiveController)
-    {
-        DataController = objectiveController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
         
@@ -25,13 +18,18 @@ public class ObjectiveDataManager : IDataManager
         var list = (from objectiveData in objectiveDataList
                     select new ObjectiveElementData()
                     {
-                        Id = objectiveData.id,
-                        Index = objectiveData.index,
+                        Id = objectiveData.Id,
+                        
+                        QuestId = objectiveData.QuestId,
 
-                        QuestId = objectiveData.questId,
-                        Name = objectiveData.name,
-                        Journal = objectiveData.journal,
-                        PublicNotes = objectiveData.notes
+                        Index = objectiveData.Index,
+
+                        Name = objectiveData.Name,
+
+                        Journal = objectiveData.Journal,
+
+                        PublicNotes = objectiveData.PublicNotes,
+                        PrivateNotes = objectiveData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -40,38 +38,55 @@ public class ObjectiveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetObjectiveData(Search.Objective searchParameters)
+    private static void GetObjectiveData(Search.Objective searchParameters)
     {
-        objectiveDataList = new List<ObjectiveData>();
+        objectiveDataList = new List<ObjectiveBaseData>();
 
-        foreach(Fixtures.Objective objective in Fixtures.objectiveList)
+        foreach(ObjectiveBaseData objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.id)) continue;
-            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.questId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.Id)) continue;
+            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.QuestId)) continue;
 
-            var objectiveData = new ObjectiveData();
+            var objectiveData = new ObjectiveBaseData();
             
-            objectiveData.id = objective.id;
-            objectiveData.index = objective.index;
+            objectiveData.Id = objective.Id;
+            
+            objectiveData.QuestId = objective.QuestId;
 
-            objectiveData.questId = objective.questId;
-            objectiveData.name = objective.name;
-            objectiveData.journal = objective.journal;
-            objectiveData.notes = objective.publicNotes;
+            objectiveData.Index = objective.Index;
+
+            objectiveData.Name = objective.Name;
+
+            objectiveData.Journal = objective.Journal;
+
+            objectiveData.PublicNotes = objective.PublicNotes;
+            objectiveData.PrivateNotes = objective.PrivateNotes;
 
             objectiveDataList.Add(objectiveData);
         }
     }
 
-    internal class ObjectiveData
+    public static void UpdateData(ObjectiveElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.objectiveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
 
-        public int questId;
+        if (elementData.ChangedJournal)
+            data.Journal = elementData.Journal;
 
-        public string name;
-        public string journal;
-        public string notes;
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
+
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
+    }
+
+    static public void UpdateIndex(ObjectiveElementData elementData)
+    {
+        var data = Fixtures.objectiveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

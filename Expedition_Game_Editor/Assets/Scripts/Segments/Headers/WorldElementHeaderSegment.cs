@@ -7,7 +7,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     public Text headerText;
     public Text idText;
 
-    private string objectGraphicIconPath;
+    private string modelIconPath;
     private string header;
     private int id;
 
@@ -42,7 +42,7 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
             default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
         }
         
-        icon.texture = Resources.Load<Texture2D>(objectGraphicIconPath);
+        icon.texture = Resources.Load<Texture2D>(modelIconPath);
         headerText.text = header;
         idText.text = id.ToString();
 
@@ -51,11 +51,11 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     
     private void InitializeWorldObjectData()
     {
-        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
+        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
 
         id = worldObjectData.Id;
-        header = worldObjectData.objectGraphicName;
-        objectGraphicIconPath = worldObjectData.objectGraphicIconPath;
+        header = worldObjectData.ModelName;
+        modelIconPath = worldObjectData.ModelIconPath;
 
         headerText.fontSize = StyleManager.headerFontSize;
         headerText.resizeTextMaxSize = StyleManager.headerFontSize;
@@ -63,11 +63,11 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+        var phaseData = (PhaseElementData)DataEditor.ElementData;
 
-        id = phaseData.partyMemberId;
-        header = phaseData.interactableName;
-        objectGraphicIconPath = phaseData.objectGraphicIconPath;
+        id = phaseData.PartyMemberId;
+        header = phaseData.InteractableName;
+        modelIconPath = phaseData.ModelIconPath;
 
         headerText.fontSize = StyleManager.headerFontSize;
         headerText.resizeTextMaxSize = StyleManager.headerFontSize;
@@ -75,11 +75,11 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionDestinationData()
     {
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
 
         id = interactionDestinationData.Id;
-        header = interactionDestinationData.interactableName;
-        objectGraphicIconPath = interactionDestinationData.objectGraphicIconPath;
+        header = interactionDestinationData.InteractableName;
+        modelIconPath = interactionDestinationData.ModelIconPath;
 
         headerText.fontSize = StyleManager.headerFontSize;
         headerText.resizeTextMaxSize = StyleManager.headerFontSize;

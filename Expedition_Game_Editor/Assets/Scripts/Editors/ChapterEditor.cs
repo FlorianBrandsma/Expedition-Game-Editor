@@ -4,23 +4,24 @@ using System.Linq;
 
 public class ChapterEditor : MonoBehaviour, IEditor
 {
-    public ChapterElementData ChapterData { get { return (ChapterElementData)Data.elementData; } }
+    public ChapterData chapterData;
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
-
-    public List<PartyMemberElementData> partyMemberDataList                 = new List<PartyMemberElementData>();
+    public List<PartyMemberElementData> partyMemberDataList = new List<PartyMemberElementData>();
     public List<ChapterInteractableElementData> chapterInteractableDataList = new List<ChapterInteractableElementData>();
-    public List<ChapterRegionElementData> chapterRegionDataList             = new List<ChapterRegionElementData>();
-    
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    public List<ChapterRegionElementData> chapterRegionDataList = new List<ChapterRegionElementData>();
+
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == chapterData.Id).FirstOrDefault(); } }
+
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(ChapterData).Concat(new[] { ChapterData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -29,22 +30,15 @@ public class ChapterEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
-
-            partyMemberDataList.ForEach(x => list.Add(x));
-            chapterInteractableDataList.ForEach(x => list.Add(x));
-            chapterRegionDataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
     }
     
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
-    }
-
     public void InitializeEditor() { }
+
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -61,26 +55,36 @@ public class ChapterEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
+    //public void ApplyChanges()
+    //{
+    //    chapterRegionDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
+
+    //    ChapterData.Update();
+
+    //    ElementDataList.ForEach(x =>
+    //    {
+    //        if (DataManager.Equals(x, ChapterData))
+    //            x.Copy(ChapterData);
+    //        else
+    //            x.Update();
+
+    //        if(SelectionElementManager.SelectionActive(x.DataElement))
+    //            x.DataElement.UpdateElement();
+    //    });
+
+    //    UpdateEditor();
+
+    //    UpdatePhaseElements();
+    //}
+
     public void ApplyChanges()
     {
-        chapterRegionDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
+        EditData.Update();
 
-        ChapterData.Update();
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
-        ElementDataList.ForEach(x =>
-        {
-            if (((GeneralData)x).Equals(ChapterData))
-                x.Copy(ChapterData);
-            else
-                x.Update();
-
-            if(SelectionElementManager.SelectionActive(x.DataElement))
-                x.DataElement.UpdateElement();
-        });
-        
         UpdateEditor();
-
-        UpdatePhaseElements();
     }
 
     private void ChangedRegion(ChapterRegionElementData chapterRegion)
@@ -202,7 +206,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
                     interaction.rotationY = interactionSource.rotationY;
                     interaction.rotationZ = interactionSource.rotationZ;
 
-                    interaction.scaleMultiplier = interactionSource.scaleMultiplier;
+                    interaction.scale = interactionSource.scale;
 
                     interaction.animation = interactionSource.animation;
 
@@ -224,7 +228,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
                 worldObject.regionId = phaseRegion.Id;
 
                 worldObject.Index = worldObjectSource.Index;
-                worldObject.objectGraphicId = worldObjectSource.objectGraphicId;
+                worldObject.modelId = worldObjectSource.modelId;
 
                 worldObject.positionX = worldObjectSource.positionX;
                 worldObject.positionY = worldObjectSource.positionY;
@@ -237,7 +241,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
                 worldObject.rotationY = worldObjectSource.rotationY;
                 worldObject.rotationZ = worldObjectSource.rotationZ;
 
-                worldObject.scaleMultiplier = worldObjectSource.scaleMultiplier;
+                worldObject.scale = worldObjectSource.scale;
 
                 worldObject.animation = worldObjectSource.animation;
 
@@ -251,9 +255,9 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        partyMemberDataList.Clear();
-        chapterInteractableDataList.Clear();
-        chapterRegionDataList.Clear();
+        //partyMemberDataList.Clear();
+        //chapterInteractableDataList.Clear();
+        //chapterRegionDataList.Clear();
 
         ElementDataList.ForEach(x => x.ClearChanges());
         

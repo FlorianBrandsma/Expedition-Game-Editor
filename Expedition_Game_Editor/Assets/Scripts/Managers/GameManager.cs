@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public GameRegionElementData regionData;
     public GamePartyMemberElementData partyMemberData;
 
-    public GameSaveController gameSaveController;
-    public GameWorldController gameWorldController;
+    public GameSaveDataController gameSaveController;
+    public GameWorldDataController gameWorldController;
     
     public LocalNavMeshBuilder localNavMeshBuilder;
 
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             {
                 activeRegionId = value;
 
-                gameSaveData.playerSaveData.RegionId = value;
+                gameSaveData.PlayerSaveData.RegionId = value;
 
                 ChangeRegion();
             }
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
             {
                 activePartyMemberId = value;
 
-                gameSaveData.playerSaveData.PartyMemberId = value;
+                gameSaveData.PlayerSaveData.PartyMemberId = value;
                 
                 ChangePartyMember();
             }
@@ -135,8 +135,8 @@ public class GameManager : MonoBehaviour
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
         searchParameters.saveId = new List<int>() { saveElementData.Id };
 
-        gameSaveController.DataList = RenderManager.GetData(gameSaveController, searchProperties);
-
+        gameSaveController.GetData(searchProperties);
+        
         gameSaveData = gameSaveController.DataList.Cast<GameSaveElementData>().FirstOrDefault();
     }
 
@@ -164,8 +164,8 @@ public class GameManager : MonoBehaviour
         //1. Find the first chapter that has not been completed
         //2. Find the first phase of that chapter that has not been completed
 
-        var activeChapterSave = gameSaveData.chapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
-        var activePhaseSave = gameSaveData.phaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).OrderBy(x => x.Index).First();
+        var activeChapterSave = gameSaveData.ChapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
+        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).OrderBy(x => x.Index).First();
 
         ActivePhaseId = activePhaseSave.PhaseId;
 
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         InitializePartyMember();
 
         //Set the time based on the save data or else from the phase defaults, which is already set
-        TimeManager.instance.InitializeGameTime(gameSaveData.playerSaveData.GameTime);
+        TimeManager.instance.InitializeGameTime(gameSaveData.PlayerSaveData.GameTime);
 
         //Compare game data with save data to determine which task is active
         CheckProgress();
@@ -200,48 +200,48 @@ public class GameManager : MonoBehaviour
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameWorld>().First();
         searchParameters.phaseId = new List<int>() { ActivePhaseId };
 
-        gameWorldController.DataList = RenderManager.GetData(gameWorldController, searchProperties);
-
+        gameWorldController.GetData(searchProperties);
+        
         gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
     }
 
     private void SetChapterTimeSpeed()
     {
-        TimeManager.gameTimeSpeed = gameWorldData.chapterData.TimeSpeed;
+        TimeManager.gameTimeSpeed = gameWorldData.ChapterData.TimeSpeed;
     }
 
     private void InitializeRegion()
     {
         //Must be a new phase if the saved region is not listed
-        if (!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.RegionId))
+        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.RegionId))
         {
-            gameSaveData.playerSaveData.PositionX = gameWorldData.phaseData.DefaultPositionX;
-            gameSaveData.playerSaveData.PositionY = gameWorldData.phaseData.DefaultPositionY;
-            gameSaveData.playerSaveData.PositionZ = gameWorldData.phaseData.DefaultPositionZ;
+            gameSaveData.PlayerSaveData.PositionX = gameWorldData.PhaseData.DefaultPositionX;
+            gameSaveData.PlayerSaveData.PositionY = gameWorldData.PhaseData.DefaultPositionY;
+            gameSaveData.PlayerSaveData.PositionZ = gameWorldData.PhaseData.DefaultPositionZ;
 
-            gameSaveData.playerSaveData.GameTime = gameWorldData.phaseData.DefaultTime;
+            gameSaveData.PlayerSaveData.GameTime = gameWorldData.PhaseData.DefaultTime;
 
-            ActiveRegionId = gameWorldData.phaseData.DefaultRegionId;
+            ActiveRegionId = gameWorldData.PhaseData.DefaultRegionId;
             
         } else {
 
-            ActiveRegionId = gameSaveData.playerSaveData.RegionId;
+            ActiveRegionId = gameSaveData.PlayerSaveData.RegionId;
         }
     }
 
     private void InitializePartyMember()
     {
         //The first party member of a chapter is the default
-        if (!gameWorldData.regionDataList.Select(x => x.Id).Contains(gameSaveData.playerSaveData.PartyMemberId))
-            ActivePartyMemberId = gameWorldData.partyMemberList.First().Id;
+        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.PartyMemberId))
+            ActivePartyMemberId = gameWorldData.PartyMemberList.First().Id;
         else
-            ActivePartyMemberId = gameSaveData.playerSaveData.PartyMemberId;
+            ActivePartyMemberId = gameSaveData.PlayerSaveData.PartyMemberId;
     }
 
     public void ChangePartyMember()
     {
         Debug.Log("Change party member");
-        partyMemberData = gameWorldData.partyMemberList.Where(x => x.Id == gameSaveData.playerSaveData.PartyMemberId).First();
+        partyMemberData = gameWorldData.PartyMemberList.Where(x => x.Id == gameSaveData.PlayerSaveData.PartyMemberId).First();
 
         PlayerControlManager.instance.SetPlayerCharacter();
     }
@@ -252,39 +252,39 @@ public class GameManager : MonoBehaviour
         Debug.Log("Check what game data has been completed");
 
         //Finds the phase save of the active phase
-        var activePhaseSave = gameSaveData.phaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
+        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
 
         //Finds the quest saves of the quests belonging to the active phase
-        var activeQuestSaves = gameSaveData.questSaveDataList.Where(x => x.PhaseSaveId == activePhaseSave.Id).ToList();
+        var activeQuestSaves = gameSaveData.QuestSaveDataList.Where(x => x.PhaseSaveId == activePhaseSave.Id).ToList();
 
         //Finds the objectives belonging to the quests of the quest saves
         //Groups the objectives per quest and check if there are any uncompleted objectives left
         //Select the first uncompleted objective if there are any, else pick the last objective
-        var activeObjectiveSaves = gameSaveData.objectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.Id).Contains(x.QuestSaveId)).OrderBy(x => x.Index)
+        var activeObjectiveSaves = gameSaveData.ObjectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.Id).Contains(x.QuestSaveId)).OrderBy(x => x.Index)
                                                                      .GroupBy(x => x.QuestSaveId)
                                                                      .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : x.Last()).ToList();
 
         //Finds the region interactions: interactions that do not belong to an objective
-        var regionInteractions = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => y.objectiveId == 0)).ToList();
+        var regionInteractions = gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList.Where(y => y.ObjectiveId == 0)).ToList();
 
         //Finds the tasks of the region interactions
-        var regionTasks = gameSaveData.taskSaveDataList.Where(x => regionInteractions.Select(y => y.taskId).Contains(x.TaskId)).Distinct().ToList();
+        var regionTasks = gameSaveData.TaskSaveDataList.Where(x => regionInteractions.Select(y => y.TaskId).Contains(x.TaskId)).Distinct().ToList();
 
         //Finds the task saves of the tasks belonging to the objective saves, combined with the region tasks
         //Groups the tasks by world interactable and by objective save, as some world interactables "belong" to multiple objectives and some to none
         //Selects the first uncompleted task if there are any, else pick the last task if it's repeatable
-        activeTaskSaveList = gameSaveData.taskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.Id).Contains(x.ObjectiveSaveId))
+        activeTaskSaveList = gameSaveData.TaskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.Id).Contains(x.ObjectiveSaveId))
                                                           .Concat(regionTasks)
                                                           .GroupBy(x => new { x.WorldInteractableId, x.ObjectiveSaveId })
                                                           .Select(x => x.ToList().OrderBy(y => y.Index))
                                                           .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : 
-                                                                                                 x.Last().repeatable ? x.Last() : 
+                                                                                                 x.Last().Repeatable ? x.Last() : 
                                                                                                                        null).ToList();
         
 
-        TimeManager.activeWorldInteractableList = gameWorldData.worldInteractableDataList.Where(x => x.interactionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId))).ToList();
+        TimeManager.activeWorldInteractableList = gameWorldData.WorldInteractableDataList.Where(x => x.InteractionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
         
-        TimeManager.activeInteractionList = gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.taskId))).ToList();
+        TimeManager.activeInteractionList = gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
         
         GetInteractionTimes();
 
@@ -297,7 +297,7 @@ public class GameManager : MonoBehaviour
         
         //PlayerControlManager.Enabled = false;
 
-        regionData = gameWorldData.regionDataList.Where(x => x.Id == ActiveRegionId).First();
+        regionData = gameWorldData.RegionDataList.Where(x => x.Id == ActiveRegionId).First();
 
         //Something should happen here to reset the world when the region is changed manually
         //CheckTime();
@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
     {
         TimeManager.interactionTimeList = new List<int>();
 
-        TimeManager.activeWorldInteractableList.SelectMany(x => x.interactionDataList.Where(y => !y.isDefault)).ToList().ForEach(x => TimeManager.AddInteractionTimeEvent(x));
+        TimeManager.activeWorldInteractableList.SelectMany(x => x.InteractionDataList.Where(y => !y.Default)).ToList().ForEach(x => TimeManager.AddInteractionTimeEvent(x));
     }
 
     public void UpdateWorld()
@@ -345,29 +345,29 @@ public class GameManager : MonoBehaviour
 
     private void DeactivateInteractionTime()
     {
-        gameWorldData.worldInteractableDataList.SelectMany(x => x.interactionDataList).ToList().ForEach(y => 
+        gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList).ToList().ForEach(y => 
         {
-            y.containsActiveTime = false;
+            y.ContainsActiveTime = false;
         });
     }
 
     private void ValidateInteractionTime()
     {
         //Validate times of interactions which belong to the active task saves
-        TimeManager.activeWorldInteractableList.SelectMany(x => x.interactionDataList).GroupBy(y => y.taskId)
-                                               .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.startTime, z.endTime) || z.isDefault)
-                                               .OrderBy(z => z.isDefault).First()).ToList()
+        TimeManager.activeWorldInteractableList.SelectMany(x => x.InteractionDataList).GroupBy(y => y.TaskId)
+                                               .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
+                                               .OrderBy(z => z.Default).First()).ToList()
                                                .ForEach(x => 
                                                {
-                                                   x.containsActiveTime = true;
+                                                   x.ContainsActiveTime = true;
                                                });
 
-        TimeManager.activeWorldInteractableList.ForEach(x => x.ActiveInteraction = x.interactionDataList.Where(y => y.containsActiveTime).First());
+        TimeManager.activeWorldInteractableList.ForEach(x => x.ActiveInteraction = x.InteractionDataList.Where(y => y.ContainsActiveTime).First());
     }
 
     private void UpdateWorldInteractables()
     {
-        gameWorldData.worldInteractableDataList.ForEach(x => UpdateWorldInteractable(x));
+        gameWorldData.WorldInteractableDataList.ForEach(x => UpdateWorldInteractable(x));
     }
 
     public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
@@ -379,11 +379,11 @@ public class GameManager : MonoBehaviour
             //If the active world interactable contains no active time, deactivate it
             if (interactionData == null)
             {
-                worldInteractableData.terrainTileId = 0;
+                worldInteractableData.TerrainTileId = 0;
 
             } else {
                 
-                switch((Enums.InteractableType)worldInteractableData.type)
+                switch((Enums.InteractableType)worldInteractableData.Type)
                 {
                     case Enums.InteractableType.Agent:
 
@@ -394,7 +394,7 @@ public class GameManager : MonoBehaviour
                     case Enums.InteractableType.Object:
 
                         //World interactable objects can relocate instantly by changing the terrain tile id
-                        worldInteractableData.terrainTileId = interactionData.interactionDestinationDataList.First().terrainTileId;
+                        worldInteractableData.TerrainTileId = interactionData.InteractionDestinationDataList.First().TerrainTileId;
                         break;
                 }
             }
@@ -402,7 +402,7 @@ public class GameManager : MonoBehaviour
         } else if (interactionData != null) {
 
             //If the inactive world interactable contains an active time, activate it
-            worldInteractableData.terrainTileId = interactionData.interactionDestinationDataList.First().terrainTileId;
+            worldInteractableData.TerrainTileId = interactionData.InteractionDestinationDataList.First().TerrainTileId;
         }
         
         //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out

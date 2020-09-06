@@ -4,12 +4,15 @@ using System.Collections.Generic;
 public interface IEditor
 {
     bool Loaded { get; set; }
-    Route.Data Data { get; }
+    Data Data { get; }
+    IElementData ElementData { get; }
     List<IElementData> DataList { get; }
     List<IElementData> ElementDataList { get; }
     List<SegmentController> EditorSegments { get; }
     bool Changed();
 
+    void InitializeEditor();
+    void OpenEditor();
     void UpdateEditor();
     void ApplyChanges();
     void CancelEdit();

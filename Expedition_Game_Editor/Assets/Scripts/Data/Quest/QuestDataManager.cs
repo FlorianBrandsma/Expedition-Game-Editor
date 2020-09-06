@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestDataManager : IDataManager
+public static class QuestDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<QuestBaseData> questDataList;
 
-    private List<QuestData> questDataList;
-
-    public QuestDataManager(QuestController questController)
-    {
-        DataController = questController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
 
@@ -25,12 +18,15 @@ public class QuestDataManager : IDataManager
         var list = (from questData in questDataList
                     select new QuestElementData()
                     {
-                        Id = questData.id,
-                        Index = questData.index,
+                        Id = questData.Id,
+                        Index = questData.Index,
 
-                        PhaseId = questData.phaseId,
-                        Name = questData.name,
-                        PublicNotes = questData.notes
+                        PhaseId = questData.PhaseId,
+
+                        Name = questData.Name,
+
+                        PublicNotes = questData.PublicNotes,
+                        PrivateNotes = questData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -39,36 +35,49 @@ public class QuestDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetQuestData(Search.Quest searchParameters)
+    private static void GetQuestData(Search.Quest searchParameters)
     {
-        questDataList = new List<QuestData>();
+        questDataList = new List<QuestBaseData>();
 
-        foreach(Fixtures.Quest quest in Fixtures.questList)
+        foreach(QuestBaseData quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(quest.id)) continue;
-            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(quest.phaseId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(quest.Id)) continue;
+            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(quest.PhaseId)) continue;
 
-            var questData = new QuestData();
+            var questData = new QuestBaseData();
 
-            questData.id = quest.id;
-            questData.index = quest.index;
+            questData.Id = quest.Id;
+            questData.Index = quest.Index;
 
-            questData.phaseId = quest.phaseId;
-            questData.name = quest.name;
-            questData.notes = quest.publicNotes;
+            questData.PhaseId = quest.PhaseId;
+
+            questData.Name = quest.Name;
+
+            questData.PublicNotes = quest.PublicNotes;
+            questData.PrivateNotes = quest.PrivateNotes;
 
             questDataList.Add(questData);
         }
     }
 
-    internal class QuestData
+    public static void UpdateData(QuestElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.questList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
 
-        public int phaseId;
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
 
-        public string name;
-        public string notes;
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
+    }
+
+    static public void UpdateIndex(TaskElementData elementData)
+    {
+        var data = Fixtures.questList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

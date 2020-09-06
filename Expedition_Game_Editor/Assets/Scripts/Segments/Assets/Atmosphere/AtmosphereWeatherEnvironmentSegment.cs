@@ -6,7 +6,7 @@ using System.Linq;
 
 public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
 {
-    private AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)DataEditor.Data.elementData; } }
+    private AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 
@@ -34,11 +34,11 @@ public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        icon.texture = Resources.Load<Texture2D>(AtmosphereData.iconPath);
-        baseIcon.texture = Resources.Load<Texture2D>(AtmosphereData.baseTilePath);
+        icon.texture = Resources.Load<Texture2D>(AtmosphereData.IconPath);
+        baseIcon.texture = Resources.Load<Texture2D>(AtmosphereData.BaseTilePath);
 
-        terrainText.text = AtmosphereData.terrainName;
-        regionText.text = AtmosphereData.regionName;
+        terrainText.text = AtmosphereData.TerrainName;
+        regionText.text = AtmosphereData.RegionName;
 
     }
 

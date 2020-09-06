@@ -1,78 +1,88 @@
 ﻿using UnityEngine;
+using System;
 
-public class AtmosphereElementData : AtmosphereCore, IElementData
+public class AtmosphereElementData : AtmosphereData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public AtmosphereElementData() : base()
+    public AtmosphereData OriginalData              { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Atmosphere; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedStartTime
     {
-        DataType = Enums.DataType.Atmosphere;
+        get { return StartTime != OriginalData.StartTime; }
     }
-    
-    public string regionName;
-    public string terrainName;
 
-    public string iconPath;
-    public string baseTilePath;
+    public bool ChangedEndTime
+    {
+        get { return EndTime != OriginalData.EndTime; }
+    }
 
-    public bool timeConflict;
-    public bool containsActiveTime;
+    public bool ChangedPublicNotes
+    {
+        get { return PublicNotes != OriginalData.PublicNotes; }
+    }
 
-    public override void Update()
+    public bool ChangedPrivateNotes
+    {
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedStartTime || ChangedEndTime || ChangedPublicNotes || ChangedPrivateNotes;
+        }
+    }
+    #endregion
+
+    public void Update()
     {
         if (!Changed) return;
 
-        base.Update();
+        AtmosphereDataManager.UpdateData(this);
 
         SetOriginalValues();
     }
 
-    public override void SetOriginalValues()
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
     {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new AtmosphereElementData();
-
-        Debug.Log("Probably remove this");
-        elementData.DataElement = DataElement;
-
-        elementData.regionName = regionName;
-
-        CloneCore(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new AtmosphereElementData();
 
-        var atmosphereDataSource = (AtmosphereElementData)dataSource;
+        data.DataElement = DataElement;
 
-        timeConflict = atmosphereDataSource.timeConflict;
+        data.OriginalData = OriginalData.Clone();
 
-        regionName = atmosphereDataSource.regionName;
-        terrainName = atmosphereDataSource.terrainName;
+        base.Clone(data);
 
-        iconPath = atmosphereDataSource.iconPath;
-        baseTilePath = atmosphereDataSource.baseTilePath;
-
-        SetOriginalValues();
+        return data;
     }
 }

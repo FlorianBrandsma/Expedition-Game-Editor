@@ -58,7 +58,7 @@ public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
         health = interactableData.Health;
     }

@@ -51,56 +51,56 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterSaveData()
     {
-        var chapterSaveData = (ChapterSaveElementData)DataEditor.Data.elementData;
+        var chapterSaveData = (ChapterSaveElementData)DataEditor.ElementData;
 
         id = chapterSaveData.Id;
         index = chapterSaveData.Index;
-        name = chapterSaveData.name;
+        name = chapterSaveData.Name;
     }
 
     private void InitializePhaseSaveData()
     {
-        var phaseSaveData = (PhaseSaveElementData)DataEditor.Data.elementData;
+        var phaseSaveData = (PhaseSaveElementData)DataEditor.ElementData;
 
         id = phaseSaveData.Id;
         index = phaseSaveData.Index;
-        name = phaseSaveData.name;
+        name = phaseSaveData.Name;
     }
 
     private void InitializeQuestSaveData()
     {
-        var questSaveData = (QuestSaveElementData)DataEditor.Data.elementData;
+        var questSaveData = (QuestSaveElementData)DataEditor.ElementData;
 
         id = questSaveData.Id;
         index = questSaveData.Index;
-        name = questSaveData.name;
+        name = questSaveData.Name;
     }
 
     private void InitializeObjectiveSaveData()
     {
-        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.Data.elementData;
+        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.ElementData;
 
         id = objectiveSaveData.Id;
         index = objectiveSaveData.Index;
-        name = objectiveSaveData.name;
+        name = objectiveSaveData.Name;
     }
 
     private void InitializeTaskSaveData()
     {
-        var taskSaveData = (TaskSaveElementData)DataEditor.Data.elementData;
+        var taskSaveData = (TaskSaveElementData)DataEditor.ElementData;
 
         id = taskSaveData.Id;
         index = taskSaveData.Index;
-        name = taskSaveData.name;
+        name = taskSaveData.Name;
     }
 
     private void InitializeInteractionSaveData()
     {
-        var interactionSaveData = (InteractionSaveElementData)DataEditor.Data.elementData;
+        var interactionSaveData = (InteractionSaveElementData)DataEditor.ElementData;
 
         id = interactionSaveData.Id;
         index = interactionSaveData.Index;
-        name = interactionSaveData.isDefault ? "Default" : TimeManager.FormatTime(interactionSaveData.startTime) + " - " + TimeManager.FormatTime(interactionSaveData.endTime);
+        name = interactionSaveData.Default ? "Default" : TimeManager.FormatTime(interactionSaveData.StartTime) + " - " + TimeManager.FormatTime(interactionSaveData.EndTime);
     }
 
     public void OpenSegment()

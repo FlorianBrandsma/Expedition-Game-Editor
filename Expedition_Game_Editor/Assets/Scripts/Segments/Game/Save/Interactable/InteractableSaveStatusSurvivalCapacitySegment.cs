@@ -44,11 +44,11 @@ public class InteractableSaveStatusSurvivalCapacitySegment : MonoBehaviour, ISeg
     {
         if (DataEditor.Loaded) return;
 
-        var interactableSaveData = (InteractableSaveElementData)DataEditor.Data.elementData;
+        var interactableSaveData = (InteractableSaveElementData)DataEditor.ElementData;
 
-        health = interactableSaveData.health;
-        hunger = interactableSaveData.hunger;
-        thirst = interactableSaveData.thirst;
+        health = interactableSaveData.Health;
+        hunger = interactableSaveData.Hunger;
+        thirst = interactableSaveData.Thirst;
     }
 
     public void OpenSegment() { }

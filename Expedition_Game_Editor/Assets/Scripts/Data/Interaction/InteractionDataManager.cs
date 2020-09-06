@@ -3,31 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractionDataManager : IDataManager
+public static class InteractionDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<InteractionBaseData> interactionDataList;
 
-    private List<InteractionData> interactionDataList;
+    private static List<TaskBaseData> taskDataList;
+    private static List<WorldInteractableBaseData> worldInteractableDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
+    private static List<InteractionDestinationBaseData> interactionDestinationDataList;
+    private static List<RegionBaseData> regionDataList;
+    private static List<TerrainBaseData> terrainDataList;
+    private static List<TileSetBaseData> tileSetDataList;
 
-    private List<DataManager.TaskData> taskDataList;
-    private List<DataManager.WorldInteractableData> worldInteractableDataList;
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    private List<DataManager.InteractionDestinationData> interactionDestinationDataList;
-    private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TerrainData> terrainDataList;
-    private List<DataManager.TileSetData> tileSetDataList;
-
-    public InteractionDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
 
@@ -38,7 +29,7 @@ public class InteractionDataManager : IDataManager
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         GetInteractionDestinationData();
@@ -47,57 +38,57 @@ public class InteractionDataManager : IDataManager
         GetTerrainData();
 
         var list = (from interactionData        in interactionDataList
-                    join taskData               in taskDataList                 on interactionData.taskId                   equals taskData.id
-                    join worldInteractableData  in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.id
-                    join interactableData       in interactableDataList         on worldInteractableData.interactableId     equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.id
-                    join iconData               in iconDataList                 on objectGraphicData.iconId                 equals iconData.id
+                    join taskData               in taskDataList                 on interactionData.TaskId                   equals taskData.Id
+                    join worldInteractableData  in worldInteractableDataList    on taskData.WorldInteractableId             equals worldInteractableData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
+                    join modelData              in modelDataList                on interactableData.ModelId                 equals modelData.Id
+                    join iconData               in iconDataList                 on modelData.IconId                         equals iconData.Id
 
                     join leftJoin in (from interactionDestinationData   in interactionDestinationDataList
-                                      join regionData                   in regionDataList   on interactionDestinationData.regionId  equals regionData.id
-                                      join tileSetData                  in tileSetDataList  on regionData.tileSetId                 equals tileSetData.id
-                                      select new { interactionDestinationData, regionData, tileSetData }) on interactionData.id equals leftJoin.interactionDestinationData.interactionId into interactionDestinationData
+                                      join regionData                   in regionDataList   on interactionDestinationData.RegionId  equals regionData.Id
+                                      join tileSetData                  in tileSetDataList  on regionData.TileSetId                 equals tileSetData.Id
+                                      select new { interactionDestinationData, regionData, tileSetData }) on interactionData.Id equals leftJoin.interactionDestinationData.InteractionId into interactionDestinationData
 
                     select new InteractionElementData()
                     {
-                        Id = interactionData.id,
+                        Id = interactionData.Id,
 
-                        TaskId = interactionData.taskId,
+                        TaskId = interactionData.TaskId,
                         
-                        Default = interactionData.isDefault,
+                        Default = interactionData.Default,
 
-                        StartTime = interactionData.startTime,
-                        EndTime = interactionData.endTime,
+                        StartTime = interactionData.StartTime,
+                        EndTime = interactionData.EndTime,
                         
-                        TriggerAutomatically = interactionData.triggerAutomatically,
-                        BeNearDestination = interactionData.beNearDestination,
-                        FaceAgent = interactionData.faceAgent,
-                        FacePartyLeader = interactionData.facePartyLeader,
-                        HideInteractionIndicator = interactionData.hideInteractionIndicator,
+                        TriggerAutomatically = interactionData.TriggerAutomatically,
+                        BeNearDestination = interactionData.BeNearDestination,
+                        FaceAgent = interactionData.FaceAgent,
+                        FacePartyLeader = interactionData.FacePartyLeader,
+                        HideInteractionIndicator = interactionData.HideInteractionIndicator,
 
-                        InteractionRange = interactionData.interactionRange,
+                        InteractionRange = interactionData.InteractionRange,
 
-                        DelayMethod = interactionData.delayMethod,
-                        DelayDuration = interactionData.delayDuration,
-                        HideDelayIndicator = interactionData.hideDelayIndicator,
+                        DelayMethod = interactionData.DelayMethod,
+                        DelayDuration = interactionData.DelayDuration,
+                        HideDelayIndicator = interactionData.HideDelayIndicator,
 
-                        CancelDelayOnInput = interactionData.cancelDelayOnInput,
-                        CancelDelayOnMovement = interactionData.cancelDelayOnMovement,
-                        CancelDelayOnHit = interactionData.cancelDelayOnHit,
+                        CancelDelayOnInput = interactionData.CancelDelayOnInput,
+                        CancelDelayOnMovement = interactionData.CancelDelayOnMovement,
+                        CancelDelayOnHit = interactionData.CancelDelayOnHit,
 
-                        PublicNotes = interactionData.publicNotes,
-                        PrivateNotes = interactionData.privateNotes,
+                        PublicNotes = interactionData.PublicNotes,
+                        PrivateNotes = interactionData.PrivateNotes,
 
-                        objectGraphicIconPath = iconData.path,
+                        ModelIconPath = iconData.Path,
 
-                        interactableName = interactableData.name,
-                        locationName = interactionDestinationData.FirstOrDefault() != null ? RegionManager.LocationName(interactionDestinationData.FirstOrDefault().interactionDestinationData.positionX, 
-                                                                                                                        interactionDestinationData.FirstOrDefault().interactionDestinationData.positionZ,
-                                                                                                                        interactionDestinationData.FirstOrDefault().tileSetData.tileSize,
+                        InteractableName = interactableData.Name,
+                        LocationName = interactionDestinationData.FirstOrDefault() != null ? RegionManager.LocationName(interactionDestinationData.FirstOrDefault().interactionDestinationData.PositionX, 
+                                                                                                                        interactionDestinationData.FirstOrDefault().interactionDestinationData.PositionZ,
+                                                                                                                        interactionDestinationData.FirstOrDefault().tileSetData.TileSize,
                                                                                                                         interactionDestinationData.FirstOrDefault().regionData, 
                                                                                                                         terrainDataList) : "-",
 
-                        defaultTimes = interactionData.isDefault ? DefaultTimes(taskData.id) : new List<int>(),
+                        DefaultTimes = interactionData.Default ? DefaultTimes(taskData.Id) : new List<int>(),
 
                     }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
@@ -106,132 +97,132 @@ public class InteractionDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetInteractionData(Search.Interaction searchParameters)
+    private static void GetInteractionData(Search.Interaction searchParameters)
     {
-        interactionDataList = new List<InteractionData>();
+        interactionDataList = new List<InteractionBaseData>();
 
-        foreach(Fixtures.Interaction interaction in Fixtures.interactionList)
+        foreach(InteractionBaseData interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.id)) continue;
-            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.taskId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
+            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.TaskId)) continue;
 
-            var interactionData = new InteractionData();
+            var interactionData = new InteractionBaseData();
 
-            interactionData.id = interaction.id;
+            interactionData.Id = interaction.Id;
 
-            interactionData.taskId = interaction.taskId;
+            interactionData.TaskId = interaction.TaskId;
 
-            interactionData.isDefault = interaction.isDefault;
+            interactionData.Default = interaction.Default;
 
-            interactionData.startTime = interaction.startTime;
-            interactionData.endTime = interaction.endTime;
+            interactionData.StartTime = interaction.StartTime;
+            interactionData.EndTime = interaction.EndTime;
 
-            interactionData.triggerAutomatically = interaction.triggerAutomatically;
-            interactionData.beNearDestination = interaction.beNearDestination;
-            interactionData.faceAgent = interaction.faceAgent;
-            interactionData.facePartyLeader = interaction.facePartyLeader;
-            interactionData.hideInteractionIndicator = interaction.hideInteractionIndicator;
+            interactionData.TriggerAutomatically = interaction.TriggerAutomatically;
+            interactionData.BeNearDestination = interaction.BeNearDestination;
+            interactionData.FaceAgent = interaction.FaceAgent;
+            interactionData.FacePartyLeader = interaction.FacePartyLeader;
+            interactionData.HideInteractionIndicator = interaction.HideInteractionIndicator;
 
-            interactionData.interactionRange = interaction.interactionRange;
+            interactionData.InteractionRange = interaction.InteractionRange;
 
-            interactionData.delayMethod = interaction.delayMethod;
-            interactionData.delayDuration = interaction.delayDuration;
-            interactionData.hideDelayIndicator = interaction.hideDelayIndicator;
+            interactionData.DelayMethod = interaction.DelayMethod;
+            interactionData.DelayDuration = interaction.DelayDuration;
+            interactionData.HideDelayIndicator = interaction.HideDelayIndicator;
 
-            interactionData.cancelDelayOnInput = interaction.cancelDelayOnInput;
-            interactionData.cancelDelayOnMovement = interaction.cancelDelayOnMovement;
-            interactionData.cancelDelayOnHit = interaction.cancelDelayOnHit;
+            interactionData.CancelDelayOnInput = interaction.CancelDelayOnInput;
+            interactionData.CancelDelayOnMovement = interaction.CancelDelayOnMovement;
+            interactionData.CancelDelayOnHit = interaction.CancelDelayOnHit;
 
-            interactionData.publicNotes = interaction.publicNotes;
-            interactionData.privateNotes = interaction.privateNotes;
+            interactionData.PublicNotes = interaction.PublicNotes;
+            interactionData.PrivateNotes = interaction.PrivateNotes;
 
             interactionDataList.Add(interactionData);
         }
     }
 
-    internal void GetTaskData()
+    private static void GetTaskData()
     {
         var taskSearchParameters = new Search.Task();
 
-        taskSearchParameters.id = interactionDataList.Select(x => x.taskId).Distinct().ToList();
+        taskSearchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskDataList = dataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(taskSearchParameters);
     }
 
-    internal void GetWorldInteractableData()
+    private static void GetWorldInteractableData()
     {
         var worldInteractableSearchParameters = new Search.WorldInteractable();
 
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.worldInteractableId).Distinct().ToList();
+        worldInteractableSearchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal void GetInteractionDestinationData()
+    private static void GetInteractionDestinationData()
     {
         var interactionDestinationSearchParameters = new Search.InteractionDestination();
-        interactionDestinationSearchParameters.interactionId = interactionDataList.Select(x => x.id).Distinct().ToList();
+        interactionDestinationSearchParameters.interactionId = interactionDataList.Select(x => x.Id).Distinct().ToList();
 
-        interactionDestinationDataList = dataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+        interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
     }
 
-    internal void GetRegionData()
+    private static void GetRegionData()
     {
         var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = interactionDestinationDataList.Select(x => x.regionId).Distinct().ToList();
+        regionSearchParameters.id = interactionDestinationDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = dataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(regionSearchParameters);
     }
 
-    internal void GetTileSetData()
+    private static void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    internal void GetTerrainData()
+    private static void GetTerrainData()
     {
         var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
     }
 
-    internal List<int> DefaultTimes(int taskId)
+    private static List<int> DefaultTimes(int taskId)
     {
-        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.isDefault)
+        var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.Default)
                              select new TimeManager.TimeFrame()
                              {
-                                 StartTime = interactionData.startTime,
-                                 EndTime = interactionData.endTime
+                                 StartTime = interactionData.StartTime,
+                                 EndTime = interactionData.EndTime
 
                              }).ToList();
 
@@ -240,34 +231,56 @@ public class InteractionDataManager : IDataManager
         return defaultTimes;
     }
 
-    internal class InteractionData
+    public static void UpdateData(InteractionElementData elementData)
     {
-        public int id;
-
-        public int taskId;
+        var data = Fixtures.interactionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
-        public bool isDefault;
+        if (elementData.ChangedStartTime)
+            data.StartTime = elementData.StartTime;
 
-        public int startTime;
-        public int endTime;
+        if (elementData.ChangedEndTime)
+            data.EndTime = elementData.EndTime;
 
-        public bool triggerAutomatically;
-        public bool beNearDestination;
-        public bool faceAgent;
-        public bool facePartyLeader;
-        public bool hideInteractionIndicator;
+        if (elementData.ChangedTriggerAutomatically)
+            data.TriggerAutomatically = elementData.TriggerAutomatically;
 
-        public float interactionRange;
+        if (elementData.ChangedBeNearDestination)
+            data.BeNearDestination = elementData.BeNearDestination;
 
-        public int delayMethod;
-        public int delayDuration;
-        public bool hideDelayIndicator;
+        if (elementData.FaceAgent)
+            data.FaceAgent = elementData.FaceAgent;
 
-        public bool cancelDelayOnInput;
-        public bool cancelDelayOnMovement;
-        public bool cancelDelayOnHit;
+        if (elementData.ChangedFacePartyLeader)
+            data.FacePartyLeader = elementData.FacePartyLeader;
 
-        public string publicNotes;
-        public string privateNotes;
+        if (elementData.ChangedHideInteractionIndicator)
+            data.HideInteractionIndicator = elementData.HideInteractionIndicator;
+
+        if (elementData.ChangedInteractionRange)
+            data.InteractionRange = elementData.InteractionRange;
+
+        if (elementData.ChangedDelayMethod)
+            data.DelayMethod = elementData.DelayMethod;
+
+        if (elementData.ChangedDelayDuration)
+            data.DelayDuration = elementData.DelayDuration;
+
+        if (elementData.ChangedHideDelayIndicator)
+            data.HideDelayIndicator = elementData.HideDelayIndicator;
+
+        if (elementData.ChangedCancelDelayOnInput)
+            data.CancelDelayOnInput = elementData.CancelDelayOnInput;
+
+        if (elementData.ChangedCancelDelayOnMovement)
+            data.CancelDelayOnMovement = elementData.CancelDelayOnMovement;
+
+        if (elementData.ChangedCancelDelayOnHit)
+            data.CancelDelayOnHit = elementData.CancelDelayOnHit;
+
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
+
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
     }
 }

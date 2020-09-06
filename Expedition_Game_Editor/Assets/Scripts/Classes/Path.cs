@@ -16,6 +16,8 @@ public class Path
     public EditorForm form;
     public Type type;
 
+    public Enums.HistoryGroup historyGroup;
+
     public int start;
 
     public Path()
@@ -42,45 +44,30 @@ public class Path
     {
         //Use last used step as base
         if (routeList.Count > 0)
-            Add(0, routeList.LastOrDefault().data, routeList.LastOrDefault().selectionStatus);
+            Add(0, routeList.LastOrDefault());
          else
             Add(new Route(this));
     }
 
-    public void Add(int index)
+    public void Add(int controllerIndex)
     {
         if (routeList.Count > 0)
-            Add(index, routeList.LastOrDefault().data, routeList.LastOrDefault().selectionStatus);
+            Add(controllerIndex, routeList.LastOrDefault());
         else
-            Add(index, new Route.Data(), Enums.SelectionStatus.Main);
+            Add(new Route(controllerIndex));
     }
 
-    public void Add(int controller, Route.Data data, Enums.SelectionStatus selectionGroup)
+    public void Add(int controller, Route route /*Data data, Enums.SelectionStatus selectionGroup*/)
     {
-        routeList.Add(new Route(controller, data, selectionGroup));
-
-        data = new Route.Data();
+        routeList.Add(new Route(controller, route));
     }
 
     public void Add(Route route)
     {
-        this.routeList.Add(route);
+        routeList.Add(route);
+        route.path = this;
     }
     #endregion
-
-    public Path Clone()
-    {
-        Path path = new Path();
-
-        routeList.ForEach(x => path.Add(x));
-
-        path.form = form;
-        path.start = start;
-
-        path.type = type;
-
-        return path;
-    }
 
     public Path Trim(int step)
     {
@@ -94,19 +81,21 @@ public class Path
 
         path.type = type;
 
+        path.historyGroup = historyGroup;
+
         return path;
     }
 
     public Path TrimToFirstType(Enums.DataType dataType)
     {
-        var index = routeList.FindIndex(x => x.GeneralData.DataType == dataType);
+        var index = routeList.FindIndex(x => x.ElementData.DataType == dataType);
 
         return Trim(index + 1);
     }
 
     public Path TrimToLastType(Enums.DataType dataType)
     {
-        var index = routeList.FindLastIndex(x => x.GeneralData.DataType == dataType);
+        var index = routeList.FindLastIndex(x => x.ElementData.DataType == dataType);
 
         return Trim(index + 1);
     }
@@ -115,7 +104,7 @@ public class Path
     {
         foreach(Route route in routeList)
         {
-            if (route.GeneralData.DataType == dataType)
+            if (route.ElementData.DataType == dataType)
                 return route;
         }
 
@@ -124,7 +113,7 @@ public class Path
 
     public Route FindLastRoute(Enums.DataType dataType)
     {
-        return routeList.FindLast(x => x.GeneralData.DataType == dataType);
+        return routeList.Where(x => x.data != null).ToList().FindLast(x => x.ElementData.DataType == dataType);
     }
 
     public Route GetLastRoute()
@@ -145,44 +134,90 @@ public class Path
         return newRoute;
     }
 
-    public void ReplaceAllData(Route.Data data)
+    public Path Clone()
     {
-        routeList.ForEach(route => 
+        var path = new Path();
+        
+        path.routeList = new List<Route>();
+
+        for(int i = 0; i < routeList.Count; i++)
         {
-            if (route.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
+            var route = new Route();
+
+            var originalRoute = routeList[i];
+
+            route.controllerIndex = originalRoute.controllerIndex;
+            route.id = originalRoute.id;
+
+            if (originalRoute.data != null)
             {
-                //var oldDataController = route.data.dataController;
-                //if (data.dataController.DataType == Enums.DataType.Region)
-                //{
-                //    Debug.Log(((RegionController)data.dataController).regionType);
-                //}
-                    
-                
-                //This overwrites the data controller, which should NOT happen
-                route.data = data;
+                var originalRouteList = originalRoute.path.routeList;
 
-                //route.data.dataList = data.dataList;
-                //route.data.dataController.DataList = data.dataController.DataList;
-                //route.data.elementData = data.elementData;
-
-                //route.data.dataController = oldDataController;
+                if(i > 0 && originalRoute.data == originalRouteList[i - 1].data)
+                {
+                    //Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
+                    route.data = path.routeList[i - 1].data;
+                } else {
+                    //Debug.Log("Clone from " + originalRoute.data.dataController);
+                    route.data = originalRoute.data.Clone();
+                }               
             }
 
-        });
+            route.path = path;
+
+            route.selectionStatus = originalRoute.selectionStatus;
+
+            path.routeList.Add(route);
+        }
+
+        path.form = form;
+        path.type = type;
+
+        path.historyGroup = historyGroup;
+
+        path.start = start;
+        
+        return path;
+    }
+
+    public void ReplaceAllData(Data data)
+    {
+        //routeList.ForEach(route => 
+        //{
+        //    if (route.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
+        //    {
+        //        //var oldDataController = route.data.dataController;
+        //        //if (data.dataController.DataType == Enums.DataType.Region)
+        //        //{
+        //        //    Debug.Log(((RegionController)data.dataController).regionType);
+        //        //}
+                    
+                
+        //        //This overwrites the data controller, which should NOT happen
+        //        route.data = data;
+
+        //        //route.data.dataList = data.dataList;
+        //        //route.data.dataController.DataList = data.dataController.DataList;
+        //        //route.data.elementData = data.elementData;
+
+        //        //route.data.dataController = oldDataController;
+        //    }
+
+        //});
     }
 
     public void ReplaceDataLists(int start, Enums.DataType dataType, List<IElementData> dataList, IElementData elementData = null)
     {
-        routeList.ForEach(route =>
-        {
-            if (route.GeneralData.DataType == dataType)
-            {
-                route.data.dataList = dataList;
-                route.data.dataController.DataList = dataList;
+        //routeList.ForEach(route =>
+        //{
+        //    if (route.GeneralData.DataType == dataType)
+        //    {
+        //        route.data.dataList = dataList;
+        //        route.data.dataController.DataList = dataList;
 
-                if (elementData != null)
-                    route.data.elementData = elementData;
-            }
-        });
+        //        if (elementData != null)
+        //            route.data.elementData = elementData;
+        //    }
+        //});
     }
 }

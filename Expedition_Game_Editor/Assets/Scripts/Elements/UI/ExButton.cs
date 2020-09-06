@@ -36,27 +36,27 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        switch (EditorElement.DataElement.data.dataController.DataType)
+        switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.Item:           SetItemElement();           break;
             case Enums.DataType.ChapterRegion:  SetChapterRegionElement();  break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
     }
 
     private void SetItemElement()
     {
-        var data = (ItemElementData)EditorElement.DataElement.data.elementData;
+        var data = (ItemElementData)EditorElement.DataElement.ElementData;
 
-        label.text = data.originalName;
+        label.text = data.OriginalData.Name;
     }
 
     private void SetChapterRegionElement()
     {
-        var data = (ChapterRegionElementData)EditorElement.DataElement.data.elementData;
+        var data = (ChapterRegionElementData)EditorElement.DataElement.ElementData;
 
-        label.text = data.name;
+        label.text = data.Name;
     }
 
     public void CloseElement() { }

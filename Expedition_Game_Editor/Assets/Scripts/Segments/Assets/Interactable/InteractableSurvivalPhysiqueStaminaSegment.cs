@@ -58,7 +58,7 @@ public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegmen
     {
         if (DataEditor.Loaded) return;
 
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
         stamina = interactableData.Stamina;
     }

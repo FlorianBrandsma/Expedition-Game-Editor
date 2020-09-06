@@ -105,7 +105,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
     {
         if (DataEditor.Loaded) return;
 
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        var interactionData = (InteractionElementData)DataEditor.ElementData;
 
         triggerAutomatically = interactionData.TriggerAutomatically;
         beNearDestination = interactionData.BeNearDestination;

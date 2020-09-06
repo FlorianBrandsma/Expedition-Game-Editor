@@ -4,19 +4,20 @@ using System.Linq;
 
 public class TerrainEditor : MonoBehaviour, IEditor
 {
-    private TerrainElementData TerrainData { get { return (TerrainElementData)Data.elementData; } }
+    public TerrainData terrainData;
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == terrainData.Id).FirstOrDefault(); } }
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(TerrainData).Concat(new[] { TerrainData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -25,18 +26,15 @@ public class TerrainEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
     }
 
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
-    }
-
     public void InitializeEditor() { }
+
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -55,18 +53,10 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        TerrainData.Update();
+        EditData.Update();
 
-        ElementDataList.ForEach(x =>
-        {
-            if (((GeneralData)x).Equals(TerrainData))
-                x.Copy(TerrainData);
-            else
-                x.Update();
-
-            if (SelectionElementManager.SelectionActive(x.DataElement))
-                x.DataElement.UpdateElement();
-        });
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
         UpdateEditor();
     }

@@ -39,100 +39,100 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        switch (EditorElement.DataElement.data.dataController.DataType)
+        switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.Icon:               SetIconElement();               break;
             case Enums.DataType.Interactable:       SetInteractableElement();       break;
             case Enums.DataType.Terrain:            SetTerrainElement();            break;
             case Enums.DataType.Tile:               SetTileElement();               break;
             case Enums.DataType.TerrainTile:        SetTerrainTileElement();        break;
-            case Enums.DataType.ObjectGraphic:      SetObjectGraphicElement();      break;
+            case Enums.DataType.Model:              SetModelElement();              break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
     }
 
     private void SetIconElement()
     {
-        var elementData = (IconElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (IconElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
             iconPath = elementData.Path;
         else
-            iconPath = elementData.originalPath;
+            iconPath = elementData.OriginalData.Path;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
 
-        if(elementData.baseIconPath != "")
-            iconBase.texture = Resources.Load<Texture2D>(elementData.baseIconPath);
+        if(elementData.BaseIconPath != "")
+            iconBase.texture = Resources.Load<Texture2D>(elementData.BaseIconPath);
     }
 
     private void SetInteractableElement()
     {
-        var elementData = (InteractableElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (InteractableElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = elementData.objectGraphicIconPath;
+            iconPath = elementData.ModelIconPath;
         else
-            iconPath = elementData.originalObjectGraphicIconPath;
+            iconPath = elementData.OriginalData.ModelIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainElement()
     {
-        var elementData = (TerrainElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (TerrainElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = elementData.iconPath;
+            iconPath = elementData.IconPath;
         else
-            iconPath = elementData.originalIconPath;
+            iconPath = elementData.OriginalData.IconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTileElement()
     {
-        var elementData = (TileElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (TileElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = elementData.icon;
+            iconPath = elementData.Icon;
         else
-            iconPath = elementData.icon;
+            iconPath = elementData.Icon;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetTerrainTileElement()
     {
-        var elementData = (TerrainTileElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (TerrainTileElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = elementData.iconPath;
+            iconPath = elementData.IconPath;
         else
-            iconPath = elementData.originalIconPath;
+            iconPath = elementData.OriginalData.IconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
-    private void SetObjectGraphicElement()
+    private void SetModelElement()
     {
-        var elementData = (ObjectGraphicElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (ModelElementData)EditorElement.DataElement.ElementData;
         
-        iconPath = elementData.iconPath;
+        iconPath = elementData.IconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetWorldInteractableElement()
     {
-        var elementData = (WorldInteractableElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (WorldInteractableElementData)EditorElement.DataElement.ElementData;
 
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-            iconPath = elementData.objectGraphicIconPath;
+            iconPath = elementData.ModelIconPath;
         else
-            iconPath = elementData.originalObjectGraphicIconPath;
+            iconPath = elementData.OriginalData.ModelIconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

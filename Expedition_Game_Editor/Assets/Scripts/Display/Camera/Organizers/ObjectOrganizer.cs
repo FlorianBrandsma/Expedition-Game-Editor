@@ -22,30 +22,28 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
     public void SetData()
     {
         if(DataController != null)
-            SetData(DataController.DataList);
+            SetData(DataController.Data.dataList);
     }
 
     public void SetData(List<IElementData> list)
     {
-        foreach (IElementData data in list)
+        foreach (IElementData elementData in list)
         {
-            var objectGraphicData = (ObjectGraphicElementData)data;
+            var modelData = (ModelElementData)elementData;
 
-            if (objectGraphicData.Id == 1) continue;
+            if (modelData.Id == 1) continue;
 
-            var prefab = Resources.Load<ObjectGraphic>(objectGraphicData.Path);
-            var graphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, objectGraphicData.Id);
+            var prefab = Resources.Load<Model>(modelData.Path);
+            var model = (Model)PoolManager.SpawnObject(prefab, modelData.Id);
 
-            poolObjects.Add(graphic);
+            poolObjects.Add(model);
 
-            graphic.transform.SetParent(CameraManager.content, false);
+            model.transform.SetParent(CameraManager.content, false);
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
-            graphic.name = generalData.DebugName + generalData.Id;
-            //
+            model.name = elementData.DebugName + elementData.Id;
 
-            SetGraphic(graphic);
+            SetModel(model);
         }
     }
 
@@ -60,27 +58,27 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         SetData();
     }
 
-    private void SetGraphic(ObjectGraphic objectGraphic)
+    private void SetModel(Model model)
     {
-        objectGraphic.transform.localPosition = new Vector2(objectGraphic.transform.localPosition.x, 
-                                                            ObjectProperties.pivotPosition[(int)objectGraphic.pivot]);
+        model.transform.localPosition = new Vector2(model.transform.localPosition.x, 
+                                                    ObjectProperties.pivotPosition[(int)model.pivot]);
 
-        objectGraphic.transform.localEulerAngles = objectGraphic.previewRotation;
-        objectGraphic.transform.localScale = objectGraphic.previewScale;
+        model.transform.localEulerAngles = model.previewRotation;
+        model.transform.localScale = model.previewScale;
         
-        objectGraphic.gameObject.SetActive(true);
+        model.gameObject.SetActive(true);
     }
     
-    private void CloseGraphic(ObjectGraphic objectGraphic)
+    private void CloseModel(Model model)
     {
-        objectGraphic.transform.localPosition = new Vector3(0, 0, 0);
-        objectGraphic.transform.localEulerAngles = new Vector3(0, 0, 0);
-        objectGraphic.transform.localScale = new Vector3(1, 1, 1);
+        model.transform.localPosition = new Vector3(0, 0, 0);
+        model.transform.localEulerAngles = new Vector3(0, 0, 0);
+        model.transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void ClearCamera()
     {
-        poolObjects.ForEach(x => CloseGraphic((ObjectGraphic)x));
+        poolObjects.ForEach(x => CloseModel((Model)x));
 
         poolObjects.ForEach(x => x.ClosePoolable());
 

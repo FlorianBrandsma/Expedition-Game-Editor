@@ -1,38 +1,55 @@
 ﻿using UnityEngine;
+using System;
 
-public class GameAtmosphereElementData : GeneralData, IElementData
+public class GameAtmosphereElementData : GameAtmosphereData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameAtmosphereElementData() : base()
-    {
-        DataType = Enums.DataType.GameAtmosphere;
-    }
+    public GameAtmosphereData OriginalData          { get; set; }
 
-    public int terrainId;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameAtmosphere; } }
 
-    public bool isDefault;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public int startTime;
-    public int endTime;
-
-    #region ElementData
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameAtmosphereElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameAtmosphereElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+        
+        base.Clone(data);
+
+        return data;
+    }
 }

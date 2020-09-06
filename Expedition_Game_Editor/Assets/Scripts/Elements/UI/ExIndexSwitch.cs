@@ -5,9 +5,9 @@ using System.Linq;
 
 public class ExIndexSwitch : MonoBehaviour
 {
-    private IElementData elementData;
-
     private ISegment segment;
+
+    private List<IElementData> dataList;
 
     public Button minus_button;
     public Button plus_button;
@@ -17,18 +17,13 @@ public class ExIndexSwitch : MonoBehaviour
     private int index;
     private int indexLimit;
 
-    private List<IElementData> dataList;
-
     public void InitializeSwitch(ISegment segment, int index)
     {
         this.segment = segment;
-
+        
         this.index = index;
 
-        elementData = segment.DataEditor.Data.elementData;
-        dataList = segment.DataEditor.Data.dataController.DataList;
-        
-        indexLimit = dataList.Count - 1;
+        indexLimit = segment.DataEditor.Data.dataList.Count - 1;
 
         SetSwitch();
     }
@@ -58,23 +53,42 @@ public class ExIndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-        dataList.RemoveAt(elementData.Index);
-        dataList.Insert(index, elementData);
+        dataList = segment.DataEditor.Data.dataList;
+        
+        var elementData = segment.DataEditor.ElementData;
+        var elementIndex = dataList.IndexOf(elementData);
 
-        segment.DataEditor.Data.dataController.DataList = dataList;
+        dataList.RemoveAt(elementIndex);
+        dataList.Insert(index, elementData);
 
         for (int i = 0; i < dataList.Count; i++)
         {
-            dataList[i].Index = i;
-            dataList[i].UpdateIndex();
+            switch (elementData.DataType)
+            {
+                case Enums.DataType.Item: UpdateItemIndex(i); break;
+
+                default: Debug.Log("CASE MISSING " + elementData.DataType); break;
+            }
         }
 
-        if (elementData.SelectionStatus == Enums.SelectionStatus.None)
-            elementData.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
+        if (dataList[elementIndex].DataElement != null)
+            dataList[elementIndex].DataElement.CancelDataSelection();
+
+        //if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+        //    elementData.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
 
         SelectionElementManager.UpdateElements(elementData);
         
         SetIndex();
+    }
+
+    private void UpdateItemIndex(int index)
+    {
+        var itemElementData = (ItemElementData)dataList[index];
+
+        itemElementData.Index = index;
+
+        itemElementData.UpdateIndex();
     }
 
     public void SetIndex()

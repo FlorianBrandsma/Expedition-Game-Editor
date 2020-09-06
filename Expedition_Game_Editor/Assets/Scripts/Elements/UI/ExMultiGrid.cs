@@ -27,7 +27,6 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     private List<EditorElement> elementList = new List<EditorElement>();
     private List<IElementData> dataList     = new List<IElementData>();
-    private List<GeneralData> generalDataList;
 
     public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
     
@@ -62,11 +61,11 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         innerGrid.sizeDelta = new Vector2(  EditorElement.RectTransform.sizeDelta.x - multiGridProperties.margin, 
                                             EditorElement.RectTransform.sizeDelta.y - multiGridProperties.margin);
 
-        switch (EditorElement.DataElement.data.dataController.DataType)
+        switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.Terrain: SetTerrain(); break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
 
         if (idText != null)
@@ -84,13 +83,14 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     private void SetTerrain()
     {
-        var elementData = (TerrainElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (TerrainElementData)EditorElement.DataElement.ElementData;
 
         if(multiGridProperties.SecondaryDataController != null)
         {
             switch (multiGridProperties.SecondaryDataController.DataType)
             {
                 case Enums.DataType.TerrainTile: SetTerrainTileData(elementData); break;
+
                 default: Debug.Log("CASE MISSING: " + multiGridProperties.SecondaryDataController.DataType); break;
             }
         }
@@ -98,33 +98,31 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         if (icon != null)
         {
             if (EditorElement.selectionProperty == SelectionManager.Property.Get)
-                iconPath = elementData.iconPath;
+                iconPath = elementData.IconPath;
             else
-                iconPath = elementData.originalIconPath; 
+                iconPath = elementData.OriginalData.IconPath; 
         }
 
         id = elementData.Id;
         header = elementData.Name;
-        baseTilePath = elementData.baseTilePath;
+        baseTilePath = elementData.BaseTilePath;
     }
 
     private void SetTerrainTileData(TerrainElementData terrainData)
     {
-        dataList = multiGridProperties.SecondaryDataController.DataList.Cast<TerrainTileElementData>().Where(x => x.TerrainId == terrainData.Id).Distinct().Cast<IElementData>().ToList();
+        dataList = multiGridProperties.SecondaryDataController.Data.dataList.Where(x => ((TerrainTileElementData)x).TerrainId == terrainData.Id).Distinct().ToList();
 
         var searchProperties = multiGridProperties.SecondaryDataController.SearchProperties;
         searchProperties.elementType = Enums.ElementType.CompactTile;
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
-        searchParameters.tileSetId = new List<int>() { terrainData.tileSetId };
+        searchParameters.tileSetId = new List<int>() { terrainData.TileSetId };
 
         SetData(dataList, searchProperties);
     }
 
     public void SetData(List<IElementData> list, SearchProperties searchProperties)
     {
-        generalDataList = list.Cast<GeneralData>().ToList();
-
         string elementType = Enum.GetName(typeof(Enums.ElementType), multiGridProperties.innerElementType);
 
         //It's always tile so far
@@ -144,15 +142,15 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
             elementList.Add(innerElement.EditorElement);
 
             elementData.DataElement = innerElement.EditorElement.DataElement;
-            innerElement.EditorElement.DataElement.data = new DataElement.Data(multiGridProperties.SecondaryDataController, elementData, searchProperties);
+
+            innerElement.EditorElement.DataElement.Data = multiGridProperties.SecondaryDataController.Data; /*, elementData, searchProperties);*/
+            innerElement.EditorElement.DataElement.Id = elementData.Id;
 
             //Overwrites dataController set by initialization
-            innerElement.EditorElement.DataElement.data.dataController = multiGridProperties.SecondaryDataController;
+            innerElement.EditorElement.DataElement.Data.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            innerElement.name = generalData.DebugName + generalData.Id;
-            //
+            innerElement.name = elementData.DebugName + elementData.Id;
 
             SetElement(innerElement.EditorElement);
         }
@@ -162,7 +160,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
     {
         element.RectTransform.sizeDelta = multiGridProperties.elementSize;
 
-        int index = generalDataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = new Vector2( -((multiGridProperties.elementSize.x * 0.5f) * (Mathf.Sqrt(dataList.Count) - 1)) + (index % Mathf.Sqrt(dataList.Count) * multiGridProperties.elementSize.x),
                                                         -(multiGridProperties.elementSize.y * 0.5f) + (innerGrid.sizeDelta.y / 2f) - (Mathf.Floor(index / Mathf.Sqrt(dataList.Count)) * multiGridProperties.elementSize.y));
 

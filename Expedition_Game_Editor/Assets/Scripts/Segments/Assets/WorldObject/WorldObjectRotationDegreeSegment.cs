@@ -92,7 +92,7 @@ public class WorldObjectRotationDegreeSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
+        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
 
         rotationX = worldObjectData.RotationX;
         rotationY = worldObjectData.RotationY;

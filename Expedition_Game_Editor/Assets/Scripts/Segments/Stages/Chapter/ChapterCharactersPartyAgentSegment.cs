@@ -6,10 +6,7 @@ public class ChapterCharactersPartyAgentSegment : MonoBehaviour, ISegment
 {
     private ChapterEditor ChapterEditor { get { return (ChapterEditor)DataEditor; } }
 
-    private DataManager dataManager = new DataManager();
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies()
@@ -29,11 +26,11 @@ public class ChapterCharactersPartyAgentSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.PartyMember);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
-        searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
+        searchParameters.chapterId = new List<int>() { ChapterEditor.chapterData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        var partyMemberList = SegmentController.DataController.DataList.Cast<PartyMemberElementData>().ToList();
+        var partyMemberList = SegmentController.DataController.Data.dataList.Cast<PartyMemberElementData>().ToList();
         partyMemberList.ForEach(x => ChapterEditor.partyMemberDataList.Add(x));
     }
 
@@ -47,7 +44,7 @@ public class ChapterCharactersPartyAgentSegment : MonoBehaviour, ISegment
                      ChapterEditor.chapterInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
 
         //Find interactables where id is not in the list
-        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        var list = DataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
 
         searchParameters.id = list;
     }

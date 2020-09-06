@@ -1,58 +1,66 @@
-﻿public class IconElementData : IconCore, IElementData
+﻿using UnityEngine;
+using System;
+
+public class IconElementData : IconData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public IconElementData() : base()
+    public IconData OriginalData                    { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Icon; } }
+    
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedPath
     {
-        DataType = Enums.DataType.Icon;
+        get { return Path != OriginalData.Path; }
     }
 
-    public string baseIconPath;
-
-    public override void Update()
+    public bool Changed
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get
+        {
+            return ChangedPath;
+        }
     }
+    #endregion
 
-    public override void SetOriginalValues()
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
     {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
-
         if (!Changed) return;
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new IconElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new IconElementData();
 
-        var iconDataSource = (IconElementData)dataSource;
+        data.DataElement = DataElement;
 
-        baseIconPath = iconDataSource.baseIconPath;
+        data.OriginalData = OriginalData.Clone();
+        
+        base.Clone(data);
 
-        SetOriginalValues();
+        return data;
     }
 }

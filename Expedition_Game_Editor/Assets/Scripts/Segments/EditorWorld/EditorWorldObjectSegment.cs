@@ -5,7 +5,6 @@ using System.Linq;
 public class EditorWorldObjectSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies() { }
@@ -22,9 +21,9 @@ public class EditorWorldObjectSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldObject);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
-        searchParameters.regionId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).GeneralData.Id };
+        searchParameters.regionId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Region).ElementData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

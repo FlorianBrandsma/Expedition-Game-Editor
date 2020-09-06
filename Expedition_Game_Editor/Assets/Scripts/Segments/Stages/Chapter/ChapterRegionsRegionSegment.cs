@@ -6,10 +6,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 {
     private ChapterEditor ChapterEditor { get { return (ChapterEditor)DataEditor; } }
 
-    private DataManager dataManager = new DataManager();
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies()
@@ -29,11 +26,11 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.ChapterRegion);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
-        searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
+        searchParameters.chapterId = new List<int>() { ChapterEditor.chapterData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        var chapterRegionList = SegmentController.DataController.DataList.Cast<ChapterRegionElementData>().ToList();
+        var chapterRegionList = SegmentController.DataController.Data.dataList.Cast<ChapterRegionElementData>().ToList();
         chapterRegionList.ForEach(x => ChapterEditor.chapterRegionDataList.Add(x));
     }
 
@@ -46,7 +43,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         var idList = ChapterEditor.chapterRegionDataList.Select(x => x.RegionId).Distinct().ToList();
 
         //Find interactables where id is not in the list
-        var regionList = dataManager.GetRegionData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        var regionList = DataManager.GetRegionData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
 
         searchParameters.id = regionList;
         searchParameters.phaseId = new List<int>() { 0 };

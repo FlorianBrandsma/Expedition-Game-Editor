@@ -1,69 +1,66 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
-public class GameWorldInteractableElementData : GeneralData, IElementData
+public class GameWorldInteractableElementData : GameWorldInteractableData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameWorldInteractableElementData() : base()
-    {
-        DataType = Enums.DataType.GameWorldInteractable;
-    }
+    public GameWorldInteractableData OriginalData   { get; set; }
 
-    public int type;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameWorldInteractable; } }
 
-    public int terrainTileId;
-    public int objectGraphicId;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public string objectGraphicPath;
-    public string objectGraphicIconPath;
-    
-    public string interactableName;
-    
-    public int health;
-    public int hunger;
-    public int thirst;
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
-    public float weight;
-    public float speed;
-    public float stamina;
-
-    public float scaleMultiplier;
-
-    //public float currentPatience;
-
-    public List<GameInteractionElementData> interactionDataList;
-    
-    private GameInteractionElementData activeInteraction;
     public GameInteractionElementData ActiveInteraction
     {
-        get { return activeInteraction; }
+        get { return Interaction; }
         set
         {
-            activeInteraction = value;
+            Interaction = value;
 
-            activeInteraction.ActiveDestinationIndex = 0;
+            Interaction.ActiveDestinationIndex = 0;
         }
     }
 
-    #region ElementData
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameWorldInteractableElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameWorldInteractableElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

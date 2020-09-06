@@ -8,62 +8,34 @@ using System.Linq;
 
 static public class HistoryManager
 {
-    public enum Group
-    {
-        None,
-        Assets,
-        Stage,
-        Chapter,
-        ChapterSelection,
-        Phase,
-        PhaseSelection,
-        Quest,
-        QuestSelection,
-        Objective,
-        ObjectiveSelection,
-        Interactable,
-        InteractableSelection,
-        Task,
-        TaskSelection,
-        Interaction,
-        InteractionSelection,
-        Region,
-        Terrain,
-        TerrainSelection,
-        Popup,
-        Atmosphere,
-        Outcome,
-        OutcomeSelection,
-        Menu,
-        MenuSelection
-    }
+    static private List<Path> historyPath = new List<Path>();
 
-    static private List<HistoryElement> history = new List<HistoryElement>();
-
-    static public void AddHistory(HistoryElement element)
+    static public void AddHistory(Path path)
     {
-        if (history.Count > 0 && element.group == history[history.Count - 1].group)
+        if (path.historyGroup == Enums.HistoryGroup.None) return;
+
+        if (historyPath.Count > 0 && path.historyGroup == historyPath[historyPath.Count - 1].historyGroup)
         {
-            history[history.Count - 1] = element;
+            historyPath[historyPath.Count - 1] = path;
         } else {
-            history.Add(element);
+            historyPath.Add(path);
         }
     }
 
     static public void ClearHistory()
     {
-        history.Clear();
+        historyPath.Clear();
     }
 
     static public void PreviousPath()
     {
-        if(history.Count > 1)
+        if(historyPath.Count > 1)
         {
-            var historyForm = history[history.Count - 1].path.form;
+            var historyForm = historyPath[historyPath.Count - 1].form;
             
-            history.RemoveAt(history.Count - 1);
+            historyPath.RemoveAt(historyPath.Count - 1);
 
-            var newHistoryForm = history[history.Count - 1].path.form;
+            var newHistoryForm = historyPath[historyPath.Count - 1].form;
 
             if (historyForm == newHistoryForm)
                 InitializePath();
@@ -81,6 +53,6 @@ static public class HistoryManager
     {
         RenderManager.loadType = Enums.LoadType.Return;
 
-        RenderManager.ResetPath(history[history.Count - 1].path);
+        RenderManager.ResetPath(historyPath[historyPath.Count - 1]);
     }
 }

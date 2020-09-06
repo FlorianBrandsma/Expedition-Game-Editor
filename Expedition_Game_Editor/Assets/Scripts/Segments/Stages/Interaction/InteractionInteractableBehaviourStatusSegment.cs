@@ -6,7 +6,7 @@ using System.Linq;
 
 public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISegment
 {
-    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.Data.elementData; } }
+    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

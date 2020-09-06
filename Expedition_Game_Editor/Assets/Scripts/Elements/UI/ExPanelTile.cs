@@ -41,13 +41,13 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
         }
     }
 
-    private DataElement.Data ChildButtonData
+    private Data ChildButtonData
     {
-        get { return ElementChild.DataElement.data; }
+        get { return ElementChild.DataElement.Data; }
         set
         {
             InitializeEdit();
-            ElementChild.DataElement.data = value;
+            ElementChild.DataElement.Data = value;
         }
     }
 
@@ -68,7 +68,7 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     public void InitializeChildElement()
     {
         if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = EditorElement.DataElement.data;
+            ChildButtonData = EditorElement.DataElement.Data;
     }
 
     private void InitializeIcon()
@@ -93,37 +93,35 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        switch (EditorElement.DataElement.data.dataController.DataType)
+        switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();    break;
             case Enums.DataType.WorldObject:        SetWorldObjectElement();          break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
     }
 
     private void SetWorldInteractableElement()
     {
-        var data = EditorElement.DataElement.data;
-        var elementData = (WorldInteractableElementData)data.elementData;
+        var elementData = (WorldInteractableElementData)EditorElement.DataElement.ElementData;
 
         idText.text = elementData.Id.ToString();
-        headerText.text = elementData.interactableName;
+        headerText.text = elementData.InteractableName;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.objectGraphicIconPath);
+            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
     }
 
     private void SetWorldObjectElement()
     {
-        var data = EditorElement.DataElement.data;
-        var elementData = (WorldObjectElementData)data.elementData;
+        var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
 
         idText.text = elementData.Id.ToString();
-        headerText.text = elementData.objectGraphicName;
+        headerText.text = elementData.ModelName;
 
         if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.objectGraphicIconPath);
+            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
     }
 
     public void CloseElement()

@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterDataManager : IDataManager
+public static class ChapterDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ChapterBaseData> chapterDataList;
 
-    private List<ChapterData> chapterDataList;
-
-    public ChapterDataManager(ChapterController chapterController)
-    {
-        DataController = chapterController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
@@ -25,15 +18,15 @@ public class ChapterDataManager : IDataManager
         var list = (from chapterData in chapterDataList
                     select new ChapterElementData()
                     {
-                        Id = chapterData.id,
-                        Index = chapterData.index,
+                        Id = chapterData.Id,
+                        Index = chapterData.Index,
 
-                        Name = chapterData.name,
+                        Name = chapterData.Name,
 
-                        TimeSpeed = chapterData.timeSpeed,
+                        TimeSpeed = chapterData.TimeSpeed,
 
-                        PublicNotes = chapterData.publicNotes,
-                        PrivateNotes = chapterData.privateNotes
+                        PublicNotes = chapterData.PublicNotes,
+                        PrivateNotes = chapterData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -42,40 +35,51 @@ public class ChapterDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetChapterData(Search.Chapter searchParameters)
+    private static void GetChapterData(Search.Chapter searchParameters)
     {
-        chapterDataList = new List<ChapterData>();
+        chapterDataList = new List<ChapterBaseData>();
 
-        foreach(Fixtures.Chapter chapter in Fixtures.chapterList)
+        foreach(ChapterBaseData chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.id)) return;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) return;
 
-            var chapterData = new ChapterData();
+            var chapterData = new ChapterBaseData();
             
-            chapterData.id = chapter.id;
-            chapterData.index = chapter.index;
+            chapterData.Id = chapter.Id;
+            chapterData.Index = chapter.Index;
 
-            chapterData.name = chapter.name;
+            chapterData.Name = chapter.Name;
 
-            chapterData.timeSpeed = chapter.timeSpeed;
+            chapterData.TimeSpeed = chapter.TimeSpeed;
 
-            chapterData.publicNotes = chapter.publicNotes;
-            chapterData.privateNotes = chapter.privateNotes;
+            chapterData.PublicNotes = chapter.PublicNotes;
+            chapterData.PrivateNotes = chapter.PrivateNotes;
             
             chapterDataList.Add(chapterData);
         }
     }
 
-    internal class ChapterData
+    public static void UpdateData(ChapterElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
 
-        public string name;
+        if (elementData.ChangedTimeSpeed)
+            data.TimeSpeed = elementData.TimeSpeed;
 
-        public float timeSpeed;
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
 
-        public string publicNotes;
-        public string privateNotes;
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
+    }
+
+    static public void UpdateIndex(ChapterElementData elementData)
+    {
+        var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

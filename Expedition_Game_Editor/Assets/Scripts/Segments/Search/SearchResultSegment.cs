@@ -4,7 +4,6 @@ using System.Collections;
 public class SearchResultSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies() { }
@@ -20,7 +19,7 @@ public class SearchResultSegment : MonoBehaviour, ISegment
         
         var searchProperties = SegmentController.EditorController.PathController.route.data.searchProperties;
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

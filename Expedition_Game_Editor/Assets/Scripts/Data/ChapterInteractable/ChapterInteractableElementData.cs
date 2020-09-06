@@ -1,65 +1,73 @@
 ﻿using UnityEngine;
+using System;
 
-public class ChapterInteractableElementData : ChapterInteractableCore, IElementData
+public class ChapterInteractableElementData : ChapterInteractableData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public ChapterInteractableElementData() : base()
+    public ChapterInteractableData OriginalData     { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.ChapterInteractable; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedInteractableId
     {
-        DataType = Enums.DataType.ChapterInteractable;
+        get { return InteractableId != OriginalData.InteractableId; }
     }
 
-    public string interactableName;
-    public string objectGraphicIconPath;
+    public bool Changed
+    {
+        get
+        {
+            return ChangedInteractableId;
+        }
+    }
+    #endregion
 
-    public override void Update()
+    public void Update()
     {
         if (!Changed) return;
 
-        base.Update();
+        ChapterInteractableDataManager.UpdateData(this);
 
         SetOriginalValues();
     }
 
-    public override void SetOriginalValues()
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
     {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new ChapterInteractableElementData();
-
-        Debug.Log("Probably remove this");
-        elementData.DataElement = DataElement;
-        
-        CloneCore(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new ChapterInteractableElementData();
 
-        var chapterInteractableDataSource = (ChapterInteractableElementData)dataSource;
+        data.DataElement = DataElement;
 
-        interactableName = chapterInteractableDataSource.interactableName;
-        objectGraphicIconPath = chapterInteractableDataSource.objectGraphicIconPath;
+        data.OriginalData = OriginalData.Clone();
+        
+        base.Clone(data);
 
-        SetOriginalValues();
+        return data;
     }
 }

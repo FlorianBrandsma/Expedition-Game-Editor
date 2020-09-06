@@ -2,36 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractionDestinationDataManager : IDataManager
+public static class InteractionDestinationDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<InteractionDestinationBaseData> interactionDestinationDataList;
 
-    private List<InteractionDestinationData> interactionDestinationDataList;
+    private static List<InteractionBaseData> interactionDataList;
+    private static List<TaskBaseData> taskDataList;
+    private static List<WorldInteractableBaseData> worldInteractableDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
+    private static List<ObjectiveBaseData> objectiveDataList;
+    private static List<QuestBaseData> questDataList;
 
-    private List<DataManager.InteractionData> interactionDataList;
-    private List<DataManager.TaskData> taskDataList;
-    private List<DataManager.WorldInteractableData> worldInteractableDataList;
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
+    private static List<RegionBaseData> regionDataList;
+    private static List<TerrainBaseData> terrainDataList;
+    private static List<TerrainTileBaseData> terrainTileDataList;
+    private static List<TileBaseData> tileDataList;
+    private static List<TileSetBaseData> tileSetDataList;
 
-    private List<DataManager.ObjectiveData> objectiveDataList;
-    private List<DataManager.QuestData> questDataList;
-
-    private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TerrainData> terrainDataList;
-    private List<DataManager.TerrainTileData> terrainTileDataList;
-    private List<DataManager.TileData> tileDataList;
-    private List<DataManager.TileSetData> tileSetDataList;
-
-    public InteractionDestinationDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
 
@@ -43,7 +34,7 @@ public class InteractionDestinationDataManager : IDataManager
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         GetObjectiveData();
@@ -56,261 +47,279 @@ public class InteractionDestinationDataManager : IDataManager
         GetTileSetData();
 
         var list = (from interactionDestinationData in interactionDestinationDataList
-                    join interactionData            in interactionDataList          on interactionDestinationData.interactionId equals interactionData.id
-                    join taskData                   in taskDataList                 on interactionData.taskId                   equals taskData.id
-                    join worldInteractableData      in worldInteractableDataList    on taskData.worldInteractableId             equals worldInteractableData.id
-                    join interactableData           in interactableDataList         on worldInteractableData.interactableId     equals interactableData.id
-                    join objectGraphicData          in objectGraphicDataList        on interactableData.objectGraphicId         equals objectGraphicData.id
-                    join iconData                   in iconDataList                 on objectGraphicData.iconId                 equals iconData.id
+                    join interactionData            in interactionDataList          on interactionDestinationData.InteractionId equals interactionData.Id
+                    join taskData                   in taskDataList                 on interactionData.TaskId                   equals taskData.Id
+                    join worldInteractableData      in worldInteractableDataList    on taskData.WorldInteractableId             equals worldInteractableData.Id
+                    join interactableData           in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
+                    join modelData                  in modelDataList                on interactableData.ModelId                 equals modelData.Id
+                    join iconData                   in iconDataList                 on modelData.IconId                         equals iconData.Id
 
-                    join regionData                 in regionDataList               on interactionDestinationData.regionId      equals regionData.id
-                    join terrainData                in terrainDataList              on regionData.id                            equals terrainData.regionId
-                    join terrainTileData            in terrainTileDataList          on terrainData.id                           equals terrainTileData.terrainId
-                    join tileData                   in tileDataList                 on terrainTileData.tileId                   equals tileData.id
-                    join tileSetData                in tileSetDataList              on regionData.tileSetId                     equals tileSetData.id
+                    join regionData                 in regionDataList               on interactionDestinationData.RegionId      equals regionData.Id
+                    join terrainData                in terrainDataList              on regionData.Id                            equals terrainData.RegionId
+                    join terrainTileData            in terrainTileDataList          on terrainData.Id                           equals terrainTileData.TerrainId
+                    join tileData                   in tileDataList                 on terrainTileData.TileId                   equals tileData.Id
+                    join tileSetData                in tileSetDataList              on regionData.TileSetId                     equals tileSetData.Id
 
                     join leftJoin in (from objectiveData in objectiveDataList
-                                      select new { objectiveData }) on worldInteractableData.objectiveId equals leftJoin.objectiveData.id into objectiveData
+                                      select new { objectiveData }) on worldInteractableData.ObjectiveId equals leftJoin.objectiveData.Id into objectiveData
 
                     join leftJoin in (from questData in questDataList
-                                      select new { questData }) on worldInteractableData.questId equals leftJoin.questData.id into questData
+                                      select new { questData }) on worldInteractableData.QuestId equals leftJoin.questData.Id into questData
 
                     select new InteractionDestinationElementData()
                     {
-                        Id = interactionDestinationData.id,
+                        Id = interactionDestinationData.Id,
 
-                        InteractionId = interactionDestinationData.interactionId,
+                        InteractionId = interactionDestinationData.InteractionId,
 
-                        RegionId = interactionDestinationData.regionId,
-                        TerrainId = interactionDestinationData.terrainId,
-                        TerrainTileId = interactionDestinationData.terrainTileId,
+                        RegionId = interactionDestinationData.RegionId,
+                        TerrainId = interactionDestinationData.TerrainId,
+                        TerrainTileId = interactionDestinationData.TerrainTileId,
 
-                        PositionX = interactionDestinationData.positionX,
-                        PositionY = interactionDestinationData.positionY,
-                        PositionZ = interactionDestinationData.positionZ,
+                        PositionX = interactionDestinationData.PositionX,
+                        PositionY = interactionDestinationData.PositionY,
+                        PositionZ = interactionDestinationData.PositionZ,
 
-                        PositionVariance = interactionDestinationData.positionVariance,
+                        PositionVariance = interactionDestinationData.PositionVariance,
 
-                        RotationX = interactionDestinationData.rotationX,
-                        RotationY = interactionDestinationData.rotationY,
-                        RotationZ = interactionDestinationData.rotationZ,
+                        RotationX = interactionDestinationData.RotationX,
+                        RotationY = interactionDestinationData.RotationY,
+                        RotationZ = interactionDestinationData.RotationZ,
 
-                        FreeRotation = interactionDestinationData.freeRotation,
+                        FreeRotation = interactionDestinationData.FreeRotation,
 
-                        Animation = interactionDestinationData.animation,
-                        Patience = interactionDestinationData.patience,
+                        Animation = interactionDestinationData.Animation,
+                        Patience = interactionDestinationData.Patience,
                         
-                        questId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.questId :
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.id : 0,
-                        objectiveId = taskData.objectiveId,
-                        worldInteractableId = taskData.worldInteractableId,
-                        taskId = interactionData.taskId,
+                        QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
+                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+                        ObjectiveId = taskData.ObjectiveId,
+                        WorldInteractableId = taskData.WorldInteractableId,
+                        TaskId = interactionData.TaskId,
                         
-                        objectGraphicId = objectGraphicData.id,
-                        objectGraphicPath = objectGraphicData.path,
+                        ModelId = modelData.Id,
+                        ModelPath = modelData.Path,
 
-                        objectGraphicIconPath = iconData.path,
+                        ModelIconPath = iconData.Path,
                         
-                        interactableName = interactableData.name,
+                        InteractableName = interactableData.Name,
 
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth,
+                        Height = modelData.Height,
+                        Width = modelData.Width,
+                        Depth = modelData.Depth,
 
-                        scaleMultiplier = interactableData.scaleMultiplier,
+                        Scale = interactableData.Scale,
 
-                        tileIconPath = tileData.iconPath,
-                        tileSize = tileSetData.tileSize,
+                        TileIconPath = tileData.IconPath,
+                        TileSize = tileSetData.TileSize,
 
-                        localPosition = RegionManager.PositionOnTile(regionData.regionSize, regionData.terrainSize, tileSetData.tileSize, interactionDestinationData.positionX, interactionDestinationData.positionZ),
+                        LocalPosition = RegionManager.PositionOnTile(regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize, interactionDestinationData.PositionX, interactionDestinationData.PositionZ),
 
-                        locationName = regionData.name + ", " + terrainData.name,
+                        LocationName = regionData.Name + ", " + terrainData.Name,
 
-                        interactableStatus = "Idle, " + interactableData.name,
+                        InteractableStatus = "Idle, " + interactableData.Name,
                         
-                        isDefault = interactionData.isDefault,
+                        Default = interactionData.Default,
 
-                        startTime = interactionData.startTime,
-                        endTime = interactionData.endTime
+                        StartTime = interactionData.StartTime,
+                        EndTime = interactionData.EndTime
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetInteractionDestinationData(Search.InteractionDestination searchParameters)
+    private static void GetInteractionDestinationData(Search.InteractionDestination searchParameters)
     {
-        interactionDestinationDataList = new List<InteractionDestinationData>();
+        interactionDestinationDataList = new List<InteractionDestinationBaseData>();
 
-        foreach (Fixtures.InteractionDestination interactionDestination in Fixtures.interactionDestinationList)
+        foreach (InteractionDestinationBaseData interactionDestination in Fixtures.interactionDestinationList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.id)) continue;
-            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.interactionId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.Id)) continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.InteractionId)) continue;
 
-            var interactionDestinationData = new InteractionDestinationData();
+            var interactionDestinationData = new InteractionDestinationBaseData();
 
-            interactionDestinationData.id = interactionDestination.id;
+            interactionDestinationData.Id = interactionDestination.Id;
 
-            interactionDestinationData.interactionId = interactionDestination.interactionId;
+            interactionDestinationData.InteractionId = interactionDestination.InteractionId;
 
-            interactionDestinationData.regionId = interactionDestination.regionId;
-            interactionDestinationData.terrainId = interactionDestination.terrainId;
-            interactionDestinationData.terrainTileId = interactionDestination.terrainTileId;
+            interactionDestinationData.RegionId = interactionDestination.RegionId;
+            interactionDestinationData.TerrainId = interactionDestination.TerrainId;
+            interactionDestinationData.TerrainTileId = interactionDestination.TerrainTileId;
 
-            interactionDestinationData.positionX = interactionDestination.positionX;
-            interactionDestinationData.positionY = interactionDestination.positionY;
-            interactionDestinationData.positionZ = interactionDestination.positionZ;
+            interactionDestinationData.PositionX = interactionDestination.PositionX;
+            interactionDestinationData.PositionY = interactionDestination.PositionY;
+            interactionDestinationData.PositionZ = interactionDestination.PositionZ;
 
-            interactionDestinationData.positionVariance = interactionDestination.positionVariance;
+            interactionDestinationData.PositionVariance = interactionDestination.PositionVariance;
 
-            interactionDestinationData.rotationX = interactionDestination.rotationX;
-            interactionDestinationData.rotationY = interactionDestination.rotationY;
-            interactionDestinationData.rotationZ = interactionDestination.rotationZ;
+            interactionDestinationData.RotationX = interactionDestination.RotationX;
+            interactionDestinationData.RotationY = interactionDestination.RotationY;
+            interactionDestinationData.RotationZ = interactionDestination.RotationZ;
 
-            interactionDestinationData.freeRotation = interactionDestination.freeRotation;
+            interactionDestinationData.FreeRotation = interactionDestination.FreeRotation;
 
-            interactionDestinationData.animation = interactionDestination.animation;
-            interactionDestinationData.patience = interactionDestination.patience;
+            interactionDestinationData.Animation = interactionDestination.Animation;
+            interactionDestinationData.Patience = interactionDestination.Patience;
 
             interactionDestinationDataList.Add(interactionDestinationData);
         }
     }
 
-    internal void GetInteractionData()
+    private static void GetInteractionData()
     {
         var interactionSearchParameters = new Search.Interaction();
 
-        interactionSearchParameters.id = interactionDestinationDataList.Select(x => x.interactionId).Distinct().ToList();
+        interactionSearchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId).Distinct().ToList();
 
-        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
+        interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
     }
 
-    internal void GetTaskData()
+    private static void GetTaskData()
     {
         var taskSearchParameters = new Search.Task();
 
-        taskSearchParameters.id = interactionDataList.Select(x => x.taskId).Distinct().ToList();
+        taskSearchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskDataList = dataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(taskSearchParameters);
     }
 
-    internal void GetWorldInteractableData()
+    private static void GetWorldInteractableData()
     {
         var worldInteractableSearchParameters = new Search.WorldInteractable();
 
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.worldInteractableId).Distinct().ToList();
+        worldInteractableSearchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableDataList = dataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal void GetObjectiveData()
+    private static void GetObjectiveData()
     {
         var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.objectiveId).Union(taskDataList.Select(x => x.objectiveId)).Distinct().ToList();
+        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
 
-        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
+        objectiveDataList = DataManager.GetObjectiveData(objectiveSearchParameters);
     }
 
-    internal void GetQuestData()
+    private static void GetQuestData()
     {
         var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = objectiveDataList.Select(x => x.questId).Distinct().ToList();
+        questSearchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
 
-        questDataList = dataManager.GetQuestData(questSearchParameters);
+        questDataList = DataManager.GetQuestData(questSearchParameters);
     }
 
-    internal void GetRegionData()
+    private static void GetRegionData()
     {
         var searchParameters = new Search.Region();
-        searchParameters.id = interactionDestinationDataList.Select(x => x.regionId).Distinct().ToList();
+        searchParameters.id = interactionDestinationDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = dataManager.GetRegionData(searchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
-    internal void GetTerrainData()
+    private static void GetTerrainData()
     {
         var searchParameters = new Search.Terrain();
-        searchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = dataManager.GetTerrainData(searchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
-    internal void GetTerrainTileData()
+    private static void GetTerrainTileData()
     {
         var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.id = interactionDestinationDataList.Select(x => x.terrainTileId).Distinct().ToList();
+        terrainTileSearchParameters.id = interactionDestinationDataList.Select(x => x.TerrainTileId).Distinct().ToList();
 
-        terrainTileDataList = dataManager.GetTerrainTileData(terrainTileSearchParameters);
+        terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
     }
 
-    internal void GetTileData()
+    private static void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.id = terrainTileDataList.Select(x => x.tileId).Distinct().ToList();
+        tileSearchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
 
-        tileDataList = dataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(tileSearchParameters);
     }
 
-    private void GetTileSetData()
+    private static void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    internal class InteractionDestinationData
+    public static void UpdateData(InteractionDestinationElementData elementData)
     {
-        public int id;
+        var data = Fixtures.interactionDestinationList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedRegionId)
+            data.RegionId = elementData.RegionId;
 
-        public int interactionId;
+        if (elementData.ChangedTerrainId)
+            data.TerrainId = elementData.TerrainId;
 
-        public int regionId;
-        public int terrainId;
-        public int terrainTileId;
+        if (elementData.ChangedTerrainTileId)
+            data.TerrainTileId = elementData.TerrainTileId;
 
-        public float positionX;
-        public float positionY;
-        public float positionZ;
+        if (elementData.ChangedPositionX)
+            data.PositionX = elementData.PositionX;
 
-        public float positionVariance;
+        if (elementData.ChangedPositionY)
+            data.PositionY = elementData.PositionY;
 
-        public bool freeRotation;
+        if (elementData.ChangedPositionZ)
+            data.PositionZ = elementData.PositionZ;
 
-        public int rotationX;
-        public int rotationY;
-        public int rotationZ;
+        if (elementData.ChangedPositionVariance)
+            data.PositionVariance = elementData.PositionVariance;
 
-        public int animation;
-        public float patience;
+        if (elementData.ChangedRotationX)
+            data.RotationX = elementData.RotationX;
+
+        if (elementData.ChangedRotationY)
+            data.RotationY = elementData.RotationY;
+
+        if (elementData.ChangedRotationZ)
+            data.RotationZ = elementData.RotationZ;
+
+        if (elementData.ChangedFreeRotation)
+            data.FreeRotation = elementData.FreeRotation;
+
+        if (elementData.ChangedAnimation)
+            data.Animation = elementData.Animation;
+
+        if (elementData.ChangedPatience)
+            data.Patience = elementData.Patience;
     }
 }
 

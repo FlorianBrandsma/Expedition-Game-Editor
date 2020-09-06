@@ -32,42 +32,42 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Chapter:
 
-                    var chapterData = (ChapterElementData)DataEditor.Data.elementData;
+                    var chapterData = (ChapterElementData)DataEditor.ElementData;
                     chapterData.Name = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+                    var phaseData = (PhaseElementData)DataEditor.ElementData;
                     phaseData.Name = value;
                     
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questData = (QuestElementData)DataEditor.Data.elementData;
+                    var questData = (QuestElementData)DataEditor.ElementData;
                     questData.Name = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = (ObjectiveElementData)DataEditor.Data.elementData;
+                    var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
                     objectiveData.Name = value;
 
                     break;
 
                 case Enums.DataType.Task:
 
-                    var taskData = (TaskElementData)DataEditor.Data.elementData;
+                    var taskData = (TaskElementData)DataEditor.ElementData;
                     taskData.Name = value;
                     
                     break;
 
                 case Enums.DataType.Region:
 
-                    var regionData = (RegionElementData)DataEditor.Data.elementData;
+                    var regionData = (RegionElementData)DataEditor.ElementData;
                     regionData.Name = value;
 
                     break;
@@ -125,7 +125,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterData()
     {
-        var chapterData = (ChapterElementData)DataEditor.Data.elementData;
+        var chapterData = (ChapterElementData)DataEditor.ElementData;
 
         id      = chapterData.Id;
         index   = chapterData.Index;
@@ -134,7 +134,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+        var phaseData = (PhaseElementData)DataEditor.ElementData;
 
         id      = phaseData.Id;
         index   = phaseData.Index;
@@ -143,7 +143,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeQuestData()
     {
-        var questData = (QuestElementData)DataEditor.Data.elementData;
+        var questData = (QuestElementData)DataEditor.ElementData;
 
         id      = questData.Id;
         index   = questData.Index;
@@ -152,7 +152,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeObjectiveData()
     {
-        var objectiveData = (ObjectiveElementData)DataEditor.Data.elementData;
+        var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
 
         id      = objectiveData.Id;
         index   = objectiveData.Index;
@@ -161,7 +161,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskData()
     {
-        var objectiveData = (TaskElementData)DataEditor.Data.elementData;
+        var objectiveData = (TaskElementData)DataEditor.ElementData;
 
         id      = objectiveData.Id;
         index   = objectiveData.Index;
@@ -170,7 +170,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeRegionData()
     {
-        var regionData = (RegionElementData)DataEditor.Data.elementData;
+        var regionData = (RegionElementData)DataEditor.ElementData;
 
         id      = regionData.Id;
         index   = regionData.Index;
@@ -179,7 +179,7 @@ public class DefaultHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeTerrainData()
     {
-        var terrainData = (TerrainElementData)DataEditor.Data.elementData;
+        var terrainData = (TerrainElementData)DataEditor.ElementData;
 
         id      = terrainData.Id;
         name    = terrainData.Name;

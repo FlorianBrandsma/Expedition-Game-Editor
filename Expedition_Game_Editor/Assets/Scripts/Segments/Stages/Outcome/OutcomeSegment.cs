@@ -7,7 +7,6 @@ public class OutcomeSegment : MonoBehaviour, ISegment
     public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies() { }
@@ -24,9 +23,9 @@ public class OutcomeSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Outcome);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
-        searchParameters.interactionId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Interaction).GeneralData.Id };
+        searchParameters.interactionId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Interaction).ElementData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

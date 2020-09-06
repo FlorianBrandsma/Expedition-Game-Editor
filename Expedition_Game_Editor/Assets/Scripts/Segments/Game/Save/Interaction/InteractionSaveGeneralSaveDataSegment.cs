@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractionSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private InteractionSaveElementData InteractionSaveData { get { return (InteractionSaveElementData)DataEditor.Data.elementData; } }
+    private InteractionSaveElementData InteractionSaveData { get { return (InteractionSaveElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

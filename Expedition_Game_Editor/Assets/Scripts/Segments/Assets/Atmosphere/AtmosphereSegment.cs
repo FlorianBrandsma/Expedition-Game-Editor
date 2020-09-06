@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class AtmosphereSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
@@ -26,9 +25,9 @@ public class AtmosphereSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Atmosphere);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
-        searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).GeneralData.Id };
+        searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).ElementData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

@@ -58,7 +58,7 @@ public class InteractableSurvivalCapacityThirstSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
         thirst = interactableData.Thirst;
     }

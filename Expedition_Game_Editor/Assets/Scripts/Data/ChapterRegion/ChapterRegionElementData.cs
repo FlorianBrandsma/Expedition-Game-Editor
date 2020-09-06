@@ -1,60 +1,73 @@
-﻿public class ChapterRegionElementData : ChapterRegionCore, IElementData
-{
-    public DataElement DataElement { get; set; }
+﻿using UnityEngine;
+using System;
 
-    public ChapterRegionElementData() : base()
+public class ChapterRegionElementData : ChapterRegionData, IElementData
+{
+    public DataElement DataElement                  { get; set; }
+
+    public ChapterRegionData OriginalData           { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.ChapterRegion; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedRegionId
     {
-        DataType = Enums.DataType.ChapterRegion;
+        get { return RegionId != OriginalData.RegionId; }
     }
 
-    public string name;
-    public string tileIconPath;
+    public bool Changed
+    {
+        get
+        {
+            return ChangedRegionId;
+        }
+    }
+    #endregion
 
-    public override void Update()
+    public void Update()
     {
         if (!Changed) return;
 
-        base.Update();
+        ChapterRegionDataManager.UpdateData(this);
 
         SetOriginalValues();
     }
+    
+    public void UpdateSearch() { }
 
-    public override void SetOriginalValues()
+    public void SetOriginalValues()
     {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new ChapterRegionElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new ChapterRegionElementData();
 
-        var chapterRegionDataSource = (ChapterRegionElementData)dataSource;
+        data.DataElement = DataElement;
 
-        name = chapterRegionDataSource.name;
-        tileIconPath = chapterRegionDataSource.tileIconPath;
+        data.OriginalData = OriginalData.Clone();
+        
+        base.Clone(data);
 
-        SetOriginalValues();
+        return data;
     }
 }

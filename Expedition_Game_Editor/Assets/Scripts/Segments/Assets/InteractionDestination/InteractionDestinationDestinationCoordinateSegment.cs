@@ -98,7 +98,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
 
     public void UpdateTile()
     {
-        var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).GeneralData.Id;
+        var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
 
         var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
         TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
@@ -118,7 +118,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
     {
         if (DataEditor.Loaded) return;
 
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
 
         positionX = interactionDestinationData.PositionX;
         positionY = interactionDestinationData.PositionY;
@@ -129,10 +129,10 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
 
     public void InitializeSegment()
     {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
+        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
-        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.tileSize,
-                                     regionData.RegionSize * regionData.TerrainSize * regionData.tileSize);
+        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
+                                     regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
 
         xInputField.max = regionSize.x;
         yInputField.max = regionSize.y;

@@ -25,7 +25,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SelectData()
     {
-        SelectionManager.SelectData(DataController.DataList, DisplayManager);
+        SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
 
     public void UpdateData()
@@ -41,7 +41,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        SetData(DataController.DataList);
+        SetData(DataController.Data.dataList);
     }
 
     public void SetData(List<IElementData> list)
@@ -60,14 +60,14 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(panelTile.EditorElement);
 
             elementData.DataElement = panelTile.EditorElement.DataElement;
-            panelTile.EditorElement.DataElement.data = new DataElement.Data(DataController, elementData);
+
+            panelTile.EditorElement.DataElement.Data = DataController.Data;
+            panelTile.EditorElement.DataElement.Id = elementData.Id;
 
             panelTile.GetComponent<ExPanelTile>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            panelTile.name = generalData.DebugName + generalData.Id;
-            //
+            panelTile.name = elementData.DebugName + elementData.Id;
 
             SetElement(panelTile.EditorElement);
         }
@@ -77,7 +77,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
@@ -143,15 +143,15 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(DataController.DataList);
+        SelectionManager.CancelSelection(DataController.Data.dataList);
     }
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

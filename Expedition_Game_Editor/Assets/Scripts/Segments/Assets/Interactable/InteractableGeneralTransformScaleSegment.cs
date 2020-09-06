@@ -7,22 +7,22 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
     public Text heightText, widthText, depthText;
     public ExInputNumber inputField;
 
-    private float scaleMultiplier;
+    private float scale;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float ScaleMultiplier
+    public float Scale
     {
-        get { return scaleMultiplier; }
+        get { return scale; }
         set
         {
-            scaleMultiplier = value;
+            scale = value;
 
             var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
             interactableDataList.ForEach(interactableData =>
             {
-                interactableData.ScaleMultiplier = value;
+                interactableData.Scale = value;
             });
         }
     }
@@ -39,9 +39,9 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
-        scaleMultiplier = interactableData.ScaleMultiplier;
+        scale = interactableData.Scale;
     }
 
     public void InitializeSegment()
@@ -51,16 +51,16 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 
     public void SetSizeValues()
     {
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
-        heightText.text = (interactableData.height * scaleMultiplier).ToString();
-        widthText.text = (interactableData.width * scaleMultiplier).ToString();
-        depthText.text = (interactableData.depth * scaleMultiplier).ToString();
+        heightText.text = (interactableData.Height * scale).ToString();
+        widthText.text = (interactableData.Width * scale).ToString();
+        depthText.text = (interactableData.Depth * scale).ToString();
     }
 
-    public void UpdateScaleMultiplier()
+    public void UpdateScale()
     {
-        ScaleMultiplier = inputField.Value;
+        Scale = inputField.Value;
 
         SetSizeValues();
 
@@ -71,7 +71,7 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
     {
         SetSizeValues();
 
-        inputField.Value = ScaleMultiplier;
+        inputField.Value = Scale;
     }
 
     public void CloseSegment() { }

@@ -58,7 +58,7 @@ public class InteractableSurvivalPhysiqueSpeedSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+        var interactableData = (InteractableElementData)DataEditor.ElementData;
 
         speed = interactableData.Speed;
     }

@@ -3,23 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractableDataManager : IDataManager
+public static class InteractableDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<InteractableBaseData> interactableDataList;
 
-    private List<InteractableData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public InteractableDataManager(InteractableController interactableController)
-    {
-        DataController = interactableController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
         
@@ -27,39 +18,39 @@ public class InteractableDataManager : IDataManager
 
         if (interactableDataList.Count == 0) return new List<IElementData>();
 
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from interactableData   in interactableDataList
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                    join modelData          in modelDataList    on interactableData.ModelId equals modelData.Id
+                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
                     select new InteractableElementData()
                     {
-                        Id = interactableData.id,
-                        Index = interactableData.index,
+                        Id = interactableData.Id,
+                        Index = interactableData.Index,
 
-                        Type = interactableData.type,
+                        Type = interactableData.Type,
 
-                        ObjectGraphicId = interactableData.objectGraphicId,
+                        ModelId = interactableData.ModelId,
 
-                        Name = interactableData.name,
+                        Name = interactableData.Name,
                         
-                        ScaleMultiplier = interactableData.scaleMultiplier,
+                        Scale = interactableData.Scale,
 
-                        Health = interactableData.health,
-                        Hunger = interactableData.hunger,
-                        Thirst = interactableData.thirst,
+                        Health = interactableData.Health,
+                        Hunger = interactableData.Hunger,
+                        Thirst = interactableData.Thirst,
 
-                        Weight = interactableData.weight,
-                        Speed = interactableData.speed,
-                        Stamina = interactableData.stamina,
+                        Weight = interactableData.Weight,
+                        Speed = interactableData.Speed,
+                        Stamina = interactableData.Stamina,
                         
-                        objectGraphicPath = objectGraphicData.path,
-                        objectGraphicIconPath = iconData.path,
+                        ModelPath = modelData.Path,
+                        ModelIconPath = iconData.Path,
 
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth
+                        Height = modelData.Height,
+                        Width = modelData.Width,
+                        Depth = modelData.Depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -68,76 +59,93 @@ public class InteractableDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetInteractableData(Search.Interactable searchParameters)
+    private static void GetInteractableData(Search.Interactable searchParameters)
     {
-        interactableDataList = new List<InteractableData>();
+        interactableDataList = new List<InteractableBaseData>();
         
-        foreach(Fixtures.Interactable interactable in Fixtures.interactableList)
+        foreach(InteractableBaseData interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.id)) continue;
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactable.type)) continue;
+            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactable.Type)) continue;
 
-            var interactableData = new InteractableData();
+            var interactableData = new InteractableBaseData();
 
-            interactableData.id = interactable.id;
-            interactableData.index = interactable.index;
+            interactableData.Id = interactable.Id;
+            interactableData.Index = interactable.Index;
 
-            interactableData.type = interactable.type;
+            interactableData.Type = interactable.Type;
 
-            interactableData.objectGraphicId = interactable.objectGraphicId;
+            interactableData.ModelId = interactable.ModelId;
 
-            interactableData.name = interactable.name;
+            interactableData.Name = interactable.Name;
 
-            interactableData.scaleMultiplier = interactable.scaleMultiplier;
+            interactableData.Scale = interactable.Scale;
 
-            interactableData.health = interactable.health;
-            interactableData.hunger = interactable.hunger;
-            interactableData.thirst = interactable.thirst;
+            interactableData.Health = interactable.Health;
+            interactableData.Hunger = interactable.Hunger;
+            interactableData.Thirst = interactable.Thirst;
 
-            interactableData.weight = interactable.weight;
-            interactableData.speed = interactable.speed;
-            interactableData.stamina = interactable.stamina;
+            interactableData.Weight = interactable.Weight;
+            interactableData.Speed = interactable.Speed;
+            interactableData.Stamina = interactable.Stamina;
             
             interactableDataList.Add(interactableData);
         }
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class InteractableData
+    public static void UpdateData(InteractableElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedModelId)
+            data.ModelId = elementData.ModelId;
 
-        public int type;
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
 
-        public int objectGraphicId;
+        if (elementData.ChangedScale)
+            data.Scale = elementData.Scale;
 
-        public string name;
+        if (elementData.ChangedHealth)
+            data.Health = elementData.Health;
 
-        public float scaleMultiplier;
+        if (elementData.ChangedHunger)
+            data.Hunger = elementData.Hunger;
 
-        public int health;
-        public int hunger;
-        public int thirst;
+        if (elementData.ChangedThirst)
+            data.Thirst = elementData.Thirst;
 
-        public float weight;
-        public float speed;
-        public float stamina;
+        if (elementData.ChangedWeight)
+            data.Weight = elementData.Weight;
+
+        if (elementData.ChangedSpeed)
+            data.Speed = elementData.Speed;
+
+        if (elementData.ChangedStamina)
+            data.Stamina = elementData.Stamina;
+    }
+
+    static public void UpdateIndex(InteractableElementData elementData)
+    {
+        var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

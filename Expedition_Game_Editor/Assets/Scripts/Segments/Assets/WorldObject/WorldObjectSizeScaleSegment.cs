@@ -11,22 +11,22 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
     private float height;
     private float width;
     private float depth;
-    private float scaleMultiplier;
+    private float scale;
     
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float ScaleMultiplier
+    public float Scale
     {
-        get { return scaleMultiplier; }
+        get { return scale; }
         set
         {
-            scaleMultiplier = value;
+            scale = value;
 
             var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
             worldObjectDataList.ForEach(worldObjectData =>
             {
-                worldObjectData.ScaleMultiplier = value;
+                worldObjectData.Scale = value;
             });
         }
     }
@@ -45,13 +45,13 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 
         if (DataEditor.Loaded) return;
 
-        var worldObjectData = (WorldObjectElementData)DataEditor.Data.elementData;
+        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
 
-        height = worldObjectData.height;
-        width = worldObjectData.width;
-        depth = worldObjectData.depth;
+        height  = worldObjectData.Height;
+        width   = worldObjectData.Width;
+        depth   = worldObjectData.Depth;
 
-        scaleMultiplier = worldObjectData.ScaleMultiplier;
+        scale   = worldObjectData.Scale;
     }
 
     public void InitializeSegment()
@@ -61,14 +61,14 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 
     public void SetSizeValues()
     {
-        heightText.text = (height * scaleMultiplier).ToString();
-        widthText.text = (width * scaleMultiplier).ToString();
-        depthText.text = (depth * scaleMultiplier).ToString();
+        heightText.text = (height * scale).ToString();
+        widthText.text  = (width * scale).ToString();
+        depthText.text  = (depth * scale).ToString();
     }
 
-    public void UpdateScaleMultiplier()
+    public void UpdateScale()
     {
-        ScaleMultiplier = inputField.Value;
+        Scale = inputField.Value;
 
         SetSizeValues();
 
@@ -79,7 +79,7 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
     {
         SetSizeValues();
 
-        inputField.Value = ScaleMultiplier;
+        inputField.Value = Scale;
     }
 
     public void CloseSegment() { }

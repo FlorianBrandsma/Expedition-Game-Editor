@@ -1,61 +1,55 @@
 ﻿using UnityEngine;
+using System;
 
-public class SaveElementData : SaveCore, IElementData
+public class SaveElementData : SaveData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public SaveElementData() : base()
-    {
-        DataType = Enums.DataType.Save;
-    }
+    public SaveData OriginalData                    { get; set; }
 
-    public string objectGraphicIconPath;
+    public Enums.DataType DataType                  { get { return Enums.DataType.Save; } }
 
-    public string name;
-    public string locationName;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
     
-    public string time;
+    #region Changed
+    public bool Changed { get { return false; } }
+    #endregion
 
-    public override void Update()
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
-    }
-
-    public override void SetOriginalValues()
-    {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new SaveElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new SaveElementData();
 
-        SetOriginalValues();
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
     }
 }

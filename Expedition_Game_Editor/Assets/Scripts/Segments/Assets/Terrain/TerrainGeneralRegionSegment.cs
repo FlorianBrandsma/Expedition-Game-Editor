@@ -22,10 +22,11 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
     {
         editButton.Path = SegmentController.Path;
 
-        var data = SegmentController.Path.FindLastRoute(Enums.DataType.Region).data;
-        editButton.data = new DataElement.Data(data);
+        var regionRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Region);
+#warning Fix this
+        //editButton.data = new Data(regionRoute.ElementData);
 
-        var regionData = (RegionElementData)data.elementData;
+        var regionData = (RegionElementData)regionRoute.ElementData;
         editButton.GetComponentInChildren<Text>().text = "Tiles, " + regionData.Name;
     }
     #endregion

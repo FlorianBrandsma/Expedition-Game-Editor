@@ -25,17 +25,17 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SelectData()
     {
-        SelectionManager.SelectData(DataController.DataList, DisplayManager);
+        SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
     
     public void SetData()
     {
-        SetData(DataController.DataList);
+        SetData(DataController.Data.dataList);
     }
 
     public void UpdateData()
     {
-        ResetData(DataController.DataList);
+        ResetData(DataController.Data.dataList);
     }
 
     public void ResetData(List<IElementData> filter)
@@ -74,7 +74,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
         element.RectTransform.anchorMax = new Vector2(1, 1);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
@@ -102,15 +102,15 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(DataController.DataList);
+        SelectionManager.CancelSelection(DataController.Data.dataList);
     }
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

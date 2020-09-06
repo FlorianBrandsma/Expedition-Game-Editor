@@ -44,7 +44,7 @@ public class InteractionDestinationDestinationVarianceSegment : MonoBehaviour, I
     {
         if (DataEditor.Loaded) return;
 
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
 
         positionVariance = interactionDestinationData.PositionVariance;
     }

@@ -3,24 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PartyMemberDataManager : IDataManager
+public static class PartyMemberDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<PartyMemberBaseData> partyMemberDataList;
 
-    private List<PartyMemberData> partyMemberDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public PartyMemberDataManager(PartyMemberController partyMemberController)
-    {
-        DataController = partyMemberController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PartyMember>().First();
 
@@ -29,81 +20,84 @@ public class PartyMemberDataManager : IDataManager
         if (partyMemberDataList.Count == 0) return new List<IElementData>();
 
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from partyMemberData    in partyMemberDataList
-                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                    join interactableData   in interactableDataList on partyMemberData.InteractableId   equals interactableData.Id
+                    join modelData          in modelDataList        on interactableData.ModelId         equals modelData.Id
+                    join iconData           in iconDataList         on modelData.IconId                 equals iconData.Id
                     select new PartyMemberElementData()
                     {
-                        Id = partyMemberData.id,
+                        Id = partyMemberData.Id,
 
-                        ChapterId = partyMemberData.chapterId,
-                        InteractableId = partyMemberData.interactableId,
+                        ChapterId = partyMemberData.ChapterId,
+                        InteractableId = partyMemberData.InteractableId,
 
-                        interactableName = interactableData.name,
-                        objectGraphicIconPath = iconData.path
+                        InteractableName = interactableData.Name,
+                        ModelIconPath = iconData.Path
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetPartyMemberData(Search.PartyMember searchParameters)
+    private static void GetPartyMemberData(Search.PartyMember searchParameters)
     {
-        partyMemberDataList = new List<PartyMemberData>();
+        partyMemberDataList = new List<PartyMemberBaseData>();
 
-        foreach (Fixtures.PartyMember partyMember in Fixtures.partyMemberList)
+        foreach (PartyMemberBaseData partyMember in Fixtures.partyMemberList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(partyMember.id)) continue;
-            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(partyMember.chapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(partyMember.Id)) continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(partyMember.ChapterId)) continue;
 
-            var partyMemberData = new PartyMemberData();
+            var partyMemberData = new PartyMemberBaseData();
 
-            partyMemberData.id = partyMember.id;
+            partyMemberData.Id = partyMember.Id;
 
-            partyMemberData.chapterId = partyMember.chapterId;
-            partyMemberData.interactableId = partyMember.interactableId;
+            partyMemberData.ChapterId = partyMember.ChapterId;
+            partyMemberData.InteractableId = partyMember.InteractableId;
 
             partyMemberDataList.Add(partyMemberData);
         }
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = partyMemberDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = partyMemberDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class PartyMemberData
+    public static void UpdateData(PartyMemberElementData elementData)
     {
-        public int id;
+        var data = Fixtures.partyMemberList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedChapterId)
+            data.ChapterId = elementData.ChapterId;
 
-        public int chapterId;
-        public int interactableId;
+        if (elementData.ChangedInteractableId)
+            data.InteractableId = elementData.InteractableId;
     }
 }

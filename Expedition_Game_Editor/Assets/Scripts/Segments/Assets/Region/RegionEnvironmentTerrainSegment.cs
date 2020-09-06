@@ -5,18 +5,13 @@ using System.Linq;
 
 public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData RegionDataElement { get { return (RegionElementData)DataEditor.Data.elementData; } }
+    private RegionElementData RegionDataElement { get { return (RegionElementData)DataEditor.ElementData; } }
 
-    private DataManager dataManager = new DataManager();
+    private List<TileSetBaseData> tileSetList;
 
-    private List<DataManager.TileSetData> tileSetList;
-
-    #region UI
     public Dropdown tileSetDropdown;
-    #endregion
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies()
@@ -44,22 +39,22 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         tileSetDropdown.ClearOptions();
         tileSetDropdown.onValueChanged.RemoveAllListeners();
 
-        tileSetList = dataManager.GetTileSetData();
+        tileSetList = DataManager.GetTileSetData();
 
-        foreach (DataManager.TileSetData tileSetData in tileSetList)
-            tileSetDropdown.options.Add(new Dropdown.OptionData(tileSetData.name));
+        foreach (TileSetBaseData tileSetData in tileSetList)
+            tileSetDropdown.options.Add(new Dropdown.OptionData(tileSetData.Name));
 
-        int selectedIndex = tileSetList.FindIndex(x => x.id == RegionDataElement.TileSetId);
+        int selectedIndex = tileSetList.FindIndex(x => x.Id == RegionDataElement.TileSetId);
 
         tileSetDropdown.value = selectedIndex;
         tileSetDropdown.captionText.text = tileSetDropdown.options[selectedIndex].text;
 
-        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].id); });
+        tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].Id); });
     }
 
     public void SetDropdown(int tileSetId)
     {
-        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].id;
+        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].Id;
 
         DataEditor.UpdateEditor();
 
@@ -73,9 +68,9 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
         searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        RegionDataElement.tileIconPath = SegmentController.DataController.DataList.Cast<TileElementData>().First().icon;
+        RegionDataElement.TileIconPath = SegmentController.DataController.Data.dataList.Cast<TileElementData>().First().Icon;
     }
 
     private void SetDisplay()

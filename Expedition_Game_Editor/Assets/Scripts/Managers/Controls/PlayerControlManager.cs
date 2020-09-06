@@ -8,7 +8,7 @@ public class PlayerControlManager : MonoBehaviour
 
     private IPlayerController playerController;
 
-    private PlayerSaveElementData PlayerData            { get { return GameManager.instance.gameSaveData.playerSaveData; } }
+    private PlayerSaveElementData PlayerData            { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
     private GamePartyMemberElementData ActiveCharacter  { get { return GameManager.instance.partyMemberData; } }
     private Animator ActiveAnimator                     { get { return ((ExGameWorldAgent)ActiveCharacter.DataElement.Element).Animator; } }
 
@@ -62,12 +62,12 @@ public class PlayerControlManager : MonoBehaviour
 
     public void MovePlayerCharacter(float sensitivity)
     {
-        var speed = ActiveCharacter.speed * sensitivity;
+        var speed = ActiveCharacter.Speed * sensitivity;
         
         ActiveCharacter.DataElement.transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         ActiveAnimator.SetBool("IsMoving", true);
-        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacter.scaleMultiplier);
+        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacter.Scale);
 
         PlayerData.PositionX = ActiveCharacter.DataElement.transform.localPosition.x;
         PlayerData.PositionY = ActiveCharacter.DataElement.transform.localPosition.y;

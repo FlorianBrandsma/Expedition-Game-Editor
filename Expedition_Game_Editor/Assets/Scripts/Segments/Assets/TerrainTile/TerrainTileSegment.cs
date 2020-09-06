@@ -7,11 +7,10 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 {
     private RegionElementData regionData;
     
-    private TerrainController TerrainController { get { return GetComponent<TerrainController>(); } }
-    private TerrainTileController TerrainTileController { get { return GetComponent<TerrainTileController>(); } }
+    private TerrainDataController       TerrainController       { get { return GetComponent<TerrainDataController>(); } }
+    private TerrainTileDataController   TerrainTileController   { get { return GetComponent<TerrainTileDataController>(); } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies() { }
@@ -25,7 +24,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
         
-        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         GetTerrainData();
         GetTerrainTileData();
@@ -38,7 +37,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainController.DataList = RenderManager.GetData(TerrainController, searchProperties);
+        TerrainController.GetData(searchProperties);
     }
 
     private void GetTerrainTileData()
@@ -48,7 +47,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.TerrainTile>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        TerrainTileController.DataList = RenderManager.GetData(TerrainTileController, searchProperties);
+        TerrainTileController.GetData(searchProperties);
     }
 
     public void OpenSegment()
@@ -61,6 +60,6 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(DataElement dataElement)
     {
-        dataElement.data.elementData.Update(); 
+        dataElement.ElementData.Update(); 
     }
 }

@@ -16,7 +16,7 @@ public class LayoutSection : MonoBehaviour
     public EditorController PreviousTargetController    { get; set; }
     public EditorController DisplayTargetController     { get; set; }
 
-    public GeneralData PreviousTargetControllerData     { get; set; }
+    public IElementData PreviousTargetControllerData    { get; set; }
     
     public LayoutDependency TargetView                  { get; set; }
 
@@ -34,10 +34,13 @@ public class LayoutSection : MonoBehaviour
             if (TargetController != PreviousTargetController)
                 return false;
 
-            if (PreviousTargetControllerData != null)
-                return TargetController.PathController.route.GeneralData.Equals(PreviousTargetControllerData);
+            if (PreviousTargetControllerData == null && TargetController.PathController.route.data != null)
+                return false;
 
-            return false;
+            if (PreviousTargetControllerData != null && !TargetController.PathController.route.ElementData.Equals(PreviousTargetControllerData))
+                return false;
+
+            return true;
         }
     }
 
@@ -106,7 +109,7 @@ public class LayoutSection : MonoBehaviour
             buttonActionManager.CloseButtons();
 
         PreviousTargetController = TargetController;
-        PreviousTargetControllerData = (GeneralData)TargetController.PathController.route.data.elementData;
+        PreviousTargetControllerData = TargetController.PathController.route.ElementData;
         
         TargetController = null;
 
@@ -127,7 +130,7 @@ public class LayoutSection : MonoBehaviour
         if (DisplayTargetController == null) return;
 
         PreviousTargetController = DisplayTargetController;
-        PreviousTargetControllerData = (GeneralData)DisplayTargetController.PathController.route.data.elementData;
+        PreviousTargetControllerData = DisplayTargetController.PathController.route.ElementData;
 
         DisplayTargetController.CloseSegments();
     }
@@ -142,7 +145,7 @@ public class LayoutSection : MonoBehaviour
     {
         if (dataEditor.Loaded)
             dataEditor.CancelEdit();
-        
+
         if (previousElementDataList != null)
         {
             previousElementDataList.ForEach(x => x.ClearChanges());
@@ -150,7 +153,7 @@ public class LayoutSection : MonoBehaviour
             previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
                                 .ForEach(x => x.DataElement.UpdateElement());
         }
-        
+
         if (!Active) dataEditor = null;
     }
 

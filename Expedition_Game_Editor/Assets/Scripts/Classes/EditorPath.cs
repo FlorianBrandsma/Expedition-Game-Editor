@@ -20,7 +20,7 @@ public class EditorPath
             return;
         }
 
-        switch (editorElement.DataElement.GeneralData.DataType)
+        switch (editorElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.Chapter:
 
@@ -313,7 +313,7 @@ public class EditorPath
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + editorElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + editorElement.DataElement.ElementData.DataType); break;
         }
     }
 }

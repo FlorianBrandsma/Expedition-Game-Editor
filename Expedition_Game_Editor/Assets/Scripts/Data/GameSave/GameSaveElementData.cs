@@ -1,48 +1,55 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class GameSaveElementData : GeneralData, IElementData
+public class GameSaveElementData : GameSaveData, IElementData
 {
-    public PlayerSaveElementData playerSaveData;
+    public DataElement DataElement                  { get; set; }
 
-    public List<ChapterSaveElementData> chapterSaveDataList;
-    public List<PhaseSaveElementData> phaseSaveDataList;
-    public List<QuestSaveElementData> questSaveDataList;
-    public List<ObjectiveSaveElementData> objectiveSaveDataList;
-    public List<TaskSaveElementData> taskSaveDataList;
-    public List<InteractionSaveElementData> interactionSaveDataList;
+    public GameSaveData OriginalData                { get; set; }
 
-    public DataElement DataElement { get; set; }
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameSave; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
     public bool Changed { get; set; }
+    #endregion
 
     public void Update() { }
 
     public void UpdateSearch() { }
 
-    public void UpdateIndex() { }
-
     public void SetOriginalValues()
     {
-        chapterSaveDataList.ForEach(x => x.SetOriginalValues());
-        phaseSaveDataList.ForEach(x => x.SetOriginalValues());
-        questSaveDataList.ForEach(x => x.SetOriginalValues());
-        objectiveSaveDataList.ForEach(x => x.SetOriginalValues());
-        taskSaveDataList.ForEach(x => x.SetOriginalValues());
-        interactionSaveDataList.ForEach(x => x.SetOriginalValues());
+        OriginalData = base.Clone();
+
+        ClearChanges();
     }
 
-    public void GetOriginalValues() { }
-
-    public void ClearChanges() { }
-
-    public IElementData Clone()
+    public void ClearChanges()
     {
-        var elementData = new EditorWorldElementData();
+        if (!Changed) return;
 
-        CloneGeneralData(elementData);
-
-        return elementData;
+        GetOriginalValues();
     }
 
-    new public virtual void Copy(IElementData dataSource) { }
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameSaveElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

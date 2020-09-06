@@ -6,7 +6,7 @@ using System.Linq;
 
 public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 {
-    private PhaseElementData PhaseData { get { return (PhaseElementData)DataEditor.Data.elementData; } }
+    private PhaseElementData PhaseData { get { return (PhaseElementData)DataEditor.ElementData; } }
     
     public Text nameText;
     public Text stateText;
@@ -25,16 +25,18 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         searchParameters.phaseId = new List<int>() { PhaseData.Id };
-        
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
-        
-        var regionData = SegmentController.DataController.DataList.Cast<RegionElementData>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
-        regionData.type = Enums.RegionType.Party;
+
+        SegmentController.DataController.GetData(searchProperties);
+
+        var regionData = SegmentController.DataController.Data.dataList.Cast<RegionElementData>().Where(x => x.Id == PhaseData.DefaultRegionId).FirstOrDefault();
+        regionData.Type = Enums.RegionType.Party;
+
+        editButton.Data = SegmentController.DataController.Data;
+        editButton.Id = regionData.Id;
 
         editButton.Path = SegmentController.EditorController.PathController.route.path;
-
-        editButton.data = new DataElement.Data(SegmentController.DataController, regionData);
-        buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.objectGraphicIconPath);
+        
+        buttonIcon.texture = Resources.Load<Texture2D>(PhaseData.ModelIconPath);
     }
 
     public void InitializeDependencies()
@@ -47,8 +49,8 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        nameText.text = PhaseData.interactableName;
-        locationText.text = PhaseData.locationName;
+        nameText.text = PhaseData.InteractableName;
+        locationText.text = PhaseData.LocationName;
         timeText.text = TimeManager.FormatTime(PhaseData.DefaultTime);
 
         InitializeEditButton();

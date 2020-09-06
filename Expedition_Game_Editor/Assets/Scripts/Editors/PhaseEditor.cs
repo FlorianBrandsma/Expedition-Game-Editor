@@ -4,20 +4,22 @@ using System.Linq;
 
 public class PhaseEditor : MonoBehaviour, IEditor
 {
-    public PhaseElementData PhaseData { get { return (PhaseElementData)Data.elementData; } }
-    
-    private List<RegionElementData> regionDataList = new List<RegionElementData>();
-    public List<RegionElementData> RegionDataList { get { return regionDataList; } }
+    public PhaseData phaseData;
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    public List<RegionElementData> regionDataList = new List<RegionElementData>();
+
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == phaseData.Id).FirstOrDefault(); } }
+
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(PhaseData).Concat(new[] { PhaseData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -26,16 +28,15 @@ public class PhaseEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
     }
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
-    public List<SegmentController> EditorSegments { get { return editorSegments; } }
-
     public void InitializeEditor() { }
+
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -56,18 +57,10 @@ public class PhaseEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        PhaseData.Update();
+        EditData.Update();
 
-        ElementDataList.ForEach(x =>
-        {
-            if (((GeneralData)x).Equals(PhaseData))
-                x.Copy(PhaseData);
-            else
-                x.Update();
-
-            if (SelectionElementManager.SelectionActive(x.DataElement))
-                x.DataElement.UpdateElement();
-        });
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
         UpdateEditor();
     }

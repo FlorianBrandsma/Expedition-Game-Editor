@@ -14,14 +14,15 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     internal class ActionData
     {
-        public Route.Data data;
+        public Data data;
+        public IElementData elementData;
         public bool reset;
         public List<int> idFilter = new List<int>();
 
-        public ActionData(Route.Data data)
+        public ActionData(Data data)
         {
-            this.data = new Route.Data(data);
-            this.data.elementData = data.elementData.Clone();
+            //this.data = new Data(data.dataController);
+            //this.elementData = data.elementData.Clone();
         }
     }
     
@@ -40,7 +41,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         structureList = path.routeList.Where(x => x.data.dataController != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
                                   .Select(x => x.data.dataController.DataType).Distinct().ToList();
         
-        regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Copy();
+        regionRoute = PathController.route.path.FindLastRoute(Enums.DataType.Region).Clone();
 
         InitializeData();
 
@@ -49,7 +50,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             int index = (int)RegionManager.activeDisplay;
 
-            regionRoute.controller = index;
+            regionRoute.controllerIndex = index;
 
             if (RegionManager.activeDisplay == RegionManager.Display.World)
             {
@@ -59,18 +60,18 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             if (RegionManager.regionType == Enums.RegionType.InteractionDestination)
             {
                 //Must copy route or the source will have its values changed
-                var interactionDestinationRoute = PathController.route.path.FindLastRoute(Enums.DataType.InteractionDestination).Copy();
+                var interactionDestinationRoute = PathController.route.path.FindLastRoute(Enums.DataType.InteractionDestination).Clone();
 
-                interactionDestinationRoute.controller = (int)Enums.WorldSelectionType.InteractionDestination;
+                interactionDestinationRoute.controllerIndex = (int)Enums.WorldSelectionType.InteractionDestination;
                 interactionDestinationRoute.selectionStatus = Enums.SelectionStatus.Main;
 
                 path.Add(interactionDestinationRoute);
 
             } else if (RegionManager.regionType == Enums.RegionType.Party) {
 
-                var phaseRoute = PathController.route.path.FindLastRoute(Enums.DataType.Phase).Copy();
+                var phaseRoute = PathController.route.path.FindLastRoute(Enums.DataType.Phase).Clone();
 
-                phaseRoute.controller = (int)Enums.WorldSelectionType.Party;
+                phaseRoute.controllerIndex = (int)Enums.WorldSelectionType.Party;
                 phaseRoute.selectionStatus = Enums.SelectionStatus.Main;
 
                 path.Add(phaseRoute);
@@ -86,8 +87,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         InitializeStructureData();
 
-        var regionData = (RegionElementData)regionRoute.data.elementData;
-        RegionManager.regionType = regionData.type;
+        var regionData = (RegionElementData)regionRoute.ElementData;
+        RegionManager.regionType = regionData.Type;
 
         if (PathController.route.path.type == Path.Type.New)
         {
@@ -120,11 +121,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             var route = PathController.route.path.FindLastRoute(dataType);
             var mainRoute = PathController.layoutSection.EditorForm.activePath.FindLastRoute(dataType);
 
-            if (route.GeneralData.Id != mainRoute.GeneralData.Id)
-                actionData.data.elementData = mainRoute.data.elementData;
+            if (route.ElementData.Id != mainRoute.ElementData.Id)
+                actionData.elementData = mainRoute.ElementData;
 
             if (actionData.data.dataController.DataType == Enums.DataType.Interaction)
-                CheckTime((InteractionElementData)actionData.data.elementData);
+                CheckTime((InteractionElementData)actionData.elementData);
 
             //World interactable doesn't always reset as the id can be the same in multiple objectives
             if (!ListContainsElement(actionData))
@@ -143,15 +144,15 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     
     private bool ListContainsElement(ActionData actionData)
     {
-        return actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.elementData.Id);
+        return actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.elementData.Id);
     }
     
     private void CheckTime(IElementData elementData)
     {
         var interactionData = (InteractionElementData)elementData;
 
-        var startTime   = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.defaultTimes) : interactionData.StartTime;
-        var endTime     = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.defaultTimes) : interactionData.EndTime;
+        var startTime   = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.DefaultTimes) : interactionData.StartTime;
+        var endTime     = interactionData.Default ? TimeManager.instance.DefaultTime(interactionData.DefaultTimes) : interactionData.EndTime;
 
         if (!TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, startTime, endTime))
             TimeManager.instance.SetEditorTime(startTime);
@@ -160,7 +161,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void ResetData(ActionData actionData)
     {
         if (actionData.data.dataController.DataType == Enums.DataType.InteractionDestination)
-            GetInteractionDestinationDependencies(actionData.data.elementData);
+            GetInteractionDestinationDependencies(actionData.elementData);
 
         GetData(actionData.data.dataController);
     }
@@ -170,23 +171,23 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var interactionDestinationData = (InteractionDestinationElementData)elementData;
 
         var interactionAction = FindActionByDataType(Enums.DataType.Interaction);
-        interactionAction.data.elementData.Id = interactionDestinationData.InteractionId;
+        interactionAction.elementData.Id = interactionDestinationData.InteractionId;
 
         var taskAction = FindActionByDataType(Enums.DataType.Task);
-        taskAction.data.elementData.Id = interactionDestinationData.taskId;
+        taskAction.elementData.Id = interactionDestinationData.TaskId;
 
         var worldInteractableAction = FindActionByDataType(Enums.DataType.WorldInteractable);
-        worldInteractableAction.data.elementData.Id = interactionDestinationData.worldInteractableId;
+        worldInteractableAction.elementData.Id = interactionDestinationData.WorldInteractableId;
 
         var questAction = FindActionByDataType(Enums.DataType.Quest);
 
         if (questAction != null)
-            questAction.data.elementData.Id = interactionDestinationData.questId;
+            questAction.elementData.Id = interactionDestinationData.QuestId;
 
         var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
 
         if (objectiveAction != null)
-            objectiveAction.data.elementData.Id = interactionDestinationData.objectiveId;
+            objectiveAction.elementData.Id = interactionDestinationData.ObjectiveId;
     }
 
     #region Data Filter
@@ -326,7 +327,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     private void InitializePath(IElementData elementData, int index)
     {
-        actionDataList[index].data.elementData = elementData;
+        actionDataList[index].elementData = elementData;
 
         var path = PathController.route.path;
 
@@ -360,8 +361,12 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         }
         
         var actionData = FindActionByDataType(dataController.DataType);
+        
+        dataController.GetData(searchProperties);
 
-        actionData.data.dataList = RenderManager.GetData(dataController, searchProperties);
+        //DataManager.GetData(dataController, searchProperties);
+
+        //actionData.data = dataController.Data;
 
         SelectOption(dataController.DataType);
     }
@@ -376,19 +381,19 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void GetPhaseData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
-        searchParameters.chapterId = new List<int>() { FindActionByDataType(Enums.DataType.Chapter).data.elementData.Id };
+        searchParameters.chapterId = new List<int>() { FindActionByDataType(Enums.DataType.Chapter).elementData.Id };
     }
 
     private void GetQuestData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
-        searchParameters.phaseId = new List<int>() { FindActionByDataType(Enums.DataType.Phase).data.elementData.Id };
+        searchParameters.phaseId = new List<int>() { FindActionByDataType(Enums.DataType.Phase).elementData.Id };
     }
 
     private void GetObjectiveData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
-        searchParameters.questId = new List<int>() { FindActionByDataType(Enums.DataType.Quest).data.elementData.Id };
+        searchParameters.questId = new List<int>() { FindActionByDataType(Enums.DataType.Quest).elementData.Id };
     }
 
     private void GetWorldInteractableData(SearchProperties searchProperties)
@@ -402,16 +407,16 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
 
-            searchParameters.questId        = new List<int>() { questAction.data.elementData.Id };
-            searchParameters.objectiveId    = new List<int>() { objectiveAction.data.elementData.Id };
+            searchParameters.questId        = new List<int>() { questAction.elementData.Id };
+            searchParameters.objectiveId    = new List<int>() { objectiveAction.elementData.Id };
 
         } else {
 
             searchParameters.requestType = Search.WorldInteractable.RequestType.GetRegionWorldInteractables;
 
-            var regionRoute = FindActionByDataType(Enums.DataType.Region);
+            var regionAction = FindActionByDataType(Enums.DataType.Region);
 
-            searchParameters.regionId = new List<int>() { regionRoute.data.elementData.Id };
+            searchParameters.regionId = new List<int>() { regionAction.elementData.Id };
 
             searchParameters.objectiveId = new List<int>() { 0 };
         }
@@ -424,21 +429,21 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
 
         if(objectiveAction != null)
-            searchParameters.objectiveId = new List<int>() { objectiveAction.data.elementData.Id };
+            searchParameters.objectiveId = new List<int>() { objectiveAction.elementData.Id };
 
-        searchParameters.worldInteractableId = new List<int>() { FindActionByDataType(Enums.DataType.WorldInteractable).data.elementData.Id };
+        searchParameters.worldInteractableId = new List<int>() { FindActionByDataType(Enums.DataType.WorldInteractable).elementData.Id };
     }
 
     private void GetInteractionData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
-        searchParameters.taskId = new List<int>() { FindActionByDataType(Enums.DataType.Task).data.elementData.Id };
+        searchParameters.taskId = new List<int>() { FindActionByDataType(Enums.DataType.Task).elementData.Id };
     }
 
     private void GetInteractionDestinationData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
-        searchParameters.interactionId = new List<int>() { FindActionByDataType(Enums.DataType.Interaction).data.elementData.Id };
+        searchParameters.interactionId = new List<int>() { FindActionByDataType(Enums.DataType.Interaction).elementData.Id };
     }
 
     private void GetRegionData(SearchProperties searchProperties)
@@ -451,7 +456,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         if (phaseAction != null)
         {
-            var phaseData = (PhaseElementData)phaseAction.data.elementData;
+            var phaseData = (PhaseElementData)phaseAction.elementData;
             phaseId = phaseData.Id;
         }
 
@@ -459,7 +464,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         if (phaseSaveAction != null)
         {
-            var phaseSaveData = (PhaseSaveElementData)phaseSaveAction.data.elementData;
+            var phaseSaveData = (PhaseSaveElementData)phaseSaveAction.elementData;
             phaseId = phaseSaveData.PhaseId;
         }
 
@@ -471,7 +476,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
         searchParameters.requestType = Search.PhaseSave.RequestType.GetPhaseSaveByChapter;
 
-        var chapterSaveData = (ChapterSaveElementData)FindActionByDataType(Enums.DataType.ChapterSave).data.elementData;
+        var chapterSaveData = (ChapterSaveElementData)FindActionByDataType(Enums.DataType.ChapterSave).elementData;
         searchParameters.chapterId = new List<int>() { chapterSaveData.ChapterId };
     }
     #endregion
@@ -498,9 +503,9 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             default: Debug.Log("CASE MISSING: " + dataType); break;
         }
 
-        var data = FindActionByDataType(dataType).data;
+        var action = FindActionByDataType(dataType);
 
-        int selectedIndex = actionData.data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == data.elementData.Id);
+        int selectedIndex = actionData.data.dataList.FindIndex(x => x.Id == action.elementData.Id);
 
         dropdown.Dropdown.value = selectedIndex;
 
@@ -535,7 +540,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetWorldInteractableOptions(ExDropdown dropdown, ActionData actionData)
     {
         var elementDataList = actionData.data.dataList.Cast<WorldInteractableElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.InteractableName)));
     }
 
     private void SetTaskOptions(ExDropdown dropdown, ActionData actionData)
@@ -565,13 +570,13 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetChapterSaveOptions(ExDropdown dropdown, ActionData actionData)
     {
         var elementDataList = actionData.data.dataList.Cast<ChapterSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseSaveOptions(ExDropdown dropdown, ActionData actionData)
     {
         var elementDataList = actionData.data.dataList.Cast<PhaseSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
     #endregion
 
@@ -587,11 +592,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         } else {
 
-            if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.data.elementData.Id))
-                actionData.data.elementData = actionData.data.dataList.First();
+            if (!actionData.data.dataList.Select(y => y.Id).ToList().Contains(actionData.elementData.Id))
+                actionData.elementData = actionData.data.dataList.First();
 
             //Assigns an element from the data list as the main element so that it may be editted instead of the clone
-            actionData.data.elementData = actionData.data.dataList.First(x => x.Id == actionData.data.elementData.Id);
+            actionData.elementData = actionData.data.dataList.First(x => x.Id == actionData.elementData.Id);
 
             PathController.route.path.ReplaceAllData(actionData.data);
         }
@@ -603,7 +608,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         SelectValidInteraction(actionData);
         
-        InitializePath(actionData.data.elementData, actionDataList.IndexOf(actionData));
+        InitializePath(actionData.elementData, actionDataList.IndexOf(actionData));
     }
 
     private void SelectValidInteraction(ActionData actionData)
@@ -611,7 +616,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         var interactionDataList = actionData.data.dataList.Cast<InteractionElementData>().ToList();
         var validInteraction = interactionDataList.Where(x => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, x.StartTime, x.EndTime) || x.Default).OrderBy(x => x.Default).First();
 
-        actionData.data.elementData = validInteraction;
+        actionData.elementData = validInteraction;
     }
 
     private ActionData FindActionByDataType(Enums.DataType dataType)

@@ -9,7 +9,6 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
     private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies()
@@ -27,9 +26,9 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
         var searchProperties = new SearchProperties(Enums.DataType.InteractionDestination);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
-        searchParameters.interactionId = new List<int>() { InteractionEditor.InteractionData.Id };
+        searchParameters.interactionId = new List<int>() { InteractionEditor.interactionData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void InitializeSegment() { }

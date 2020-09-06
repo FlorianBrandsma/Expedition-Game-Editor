@@ -3,24 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterInteractableDataManager : IDataManager
+public static class ChapterInteractableDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ChapterInteractableBaseData> chapterInteractableDataList;
 
-    private List<ChapterInteractableData> chapterInteractableDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public ChapterInteractableDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();
         
@@ -29,82 +20,82 @@ public class ChapterInteractableDataManager : IDataManager
         if (chapterInteractableDataList.Count == 0) return new List<IElementData>();
 
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from chapterInteractableData    in chapterInteractableDataList
-                    join interactableData           in interactableDataList     on chapterInteractableData.interactableId   equals interactableData.id
-                    join objectGraphicData          in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.id
-                    join iconData                   in iconDataList             on objectGraphicData.iconId                 equals iconData.id
+                    join interactableData           in interactableDataList     on chapterInteractableData.InteractableId   equals interactableData.Id
+                    join modelData                  in modelDataList            on interactableData.ModelId                 equals modelData.Id
+                    join iconData                   in iconDataList             on modelData.IconId                         equals iconData.Id
                     select new ChapterInteractableElementData()
                     {
-                        Id = chapterInteractableData.id,
+                        Id = chapterInteractableData.Id,
 
-                        ChapterId = chapterInteractableData.chapterId,
-                        InteractableId = chapterInteractableData.interactableId,
+                        ChapterId = chapterInteractableData.ChapterId,
+                        InteractableId = chapterInteractableData.InteractableId,
 
-                        interactableName = interactableData.name,
-                        objectGraphicIconPath = iconData.path
+                        InteractableName = interactableData.Name,
+                        ModelIconPath = iconData.Path
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetChapterInteractableData(Search.ChapterInteractable searchParameters)
+    private static void GetChapterInteractableData(Search.ChapterInteractable searchParameters)
     {
-        chapterInteractableDataList = new List<ChapterInteractableData>();
+        chapterInteractableDataList = new List<ChapterInteractableBaseData>();
 
-        foreach (Fixtures.ChapterInteractable chapterInteractable in Fixtures.chapterInteractableList)
+        foreach (ChapterInteractableBaseData chapterInteractable in Fixtures.chapterInteractableList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(chapterInteractable.id)) continue;
-            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.chapterId)) continue;
-            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.interactableId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(chapterInteractable.Id)) continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.ChapterId)) continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.InteractableId)) continue;
 
-            var chapterInteractableData = new ChapterInteractableData();
+            var chapterInteractableData = new ChapterInteractableBaseData();
 
-            chapterInteractableData.id = chapterInteractable.id;
+            chapterInteractableData.Id = chapterInteractable.Id;
 
-            chapterInteractableData.chapterId = chapterInteractable.chapterId;
-            chapterInteractableData.interactableId = chapterInteractable.interactableId;
+            chapterInteractableData.ChapterId = chapterInteractable.ChapterId;
+            chapterInteractableData.InteractableId = chapterInteractable.InteractableId;
 
             chapterInteractableDataList.Add(chapterInteractableData);
         }
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = chapterInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = chapterInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class ChapterInteractableData
+    public static void UpdateData(ChapterInteractableElementData elementData)
     {
-        public int id;
-
-        public int chapterId;
-        public int interactableId;
+        var data = Fixtures.chapterInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedInteractableId)
+            data.InteractableId = elementData.InteractableId;
     }
 }

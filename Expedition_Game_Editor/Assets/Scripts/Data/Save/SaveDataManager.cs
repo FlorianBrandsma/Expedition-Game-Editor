@@ -3,34 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SaveDataManager : IDataManager
+public static class SaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<SaveBaseData> saveDataList;
 
-    private List<SaveData> saveDataList;
+    private static List<PlayerSaveBaseData> playerSaveDataList;
 
-    private DataManager dataManager = new DataManager();
+    private static List<PartyMemberBaseData> partyMemberDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private List<DataManager.PlayerSaveData> playerSaveDataList;
+    private static List<RegionBaseData> regionDataList;
+    private static List<TerrainBaseData> terrainDataList;
+    private static List<TileSetBaseData> tileSetDataList;
 
-    private List<DataManager.PartyMemberData> partyMemberDataList;
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
+    private static List<PhaseBaseData> phaseDataList;
+    private static List<ChapterBaseData> chapterDataList;
 
-    private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TerrainData> terrainDataList;
-    private List<DataManager.TileSetData> tileSetDataList;
-
-    private List<DataManager.PhaseData> phaseDataList;
-    private List<DataManager.ChapterData> chapterDataList;
-
-    public SaveDataManager(SaveController saveController)
-    {
-        DataController = saveController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Save>().First();
 
@@ -42,7 +33,7 @@ public class SaveDataManager : IDataManager
 
         GetPartyMemberData();
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         GetRegionData();
@@ -53,29 +44,31 @@ public class SaveDataManager : IDataManager
         GetChapterData();
 
         var list = (from saveData in saveDataList
-                    join playerSaveData     in playerSaveDataList       on saveData.id                      equals playerSaveData.saveId
+                    join playerSaveData     in playerSaveDataList       on saveData.Id                      equals playerSaveData.SaveId
 
-                    join partyMemberData    in partyMemberDataList      on playerSaveData.partyMemberId     equals partyMemberData.id
-                    join interactableData   in interactableDataList     on partyMemberData.interactableId   equals interactableData.id
-                    join objectGraphicData  in objectGraphicDataList    on interactableData.objectGraphicId equals objectGraphicData.id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                    join partyMemberData    in partyMemberDataList      on playerSaveData.PartyMemberId     equals partyMemberData.Id
+                    join interactableData   in interactableDataList     on partyMemberData.InteractableId   equals interactableData.Id
+                    join modelData          in modelDataList            on interactableData.ModelId         equals modelData.Id
+                    join iconData           in iconDataList             on modelData.IconId                 equals iconData.Id
 
-                    join regionData         in regionDataList           on playerSaveData.regionId          equals regionData.id
-                    join tileSetData        in tileSetDataList          on regionData.tileSetId             equals tileSetData.id
+                    join regionData         in regionDataList           on playerSaveData.RegionId          equals regionData.Id
+                    join tileSetData        in tileSetDataList          on regionData.TileSetId             equals tileSetData.Id
 
-                    join phaseData          in phaseDataList            on regionData.phaseId               equals phaseData.id
-                    join chapterData        in chapterDataList          on phaseData.chapterId              equals chapterData.id
+                    join phaseData          in phaseDataList            on regionData.PhaseId               equals phaseData.Id
+                    join chapterData        in chapterDataList          on phaseData.ChapterId              equals chapterData.Id
                     select new SaveElementData()
                     {
-                        Id = saveData.id,
-                        GameId = saveData.gameId,
+                        Id = saveData.Id,
+                        Index = saveData.Index,
 
-                        objectGraphicIconPath = iconData.path,
+                        GameId = saveData.GameId,
 
-                        name = "Ch. " + (chapterData.index + 1) + ": " + chapterData.name,
-                        locationName = RegionManager.LocationName(playerSaveData.positionX, playerSaveData.positionZ, tileSetData.tileSize, regionData, terrainDataList),
+                        ModelIconPath = iconData.Path,
 
-                        time = TimeManager.TimeFromSeconds(playerSaveData.playedSeconds)
+                        Name = "Ch. " + (chapterData.Index + 1) + ": " + chapterData.Name,
+                        LocationName = RegionManager.LocationName(playerSaveData.PositionX, playerSaveData.PositionZ, tileSetData.TileSize, regionData, terrainDataList),
+
+                        Time = TimeManager.TimeFromSeconds(playerSaveData.PlayedTime)
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -84,110 +77,108 @@ public class SaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetSaveData(Search.Save searchParameters)
+    private static void GetSaveData(Search.Save searchParameters)
     {
-        saveDataList = new List<SaveData>();
+        saveDataList = new List<SaveBaseData>();
 
-        foreach (Fixtures.Save save in Fixtures.saveList)
+        foreach (SaveBaseData save in Fixtures.saveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.id))          continue;
-            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.gameId))  continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.Id))          continue;
+            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.GameId))  continue;
 
-            var saveData = new SaveData();
+            var saveData = new SaveBaseData();
 
-            saveData.id = save.id;
+            saveData.Id = save.Id;
+            saveData.Index = save.Index;
 
-            saveData.gameId = save.gameId;
+            saveData.GameId = save.GameId;
 
             saveDataList.Add(saveData);
         }
     }
 
-    internal void GetPlayerSaveData()
+    private static void GetPlayerSaveData()
     {
         var searchParameters = new Search.PlayerSave();
-        searchParameters.saveId = saveDataList.Select(x => x.id).Distinct().ToList();
+        searchParameters.saveId = saveDataList.Select(x => x.Id).Distinct().ToList();
 
-        playerSaveDataList = dataManager.GetPlayerSaveData(searchParameters);
+        playerSaveDataList = DataManager.GetPlayerSaveData(searchParameters);
     }
 
-    internal void GetPartyMemberData()
+    private static void GetPartyMemberData()
     {
         var searchParameters = new Search.PartyMember();
-        searchParameters.id = playerSaveDataList.Select(x => x.partyMemberId).Distinct().ToList();
+        searchParameters.id = playerSaveDataList.Select(x => x.PartyMemberId).Distinct().ToList();
 
-        partyMemberDataList = dataManager.GetPartyMemberData(searchParameters);
+        partyMemberDataList = DataManager.GetPartyMemberData(searchParameters);
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var searchParameters = new Search.Interactable();
-        searchParameters.id = partyMemberDataList.Select(x => x.interactableId).Distinct().ToList();
+        searchParameters.id = partyMemberDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(searchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var searchParameters = new Search.ObjectGraphic();
-        searchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(searchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var searchParameters = new Search.Icon();
-        searchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(searchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    internal void GetRegionData()
+    private static void GetRegionData()
     {
         var searchParameters = new Search.Region();
-        searchParameters.id = playerSaveDataList.Select(x => x.regionId).Distinct().ToList();
+        searchParameters.id = playerSaveDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = dataManager.GetRegionData(searchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
-    internal void GetTerrainData()
+    private static void GetTerrainData()
     {
         var searchParameters = new Search.Terrain();
-        searchParameters.regionId = regionDataList.Select(x => x.id).Distinct().ToList();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = dataManager.GetTerrainData(searchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
-    private void GetTileSetData()
+    private static void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    internal void GetPhaseData()
+    private static void GetPhaseData()
     {
         var searchParameters = new Search.Phase();
-        searchParameters.id = regionDataList.Select(x => x.phaseId).Distinct().ToList();
+        searchParameters.id = regionDataList.Select(x => x.PhaseId).Distinct().ToList();
 
-        phaseDataList = dataManager.GetPhaseData(searchParameters);
+        phaseDataList = DataManager.GetPhaseData(searchParameters);
     }
 
-    internal void GetChapterData()
+    private static void GetChapterData()
     {
         var searchParameters = new Search.Chapter();
-        searchParameters.id = phaseDataList.Select(x => x.chapterId).Distinct().ToList();
+        searchParameters.id = phaseDataList.Select(x => x.ChapterId).Distinct().ToList();
 
-        chapterDataList = dataManager.GetChapterData(searchParameters);
+        chapterDataList = DataManager.GetChapterData(searchParameters);
     }
 
-    internal class SaveData
+    public static void UpdateData(SaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int gameId;
+        var data = Fixtures.saveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
     }
 }

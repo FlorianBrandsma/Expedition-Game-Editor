@@ -17,7 +17,7 @@ public class Search
         public RequestType requestType;
     }
 
-    public class ObjectGraphic
+    public class Model
     {
         public List<int> id = new List<int>();
 
@@ -199,7 +199,7 @@ public class Search
         public List<int> questId = new List<int>();
         public List<int> objectiveId = new List<int>();
         public List<int> interactableId = new List<int>();
-        public List<int> objectGraphicId = new List<int>();
+        public List<int> modelId = new List<int>();
 
         public int isDefault = -1;
 

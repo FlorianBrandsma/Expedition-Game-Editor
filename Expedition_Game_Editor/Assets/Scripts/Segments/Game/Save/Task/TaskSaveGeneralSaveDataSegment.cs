@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TaskSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private TaskSaveElementData TaskSaveData { get { return (TaskSaveElementData)DataEditor.Data.elementData; } }
+    private TaskSaveElementData TaskSaveData { get { return (TaskSaveElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

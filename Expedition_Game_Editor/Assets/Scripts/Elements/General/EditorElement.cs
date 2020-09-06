@@ -69,9 +69,9 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void SetOverlay()
     {
-        if (DataElement.data.elementData == null) return;
+        if (DataElement.ElementData == null) return;
 
-        if (child != null)
+        if (child != null && child.isActiveAndEnabled)
             child.SetOverlay();
 
         SetSelection();
@@ -82,12 +82,20 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         if (selectionStatus == Enums.SelectionStatus.None || glow == null) return;
 
+        //Debug.Log(DataElement.ElementData.Id + ":" + selectionStatus + ":" + DataElement.ElementData.SelectionStatus);
+
+        //Debug.Log(this + ":" + selectionStatus + ":" + DataElement.ElementData.SelectionStatus);
+
         //Kind of a band-aid fix, but it works (for now)
         //Cancelling selection after changing index cancels all selections
-        if (selectionStatus == DataElement.data.elementData.SelectionStatus || DataElement.data.elementData.SelectionStatus == Enums.SelectionStatus.Both)
+        if (selectionStatus == DataElement.ElementData.SelectionStatus || DataElement.ElementData.SelectionStatus == Enums.SelectionStatus.Both)
+        {
             glow.SetActive(true);
-        else
+
+        } else {
+
             glow.SetActive(false);
+        }
     }
 
     public void SetStatus()
@@ -149,7 +157,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
             case SelectionManager.Property.Get:
 
-                var elementData = DataElement.data.elementData;
+                var elementData = DataElement.ElementData;
 
                 RenderManager.Render(editorPath.path);
 
@@ -158,7 +166,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
                 break;
 
             case SelectionManager.Property.Set:
-                SelectionManager.SelectSet(DataElement.data.elementData);
+                SelectionManager.SelectSet(DataElement.ElementData);
                 break;
 
             case SelectionManager.Property.Enter:
@@ -175,7 +183,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
             case SelectionManager.Property.Toggle:
 
-                DataElement.data.dataController.ToggleElement(this);
+                DataElement.Data.dataController.ToggleElement(this);
 
                 break;
 
@@ -193,7 +201,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     
     public void CloseElement()
     {
-        if (DataElement.data.elementData == null) return;
+        if (DataElement.ElementData == null) return;
 
         ResetStatus();
 
@@ -203,7 +211,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
         gameObject.SetActive(false);
 
-        if (child != null)
+        if (child != null && child.isActiveAndEnabled)
             child.CloseElement();
     }
 
@@ -221,14 +229,16 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void CancelSelection()
     {
-        if (DataElement.data.elementData == null) return;
+        if (DataElement.ElementData == null) return;
 
-        DataElement.data.elementData.SelectionStatus = Enums.SelectionStatus.None;
+        DataElement.ElementData.SelectionStatus = Enums.SelectionStatus.None;
 
         if (glow != null)
+        {
             glow.SetActive(false);
+        }
 
-        if (child != null)
+        if (child != null && child.isActiveAndEnabled)
             child.CancelSelection();
     }
 }

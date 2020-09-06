@@ -35,7 +35,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     
     public void SetData()
     {
-        SetData(DataController.DataList);
+        SetData(DataController.Data.dataList);
     }
 
     public void SetData(List<IElementData> list)
@@ -46,7 +46,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
         CloseInactiveElements();
 
-        foreach (GameTerrainElementData terrainData in RegionData.terrainDataList)
+        foreach (GameTerrainElementData terrainData in RegionData.TerrainDataList)
             SetTerrain(terrainData);
         
         //Set elements that are not bound to a tile
@@ -57,13 +57,13 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     
     private void SetTerrain(GameTerrainElementData terrainData)
     {
-        if (!activeRect.Overlaps(terrainData.gridElement.rect, true)) return;
+        if (!activeRect.Overlaps(terrainData.GridElement.rect, true)) return;
 
-        foreach (GameTerrainTileElementData terrainTileData in terrainData.terrainTileDataList)
+        foreach (GameTerrainTileElementData terrainTileData in terrainData.TerrainTileDataList)
         {
-            if (activeRect.Overlaps(terrainTileData.gridElement.rect, true))
+            if (activeRect.Overlaps(terrainTileData.GridElement.rect, true))
             {
-                if(!terrainTileData.active)
+                if(!terrainTileData.Active)
                 {
                     SetTerrainTile(terrainTileData);
                     
@@ -82,49 +82,49 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetTerrainTile(GameTerrainTileElementData terrainTileData)
     {
-        Tile prefab = Resources.Load<Tile>("Objects/Tile/" + RegionData.tileSetName + "/" + terrainTileData.tileId);
+        Tile prefab = Resources.Load<Tile>("Objects/Tile/" + RegionData.TileSetName + "/" + terrainTileData.TileId);
 
-        Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.tileId);
+        Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.TileId);
         tileList.Add(tile);
 
         tile.gameObject.SetActive(true);
 
         tile.transform.SetParent(CameraManager.content, false);
-        tile.transform.localPosition = new Vector3(terrainTileData.gridElement.startPosition.x, tile.transform.localPosition.y, terrainTileData.gridElement.startPosition.y);
+        tile.transform.localPosition = new Vector3(terrainTileData.GridElement.startPosition.x, tile.transform.localPosition.y, terrainTileData.GridElement.startPosition.y);
 
         tile.DataType = Enums.DataType.GameTerrainTile;
         tile.ElementData = terrainTileData;
 
-        terrainTileData.active = true;
+        terrainTileData.Active = true;
     }
 
     private void SetWorldObjects(int terrainTileId = 0)
     {
-        var worldObjectDataList = RegionData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => y.terrainTileId == terrainTileId)).Cast<IElementData>().ToList();
+        var worldObjectDataList = RegionData.TerrainDataList.SelectMany(x => x.WorldObjectDataList.Where(y => y.TerrainTileId == terrainTileId)).Cast<IElementData>().ToList();
 
         SetWorldElements(worldObjectDataList);
     }
     
     private void SetWorldInteractableAgents(int terrainTileId)
     {
-        var worldInteractableAgentDataList = GameWorldData.worldInteractableDataList.Where(x => x.DataElement == null && 
-                                                                                                x.type == (int)Enums.InteractableType.Agent && 
-                                                                                                x.terrainTileId == terrainTileId).Cast<IElementData>().ToList();
+        var worldInteractableAgentDataList = GameWorldData.WorldInteractableDataList.Where(x => x.DataElement == null && 
+                                                                                                x.Type == (int)Enums.InteractableType.Agent && 
+                                                                                                x.TerrainTileId == terrainTileId).Cast<IElementData>().ToList();
         SetWorldAgents(worldInteractableAgentDataList);
     }
 
     private void SetWorldInteractableObjects(int terrainTileId)
     {
-        var worldInteractableObjectDataList = GameWorldData.worldInteractableDataList.Where(x => x.DataElement == null && 
-                                                                                                 x.type == (int)Enums.InteractableType.Object && 
-                                                                                                 x.terrainTileId == terrainTileId).Cast<IElementData>().ToList();
+        var worldInteractableObjectDataList = GameWorldData.WorldInteractableDataList.Where(x => x.DataElement == null && 
+                                                                                                 x.Type == (int)Enums.InteractableType.Object && 
+                                                                                                 x.TerrainTileId == terrainTileId).Cast<IElementData>().ToList();
 
         SetWorldElements(worldInteractableObjectDataList);
     }
 
     private void SetPartyMembers()
     {
-        var partyMemberDataList = GameWorldData.partyMemberList.Where(x => x.DataElement == null).Cast<IElementData>().ToList();
+        var partyMemberDataList = GameWorldData.PartyMemberList.Where(x => x.DataElement == null).Cast<IElementData>().ToList();
 
         SetWorldAgents(partyMemberDataList);
     }
@@ -137,16 +137,16 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         {
             var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
 
-            gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
-
-            gameWorldElement.GameElement.DataElement.data.elementData = elementData;
             elementData.DataElement = gameWorldElement.GameElement.DataElement;
 
-            //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            gameWorldElement.name = generalData.DebugName + generalData.Id;
-            //
+            gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
             
+            gameWorldElement.GameElement.DataElement.Data = DataController.Data;
+            gameWorldElement.GameElement.DataElement.Id = elementData.Id;
+
+            //Debugging
+            gameWorldElement.name = elementData.DebugName + elementData.Id;
+
             SetElement(gameWorldElement.GameElement);
         }
     }
@@ -160,13 +160,13 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
             gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
 
-            gameWorldAgent.GameElement.DataElement.data.elementData = elementData;
-            elementData.DataElement = gameWorldAgent.GameElement.DataElement;
+            gameWorldAgent.GameElement.DataElement.Data = DataController.Data;
+            gameWorldAgent.GameElement.DataElement.Id = elementData.Id;
 
+            elementData.DataElement = gameWorldAgent.GameElement.DataElement;
+            
             //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            gameWorldAgent.name = generalData.DebugName + "Agent" + generalData.Id;
-            //
+            gameWorldAgent.name = elementData.DebugName + "Agent" + elementData.Id;
 
             SetElement(gameWorldAgent.GameElement);
         }
@@ -191,7 +191,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void CloseInactiveElements()
     {
-        var inactiveTiles = tileList.Where(x => !activeRect.Overlaps(((GameTerrainTileElementData)x.ElementData).gridElement.rect, true)).ToList();
+        var inactiveTiles = tileList.Where(x => !activeRect.Overlaps(((GameTerrainTileElementData)x.ElementData).GridElement.rect, true)).ToList();
         ClearTiles(inactiveTiles);
     }
 
@@ -199,12 +199,12 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var cameraTransform = CameraManager.cam.transform;
 
-        if (cameraTransform.localPosition.x >= positionTracker.x + RegionData.tileSize ||
-            cameraTransform.localPosition.x <= positionTracker.x - RegionData.tileSize ||
-            cameraTransform.localPosition.z >= positionTracker.y + RegionData.tileSize ||
-            cameraTransform.localPosition.z <= positionTracker.y - RegionData.tileSize)
+        if (cameraTransform.localPosition.x >= positionTracker.x + RegionData.TileSize ||
+            cameraTransform.localPosition.x <= positionTracker.x - RegionData.TileSize ||
+            cameraTransform.localPosition.z >= positionTracker.y + RegionData.TileSize ||
+            cameraTransform.localPosition.z <= positionTracker.y - RegionData.TileSize)
         {
-            SetData(DataController.DataList);
+            SetData(DataController.Data.dataList);
 
             positionTracker = FixTrackerPosition(CameraManager.cam.transform.localPosition);
 
@@ -214,8 +214,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private Vector2 FixTrackerPosition(Vector3 cameraPosition)
     {
-        return new Vector2(Mathf.Floor((cameraPosition.x + (RegionData.tileSize / 2)) / RegionData.tileSize) * RegionData.tileSize,
-                           Mathf.Floor((cameraPosition.z + (RegionData.tileSize / 2)) / RegionData.tileSize) * RegionData.tileSize);
+        return new Vector2(Mathf.Floor((cameraPosition.x + (RegionData.TileSize / 2)) / RegionData.TileSize) * RegionData.TileSize,
+                           Mathf.Floor((cameraPosition.z + (RegionData.TileSize / 2)) / RegionData.TileSize) * RegionData.TileSize);
     }
 
     public void ResetData(List<IElementData> filter)
@@ -248,7 +248,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ClearWorldObjects(GameTerrainTileElementData terrainTileData)
     {
-        var inactiveWorldObjectList = RegionData.terrainDataList.SelectMany(x => x.worldObjectDataList.Where(y => y.terrainTileId == terrainTileData.Id)).ToList();
+        var inactiveWorldObjectList = RegionData.TerrainDataList.SelectMany(x => x.WorldObjectDataList.Where(y => y.TerrainTileId == terrainTileData.Id)).ToList();
 
         inactiveWorldObjectList.ForEach(x =>
         {
@@ -259,7 +259,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ClearWorldInteractables(GameTerrainTileElementData terrainTileData)
     {
-        var inactiveWorldInteractableList = GameWorldData.worldInteractableDataList.Where(x => x.terrainTileId == terrainTileData.Id).ToList();
+        var inactiveWorldInteractableList = GameWorldData.WorldInteractableDataList.Where(x => x.TerrainTileId == terrainTileData.Id).ToList();
 
         inactiveWorldInteractableList.ForEach(x =>
         {
@@ -270,7 +270,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ClearPartyMembers()
     {
-        GameWorldData.partyMemberList.ForEach(x =>
+        GameWorldData.PartyMemberList.ForEach(x =>
         {
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
             x.DataElement.Element.CloseElement();

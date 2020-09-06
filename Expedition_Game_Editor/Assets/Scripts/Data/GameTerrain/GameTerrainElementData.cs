@@ -1,41 +1,55 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class GameTerrainElementData : GeneralData, IElementData
+public class GameTerrainElementData : GameTerrainData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameTerrainElementData() : base()
-    {
-        DataType = Enums.DataType.GameTerrain;
-    }
+    public GameTerrainData OriginalData             { get; set; }
 
-    public string name;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameTerrain; } }
 
-    public GridElement gridElement;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public List<GameAtmosphereElementData> atmosphereDataList;
-    public List<GameTerrainTileElementData> terrainTileDataList;
-    public List<GameWorldInteractableElementData> worldInteractableDataList;
-    public List<GameWorldObjectElementData> worldObjectDataList;
-
-    #region ElementData
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameTerrainElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameTerrainElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

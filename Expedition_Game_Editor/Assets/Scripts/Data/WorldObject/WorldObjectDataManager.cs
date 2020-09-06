@@ -3,23 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class WorldObjectDataManager : IDataManager
+public static class WorldObjectDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<WorldObjectBaseData> worldObjectDataList;
 
-    private List<WorldObjectData> worldObjectDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public WorldObjectDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
 
@@ -27,119 +18,138 @@ public class WorldObjectDataManager : IDataManager
         
         if (worldObjectDataList.Count == 0) return new List<IElementData>();
 
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from worldObjectData    in worldObjectDataList
-                    join objectGraphicData  in objectGraphicDataList    on worldObjectData.objectGraphicId  equals objectGraphicData.id
-                    join iconData           in iconDataList             on objectGraphicData.iconId         equals iconData.id
+                    join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
+                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
                     select new WorldObjectElementData()
                     {
-                        Id = worldObjectData.id,
+                        Id = worldObjectData.Id,
 
-                        ObjectGraphicId = worldObjectData.objectGraphicId,
-                        RegionId = worldObjectData.regionId,
-                        TerrainId = worldObjectData.terrainId,
-                        TerrainTileId = worldObjectData.terrainTileId,
+                        ModelId = worldObjectData.ModelId,
+                        RegionId = worldObjectData.RegionId,
+                        TerrainId = worldObjectData.TerrainId,
+                        TerrainTileId = worldObjectData.TerrainTileId,
 
-                        PositionX = worldObjectData.positionX,
-                        PositionY = worldObjectData.positionY,
-                        PositionZ = worldObjectData.positionZ,
+                        PositionX = worldObjectData.PositionX,
+                        PositionY = worldObjectData.PositionY,
+                        PositionZ = worldObjectData.PositionZ,
 
-                        RotationX = worldObjectData.rotationX,
-                        RotationY = worldObjectData.rotationY,
-                        RotationZ = worldObjectData.rotationZ,
+                        RotationX = worldObjectData.RotationX,
+                        RotationY = worldObjectData.RotationY,
+                        RotationZ = worldObjectData.RotationZ,
 
-                        ScaleMultiplier = worldObjectData.scaleMultiplier,
+                        Scale = worldObjectData.Scale,
 
-                        Animation = worldObjectData.animation,
+                        Animation = worldObjectData.Animation,
 
-                        objectGraphicPath = objectGraphicData.path,
+                        ModelPath = modelData.Path,
 
-                        objectGraphicName = objectGraphicData.name,
-                        objectGraphicIconPath = iconData.path,
+                        ModelName = modelData.Name,
+                        ModelIconPath = iconData.Path,
 
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth
+                        Height = modelData.Height,
+                        Width = modelData.Width,
+                        Depth = modelData.Depth
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetWorldObjectData(Search.WorldObject searchParameters)
+    private static void GetWorldObjectData(Search.WorldObject searchParameters)
     {
-        worldObjectDataList = new List<WorldObjectData>();
+        worldObjectDataList = new List<WorldObjectBaseData>();
 
-        foreach (Fixtures.WorldObject worldObject in Fixtures.worldObjectList)
+        foreach (WorldObjectBaseData worldObject in Fixtures.worldObjectList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.id)) continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.regionId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.Id)) continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.RegionId)) continue;
 
-            var worldObjectData = new WorldObjectData();
+            var worldObjectData = new WorldObjectBaseData();
 
-            worldObjectData.id = worldObject.id;
+            worldObjectData.Id = worldObject.Id;
 
-            worldObjectData.objectGraphicId = worldObject.objectGraphicId;
-            worldObjectData.regionId = worldObject.regionId;
-            worldObjectData.terrainId = worldObject.terrainId;
-            worldObjectData.terrainTileId = worldObject.terrainTileId;
+            worldObjectData.ModelId = worldObject.ModelId;
+            worldObjectData.RegionId = worldObject.RegionId;
+            worldObjectData.TerrainId = worldObject.TerrainId;
+            worldObjectData.TerrainTileId = worldObject.TerrainTileId;
 
-            worldObjectData.positionX = worldObject.positionX;
-            worldObjectData.positionY = worldObject.positionY;
-            worldObjectData.positionZ = worldObject.positionZ;
+            worldObjectData.PositionX = worldObject.PositionX;
+            worldObjectData.PositionY = worldObject.PositionY;
+            worldObjectData.PositionZ = worldObject.PositionZ;
 
-            worldObjectData.rotationX = worldObject.rotationX;
-            worldObjectData.rotationY = worldObject.rotationY;
-            worldObjectData.rotationZ = worldObject.rotationZ;
+            worldObjectData.RotationX = worldObject.RotationX;
+            worldObjectData.RotationY = worldObject.RotationY;
+            worldObjectData.RotationZ = worldObject.RotationZ;
 
-            worldObjectData.scaleMultiplier = worldObject.scaleMultiplier;
+            worldObjectData.Scale = worldObject.Scale;
 
-            worldObjectData.animation = worldObject.animation;
+            worldObjectData.Animation = worldObject.Animation;
             
             worldObjectDataList.Add(worldObjectData);
         }
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = worldObjectDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = worldObjectDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class WorldObjectData
+    public static void UpdateData(WorldObjectElementData elementData)
     {
-        public int id;
+        var data = Fixtures.worldObjectList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        public int objectGraphicId;
-        public int regionId;
-        public int terrainId;
-        public int terrainTileId;
+        if (elementData.ChangedModelId)
+            data.ModelId = elementData.ModelId;
 
-        public float positionX;
-        public float positionY;
-        public float positionZ;
+        if (elementData.ChangedRegionId)
+            data.RegionId = elementData.RegionId;
+        
+        if (elementData.ChangedTerrainId)
+            data.TerrainId = elementData.TerrainId;
+        
+        if (elementData.ChangedTerrainTileId)
+            data.TerrainTileId = elementData.TerrainTileId;
 
-        public int rotationX;
-        public int rotationY;
-        public int rotationZ;
+        if (elementData.ChangedPositionX)
+            data.PositionX = elementData.PositionX;
 
-        public float scaleMultiplier;
+        if (elementData.ChangedPositionY)
+            data.PositionY = elementData.PositionY;
 
-        public int animation;
+        if (elementData.ChangedPositionZ)
+            data.PositionZ = elementData.PositionZ;
+        
+        if (elementData.ChangedRotationX)
+            data.RotationX = elementData.RotationX;
+
+        if (elementData.ChangedRotationY)
+            data.RotationY = elementData.RotationY;
+
+        if (elementData.ChangedRotationZ)
+            data.RotationZ = elementData.RotationZ;
+        
+        if (elementData.ChangedScale)
+            data.Scale = elementData.Scale;
+        
+        if (elementData.ChangedAnimation)
+            data.Animation = elementData.Animation;
     }
 }

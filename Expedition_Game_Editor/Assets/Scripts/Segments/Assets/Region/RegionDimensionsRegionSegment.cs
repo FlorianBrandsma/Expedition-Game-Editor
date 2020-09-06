@@ -4,7 +4,7 @@ using System.Linq;
 
 public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData RegionElementData { get { return (RegionElementData)DataEditor.Data.elementData; } }
+    private RegionElementData RegionElementData { get { return (RegionElementData)DataEditor.ElementData; } }
 
     #region UI
     public ExInputNumber sizeInputNumber;

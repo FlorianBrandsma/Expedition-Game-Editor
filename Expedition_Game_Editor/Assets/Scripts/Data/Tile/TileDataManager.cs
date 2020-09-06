@@ -3,22 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TileDataManager : IDataManager
+public static class TileDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<TileBaseData> tileDataList;
 
-    private List<TileData> tileDataList;
-
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.IconData> iconDataList;
-
-    public TileDataManager(TileController tileController)
-    {
-        DataController = tileController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
 
@@ -30,42 +19,34 @@ public class TileDataManager : IDataManager
 
                     select new TileElementData()
                     {
-                        Id = tileData.id,
+                        Id = tileData.Id,
 
-                        icon = tileData.iconPath
+                        Icon = tileData.IconPath
                         
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetTileData(Search.Tile searchParameters)
+    private static void GetTileData(Search.Tile searchParameters)
     {
-        tileDataList = new List<TileData>();
+        tileDataList = new List<TileBaseData>();
 
-        foreach (Fixtures.Tile tile in Fixtures.tileList)
+        foreach (TileBaseData tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.id)) continue;
-            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.tileSetId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.Id)) continue;
+            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.TileSetId)) continue;
 
-            var tileData = new TileData();
+            var tileData = new TileBaseData();
 
-            tileData.id = tile.id;
+            tileData.Id = tile.Id;
 
-            tileData.tileSetId = tile.tileSetId;
-            tileData.iconPath = tile.iconPath;
+            tileData.TileSetId = tile.TileSetId;
+            tileData.IconPath = tile.IconPath;
             
             tileDataList.Add(tileData);
         }
-    }
-
-    internal class TileData
-    {
-        public int id;
-
-        public int tileSetId;
-        public string iconPath;
     }
 }

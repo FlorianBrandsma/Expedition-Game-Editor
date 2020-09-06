@@ -5,47 +5,72 @@ using System.Collections.Generic;
 
 public class AssetHeaderSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public ModelDataController modelController;
+    private ModelElementData ModelElementData { get { return (ModelElementData)iconEditorElement.DataElement.ElementData; } }
 
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public ExIndexSwitch indexSwitch;
-    public EditorElement editorElement;
+    public EditorElement iconEditorElement;
     public InputField inputField;
     public Text idText;
-    #endregion
 
-    #region Data Variables
-    private int id;
-    private int index;
-    private int objectGraphicId;
-    private string assetName;
-    private string objectGraphicPath;
-    private string objectGraphicIconPath;
-    #endregion
+    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor { get; set; }
 
-    #region Properties
+    public int Id
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).Id;
+
+                default: return -1;
+            }
+        }
+    }
+
+    public int Index
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).Index;
+
+                default: return -1;
+            }
+        }
+    }
+
     public string Name
     {
-        get { return assetName; }
+        get
+        {
+            switch(DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).Name;
+
+                default: return "Error";
+            }
+        }
         set
         {
-            assetName = value;
-
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
 
-                    var itemData = (ItemElementData)DataEditor.Data.elementData;
+                    var itemEditor = (ItemEditor)DataEditor;
 
-                    itemData.Name = value;
+                    itemEditor.Name = value;
 
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData = (InteractableElementData)DataEditor.Data.elementData;
+                    var interactableData = (InteractableElementData)DataEditor.ElementData;
 
                     interactableData.Name = value;
 
@@ -54,84 +79,200 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         }
     }
 
-    public ObjectGraphicElementData ObjectGraphic
+    public int ModelId
     {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelId;
+
+                default: return -1;
+            }
+        }
         set
         {
-            objectGraphicId         = value.Id;
-            objectGraphicPath       = value.Path;
-            objectGraphicIconPath   = value.iconPath;
-
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
 
-                    var itemData = (ItemElementData)DataEditor.Data.elementData;
+                    var itemEditor = (ItemEditor)DataEditor;
 
-                    itemData.ObjectGraphicId        = value.Id;
-                    itemData.objectGraphicPath      = value.Path;
-                    itemData.objectGraphicIconPath  = value.iconPath;
+                    itemEditor.ModelId = value;
 
-                    break;
-
-                case Enums.DataType.Interactable:
-
-                    var interactableData = (InteractableElementData)DataEditor.Data.elementData;
-
-                    interactableData.ObjectGraphicId = value.Id;
-                    interactableData.objectGraphicPath = value.Path;
-                    interactableData.objectGraphicIconPath = value.iconPath;
-
-                    interactableData.height = value.Height;
-                    interactableData.width = value.Width;
-                    interactableData.depth = value.Depth;
-                    
                     break;
             }
         }
     }
 
-    public int ObjectGraphicId
+    public string ModelPath
     {
-        get { return objectGraphicId; }
-    }
-    #endregion
+        get
+        {
+            switch(DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelPath;
 
-    #region Methods
+                default: return "Error";
+            }
+        }
+        set
+        {
+            switch(DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+
+                    var itemEditor = (ItemEditor)DataEditor;
+
+                    itemEditor.ModelPath = value;
+
+                    break;
+            }
+        }
+    }
+
+    public string ModelIconPath
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelIconPath;
+
+                default: return "Error";
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+
+                    var itemEditor = (ItemEditor)DataEditor;
+
+                    itemEditor.ModelIconPath = value;
+
+                    break;
+            }
+        }
+    }
+
+    public float ModelHeight
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelHeight;
+
+                default: return -1;
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+
+                    var itemEditor = (ItemEditor)DataEditor;
+
+                    itemEditor.ModelHeight = value;
+
+                    break;
+            }
+        }
+    }
+
+    public float ModelWidth
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelWidth;
+
+                default: return -1;
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+
+                    var itemEditor = (ItemEditor)DataEditor;
+
+                    itemEditor.ModelWidth = value;
+
+                    break;
+            }
+        }
+    }
+
+    public float ModelDepth
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+                    return ((ItemEditor)DataEditor).ModelDepth;
+
+                default: return 404;
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Item:
+
+                    var itemEditor = (ItemEditor)DataEditor;
+
+                    itemEditor.ModelDepth = value;
+
+                    break;
+            }
+        }
+    }
+
     public void UpdateName()
     {
         Name = inputField.text;
+
         DataEditor.UpdateEditor();
     }
 
-    public void UpdateObjectGraphic(ObjectGraphicElementData objectGraphicElementData)
+    public void UpdateModel(ModelElementData modelElementData)
     {
-        ObjectGraphic = objectGraphicElementData;
+        ModelId = modelElementData.Id;
+        ModelPath = modelElementData.Path;
+        ModelIconPath = modelElementData.IconPath;
+
+        ModelHeight = modelElementData.Height;
+        ModelWidth = modelElementData.Width;
+        ModelDepth = modelElementData.Depth;
+
+        SetModelData();
+        
         DataEditor.UpdateEditor();
     }
-    #endregion
 
-    #region Segment
     public void InitializeDependencies()
     {
+        modelController.InitializeController();
+
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        editorElement.DataElement.InitializeElement(editorElement.GetComponent<IDataController>());
-
-        var objectGraphicElementData = new ObjectGraphicElementData();
-        
-        objectGraphicElementData.DataElement = editorElement.DataElement;
-
-        editorElement.DataElement.data.dataController.DataList = new List<IElementData>() { objectGraphicElementData };
-        editorElement.DataElement.data.elementData = objectGraphicElementData;
-    }
-    
     public void InitializeData()
     {
         InitializeDependencies();
@@ -145,37 +286,42 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         }
 
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, index);
+            indexSwitch.InitializeSwitch(this, Index);
     }
 
     private void InitializeItemData()
     {
-        var itemData        = (ItemElementData)DataEditor.Data.elementData;
-
-        id                  = itemData.Id;
-        index               = itemData.Index;
-        assetName           = itemData.Name;
-
-        objectGraphicId     = itemData.ObjectGraphicId;
-        objectGraphicPath   = itemData.objectGraphicPath;
-        objectGraphicIconPath   = itemData.objectGraphicIconPath;
-
         GetComponent<ObjectProperties>().castShadow = false;
     }
 
     private void InitializeInteractableData()
     {
-        var interactableData = (InteractableElementData)DataEditor.Data.elementData;
-
-        id                  = interactableData.Id;
-        index               = interactableData.Index;
-        assetName           = interactableData.Name;
-
-        objectGraphicId     = interactableData.ObjectGraphicId;
-        objectGraphicPath   = interactableData.objectGraphicPath;
-        objectGraphicIconPath   = interactableData.objectGraphicIconPath;
-
         GetComponent<ObjectProperties>().castShadow = true;
+    }
+
+    public void InitializeSegment()
+    {
+        var modelData = new Data();
+
+        modelData.dataController = modelController;
+        modelData.dataList = new List<IElementData>() { new ModelElementData() { Id = ModelId, DataElement = iconEditorElement.DataElement } };
+        modelData.searchProperties = modelController.SearchProperties;
+
+        iconEditorElement.DataElement.Data = modelData;
+        iconEditorElement.DataElement.Id = ModelId;
+        
+        SetModelData();
+
+        iconEditorElement.DataElement.InitializeElement();
+    }
+    
+    private void SetModelData()
+    {
+        modelController.Data = iconEditorElement.DataElement.Data;
+
+        ModelElementData.Id = ModelId;
+        ModelElementData.Path = ModelPath;
+        ModelElementData.IconPath = ModelIconPath;
     }
 
     public void OpenSegment()
@@ -183,21 +329,16 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Activate();
 
-        idText.text = id.ToString();
+        idText.text = Id.ToString();
 
-        inputField.text = assetName;
+        inputField.text = Name;
 
-        var objectGraphicElementData = (ObjectGraphicElementData)editorElement.DataElement.data.elementData;
+        SelectionElementManager.Add(iconEditorElement);
 
-        objectGraphicElementData.Id         = objectGraphicId;
-        objectGraphicElementData.Path       = objectGraphicPath;
-        objectGraphicElementData.iconPath   = objectGraphicIconPath;
+        SelectionManager.SelectData(iconEditorElement.DataElement.Data.dataList);
 
-        SelectionElementManager.Add(editorElement);
-        SelectionManager.SelectData(editorElement.DataElement.data.dataController.DataList);
-
-        editorElement.DataElement.SetElement();
-        editorElement.SetOverlay();
+        iconEditorElement.DataElement.SetElement();
+        iconEditorElement.SetOverlay();
 
         gameObject.SetActive(true);
     }
@@ -207,25 +348,24 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Deactivate();
 
-        SelectionElementManager.elementPool.Remove(editorElement);
+        SelectionElementManager.elementPool.Remove(iconEditorElement);
 
         gameObject.SetActive(false);
     }
 
     public void SetSearchResult(DataElement dataElement)
     {
-        switch(dataElement.data.dataController.DataType)
+        switch(dataElement.Data.dataController.DataType)
         {
-            case Enums.DataType.ObjectGraphic:
+            case Enums.DataType.Model:
 
-                var objectGraphicElementData = (ObjectGraphicElementData)dataElement.data.elementData;
+                var modelElementData = (ModelElementData)dataElement.ElementData;
 
-                UpdateObjectGraphic(objectGraphicElementData);
+                UpdateModel(modelElementData);
                 
                 break;
 
             default: Debug.Log("CASE MISSING"); break;
         }
     }
-    #endregion
 }

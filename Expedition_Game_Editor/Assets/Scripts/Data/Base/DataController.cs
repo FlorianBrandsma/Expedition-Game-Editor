@@ -4,34 +4,19 @@ using System.Collections.Generic;
 
 public class DataController : IDataController
 {
-    public IDataManager DataManager { get; set; }
+    public SearchProperties searchProperties;
 
-    private List<IElementData> dataList = new List<IElementData>();
+    public SegmentController SegmentController  { get; set; }
 
-    public SegmentController SegmentController { get; set; }
-    
-    public List<IElementData> DataList
-    {
-        get { return dataList; }
-        set { dataList = value; }
-    }
+    public Data Data                            { get; set; }  
+    public Enums.DataType DataType              { get; set; }
+    public Enums.DataCategory DataCategory      { get; set; }
 
-    public Enums.DataType DataType { get; set; }
-
-    public Enums.DataCategory DataCategory { get; set; }
-
-    public SearchProperties SearchProperties { get; set; }
+    public SearchProperties SearchProperties    { get; set; }
 
     public DataController(Enums.DataType dataType)
     {
         DataType = dataType;
-
-        switch(DataType)
-        {
-            case Enums.DataType.WorldInteractable:  DataManager = new WorldInteractableDataManager(this);   break;
-            case Enums.DataType.Interaction:        DataManager = new InteractionDataManager(this);         break;
-            case Enums.DataType.WorldObject:        DataManager = new WorldObjectDataManager(this);         break;
-        }
     }
 
     public void InitializeController() { }
@@ -47,9 +32,31 @@ public class DataController : IDataController
         }
     }
 
+    public void GetData()
+    {
+        GetData(searchProperties);
+    }
+
+    public void GetData(SearchProperties searchProperties)
+    {
+        Data = new Data()
+        {
+            dataController = this
+        };
+
+        switch(DataType)
+        {
+            case Enums.DataType.WorldInteractable:  Data.dataList = WorldInteractableDataManager.GetData(searchProperties); break;
+            case Enums.DataType.Interaction:        Data.dataList = InteractionDataManager.GetData(searchProperties);       break;
+            case Enums.DataType.WorldObject:        Data.dataList = WorldObjectDataManager.GetData(searchProperties);       break;
+        }
+
+        DataManager.ReplaceRouteData(this);
+    }
+
     public void SetWorldInteractableData(DataElement searchElement, IElementData resultElementData)
     {
-        var worldInteractableData = (WorldInteractableElementData)searchElement.data.elementData;
+        var worldInteractableData = (WorldInteractableElementData)searchElement.ElementData;
 
         switch (resultElementData.DataType)
         {
@@ -59,13 +66,13 @@ public class DataController : IDataController
 
                 worldInteractableData.InteractableId = interactableData.Id;
 
-                worldInteractableData.objectGraphicId = interactableData.ObjectGraphicId;
+                worldInteractableData.ModelId = interactableData.ModelId;
 
-                worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
+                worldInteractableData.ModelPath = interactableData.ModelPath;
 
-                worldInteractableData.interactableName = interactableData.Name;
-                worldInteractableData.objectGraphicIconPath = interactableData.objectGraphicIconPath;
-                worldInteractableData.objectGraphicPath = interactableData.objectGraphicPath;
+                worldInteractableData.InteractableName = interactableData.Name;
+                worldInteractableData.ModelIconPath = interactableData.ModelIconPath;
+                worldInteractableData.ModelPath = interactableData.ModelPath;
 
                 break;
         }
@@ -73,24 +80,24 @@ public class DataController : IDataController
 
     public void SetWorldObjectData(DataElement searchElement, IElementData resultElementData)
     {
-        var worldObjectData = (WorldObjectElementData)searchElement.data.elementData;
+        var worldObjectData = (WorldObjectElementData)searchElement.ElementData;
 
         switch (resultElementData.DataType)
         {
-            case Enums.DataType.ObjectGraphic:
+            case Enums.DataType.Model:
 
-                var objectGraphicData = (ObjectGraphicElementData)resultElementData;
+                var modelData = (ModelElementData)resultElementData;
 
-                worldObjectData.ObjectGraphicId = objectGraphicData.Id;
+                worldObjectData.ModelId = modelData.Id;
 
-                worldObjectData.objectGraphicPath = objectGraphicData.Path;
+                worldObjectData.ModelPath = modelData.Path;
 
-                worldObjectData.objectGraphicName = objectGraphicData.Name;
-                worldObjectData.objectGraphicIconPath = objectGraphicData.iconPath;
+                worldObjectData.ModelName = modelData.Name;
+                worldObjectData.ModelIconPath = modelData.IconPath;
                 
-                worldObjectData.height = objectGraphicData.Height;
-                worldObjectData.width = objectGraphicData.Width;
-                worldObjectData.depth = objectGraphicData.Depth;
+                worldObjectData.Height = modelData.Height;
+                worldObjectData.Width = modelData.Width;
+                worldObjectData.Depth = modelData.Depth;
 
                 break;
         }

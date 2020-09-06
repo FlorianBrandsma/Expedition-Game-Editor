@@ -1,39 +1,41 @@
-﻿public class GeneralElementData : GeneralData, IElementData
-{
-    public DataElement DataElement { get; set; }
+﻿
+//DELETE ME
+//public class GeneralElementData : GeneralData, IElementData
+//{
+//    public DataElement DataElement { get; set; }
 
-    public GeneralElementData() : base()
-    {
-        DataType = Enums.DataType.None;
-    }
+//    public GeneralElementData() : base()
+//    {
+//        DataType = Enums.DataType.None;
+//    }
 
-    public void Update() { }
+//    public void Update() { }
 
-    public void UpdateSearch() { }
+//    public void UpdateSearch() { }
 
-    public void UpdateIndex() { }
+//    public void UpdateIndex() { }
 
-    public void SetOriginalValues() { }
+//    public void SetOriginalValues() { }
 
-    public void GetOriginalValues() { }
+//    public void GetOriginalValues() { }
 
-    public void ClearChanges() { }
+//    public void ClearChanges() { }
 
-    public bool Changed { get { return false; } }
+//    public bool Changed { get { return false; } }
 
-    public IElementData Clone()
-    {
-        var elementData = new GeneralElementData();
+//    public IElementData Clone()
+//    {
+//        var elementData = new GeneralElementData();
 
-        CloneGeneralData(elementData);
+//        CloneGeneralData(elementData);
         
-        return elementData;
-    }
+//        return elementData;
+//    }
 
-    public override void Copy(IElementData dataSource)
-    {
-        base.Copy(dataSource);
+//    public override void Copy(IElementData dataSource)
+//    {
+//        base.Copy(dataSource);
 
-        SetOriginalValues();
-    }
-}
+//        SetOriginalValues();
+//    }
+//}

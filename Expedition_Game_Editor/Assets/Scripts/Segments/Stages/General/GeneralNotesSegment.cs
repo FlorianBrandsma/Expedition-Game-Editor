@@ -33,7 +33,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Chapter:
 
-                    var chapterData = (ChapterElementData)DataEditor.Data.elementData;
+                    var chapterData = (ChapterElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         chapterData.PublicNotes = value;
@@ -44,7 +44,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+                    var phaseData = (PhaseElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         phaseData.PublicNotes = value;
@@ -55,7 +55,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Quest:
 
-                    var questData = (QuestElementData)DataEditor.Data.elementData;
+                    var questData = (QuestElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         questData.PublicNotes = value;
@@ -66,7 +66,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = (ObjectiveElementData)DataEditor.Data.elementData;
+                    var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         objectiveData.PublicNotes = value;
@@ -77,7 +77,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Task:
 
-                    var taskData = (TaskElementData)DataEditor.Data.elementData;
+                    var taskData = (TaskElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         taskData.PublicNotes = value;
@@ -88,7 +88,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+                    var interactionData = (InteractionElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         interactionData.PublicNotes = value;
@@ -99,7 +99,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
+                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
 
                     if (noteType == NoteType.Public)
                         atmosphereData.PublicNotes = value;
@@ -152,7 +152,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterData()
     {
-        var chapterData = (ChapterElementData)DataEditor.Data.elementData;
+        var chapterData = (ChapterElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = chapterData.PublicNotes;
@@ -162,7 +162,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializePhaseData()
     {
-        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+        var phaseData = (PhaseElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = phaseData.PublicNotes;
@@ -172,7 +172,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeQuestData()
     {
-        var questData = (QuestElementData)DataEditor.Data.elementData;
+        var questData = (QuestElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = questData.PublicNotes;
@@ -182,7 +182,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeObjectiveData()
     {
-        var objectiveData = (ObjectiveElementData)DataEditor.Data.elementData;
+        var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = objectiveData.PublicNotes;
@@ -192,7 +192,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeTaskData()
     {
-        var taskData = (TaskElementData)DataEditor.Data.elementData;
+        var taskData = (TaskElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = taskData.PublicNotes;
@@ -202,7 +202,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        var interactionData = (InteractionElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = interactionData.PublicNotes;
@@ -212,7 +212,7 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     private void InitializeAtmosphereData()
     {
-        var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
+        var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
             notes = atmosphereData.PublicNotes;

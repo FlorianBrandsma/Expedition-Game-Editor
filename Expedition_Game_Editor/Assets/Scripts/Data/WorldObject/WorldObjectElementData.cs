@@ -1,94 +1,124 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class WorldObjectElementData : WorldObjectCore, IElementData
+public class WorldObjectElementData : WorldObjectData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public WorldObjectElementData() : base()
+    public WorldObjectData OriginalData             { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.WorldObject; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedModelId
     {
-        DataType = Enums.DataType.WorldObject;
-    }
-    
-    public string objectGraphicPath;
-
-    public string objectGraphicName;
-    public string objectGraphicIconPath;
-
-    public float height;
-    public float width;
-    public float depth;
-
-    //Original
-    public string originalObjectGraphicName;
-    public string originalObjectGraphicIconPath;
-    
-    public override void Update()
-    {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return ModelId != OriginalData.ModelId; }
     }
 
-    public override void UpdateSearch()
+    public bool ChangedRegionId
     {
-        base.UpdateSearch();
-        
-        originalObjectGraphicName = objectGraphicName;
-        originalObjectGraphicIconPath = objectGraphicIconPath;
+        get { return RegionId != OriginalData.RegionId; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedTerrainId
     {
-        base.SetOriginalValues();
+        get { return TerrainId != OriginalData.TerrainId; }
+    }
 
-        originalObjectGraphicName = objectGraphicName;
-        originalObjectGraphicIconPath = objectGraphicIconPath;
-        
+    public bool ChangedTerrainTileId
+    {
+        get { return TerrainTileId != OriginalData.TerrainTileId; }
+    }
+
+    public bool ChangedPositionX
+    {
+        get { return PositionX != OriginalData.PositionX; }
+    }
+
+    public bool ChangedPositionY
+    {
+        get { return PositionY != OriginalData.PositionY; }
+    }
+
+    public bool ChangedPositionZ
+    {
+        get { return PositionZ != OriginalData.PositionZ; }
+    }
+
+    public bool ChangedRotationX
+    {
+        get { return RotationX != OriginalData.RotationX; }
+    }
+
+    public bool ChangedRotationY
+    {
+        get { return RotationY != OriginalData.RotationY; }
+    }
+
+    public bool ChangedRotationZ
+    {
+        get { return RotationZ != OriginalData.RotationZ; }
+    }
+
+    public bool ChangedScale
+    {
+        get { return Scale != OriginalData.Scale; }
+    }
+
+    public bool ChangedAnimation
+    {
+        get { return Animation != OriginalData.Animation; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return  ChangedRegionId     || ChangedTerrainId || ChangedTerrainTileId || 
+                    ChangedPositionX    || ChangedPositionY || ChangedPositionZ     || 
+                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ     || 
+                    ChangedScale        || ChangedAnimation;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        objectGraphicName = originalObjectGraphicName;
-        objectGraphicIconPath = originalObjectGraphicIconPath;
-    }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new WorldObjectElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new WorldObjectElementData();
 
-        var worldObjectDataSource = (WorldObjectElementData)dataSource;
-        
-        objectGraphicPath = worldObjectDataSource.objectGraphicPath;
+        data.DataElement = DataElement;
 
-        objectGraphicName = worldObjectDataSource.objectGraphicName;
-        objectGraphicIconPath = worldObjectDataSource.objectGraphicIconPath;
+        data.OriginalData = OriginalData.Clone();
 
-        height = worldObjectDataSource.height;
-        width = worldObjectDataSource.width;
-        depth = worldObjectDataSource.depth;
-        
-        SetOriginalValues();
+        base.Clone(data);
+
+        return data;
     }
 }

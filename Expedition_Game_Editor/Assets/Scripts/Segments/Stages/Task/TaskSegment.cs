@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class TaskSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies() { }
@@ -26,14 +25,14 @@ public class TaskSegment : MonoBehaviour, ISegment
         //If a worldInteractable is selected without being directly related to an objective, don't try to get this data
         if (SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
         {
-            var objectiveData = (ObjectiveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).data.elementData;
+            var objectiveData = (ObjectiveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Objective).ElementData;
             searchParameters.objectiveId = new List<int>() { objectiveData.Id };
         }
 
-        var worldInteractableData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).data.elementData;
+        var worldInteractableData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).ElementData;
         searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

@@ -25,17 +25,17 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SelectData()
     {
-        SelectionManager.SelectData(DataController.DataList, DisplayManager);
+        SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
     
     public void SetData()
     {
-        SetData(DataController.DataList);
+        SetData(DataController.Data.dataList);
     }
 
     public void UpdateData()
     {
-        ResetData(DataController.DataList);
+        ResetData(DataController.Data.dataList);
     }
 
     public void ResetData(List<IElementData> filter)
@@ -50,7 +50,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         var prefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
 
-        foreach (IElementData data in list)
+        foreach (IElementData elementData in list)
         {
             var tile = (ExTile)PoolManager.SpawnObject(prefab);
             
@@ -60,13 +60,13 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
                                                         DisplayManager.Display.SelectionProperty);
             ElementList.Add(tile.EditorElement);
 
-            data.DataElement = tile.EditorElement.DataElement;
-            tile.EditorElement.DataElement.data = new DataElement.Data(DataController, data);
+            elementData.DataElement = tile.EditorElement.DataElement;
+
+            tile.EditorElement.DataElement.Data = DataController.Data;
+            tile.EditorElement.DataElement.Id = elementData.Id;
 
             //Debugging
-            GeneralData generalData = (GeneralData)data;
-            tile.name = generalData.DebugName + generalData.Id;
-            //
+            tile.name = elementData.DebugName + elementData.Id;
 
             SetElement(tile.EditorElement);
         }
@@ -76,7 +76,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
-        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
         
         element.gameObject.SetActive(true);
@@ -145,15 +145,15 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(DataController.DataList);
+        SelectionManager.CancelSelection(DataController.Data.dataList);
     }
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

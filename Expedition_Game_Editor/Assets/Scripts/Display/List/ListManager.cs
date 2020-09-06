@@ -66,7 +66,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
     {
         if (Organizer == null) return;
 
-        var dataList = Display.DataController.DataList;
+        var dataList = Display.DataController.Data.dataList;
 
         if (dataList.Count == 0) return;
         
@@ -115,14 +115,14 @@ public class ListManager : MonoBehaviour, IDisplayManager
         overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(IElementData elementData)
+    public void CorrectPosition(IElementData elementData, List<IElementData> dataList)
     {
         if (!listProperties.enablePositionCorrection) return;
 
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
 
-        var elementPosition = List.GetElementPosition(elementData.Index);
+        var elementPosition = List.GetElementPosition(dataList.IndexOf(elementData));
 
         var localElementPosition = new Vector2(elementPosition.x + listParent.localPosition.x,
                                                elementPosition.y + listParent.localPosition.y) * positionOffset;
@@ -156,11 +156,11 @@ public class ListManager : MonoBehaviour, IDisplayManager
     {
         if (Organizer == null) return;
         
-        if (Display.DataController.DataList.Count == 0) return;
+        if (Display.DataController.Data.dataList.Count == 0) return;
         
         if (Display.SelectionType == SelectionManager.Type.Automatic)
         {
-            EditorElement element = List.ElementList.Where(x => x.DataElement.data.elementData.Id == autoSelectId).FirstOrDefault();
+            EditorElement element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
 
             if(element == null)
                 element = List.ElementList.FirstOrDefault();

@@ -1,52 +1,55 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
-public class GameInteractionDestinationElementData : GeneralData, IElementData
+public class GameInteractionDestinationElementData : GameInteractionDestinationData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                      { get; set; }
 
-    public GameInteractionDestinationElementData() : base()
-    {
-        DataType = Enums.DataType.GameInteractionDestination;
-    }
+    public GameInteractionDestinationData OriginalData  { get; set; }
 
-    public int regionId;
-    public int terrainId;
-    public int terrainTileId;
+    public Enums.DataType DataType                      { get { return Enums.DataType.GameInteractionDestination; } }
 
-    public float positionX;
-    public float positionY;
-    public float positionZ;
+    public Enums.SelectionStatus SelectionStatus        { get; set; }
 
-    public float positionVariance;
-
-    public int rotationX;
-    public int rotationY;
-    public int rotationZ;
-
-    public bool freeRotation;
-
-    public int animation;
-    public float patience;
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
     
-    #region ElementData
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameInteractionDestinationElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameInteractionDestinationElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

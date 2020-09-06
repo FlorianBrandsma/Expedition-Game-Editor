@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestSaveDataManager : IDataManager
+public static class QuestSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<QuestSaveBaseData> questSaveDataList;
 
-    private List<QuestSaveData> questSaveDataList;
+    private static List<QuestBaseData> questDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.QuestData> questDataList;
-
-    public QuestSaveDataManager(QuestSaveController questController)
-    {
-        DataController = questController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.QuestSave>().First();
 
@@ -29,20 +20,20 @@ public class QuestSaveDataManager : IDataManager
         GetQuestData();
 
         var list = (from questSaveData  in questSaveDataList
-                    join questData      in questDataList on questSaveData.questId equals questData.id
+                    join questData      in questDataList on questSaveData.QuestId equals questData.Id
                     select new QuestSaveElementData()
                     {
-                        Id = questSaveData.id,
-                        Index = questSaveData.index,
+                        Id = questSaveData.Id,
+                        Index = questSaveData.Index,
 
-                        PhaseSaveId = questSaveData.phaseSaveId,
-                        QuestId = questSaveData.questId,
+                        PhaseSaveId = questSaveData.PhaseSaveId,
+                        QuestId = questSaveData.QuestId,
 
-                        Complete = questSaveData.complete,
+                        Complete = questSaveData.Complete,
 
-                        name = questData.name,
+                        Name = questData.Name,
 
-                        publicNotes = questData.publicNotes
+                        PublicNotes = questData.PublicNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -51,45 +42,42 @@ public class QuestSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetQuestSaveData(Search.QuestSave searchParameters)
+    private static void GetQuestSaveData(Search.QuestSave searchParameters)
     {
-        questSaveDataList = new List<QuestSaveData>();
+        questSaveDataList = new List<QuestSaveBaseData>();
 
-        foreach (Fixtures.QuestSave questSave in Fixtures.questSaveList)
+        foreach (QuestSaveBaseData questSave in Fixtures.questSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.id))                     continue;
-            if (searchParameters.phaseSaveId.Count  > 0 && !searchParameters.phaseSaveId.Contains(questSave.phaseSaveId))   continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.Id))                     continue;
+            if (searchParameters.phaseSaveId.Count  > 0 && !searchParameters.phaseSaveId.Contains(questSave.PhaseSaveId))   continue;
 
-            var questSaveData = new QuestSaveData();
+            var questSaveData = new QuestSaveBaseData();
 
-            questSaveData.id = questSave.id;
-            questSaveData.index = questSave.index;
+            questSaveData.Id = questSave.Id;
+            questSaveData.Index = questSave.Index;
 
-            questSaveData.phaseSaveId = questSave.phaseSaveId;
-            questSaveData.questId = questSave.questId;
+            questSaveData.PhaseSaveId = questSave.PhaseSaveId;
+            questSaveData.QuestId = questSave.QuestId;
 
-            questSaveData.complete = questSave.complete;
+            questSaveData.Complete = questSave.Complete;
 
             questSaveDataList.Add(questSaveData);
         }
     }
 
-    internal void GetQuestData()
+    private static void GetQuestData()
     {
         var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = questSaveDataList.Select(x => x.questId).Distinct().ToList();
+        questSearchParameters.id = questSaveDataList.Select(x => x.QuestId).Distinct().ToList();
 
-        questDataList = dataManager.GetQuestData(questSearchParameters);
+        questDataList = DataManager.GetQuestData(questSearchParameters);
     }
 
-    internal class QuestSaveData
+    public static void UpdateData(QuestSaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int phaseSaveId;
-        public int questId;
-
-        public bool complete;
+        var data = Fixtures.questSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

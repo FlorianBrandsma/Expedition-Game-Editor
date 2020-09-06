@@ -31,7 +31,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
         this.organizer = organizer;
         list = (IList)organizer;
 
-        int listCount = overlayManager.DisplayManager.Display.DataController.DataList.Count;
+        int listCount = overlayManager.DisplayManager.Display.DataController.Data.dataList.Count;
 
         Vector2 listSize = this.list.GetListSize(listCount, false);
 
@@ -103,7 +103,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
 
         var dataController = overlayManager.DisplayManager.Display.DataController;
 
-        organizer.ResetData(dataController.DataList.GetRange(start, count));
+        organizer.ResetData(dataController.Data.dataList.GetRange(start, count));
     }
      
     public void UpdateOverlay() { }

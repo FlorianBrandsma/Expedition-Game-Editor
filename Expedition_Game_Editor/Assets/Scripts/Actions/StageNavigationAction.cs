@@ -10,7 +10,7 @@ public class StageNavigationAction : MonoBehaviour, IAction
 
     public ActionProperties actionProperties;
 
-    private Route.Data data;
+    private Data data;
 
     private ExDropdown dropdown;
 
@@ -50,12 +50,12 @@ public class StageNavigationAction : MonoBehaviour, IAction
             default: Debug.Log("CASE MISSING: " + data.dataController.DataType); break;
         }
 
-        int selectedIndex = data.dataList.Cast<GeneralData>().ToList().FindIndex(x => x.Id == PathController.route.GeneralData.Id);
+        int selectedIndex = data.dataList.FindIndex(x => x.Id == PathController.route.ElementData.Id);
 
         dropdown.Dropdown.value = selectedIndex;
         dropdown.Dropdown.captionText.text = dropdown.Dropdown.options[selectedIndex].text;
 
-        dropdown.Dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Route.Data(data, data.dataList[dropdown.Dropdown.value])); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, new Data(/*data, data.dataList[dropdown.Dropdown.value]*/)); });
     }
 
     private void SetChapterOptions()
@@ -85,7 +85,7 @@ public class StageNavigationAction : MonoBehaviour, IAction
     private void SetWorldInteractableOptions()
     {
         var elementDataList = data.dataList.Cast<WorldInteractableElementData>().ToList();      
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.interactableName)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.InteractableName)));
     }
 
     private void SetTaskOptions()
@@ -109,34 +109,34 @@ public class StageNavigationAction : MonoBehaviour, IAction
     private void SetChapterSaveOptions()
     {
         var elementDataList = data.dataList.Cast<ChapterSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseSaveOptions()
     {
         var elementDataList = data.dataList.Cast<PhaseSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestSaveOptions()
     {
         var elementDataList = data.dataList.Cast<QuestSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveSaveOptions()
     {
         var elementDataList = data.dataList.Cast<ObjectiveSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetTaskSaveOptions()
     {
         var elementDataList = data.dataList.Cast<TaskSaveElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.name)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
-    public void InitializePath(Path path, Route.Data data)
+    public void InitializePath(Path path, Data data)
     {
         RenderManager.Render(PathManager.ReloadPath(path, data));
     }

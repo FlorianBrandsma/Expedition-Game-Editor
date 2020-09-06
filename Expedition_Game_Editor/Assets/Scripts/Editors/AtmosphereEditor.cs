@@ -4,19 +4,20 @@ using System.Linq;
 
 public class AtmosphereEditor : MonoBehaviour, IEditor
 {
-    public AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)Data.elementData; } }
+    public AtmosphereData atmosphereData;
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == atmosphereData.Id).FirstOrDefault(); } }
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(AtmosphereData).Concat(new[] { AtmosphereData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -25,18 +26,15 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
     }
-
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
-    }
-
+    
     public void InitializeEditor() { }
+
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -50,36 +48,46 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed) && !AtmosphereData.timeConflict;
+        return ElementDataList.Any(x => x.Changed) && !atmosphereData.TimeConflict;
     }
+
+    //public void ApplyChanges()
+    //{
+    //    var changedTime = AtmosphereData.ChangedStartTime || AtmosphereData.ChangedEndTime;
+
+    //    AtmosphereData.Update();
+
+    //    //If time was changed, reset the entire editor so that the atmosphere segment may reload.
+    //    //Elements don't need to be updated as the reset takes care of that.
+    //    if (changedTime)
+    //    {
+    //        RenderManager.ResetPath(true);
+
+    //    } else {
+
+    //        ElementDataList.ForEach(x =>
+    //        {
+    //            if (DataManager.Equals(x, AtmosphereData))
+    //                x.Copy(AtmosphereData);
+    //            else
+    //                x.Update();
+
+    //            if (SelectionElementManager.SelectionActive(x.DataElement))
+    //                x.DataElement.UpdateElement();
+    //        });
+
+    //        UpdateEditor();
+    //    }
+    //}
 
     public void ApplyChanges()
     {
-        var changedTime = AtmosphereData.changedStartTime || AtmosphereData.changedEndTime;
+        EditData.Update();
 
-        AtmosphereData.Update();
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
-        //If time was changed, reset the entire editor so that the atmosphere segment may reload.
-        //Elements don't need to be updated as the reset takes care of that.
-        if (changedTime)
-        {
-            RenderManager.ResetPath(true);
-
-        } else {
-
-            ElementDataList.ForEach(x =>
-            {
-                if (((GeneralData)x).Equals(AtmosphereData))
-                    x.Copy(AtmosphereData);
-                else
-                    x.Update();
-
-                if (SelectionElementManager.SelectionActive(x.DataElement))
-                    x.DataElement.UpdateElement();
-            });
-
-            UpdateEditor();
-        }
+        UpdateEditor();
     }
 
     public void CancelEdit()

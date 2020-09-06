@@ -1,68 +1,76 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerSaveElementData : PlayerSaveCore, IElementData
+public class PlayerSaveElementData : PlayerSaveData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public PlayerSaveElementData() : base()
+    public PlayerSaveData OriginalData              { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.PlayerSave; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedRegionId
     {
-        DataType = Enums.DataType.Interaction;
+        get { return RegionId != OriginalData.RegionId; }
     }
 
-    //public int objectGraphicId;
-
-    //public string objectGraphicPath;
-    //public string objectGraphicIconPath;
-
-    //public string interactableName;
-
-    public DateTime saveTime;
-
-    //Testing purposes
-    public DateTime testTime;
-    public TimeSpan passedTime { get { return  saveTime - testTime; } }
-    public float passedSeconds { get { return passedTime.Seconds; } }
-    //----------------
-
-    public override void Update()
+    public bool ChangedPartyMemberId
     {
-        base.Update();
-
-        SetOriginalValues();
+        get { return PartyMemberId != OriginalData.PartyMemberId; }
     }
 
-    public override void SetOriginalValues()
+    //public bool ChangedPlayedSeconds
+    //{
+    //    get { return PlayedSeconds != OriginalData.PlayedSeconds; }
+    //}
+
+    public bool Changed
     {
-        base.SetOriginalValues();
+        get
+        {
+            return ChangedRegionId || ChangedPartyMemberId;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new PlayerSaveElementData();
-
-        CloneCore(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
-        
-        SetOriginalValues();
+        var data = new PlayerSaveElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
     }
 }

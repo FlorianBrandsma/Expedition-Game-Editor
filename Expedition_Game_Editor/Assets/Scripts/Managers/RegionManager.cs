@@ -25,16 +25,16 @@ static public class RegionManager
         return positionOnTile;
     }
 
-    static public string LocationName(float positionX, float positionZ, float tileSize, DataManager.RegionData regionData, List<DataManager.TerrainData> terrainDataList)
+    static public string LocationName(float positionX, float positionZ, float tileSize, RegionBaseData regionData, List<TerrainBaseData> terrainDataList)
     {
-        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / (regionData.terrainSize * tileSize)),
-                                             Mathf.Floor(positionZ / (regionData.terrainSize * tileSize)));
+        var terrainCoordinates = new Vector2(Mathf.Floor(positionX / (regionData.TerrainSize * tileSize)),
+                                             Mathf.Floor(positionZ / (regionData.TerrainSize * tileSize)));
 
-        var terrainIndex = (regionData.regionSize * terrainCoordinates.y) + terrainCoordinates.x;
+        var terrainIndex = (regionData.RegionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainData = terrainDataList.Where(x => x.regionId == regionData.id && x.index == terrainIndex).FirstOrDefault();
+        var terrainData = terrainDataList.Where(x => x.RegionId == regionData.Id && x.Index == terrainIndex).FirstOrDefault();
 
-        return regionData.name + ", " + terrainData.name;
+        return regionData.Name + ", " + terrainData.Name;
     }
 
     static public void SetDisplay(int display, Path path)

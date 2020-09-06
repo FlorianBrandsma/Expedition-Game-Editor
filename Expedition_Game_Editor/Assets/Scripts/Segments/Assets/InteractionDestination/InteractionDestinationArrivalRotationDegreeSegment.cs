@@ -84,7 +84,7 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
     {
         if (DataEditor.Loaded) return;
 
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
 
         freeRotation = interactionDestinationData.FreeRotation;
 

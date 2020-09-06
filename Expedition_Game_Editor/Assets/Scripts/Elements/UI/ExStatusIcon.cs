@@ -16,7 +16,7 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	#region Data Variables
 	private float height, width, depth;
-	private float scaleMultiplier;
+	private float scale;
 	#endregion
 	
 	public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
@@ -60,36 +60,36 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		var worldInteractableData = (WorldInteractableElementData)targetElementData;
 
-		height = worldInteractableData.height * worldInteractableData.scaleMultiplier;
-		width  = worldInteractableData.width  * worldInteractableData.scaleMultiplier;
-		depth  = worldInteractableData.depth  * worldInteractableData.scaleMultiplier;
+		height = worldInteractableData.Height * worldInteractableData.Scale;
+		width  = worldInteractableData.Width  * worldInteractableData.Scale;
+		depth  = worldInteractableData.Depth  * worldInteractableData.Scale;
 	}
 
 	private void InitializeInteractionDestinationData()
 	{
 		var interactionDestinationData = (InteractionDestinationElementData)targetElementData;
 
-		height = interactionDestinationData.height * 1;
-		width  = interactionDestinationData.width  * 1;
-		depth  = interactionDestinationData.depth  * 1;
+		height = interactionDestinationData.Height * 1;
+		width  = interactionDestinationData.Width  * 1;
+		depth  = interactionDestinationData.Depth  * 1;
 	}
 
 	private void InitializeWorldObjectData()
 	{
 		var worldObjectData = (WorldObjectElementData)targetElementData;
 
-		height = worldObjectData.height * worldObjectData.ScaleMultiplier;
-		width  = worldObjectData.width  * worldObjectData.ScaleMultiplier;
-		depth  = worldObjectData.depth  * worldObjectData.ScaleMultiplier;
+		height = worldObjectData.Height * worldObjectData.Scale;
+		width  = worldObjectData.Width  * worldObjectData.Scale;
+		depth  = worldObjectData.Depth  * worldObjectData.Scale;
 	}
 
 	private void InitializePhaseData()
 	{
 		var phaseData = (PhaseElementData)targetElementData;
 
-		height = phaseData.height   * phaseData.scaleMultiplier;
-		width = phaseData.width     * phaseData.scaleMultiplier;
-		depth = phaseData.depth     * phaseData.scaleMultiplier;
+		height = phaseData.Height   * phaseData.Scale;
+		width = phaseData.Width     * phaseData.Scale;
+		depth = phaseData.Depth     * phaseData.Scale;
 	}
 
 	private void UpdateSelectionPosition()

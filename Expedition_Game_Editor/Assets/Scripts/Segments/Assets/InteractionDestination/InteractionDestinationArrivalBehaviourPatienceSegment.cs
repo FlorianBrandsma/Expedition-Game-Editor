@@ -44,7 +44,7 @@ public class InteractionDestinationArrivalBehaviourPatienceSegment : MonoBehavio
     {
         if (DataEditor.Loaded) return;
 
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.Data.elementData;
+        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
 
         patience = interactionDestinationData.Patience;
     }

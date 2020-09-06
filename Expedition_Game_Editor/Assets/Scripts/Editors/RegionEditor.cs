@@ -4,19 +4,20 @@ using System.Linq;
 
 public class RegionEditor : MonoBehaviour, IEditor
 {
-    public RegionElementData RegionData { get { return (RegionElementData)Data.elementData; } }
+    public RegionData regionData;
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == regionData.Id).FirstOrDefault(); } }
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(RegionData).Concat(new[] { RegionData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -25,18 +26,15 @@ public class RegionEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
     }
 
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
-    }
-
     public void InitializeEditor() { }
+
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -55,50 +53,42 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        if (RegionData.changedName)
-            ChangedName();
+        //if (regionData.ChangedName)
+        //    ChangedName();
 
-        if (RegionData.changedTileSetId)
-            ChangedTileSet();
+        //if (regionData.ChangedTileSetId)
+        //    ChangedTileSet();
+        
+        EditData.Update();
 
-        RegionData.Update();
-
-        ElementDataList.ForEach(x =>
-        {
-            if (((GeneralData)x).Equals(RegionData))
-                x.Copy(RegionData);
-            else
-                x.Update();
-
-            if (SelectionElementManager.SelectionActive(x.DataElement))
-                x.DataElement.UpdateElement();
-        });
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
         UpdateEditor();
     }
 
     private void ChangedName()
     {
-        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == RegionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
+        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
 
-        regions.ForEach(x => x.name = RegionData.Name);
+        regions.ForEach(x => x.Name = regionData.Name);
     }
 
     private void ChangedTileSet()
     {
-        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.regionId == RegionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.id).Contains(x.chapterRegionId)).Distinct().ToList();
+        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
+        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
 
-        regions.ForEach(x => x.tileSetId = RegionData.TileSetId);
+        regions.ForEach(x => x.TileSetId = regionData.TileSetId);
 
-        regions.Add(Fixtures.regionList.Where(x => x.id == RegionData.Id).FirstOrDefault());
+        regions.Add(Fixtures.regionList.Where(x => x.Id == regionData.Id).FirstOrDefault());
 
-        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.id).Distinct().ToList().Contains(x.regionId)).Distinct().ToList();
-        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.id).Distinct().ToList().Contains(x.terrainId)).Distinct().ToList();
-        var firstTile = Fixtures.tileList.Where(x => x.tileSetId == RegionData.TileSetId).FirstOrDefault();
+        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.Id).Distinct().ToList().Contains(x.RegionId)).Distinct().ToList();
+        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.Id).Distinct().ToList().Contains(x.TerrainId)).Distinct().ToList();
+        var firstTile = Fixtures.tileList.Where(x => x.TileSetId == regionData.TileSetId).FirstOrDefault();
         
-        terrainTiles.ForEach(x => x.tileId = firstTile.id);
+        terrainTiles.ForEach(x => x.TileId = firstTile.Id);
         
         //var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
 

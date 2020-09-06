@@ -60,7 +60,7 @@ public class EditorForm : MonoBehaviour
         if (activePath.routeList.Count == 0) return;
 
         TimeManager.instance.PauseTime(pauseTime);
-        
+
         //Flesh out the path and determine the target controller
         baseController.OpenPath(path, path.start);
 
@@ -163,8 +163,8 @@ public class EditorForm : MonoBehaviour
 
         if (editorSection.previousEditor != editorSection.dataEditor)
             return false;
-        
-        return ((GeneralData)editorSection.previousDataSource).Equals((GeneralData)editorSection.dataEditor.Data.elementData);
+
+        return DataManager.Equals(editorSection.previousDataSource, editorSection.dataEditor.ElementData);
     }
 
     private void CloseView()

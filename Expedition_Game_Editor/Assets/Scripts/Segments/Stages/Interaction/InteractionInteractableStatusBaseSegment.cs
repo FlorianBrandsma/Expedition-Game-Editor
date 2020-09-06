@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
 {
-    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.Data.elementData; } }
+    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.ElementData; } }
     
     public RawImage icon;
 
@@ -24,10 +24,10 @@ public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        icon.texture = Resources.Load<Texture2D>(InteractionData.objectGraphicIconPath);
+        icon.texture = Resources.Load<Texture2D>(InteractionData.ModelIconPath);
 
-        nameText.text = InteractionData.interactableName;
-        locationText.text = InteractionData.locationName;
+        nameText.text = InteractionData.InteractableName;
+        locationText.text = InteractionData.LocationName;
     }
 
     public void InitializeData() { }

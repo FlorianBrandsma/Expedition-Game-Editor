@@ -9,7 +9,7 @@ public class Enums
         Option,
         Search,
         Icon,
-        ObjectGraphic,
+        Model,
         Item,
         Interactable,
         Region,
@@ -44,6 +44,7 @@ public class Enums
         GamePartyMember,
         Save,
         GameSave,
+        PlayerSave,
         InteractableSave,
         ChapterSave,
         PhaseSave,
@@ -140,7 +141,7 @@ public class Enums
         Button,
         WorldElement,
         WorldInteractable,
-        ObjectGraphic,
+        Model,
         Text,
         Dropdown,
         StatusIcon,
@@ -184,5 +185,35 @@ public class Enums
     public enum InteractionDelayMethod
     {
         Wait
+    }
+
+    public enum HistoryGroup
+    {
+        None,
+        Assets,
+        Stage,
+        Chapter,
+        ChapterSelection,
+        Phase,
+        PhaseSelection,
+        Quest,
+        QuestSelection,
+        Objective,
+        ObjectiveSelection,
+        Interactable,
+        InteractableSelection,
+        Task,
+        TaskSelection,
+        Interaction,
+        InteractionSelection,
+        Region,
+        Terrain,
+        TerrainSelection,
+        Popup,
+        Atmosphere,
+        Outcome,
+        OutcomeSelection,
+        Menu,
+        MenuSelection
     }
 }

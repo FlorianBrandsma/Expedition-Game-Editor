@@ -1,72 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Linq;
 
 public class DataElement : MonoBehaviour
 {
-    public class Data
-    {
-        public IDataController dataController;
-        public IElementData elementData;
-        public SearchProperties searchProperties;
+    public Data Data    { get; set; }
+    public int Id       { get; set; }
 
-        public Data() { }
+    public IElementData ElementData { get { return Data.dataList.Where(x => x.Id == Id).First(); } }
 
-        public Data(Route.Data data)
-        {
-            dataController = data.dataController;
-            elementData = data.elementData;
-        }
-
-        public Data(IDataController dataController)
-        {
-            elementData = new GeneralElementData();
-
-            if (dataController != null)
-            {
-                this.dataController = dataController;
-                elementData.DataType = dataController.DataType;
-            }
-        }
-        
-        public Data(IDataController dataController, IElementData elementData)
-        {
-            this.dataController = dataController;
-            this.elementData = elementData;
-        }
-
-        public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
-        {
-            this.dataController = dataController;
-            this.elementData = elementData;
-            this.searchProperties = searchProperties;
-        }
-    }
-
-    public Data data = new Data();
     public Path Path { get; set; }
 
     public SegmentController segmentController;
     public GameObject displayParent;
-
-    public GeneralData GeneralData { get { return (GeneralData)data.elementData; } }
-
+    
     public IDisplayManager DisplayManager { get; set; }
 
     public ISelectionElement SelectionElement { get { return GetComponent<ISelectionElement>(); } }
     public IPoolable Poolable   { get { return GetComponent<IPoolable>(); } }
     public IElement Element     { get { return GetComponent<IElement>(); } }
 
-    public void InitializeElement(IDataController dataController)
+    public void InitializeElement(Route route)
     {
-        data = new Data(dataController);
+        Id = route.id;
 
+        InitializeElement(route.data.dataController);
+    }
+
+    public void InitializeElement()
+    {
         SelectionElement.InitializeElement();
     }
 
-    public void InitializeElement(Route.Data data)
+    public void InitializeElement(IDataController dataController)
     {
-        this.data = new Data(data);
+        Data = dataController.Data;
 
         SelectionElement.InitializeElement();
     }
@@ -78,7 +47,7 @@ public class DataElement : MonoBehaviour
         segmentController = DisplayManager.Display.DataController.SegmentController;
 
         //Can be overwritten
-        data.dataController = DisplayManager.Display.DataController;
+        //data.dataController = DisplayManager.Display.DataController;
 
         SelectionElement.InitializeElement(selectionType, selectionProperty);
     }
@@ -91,9 +60,9 @@ public class DataElement : MonoBehaviour
     public void SetElement()
     {
         GetComponent<IElement>().SetElement();
-        
+
         if (displayParent != null)
-            displayParent.GetComponent<IDisplay>().DataController = data.dataController;
+            displayParent.GetComponent<IDisplay>().DataController = Data.dataController;
     }
 
     public void SetResult(IElementData resultData)
@@ -101,21 +70,21 @@ public class DataElement : MonoBehaviour
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
-        data.dataController.SetData(this, resultData);
+        Data.dataController.SetData(this, resultData);
         
-        if(data.dataController.SearchProperties != null)
+        if(Data.dataController.SearchProperties != null)
         {
-            if (data.dataController.SearchProperties.autoUpdate)
-                data.elementData.UpdateSearch();
+            if (Data.dataController.SearchProperties.autoUpdate)
+                ElementData.UpdateSearch();
         }
         
         segmentController.GetComponent<ISegment>().SetSearchResult(this);
     }
-    
+
     public void CancelDataSelection()
     {
-        if (data.elementData == null) return;
+        if (ElementData == null) return;
 
-        data.elementData.SelectionStatus = Enums.SelectionStatus.None;
+        ElementData.SelectionStatus = Enums.SelectionStatus.None;
     }
 }

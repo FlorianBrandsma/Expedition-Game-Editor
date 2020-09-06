@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class IconDataManager : IDataManager
+public static class IconDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<IconBaseData> iconDataList;
 
-    private List<IconData> iconDataList;
-
-    public IconDataManager(IconController iconController)
-    {
-        DataController = iconController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
 
@@ -25,41 +18,34 @@ public class IconDataManager : IDataManager
         var list = (from iconData in iconDataList
                     select new IconElementData()
                     {
-                        Id = iconData.id,
+                        Id = iconData.Id,
 
-                        Path = iconData.path,
-                        baseIconPath = ""
+                        Path = iconData.Path,
+                        BaseIconPath = ""
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetIconData(Search.Icon searchParameters)
+    private static void GetIconData(Search.Icon searchParameters)
     {
-        iconDataList = new List<IconData>();
+        iconDataList = new List<IconBaseData>();
 
-        foreach (Fixtures.Icon icon in Fixtures.iconList)
+        foreach (IconBaseData icon in Fixtures.iconList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(icon.id)) continue;
-            if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.category)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(icon.Id)) continue;
+            if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.Category)) continue;
 
-            var iconData = new IconData();
+            var iconData = new IconBaseData();
 
-            iconData.id = icon.id;
+            iconData.Id = icon.Id;
 
-            iconData.path = icon.path;
+            iconData.Path = icon.Path;
 
             iconDataList.Add(iconData);
         }
-    }
-
-    internal class IconData
-    {
-        public int id;
-
-        public string path;
     }
 }

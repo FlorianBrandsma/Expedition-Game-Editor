@@ -1,44 +1,55 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class GameWorldElementData : GeneralData, IElementData
+public class GameWorldElementData : GameWorldData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameWorldElementData() : base()
-    {
-        DataType = Enums.DataType.GameWorld;
-    }
+    public GameWorldData OriginalData               { get; set; }
 
-    public ChapterElementData chapterData;
-    public PhaseElementData phaseData;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameWorld; } }
 
-    public List<GamePartyMemberElementData> partyMemberList = new List<GamePartyMemberElementData>();
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    //[Might have to go in terrain to preserve the possibility to generate terrains]
-    //There's actually no real way to know what terrain a world interactable belongs to
-    //Generated interactables/interactions can be bound to a terrain by id and removed from the list when necessary
-    public List<GameWorldInteractableElementData> worldInteractableDataList = new List<GameWorldInteractableElementData>();
-
-    public List<GameRegionElementData> regionDataList;
-
-    #region ElementData
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameWorldElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameWorldElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

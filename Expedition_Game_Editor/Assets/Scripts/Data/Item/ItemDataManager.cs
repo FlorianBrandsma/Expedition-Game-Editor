@@ -3,23 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ItemDataManager : IDataManager
+public static class ItemDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ItemBaseData> itemDataList;
 
-    private List<ItemData> itemDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-    
-    public ItemDataManager(ItemController itemController)
-    {
-        DataController = itemController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
 
@@ -27,25 +18,25 @@ public class ItemDataManager : IDataManager
 
         if (itemDataList.Count == 0) return new List<IElementData>();
 
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
-        var list = (from itemData           in itemDataList
-                    join objectGraphicData  in objectGraphicDataList    on itemData.objectGraphicId equals objectGraphicData.id
-                    join iconData           in iconDataList             on objectGraphicData.iconId equals iconData.id
+        var list = (from itemData   in itemDataList
+                    join modelData  in modelDataList    on itemData.ModelId equals modelData.Id
+                    join iconData   in iconDataList     on modelData.IconId equals iconData.Id
                     select new ItemElementData()
                     {
-                        Id = itemData.id,
-                        Index = itemData.index,
+                        Id = itemData.Id,
+                        Index = itemData.Index,
 
-                        Type = itemData.type,
+                        Type = itemData.Type,
 
-                        ObjectGraphicId = itemData.objectGraphicId,
+                        ModelId = itemData.ModelId,
 
-                        Name = itemData.name,
+                        Name = itemData.Name,
 
-                        objectGraphicPath = objectGraphicData.path,
-                        objectGraphicIconPath = iconData.path,
+                        ModelPath = modelData.Path,
+                        ModelIconPath = iconData.Path,
                         
                     }).OrderBy(x => x.Index).ToList();
 
@@ -54,56 +45,62 @@ public class ItemDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetItemData(Search.Item searchParameters)
+    private static void GetItemData(Search.Item searchParameters)
     {
-        itemDataList = new List<ItemData>();
+        itemDataList = new List<ItemBaseData>();
 
-        foreach(Fixtures.Item item in Fixtures.itemList)
+        foreach(ItemBaseData item in Fixtures.itemList)
         {
-            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.id)) continue;
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.type)) continue;
+            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.Id)) continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.Type)) continue;
 
-            var itemData = new ItemData();
+            var itemData = new ItemElementData();
 
-            itemData.id = item.id;
-            itemData.index = item.index;
+            itemData.Id = item.Id;
+            itemData.Index = item.Index;
 
-            itemData.type = item.type;
+            itemData.Type = item.Type;
 
-            itemData.objectGraphicId = item.objectGraphicId;
+            itemData.ModelId = item.ModelId;
 
-            itemData.name = item.name;
+            itemData.Name = item.Name;
 
             itemDataList.Add(itemData);
         }
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = itemDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = itemDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class ItemData
+    public static void UpdateData(ItemElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        public int type;
+        if (elementData.ChangedModelId)
+            data.ModelId = elementData.ModelId;
 
-        public string name;
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
+    }
 
-        public int objectGraphicId;
+    static public void UpdateIndex(ItemElementData elementData)
+    {
+        var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

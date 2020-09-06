@@ -7,7 +7,6 @@ using System.Linq;
 public class TimeHeaderSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     #region UI
@@ -23,7 +22,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
     private bool isDefault;
     private int startTime;
     private int endTime;
-    private string objectGraphicIcon;
+    private string modelIcon;
     #endregion
 
     #region Data Properties    
@@ -38,14 +37,14 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
+                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
                     atmosphereData.StartTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+                    var interactionData = (InteractionElementData)DataEditor.ElementData;
                     interactionData.StartTime = value;
 
                     break;
@@ -64,14 +63,14 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
+                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
                     atmosphereData.EndTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+                    var interactionData = (InteractionElementData)DataEditor.ElementData;
                     interactionData.EndTime = value;
 
                     break;
@@ -101,21 +100,21 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void CheckTime()
     {
-        var timeConflict = isDefault ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.Data.elementData);
+        var timeConflict = isDefault ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.ElementData);
 
         switch (DataEditor.Data.dataController.DataType)
         {
             case Enums.DataType.Atmosphere:
 
-                var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
-                atmosphereData.timeConflict = timeConflict;
+                var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
+                atmosphereData.TimeConflict = timeConflict;
 
                 break;
 
             case Enums.DataType.Interaction:
 
-                var interactionData = (InteractionElementData)DataEditor.Data.elementData;
-                interactionData.timeConflict = timeConflict;
+                var interactionData = (InteractionElementData)DataEditor.ElementData;
+                interactionData.TimeConflict = timeConflict;
 
                 break;
         }
@@ -154,10 +153,9 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
     
     private void InitializeAtmosphereData()
     {
-        var atmosphereData = (AtmosphereElementData)DataEditor.Data.elementData;
+        var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
 
         id          = atmosphereData.Id;
-        index       = atmosphereData.Index;
 
         isDefault   = atmosphereData.Default;
 
@@ -167,10 +165,9 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void InitializeInteractionData()
     {
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        var interactionData = (InteractionElementData)DataEditor.ElementData;
 
         id          = interactionData.Id;
-        index       = interactionData.Index;
 
         isDefault   = interactionData.Default;
 

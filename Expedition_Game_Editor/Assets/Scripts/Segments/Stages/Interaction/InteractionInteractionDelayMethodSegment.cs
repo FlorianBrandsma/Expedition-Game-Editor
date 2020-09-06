@@ -71,7 +71,7 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        var interactionData = (InteractionElementData)DataEditor.ElementData;
 
         delayMethod = interactionData.DelayMethod;
         delayDuration = interactionData.DelayDuration;

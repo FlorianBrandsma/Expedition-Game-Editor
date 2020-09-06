@@ -37,7 +37,7 @@ public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var chapterData = (ChapterElementData)DataEditor.Data.elementData;
+        var chapterData = (ChapterElementData)DataEditor.ElementData;
 
         timeSpeed = chapterData.TimeSpeed;
     }

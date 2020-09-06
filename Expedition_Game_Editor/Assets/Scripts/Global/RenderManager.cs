@@ -11,10 +11,12 @@ static public class RenderManager
 
     static public Enums.LoadType loadType;
     
-    static public void Render(Path path)
+    static public void Render(Path testPath)
     {
-        //Debug.Log(PathString(path));
+        var path = testPath.Clone();
 
+        Debug.Log(PathString(path));
+        
         SelectionManager.CancelGetSelection();
 
         //Set up data along the path
@@ -34,6 +36,8 @@ static public class RenderManager
         
         //Performed at the end so it doesn't interfere with the current (de)activation process
         InitializeSecondaryPaths(path);
+        
+        HistoryManager.AddHistory(path);
     }
 
     static private void InitializeSecondaryPaths(Path path)
@@ -117,41 +121,24 @@ static public class RenderManager
 
         loadType = Enums.LoadType.Normal;
     }
-
-    static public List<IElementData> GetData(IDataController dataController, SearchProperties searchProperties)
-    {
-        //Cancel the selection of data that is about to be overwritten while it still has active elements.
-        //Results in some double cancel calls, but necessary to do via DataList for selected data without elements
-
-        if(dataController.DataList != null)
-            SelectionManager.CancelSelection(dataController.DataList);
-
-        var dataList = dataController.DataManager.GetData(searchProperties);
-
-        //Debug.Log(dataController.DataType);
-
-        //An editor might be forced to reload, but it might not reload other lists of the same type,
-        //which are at least used by the region navigation (example: changing time)
-        //if (dataController.SegmentController != null)
-        //{
-        //    var segmentController = dataController.SegmentController;
-        //    segmentController.MainPath.ReplaceDataLists(segmentController.EditorController.PathController.step, dataController.DataType, dataList);
-        //}
-
-        return dataList;
-    }
-
+    
     static public string PathString(Path path)
     {
         string str = "route: ";
 
         for (int i = 0; i < path.routeList.Count; i++)
-            str += path.routeList[i].controller + "/";
+            str += path.routeList[i].controllerIndex + "/";
 
         str += "\n";
 
         for (int i = 0; i < path.routeList.Count; i++)
-            str += path.routeList[i].GeneralData.DataType + "-" + path.routeList[i].GeneralData.Id + "/";
+        {
+            if (path.routeList[i].data != null)
+                str += path.routeList[i].ElementData.DataType + "-" + path.routeList[i].ElementData.Id + "/";
+            else
+                str += "Null-0/";
+        }
+            
 
         return str;
     }

@@ -18,8 +18,8 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var interactionDestinationData = (InteractionDestinationElementData)SegmentController.Path.FindLastRoute(Enums.DataType.InteractionDestination).data.elementData;
-        SegmentController.ListProperties.autoSelectId = interactionDestinationData.RegionId;
+        var interactionDestinationElementData = (InteractionDestinationElementData)SegmentController.Path.FindLastRoute(Enums.DataType.InteractionDestination).ElementData;
+        SegmentController.ListProperties.autoSelectId = interactionDestinationElementData.RegionId;
         
         var searchProperties = new SearchProperties(Enums.DataType.Region);
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
@@ -27,11 +27,11 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
         var phaseId = 0;
 
         if (SegmentController.Path.FindLastRoute(Enums.DataType.Phase) != null)
-            phaseId = SegmentController.Path.FindLastRoute(Enums.DataType.Phase).GeneralData.Id;
+            phaseId = SegmentController.Path.FindLastRoute(Enums.DataType.Phase).ElementData.Id;
         
         searchParameters.phaseId = new List<int>() { phaseId };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

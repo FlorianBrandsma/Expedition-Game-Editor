@@ -4,24 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class WorldInteractableDataManager : IDataManager
+public static class WorldInteractableDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<WorldInteractableBaseData> worldInteractableDataList = new List<WorldInteractableBaseData>();
 
-    private List<WorldInteractableData> worldInteractableDataList = new List<WorldInteractableData>();
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public WorldInteractableDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
@@ -45,39 +36,34 @@ public class WorldInteractableDataManager : IDataManager
         
         if (worldInteractableDataList.Count == 0) return new List<IElementData>();
 
-        //for(int i = 0; i < worldInteractableDataList.Count; i++)
-        //{
-        //    worldInteractableDataList[i].index = i;
-        //}
-
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from worldInteractableData  in worldInteractableDataList
-                    join interactableData       in interactableDataList     on worldInteractableData.interactableId     equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId         equals objectGraphicData.id
-                    join iconData               in iconDataList             on objectGraphicData.iconId                 equals iconData.id
+                    join interactableData       in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                    join modelData              in modelDataList        on interactableData.ModelId             equals modelData.Id
+                    join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
 
                     select new WorldInteractableElementData()
                     {
-                        Id = worldInteractableData.id,
+                        Id = worldInteractableData.Id,
 
-                        Type = worldInteractableData.type,
+                        Type = worldInteractableData.Type,
 
-                        PhaseId = worldInteractableData.phaseId,
-                        QuestId = worldInteractableData.questId,
-                        ObjectiveId = worldInteractableData.objectiveId,
+                        PhaseId = worldInteractableData.PhaseId,
+                        QuestId = worldInteractableData.QuestId,
+                        ObjectiveId = worldInteractableData.ObjectiveId,
 
-                        ChapterInteractableId = worldInteractableData.chapterInteractableId,
-                        InteractableId = worldInteractableData.interactableId,
+                        ChapterInteractableId = worldInteractableData.ChapterInteractableId,
+                        InteractableId = worldInteractableData.InteractableId,
                         
-                        interactableName =  interactableData.name,
-                        objectGraphicIconPath = iconData.path,
+                        InteractableName =  interactableData.Name,
+                        ModelIconPath = iconData.Path,
 
-                        height = objectGraphicData.height,
-                        width = objectGraphicData.width,
-                        depth = objectGraphicData.depth
+                        Height = modelData.Height,
+                        Width = modelData.Width,
+                        Depth = modelData.Depth
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -86,138 +72,135 @@ public class WorldInteractableDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    internal void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)
     {
-        worldInteractableDataList = new List<WorldInteractableData>();
+        worldInteractableDataList = new List<WorldInteractableBaseData>();
         
-        foreach (Fixtures.WorldInteractable worldInteractable in Fixtures.worldInteractableList)
+        foreach (WorldInteractableBaseData worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.id))                                         continue;
-            if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.type))                                     continue;
-            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.chapterInteractableId))   continue;
-            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.phaseId))                               continue;
-            if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.questId))                               continue;
-            if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))                       continue;
-            if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.interactableId))                 continue;
+            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
+            if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
+            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
+            if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.QuestId))                               continue;
+            if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
+            if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.InteractableId))                 continue;
 
-            var worldInteractableData = new WorldInteractableData();
+            var worldInteractableData = new WorldInteractableBaseData();
 
-            worldInteractableData.id = worldInteractable.id;
+            worldInteractableData.Id = worldInteractable.Id;
 
-            worldInteractableData.type = worldInteractable.type;
+            worldInteractableData.Type = worldInteractable.Type;
             
-            worldInteractableData.phaseId = worldInteractable.phaseId;
-            worldInteractableData.questId = worldInteractable.questId;
-            worldInteractableData.objectiveId = worldInteractable.objectiveId;
+            worldInteractableData.PhaseId = worldInteractable.PhaseId;
+            worldInteractableData.QuestId = worldInteractable.QuestId;
+            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
 
-            worldInteractableData.chapterInteractableId = worldInteractable.chapterInteractableId;
-            worldInteractableData.interactableId = worldInteractable.interactableId;
+            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
+            worldInteractableData.InteractableId = worldInteractable.InteractableId;
 
             worldInteractableDataList.Add(worldInteractableData);
         }
     }
 
-    internal void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
     {
-        worldInteractableDataList = new List<WorldInteractableData>();
+        worldInteractableDataList = new List<WorldInteractableBaseData>();
 
-        var interactionDestinationList  = Fixtures.interactionDestinationList.Where(x => searchParameters.regionId.Contains(x.regionId)).Distinct().ToList();
-        var interactionList             = Fixtures.interactionList.Where(x => interactionDestinationList.Select(y => y.interactionId).Contains(x.id)).Distinct().ToList();
-        var taskList                    = Fixtures.taskList.Where(x => interactionList.Select(y => y.taskId).Contains(x.id) && searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList();
-        var worldInteractableList       = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.worldInteractableId).Contains(x.id)).Distinct().ToList();
+        var interactionDestinationList  = Fixtures.interactionDestinationList.Where(x => searchParameters.regionId.Contains(x.RegionId)).Distinct().ToList();
+        var interactionList             = Fixtures.interactionList.Where(x => interactionDestinationList.Select(y => y.InteractionId).Contains(x.Id)).Distinct().ToList();
+        var taskList                    = Fixtures.taskList.Where(x => interactionList.Select(y => y.TaskId).Contains(x.Id) && searchParameters.objectiveId.Contains(x.ObjectiveId)).Distinct().ToList();
+        var worldInteractableList       = Fixtures.worldInteractableList.Where(x => taskList.Select(y => y.WorldInteractableId).Contains(x.Id)).Distinct().ToList();
 
-        foreach (Fixtures.WorldInteractable worldInteractable in worldInteractableList)
+        foreach (WorldInteractableBaseData worldInteractable in worldInteractableList)
         {
-            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.id))                                         continue;
-            if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.type))                                     continue;
-            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.chapterInteractableId))   continue;
-            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.phaseId))                               continue;
-            if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.questId))                               continue;
-            if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.objectiveId))                       continue;
-            if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.interactableId))                 continue;
+            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
+            if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
+            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
+            if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.QuestId))                               continue;
+            if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
+            if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.InteractableId))                 continue;
 
-            var worldInteractableData = new WorldInteractableData();
+            var worldInteractableData = new WorldInteractableBaseData();
 
-            worldInteractableData.id = worldInteractable.id;
+            worldInteractableData.Id = worldInteractable.Id;
 
-            worldInteractableData.type = worldInteractable.type;
+            worldInteractableData.Type = worldInteractable.Type;
             
-            worldInteractableData.phaseId = worldInteractable.phaseId;
-            worldInteractableData.questId = worldInteractable.questId;
-            worldInteractableData.objectiveId = worldInteractable.objectiveId;
+            worldInteractableData.PhaseId = worldInteractable.PhaseId;
+            worldInteractableData.QuestId = worldInteractable.QuestId;
+            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
 
-            worldInteractableData.chapterInteractableId = worldInteractable.chapterInteractableId;
-            worldInteractableData.interactableId = worldInteractable.interactableId;
+            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
+            worldInteractableData.InteractableId = worldInteractable.InteractableId;
 
             worldInteractableDataList.Add(worldInteractableData);
         }
     }
 
-    internal void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
     {
-        worldInteractableDataList = new List<WorldInteractableData>();
+        worldInteractableDataList = new List<WorldInteractableBaseData>();
 
-        var worldInteractableList = new List<Fixtures.WorldInteractable>();
+        var worldInteractableList = new List<WorldInteractableBaseData>();
 
-        Fixtures.worldInteractableList.Where(x => searchParameters.questId.Contains(x.questId)).Distinct().ToList().ForEach(x => worldInteractableList.Add(x));
-        Fixtures.worldInteractableList.Where(x => searchParameters.objectiveId.Contains(x.objectiveId)).Distinct().ToList().ForEach(x => worldInteractableList.Add(x));
+        Fixtures.worldInteractableList.Where(x => searchParameters.questId.Contains(x.QuestId)).Distinct().ToList().ForEach(x => worldInteractableList.Add(x));
+        Fixtures.worldInteractableList.Where(x => searchParameters.objectiveId.Contains(x.ObjectiveId)).Distinct().ToList().ForEach(x => worldInteractableList.Add(x));
 
-        foreach (Fixtures.WorldInteractable worldInteractable in worldInteractableList)
+        foreach (WorldInteractableBaseData worldInteractable in worldInteractableList)
         {
-            var worldInteractableData = new WorldInteractableData();
+            var worldInteractableData = new WorldInteractableBaseData();
 
-            worldInteractableData.id = worldInteractable.id;
+            worldInteractableData.Id = worldInteractable.Id;
 
-            worldInteractableData.type = worldInteractable.type;
+            worldInteractableData.Type = worldInteractable.Type;
 
-            worldInteractableData.phaseId = worldInteractable.phaseId;
-            worldInteractableData.questId = worldInteractable.questId;
-            worldInteractableData.objectiveId = worldInteractable.objectiveId;
+            worldInteractableData.PhaseId = worldInteractable.PhaseId;
+            worldInteractableData.QuestId = worldInteractable.QuestId;
+            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
 
-            worldInteractableData.chapterInteractableId = worldInteractable.chapterInteractableId;
-            worldInteractableData.interactableId = worldInteractable.interactableId;
+            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
+            worldInteractableData.InteractableId = worldInteractable.InteractableId;
 
             worldInteractableDataList.Add(worldInteractableData);
         }
     }
-    
-    internal void GetInteractableData()
+
+    private static void GetInteractableData()
     {
         var interactableSearchParameters = new Search.Interactable();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.interactableId).Distinct().ToList();
+        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var objectGraphicSearchParameters = new Search.ObjectGraphic();
+        var modelSearchParameters = new Search.Model();
 
-        objectGraphicSearchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(objectGraphicSearchParameters);
+        modelDataList = DataManager.GetModelData(modelSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
 
-    internal class WorldInteractableData
+    public static void UpdateData(WorldInteractableElementData elementData)
     {
-        public int id;
-
-        public int type;
+        var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
-        public int phaseId;
-        public int questId;
-        public int objectiveId;
-
-        public int chapterInteractableId;
-        public int interactableId;
+        if (elementData.ChangedInteractableId)
+            data.InteractableId = elementData.InteractableId;
+        
+        if (elementData.ChangedQuestId)
+            data.QuestId = elementData.QuestId;
     }
 }

@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterSaveDataManager : IDataManager
+public static class ChapterSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ChapterSaveBaseData> chapterSaveDataList;
 
-    private List<ChapterSaveData> chapterSaveDataList;
+    private static List<ChapterBaseData> chapterDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ChapterData> chapterDataList;
-
-    public ChapterSaveDataManager(ChapterSaveController chapterController)
-    {
-        DataController = chapterController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterSave>().First();
 
@@ -29,20 +20,20 @@ public class ChapterSaveDataManager : IDataManager
         GetChapterData();
 
         var list = (from chapterSaveData    in chapterSaveDataList
-                    join chapterData        in chapterDataList on chapterSaveData.chapterId equals chapterData.id
+                    join chapterData        in chapterDataList on chapterSaveData.ChapterId equals chapterData.Id
                     select new ChapterSaveElementData()
                     {
-                        Id = chapterSaveData.id,
-                        Index = chapterSaveData.index,
+                        Id = chapterSaveData.Id,
+                        Index = chapterSaveData.Index,
                         
-                        SaveId = chapterSaveData.saveId,
-                        ChapterId = chapterSaveData.chapterId,
+                        SaveId = chapterSaveData.SaveId,
+                        ChapterId = chapterSaveData.ChapterId,
 
-                        Complete = chapterSaveData.complete,
+                        Complete = chapterSaveData.Complete,
 
-                        name = chapterData.name,
+                        Name = chapterData.Name,
 
-                        publicNotes = chapterData.publicNotes
+                        PublicNotes = chapterData.PublicNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -51,45 +42,42 @@ public class ChapterSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetChapterSaveData(Search.ChapterSave searchParameters)
+    private static void GetChapterSaveData(Search.ChapterSave searchParameters)
     {
-        chapterSaveDataList = new List<ChapterSaveData>();
+        chapterSaveDataList = new List<ChapterSaveBaseData>();
 
-        foreach (Fixtures.ChapterSave chapterSave in Fixtures.chapterSaveList)
+        foreach (ChapterSaveBaseData chapterSave in Fixtures.chapterSaveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.id))           continue;
-            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.saveId))   continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.Id))           continue;
+            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.SaveId))   continue;
 
-            var chapterSaveData = new ChapterSaveData();
+            var chapterSaveData = new ChapterSaveBaseData();
 
-            chapterSaveData.id = chapterSave.id;
-            chapterSaveData.index = chapterSave.index;
+            chapterSaveData.Id = chapterSave.Id;
+            chapterSaveData.Index = chapterSave.Index;
 
-            chapterSaveData.saveId = chapterSave.saveId;
-            chapterSaveData.chapterId = chapterSave.chapterId;
+            chapterSaveData.SaveId = chapterSave.SaveId;
+            chapterSaveData.ChapterId = chapterSave.ChapterId;
 
-            chapterSaveData.complete = chapterSave.complete;
+            chapterSaveData.Complete = chapterSave.Complete;
 
             chapterSaveDataList.Add(chapterSaveData);
         }
     }
 
-    internal void GetChapterData()
+    private static void GetChapterData()
     {
         var chapterSearchParameters = new Search.Chapter();
-        chapterSearchParameters.id = chapterSaveDataList.Select(x => x.chapterId).Distinct().ToList();
+        chapterSearchParameters.id = chapterSaveDataList.Select(x => x.ChapterId).Distinct().ToList();
 
-        chapterDataList = dataManager.GetChapterData(chapterSearchParameters);
+        chapterDataList = DataManager.GetChapterData(chapterSearchParameters);
     }
 
-    internal class ChapterSaveData
+    public static void UpdateData(ChapterSaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int saveId;
-        public int chapterId;
-
-        public bool complete;
+        var data = Fixtures.chapterSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

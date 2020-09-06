@@ -6,10 +6,7 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 {
     private PhaseEditor PhaseEditor { get { return (PhaseEditor)DataEditor; } }
 
-    private DataManager dataManager = new DataManager();
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies()
@@ -29,12 +26,12 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Region);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
-        searchParameters.phaseId = new List<int>() { PhaseEditor.PhaseData.Id };
+        searchParameters.phaseId = new List<int>() { PhaseEditor.phaseData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        var phaseRegionList = SegmentController.DataController.DataList.Cast<RegionElementData>().ToList();
-        phaseRegionList.ForEach(x => PhaseEditor.RegionDataList.Add(x));
+        var phaseRegionList = SegmentController.DataController.Data.dataList.Cast<RegionElementData>().ToList();
+        phaseRegionList.ForEach(x => PhaseEditor.regionDataList.Add(x));
     }
 
     public void OpenSegment()

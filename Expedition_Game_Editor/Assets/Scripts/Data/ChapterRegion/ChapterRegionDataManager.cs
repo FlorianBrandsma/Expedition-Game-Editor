@@ -3,24 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ChapterRegionDataManager : IDataManager
+public static class ChapterRegionDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ChapterRegionBaseData> chapterRegionDataList;
 
-    private List<ChapterRegionData> chapterRegionDataList;
-    
-    private DataManager dataManager = new DataManager();
+    private static List<RegionBaseData> regionDataList;
+    private static List<TileSetBaseData> tileSetDataList;
+    private static List<TileBaseData> tileDataList;
 
-    private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TileSetData> tileSetDataList;
-    private List<DataManager.TileData> tileDataList;
-
-    public ChapterRegionDataManager(ChapterRegionController chapterRegionController)
-    {
-        DataController = chapterRegionController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
 
@@ -33,22 +24,22 @@ public class ChapterRegionDataManager : IDataManager
         GetTileData();
 
         var list = (from chapterRegionData  in chapterRegionDataList
-                    join regionData         in regionDataList       on chapterRegionData.regionId   equals regionData.id
-                    join tileSetData        in tileSetDataList      on regionData.tileSetId         equals tileSetData.id
+                    join regionData         in regionDataList       on chapterRegionData.RegionId   equals regionData.Id
+                    join tileSetData        in tileSetDataList      on regionData.TileSetId         equals tileSetData.Id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
 
                     select new ChapterRegionElementData()
                     {
-                        Id = chapterRegionData.id,
+                        Id = chapterRegionData.Id,
 
-                        ChapterId = chapterRegionData.chapterId,
-                        RegionId = chapterRegionData.regionId,
+                        ChapterId = chapterRegionData.ChapterId,
+                        RegionId = chapterRegionData.RegionId,
 
-                        name = regionData.name,
+                        Name = regionData.Name,
 
-                        tileIconPath = tileData.First().tileData.iconPath
+                        TileIconPath = tileData.First().tileData.IconPath
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -57,55 +48,55 @@ public class ChapterRegionDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetChapterRegionData(Search.ChapterRegion searchParameters)
+    private static void GetChapterRegionData(Search.ChapterRegion searchParameters)
     {
-        chapterRegionDataList = new List<ChapterRegionData>();
+        chapterRegionDataList = new List<ChapterRegionBaseData>();
 
-        foreach(Fixtures.ChapterRegion chapterRegion in Fixtures.chapterRegionList)
+        foreach(ChapterRegionBaseData chapterRegion in Fixtures.chapterRegionList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterRegion.id)) continue;
-            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.chapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterRegion.Id)) continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.ChapterId)) continue;
 
-            var chapterRegionData = new ChapterRegionData();
+            var chapterRegionData = new ChapterRegionBaseData();
 
-            chapterRegionData.id = chapterRegion.id;
+            chapterRegionData.Id = chapterRegion.Id;
 
-            chapterRegionData.chapterId = chapterRegion.chapterId;
-            chapterRegionData.regionId = chapterRegion.regionId;
+            chapterRegionData.ChapterId = chapterRegion.ChapterId;
+            chapterRegionData.RegionId = chapterRegion.RegionId;
 
             chapterRegionDataList.Add(chapterRegionData);
         }
     }
 
-    internal void GetRegionData()
+    private static void GetRegionData()
     {
         var searchParameters = new Search.Region();
-        searchParameters.id = chapterRegionDataList.Select(x => x.regionId).Distinct().ToList();
+        searchParameters.id = chapterRegionDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = dataManager.GetRegionData(searchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
-    private void GetTileSetData()
+    private static void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    private void GetTileData()
+    private static void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = dataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(tileSearchParameters);
     }
 
-    internal class ChapterRegionData
+    public static void UpdateData(ChapterRegionElementData elementData)
     {
-        public int id;
-
-        public int chapterId;
-        public int regionId;
+        var data = Fixtures.chapterRegionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedRegionId)
+            data.RegionId = elementData.RegionId;
     }
 }

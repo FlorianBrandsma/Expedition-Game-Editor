@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhaseSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private PhaseSaveElementData PhaseSaveData { get { return (PhaseSaveElementData)DataEditor.Data.elementData; } }
+    private PhaseSaveElementData PhaseSaveData { get { return (PhaseSaveElementData)DataEditor.ElementData; } }
 
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
 

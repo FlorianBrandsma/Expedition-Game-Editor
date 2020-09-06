@@ -1,74 +1,55 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class EditorWorldElementData : GeneralData, IElementData
+public class EditorWorldElementData : EditorWorldData, IElementData
 {
-    public Enums.RegionType regionType;
+    public DataElement DataElement                  { get; set; }
 
-    public int regionSize;
-    public int terrainSize;
-    public float tileSize;
+    public EditorWorldData OriginalData             { get; set; }
 
-    public string tileSetName;
+    public Enums.DataType DataType                  { get { return Enums.DataType.EditorWorld; } }
 
-    public Vector3 startPosition;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public List<TerrainElementData> terrainDataList;
-
-    public List<PhaseElementData> phaseDataList;
-
-    public DataElement DataElement { get; set; }
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
     public bool Changed { get; set; }
+    #endregion
 
     public void Update() { }
 
     public void UpdateSearch() { }
 
-    public void UpdateIndex() { }
-
     public void SetOriginalValues()
     {
-        terrainDataList.ForEach(x => x.SetOriginalValues());
-        phaseDataList.ForEach(x => x.SetOriginalValues());
+        OriginalData = base.Clone();
+        
+        ClearChanges();
+    }
+    
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
     }
 
-    public void GetOriginalValues() { }
-
-    public void ClearChanges() { }
-
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new EditorWorldElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    new public virtual void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        var worldDataSource = (EditorWorldElementData)dataSource;
+        var data = new EditorWorldElementData();
 
-        regionType = worldDataSource.regionType;
+        data.DataElement = DataElement;
 
-        regionSize = worldDataSource.regionSize;
-        terrainSize = worldDataSource.terrainSize;
-        tileSize = worldDataSource.tileSize;
+        data.OriginalData = OriginalData.Clone();
+        
+        base.Clone(data);
 
-        tileSetName = worldDataSource.tileSetName;
-
-        startPosition = worldDataSource.startPosition;
-
-        for (int i = 0; i < terrainDataList.Count; i++)
-        {
-            var terrainDataSource = worldDataSource.terrainDataList[i];
-            terrainDataList[i].Copy(terrainDataSource);
-        }
-
-        for(int i = 0; i < phaseDataList.Count; i++)
-        {
-            var phaseDataSource = worldDataSource.phaseDataList[i];
-            phaseDataList[i].Copy(phaseDataSource);
-        }        
+        return data;
     }
 }

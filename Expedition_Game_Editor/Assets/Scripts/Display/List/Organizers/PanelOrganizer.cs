@@ -33,12 +33,12 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SelectData()
     {
-        SelectionManager.SelectData(DataController.DataList, DisplayManager);
+        SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
 
     public void UpdateData()
     {
-        ResetData(DataController.DataList);
+        ResetData(DataController.Data.dataList);
     }
 
     public void ResetData(List<IElementData> filter)
@@ -50,7 +50,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        SetData(DataController.DataList);
+        SetData(DataController.Data.dataList);
     }
     
     public void SetData(List<IElementData> list)
@@ -71,7 +71,10 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(panel.EditorElement);
 
             elementData.DataElement = panel.EditorElement.DataElement;
-            panel.EditorElement.DataElement.data = new DataElement.Data(DataController, elementData);
+
+            panel.EditorElement.DataElement.Data = DataController.Data;
+            panel.EditorElement.DataElement.Id = elementData.Id;
+
             panel.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
 
             SetProperties(panel);
@@ -79,9 +82,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             panel.GetComponent<ExPanel>().InitializeChildElement();
 
             //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            panel.name = generalData.DebugName + generalData.Id;
-            //
+            panel.name = elementData.DebugName + elementData.Id;
 
             SetElement(panel.EditorElement);
         }
@@ -94,7 +95,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         element.RectTransform.offsetMin = new Vector2(0, element.RectTransform.offsetMin.y);
         element.RectTransform.offsetMax = new Vector2(0, element.RectTransform.offsetMax.y);
         
-        int index = DataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
@@ -119,7 +120,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     public Vector2 GetListSize(int elementCount, bool exact)
     {
         if (exact)
-            return new Vector2(0, DataController.DataList.Count * ElementSize.y);
+            return new Vector2(0, DataController.Data.dataList.Count * ElementSize.y);
         else
             return new Vector2(0, elementCount);
     }
@@ -132,15 +133,15 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
     private void CancelSelection()
     {
-        SelectionManager.CancelSelection(DataController.DataList);
+        SelectionManager.CancelSelection(DataController.Data.dataList);
     }
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

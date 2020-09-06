@@ -13,7 +13,7 @@ public class RegionDisplayAction : MonoBehaviour, IAction
 
     public void SetAction(Path path)
     {
-        RegionManager.activeDisplay = (RegionManager.Display)path.FindLastRoute(Enums.DataType.Region).controller;
+        RegionManager.activeDisplay = (RegionManager.Display)path.FindLastRoute(Enums.DataType.Region).controllerIndex;
 
         var dropdown = ActionManager.instance.AddDropdown(actionProperties);
         dropdown.Dropdown.captionText.text = Enum.GetName(typeof(RegionManager.Display), RegionManager.activeDisplay);

@@ -6,10 +6,7 @@ public class ChapterCharactersConstantInteractableSegment : MonoBehaviour, ISegm
 {
     private ChapterEditor ChapterEditor { get { return (ChapterEditor)DataEditor; } }
 
-    private DataManager dataManager = new DataManager();
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies()
@@ -29,11 +26,11 @@ public class ChapterCharactersConstantInteractableSegment : MonoBehaviour, ISegm
         var searchProperties = new SearchProperties(Enums.DataType.ChapterInteractable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();     
-        searchParameters.chapterId = new List<int>() { ChapterEditor.ChapterData.Id };
+        searchParameters.chapterId = new List<int>() { ChapterEditor.chapterData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        var chapterInteractableList = SegmentController.DataController.DataList.Cast<ChapterInteractableElementData>().ToList();
+        var chapterInteractableList = SegmentController.DataController.Data.dataList.Cast<ChapterInteractableElementData>().ToList();
         chapterInteractableList.ForEach(x => ChapterEditor.chapterInteractableDataList.Add(x));
     }
 
@@ -47,7 +44,7 @@ public class ChapterCharactersConstantInteractableSegment : MonoBehaviour, ISegm
                      ChapterEditor.chapterInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
         
         //Find interactables where id is not in the list
-        var list = dataManager.GetInteractableData().Where(x => !idList.Contains(x.id)).Select(x => x.id).Distinct().ToList();
+        var list = DataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
 
         searchParameters.id = list;
     }

@@ -3,24 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractableSaveDataManager : IDataManager
+public static class InteractableSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<InteractableSaveBaseData> interactableSaveDataList;
 
-    private List<InteractableSaveData> interactableSaveDataList;
+    private static List<InteractableBaseData> interactableDataList;
+    private static List<ModelBaseData> modelDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.InteractableData> interactableDataList;
-    private List<DataManager.ObjectGraphicData> objectGraphicDataList;
-    private List<DataManager.IconData> iconDataList;
-
-    public InteractableSaveDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractableSave>().First();
 
@@ -29,32 +20,32 @@ public class InteractableSaveDataManager : IDataManager
         if (interactableSaveDataList.Count == 0) return new List<IElementData>();
 
         GetInteractableData();
-        GetObjectGraphicData();
+        GetModelData();
         GetIconData();
 
         var list = (from interactableSaveData   in interactableSaveDataList
-                    join interactableData       in interactableDataList     on interactableSaveData.interactableId  equals interactableData.id
-                    join objectGraphicData      in objectGraphicDataList    on interactableData.objectGraphicId     equals objectGraphicData.id
-                    join iconData               in iconDataList             on objectGraphicData.iconId             equals iconData.id
+                    join interactableData       in interactableDataList on interactableSaveData.InteractableId  equals interactableData.Id
+                    join modelData              in modelDataList        on interactableData.ModelId             equals modelData.Id
+                    join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
                     select new InteractableSaveElementData()
                     {
-                        Id = interactableData.id,
-                        Index = interactableData.index,
+                        Id = interactableData.Id,
+                        Index = interactableData.Index,
 
-                        objectGraphicId = interactableData.objectGraphicId,
+                        ModelId = interactableData.ModelId,
 
-                        interactableName = interactableData.name,
+                        InteractableName = interactableData.Name,
 
-                        health = interactableData.health,
-                        hunger = interactableData.hunger,
-                        thirst = interactableData.thirst,
+                        Health = interactableData.Health,
+                        Hunger = interactableData.Hunger,
+                        Thirst = interactableData.Thirst,
 
-                        weight = interactableData.weight,
-                        speed = interactableData.speed,
-                        stamina = interactableData.stamina,
+                        Weight = interactableData.Weight,
+                        Speed = interactableData.Speed,
+                        Stamina = interactableData.Stamina,
 
-                        objectGraphicPath = objectGraphicData.path,
-                        objectGraphicIconPath = iconData.path
+                        ModelPath = modelData.Path,
+                        ModelIconPath = iconData.Path
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -63,60 +54,51 @@ public class InteractableSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetInteractableSaveData(Search.InteractableSave searchParameters)
+    private static void GetInteractableSaveData(Search.InteractableSave searchParameters)
     {
-        interactableSaveDataList = new List<InteractableSaveData>();
+        interactableSaveDataList = new List<InteractableSaveBaseData>();
 
-        foreach (Fixtures.InteractableSave interactableSave in Fixtures.interactableSaveList)
+        foreach (InteractableSaveBaseData interactableSave in Fixtures.interactableSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(interactableSave.saveId)) continue;
+            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(interactableSave.SaveId)) continue;
 
-            var interactableData = Fixtures.interactableList.Where(x => x.id == interactableSave.interactableId).First();
+            var interactableData = Fixtures.interactableList.Where(x => x.Id == interactableSave.InteractableId).First();
 
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactableData.type)) continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactableData.Type)) continue;
 
-            var interactableSaveData = new InteractableSaveData();
+            var interactableSaveData = new InteractableSaveBaseData();
 
-            interactableSaveData.id = interactableSave.id;
-            interactableSaveData.index = interactableSave.index;
+            interactableSaveData.Id = interactableSave.Id;
+            interactableSaveData.Index = interactableSave.Index;
 
-            interactableSaveData.saveId = interactableSave.saveId;
-            interactableSaveData.interactableId = interactableSave.interactableId;
+            interactableSaveData.SaveId = interactableSave.SaveId;
+            interactableSaveData.InteractableId = interactableSave.InteractableId;
 
             interactableSaveDataList.Add(interactableSaveData);
         }
     }
 
-    internal void GetInteractableData()
+    private static void GetInteractableData()
     {
         var searchParameters = new Search.Interactable();
-        searchParameters.id = interactableSaveDataList.Select(x => x.interactableId).Distinct().ToList();
+        searchParameters.id = interactableSaveDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableDataList = dataManager.GetInteractableData(searchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
-    internal void GetObjectGraphicData()
+    private static void GetModelData()
     {
-        var searchParameters = new Search.ObjectGraphic();
-        searchParameters.id = interactableDataList.Select(x => x.objectGraphicId).Distinct().ToList();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        objectGraphicDataList = dataManager.GetObjectGraphicData(searchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var searchParameters = new Search.Icon();
-        searchParameters.id = objectGraphicDataList.Select(x => x.iconId).Distinct().ToList();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(searchParameters);
-    }
-
-    internal class InteractableSaveData
-    {
-        public int id;
-        public int index;
-
-        public int saveId;
-        public int interactableId;
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 }

@@ -22,42 +22,42 @@ static public class SelectionElementManager
             Add(element.child);
     }
 
-    //Reload the display of active elements that match the argument
+    //Reload the display of active elements that match the argument. Exclusively used by index switching
     static public void UpdateElements(IElementData elementData)
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
-        var elementList = FindSelectionElements(activeElements, (GeneralData)elementData);
+        var elementList = FindSelectionElements(activeElements, elementData);
 
         var managerList = elementList.Select(x => x.DataElement.DisplayManager).Distinct().ToList();
 
         managerList.ForEach(x =>
         {
             x.UpdateData();
-            x.CorrectPosition(elementData);
+            x.CorrectPosition(elementData, x.Display.DataController.Data.dataList);
         });
     }
     
-    static public List<IElementData> FindElementData(GeneralData generalData)
+    static public List<IElementData> FindElementData(IElementData elementData)
     {
-        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), generalData)
-                                                   .Select(x => x.DataElement.data.elementData).Distinct().ToList();
+        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData)
+                                                   .Select(x => x.DataElement.ElementData).Distinct().ToList();
 
         return elementDataList;
     }
 
-    static public List<EditorElement> FindSelectionElements(GeneralData generalData)
+    static public List<EditorElement> FindSelectionElements(IElementData elementData)
     {
         var elementList = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();
 
-        return FindSelectionElements(elementList, generalData);
+        return FindSelectionElements(elementList, elementData);
     }
 
-    static public List<EditorElement> FindSelectionElements(List<EditorElement> elementList, GeneralData generalData)
+    static public List<EditorElement> FindSelectionElements(List<EditorElement> elementList, IElementData elementData)
     {
         return elementList.Where(x => x.selectionStatus == Enums.SelectionStatus.Main &&
-                                                        x.DataElement.GeneralData != null)
-                                            .Where(x => x.DataElement.GeneralData.Equals(generalData)).ToList();
+                                                        x.DataElement.ElementData != null)
+                                            .Where(x => DataManager.Equals(x.DataElement.ElementData, elementData)).ToList();
     }
 
     static public void CloseElement(DataElement dataElement)
@@ -76,7 +76,7 @@ static public class SelectionElementManager
     {
         foreach (EditorElement element in elementList)
         {
-            if (element.child != null)
+            if (element.child != null && element.child.isActiveAndEnabled)
                 CloseElement(element.child);
 
             element.CloseElement();

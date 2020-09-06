@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SearchController : MonoBehaviour
 {
-    private Route.Data data;
+    private Data data;
 
     public RectTransform referenceArea;
 
@@ -17,7 +17,7 @@ public class SearchController : MonoBehaviour
 
         data = SegmentController.EditorController.PathController.route.data;
         
-        if (data.searchProperties == null) return;
+        if (data == null) return;
         
         InitializeListProperties(data.searchProperties);
         InitializeDataController(data.searchProperties);
@@ -53,11 +53,11 @@ public class SearchController : MonoBehaviour
 
         switch (searchParameters.dataType)
         {
-            case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileController>();             break;
-            case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconController>();             break;
-            case Enums.DataType.ObjectGraphic:  dataController = gameObject.AddComponent<ObjectGraphicController>();    break;
-            case Enums.DataType.Interactable:   dataController = gameObject.AddComponent<InteractableController>();     break;
-            case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionController>();           break;
+            case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileDataController>();             break;
+            case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconDataController>();             break;
+            case Enums.DataType.Model:  dataController = gameObject.AddComponent<ModelDataController>();    break;
+            case Enums.DataType.Interactable:   dataController = gameObject.AddComponent<InteractableDataController>();     break;
+            case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionDataController>();           break;
 
             default: Debug.Log("CASE MISSING:" + searchParameters.dataType); break;
         }

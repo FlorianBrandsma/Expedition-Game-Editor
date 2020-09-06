@@ -27,7 +27,7 @@ public class SearchProperties
         {
             case Enums.DataType.None: return;
             case Enums.DataType.Icon:                   searchParameters = new[] { new Search.Icon() };                     break;
-            case Enums.DataType.ObjectGraphic:          searchParameters = new[] { new Search.ObjectGraphic() };            break;
+            case Enums.DataType.Model:          searchParameters = new[] { new Search.Model() };            break;
             case Enums.DataType.Item:                   searchParameters = new[] { new Search.Item() };                     break;
             case Enums.DataType.Interactable:           searchParameters = new[] { new Search.Interactable() };             break;
             case Enums.DataType.Region:                 searchParameters = new[] { new Search.Region() };                   break;

@@ -79,7 +79,7 @@ public class PhaseTransformRotationDegreeSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var phaseData = (PhaseElementData)DataEditor.Data.elementData;
+        var phaseData = (PhaseElementData)DataEditor.ElementData;
 
         rotationX = phaseData.DefaultRotationX;
         rotationY = phaseData.DefaultRotationY;

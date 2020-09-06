@@ -134,7 +134,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             overlayManager.UpdateOverlay();
     }
 
-    public void CorrectPosition(IElementData elementData)
+    public void CorrectPosition(IElementData elementData, List<IElementData> dataList)
     {
         var planes = GeometryUtility.CalculateFrustumPlanes(cam);
 
@@ -154,7 +154,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             case Enums.DataType.WorldInteractable:
 
                 var worldInteractableData = (WorldInteractableElementData)elementData;
-                elementPosition = new Vector3(worldInteractableData.positionX, worldInteractableData.positionY, -worldInteractableData.positionZ);
+                elementPosition = new Vector3(worldInteractableData.PositionX, worldInteractableData.PositionY, -worldInteractableData.PositionZ);
                 
                 break;
 
@@ -175,8 +175,8 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             default: Debug.Log("CASE MISSING: " + elementData.DataType); return;
         }
 
-        var regionData = (RegionElementData)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
-        var worldSize = regionData.RegionSize * regionData.TerrainSize * regionData.tileSize;
+        var regionData = (RegionElementData)Display.DataController.SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
+        var worldSize = regionData.RegionSize * regionData.TerrainSize * regionData.TileSize;
 
         var localPosition = new Vector3(-(worldSize / 2) + elementPosition.x, -elementPosition.y, (worldSize / 2) + elementPosition.z);
 

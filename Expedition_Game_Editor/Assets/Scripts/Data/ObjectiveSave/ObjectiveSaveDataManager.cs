@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectiveSaveDataManager : IDataManager
+public static class ObjectiveSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<ObjectiveSaveBaseData> objectiveSaveDataList;
 
-    private List<ObjectiveSaveData> objectiveSaveDataList;
+    private static List<ObjectiveBaseData> objectiveDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.ObjectiveData> objectiveDataList;
-
-    public ObjectiveSaveDataManager(ObjectiveSaveController objectiveController)
-    {
-        DataController = objectiveController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectiveSave>().First();
 
@@ -29,19 +20,20 @@ public class ObjectiveSaveDataManager : IDataManager
         GetObjectiveData();
 
         var list = (from objectiveSaveData  in objectiveSaveDataList
-                    join objectiveData      in objectiveDataList on objectiveSaveData.objectiveId equals objectiveData.id
+                    join objectiveData      in objectiveDataList on objectiveSaveData.ObjectiveId equals objectiveData.Id
                     select new ObjectiveSaveElementData()
                     {
-                        Id = objectiveSaveData.id,
+                        Id = objectiveSaveData.Id,
+                        Index = objectiveSaveData.Index,
 
-                        QuestSaveId = objectiveSaveData.questSaveId,
-                        ObjectiveId = objectiveSaveData.objectiveId,
+                        QuestSaveId = objectiveSaveData.QuestSaveId,
+                        ObjectiveId = objectiveSaveData.ObjectiveId,
 
-                        Complete = objectiveSaveData.complete,
+                        Complete = objectiveSaveData.Complete,
 
-                        name = objectiveData.name,
+                        Name = objectiveData.Name,
 
-                        publicNotes = objectiveData.publicNotes
+                        PublicNotes = objectiveData.PublicNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -50,44 +42,42 @@ public class ObjectiveSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetObjectiveSaveData(Search.ObjectiveSave searchParameters)
+    private static void GetObjectiveSaveData(Search.ObjectiveSave searchParameters)
     {
-        objectiveSaveDataList = new List<ObjectiveSaveData>();
+        objectiveSaveDataList = new List<ObjectiveSaveBaseData>();
 
-        foreach (Fixtures.ObjectiveSave objectiveSave in Fixtures.objectiveSaveList)
+        foreach (ObjectiveSaveBaseData objectiveSave in Fixtures.objectiveSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.id))                     continue;
-            if (searchParameters.questSaveId.Count  > 0 && !searchParameters.questSaveId.Contains(objectiveSave.questSaveId))   continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.Id))                     continue;
+            if (searchParameters.questSaveId.Count  > 0 && !searchParameters.questSaveId.Contains(objectiveSave.QuestSaveId))   continue;
 
-            var objectiveSaveData = new ObjectiveSaveData();
+            var objectiveSaveData = new ObjectiveSaveBaseData();
 
-            objectiveSaveData.id = objectiveSave.id;
+            objectiveSaveData.Id = objectiveSave.Id;
+            objectiveSaveData.Index = objectiveSave.Index;
 
-            objectiveSaveData.questSaveId = objectiveSave.questSaveId;
-            objectiveSaveData.objectiveId = objectiveSave.objectiveId;
+            objectiveSaveData.QuestSaveId = objectiveSave.QuestSaveId;
+            objectiveSaveData.ObjectiveId = objectiveSave.ObjectiveId;
 
-            objectiveSaveData.complete = objectiveSave.complete;
+            objectiveSaveData.Complete = objectiveSave.Complete;
 
             objectiveSaveDataList.Add(objectiveSaveData);
         }
     }
 
-    internal void GetObjectiveData()
+    private static void GetObjectiveData()
     {
         var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = objectiveSaveDataList.Select(x => x.objectiveId).Distinct().ToList();
+        objectiveSearchParameters.id = objectiveSaveDataList.Select(x => x.ObjectiveId).Distinct().ToList();
 
-        objectiveDataList = dataManager.GetObjectiveData(objectiveSearchParameters);
+        objectiveDataList = DataManager.GetObjectiveData(objectiveSearchParameters);
     }
 
-    internal class ObjectiveSaveData
+    public static void UpdateData(ObjectiveSaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int questSaveId;
-        public int objectiveId;
-
-        public bool complete;
+        var data = Fixtures.objectiveSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

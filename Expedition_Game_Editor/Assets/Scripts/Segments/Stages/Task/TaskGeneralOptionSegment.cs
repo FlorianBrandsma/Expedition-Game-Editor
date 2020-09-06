@@ -80,7 +80,7 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var taskData = (TaskElementData)DataEditor.Data.elementData;
+        var taskData = (TaskElementData)DataEditor.ElementData;
 
         completeObjective = taskData.CompleteObjective;
         repeatable = taskData.Repeatable;

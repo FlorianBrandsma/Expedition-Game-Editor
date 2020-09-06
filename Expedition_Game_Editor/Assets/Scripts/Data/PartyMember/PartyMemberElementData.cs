@@ -1,70 +1,71 @@
-﻿public class PartyMemberElementData : PartyMemberCore, IElementData
+﻿using UnityEngine;
+using System;
+
+public class PartyMemberElementData : PartyMemberData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public PartyMemberElementData() : base()
+    public PartyMemberData OriginalData             { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.PartyMember; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedChapterId
     {
-        DataType = Enums.DataType.PartyMember;
+        get { return ChapterId != OriginalData.ChapterId; }
     }
 
-    public string interactableName;
-    public string objectGraphicIconPath;
-
-    public string originalInteractableName;
-    public string originalObjectGraphicIconPath;
-
-    public override void Update()
+    public bool ChangedInteractableId
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return InteractableId != OriginalData.InteractableId; }
     }
 
-    public override void SetOriginalValues()
+    public bool Changed
     {
-        base.SetOriginalValues();
+        get
+        {
+            return ChangedChapterId || ChangedInteractableId;
+        }
+    }
+    #endregion
 
-        originalInteractableName = interactableName;
-        originalObjectGraphicIconPath = objectGraphicIconPath;
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        interactableName = originalInteractableName;
-        objectGraphicIconPath = originalObjectGraphicIconPath;
-    }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new PartyMemberElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new PartyMemberElementData();
 
-        var partyMemberDataSource = (PartyMemberElementData)dataSource;
+        data.DataElement = DataElement;
 
-        interactableName = partyMemberDataSource.interactableName;
-        objectGraphicIconPath = partyMemberDataSource.objectGraphicIconPath;
+        data.OriginalData = OriginalData.Clone();
 
-        SetOriginalValues();
+        base.Clone(data);
+
+        return data;
     }
 }

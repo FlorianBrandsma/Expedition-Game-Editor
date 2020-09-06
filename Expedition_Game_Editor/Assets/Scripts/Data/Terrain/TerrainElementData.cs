@@ -1,119 +1,91 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public class TerrainElementData : TerrainCore, IElementData
+public class TerrainElementData : TerrainData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public TerrainElementData() : base()
+    public TerrainData OriginalData                 { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Terrain; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    public List<AtmosphereElementData> AtmosphereDataList                           { get; set; } = new List<AtmosphereElementData>();
+    public List<TerrainTileElementData> TerrainTileDataList                         { get; set; } = new List<TerrainTileElementData>();
+    public List<WorldInteractableElementData> WorldInteractableDataList             { get; set; } = new List<WorldInteractableElementData>();
+    public List<InteractionDestinationElementData> InteractionDestinationDataList   { get; set; } = new List<InteractionDestinationElementData>();
+    public List<WorldObjectElementData> WorldObjectDataList                         { get; set; } = new List<WorldObjectElementData>();
+
+    #region Changed
+    public bool ChangedIconId
     {
-        DataType = Enums.DataType.Terrain;
+        get { return IconId != OriginalData.IconId; }
     }
 
-    public GridElement gridElement;
-
-    public int tileSetId;
-
-    public string iconPath;
-    public string baseTilePath;
-    
-    //Original
-    public string originalIconPath;
-
-    //List
-    public List<AtmosphereElementData> atmosphereDataList = new List<AtmosphereElementData>();
-    public List<TerrainTileElementData> terrainTileDataList = new List<TerrainTileElementData>();
-    public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
-    public List<InteractionDestinationElementData> interactionDestinationDataList = new List<InteractionDestinationElementData>();
-    public List<WorldObjectElementData> worldObjectDataList = new List<WorldObjectElementData>();
-
-    public override void Update()
+    public bool ChangedName
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return Name != OriginalData.Name; }
     }
 
-    public override void SetOriginalValues()
+    public bool Changed
     {
-        base.SetOriginalValues();
+        get
+        {
+            return ChangedIconId || ChangedName;
+        }
+    }
+    #endregion
 
-        originalIconPath = iconPath;
+    public void Update() { }
 
-        atmosphereDataList.ForEach(x => x.SetOriginalValues());
-        terrainTileDataList.ForEach(x => x.SetOriginalValues());
-        worldInteractableDataList.ForEach(x => x.SetOriginalValues());
-        interactionDestinationDataList.ForEach(x => x.SetOriginalValues());
-        worldObjectDataList.ForEach(x => x.SetOriginalValues());
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        iconPath = originalIconPath;
-    }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new TerrainElementData();
+        base.GetOriginalValues(OriginalData);
 
-        CloneGeneralData(elementData);
-
-        return elementData;
+        //AtmosphereDataList = originalData.AtmosphereDataList;
+        //TerrainTileDataList = originalData.TerrainTileDataList;
+        //WorldInteractableDataList = originalData.WorldInteractableDataList;
+        //InteractionDestinationDataList = originalData.InteractionDestinationDataList;
+        //WorldObjectDataList = originalData.WorldObjectDataList;
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new TerrainElementData();
 
-        var terrainDataSource = (TerrainElementData)dataSource;
+        data.DataElement = DataElement;
 
-        tileSetId = terrainDataSource.tileSetId;
+        data.OriginalData = OriginalData.Clone();
+        
+        data.AtmosphereDataList             = new List<AtmosphereElementData>(AtmosphereDataList.Select(x => (AtmosphereElementData)x.Clone()));
+        data.TerrainTileDataList            = new List<TerrainTileElementData>(TerrainTileDataList.Select(x => (TerrainTileElementData)x.Clone()));
+        data.WorldInteractableDataList      = new List<WorldInteractableElementData>(WorldInteractableDataList.Select(x => (WorldInteractableElementData)x.Clone()));
+        data.InteractionDestinationDataList = new List<InteractionDestinationElementData>(InteractionDestinationDataList.Select(x => (InteractionDestinationElementData)x.Clone()));
+        data.WorldObjectDataList            = new List<WorldObjectElementData>(WorldObjectDataList.Select(x => (WorldObjectElementData)x.Clone()));
 
-        iconPath = terrainDataSource.iconPath;
-        baseTilePath = terrainDataSource.baseTilePath;
+        base.Clone(data);
 
-        for (int i = 0; i < atmosphereDataList.Count; i++)
-        {
-            var atmosphereDataSource = terrainDataSource.atmosphereDataList[i];
-            atmosphereDataList[i].Copy(atmosphereDataSource);
-        }
-
-        for (int i = 0; i < terrainTileDataList.Count; i++)
-        {
-            var terrainTileDataSource = terrainDataSource.terrainTileDataList[i];
-            terrainTileDataList[i].Copy(terrainTileDataSource);
-        }
-
-        for (int i = 0; i < worldInteractableDataList.Count; i++)
-        {
-            var worldInteractableDataSource = terrainDataSource.worldInteractableDataList[i];
-            worldInteractableDataList[i].Copy(worldInteractableDataSource);
-        }
-
-        for (int i = 0; i < interactionDestinationDataList.Count; i++)
-        {
-            var interactionDataSource = terrainDataSource.interactionDestinationDataList[i];
-            interactionDestinationDataList[i].Copy(interactionDataSource);
-        }
-
-        for (int i = 0; i < worldObjectDataList.Count; i++)
-        {
-            var worldObjectDataSource = terrainDataSource.worldObjectDataList[i];
-            worldObjectDataList[i].Copy(worldObjectDataSource);
-        }
-
-        SetOriginalValues();
+        return data;
     }
 }

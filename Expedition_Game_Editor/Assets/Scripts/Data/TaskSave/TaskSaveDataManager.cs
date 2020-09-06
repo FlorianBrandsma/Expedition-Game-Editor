@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TaskSaveDataManager : IDataManager
+public static class TaskSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<TaskSaveBaseData> taskSaveDataList;
 
-    private List<TaskSaveData> taskSaveDataList;
+    private static List<TaskBaseData> taskDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.TaskData> taskDataList;
-
-    public TaskSaveDataManager(TaskSaveController taskController)
-    {
-        DataController = taskController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.TaskSave>().First();
 
@@ -29,22 +20,22 @@ public class TaskSaveDataManager : IDataManager
         GetTaskData();
 
         var list = (from taskSaveData   in taskSaveDataList
-                    join taskData       in taskDataList on taskSaveData.taskId equals taskData.id
+                    join taskData       in taskDataList on taskSaveData.TaskId equals taskData.Id
                     select new TaskSaveElementData()
                     {
-                        Id = taskSaveData.id,
-                        Index = taskSaveData.index,
+                        Id = taskSaveData.Id,
+                        Index = taskSaveData.Index,
 
-                        ObjectiveSaveId = taskSaveData.objectiveSaveId,
-                        TaskId = taskSaveData.taskId,
+                        ObjectiveSaveId = taskSaveData.ObjectiveSaveId,
+                        TaskId = taskSaveData.TaskId,
 
-                        Complete = taskSaveData.complete,
+                        Complete = taskSaveData.Complete,
 
-                        name = taskData.name,
+                        Name = taskData.Name,
 
-                        repeatable = taskData.repeatable,
+                        Repeatable = taskData.Repeatable,
 
-                        publicNotes = taskData.publicNotes
+                        PublicNotes = taskData.PublicNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -53,48 +44,44 @@ public class TaskSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetTaskSaveData(Search.TaskSave searchParameters)
+    private static void GetTaskSaveData(Search.TaskSave searchParameters)
     {
-        taskSaveDataList = new List<TaskSaveData>();
+        taskSaveDataList = new List<TaskSaveBaseData>();
 
-        foreach (Fixtures.TaskSave taskSave in Fixtures.taskSaveList)
+        foreach (TaskSaveBaseData taskSave in Fixtures.taskSaveList)
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(taskSave.id))                                      continue;
-            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.worldInteractableId))    continue;
-            if (searchParameters.objectiveSaveId.Count      > 0 && !searchParameters.objectiveSaveId.Contains(taskSave.objectiveSaveId))            continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(taskSave.Id))                                      continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.WorldInteractableId))    continue;
+            if (searchParameters.objectiveSaveId.Count      > 0 && !searchParameters.objectiveSaveId.Contains(taskSave.ObjectiveSaveId))            continue;
 
-            var taskSaveData = new TaskSaveData();
+            var taskSaveData = new TaskSaveBaseData();
 
-            taskSaveData.id = taskSave.id;
-            taskSaveData.index = taskSave.index;
+            taskSaveData.Id = taskSave.Id;
+            taskSaveData.Index = taskSave.Index;
 
-            taskSaveData.worldInteractableId = taskSave.worldInteractableId;
-            taskSaveData.objectiveSaveId = taskSave.objectiveSaveId;
-            taskSaveData.taskId = taskSave.taskId;
+            taskSaveData.WorldInteractableId = taskSave.WorldInteractableId;
+            taskSaveData.ObjectiveSaveId = taskSave.ObjectiveSaveId;
+            taskSaveData.TaskId = taskSave.TaskId;
 
-            taskSaveData.complete = taskSave.complete;
+            taskSaveData.Complete = taskSave.Complete;
 
             taskSaveDataList.Add(taskSaveData);
         }
     }
 
-    internal void GetTaskData()
+    private static void GetTaskData()
     {
         var taskSearchParameters = new Search.Task();
-        taskSearchParameters.id = taskSaveDataList.Select(x => x.taskId).Distinct().ToList();
+        taskSearchParameters.id = taskSaveDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskDataList = dataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(taskSearchParameters);
     }
 
-    internal class TaskSaveData
+    public static void UpdateData(TaskSaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int worldInteractableId;
-        public int objectiveSaveId;
-        public int taskId;
-
-        public bool complete;
+        var data = Fixtures.taskSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

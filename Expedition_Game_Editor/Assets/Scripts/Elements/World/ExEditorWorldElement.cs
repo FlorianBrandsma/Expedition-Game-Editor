@@ -4,22 +4,22 @@ using System.Linq;
 
 public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 {
-    private ObjectGraphic objectGraphic;
+    private Model model;
     
     private Vector3 position;
     private Vector3 rotation;
     
-    private float scaleMultiplier;
+    private float scale;
 
-    public EditorElement EditorElement   { get { return GetComponent<EditorElement>(); } }
+    public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
 
     public Color ElementColor
     {
         set
         {
-            if (objectGraphic == null) return;
+            if (model == null) return;
 
-            objectGraphic.SetStatus(value);
+            model.SetStatus(value);
         }
     }
 
@@ -46,99 +46,99 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        if (objectGraphic != null)
-            objectGraphic.gameObject.SetActive(false);
+        if (model != null)
+            model.gameObject.SetActive(false);
 
-        switch (EditorElement.DataElement.GeneralData.DataType)
+        switch (EditorElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.WorldInteractable:      SetWorldInteractableElement();      break;
             case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
             case Enums.DataType.WorldObject:            SetWorldObjectElement();            break;
             case Enums.DataType.Phase:                  SetPartyElement();                  break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.GeneralData.DataType);    break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
         }
 
         transform.localPosition     = new Vector3(position.x, position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
-        transform.localScale        = new Vector3(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+        transform.localScale        = new Vector3(scale, scale, scale);
     }
 
     private void SetWorldInteractableElement()
     {
-        var elementData = (WorldInteractableElementData)EditorElement.DataElement.data.elementData;
-        
-        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var elementData = (WorldInteractableElementData)EditorElement.DataElement.ElementData;
 
-        position = new Vector3(elementData.positionX, elementData.positionY, elementData.positionZ);
-        rotation = new Vector3(elementData.rotationX, elementData.rotationY, elementData.rotationZ);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        SetObjectGraphic();
+        scale = elementData.Scale;
+
+        SetModel();
     }
 
     private void SetInteractionDestinationElement()
     {
-        var elementData = (InteractionDestinationElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (InteractionDestinationElementData)EditorElement.DataElement.ElementData;
 
-        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        scale = elementData.Scale;
 
-        SetObjectGraphic();
+        SetModel();
     }
 
     private void SetWorldObjectElement()
     {
-        var elementData = (WorldObjectElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
 
-        var prefab      = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic   = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.ObjectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
-        scaleMultiplier = elementData.ScaleMultiplier;
+        scale = elementData.Scale;
 
-        SetObjectGraphic();
+        SetModel();
     }
 
     private void SetPartyElement()
     {
-        var elementData = (PhaseElementData)EditorElement.DataElement.data.elementData;
+        var elementData = (PhaseElementData)EditorElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
         rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        scale = elementData.Scale;
 
-        SetObjectGraphic();
+        SetModel();
     }
 
-    private void SetObjectGraphic()
+    private void SetModel()
     {
-        objectGraphic.EditorElement = EditorElement;
+        model.EditorElement = EditorElement;
 
-        objectGraphic.transform.SetParent(transform, false);
+        model.transform.SetParent(transform, false);
 
-        objectGraphic.gameObject.SetActive(true);
+        model.gameObject.SetActive(true);
     }
 
     public void CloseElement()
     {
-        if (objectGraphic == null) return;
+        if (model == null) return;
 
-        PoolManager.ClosePoolObject(objectGraphic);
-        objectGraphic = null;
+        PoolManager.ClosePoolObject(model);
+        model = null;
 
         CloseStatusIcons();
     }

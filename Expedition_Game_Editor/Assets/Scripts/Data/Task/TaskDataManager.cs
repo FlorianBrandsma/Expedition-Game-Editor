@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TaskDataManager : IDataManager
+public static class TaskDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<TaskBaseData> taskDataList;
 
-    private List<TaskData> taskDataList;
-
-    public TaskDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
@@ -25,19 +18,19 @@ public class TaskDataManager : IDataManager
         var list = (from taskData in taskDataList
                     select new TaskElementData()
                     {
-                        Id = taskData.id,
-                        Index = taskData.index,
+                        Id = taskData.Id,
+                        Index = taskData.Index,
 
-                        WorldInteractableId = taskData.worldInteractableId,
-                        ObjectiveId = taskData.objectiveId,
+                        WorldInteractableId = taskData.WorldInteractableId,
+                        ObjectiveId = taskData.ObjectiveId,
 
-                        Name = taskData.name,
+                        Name = taskData.Name,
 
-                        CompleteObjective = taskData.completeObjective,
-                        Repeatable = taskData.repeatable,
+                        CompleteObjective = taskData.CompleteObjective,
+                        Repeatable = taskData.Repeatable,
 
-                        PublicNotes = taskData.publicNotes,
-                        PrivateNotes = taskData.privateNotes
+                        PublicNotes = taskData.PublicNotes,
+                        PrivateNotes = taskData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -46,50 +39,60 @@ public class TaskDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetTaskData(Search.Task searchParameters)
+    private static void GetTaskData(Search.Task searchParameters)
     {
-        taskDataList = new List<TaskData>();
+        taskDataList = new List<TaskBaseData>();
         
-        foreach (Fixtures.Task task in Fixtures.taskList)
+        foreach (TaskBaseData task in Fixtures.taskList)
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.id))                                      continue;
-            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.worldInteractableId))    continue;
-            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.objectiveId))                    continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.WorldInteractableId))    continue;
+            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.ObjectiveId))                    continue;
 
-            var taskData = new TaskData();
+            var taskData = new TaskBaseData();
 
-            taskData.id = task.id;
-            taskData.index = task.index;
+            taskData.Id = task.Id;
+            taskData.Index = task.Index;
 
-            taskData.worldInteractableId = task.worldInteractableId;
-            taskData.objectiveId = task.objectiveId;
+            taskData.WorldInteractableId = task.WorldInteractableId;
+            taskData.ObjectiveId = task.ObjectiveId;
 
-            taskData.name = task.name;
+            taskData.Name = task.Name;
 
-            taskData.completeObjective = task.completeObjective;
-            taskData.repeatable = task.repeatable;
+            taskData.CompleteObjective = task.CompleteObjective;
+            taskData.Repeatable = task.Repeatable;
 
-            taskData.publicNotes = task.publicNotes;
-            taskData.privateNotes = task.privateNotes;
+            taskData.PublicNotes = task.PublicNotes;
+            taskData.PrivateNotes = task.PrivateNotes;
             
             taskDataList.Add(taskData);
         }
     }
 
-    internal class TaskData
+    public static void UpdateData(TaskElementData elementData)
     {
-        public int id;
-        public int index;
+        var data = Fixtures.taskList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedName)
+            data.Name = elementData.Name;
 
-        public int worldInteractableId;
-        public int objectiveId;
+        if (elementData.ChangedCompleteObjective)
+            data.CompleteObjective = elementData.CompleteObjective;
 
-        public string name;
+        if (elementData.ChangedRepeatable)
+            data.Repeatable = elementData.Repeatable;
 
-        public bool completeObjective;
-        public bool repeatable;
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
 
-        public string publicNotes;
-        public string privateNotes;
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
+    }
+
+    static public void UpdateIndex(TaskElementData elementData)
+    {
+        var data = Fixtures.taskList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
     }
 }

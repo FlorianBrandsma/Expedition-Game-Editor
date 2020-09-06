@@ -6,10 +6,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 {
     private QuestEditor QuestEditor { get { return (QuestEditor)DataEditor; } }
 
-    private DataManager dataManager = new DataManager();
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies()
@@ -29,13 +26,13 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
-        searchParameters.phaseId = new List<int>() { QuestEditor.QuestData.PhaseId };
+        searchParameters.phaseId = new List<int>() { QuestEditor.questData.PhaseId };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
 
-        SetStatus(SegmentController.DataController.DataList);
+        SetStatus(SegmentController.DataController.Data.dataList);
 
-        var questInteractableList = SegmentController.DataController.DataList.Cast<WorldInteractableElementData>().ToList();
+        var questInteractableList = SegmentController.DataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
         questInteractableList.ForEach(x => QuestEditor.worldInteractableDataList.Add(x));
     }
 
@@ -45,12 +42,12 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         {
             var worldInteractableElementData = (WorldInteractableElementData)x;
 
-            if (worldInteractableElementData.QuestId == QuestEditor.QuestData.Id)
-                worldInteractableElementData.elementStatus = Enums.ElementStatus.Enabled;
+            if (worldInteractableElementData.QuestId == QuestEditor.questData.Id)
+                worldInteractableElementData.ElementStatus = Enums.ElementStatus.Enabled;
             else if (worldInteractableElementData.QuestId == 0)
-                worldInteractableElementData.elementStatus = Enums.ElementStatus.Disabled;
+                worldInteractableElementData.ElementStatus = Enums.ElementStatus.Disabled;
             else
-                worldInteractableElementData.elementStatus = Enums.ElementStatus.Locked;
+                worldInteractableElementData.ElementStatus = Enums.ElementStatus.Locked;
         });
     }
 

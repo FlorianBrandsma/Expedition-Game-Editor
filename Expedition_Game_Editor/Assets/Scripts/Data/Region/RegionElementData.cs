@@ -1,108 +1,94 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 
-public class RegionElementData : RegionCore, IElementData
+public class RegionElementData : RegionData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public RegionElementData() : base()
+    public RegionData OriginalData                  { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Region; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    public List<TerrainElementData> TerrainDataList { get; set; } = new List<TerrainElementData>();
+
+    #region Changed
+    public bool ChangedChapterRegionId
     {
-        DataType = Enums.DataType.Region;
+        get { return ChapterRegionId != OriginalData.ChapterRegionId; }
     }
 
-    public Enums.RegionType type;
-
-    public float tileSize;
-    public string tileIconPath;
-
-    public string tileSetName;
-
-    public Vector2 startPosition;
-
-    //Original
-    public string originalTileIconPath;
-
-    //List
-    public List<TerrainElementData> terrainDataList = new List<TerrainElementData>();
-
-    public override void Update()
+    public bool ChangedPhaseId
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return PhaseId != OriginalData.PhaseId; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedTileSetId
     {
-        base.SetOriginalValues();
+        get { return TileSetId != OriginalData.TileSetId; }
+    }
 
-        originalTileIconPath = tileIconPath;
+    public bool ChangedName
+    {
+        get { return Name != OriginalData.Name; }
+    }
 
-        terrainDataList.ForEach(x => x.SetOriginalValues());
+    public bool ChangedRegionSize
+    {
+        get { return RegionSize != OriginalData.RegionSize; }
+    }
+
+    public bool ChangedTerrainSize
+    {
+        get { return TerrainSize != OriginalData.TerrainSize; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedChapterRegionId || ChangedPhaseId || ChangedTileSetId || ChangedName || ChangedRegionSize || ChangedTerrainSize;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        tileIconPath = originalTileIconPath;
-    }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new RegionElementData();
-
-        elementData.DataElement = DataElement;
-
-        elementData.type = type;
-
-        elementData.tileSize = tileSize;
-        elementData.tileIconPath = tileIconPath;
-
-        elementData.tileSetName = tileSetName;
-
-        elementData.startPosition = startPosition;
-
-        //Original
-        elementData.originalTileIconPath = originalTileIconPath;
-
-        CloneCore(elementData);
-        
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new RegionElementData();
 
-        var regionDataSource = (RegionElementData)dataSource;
+        data.DataElement = DataElement;
 
-        type = regionDataSource.type;
+        data.OriginalData = OriginalData.Clone();
 
-        tileSize = regionDataSource.tileSize;
-        tileIconPath = regionDataSource.tileIconPath;
+        base.Clone(data);
 
-        tileSetName = regionDataSource.tileSetName;
-
-        startPosition = regionDataSource.startPosition;
-
-        for (int i = 0; i < terrainDataList.Count; i++)
-        {
-            var terrainDataSource = regionDataSource.terrainDataList[i];
-            terrainDataList[i].Copy(terrainDataSource);
-        }
-
-        SetOriginalValues();
+        return data;
     }
 }

@@ -52,62 +52,62 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     private void InitializeChapterSaveData()
     {
-        var chapterSaveData = (ChapterSaveElementData)DataEditor.Data.elementData;
+        var chapterSaveData = (ChapterSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = chapterSaveData.publicNotes;
+            notes = chapterSaveData.PublicNotes;
         else
-            notes = chapterSaveData.privateNotes;
+            notes = chapterSaveData.PrivateNotes;
     }
 
     private void InitializePhaseSaveData()
     {
-        var phaseSaveData = (PhaseSaveElementData)DataEditor.Data.elementData;
+        var phaseSaveData = (PhaseSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = phaseSaveData.publicNotes;
+            notes = phaseSaveData.PublicNotes;
         else
-            notes = phaseSaveData.privateNotes;
+            notes = phaseSaveData.PrivateNotes;
     }
 
     private void InitializeQuestSaveData()
     {
-        var questSaveData = (QuestSaveElementData)DataEditor.Data.elementData;
+        var questSaveData = (QuestSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = questSaveData.publicNotes;
+            notes = questSaveData.PublicNotes;
         else
-            notes = questSaveData.privateNotes;
+            notes = questSaveData.PrivateNotes;
     }
 
     private void InitializeObjectiveSaveData()
     {
-        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.Data.elementData;
+        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = objectiveSaveData.publicNotes;
+            notes = objectiveSaveData.PublicNotes;
         else
-            notes = objectiveSaveData.privateNotes;
+            notes = objectiveSaveData.PrivateNotes;
     }
 
     private void InitializeTaskSaveData()
     {
-        var taskSaveData = (TaskSaveElementData)DataEditor.Data.elementData;
+        var taskSaveData = (TaskSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = taskSaveData.publicNotes;
+            notes = taskSaveData.PublicNotes;
         else
-            notes = taskSaveData.privateNotes;
+            notes = taskSaveData.PrivateNotes;
     }
 
     private void InitializeInteractionSaveData()
     {
-        var interactionSaveData = (InteractionSaveElementData)DataEditor.Data.elementData;
+        var interactionSaveData = (InteractionSaveElementData)DataEditor.ElementData;
 
         if (noteType == NoteType.Public)
-            notes = interactionSaveData.publicNotes;
+            notes = interactionSaveData.PublicNotes;
         else
-            notes = interactionSaveData.privateNotes;
+            notes = interactionSaveData.PrivateNotes;
     }
 
     public void OpenSegment()

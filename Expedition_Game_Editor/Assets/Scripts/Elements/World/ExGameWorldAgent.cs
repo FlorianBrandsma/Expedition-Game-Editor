@@ -5,15 +5,15 @@ using System.Collections;
 
 public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 {
-    private ObjectGraphic objectGraphic;
-    public Animator Animator { get { return objectGraphic.Animator; } }
+    private Model model;
+    public Animator Animator { get { return model.Animator; } }
 
     private Vector3 startPosition = Vector3.zero;
 
     private Vector3 position;
     private Vector3 rotation;
     
-    private float scaleMultiplier;
+    private float scale;
 
     private float speed;
 
@@ -44,79 +44,79 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     
     public void SetElement()
     {
-        if (objectGraphic != null)
-            objectGraphic.gameObject.SetActive(false);
+        if (model != null)
+            model.gameObject.SetActive(false);
         
-        switch (GameElement.DataElement.GeneralData.DataType)
+        switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableAgent();    break;
             case Enums.DataType.GamePartyMember:        SetGamePartyMemberAgent();          break;
 
-            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
         
         transform.localPosition     = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
 
-        transform.localScale        = new Vector3(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+        transform.localScale        = new Vector3(scale, scale, scale);
 
         Agent.speed = speed;
     }
     
     private void SetGameWorldInteractableAgent()
     {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveInteractionDestination;
         
-        position = new Vector3(interactionDestinationData.positionX, interactionDestinationData.positionY, interactionDestinationData.positionZ);
-        rotation = new Vector3(interactionDestinationData.rotationX, interactionDestinationData.rotationY, interactionDestinationData.rotationZ);
+        position = new Vector3(interactionDestinationData.PositionX, interactionDestinationData.PositionY, interactionDestinationData.PositionZ);
+        rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
 
-        scaleMultiplier = elementData.scaleMultiplier;
+        scale = elementData.Scale;
 
-        speed = elementData.speed;
+        speed = elementData.Speed;
 
-        SetObjectGraphic();
+        SetModel();
 
         ArriveDestination();
     }
 
     private void SetGamePartyMemberAgent()
     {
-        var elementData = (GamePartyMemberElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GamePartyMemberElementData)GameElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<ObjectGraphic>(elementData.objectGraphicPath);
-        objectGraphic = (ObjectGraphic)PoolManager.SpawnObject(prefab, elementData.objectGraphicId);
+        var prefab  = Resources.Load<Model>(elementData.ModelPath);
+        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         if (elementData.Id == GameManager.instance.ActivePartyMemberId)
         {
-            var playerData = GameManager.instance.gameSaveData.playerSaveData;
+            var playerData = GameManager.instance.gameSaveData.PlayerSaveData;
 
             position = new Vector3(playerData.PositionX, playerData.PositionY, playerData.PositionZ);
             rotation = Vector3.zero;
 
-            scaleMultiplier = elementData.scaleMultiplier;
+            scale = elementData.Scale;
 
             Agent.avoidancePriority = 0;
         }
 
-        speed = elementData.speed;
+        speed = elementData.Speed;
 
-        SetObjectGraphic();
+        SetModel();
     }
 
     public void UpdateElement()
     {
-        switch (GameElement.DataElement.GeneralData.DataType)
+        switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableDestination();  break;
             case Enums.DataType.GamePartyMember:        SetGamePartyMemberDestination();        break;
 
-            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
 
         if (!Agent.isOnNavMesh) return;
@@ -126,19 +126,19 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void SetGameWorldInteractableDestination()
     {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
 
         var interactionData = elementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveInteractionDestination;
 
-        position = new Vector3(interactionDestinationData.positionX + Random.Range(-interactionDestinationData.positionVariance, interactionDestinationData.positionVariance), 
-                               interactionDestinationData.positionY, 
-                               interactionDestinationData.positionZ + Random.Range(-interactionDestinationData.positionVariance, interactionDestinationData.positionVariance));
+        position = new Vector3(interactionDestinationData.PositionX + Random.Range(-interactionDestinationData.PositionVariance, interactionDestinationData.PositionVariance), 
+                               interactionDestinationData.PositionY, 
+                               interactionDestinationData.PositionZ + Random.Range(-interactionDestinationData.PositionVariance, interactionDestinationData.PositionVariance));
     }
 
     private void SetGamePartyMemberDestination()
     {
-        var elementData = (GamePartyMemberElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GamePartyMemberElementData)GameElement.DataElement.ElementData;
 
         if (elementData.Id == GameManager.instance.ActivePartyMemberId) return;
 
@@ -148,23 +148,23 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         //}
     }
 
-    private void SetObjectGraphic()
+    private void SetModel()
     {
-        objectGraphic.transform.SetParent(transform, false);
+        model.transform.SetParent(transform, false);
 
-        objectGraphic.gameObject.SetActive(true);
+        model.gameObject.SetActive(true);
     }
 
     private void Update()
     {
         if (!Agent.isOnNavMesh) return;
 
-        switch (GameElement.DataElement.GeneralData.DataType)
+        switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable:  UpdateGameWorldInteractableAgent(); break;
             case Enums.DataType.GamePartyMember:        UpdateGamePartyMemberAgent();       break;
 
-            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
     }
 
@@ -182,7 +182,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
                 //if(Animator != null)
                 //{
                 //    Animator.SetBool("IsMoving", true);
-                //    Animator.SetFloat("MoveSpeedSensitivity", Agent.speed / scaleMultiplier);
+                //    Animator.SetFloat("MoveSpeedSensitivity", Agent.speed / scale);
                 //}
 
             } else {
@@ -209,25 +209,25 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         //    Animator.SetBool("IsMoving", false);
         //}
 
-        switch (GameElement.DataElement.GeneralData.DataType)
+        switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable: ArriveGameWorldInteractableAgent(); break;
             case Enums.DataType.GamePartyMember: break;
 
-            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.GeneralData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
     }
 
     private void ArriveGameWorldInteractableAgent()
     {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.data.elementData;
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
         var interactionData = elementData.ActiveInteraction;
         var destinationData = interactionData.ActiveInteractionDestination;
 
-        interactionData.arrived = true;
+        interactionData.Arrived = true;
 
         //Debug.Log("Agent has arrived");
-        if (!destinationData.freeRotation && destinationData.patience > 0)
+        if (!destinationData.FreeRotation && destinationData.Patience > 0)
         {
             StopAllCoroutines();
             StartCoroutine(Rotate(rotation.y));
@@ -268,18 +268,18 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         StopAgent();
         
-        GameElement.DataElement.data.elementData.DataElement = null;
-        GameElement.DataElement.data.elementData = null;
+        //GameElement.DataElement.data.elementData.DataElement = null;
+        //GameElement.DataElement.data.elementData = null;
 
         position = new Vector3();
         rotation = new Vector3();
 
-        scaleMultiplier = 0;
+        scale = 0;
 
-        if (objectGraphic == null) return;
+        if (model == null) return;
 
-        PoolManager.ClosePoolObject(objectGraphic);
-        objectGraphic = null;
+        PoolManager.ClosePoolObject(model);
+        model = null;
     }
 
     public void ClosePoolable()

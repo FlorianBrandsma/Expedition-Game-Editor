@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class WorldInteractableSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies() { }
@@ -24,10 +23,10 @@ public class WorldInteractableSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
         searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;
 
-        searchParameters.questId        = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).GeneralData.Id };
-        searchParameters.objectiveId    = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).GeneralData.Id };
+        searchParameters.questId        = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).ElementData.Id };
+        searchParameters.objectiveId    = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Objective).ElementData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InteractionSaveDataManager : IDataManager
+public static class InteractionSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<InteractionSaveBaseData> interactionSaveDataList;
 
-    private List<InteractionSaveData> interactionSaveDataList;
+    private static List<InteractionBaseData> interactionDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.InteractionData> interactionDataList;
-
-    public InteractionSaveDataManager(InteractionSaveController interactionController)
-    {
-        DataController = interactionController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionSave>().First();
 
@@ -29,22 +20,23 @@ public class InteractionSaveDataManager : IDataManager
         GetInteractionData();
 
         var list = (from interactionSaveData    in interactionSaveDataList
-                    join interactionData        in interactionDataList on interactionSaveData.interactionId equals interactionData.id
+                    join interactionData        in interactionDataList on interactionSaveData.InteractionId equals interactionData.Id
                     select new InteractionSaveElementData()
                     {
-                        Id = interactionSaveData.id,
+                        Id = interactionSaveData.Id,
 
-                        TaskSaveId = interactionSaveData.taskSaveId,
-                        InteractionId = interactionSaveData.interactionId,
+                        TaskSaveId = interactionSaveData.TaskSaveId,
+                        InteractionId = interactionSaveData.InteractionId,
 
-                        Complete = interactionSaveData.complete,
+                        Complete = interactionSaveData.Complete,
 
-                        isDefault = interactionData.isDefault,
+                        Default = interactionData.Default,
 
-                        startTime = interactionData.startTime,
-                        endTime = interactionData.endTime,
+                        StartTime = interactionData.StartTime,
+                        EndTime = interactionData.EndTime,
 
-                        publicNotes = interactionData.publicNotes
+                        PublicNotes = interactionData.PublicNotes,
+                        PrivateNotes = interactionData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -53,43 +45,41 @@ public class InteractionSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetInteractionSaveData(Search.InteractionSave searchParameters)
+    private static void GetInteractionSaveData(Search.InteractionSave searchParameters)
     {
-        interactionSaveDataList = new List<InteractionSaveData>();
+        interactionSaveDataList = new List<InteractionSaveBaseData>();
 
-        foreach (Fixtures.InteractionSave interactionSave in Fixtures.interactionSaveList)
+        foreach (InteractionSaveBaseData interactionSave in Fixtures.interactionSaveList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactionSave.id))                   continue;
-            if (searchParameters.taskSaveId.Count   > 0 && !searchParameters.taskSaveId.Contains(interactionSave.taskSaveId))   continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactionSave.Id))                   continue;
+            if (searchParameters.taskSaveId.Count   > 0 && !searchParameters.taskSaveId.Contains(interactionSave.TaskSaveId))   continue;
             
-            var interactionSaveData = new InteractionSaveData();
+            var interactionSaveData = new InteractionSaveBaseData();
 
-            interactionSaveData.id = interactionSave.id;
+            interactionSaveData.Id = interactionSave.Id;
 
-            interactionSaveData.taskSaveId = interactionSave.taskSaveId;
-            interactionSaveData.interactionId = interactionSave.interactionId;
+            interactionSaveData.TaskSaveId = interactionSave.TaskSaveId;
+            interactionSaveData.InteractionId = interactionSave.InteractionId;
 
-            interactionSaveData.complete = interactionSave.complete;
+            interactionSaveData.Complete = interactionSave.Complete;
 
             interactionSaveDataList.Add(interactionSaveData);
         }
     }
 
-    internal void GetInteractionData()
+    private static void GetInteractionData()
     {
         var interactionSearchParameters = new Search.Interaction();
-        interactionSearchParameters.id = interactionSaveDataList.Select(x => x.interactionId).Distinct().ToList();
+        interactionSearchParameters.id = interactionSaveDataList.Select(x => x.InteractionId).Distinct().ToList();
 
-        interactionDataList = dataManager.GetInteractionData(interactionSearchParameters);
+        interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
     }
 
-    internal class InteractionSaveData
+    public static void UpdateData(InteractionSaveElementData elementData)
     {
-        public int id;
-
-        public int taskSaveId;
-        public int interactionId;
-
-        public bool complete;
+        var data = Fixtures.interactionSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

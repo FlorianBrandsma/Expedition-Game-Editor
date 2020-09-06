@@ -1,108 +1,119 @@
-﻿public class PhaseElementData : PhaseCore, IElementData
+﻿using UnityEngine;
+using System;
+
+public class PhaseElementData : PhaseData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public PhaseElementData() : base()
+    public PhaseData OriginalData                   { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Phase; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedName
     {
-        DataType = Enums.DataType.Phase;
+        get { return Name != OriginalData.Name; }
     }
 
-    public int terrainTileId;
-
-    public int partyMemberId;
-
-    public int objectGraphicId;
-    public string objectGraphicPath;
-
-    public string objectGraphicIconPath;
-    
-    public float height;
-    public float width;
-    public float depth;
-
-    public float scaleMultiplier;
-
-    public string interactableName;
-    public string locationName;
-
-    public override void Update()
+    public bool ChangedDefaultRegionId
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return DefaultRegionId != OriginalData.DefaultRegionId; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedDefaultPositionX
     {
-        base.SetOriginalValues();
+        get { return DefaultPositionX != OriginalData.DefaultPositionX; }
+    }
+
+    public bool ChangedDefaultPositionY
+    {
+        get { return DefaultPositionY != OriginalData.DefaultPositionY; }
+    }
+
+    public bool ChangedDefaultPositionZ
+    {
+        get { return DefaultPositionZ != OriginalData.DefaultPositionZ; }
+    }
+
+    public bool ChangedDefaultRotationX
+    {
+        get { return DefaultRotationX != OriginalData.DefaultRotationX; }
+    }
+
+    public bool ChangedDefaultRotationY
+    {
+        get { return DefaultRotationY != OriginalData.DefaultRotationY; }
+    }
+
+    public bool ChangedDefaultRotationZ
+    {
+        get { return DefaultRotationZ != OriginalData.DefaultRotationZ; }
+    }
+
+    public bool ChangedDefaultTime
+    {
+        get { return DefaultTime != OriginalData.DefaultTime; }
+    }
+
+    public bool ChangedPublicNotes
+    {
+        get { return PublicNotes != OriginalData.PublicNotes; }
+    }
+
+    public bool ChangedPrivateNotes
+    {
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return  ChangedName             || ChangedDefaultRegionId   ||
+                    ChangedDefaultPositionX || ChangedDefaultPositionY  || ChangedDefaultPositionZ ||
+                    ChangedDefaultRotationX || ChangedDefaultRotationY  || ChangedDefaultRotationZ ||
+                    ChangedDefaultTime      || ChangedPublicNotes       || ChangedPrivateNotes;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new PhaseElementData();
-        
-        elementData.terrainTileId = terrainTileId;
-
-        elementData.partyMemberId = partyMemberId;
-
-        elementData.objectGraphicId = objectGraphicId;
-        elementData.objectGraphicPath = objectGraphicPath;
-
-        elementData.objectGraphicIconPath = objectGraphicIconPath;
-
-        elementData.height = height;
-        elementData.width = width;
-        elementData.depth = depth;
-
-        elementData.scaleMultiplier = scaleMultiplier;
-
-        elementData.interactableName = interactableName;
-        elementData.locationName = locationName;
-
-        CloneCore(elementData);
-        
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new PhaseElementData();
 
-        var phaseDataSource = (PhaseElementData)dataSource;
+        data.DataElement = DataElement;
 
-        terrainTileId = phaseDataSource.terrainTileId;
+        data.OriginalData = OriginalData.Clone();
 
-        partyMemberId = phaseDataSource.partyMemberId;
+        base.Clone(data);
 
-        objectGraphicId = phaseDataSource.objectGraphicId;
-        objectGraphicPath = phaseDataSource.objectGraphicPath;
-
-        objectGraphicIconPath = phaseDataSource.objectGraphicIconPath;
-
-        height = phaseDataSource.height;
-        width = phaseDataSource.width;
-        depth = phaseDataSource.depth;
-
-        scaleMultiplier = phaseDataSource.scaleMultiplier;
-
-        interactableName = phaseDataSource.interactableName;
-        locationName = phaseDataSource.locationName;
-
-        SetOriginalValues();
+        return data;
     }
 }

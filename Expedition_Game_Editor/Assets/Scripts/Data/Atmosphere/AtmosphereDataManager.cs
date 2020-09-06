@@ -3,28 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class AtmosphereDataManager : IDataManager
+public static class AtmosphereDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<AtmosphereBaseData> atmosphereDataList;
 
-    private List<AtmosphereData> atmosphereDataList;
+    private static List<TerrainBaseData> terrainDataList;
 
-    private DataManager dataManager = new DataManager();
+    private static List<RegionBaseData> regionDataList;
+    private static List<TileSetBaseData> tileSetDataList;
+    private static List<TileBaseData> tileDataList;
 
-    private List<DataManager.TerrainData> terrainDataList;
+    private static List<IconBaseData> iconDataList;
 
-    private List<DataManager.RegionData> regionDataList;
-    private List<DataManager.TileSetData> tileSetDataList;
-    private List<DataManager.TileData> tileDataList;
-
-    private List<DataManager.IconData> iconDataList;
-    
-    public AtmosphereDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
 
@@ -42,34 +33,34 @@ public class AtmosphereDataManager : IDataManager
         GetIconData();
         
         var list = (from atmosphereData in atmosphereDataList
-                    join terrainData    in terrainDataList  on atmosphereData.terrainId equals terrainData.id
-                    join regionData     in regionDataList   on terrainData.regionId     equals regionData.id
-                    join tileSetData    in tileSetDataList  on regionData.tileSetId     equals tileSetData.id
+                    join terrainData    in terrainDataList  on atmosphereData.TerrainId equals terrainData.Id
+                    join regionData     in regionDataList   on terrainData.RegionId     equals regionData.Id
+                    join tileSetData    in tileSetDataList  on regionData.TileSetId     equals tileSetData.Id
 
                     join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.id equals leftJoin.tileData.tileSetId into tileData
+                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
 
-                    join iconData       in iconDataList     on terrainData.iconId       equals iconData.id
+                    join iconData       in iconDataList     on terrainData.IconId       equals iconData.Id
 
                     select new AtmosphereElementData()
                     {
-                        Id = atmosphereData.id,
+                        Id = atmosphereData.Id,
 
-                        TerrainId = atmosphereData.terrainId,
+                        TerrainId = atmosphereData.TerrainId,
 
-                        Default = atmosphereData.isDefault,
+                        Default = atmosphereData.Default,
 
-                        StartTime = atmosphereData.startTime,
-                        EndTime = atmosphereData.endTime,
+                        StartTime = atmosphereData.StartTime,
+                        EndTime = atmosphereData.EndTime,
 
-                        PublicNotes = atmosphereData.publicNotes,
-                        PrivateNotes = atmosphereData.privateNotes,
+                        PublicNotes = atmosphereData.PublicNotes,
+                        PrivateNotes = atmosphereData.PrivateNotes,
 
-                        regionName = regionData.name,
-                        terrainName = terrainData.name,
+                        RegionName = regionData.Name,
+                        TerrainName = terrainData.Name,
 
-                        iconPath = iconData.path,
-                        baseTilePath = tileData.First().tileData.iconPath
+                        IconPath = iconData.Path,
+                        BaseTilePath = tileData.First().tileData.IconPath
 
                     }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
@@ -78,85 +69,87 @@ public class AtmosphereDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetAtmosphereData(Search.Atmosphere searchParameters)
+    private static void GetAtmosphereData(Search.Atmosphere searchParameters)
     {
-        atmosphereDataList = new List<AtmosphereData>();
+        atmosphereDataList = new List<AtmosphereBaseData>();
 
-        foreach (Fixtures.Atmosphere atmosphere in Fixtures.atmosphereList)
+        foreach (AtmosphereBaseData atmosphere in Fixtures.atmosphereList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.id)) continue;
-            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.terrainId)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
+            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.TerrainId)) continue;
 
-            var atmosphereData = new AtmosphereData();
+            var atmosphereData = new AtmosphereBaseData();
 
-            atmosphereData.id = atmosphere.id;
+            atmosphereData.Id = atmosphere.Id;
 
-            atmosphereData.terrainId = atmosphere.terrainId;
+            atmosphereData.TerrainId = atmosphere.TerrainId;
 
-            atmosphereData.isDefault = atmosphere.isDefault;
+            atmosphereData.Default = atmosphere.Default;
 
-            atmosphereData.startTime = atmosphere.startTime;
-            atmosphereData.endTime = atmosphere.endTime;
+            atmosphereData.StartTime = atmosphere.StartTime;
+            atmosphereData.EndTime = atmosphere.EndTime;
 
-            atmosphereData.publicNotes = atmosphere.publicNotes;
-            atmosphereData.privateNotes = atmosphere.privateNotes;
+            atmosphereData.PublicNotes = atmosphere.PublicNotes;
+            atmosphereData.PrivateNotes = atmosphere.PrivateNotes;
 
             atmosphereDataList.Add(atmosphereData);
         }
     }
 
-    internal void GetTerrainData()
+    private static void GetTerrainData()
     {
         var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.id = atmosphereDataList.Select(x => x.terrainId).Distinct().ToList();
+        terrainSearchParameters.id = atmosphereDataList.Select(x => x.TerrainId).Distinct().ToList();
 
-        terrainDataList = dataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
     }
 
-    internal void GetRegionData()
+    private static void GetRegionData()
     {
         var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = terrainDataList.Select(x => x.regionId).Distinct().ToList();
+        regionSearchParameters.id = terrainDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = dataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(regionSearchParameters);
     }
 
-    private void GetTileSetData()
+    private static void GetTileSetData()
     {
         var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.tileSetId).Distinct().ToList();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = dataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
     }
 
-    private void GetTileData()
+    private static void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.id).Distinct().ToList();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = dataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(tileSearchParameters);
     }
 
-    internal void GetIconData()
+    private static void GetIconData()
     {
         var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = terrainDataList.Select(x => x.iconId).Distinct().ToList();
+        iconSearchParameters.id = terrainDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = dataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(iconSearchParameters);
     }
-    
-    internal class AtmosphereData
+
+    public static void UpdateData(AtmosphereElementData elementData)
     {
-        public int id;
+        var data = Fixtures.atmosphereList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedStartTime)
+            data.StartTime = elementData.StartTime;
 
-        public int terrainId;
+        if (elementData.ChangedEndTime)
+            data.EndTime = elementData.EndTime;
 
-        public bool isDefault;
+        if (elementData.ChangedPublicNotes)
+            data.PublicNotes = elementData.PublicNotes;
 
-        public int startTime;
-        public int endTime;
-
-        public string publicNotes;
-        public string privateNotes;
+        if (elementData.ChangedPrivateNotes)
+            data.PrivateNotes = elementData.PrivateNotes;
     }
 }

@@ -44,11 +44,11 @@ public class InteractableSaveStatusSurvivalPhysiqueSegment : MonoBehaviour, ISeg
     {
         if (DataEditor.Loaded) return;
 
-        var interactableSaveData = (InteractableSaveElementData)DataEditor.Data.elementData;
+        var interactableSaveData = (InteractableSaveElementData)DataEditor.ElementData;
 
-        weight = interactableSaveData.weight;
-        speed = interactableSaveData.speed;
-        stamina = interactableSaveData.stamina;
+        weight = interactableSaveData.Weight;
+        speed = interactableSaveData.Speed;
+        stamina = interactableSaveData.Stamina;
     }
 
     public void OpenSegment() { }

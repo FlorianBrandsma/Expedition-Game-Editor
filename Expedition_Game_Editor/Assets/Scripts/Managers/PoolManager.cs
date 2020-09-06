@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PoolManager : MonoBehaviour
 {
-    //e.g. all objectGraphics
+    //e.g. all models
     public class Pool
     {
         public Enums.ElementType elementType;
@@ -25,7 +25,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    //e.g. all objectGraphics with id 1
+    //e.g. all models with id 1
     public class ObjectPool
     {
         public int id;
@@ -46,8 +46,8 @@ public class PoolManager : MonoBehaviour
         instance = this;
     }
 
-    //e.g. an objectGraphic with id 1
-    static public IPoolable SpawnObject(IPoolable prefab, int id = 0) //e.g. an objectGraphic with id 1
+    //e.g. a model with id 1
+    static public IPoolable SpawnObject(IPoolable prefab, int id = 0) //e.g. a model with id 1
     {
         var filteredPoolList = poolList.Where(x => x.elementType == prefab.ElementType).FirstOrDefault();
         

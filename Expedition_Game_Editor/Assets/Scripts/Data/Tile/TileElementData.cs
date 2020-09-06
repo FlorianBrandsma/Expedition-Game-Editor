@@ -1,60 +1,55 @@
-﻿public class TileElementData : TileCore, IElementData
+﻿using UnityEngine;
+using System;
+
+public class TileElementData : TileData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public TileElementData() : base()
+    public TileData OriginalData                    { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Tile; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
+    public bool Changed { get { return false; } }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
     {
-        DataType = Enums.DataType.Tile;
-    }
-
-    public string icon;
-
-    public string originalIcon;
-
-    public override void Update()
-    {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
-    }
-
-    public override void SetOriginalValues()
-    {
-        base.SetOriginalValues();
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new TileElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new TileElementData();
 
-        var tileDataSource = (TileElementData)dataSource;
+        data.DataElement = DataElement;
 
-        icon = tileDataSource.icon;
+        data.OriginalData = OriginalData.Clone();
 
-        SetOriginalValues();
+        base.Clone(data);
+
+        return data;
     }
 }

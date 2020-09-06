@@ -4,19 +4,20 @@ using System.Linq;
 
 public class WorldObjectEditor : MonoBehaviour, IEditor
 {
-    public WorldObjectElementData WorldObjectData { get { return (WorldObjectElementData)Data.elementData; } }
+    public WorldObjectData worldObjectData;
 
-    private List<SegmentController> editorSegments = new List<SegmentController>();
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
 
-    private PathController PathController { get { return GetComponent<PathController>(); } }
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-
-    public Route.Data Data { get { return PathController.route.data; } }
-
+    
     public List<IElementData> DataList
     {
-        get { return SelectionElementManager.FindElementData(WorldObjectData).Concat(new[] { WorldObjectData }).Distinct().ToList(); }
+        get { return new List<IElementData>() { EditData }; }
     }
 
     public List<IElementData> ElementDataList
@@ -25,15 +26,10 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
         {
             var list = new List<IElementData>();
 
-            DataList.ForEach(x => list.Add(x));
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
 
             return list;
         }
-    }
-
-    public List<SegmentController> EditorSegments
-    {
-        get { return editorSegments; }
     }
 
     public void InitializeEditor() { }
@@ -61,18 +57,10 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges()
     {
-        WorldObjectData.Update();
+        EditData.Update();
 
-        ElementDataList.ForEach(x =>
-        {
-            if (((GeneralData)x).Equals(WorldObjectData))
-                x.Copy(WorldObjectData);
-            else
-                x.Update();
-
-            if (SelectionElementManager.SelectionActive(x.DataElement))
-                x.DataElement.UpdateElement();
-        });
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
 
         UpdateEditor();
     }

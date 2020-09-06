@@ -5,112 +5,98 @@ using System.Linq;
 
 public class Route
 {
-    public class Data
-    {
-        public IDataController dataController;
-        public IElementData elementData;
-        public SearchProperties searchProperties;
-
-        public List<IElementData> dataList;
-
-        public Data()
-        {
-            elementData = new GeneralElementData();
-        }
-        
-        public Data(Data data)
-        {
-            dataController = data.dataController;
-            elementData = data.elementData;
-            searchProperties = data.searchProperties;
-            
-            if(data.dataList != null)
-            {
-                //Shallow copy
-                dataList = data.dataList;
-            }
-        }
-
-        public Data(DataElement.Data data)
-        {
-            dataController = data.dataController;
-            elementData = data.elementData;
-            searchProperties = data.searchProperties;
-
-            dataList = data.dataController.DataList;
-        }
-
-        public Data(Data data, IElementData elementData)
-        {
-            dataController = data.dataController;
-            this.elementData = elementData;
-
-            dataList = data.dataList;
-        }
-
-        public Data(IDataController dataController, IElementData elementData, SearchProperties searchProperties)
-        {
-            this.dataController = dataController;
-            this.elementData = elementData;
-            this.searchProperties = searchProperties;
-        }
-    }
-    
-    public int controller;
+    public int controllerIndex;
+    public int id;
     public Data data;
     public Path path;
 
     public Enums.SelectionStatus selectionStatus;
 
-    public GeneralData GeneralData { get { return (GeneralData)data.elementData; } }
+    public IElementData ElementData { get { return data == null ? null : data.dataList.Where(x => x.Id == id).First(); } }
+    //public GeneralData GeneralData  { get { return (GeneralData)ElementData; } }
 
     public Route() { }
 
+    public Route(int controllerIndex)
+    {
+        this.controllerIndex = controllerIndex;
+    }
+
     public Route(Path path)
     {
-        controller = 0;
-        data = new Data(null, new GeneralElementData(), new SearchProperties(Enums.DataType.None));
         this.path = path;
     }
 
-    public Route(Route route)
+    public Route(EditorElement editorElement)
     {
-        controller = route.controller;
-        data = route.data;
+        data = editorElement.DataElement.Data;
+        id = editorElement.DataElement.Id;
 
+        path = editorElement.DataElement.Path;
+
+        selectionStatus = editorElement.selectionStatus;
+    }
+
+    public Route(int controllerIndex, Route route)
+    {
+        this.controllerIndex = controllerIndex;
+
+        data = route.data;
+        id = route.id;
+        
         selectionStatus = route.selectionStatus;
 
         path = route.path;
     }
-    
-    public Route(EditorElement editorElement)
-    {
-        data = new Data(editorElement.DataElement.data);
-        path = editorElement.DataElement.Path;
-        selectionStatus = editorElement.selectionStatus;
-    }
 
-    public Route(int controller, Data data, Enums.SelectionStatus selectionStatus)
+    public Route(int controllerIndex, Route route, Enums.SelectionStatus selectionStatus)
     {
-        this.controller = controller;
-        this.data = data;
+        this.controllerIndex = controllerIndex;
+
+        data = route.data;
+        id = route.id;
 
         this.selectionStatus = selectionStatus;
+
+        path = route.path;
     }
 
-    public bool Equals(Route route)
+    public Route Clone()
     {
-        if (controller != route.controller)
-            return false;
+        var route = new Route();
 
-        if (!GeneralData.Equals(route.GeneralData))
-            return false;
+        route.controllerIndex = controllerIndex;
+        route.id = id;
 
-        return true;
-    }
+        //if (data != null)
+        //{
+        //    var routeList = path.routeList;
 
-    public Route Copy()
-    {
-        return new Route(this);
+        //    var i = routeList.IndexOf(this);
+
+        //    if (i > 0 && routeList[i - 1].data != null)
+        //    {
+        //        var previousRoute = path.routeList[i - 1];
+
+        //        if (data == routeList[i - 1].data)
+        //        {
+        //            Debug.Log("Copy from " + previousRoute.data.dataController);
+        //            route.data = path.routeList[i - 1].data;
+        //        }
+
+        //    }
+        //    else
+        //    {
+
+        //        Debug.Log("Clone from " + data.dataController);
+        //        route.data = data.Clone();
+        //    }
+        //}
+
+        route.path = path;
+
+        route.selectionStatus = selectionStatus;
+
+        return route;
     }
 }

@@ -1,81 +1,147 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using UnityEngine;
+using System;
 
-public class InteractionElementData : InteractionCore, IElementData
+public class InteractionElementData : InteractionData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public InteractionElementData() : base()
+    public InteractionData OriginalData             { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Interaction; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
+    #region Changed
+    public bool ChangedStartTime
     {
-        DataType = Enums.DataType.Interaction;
+        get { return StartTime != OriginalData.StartTime; }
     }
 
-    public string objectGraphicIconPath;
-
-    public string interactableName;
-    public string locationName;
-
-    public bool timeConflict;  
-    public List<int> defaultTimes;
-
-    public override void Update()
+    public bool ChangedEndTime
     {
-        if (!Changed) return;
-
-        base.Update();
-
-        SetOriginalValues();
+        get { return EndTime != OriginalData.EndTime; }
     }
 
-    public override void SetOriginalValues()
+    public bool ChangedTriggerAutomatically
     {
-        base.SetOriginalValues();
+        get { return TriggerAutomatically != OriginalData.TriggerAutomatically; }
+    }
+
+    public bool ChangedBeNearDestination
+    {
+        get { return BeNearDestination != OriginalData.BeNearDestination; }
+    }
+
+    public bool ChangedFaceAgent
+    {
+        get { return FaceAgent != OriginalData.FaceAgent; }
+    }
+
+    public bool ChangedFacePartyLeader
+    {
+        get { return FacePartyLeader != OriginalData.FacePartyLeader; }
+    }
+
+    public bool ChangedHideInteractionIndicator
+    {
+        get { return HideInteractionIndicator != OriginalData.HideInteractionIndicator; }
+    }
+
+    public bool ChangedInteractionRange
+    {
+        get { return InteractionRange != OriginalData.InteractionRange; }
+    }
+
+    public bool ChangedDelayMethod
+    {
+        get { return DelayMethod != OriginalData.DelayMethod; }
+    }
+
+    public bool ChangedDelayDuration
+    {
+        get { return DelayDuration != OriginalData.DelayDuration; }
+    }
+
+    public bool ChangedHideDelayIndicator
+    {
+        get { return HideDelayIndicator != OriginalData.HideDelayIndicator; }
+    }
+
+    public bool ChangedCancelDelayOnInput
+    {
+        get { return CancelDelayOnInput != OriginalData.CancelDelayOnInput; }
+    }
+
+    public bool ChangedCancelDelayOnMovement
+    {
+        get { return CancelDelayOnMovement != OriginalData.CancelDelayOnMovement; }
+    }
+
+    public bool ChangedCancelDelayOnHit
+    {
+        get { return CancelDelayOnHit != OriginalData.CancelDelayOnHit; }
+    }
+
+    public bool ChangedPublicNotes
+    {
+        get { return PublicNotes != OriginalData.PublicNotes; }
+    }
+
+    public bool ChangedPrivateNotes
+    {
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedStartTime             || ChangedEndTime                   ||
+                    ChangedTriggerAutomatically || ChangedBeNearDestination         || ChangedFaceAgent             ||
+                    ChangedFacePartyLeader      || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
+                    ChangedDelayMethod          || ChangedDelayDuration             ||
+                    ChangedHideDelayIndicator   || ChangedCancelDelayOnInput        || ChangedCancelDelayOnMovement ||
+                    ChangedCancelDelayOnHit     ||
+                    ChangedPublicNotes          || ChangedPrivateNotes;
+        }
+    }
+    #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues() { }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new InteractionElementData();
-
-        elementData.objectGraphicIconPath = objectGraphicIconPath;
-
-        elementData.interactableName = interactableName;
-        elementData.locationName = locationName;
-
-        elementData.timeConflict = timeConflict;
-        elementData.defaultTimes = defaultTimes.ToList();
-
-        CloneCore(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new InteractionElementData();
 
-        var interactionDataSource = (InteractionElementData)dataSource;
+        data.DataElement = DataElement;
 
-        objectGraphicIconPath = interactionDataSource.objectGraphicIconPath;
+        data.OriginalData = OriginalData.Clone();
 
-        interactableName = interactionDataSource.interactableName;
-        locationName = interactionDataSource.locationName;
+        base.Clone(data);
 
-        timeConflict = interactionDataSource.timeConflict;
-        defaultTimes = interactionDataSource.defaultTimes.ToList();
-
-        SetOriginalValues();
+        return data;
     }
 }

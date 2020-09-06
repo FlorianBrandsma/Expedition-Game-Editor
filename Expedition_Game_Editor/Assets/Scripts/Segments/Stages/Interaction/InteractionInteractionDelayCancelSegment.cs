@@ -71,7 +71,7 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var interactionData = (InteractionElementData)DataEditor.Data.elementData;
+        var interactionData = (InteractionElementData)DataEditor.ElementData;
 
         cancelDelayOnInput = interactionData.CancelDelayOnInput;
         cancelDelayOnMovement = interactionData.CancelDelayOnMovement;

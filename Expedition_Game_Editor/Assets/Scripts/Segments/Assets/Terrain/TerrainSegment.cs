@@ -4,10 +4,7 @@ using System.Collections.Generic;
 
 public class TerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData regionData;
-
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
     
     public void InitializeDependencies() { }
@@ -21,14 +18,14 @@ public class TerrainSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).data.elementData;
+        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         var searchProperties = new SearchProperties(Enums.DataType.Terrain);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

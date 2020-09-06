@@ -3,18 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class OutcomeDataManager : IDataManager
+public static class OutcomeDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<OutcomeBaseData> outcomeDataList;
 
-    private List<OutcomeData> outcomeDataList;
-
-    public OutcomeDataManager(IDataController dataController)
-    {
-        DataController = dataController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
 
@@ -25,46 +18,42 @@ public class OutcomeDataManager : IDataManager
         var list = (from outcomeData in outcomeDataList
                     select new OutcomeElementData()
                     {
-                        Id = outcomeData.id,
+                        Id = outcomeData.Id,
 
-                        Type = outcomeData.type,
+                        Type = outcomeData.Type,
 
-                        InteractionId = outcomeData.interactionId
+                        InteractionId = outcomeData.InteractionId
                         
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Type).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetOutcomeData(Search.Outcome searchParameters)
+    private static void GetOutcomeData(Search.Outcome searchParameters)
     {
-        outcomeDataList = new List<OutcomeData>();
+        outcomeDataList = new List<OutcomeBaseData>();
 
-        foreach (Fixtures.Outcome outcome in Fixtures.outcomeList)
+        foreach (OutcomeBaseData outcome in Fixtures.outcomeList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(outcome.id)) continue;
-            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(outcome.interactionId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(outcome.Id)) continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(outcome.InteractionId)) continue;
             
-            var outcomeData = new OutcomeData();
+            var outcomeData = new OutcomeBaseData();
 
-            outcomeData.id = outcome.id;
+            outcomeData.Id = outcome.Id;
 
-            outcomeData.type = outcome.type;
+            outcomeData.Type = outcome.Type;
 
-            outcomeData.interactionId = outcome.interactionId;
+            outcomeData.InteractionId = outcome.InteractionId;
             
             outcomeDataList.Add(outcomeData);
         }
     }
 
-    internal class OutcomeData
+    public static void UpdateData(OutcomeElementData elementData)
     {
-        public int id;
-
-        public int type;
-
-        public int interactionId;
+        var data = Fixtures.outcomeList.Where(x => x.Id == elementData.Id).FirstOrDefault();
     }
 }

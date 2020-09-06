@@ -21,9 +21,9 @@ public class InteractionSaveSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.InteractionSave);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionSave>().First();
-        searchParameters.taskSaveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.TaskSave).GeneralData.Id };
+        searchParameters.taskSaveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.TaskSave).ElementData.Id };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()

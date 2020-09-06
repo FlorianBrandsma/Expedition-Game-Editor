@@ -1,74 +1,129 @@
-﻿public class InteractableElementData : InteractableCore, IElementData
-{
-    public DataElement DataElement { get; set; }
+﻿using UnityEngine;
+using System;
 
-    public InteractableElementData() : base()
+public class InteractableElementData : InteractableData, IElementData
+{
+    public DataElement DataElement                  { get; set; }
+
+    public InteractableData OriginalData            { get; set; }
+
+    public Enums.DataType DataType                  { get { return Enums.DataType.Interactable; } }
+
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
+
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+
+    #region Changed
+    public bool ChangedModelId
     {
-        DataType = Enums.DataType.Interactable;
+        get { return ModelId != OriginalData.ModelId; }
     }
 
-    public string objectGraphicPath;
-    public string objectGraphicIconPath;
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
 
-    public float height;
-    public float width;
-    public float depth;
+    public bool ChangedName
+    {
+        get { return Name != OriginalData.Name; }
+    }
 
-    public string originalObjectGraphicPath;
-    public string originalObjectGraphicIconPath;
+    public bool ChangedScale
+    {
+        get { return Scale != OriginalData.Scale; }
+    }
 
-    public override void Update()
+    public bool ChangedHealth
+    {
+        get { return Health != OriginalData.Health; }
+    }
+
+    public bool ChangedHunger
+    {
+        get { return Hunger != OriginalData.Hunger; }
+    }
+
+    public bool ChangedThirst
+    {
+        get { return Thirst != OriginalData.Thirst; }
+    }
+
+    public bool ChangedWeight
+    {
+        get { return Weight != OriginalData.Weight; }
+    }
+
+    public bool ChangedSpeed
+    {
+        get { return Speed != OriginalData.Speed; }
+    }
+
+    public bool ChangedStamina
+    {
+        get { return Stamina != OriginalData.Stamina; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return  ChangedModelId  || ChangedName      || ChangedScale     ||
+                    ChangedHealth   || ChangedHunger    || ChangedThirst    ||
+                    ChangedWeight   || ChangedSpeed     || ChangedStamina;
+        }
+    }
+    #endregion
+
+    public void Update()
     {
         if (!Changed) return;
 
-        base.Update();
+        InteractableDataManager.UpdateData(this);
 
         SetOriginalValues();
     }
 
-    public override void SetOriginalValues()
+    public void UpdateIndex()
     {
-        base.SetOriginalValues();
+        if (!ChangedIndex) return;
 
-        originalObjectGraphicPath = objectGraphicPath;
-        originalObjectGraphicIconPath = objectGraphicIconPath;
+        InteractableDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
 
         ClearChanges();
     }
 
-    public new void GetOriginalValues()
-    {
-        objectGraphicPath = originalObjectGraphicPath;
-        objectGraphicIconPath = originalObjectGraphicIconPath;
-    }
-
-    public override void ClearChanges()
+    public void ClearChanges()
     {
         if (!Changed) return;
-
-        base.ClearChanges();
 
         GetOriginalValues();
     }
 
-    public IElementData Clone()
+    public void GetOriginalValues()
     {
-        var elementData = new InteractableElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
+        base.GetOriginalValues(OriginalData);
     }
 
-    public override void Copy(IElementData dataSource)
+    public new IElementData Clone()
     {
-        base.Copy(dataSource);
+        var data = new InteractableElementData();
 
-        var interactableDataSource = (InteractableElementData)dataSource;
+        data.DataElement = DataElement;
 
-        objectGraphicPath = interactableDataSource.objectGraphicPath;
-        objectGraphicIconPath = interactableDataSource.objectGraphicIconPath;
+        data.OriginalData = OriginalData.Clone();
 
-        SetOriginalValues();
+        base.Clone(data);
+
+        return data;
     }
 }

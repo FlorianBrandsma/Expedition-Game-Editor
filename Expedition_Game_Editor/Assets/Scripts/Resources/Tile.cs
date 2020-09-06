@@ -35,13 +35,13 @@ public class Tile : MonoBehaviour, IPoolable
     {
         var terrainTileData = (TerrainTileElementData)ElementData;
 
-        terrainTileData.active = false;
+        terrainTileData.Active = false;
     }
 
     private void CloseGameTerrainTile()
     {
         var terrainTileData = (GameTerrainTileElementData)ElementData;
 
-        terrainTileData.active = false;
+        terrainTileData.Active = false;
     }
 }

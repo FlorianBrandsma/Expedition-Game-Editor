@@ -1,44 +1,55 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
-public class GameRegionElementData : GeneralData, IElementData
+public class GameRegionElementData : GameRegionData, IElementData
 {
-    public DataElement DataElement { get; set; }
+    public DataElement DataElement                  { get; set; }
 
-    public GameRegionElementData() : base()
-    {
-        DataType = Enums.DataType.GameRegion;
-    }
+    public GameRegionData OriginalData              { get; set; }
 
-    public int phaseId;
+    public Enums.DataType DataType                  { get { return Enums.DataType.GameRegion; } }
 
-    public Enums.RegionType type;
-    public int regionSize;
-    public int terrainSize;
+    public Enums.SelectionStatus SelectionStatus    { get; set; }
 
-    public string tileSetName;
-    public float tileSize;
-
-    public List<GameTerrainElementData> terrainDataList;
-
+    public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
+    
     #region ElementData
     public bool Changed { get { return false; } }
-    public void Create() { }
-    public void Update() { }
-    public void UpdateSearch() { }
-    public void UpdateIndex() { }
-    public virtual void SetOriginalValues() { }
-    public void GetOriginalValues() { }
-    public virtual void ClearChanges() { }
-    public void Delete() { }
-    public IElementData Clone()
-    {
-        var elementData = new GameRegionElementData();
-
-        CloneGeneralData(elementData);
-
-        return elementData;
-    }
     #endregion
+
+    public void Update() { }
+
+    public void UpdateSearch() { }
+
+    public void SetOriginalValues()
+    {
+        OriginalData = base.Clone();
+
+        ClearChanges();
+    }
+
+    public void ClearChanges()
+    {
+        if (!Changed) return;
+
+        GetOriginalValues();
+    }
+
+    public void GetOriginalValues()
+    {
+        base.GetOriginalValues(OriginalData);
+    }
+
+    public new IElementData Clone()
+    {
+        var data = new GameRegionElementData();
+
+        data.DataElement = DataElement;
+
+        data.OriginalData = OriginalData.Clone();
+
+        base.Clone(data);
+
+        return data;
+    }
 }

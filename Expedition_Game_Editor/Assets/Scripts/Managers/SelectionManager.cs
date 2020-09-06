@@ -56,16 +56,22 @@ static public class SelectionManager
         {
             foreach (Route route in routeList)
             {
-                //Debug.Log(elementData.DataType + ":" + elementData.Id + ":" + route.GeneralData.DataType + ":" + route.GeneralData.Id);
-                if (((GeneralData)elementData).Equals(route.GeneralData))
+                if (route.id == 0) continue;
+                
+                if (DataManager.Equals(elementData, route.ElementData))
                 {
                     if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+                    {
                         elementData.SelectionStatus = route.selectionStatus;
-                    else
+
+                    } else {
+
                         elementData.SelectionStatus = Enums.SelectionStatus.Both;
+                    }
+                        
 
                     if (displayManager != null)
-                        displayManager.CorrectPosition(elementData);                 
+                        displayManager.CorrectPosition(elementData, displayManager.Display.DataController.Data.dataList);
                 }
             }
         }
@@ -78,7 +84,7 @@ static public class SelectionManager
 
     static public void SelectSet(IElementData setElementData)
     {
-        var elementDataList = SelectionElementManager.FindElementData((GeneralData)getElementData);
+        var elementDataList = SelectionElementManager.FindElementData(getElementData);
         
         //First set the result to all relevant elements
         elementDataList.ForEach(x => x.DataElement.SetResult(setElementData));
@@ -104,9 +110,13 @@ static public class SelectionManager
         dataList.ForEach(x => 
         {
             if(x.DataElement != null)
+            {
                 x.DataElement.SelectionElement.CancelSelection();
-            else
+
+            } else {
+
                 x.SelectionStatus = Enums.SelectionStatus.None;
+            }               
         });
     }
 }

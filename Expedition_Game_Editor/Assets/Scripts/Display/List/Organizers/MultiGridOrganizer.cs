@@ -33,15 +33,15 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     public void SelectData()
     {
         if(PrimaryDataController != null)
-            SelectionManager.SelectData(PrimaryDataController.DataList, DisplayManager);
+            SelectionManager.SelectData(PrimaryDataController.Data.dataList, DisplayManager);
         
         if(SecondaryDataController != null)
-            SelectionManager.SelectData(SecondaryDataController.DataList, DisplayManager);
+            SelectionManager.SelectData(SecondaryDataController.Data.dataList, DisplayManager);
     }
 
     public void UpdateData()
     {
-        ResetData(PrimaryDataController.DataList);
+        ResetData(PrimaryDataController.Data.dataList);
     }
 
     public void ResetData(List<IElementData> filter)
@@ -52,7 +52,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 
     public void SetData()
     {
-        SetData(PrimaryDataController.DataList);
+        SetData(PrimaryDataController.Data.dataList);
     }
 
     public void SetData(List<IElementData> primaryList)
@@ -73,12 +73,12 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             ElementList.Add(multiGrid.EditorElement);
 
             elementData.DataElement = multiGrid.EditorElement.DataElement;
-            multiGrid.EditorElement.DataElement.data = new DataElement.Data(PrimaryDataController, elementData);
+
+            multiGrid.EditorElement.DataElement.Data = PrimaryDataController.Data;
+            multiGrid.EditorElement.DataElement.Id = elementData.Id;
 
             //Debugging
-            GeneralData generalData = (GeneralData)elementData;
-            multiGrid.name = generalData.DebugName + generalData.Id;
-            //
+            multiGrid.name = elementData.DebugName + elementData.Id;
 
             SetElement(multiGrid.EditorElement);
         }
@@ -88,7 +88,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         element.RectTransform.sizeDelta = ElementSize;
         
-        int index = PrimaryDataController.DataList.FindIndex(x => x.Id == element.DataElement.GeneralData.Id);
+        int index = PrimaryDataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
 
         element.gameObject.SetActive(true);
@@ -109,7 +109,7 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     {
         MultiGridProperties.elementSize = ListProperties.elementSize;
 
-        primaryDimension = (int)Mathf.Sqrt(PrimaryDataController.DataList.Count);
+        primaryDimension = (int)Mathf.Sqrt(PrimaryDataController.Data.dataList.Count);
 
         if (MultiGridProperties.elementType == Enums.ElementType.CompactMultiGrid)
         {
@@ -120,8 +120,8 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             secondaryElementSize = new Vector2( ListProperties.elementSize.x,
                                                 ListProperties.elementSize.y);
 
-            ElementSize = new Vector2(  secondaryElementSize.x * (Mathf.Sqrt(SecondaryDataController.DataList.Count) / primaryDimension) + MultiGridProperties.margin,
-                                        secondaryElementSize.y * (Mathf.Sqrt(SecondaryDataController.DataList.Count) / primaryDimension) + MultiGridProperties.margin);
+            ElementSize = new Vector2(  secondaryElementSize.x * (Mathf.Sqrt(SecondaryDataController.Data.dataList.Count) / primaryDimension) + MultiGridProperties.margin,
+                                        secondaryElementSize.y * (Mathf.Sqrt(SecondaryDataController.Data.dataList.Count) / primaryDimension) + MultiGridProperties.margin);
         }
     }
 
@@ -151,18 +151,18 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
     private void CancelSelection()
     {
         if (PrimaryDataController != null)
-            SelectionManager.CancelSelection(PrimaryDataController.DataList);
+            SelectionManager.CancelSelection(PrimaryDataController.Data.dataList);
 
         if (SecondaryDataController != null)
-            SelectionManager.CancelSelection(SecondaryDataController.DataList);
+            SelectionManager.CancelSelection(SecondaryDataController.Data.dataList);
     }
 
     public void CloseOrganizer()
     {
-        ClearOrganizer();
-
         CancelSelection();
 
+        ClearOrganizer();
+        
         DestroyImmediate(this);
     }
 }

@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PhaseSaveDataManager : IDataManager
+public static class PhaseSaveDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<PhaseSaveBaseData> phaseSaveDataList;
 
-    private List<PhaseSaveData> phaseSaveDataList;
+    private static List<PhaseBaseData> phaseDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.PhaseData> phaseDataList;
-
-    public PhaseSaveDataManager(PhaseSaveController phaseController)
-    {
-        DataController = phaseController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
 
@@ -40,20 +31,20 @@ public class PhaseSaveDataManager : IDataManager
         GetPhaseData();
 
         var list = (from phaseSaveData  in phaseSaveDataList
-                    join phaseData      in phaseDataList on phaseSaveData.phaseId equals phaseData.id
+                    join phaseData      in phaseDataList on phaseSaveData.PhaseId equals phaseData.Id
                     select new PhaseSaveElementData()
                     {
-                        Id = phaseSaveData.id,
-                        Index = phaseSaveData.index,
+                        Id = phaseSaveData.Id,
+                        Index = phaseSaveData.Index,
 
-                        ChapterSaveId = phaseSaveData.chapterSaveId,
-                        PhaseId = phaseSaveData.phaseId,
+                        ChapterSaveId = phaseSaveData.ChapterSaveId,
+                        PhaseId = phaseSaveData.PhaseId,
 
-                        Complete = phaseSaveData.complete,
+                        Complete = phaseSaveData.Complete,
 
-                        name = phaseData.name,
+                        Name = phaseData.Name,
 
-                        publicNotes = phaseData.publicNotes
+                        PublicNotes = phaseData.PublicNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -62,68 +53,65 @@ public class PhaseSaveDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private void GetCustomPhaseSaveData(Search.PhaseSave searchParameters)
+    private static void GetCustomPhaseSaveData(Search.PhaseSave searchParameters)
     {
-        phaseSaveDataList = new List<PhaseSaveData>();
+        phaseSaveDataList = new List<PhaseSaveBaseData>();
 
-        foreach (Fixtures.PhaseSave phaseSave in Fixtures.phaseSaveList)
+        foreach (PhaseSaveBaseData phaseSave in Fixtures.phaseSaveList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phaseSave.id))                         continue;
-            if (searchParameters.chapterSaveId.Count    > 0 && !searchParameters.chapterSaveId.Contains(phaseSave.chapterSaveId))   continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phaseSave.Id))                         continue;
+            if (searchParameters.chapterSaveId.Count    > 0 && !searchParameters.chapterSaveId.Contains(phaseSave.ChapterSaveId))   continue;
 
-            var phaseSaveData = new PhaseSaveData();
+            var phaseSaveData = new PhaseSaveBaseData();
 
-            phaseSaveData.id = phaseSave.id;
-            phaseSaveData.index = phaseSave.index;
+            phaseSaveData.Id = phaseSave.Id;
+            phaseSaveData.Index = phaseSave.Index;
 
-            phaseSaveData.chapterSaveId = phaseSave.chapterSaveId;
-            phaseSaveData.phaseId = phaseSave.phaseId;
+            phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
+            phaseSaveData.PhaseId = phaseSave.PhaseId;
 
-            phaseSaveData.complete = phaseSave.complete;
+            phaseSaveData.Complete = phaseSave.Complete;
 
             phaseSaveDataList.Add(phaseSaveData);
         }
     }
 
-    private void GetPhaseSaveDataByChapter(Search.PhaseSave searchParameters)
+    private static void GetPhaseSaveDataByChapter(Search.PhaseSave searchParameters)
     {
-        phaseSaveDataList = new List<PhaseSaveData>();
+        phaseSaveDataList = new List<PhaseSaveBaseData>();
 
-        var phaseDataList = Fixtures.phaseList.Where(x => searchParameters.chapterId.Contains(x.chapterId)).Distinct().ToList();
-        var phaseSaveList = Fixtures.phaseSaveList.Where(x => phaseDataList.Select(y => y.id).Contains(x.phaseId)).Distinct().ToList();
+        var phaseDataList = Fixtures.phaseList.Where(x => searchParameters.chapterId.Contains(x.ChapterId)).Distinct().ToList();
+        var phaseSaveList = Fixtures.phaseSaveList.Where(x => phaseDataList.Select(y => y.Id).Contains(x.PhaseId)).Distinct().ToList();
 
-        foreach(Fixtures.PhaseSave phaseSave in phaseSaveList)
+        foreach(PhaseSaveBaseData phaseSave in phaseSaveList)
         {
-            var phaseSaveData = new PhaseSaveData();
+            var phaseSaveData = new PhaseSaveBaseData();
 
-            phaseSaveData.id = phaseSave.id;
-            phaseSaveData.index = phaseSave.index;
+            phaseSaveData.Id = phaseSave.Id;
+            phaseSaveData.Index = phaseSave.Index;
 
-            phaseSaveData.chapterSaveId = phaseSave.chapterSaveId;
-            phaseSaveData.phaseId = phaseSave.phaseId;
+            phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
+            phaseSaveData.PhaseId = phaseSave.PhaseId;
 
-            phaseSaveData.complete = phaseSave.complete;
+            phaseSaveData.Complete = phaseSave.Complete;
 
             phaseSaveDataList.Add(phaseSaveData);
         }
     }
 
-    internal void GetPhaseData()
+    private static void GetPhaseData()
     {
         var phaseSearchParameters = new Search.Phase();
-        phaseSearchParameters.id = phaseSaveDataList.Select(x => x.phaseId).Distinct().ToList();
+        phaseSearchParameters.id = phaseSaveDataList.Select(x => x.PhaseId).Distinct().ToList();
 
-        phaseDataList = dataManager.GetPhaseData(phaseSearchParameters);
+        phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
     }
 
-    internal class PhaseSaveData
+    public static void UpdateData(PhaseSaveElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int chapterSaveId;
-        public int phaseId;
-
-        public bool complete;
+        var data = Fixtures.phaseSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedComplete)
+            data.Complete = elementData.Complete;
     }
 }

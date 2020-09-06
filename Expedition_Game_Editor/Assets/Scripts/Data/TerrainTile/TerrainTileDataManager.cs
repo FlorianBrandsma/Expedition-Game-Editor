@@ -3,22 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TerrainTileDataManager : IDataManager
+public static class TerrainTileDataManager
 {
-    public IDataController DataController { get; set; }
+    private static List<TerrainTileBaseData> terrainTileDataList;
 
-    private List<TerrainTileData> terrainTileDataList;
+    private static List<TileBaseData> tileDataList;
 
-    private DataManager dataManager = new DataManager();
-
-    private List<DataManager.TileData> tileDataList;
-
-    public TerrainTileDataManager(TerrainTileController terrainTileController)
-    {
-        DataController = terrainTileController;
-    }
-
-    public List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.TerrainTile>().First();
 
@@ -28,17 +19,17 @@ public class TerrainTileDataManager : IDataManager
 
         GetTileData();
 
-        var list = (from terrainTileData in terrainTileDataList
-                    join tileData in tileDataList on terrainTileData.tileId equals tileData.id
+        var list = (from terrainTileData    in terrainTileDataList
+                    join tileData           in tileDataList on terrainTileData.TileId equals tileData.Id
                     select new TerrainTileElementData()
                     {
-                        Id = terrainTileData.id,
-                        Index = terrainTileData.index,
+                        Id = terrainTileData.Id,
+                        Index = terrainTileData.Index,
 
-                        TerrainId = terrainTileData.terrainId,
-                        TileId = terrainTileData.tileId,
+                        TerrainId = terrainTileData.TerrainId,
+                        TileId = terrainTileData.TileId,
 
-                        iconPath = tileData.iconPath
+                        IconPath = tileData.IconPath
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -47,46 +38,45 @@ public class TerrainTileDataManager : IDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    public void GetTerrainTileData(Search.TerrainTile searchParameters)
+    private static void GetTerrainTileData(Search.TerrainTile searchParameters)
     {
-        terrainTileDataList = new List<TerrainTileData>();
+        terrainTileDataList = new List<TerrainTileBaseData>();
 
-        foreach (Fixtures.TerrainTile terrainTile in Fixtures.terrainTileList)
+        foreach (TerrainTileBaseData terrainTile in Fixtures.terrainTileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrainTile.Id)) continue;
             if (searchParameters.regionId.Count > 0)
             {
-                var terrain = Fixtures.terrainList.Where(x => x.id == terrainTile.terrainId).FirstOrDefault();
+                var terrain = Fixtures.terrainList.Where(x => x.Id == terrainTile.TerrainId).FirstOrDefault();
 
-                if(!searchParameters.regionId.Contains(terrain.regionId)) continue;
+                if(!searchParameters.regionId.Contains(terrain.RegionId)) continue;
             }
 
-            var terrainTileData = new TerrainTileData();
+            var terrainTileData = new TerrainTileBaseData();
 
-            terrainTileData.id = terrainTile.id;
-            terrainTileData.index = terrainTile.index;
+            terrainTileData.Id = terrainTile.Id;
+            terrainTileData.Index = terrainTile.Index;
 
-            terrainTileData.terrainId = terrainTile.terrainId;
-            terrainTileData.tileId = terrainTile.tileId;
+            terrainTileData.TerrainId = terrainTile.TerrainId;
+            terrainTileData.TileId = terrainTile.TileId;
 
             terrainTileDataList.Add(terrainTileData);
         }
     }
 
-    internal void GetTileData()
+    private static void GetTileData()
     {
         var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.id = terrainTileDataList.Select(x => x.tileId).Distinct().ToList();
+        tileSearchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
 
-        tileDataList = dataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(tileSearchParameters);
     }
 
-    internal class TerrainTileData
+    public static void UpdateData(TerrainTileElementData elementData)
     {
-        public int id;
-        public int index;
-
-        public int terrainId;
-        public int tileId;
+        var data = Fixtures.terrainTileList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        
+        if (elementData.ChangedTileId)
+            data.TileId = elementData.TileId;
     }
 }

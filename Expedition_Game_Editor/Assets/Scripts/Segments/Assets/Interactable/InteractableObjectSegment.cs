@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class InteractableObjectSegment : MonoBehaviour, ISegment
 {
     public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
     public IEditor DataEditor { get; set; }
 
     public void InitializeDependencies() { }
@@ -24,7 +23,7 @@ public class InteractableObjectSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Object };
 
-        SegmentController.DataController.DataList = RenderManager.GetData(SegmentController.DataController, searchProperties);
+        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void OpenSegment()
