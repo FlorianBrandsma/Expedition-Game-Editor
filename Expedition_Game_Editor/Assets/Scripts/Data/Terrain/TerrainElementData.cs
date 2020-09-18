@@ -41,13 +41,26 @@ public class TerrainElementData : TerrainData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        TerrainDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
+
+        AtmosphereDataList.ForEach(x => x.SetOriginalValues());
+        TerrainTileDataList.ForEach(x => x.SetOriginalValues());
+        WorldInteractableDataList.ForEach(x => x.SetOriginalValues());
+        InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
+        WorldObjectDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
     }
@@ -62,6 +75,8 @@ public class TerrainElementData : TerrainData, IElementData
     public void GetOriginalValues()
     {
         base.GetOriginalValues(OriginalData);
+
+        Debug.Log("TEEEEEEEEEST " + WorldObjectDataList.Count);
 
         //AtmosphereDataList = originalData.AtmosphereDataList;
         //TerrainTileDataList = originalData.TerrainTileDataList;

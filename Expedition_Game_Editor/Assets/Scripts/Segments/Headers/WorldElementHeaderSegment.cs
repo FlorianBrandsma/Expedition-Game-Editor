@@ -7,12 +7,126 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     public Text headerText;
     public Text idText;
 
-    private string modelIconPath;
-    private string header;
-    private int id;
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    #region Data properties
+    private int Id
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).Id;
+
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).Id;
+
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).Id;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
+            }
+        }
+    }
+
+    private string Name
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelName;
+
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).InteractableName;
+
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).InteractableName;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.WorldObject:
+
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelName = value;
+
+                    break;
+
+                case Enums.DataType.Phase:
+
+                    var phaseEditor = (PhaseEditor)DataEditor;
+                    phaseEditor.InteractableName = value;
+
+                    break;
+
+                case Enums.DataType.InteractionDestination:
+
+                    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
+                    interactionDestinationEditor.InteractableName = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
+            }
+        }
+    }
+
+    private string ModelIconPath
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelIconPath;
+
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).ModelIconPath;
+
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).ModelIconPath;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.WorldObject:
+
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelIconPath = value;
+
+                    break;
+
+                case Enums.DataType.Phase:
+
+                    var phaseEditor = (PhaseEditor)DataEditor;
+                    phaseEditor.ModelIconPath = value;
+
+                    break;
+
+                case Enums.DataType.InteractionDestination:
+
+                    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
+                    interactionDestinationEditor.ModelIconPath = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
+            }
+        }
+    }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -33,62 +147,20 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     
     public void OpenSegment()
     {
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.WorldObject:            InitializeWorldObjectData();            break;
-            case Enums.DataType.Phase:                  InitializePhaseData();                  break;
-            case Enums.DataType.InteractionDestination: InitializeInteractionDestinationData(); break;
+        icon.texture = Resources.Load<Texture2D>(ModelIconPath);
+        headerText.text = Name;
+        idText.text = Id.ToString();
 
-            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
-        }
-        
-        icon.texture = Resources.Load<Texture2D>(modelIconPath);
-        headerText.text = header;
-        idText.text = id.ToString();
+        headerText.fontSize = StyleManager.headerFontSize;
+        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
 
         gameObject.SetActive(true);
     }
-    
-    private void InitializeWorldObjectData()
-    {
-        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
 
-        id = worldObjectData.Id;
-        header = worldObjectData.ModelName;
-        modelIconPath = worldObjectData.ModelIconPath;
-
-        headerText.fontSize = StyleManager.headerFontSize;
-        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
-    }
-
-    private void InitializePhaseData()
-    {
-        var phaseData = (PhaseElementData)DataEditor.ElementData;
-
-        id = phaseData.PartyMemberId;
-        header = phaseData.InteractableName;
-        modelIconPath = phaseData.ModelIconPath;
-
-        headerText.fontSize = StyleManager.headerFontSize;
-        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
-    }
-
-    private void InitializeInteractionDestinationData()
-    {
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
-
-        id = interactionDestinationData.Id;
-        header = interactionDestinationData.InteractableName;
-        modelIconPath = interactionDestinationData.ModelIconPath;
-
-        headerText.fontSize = StyleManager.headerFontSize;
-        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
-    }
+    public void SetSearchResult(IElementData elementData) { }
 
     public void CloseSegment()
     {
         gameObject.SetActive(false);
     }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

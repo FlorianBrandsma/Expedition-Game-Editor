@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PathController : MonoBehaviour
 {
-    public Route route      { get; set; }
+    public Route route;
     private Route previousRoute;
     public int step         { get; set; }
     public int layoutStep   { get; set; }
@@ -60,7 +60,7 @@ public class PathController : MonoBehaviour
         } else {
             route = new Route(path);
         }
-
+        
         route.path = path;
 
         previousRoute = route;
@@ -74,7 +74,7 @@ public class PathController : MonoBehaviour
             foreach (PathController controller in controllers)
                 controller.historyGroup = historyGroup;
         }
-
+        
         InitializeActions(mainPath);
 
         if (EditorController != null)
@@ -111,7 +111,7 @@ public class PathController : MonoBehaviour
     public void FinalizePath(Path path)
     {
         route.path.type = Path.Type.Loaded;
-
+        
         if (step < path.routeList.Count)
         {
             controllers[path.routeList[step].controllerIndex].FinalizePath(path);
@@ -164,7 +164,9 @@ public class PathController : MonoBehaviour
     public void SetActions(Path path)
     {
         foreach (IAction action in GetComponents<IAction>())
+        {
             action.SetAction(path);
+        }
 
         if (step < path.routeList.Count)
             controllers[path.routeList[step].controllerIndex].SetActions(path);
@@ -173,7 +175,7 @@ public class PathController : MonoBehaviour
     void InitializeTabs(Path path)
     {
         if (step == path.routeList.Count)
-            path.Add();      
+            path.Add();
     }
 
     public void GetTargetLayout(Path path, int layoutStep)

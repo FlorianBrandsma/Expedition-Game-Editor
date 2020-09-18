@@ -34,25 +34,26 @@ public class PartyMemberDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = PartyMemberDataManager.GetData(searchProperties)
+            dataList = PartyMemberDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var partyMemberData = (PartyMemberElementData)searchElement.ElementData;
+        var searchPartyMemberElementData = (PartyMemberElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableElementData)resultData;
+                var resultInteractableElementData = (InteractableElementData)resultElementData;
 
-                partyMemberData.InteractableId = resultElementData.Id;
-                partyMemberData.InteractableName = resultElementData.Name;
-                partyMemberData.ModelIconPath = resultElementData.ModelIconPath;
+                searchPartyMemberElementData.InteractableId     = resultInteractableElementData.Id;
+                searchPartyMemberElementData.InteractableName   = resultInteractableElementData.Name;
+                searchPartyMemberElementData.ModelIconPath      = resultInteractableElementData.ModelIconPath;
 
                 break;
         }

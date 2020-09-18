@@ -5,15 +5,27 @@ using System.Linq;
 
 public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData RegionDataElement { get { return (RegionElementData)DataEditor.ElementData; } }
-
-    private List<TileSetBaseData> tileSetList;
-
     public Dropdown tileSetDropdown;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    private List<TileSetBaseData> tileSetList;
     
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+
+    public RegionEditor RegionEditor            { get { return (RegionEditor)DataEditor; } }
+    
+    public int TileSetId
+    {
+        get { return RegionEditor.TileSetId; }
+        set { RegionEditor.TileSetId = value; }
+    }
+
+    public string TileIconPath
+    {
+        get { return RegionEditor.TileIconPath; }
+        set { RegionEditor.TileIconPath = value; }
+    }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -22,16 +34,11 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment()
     {
         InitializeDropdown();
-    }
-
-    public void InitializeData() { }
-
-    public void OpenSegment()
-    {
-        SetDropdown(RegionDataElement.TileSetId);
     }
 
     private void InitializeDropdown()
@@ -44,7 +51,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         foreach (TileSetBaseData tileSetData in tileSetList)
             tileSetDropdown.options.Add(new Dropdown.OptionData(tileSetData.Name));
 
-        int selectedIndex = tileSetList.FindIndex(x => x.Id == RegionDataElement.TileSetId);
+        int selectedIndex = tileSetList.FindIndex(x => x.Id == TileSetId);
 
         tileSetDropdown.value = selectedIndex;
         tileSetDropdown.captionText.text = tileSetDropdown.options[selectedIndex].text;
@@ -52,27 +59,20 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         tileSetDropdown.onValueChanged.AddListener(delegate { SetDropdown(tileSetList[tileSetDropdown.value].Id); });
     }
 
+    public void OpenSegment()
+    {
+        SetDropdown(TileSetId);
+    }
+    
     public void SetDropdown(int tileSetId)
     {
-        RegionDataElement.TileSetId = tileSetList[tileSetDropdown.value].Id;
+        TileSetId = tileSetList[tileSetDropdown.value].Id;
 
         DataEditor.UpdateEditor();
 
         SetDisplay();
     }
-
-    private void SetTiles()
-    {
-        var searchProperties = new SearchProperties(Enums.DataType.Tile);
-
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
-        searchParameters.tileSetId = new List<int>() { RegionDataElement.TileSetId };
-
-        SegmentController.DataController.GetData(searchProperties);
-
-        RegionDataElement.TileIconPath = SegmentController.DataController.Data.dataList.Cast<TileElementData>().First().Icon;
-    }
-
+    
     private void SetDisplay()
     {
         SetTiles();
@@ -81,7 +81,19 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    private void SetTiles()
+    {
+        var searchProperties = new SearchProperties(Enums.DataType.Tile);
 
-    public void SetSearchResult(DataElement dataElement) { }
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
+        searchParameters.tileSetId = new List<int>() { TileSetId };
+
+        SegmentController.DataController.GetData(searchProperties);
+
+        TileIconPath = SegmentController.DataController.Data.dataList.Cast<TileElementData>().First().Icon;
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void CloseSegment() { }
 }

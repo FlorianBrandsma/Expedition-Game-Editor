@@ -7,30 +7,38 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber inputField;
     public Text heightText, widthText, depthText;
-    
-    private float height;
-    private float width;
-    private float depth;
-    private float scale;
-    
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float Scale
-    {
-        get { return scale; }
-        set
-        {
-            scale = value;
+    public WorldObjectEditor WorldObjectEditor  { get { return (WorldObjectEditor)DataEditor; } }
 
-            var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
-            worldObjectDataList.ForEach(worldObjectData =>
-            {
-                worldObjectData.Scale = value;
-            });
-        }
+    #region Data properties
+    private float Scale
+    {
+        get { return WorldObjectEditor.Scale; }
+        set { WorldObjectEditor.Scale = value; }
     }
-    
+
+    private float Height
+    {
+        get { return WorldObjectEditor.Height; }
+        set { WorldObjectEditor.Height = value; }
+    }
+
+    private float Width
+    {
+        get { return WorldObjectEditor.Width; }
+        set { WorldObjectEditor.Width = value; }
+    }
+
+    private float Depth
+    {
+        get { return WorldObjectEditor.Depth; }
+        set { WorldObjectEditor.Depth = value; }
+    }
+    #endregion
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -39,20 +47,7 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
     
-    public void InitializeData()
-    {
-        InitializeDependencies();
-
-        if (DataEditor.Loaded) return;
-
-        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
-
-        height  = worldObjectData.Height;
-        width   = worldObjectData.Width;
-        depth   = worldObjectData.Depth;
-
-        scale   = worldObjectData.Scale;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment()
     {
@@ -61,10 +56,19 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 
     public void SetSizeValues()
     {
-        heightText.text = (height * scale).ToString();
-        widthText.text  = (width * scale).ToString();
-        depthText.text  = (depth * scale).ToString();
+        heightText.text = (Height * Scale).ToString();
+        widthText.text  = (Width * Scale).ToString();
+        depthText.text  = (Depth * Scale).ToString();
     }
+    
+    public void OpenSegment()
+    {
+        SetSizeValues();
+
+        inputField.Value = Scale;
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateScale()
     {
@@ -75,14 +79,5 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void OpenSegment()
-    {
-        SetSizeValues();
-
-        inputField.Value = Scale;
-    }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

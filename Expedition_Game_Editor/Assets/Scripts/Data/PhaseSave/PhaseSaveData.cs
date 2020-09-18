@@ -2,6 +2,8 @@
 
 public class PhaseSaveData : PhaseSaveBaseData
 {
+    public int Index            { get; set; }
+
     public string Name          { get; set; }
 
     public string PublicNotes   { get; set; }
@@ -9,6 +11,8 @@ public class PhaseSaveData : PhaseSaveBaseData
 
     public override void GetOriginalValues(PhaseSaveData originalData)
     {
+        Index           = originalData.Index;
+
         Name            = originalData.Name;
 
         PublicNotes     = originalData.PublicNotes;
@@ -20,7 +24,9 @@ public class PhaseSaveData : PhaseSaveBaseData
     public PhaseSaveData Clone()
     {
         var data = new PhaseSaveData();
-        
+
+        data.Index          = Index;
+
         data.Name           = Name;
 
         data.PublicNotes    = PublicNotes;
@@ -33,6 +39,8 @@ public class PhaseSaveData : PhaseSaveBaseData
 
     public virtual void Clone(PhaseSaveElementData elementData)
     {
+        elementData.Index           = Index;
+
         elementData.Name            = Name;
 
         elementData.PublicNotes     = PublicNotes;

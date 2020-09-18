@@ -34,13 +34,14 @@ public class ChapterDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ChapterDataManager.GetData(searchProperties)
+            dataList = ChapterDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultElementData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

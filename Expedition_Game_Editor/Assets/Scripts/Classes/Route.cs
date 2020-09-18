@@ -7,13 +7,13 @@ public class Route
 {
     public int controllerIndex;
     public int id;
-    public Data data;
+    
+    public Data data { get; set; }
     public Path path;
 
     public Enums.SelectionStatus selectionStatus;
 
-    public IElementData ElementData { get { return data == null ? null : data.dataList.Where(x => x.Id == id).First(); } }
-    //public GeneralData GeneralData  { get { return (GeneralData)ElementData; } }
+    public IElementData ElementData { get { return data == null ? null : data.dataList.Where(x => x.Id == id).FirstOrDefault(); } }
 
     public Route() { }
 
@@ -42,6 +42,7 @@ public class Route
         this.controllerIndex = controllerIndex;
 
         data = route.data;
+
         id = route.id;
         
         selectionStatus = route.selectionStatus;
@@ -54,6 +55,7 @@ public class Route
         this.controllerIndex = controllerIndex;
 
         data = route.data;
+
         id = route.id;
 
         this.selectionStatus = selectionStatus;

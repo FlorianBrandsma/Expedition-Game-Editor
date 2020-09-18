@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
 {
-    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.ElementData; } }
-    
     public RawImage icon;
 
     public Text nameText;
@@ -13,6 +11,28 @@ public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
     
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
+
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+
+    #region Data properties
+    private string ModelIconPath
+    {
+        get { return InteractionEditor.ModelIconPath; }
+        set { InteractionEditor.ModelIconPath = value; }
+    }
+
+    private string InteractableName
+    {
+        get { return InteractionEditor.InteractableName; }
+        set { InteractionEditor.InteractableName = value; }
+    }
+
+    private string LocationName
+    {
+        get { return InteractionEditor.LocationName; }
+        set { InteractionEditor.LocationName = value; }
+    }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -24,17 +44,17 @@ public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        icon.texture = Resources.Load<Texture2D>(InteractionData.ModelIconPath);
-
-        nameText.text = InteractionData.InteractableName;
-        locationText.text = InteractionData.LocationName;
+        icon.texture = Resources.Load<Texture2D>(ModelIconPath);
+        Debug.Log(ModelIconPath);
+        nameText.text = InteractableName;
+        locationText.text = LocationName;
     }
 
     public void InitializeData() { }
 
-    public void OpenSegment() { }
+    public void OpenSegment() { Debug.Log("test2"); }
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void SetSearchResult(IElementData elementData) { }
 }

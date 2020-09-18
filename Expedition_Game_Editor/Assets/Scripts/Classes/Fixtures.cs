@@ -423,7 +423,7 @@ static public class Fixtures
 
         atmosphere.Default = isDefault;
         
-        atmosphere.StartTime = startTime ;
+        atmosphere.StartTime = startTime;
         atmosphere.EndTime = endTime;
 
         atmosphereList.Add(atmosphere);
@@ -1374,7 +1374,6 @@ static public class Fixtures
             int interactableSaveId = interactableSaveList.Count > 0 ? (interactableSaveList[interactableSaveList.Count - 1].Id + 1) : 1;
 
             interactableSave.Id = interactableSaveId;
-            interactableSave.Index = interactable.Index;
 
             interactableSave.SaveId = save.Id;
             interactableSave.InteractableId = interactable.Id;

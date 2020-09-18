@@ -1,71 +1,39 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class PhaseTransformRotationDegreeSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber xInputField, yInputField, zInputField;
 
-    private int rotationX, rotationY, rotationZ;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public int RotationX
-    {
-        get { return rotationX; }
-        set
-        {
-            rotationX = value;
+    public PhaseEditor PhaseEditor              { get { return (PhaseEditor)DataEditor; } }
 
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultRotationX = value;
-            });
-        }
+    #region Data properties
+    private int DefaultRotationX
+    {
+        get { return PhaseEditor.DefaultRotationX; }
+        set { PhaseEditor.DefaultRotationX = value; }
     }
 
-    public int RotationY
+    private int DefaultRotationY
     {
-        get { return rotationY; }
-        set
-        {
-            rotationY = value;
-
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultRotationY = value;
-            });
-        }
+        get { return PhaseEditor.DefaultRotationY; }
+        set { PhaseEditor.DefaultRotationY = value; }
     }
 
-    public int RotationZ
+    private int DefaultRotationZ
     {
-        get { return rotationZ; }
-        set
-        {
-            rotationZ = value;
-
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultRotationZ = value;
-            });
-        }
+        get { return PhaseEditor.DefaultRotationZ; }
+        set { PhaseEditor.DefaultRotationZ = value; }
     }
 
-    public int Time
+    private int DefaultTime
     {
-        set
-        {
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultTime = value;
-            });
-        }
+        get { return PhaseEditor.DefaultTime; }
+        set { PhaseEditor.DefaultTime = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -79,13 +47,7 @@ public class PhaseTransformRotationDegreeSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var phaseData = (PhaseElementData)DataEditor.ElementData;
-
-        rotationX = phaseData.DefaultRotationX;
-        rotationY = phaseData.DefaultRotationY;
-        rotationZ = phaseData.DefaultRotationZ;
-
-        TimeManager.instance.ActiveTime = phaseData.DefaultTime;
+        TimeManager.instance.ActiveTime = DefaultTime;
     }
 
     public void InitializeSegment()
@@ -93,44 +55,44 @@ public class PhaseTransformRotationDegreeSegment : MonoBehaviour, ISegment
         UpdateTime();
     }
 
+    public void OpenSegment()
+    {
+        xInputField.Value = DefaultRotationX;
+        yInputField.Value = DefaultRotationY;
+        zInputField.Value = DefaultRotationZ;
+
+        gameObject.SetActive(true);
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
     public void UpdateRotationX()
     {
-        RotationX = (int)xInputField.Value;
+        DefaultRotationX = (int)xInputField.Value;
 
         DataEditor.UpdateEditor();
     }
 
     public void UpdateRotationY()
     {
-        RotationY = (int)yInputField.Value;
+        DefaultRotationY = (int)yInputField.Value;
 
         DataEditor.UpdateEditor();
     }
 
     public void UpdateRotationZ()
     {
-        RotationZ = (int)zInputField.Value;
+        DefaultRotationZ = (int)zInputField.Value;
 
         DataEditor.UpdateEditor();
     }
 
     public void UpdateTime()
     {
-        Time = TimeManager.instance.ActiveTime;
+        DefaultTime = TimeManager.instance.ActiveTime;
 
         DataEditor.UpdateEditor();
     }
-
-    public void OpenSegment()
-    {
-        xInputField.Value = RotationX;
-        yInputField.Value = RotationY;
-        zInputField.Value = RotationZ;
-
-        gameObject.SetActive(true);
-    }
-
+    
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

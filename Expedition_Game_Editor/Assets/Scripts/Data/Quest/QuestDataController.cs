@@ -34,13 +34,14 @@ public class QuestDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = QuestDataManager.GetData(searchProperties)
+            dataList = QuestDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

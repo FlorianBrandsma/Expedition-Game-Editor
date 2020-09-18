@@ -4,34 +4,20 @@ using System.Linq;
 public class InteractionDestinationArrivalBehaviourPatienceSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber patienceInputField;
-
-    private float patience;
-
+    
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float Patience
+    public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
+
+    #region Data properties
+    private float Patience
     {
-        get { return patience; }
-        set
-        {
-            patience = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.Patience = value;
-            });
-        }
+        get { return InteractionDestinationEditor.Patience; }
+        set { InteractionDestinationEditor.Patience = value; }
     }
-
-    public void UpdatePatience()
-    {
-        Patience = patienceInputField.Value;
-
-        DataEditor.UpdateEditor();
-    }
-
+    #endregion
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -40,14 +26,7 @@ public class InteractionDestinationArrivalBehaviourPatienceSegment : MonoBehavio
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
-
-        patience = interactionDestinationData.Patience;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
 
@@ -58,8 +37,15 @@ public class InteractionDestinationArrivalBehaviourPatienceSegment : MonoBehavio
         gameObject.SetActive(true);
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void UpdatePatience()
+    {
+        Patience = patienceInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void CloseSegment() { }
 }
 

@@ -62,10 +62,12 @@ public class PathManager
         {
             route.controllerIndex = enter;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            newPath.type = path.type;
+            path.routeList.Add(route);
 
-            return newPath;
+            //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            //newPath.type = path.type;
+
+            return path;
         }
 
         public Path Edit()
@@ -84,16 +86,17 @@ public class PathManager
         {
             route.controllerIndex = open;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            newPath.type = path.type;
+            path.routeList.Add(route);
 
-            return newPath;
+            //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            //newPath.type = path.type;
+
+            return path;
         }
     }
 
     public class Interaction
     {
-        Path path;
         Route route;
         DataElement dataElement;
 
@@ -110,10 +113,19 @@ public class PathManager
             int enter = 0;
 
             route.controllerIndex = enter;
+            
+            var pathSource = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
 
-            path = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start
+            };
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
 
         public Path OutcomeList()
@@ -122,15 +134,24 @@ public class PathManager
 
             route.controllerIndex = enter;
 
-            path = dataElement.Path;
+            var pathSource = dataElement.Path;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
     }
 
     public class Outcome
     {
-        Path path;
+        Path pathSource;
         Route route;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
@@ -139,7 +160,7 @@ public class PathManager
         {
             this.route = route;
 
-            path = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
+            pathSource = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
         }
 
         public Path OutcomeEditor()
@@ -147,8 +168,17 @@ public class PathManager
             int open = 0;
 
             route.controllerIndex = open;
+            
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start
+            };
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
     }
     #endregion
@@ -156,7 +186,7 @@ public class PathManager
     public class InteractionDestination
     {
         EditorElement editorElement;
-        Path path;
+        Path pathSource;
         Route route;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
@@ -168,7 +198,7 @@ public class PathManager
             this.route = route;
 
             if (editorElement.DataElement.DisplayManager != null)
-                path = editorElement.DataElement.segmentController.Path;
+                pathSource = editorElement.DataElement.segmentController.Path;
         }
 
         public Path Enter()
@@ -177,10 +207,10 @@ public class PathManager
 
             Route customRoute = new Route(1, route, editorElement.selectionStatus);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
-            path.type = Path.Type.New;
+            pathSource = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            pathSource.type = Path.Type.New;
 
-            return path;
+            return pathSource;
         }
 
         public Path Open()
@@ -189,10 +219,17 @@ public class PathManager
 
             route.controllerIndex = open;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            newPath.type = path.type;
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start,
+                type = pathSource.type
+            };
 
-            return newPath;
+            path.routeList.ForEach(x => x.path = path);
+            
+            return path;
         }
     }
 
@@ -245,7 +282,7 @@ public class PathManager
     {
         EditorElement editorElement;
 
-        Path path;
+        Path pathSource;
         Route route;
 
         int enter;
@@ -255,7 +292,7 @@ public class PathManager
         {
             this.editorElement = editorElement;
 
-            path = editorElement.DataElement.segmentController.Path;
+            pathSource = editorElement.DataElement.segmentController.Path;
 
             this.route = route;
 
@@ -268,16 +305,22 @@ public class PathManager
         public Path Enter()
         {
             route.controllerIndex = enter;
-            //Looks convoluted
-            
-            EditorForm form = RenderManager.layoutManager.forms[0];
-            return new Path(path.CombineRoute(new List<Route>() { route }), form);
+
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = RenderManager.layoutManager.forms[0],
+                type = pathSource.type
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
 
         public Path Edit()
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
-
             return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
         }
 
@@ -335,7 +378,16 @@ public class PathManager
 
                 case Enums.RegionType.InteractionDestination:
                     route.controllerIndex = interactionDestinationController;
-                    path = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+                    
+                    path = new Path()
+                    {
+                        routeList = path.CombineRoute(new List<Route>() { route }),
+                        form = form,
+                        start = path.start
+                    };
+
+                    path.routeList.ForEach(x => x.path = path);
+
                     break;
             }
 
@@ -377,7 +429,7 @@ public class PathManager
     #region Atmosphere
     public class Atmosphere
     {
-        Path path;
+        Path pathSource;
         Route route;
 
         int enter = 0;
@@ -388,14 +440,23 @@ public class PathManager
         {
             this.route = route;
 
-            path = editorElement.DataElement.segmentController.Path;
+            pathSource = editorElement.DataElement.segmentController.Path;
         }
 
         public Path Enter()
         {
             route.controllerIndex = enter;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
     }
     #endregion
@@ -407,7 +468,7 @@ public class PathManager
         int enter = 1;
 
         EditorElement editorElement;
-        Path path;
+
         Route route;
 
         EditorForm form = RenderManager.layoutManager.forms[0];
@@ -422,18 +483,29 @@ public class PathManager
         {
             route.controllerIndex = enter;
 
-            path = editorElement.DataElement.Path;
+            var pathSource = editorElement.DataElement.Path;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
 
         public Path Edit()
         {
             route.controllerIndex = edit;
 
-            path = editorElement.DataElement.segmentController.Path;
+            var pathSource = editorElement.DataElement.segmentController.Path;
 
-            return new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+            pathSource.routeList.Add(route);
+
+            return pathSource;
         }
     }
 
@@ -457,12 +529,18 @@ public class PathManager
         {
             route.controllerIndex = enter;
 
-            path = editorElement.DataElement.segmentController.Path;
+            var pathSource = editorElement.DataElement.segmentController.Path;
 
-            Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form);
-            newPath.type = path.type;
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                form = form,
+                type = pathSource.type
+            };
 
-            return newPath;
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
 
         public Path Open()
@@ -503,7 +581,18 @@ public class PathManager
 
             List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
 
-            return new Path(form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes), form, form.activePath.start);
+            var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
+
+            Path path = new Path()
+            {
+                routeList = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes),
+                form = form,
+                start = form.activePath.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
     }
     #endregion
@@ -680,32 +769,17 @@ public class PathManager
 
     static public Path ExtendPath(Path head, List<Route> tail)
     {
-        Path path = new Path(head.CombineRoute(tail), head.form, head.routeList.Count);
+        Path path = new Path()
+        {
+            routeList = head.CombineRoute(tail),
+            form = head.form,
+            start = head.routeList.Count,
+            type = head.type
+        };
 
-        path.type = head.type;
-
+        path.routeList.ForEach(x => x.path = path);
+        
         return path;
-    }
-
-    static public Path ReloadPath(Path path, Data data)
-    {
-        Debug.Log("THIS IS PROBABLY NOT THE WAY TO GO ANYMORE");
-
-        var newPath = new Path();
-
-        newPath.form = path.form;
-
-        path.routeList.ForEach(x => newPath.Add(x.Clone()));
-
-        newPath.routeList.Last().data = data;
-
-        newPath.start = path.start;
-
-        newPath.type = path.type;
-
-        RenderManager.loadType = Enums.LoadType.Reload;
-
-        return newPath;
     }
     #endregion
 }

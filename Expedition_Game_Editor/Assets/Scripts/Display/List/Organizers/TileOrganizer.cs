@@ -65,6 +65,8 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
             tile.EditorElement.DataElement.Data = DataController.Data;
             tile.EditorElement.DataElement.Id = elementData.Id;
 
+            tile.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+
             //Debugging
             tile.name = elementData.DebugName + elementData.Id;
 

@@ -10,10 +10,8 @@ public class InteractableDataController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     
     public Data Data                            { get; set; }
-
     public Enums.DataType DataType              { get { return Enums.DataType.Interactable; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -36,26 +34,29 @@ public class InteractableDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = InteractableDataManager.GetData(searchProperties)
+            dataList = InteractableDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var interactableData = (InteractableElementData)searchElement.ElementData;
+        var searchInteractableElementData = (InteractableElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableElementData)resultData;
+                var resultInteractableElementData = (InteractableElementData)resultElementData;
 
-                interactableData.Id = resultElementData.Id;
-                interactableData.ModelIconPath = resultElementData.ModelIconPath;
+                searchInteractableElementData.Id            = resultInteractableElementData.Id;
+                searchInteractableElementData.ModelIconPath = resultInteractableElementData.ModelIconPath;
 
                 break;
+
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

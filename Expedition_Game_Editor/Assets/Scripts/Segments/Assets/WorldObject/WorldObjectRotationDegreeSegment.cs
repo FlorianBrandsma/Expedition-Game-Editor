@@ -7,55 +7,53 @@ public class WorldObjectRotationDegreeSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber xInputField, yInputField, zInputField;
 
-    private int rotationX, rotationY, rotationZ;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public int RotationX
-    {
-        get { return rotationX; }
-        set
-        {
-            rotationX = value;
+    public WorldObjectEditor WorldObjectEditor  { get { return (WorldObjectEditor)DataEditor; } }
 
-            var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
-            worldObjectDataList.ForEach(worldObjectData =>
-            {
-                worldObjectData.RotationX = value;
-            });
-        }
+    #region Data properties
+    private int RotationX
+    {
+        get { return WorldObjectEditor.RotationX; }
+        set { WorldObjectEditor.RotationX = value; }
     }
 
-    public int RotationY
+    private int RotationY
     {
-        get { return rotationY; }
-        set
-        {
-            rotationY = value;
-
-            var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
-            worldObjectDataList.ForEach(worldObjectData =>
-            {
-                worldObjectData.RotationY = value;
-            });
-        }
+        get { return WorldObjectEditor.RotationY; }
+        set { WorldObjectEditor.RotationY = value; }
     }
 
-    public int RotationZ
+    private int RotationZ
     {
-        get { return rotationZ; }
-        set
-        {
-            rotationZ = value;
-
-            var worldObjectDataList = DataEditor.DataList.Cast<WorldObjectElementData>().ToList();
-            worldObjectDataList.ForEach(worldObjectData =>
-            {
-                worldObjectData.RotationZ = value;
-            });
-        }
+        get { return WorldObjectEditor.RotationZ; }
+        set { WorldObjectEditor.RotationZ = value; }
     }
+    #endregion
+    
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
+    }
+
+    public void InitializeData() { }
+
+    public void InitializeSegment() { }
+    
+    public void OpenSegment()
+    {
+        xInputField.Value = RotationX;
+        yInputField.Value = RotationY;
+        zInputField.Value = RotationZ;
+
+        gameObject.SetActive(true);
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateRotationX()
     {
@@ -78,37 +76,5 @@ public class WorldObjectRotationDegreeSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.EditorController.PathController.DataEditor;
-
-        if (!DataEditor.EditorSegments.Contains(SegmentController))
-            DataEditor.EditorSegments.Add(SegmentController);
-    }
-
-    public void InitializeSegment() { }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var worldObjectData = (WorldObjectElementData)DataEditor.ElementData;
-
-        rotationX = worldObjectData.RotationX;
-        rotationY = worldObjectData.RotationY;
-        rotationZ = worldObjectData.RotationZ;
-    }
-
-    public void OpenSegment()
-    {
-        xInputField.Value = RotationX;
-        yInputField.Value = RotationY;
-        zInputField.Value = RotationZ;
-
-        gameObject.SetActive(true);
-    }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

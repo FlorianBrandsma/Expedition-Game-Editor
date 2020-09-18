@@ -4,11 +4,11 @@ using System.Linq;
 
 public class OutcomeEditor : MonoBehaviour, IEditor
 {
-    public OutcomeData outcomeData;
+    private OutcomeData outcomeData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == outcomeData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == outcomeData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,7 +32,10 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        outcomeData = (OutcomeData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

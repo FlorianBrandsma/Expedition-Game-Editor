@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class EditorWorldElementData : EditorWorldData, IElementData
 {
@@ -13,6 +14,9 @@ public class EditorWorldElementData : EditorWorldData, IElementData
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
     
+    public List<TerrainElementData> TerrainDataList { get; set; } = new List<TerrainElementData>();
+    public List<PhaseElementData> PhaseDataList     { get; set; } = new List<PhaseElementData>();
+
     #region Changed
     public bool Changed { get; set; }
     #endregion
@@ -24,7 +28,10 @@ public class EditorWorldElementData : EditorWorldData, IElementData
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
-        
+
+        TerrainDataList.ForEach(x => x.SetOriginalValues());
+        PhaseDataList.ForEach(x => x.SetOriginalValues());
+
         ClearChanges();
     }
     

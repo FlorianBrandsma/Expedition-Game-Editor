@@ -5,25 +5,18 @@ public class InteractionInteractionTriggerRangeSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber interactionRangeInputNumber;
 
-    private float interactionRange;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+
+    #region Data properties
     public float InteractionRange
     {
-        get { return interactionRange; }
-        set
-        {
-            interactionRange = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.InteractionRange = interactionRange;
-            });
-        }
+        get { return InteractionEditor.InteractionRange; }
+        set { InteractionEditor.InteractionRange = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -33,14 +26,7 @@ public class InteractionInteractionTriggerRangeSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
     
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        interactionRange = interactionData.InteractionRange;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment()
     {
@@ -49,8 +35,12 @@ public class InteractionInteractionTriggerRangeSegment : MonoBehaviour, ISegment
 
     private void InitializeDropdown()
     {
-        interactionRangeInputNumber.Value = interactionRange;
+        interactionRangeInputNumber.Value = InteractionRange;
     }
+    
+    public void OpenSegment() { }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateInteractionRange()
     {
@@ -59,9 +49,5 @@ public class InteractionInteractionTriggerRangeSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void OpenSegment() { }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

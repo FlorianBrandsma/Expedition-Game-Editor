@@ -5,69 +5,28 @@ using System.Linq;
 
 public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public ExToggle completeObjectiveToggle;
     public ExToggle repeatableToggle;
-    #endregion
 
-    #region Data Variables
-    private bool completeObjective;
-    private bool repeatable;
-    #endregion
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    #region Properties
-    public bool CompleteObjective
+    private TaskEditor TaskEditor               { get { return (TaskEditor)DataEditor; } }
+
+    #region Data properties
+    private bool CompleteObjective
     {
-        get { return completeObjective; }
-        set
-        {
-            completeObjective = value;
-
-            var taskDataList = DataEditor.DataList.Cast<TaskElementData>().ToList();
-            taskDataList.ForEach(taskData =>
-            {
-                taskData.CompleteObjective = completeObjective;
-            });
-        }
+        get { return TaskEditor.CompleteObjective; }
+        set { TaskEditor.CompleteObjective = value; }
     }
 
-    public bool Repeatable
+    private bool Repeatable
     {
-        get { return repeatable; }
-        set
-        {
-            repeatable = value;
-
-            var taskDataList = DataEditor.DataList.Cast<TaskElementData>().ToList();
-            taskDataList.ForEach(taskData =>
-            {
-                taskData.Repeatable = repeatable;
-            });
-        }
+        get { return TaskEditor.Repeatable; }
+        set { TaskEditor.Repeatable = value; }
     }
     #endregion
 
-    #region Methods
-    public void UpdateCompleteObjective()
-    {
-        CompleteObjective = completeObjectiveToggle.Toggle.isOn;
-        
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateRepeatable()
-    {
-        Repeatable = repeatableToggle.Toggle.isOn;
-
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -76,15 +35,7 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var taskData = (TaskElementData)DataEditor.ElementData;
-
-        completeObjective = taskData.CompleteObjective;
-        repeatable = taskData.Repeatable;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
 
@@ -96,8 +47,21 @@ public class TaskGeneralOptionSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void UpdateCompleteObjective()
+    {
+        CompleteObjective = completeObjectiveToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateRepeatable()
+    {
+        Repeatable = repeatableToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void CloseSegment() { }
 }

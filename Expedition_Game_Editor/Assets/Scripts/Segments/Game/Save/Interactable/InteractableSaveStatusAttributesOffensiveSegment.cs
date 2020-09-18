@@ -1,18 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class InteractableSaveStatusAttributesOffensiveSegment : MonoBehaviour
+public class InteractableSaveStatusAttributesOffensiveSegment : MonoBehaviour, ISegment
 {
-    // Start is called before the first frame update
-    void Start()
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+
+    public InteractableSaveEditor InteractableSaveEditor { get { return (InteractableSaveEditor)DataEditor; } }
+
+    #region Data properties
+    #endregion
+
+    public void InitializeDependencies()
     {
-        
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitializeData()
     {
-        
+        InitializeDependencies();
+
+        if (DataEditor.Loaded) return;
+    }
+
+    public void InitializeSegment() { }
+
+    public void OpenSegment()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateDescription()
+    {
+        DataEditor.UpdateEditor();
+    }
+
+    public void CloseSegment()
+    {
+        gameObject.SetActive(false);
     }
 }

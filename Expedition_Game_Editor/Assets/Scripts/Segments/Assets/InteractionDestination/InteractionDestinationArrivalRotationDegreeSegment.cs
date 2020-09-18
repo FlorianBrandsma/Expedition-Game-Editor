@@ -6,71 +6,36 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
     public ExToggle freeRotationToggle;
     public ExInputNumber xInputField, yInputField, zInputField;
 
-    private bool freeRotation;
-    private int rotationX, rotationY, rotationZ;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public bool FreeRotation
-    {
-        get { return freeRotation; }
-        set
-        {
-            freeRotation = value;
+    public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
 
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.FreeRotation = value;
-            });
-        }
+    #region Data properties
+    private bool FreeRotation
+    {
+        get { return InteractionDestinationEditor.FreeRotation; }
+        set { InteractionDestinationEditor.FreeRotation = value; }
     }
 
-    public int RotationX
+    private int RotationX
     {
-        get { return rotationX; }
-        set
-        {
-            rotationX = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.RotationX = value;
-            });
-        }
+        get { return InteractionDestinationEditor.RotationX; }
+        set { InteractionDestinationEditor.RotationX = value; }
     }
 
-    public int RotationY
+    private int RotationY
     {
-        get { return rotationY; }
-        set
-        {
-            rotationY = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.RotationY = value;
-            });
-        }
+        get { return InteractionDestinationEditor.RotationY; }
+        set { InteractionDestinationEditor.RotationY = value; }
     }
 
-    public int RotationZ
+    private int RotationZ
     {
-        get { return rotationZ; }
-        set
-        {
-            rotationZ = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.RotationZ = value;
-            });
-        }
+        get { return InteractionDestinationEditor.RotationZ; }
+        set { InteractionDestinationEditor.RotationZ = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -80,50 +45,9 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
-
-        freeRotation = interactionDestinationData.FreeRotation;
-
-        rotationX = interactionDestinationData.RotationX;
-        rotationY = interactionDestinationData.RotationY;
-        rotationZ = interactionDestinationData.RotationZ;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
-
-    public void UpdateFreeRotation()
-    {
-        FreeRotation = freeRotationToggle.Toggle.isOn;
-
-        EnableInputFields(!FreeRotation);
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateRotationX()
-    {
-        RotationX = (int)xInputField.Value;
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateRotationY()
-    {
-        RotationY = (int)yInputField.Value;
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateRotationZ()
-    {
-        RotationZ = (int)zInputField.Value;
-
-        DataEditor.UpdateEditor();
-    }
     
     public void OpenSegment()
     {
@@ -145,7 +69,37 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
         zInputField.EnableElement(enable);
     }
 
-    public void CloseSegment() { }
+    public void UpdateFreeRotation()
+    {
+        FreeRotation = freeRotationToggle.Toggle.isOn;
 
-    public void SetSearchResult(DataElement dataElement) { }
+        EnableInputFields(!FreeRotation);
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateRotationX()
+    {
+        RotationX = (int)xInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateRotationY()
+    {
+        RotationY = (int)yInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateRotationZ()
+    {
+        RotationZ = (int)zInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void CloseSegment() { }
 }

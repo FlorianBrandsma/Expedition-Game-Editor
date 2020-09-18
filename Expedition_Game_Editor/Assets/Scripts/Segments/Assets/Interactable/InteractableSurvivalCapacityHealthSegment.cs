@@ -1,49 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 
 public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public ExInputNumber healthInputNumber;
-    #endregion
 
-    #region Data Variables
-    private int health;
-    #endregion
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    #region Properties
-    public int Health
+    public InteractableEditor InteractableEditor    { get { return (InteractableEditor)DataEditor; } }
+
+    #region Data properties
+    private int Health
     {
-        get { return health; }
-        set
-        {
-            health = value;
-
-            var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
-            interactableDataList.ForEach(interactableData =>
-            {
-                interactableData.Health = value;
-            });
-        }
+        get { return InteractableEditor.Health; }
+        set { InteractableEditor.Health = value; }
     }
     #endregion
 
-    #region Methods
-    public void UpdateHealth()
-    {
-        Health = (int)healthInputNumber.Value;
-        
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -52,24 +26,23 @@ public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment() { }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        health = interactableData.Health;
-    }
-
+    
     public void OpenSegment()
     {
         healthInputNumber.Value = Health;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void UpdateHealth()
+    {
+        Health = (int)healthInputNumber.Value;
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment() { }
 }

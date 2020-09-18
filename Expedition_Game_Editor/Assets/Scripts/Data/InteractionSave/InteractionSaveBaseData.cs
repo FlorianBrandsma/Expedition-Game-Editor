@@ -8,8 +8,6 @@ public class InteractionSaveBaseData
     public int TaskSaveId       { get; set; }
     public int InteractionId    { get; set; }
 
-    public int Index            { get; set; }
-
     public bool Complete        { get; set; }
 
     public virtual void GetOriginalValues(InteractionSaveData originalData)
@@ -19,8 +17,6 @@ public class InteractionSaveBaseData
         SaveId          = originalData.SaveId;
         TaskSaveId      = originalData.TaskSaveId;
         InteractionId   = originalData.InteractionId;
-
-        Index           = originalData.Index;
 
         Complete        = originalData.Complete;
 }
@@ -32,8 +28,6 @@ public class InteractionSaveBaseData
         data.SaveId         = SaveId;
         data.TaskSaveId     = TaskSaveId;
         data.InteractionId  = InteractionId;
-
-        data.Index          = Index;
 
         data.Complete       = Complete;
     }

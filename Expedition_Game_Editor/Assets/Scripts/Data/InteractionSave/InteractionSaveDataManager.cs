@@ -38,7 +38,7 @@ public static class InteractionSaveDataManager
                         PublicNotes = interactionData.PublicNotes,
                         PrivateNotes = interactionData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

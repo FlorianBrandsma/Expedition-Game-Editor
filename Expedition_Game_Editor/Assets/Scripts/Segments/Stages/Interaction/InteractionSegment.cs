@@ -4,19 +4,12 @@ using System.Collections.Generic;
 
 public class InteractionSegment : MonoBehaviour, ISegment
 {
-    public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
     
     public void InitializeDependencies() { }
-
-    public void InitializeSegment()
-    {
-        InitializeData();
-
-        CheckTimeSlots();
-    }
 
     public void InitializeData()
     {
@@ -30,10 +23,11 @@ public class InteractionSegment : MonoBehaviour, ISegment
         SegmentController.DataController.GetData(searchProperties);
     }
 
-    public void OpenSegment()
+    public void InitializeSegment()
     {
-        if (GetComponent<IDisplay>() != null)
-            GetComponent<IDisplay>().DataController = SegmentController.DataController;
+        InitializeData();
+
+        CheckTimeSlots();
     }
 
     private void CheckTimeSlots()
@@ -43,8 +37,16 @@ public class InteractionSegment : MonoBehaviour, ISegment
         //Only allow adding new rows if there are time slots available
         ListProperties.enableAdding = TimeManager.TimeFramesAvailable(SegmentController.DataController);
     }
+    
+    public void OpenSegment()
+    {
+        if (GetComponent<IDisplay>() != null)
+            GetComponent<IDisplay>().DataController = SegmentController.DataController;
+    }
+    
+    public void SetSearchResult(IElementData elementData) { }
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    
 }

@@ -40,6 +40,8 @@ static public class SelectionElementManager
     
     static public List<IElementData> FindElementData(IElementData elementData)
     {
+        if (elementData == null) return new List<IElementData>();
+
         var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData)
                                                    .Select(x => x.DataElement.ElementData).Distinct().ToList();
 
@@ -80,7 +82,6 @@ static public class SelectionElementManager
                 CloseElement(element.child);
 
             element.CloseElement();
-            //elementPool.Remove(element);
         }
 
         elementList.Clear();

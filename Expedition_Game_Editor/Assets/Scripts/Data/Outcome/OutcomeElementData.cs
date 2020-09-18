@@ -17,7 +17,14 @@ public class OutcomeElementData : OutcomeData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        OutcomeDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 

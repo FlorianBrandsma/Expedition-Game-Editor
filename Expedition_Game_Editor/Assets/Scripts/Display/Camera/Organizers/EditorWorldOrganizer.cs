@@ -183,20 +183,22 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         //Confirm which world interactable's timeframes contain the active time
         ValidateWorldInteractableTime();
-
-        worldObjectController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.WorldObjectDataList.Where(y => !selectedWorldObjects.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList();
-
+        
+        worldObjectController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.WorldObjectDataList).Cast<IElementData>().ToList();
+        
         //Only show interactables where the active time is within their first interaction's timeframe
-        worldInteractableAgentController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Agent &&
-                                                                                                                       !selectedWorldInteractableAgents.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList());
-
+        worldInteractableAgentController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Agent)).Cast<IElementData>().ToList());
+        
         //Only show interactables where the active time is within their first interaction's timeframe
-        worldInteractableObjectController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object &&
-                                                                                                                        !selectedWorldInteractableObjects.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList());
-
-        interactionDestinationController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList.Where(y => !selectedInteractionDestinations.Select(z => z.Id).Contains(y.Id))).Cast<IElementData>().ToList();
-
-        partyController.Data.dataList = worldData.PhaseDataList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id)).Cast<IElementData>().ToList();
+        worldInteractableObjectController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object)).Cast<IElementData>().ToList());
+        
+        interactionDestinationController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList).Cast<IElementData>().ToList();
+        
+        partyController.Data = new Data()
+        {
+            dataController = partyController,
+            dataList = worldData.PhaseDataList.Cast<IElementData>().ToList()
+        };
     }
 
     private void FixLostInteractions()
@@ -233,10 +235,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList.GroupBy(y => y.InteractionId)
                                                                                                          .Select(grp => new
                                                                                                          {
-                                                                                                             TaskId = grp.First().TaskId,
-                                                                                                             StartTime = grp.First().StartTime,
-                                                                                                             EndTime = grp.First().EndTime,
-                                                                                                             Default = grp.First().Default,
+                                                                                                             grp.First().TaskId,
+                                                                                                             grp.First().StartTime,
+                                                                                                             grp.First().EndTime,
+                                                                                                             grp.First().Default,
                                                                                                              InteractionDestinationList = grp.ToList()
                                                                                                          })).ToList();
 
@@ -414,40 +416,47 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         tile.DataType = Enums.DataType.TerrainTile;
         tile.ElementData = terrainTileData;
 
+        tile.name = terrainTileData.DebugName + terrainTileData.Id;
+
         terrainTileData.Active = true;
     }
 
     private void SetWorldObjects(int terrainTileId = 0)
     {
-        var worldObjectDataList = worldObjectController.Data.dataList.Where(x => ((WorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldObjectDataList = worldObjectController.Data.dataList.Where(x => !selectedWorldObjects.Select(y => y.Id).Contains(x.Id) && 
+                                                                                 ((WorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(worldObjectController, worldObjectDataList);
     }
-
+    
     private void SetWorldInteractableAgents(int terrainTileId)
     {
-        var worldInteractableAgentDataList = worldInteractableAgentController.Data.dataList.Where(x => ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldInteractableAgentDataList = worldInteractableAgentController.Data.dataList.Where(x => !selectedWorldInteractableAgents.Select(y => y.Id).Contains(x.Id) && 
+                                                                                                       ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
         
         SetWorldElements(worldInteractableAgentController, worldInteractableAgentDataList);
     }
-
+    
     private void SetWorldInteractableObjects(int terrainTileId)
     {
-        var worldInteractableObjectDataList = worldInteractableObjectController.Data.dataList.Where(x => ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldInteractableObjectDataList = worldInteractableObjectController.Data.dataList.Where(x => !selectedWorldInteractableObjects.Select(y => y.Id).Contains(x.Id) && 
+                                                                                                         ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(worldInteractableObjectController, worldInteractableObjectDataList);
     }
-
+    
     private void SetInteractionDestinations(int terrainTileId)
     {
-        var interactionDestinationDataList = interactionDestinationController.Data.dataList.Where(x => ((InteractionDestinationElementData)x).TerrainTileId == terrainTileId).ToList();
+        var interactionDestinationDataList = interactionDestinationController.Data.dataList.Where(x => !selectedInteractionDestinations.Select(y => y.Id).Contains(x.Id) && 
+                                                                                                       ((InteractionDestinationElementData)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(interactionDestinationController, interactionDestinationDataList);
     }
 
     private void SetParty(int terrainTileId)
     {
-        var partyDataList = partyController.Data.dataList.Where(x => ((PhaseElementData)x).TerrainTileId == terrainTileId).ToList();
+        var partyDataList = partyController.Data.dataList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id) && 
+                                                                     ((PhaseElementData)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(partyController, partyDataList);
     }
@@ -470,6 +479,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             worldElement.EditorElement.DataElement.Data = dataController.Data;
             worldElement.EditorElement.DataElement.Id = elementData.Id;
 
+            worldElement.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+
             //Debugging
             worldElement.name = elementData.DebugName + elementData.Id;
 
@@ -483,6 +494,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                 continue;
             }
 
+            //Must be assigned after the status check
             elementData.DataElement = worldElement.EditorElement.DataElement;
 
             SetElement(worldElement.EditorElement);
@@ -681,6 +693,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         {
             selectedInteractionDestinations.ForEach(x =>
             {
+                //if(x.DebugName + x.Id == "InteractionDestination421")
+                    //Debug.Log(x.DebugName + x.Id);
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
             });
@@ -762,11 +776,17 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var interactionDestinationElementList = interactionDestinationController.Data.dataList.Cast<InteractionDestinationElementData>().Where(x => x.DataElement != null).ToList();
 
-        var inactiveInteractionList = interactionDestinationElementList.Where(x => !selectedInteractionDestinations.Select(y => y.Id).Contains(x.Id) && 
-                                                                              x.TerrainTileId == terrainTileData.Id).ToList();
+        var inactiveInteractionDestinationList = interactionDestinationElementList.Where(x => !selectedInteractionDestinations.Select(y => y.Id).Contains(x.Id) && 
+                                                                                         x.TerrainTileId == terrainTileData.Id).ToList();
 
-        inactiveInteractionList.ForEach(x => 
+        inactiveInteractionDestinationList.ForEach(x => 
         {
+            if(x.Id != x.DataElement.Id)
+                Debug.Log(x.Id + ":" + x.DataElement.Id);
+
+            //inactive interaction destination id and the data element's id rarely match
+            //if (x.DebugName + x.Id == "InteractionDestination421")
+                //Debug.Log(x.DebugName + x.Id + ":" + x.TerrainTileId);
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
             SelectionElementManager.CloseElement(x.DataElement);
         });

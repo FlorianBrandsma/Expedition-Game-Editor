@@ -32,6 +32,11 @@ public class RegionElementData : RegionData, IElementData
         get { return TileSetId != OriginalData.TileSetId; }
     }
 
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
+
     public bool ChangedName
     {
         get { return Name != OriginalData.Name; }
@@ -56,7 +61,23 @@ public class RegionElementData : RegionData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        RegionDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
+
+    public void UpdateIndex()
+    {
+        if (!ChangedIndex) return;
+
+        RegionDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
 
     public void UpdateSearch() { }
 

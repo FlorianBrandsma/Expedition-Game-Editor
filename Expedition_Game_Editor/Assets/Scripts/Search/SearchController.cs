@@ -55,7 +55,7 @@ public class SearchController : MonoBehaviour
         {
             case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileDataController>();             break;
             case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconDataController>();             break;
-            case Enums.DataType.Model:  dataController = gameObject.AddComponent<ModelDataController>();    break;
+            case Enums.DataType.Model:          dataController = gameObject.AddComponent<ModelDataController>();            break;
             case Enums.DataType.Interactable:   dataController = gameObject.AddComponent<InteractableDataController>();     break;
             case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionDataController>();           break;
 

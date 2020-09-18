@@ -12,32 +12,13 @@ public class Path
         Loaded
     }
 
-    public List<Route> routeList;
+    public List<Route> routeList = new List<Route>();
     public EditorForm form;
     public Type type;
 
     public Enums.HistoryGroup historyGroup;
 
     public int start;
-
-    public Path()
-    {
-        routeList = new List<Route>();
-    }
-
-    public Path(List<Route> routeList, EditorForm form)
-    {
-        this.routeList = routeList;
-        this.form = form;
-    }
-
-    public Path(List<Route> routeList, EditorForm form, int start)
-    {
-        this.routeList = routeList;
-        this.form = form;
-
-        this.start = start;
-    }
 
     #region Add
     public void Add()
@@ -74,7 +55,9 @@ public class Path
         Path path = new Path();
 
         for (int i = 0; i < step; i++)
+        {
             path.routeList.Add(routeList[i]);
+        }
 
         path.form = form;
         path.start = start;
@@ -152,13 +135,13 @@ public class Path
             if (originalRoute.data != null)
             {
                 var originalRouteList = originalRoute.path.routeList;
-
+                
                 if(i > 0 && originalRoute.data == originalRouteList[i - 1].data)
                 {
-                    //Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
+                    Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
                     route.data = path.routeList[i - 1].data;
                 } else {
-                    //Debug.Log("Clone from " + originalRoute.data.dataController);
+                    Debug.Log("Clone from " + originalRoute.data.dataController);
                     route.data = originalRoute.data.Clone();
                 }               
             }

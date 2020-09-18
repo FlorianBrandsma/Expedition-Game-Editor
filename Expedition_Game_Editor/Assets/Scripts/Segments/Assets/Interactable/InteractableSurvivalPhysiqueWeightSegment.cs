@@ -1,48 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 
 public class InteractableSurvivalPhysiqueWeightSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                   { get; set; }
-
-    #region UI
     public ExInputNumber weightInputNumber;
-    #endregion
 
-    #region Data Variables
-    private float weight;
-    #endregion
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    #region Properties
-    public float Weight
+    public InteractableEditor InteractableEditor    { get { return (InteractableEditor)DataEditor; } }
+
+    #region Data properties
+    private float Weight
     {
-        get { return weight; }
-        set
-        {
-            weight = value;
-
-            var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
-            interactableDataList.ForEach(interactableData =>
-            {
-                interactableData.Weight = value;
-            });
-        }
+        get { return InteractableEditor.Weight; }
+        set { InteractableEditor.Weight = value; }
     }
     #endregion
 
-    #region Methods
-    public void UpdateWeight()
-    {
-        Weight = weightInputNumber.Value;
-
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -51,24 +26,23 @@ public class InteractableSurvivalPhysiqueWeightSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment() { }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        weight = interactableData.Weight;
-    }
-
+    
     public void OpenSegment()
     {
         weightInputNumber.Value = Weight;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void UpdateWeight()
+    {
+        Weight = weightInputNumber.Value;
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment() { }
 }

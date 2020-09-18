@@ -2,6 +2,8 @@
 
 public class ChapterSaveData : ChapterSaveBaseData
 {
+    public int Index            { get; set; }
+
     public string Name          { get; set; }
 
     public string PublicNotes   { get; set; }
@@ -9,6 +11,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
     public override void GetOriginalValues(ChapterSaveData originalData)
     {
+        Index           = originalData.Index;
+
         Name            = originalData.Name;
 
         PublicNotes     = originalData.PublicNotes;
@@ -20,7 +24,9 @@ public class ChapterSaveData : ChapterSaveBaseData
     public ChapterSaveData Clone()
     {
         var data = new ChapterSaveData();
-        
+
+        data.Index          = Index;
+
         data.Name           = Name;
 
         data.PublicNotes    = PublicNotes;
@@ -33,6 +39,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
     public virtual void Clone(ChapterSaveElementData elementData)
     {
+        elementData.Index           = Index;
+
         elementData.Name            = Name;
 
         elementData.PublicNotes     = PublicNotes;

@@ -160,6 +160,16 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void ClosePoolable()
     {
+        //GameElement.DataElement.data.elementData.DataElement = null;
+        //GameElement.DataElement.data.elementData = null;
+
+        //if(EditorElement.DataElement.ElementData.DataType == Enums.DataType.InteractionDestination)
+        //{
+        //    var elementData = (InteractionDestinationElementData)EditorElement.DataElement.ElementData;
+
+        //    Debug.Log(elementData.DebugName + elementData.Id);
+        //}
+
         gameObject.SetActive(false);
     }
 }

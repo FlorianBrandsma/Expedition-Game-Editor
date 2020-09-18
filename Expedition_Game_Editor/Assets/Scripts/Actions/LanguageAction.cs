@@ -14,10 +14,7 @@ public class LanguageAction : MonoBehaviour, IAction
 
     private ExDropdown dropdown;
 
-    public void InitializeAction(Path path)
-    {
-
-    }
+    public void InitializeAction(Path path) { }
 
     public void SetAction(Path path)
     {

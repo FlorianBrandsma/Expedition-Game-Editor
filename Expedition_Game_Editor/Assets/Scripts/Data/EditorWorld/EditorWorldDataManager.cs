@@ -61,8 +61,6 @@ public static class EditorWorldDataManager
         GetObjectiveData();
         GetQuestData();
 
-        Debug.Log(regionType);
-
         var list = (
             from regionData     in regionDataList
             join tileSetData    in tileSetDataList on regionData.TileSetId equals tileSetData.Id

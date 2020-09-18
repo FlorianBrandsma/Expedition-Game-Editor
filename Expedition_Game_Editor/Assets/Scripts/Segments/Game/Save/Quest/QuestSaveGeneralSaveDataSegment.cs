@@ -1,42 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class QuestSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private QuestSaveElementData QuestSaveData { get { return (QuestSaveElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public ExToggle completeToggle;
 
-    public void UpdateComplete()
-    {
-        QuestSaveData.Complete = completeToggle.Toggle.isOn;
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-        DataEditor.UpdateEditor();
-    }
-
+    public QuestSaveEditor QuestSaveEditor      { get { return (QuestSaveEditor)DataEditor; } }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        completeToggle.Toggle.isOn = QuestSaveData.Complete;
+        completeToggle.Toggle.isOn = QuestSaveEditor.Complete;
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateComplete()
+    {
+        QuestSaveEditor.Complete = completeToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
 
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

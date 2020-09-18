@@ -3,30 +3,30 @@ using UnityEngine.UI;
 
 public class InteractableSaveStatusSurvivalPhysiqueSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public Text weightText, speedText, staminaText;
-    #endregion
 
-    #region Data Variables
-    private float weight;
-    private float speed;
-    private float stamina;
-    #endregion
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    #region Methods
-    public void SetSizeValues()
+    public InteractableSaveEditor InteractableSaveEditor { get { return (InteractableSaveEditor)DataEditor; } }
+
+    #region Data properties
+    private float Weight
     {
-        weightText.text = (weight).ToString();
-        speedText.text = (speed).ToString();
-        staminaText.text = (stamina).ToString();
+        get { return InteractableSaveEditor.Weight; }
+    }
+    
+    private float Speed
+    {
+        get { return InteractableSaveEditor.Speed; }
+    }
+
+    private float Stamina
+    {
+        get { return InteractableSaveEditor.Stamina; }
     }
     #endregion
 
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -34,27 +34,24 @@ public class InteractableSaveStatusSurvivalPhysiqueSegment : MonoBehaviour, ISeg
         if (!DataEditor.EditorSegments.Contains(SegmentController))
             DataEditor.EditorSegments.Add(SegmentController);
     }
+    
+    public void InitializeData() { }
 
     public void InitializeSegment()
     {
         SetSizeValues();
     }
 
-    public void InitializeData()
+    public void SetSizeValues()
     {
-        if (DataEditor.Loaded) return;
-
-        var interactableSaveData = (InteractableSaveElementData)DataEditor.ElementData;
-
-        weight = interactableSaveData.Weight;
-        speed = interactableSaveData.Speed;
-        stamina = interactableSaveData.Stamina;
+        weightText.text = (Weight).ToString();
+        speedText.text = (Speed).ToString();
+        staminaText.text = (Stamina).ToString();
     }
-
+    
     public void OpenSegment() { }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void CloseSegment() { }
 }

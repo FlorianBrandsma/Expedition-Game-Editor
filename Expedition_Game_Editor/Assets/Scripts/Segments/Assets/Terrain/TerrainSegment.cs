@@ -24,7 +24,7 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
         searchParameters.regionId = new List<int>() { regionData.Id };
-
+        
         SegmentController.DataController.GetData(searchProperties);
     }
 
@@ -36,5 +36,5 @@ public class TerrainSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void SetSearchResult(IElementData elementData) { }
 }

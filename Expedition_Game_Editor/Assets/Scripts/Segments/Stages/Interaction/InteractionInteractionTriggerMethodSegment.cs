@@ -9,89 +9,42 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
     public ExToggle facePartyLeaderToggle;
     public ExToggle hideInteractionIndicatorToggle;
 
-    private bool triggerAutomatically;
-    private bool beNearDestination;
-    private bool faceAgent;
-    private bool facePartyLeader;
-    private bool hideInteractionIndicator;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+
+    #region Data properties
     public bool TriggerAutomatically
     {
-        get { return triggerAutomatically; }
-        set
-        {
-            triggerAutomatically = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.TriggerAutomatically = triggerAutomatically;
-            });
-        }
+        get { return InteractionEditor.TriggerAutomatically; }
+        set { InteractionEditor.TriggerAutomatically = value; }
     }
 
     public bool BeNearDestination
     {
-        get { return beNearDestination; }
-        set
-        {
-            beNearDestination = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.BeNearDestination = beNearDestination;
-            });
-        }
+        get { return InteractionEditor.BeNearDestination; }
+        set { InteractionEditor.BeNearDestination = value; }
     }
 
     public bool FaceAgent
     {
-        get { return faceAgent; }
-        set
-        {
-            faceAgent = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.FaceAgent = faceAgent;
-            });
-        }
+        get { return InteractionEditor.FaceAgent; }
+        set { InteractionEditor.FaceAgent = value; }
     }
 
     public bool FacePartyLeader
     {
-        get { return facePartyLeader; }
-        set
-        {
-            facePartyLeader = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.FacePartyLeader = facePartyLeader;
-            });
-        }
+        get { return InteractionEditor.FacePartyLeader; }
+        set { InteractionEditor.FacePartyLeader = value; }
     }
 
     public bool HideInteractionIndicator
     {
-        get { return hideInteractionIndicator; }
-        set
-        {
-            hideInteractionIndicator = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.HideInteractionIndicator = hideInteractionIndicator;
-            });
-        }
+        get { return InteractionEditor.HideInteractionIndicator; }
+        set { InteractionEditor.HideInteractionIndicator = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -101,21 +54,21 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        triggerAutomatically = interactionData.TriggerAutomatically;
-        beNearDestination = interactionData.BeNearDestination;
-        faceAgent = interactionData.FaceAgent;
-        facePartyLeader = interactionData.FacePartyLeader;
-        hideInteractionIndicator = interactionData.HideInteractionIndicator;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
     
+    public void OpenSegment()
+    {
+        triggerAutomaticallyToggle.Toggle.isOn = TriggerAutomatically;
+        beNearDestinationToggle.Toggle.isOn = BeNearDestination;
+        faceAgentToggle.Toggle.isOn = FaceAgent;
+        facePartyLeaderToggle.Toggle.isOn = FacePartyLeader;
+        hideInteractionIndicatorToggle.Toggle.isOn = HideInteractionIndicator;
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
     public void UpdateTriggerAutomatically()
     {
         TriggerAutomatically = triggerAutomaticallyToggle.Toggle.isOn;
@@ -151,16 +104,5 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         DataEditor.UpdateEditor();
     }
 
-    public void OpenSegment()
-    {
-        triggerAutomaticallyToggle.Toggle.isOn = triggerAutomatically;
-        beNearDestinationToggle.Toggle.isOn = beNearDestination;
-        faceAgentToggle.Toggle.isOn = faceAgent;
-        facePartyLeaderToggle.Toggle.isOn = facePartyLeader;
-        hideInteractionIndicatorToggle.Toggle.isOn = hideInteractionIndicator;
-    }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class EditorMenuSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
     public Button gameButton;
 
@@ -15,9 +15,9 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-    
     public void InitializeData() { }
+
+    public void InitializeSegment() { }
     
     public void OpenSegment()
     {
@@ -39,12 +39,10 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
         GlobalManager.CloseApplication();
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
     public void CloseSegment()
     {
         gameButton.onClick.RemoveAllListeners();
     }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

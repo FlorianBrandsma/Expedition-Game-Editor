@@ -4,11 +4,11 @@ using System.Linq;
 
 public class ItemEditor : MonoBehaviour, IEditor
 {
-    public ItemData itemData;
+    private ItemData itemData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == itemData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == itemData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,6 +32,7 @@ public class ItemEditor : MonoBehaviour, IEditor
         }
     }
 
+    #region Data properties
     public int Id
     {
         get { return itemData.Id; }
@@ -86,7 +87,7 @@ public class ItemEditor : MonoBehaviour, IEditor
         }
     }
 
-    public float ModelHeight
+    public float Height
     {
         get { return itemData.Height; }
         set
@@ -97,27 +98,28 @@ public class ItemEditor : MonoBehaviour, IEditor
         }
     }
 
-    public float ModelWidth
+    public float Width
     {
-        get { return itemData.Height; }
+        get { return itemData.Width; }
         set
         {
-            itemData.Height = value;
+            itemData.Width = value;
 
             DataList.ForEach(x => ((ItemElementData)x).Width = value);
         }
     }
 
-    public float ModelDepth
+    public float Depth
     {
-        get { return itemData.Height; }
+        get { return itemData.Depth; }
         set
         {
-            itemData.Height = value;
+            itemData.Depth = value;
 
             DataList.ForEach(x => ((ItemElementData)x).Depth = value);
         }
     }
+    #endregion
 
     public void InitializeEditor()
     {
@@ -133,9 +135,9 @@ public class ItemEditor : MonoBehaviour, IEditor
         ModelPath = itemData.ModelPath;
         ModelIconPath = itemData.ModelIconPath;
 
-        ModelHeight = itemData.Height;
-        ModelWidth = itemData.Width;
-        ModelDepth = itemData.Depth;
+        Height = itemData.Height;
+        Width = itemData.Width;
+        Depth = itemData.Depth;
     }
     
     public void UpdateEditor()
@@ -161,7 +163,7 @@ public class ItemEditor : MonoBehaviour, IEditor
     public void CancelEdit()
     {
         ElementDataList.ForEach(x => x.ClearChanges());
-
+        
         Loaded = false;
     }
 

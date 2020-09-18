@@ -4,11 +4,11 @@ using System.Linq;
 
 public class InteractionEditor : MonoBehaviour, IEditor
 {
-    public InteractionData interactionData;
+    private InteractionData interactionData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == interactionData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == interactionData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,7 +32,244 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    #region Data properties
+    public int Id
+    {
+        get { return interactionData.Id; }
+    }
+
+    public bool Default
+    {
+        get { return interactionData.Default; }
+    }
+
+    public int StartTime
+    {
+        get { return interactionData.StartTime; }
+        set
+        {
+            interactionData.StartTime = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).StartTime = value);
+        }
+    }
+
+    public int EndTime
+    {
+        get { return interactionData.EndTime; }
+        set
+        {
+            interactionData.EndTime = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).EndTime = value);
+        }
+    }
+
+    public bool TriggerAutomatically
+    {
+        get { return interactionData.TriggerAutomatically; }
+        set
+        {
+            interactionData.TriggerAutomatically = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).TriggerAutomatically = value);
+        }
+    }
+
+    public bool BeNearDestination
+    {
+        get { return interactionData.BeNearDestination; }
+        set
+        {
+            interactionData.BeNearDestination = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).BeNearDestination = value);
+        }
+    }
+
+    public bool FaceAgent
+    {
+        get { return interactionData.FaceAgent; }
+        set
+        {
+            interactionData.FaceAgent = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).FaceAgent = value);
+        }
+    }
+
+    public bool FacePartyLeader
+    {
+        get { return interactionData.FacePartyLeader; }
+        set
+        {
+            interactionData.FacePartyLeader = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).FacePartyLeader = value);
+        }
+    }
+
+    public bool HideInteractionIndicator
+    {
+        get { return interactionData.HideInteractionIndicator; }
+        set
+        {
+            interactionData.HideInteractionIndicator = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).HideInteractionIndicator = value);
+        }
+    }
+
+    public float InteractionRange
+    {
+        get { return interactionData.InteractionRange; }
+        set
+        {
+            interactionData.InteractionRange = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).InteractionRange = value);
+        }
+    }
+
+    public int DelayMethod
+    {
+        get { return interactionData.DelayMethod; }
+        set
+        {
+            interactionData.DelayMethod = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).DelayMethod = value);
+        }
+    }
+
+    public int DelayDuration
+    {
+        get { return interactionData.DelayDuration; }
+        set
+        {
+            interactionData.DelayDuration = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).DelayDuration = value);
+        }
+    }
+
+    public bool HideDelayIndicator
+    {
+        get { return interactionData.HideDelayIndicator; }
+        set
+        {
+            interactionData.HideDelayIndicator = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).HideDelayIndicator = value);
+        }
+    }
+
+    public bool CancelDelayOnInput
+    {
+        get { return interactionData.CancelDelayOnInput; }
+        set
+        {
+            interactionData.CancelDelayOnInput = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).CancelDelayOnInput = value);
+        }
+    }
+
+    public bool CancelDelayOnMovement
+    {
+        get { return interactionData.CancelDelayOnMovement; }
+        set
+        {
+            interactionData.CancelDelayOnMovement = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).CancelDelayOnMovement = value);
+        }
+    }
+
+    public bool CancelDelayOnHit
+    {
+        get { return interactionData.CancelDelayOnHit; }
+        set
+        {
+            interactionData.CancelDelayOnHit = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).CancelDelayOnHit = value);
+        }
+    }
+
+    public string PublicNotes
+    {
+        get { return interactionData.PublicNotes; }
+        set
+        {
+            interactionData.PublicNotes = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).PublicNotes = value);
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return interactionData.PrivateNotes; }
+        set
+        {
+            interactionData.PrivateNotes = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).PrivateNotes = value);
+        }
+    }
+
+    public string ModelIconPath
+    {
+        get { return interactionData.ModelIconPath; }
+        set
+        {
+            interactionData.ModelIconPath = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).ModelIconPath = value);
+        }
+    }
+
+    public string InteractableName
+    {
+        get { return interactionData.InteractableName; }
+        set
+        {
+            interactionData.InteractableName = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).InteractableName = value);
+        }
+    }
+
+    public string LocationName
+    {
+        get { return interactionData.LocationName; }
+        set
+        {
+            interactionData.LocationName = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).LocationName = value);
+        }
+    }
+
+    public bool TimeConflict
+    {
+        get { return interactionData.TimeConflict; }
+        set
+        {
+            interactionData.TimeConflict = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).TimeConflict = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        interactionData = (InteractionData)ElementData.Clone();
+        Debug.Log("init editor");
+        Debug.Log(interactionData.ModelIconPath);
+    }
 
     public void OpenEditor() { }
 
@@ -51,43 +288,23 @@ public class InteractionEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed) && !interactionData.TimeConflict;
     }
 
-    //public void ApplyChanges()
-    //{
-    //    var changedTime = InteractionData.ChangedStartTime || InteractionData.ChangedEndTime;
-
-    //    InteractionData.Update();
-
-    //    //If time was changed, reset the entire editor so that the interaction segment may reload.
-    //    //Elements don't need to be updated as the reset takes care of that.
-    //    if (changedTime)
-    //    {
-
-    //        //RenderManager.PreviousPath();
-    //        RenderManager.ResetPath(true);
-
-    //    } else {
-
-    //        ElementDataList.ForEach(x =>
-    //        {
-    //            if (DataManager.Equals(x, InteractionData))
-    //                x.Copy(InteractionData);
-    //            else
-    //                x.Update();
-
-    //            if (SelectionElementManager.SelectionActive(x.DataElement))
-    //                x.DataElement.UpdateElement();
-    //        });
-
-    //        UpdateEditor();
-    //    } 
-    //}
-
     public void ApplyChanges()
     {
+        var changedTime =   ((InteractionElementData)EditData).ChangedStartTime ||
+                            ((InteractionElementData)EditData).ChangedEndTime;
+
         EditData.Update();
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
+        if (changedTime)
+        {
+            Data.dataList = Data.dataList.OrderByDescending(x => ((InteractionElementData)x).Default).ThenBy(x => ((InteractionElementData)x).StartTime).ToList();
+            SelectionElementManager.UpdateElements(ElementData);
+
+        } else {
+
+            if (SelectionElementManager.SelectionActive(EditData.DataElement))
+                EditData.DataElement.UpdateElement();
+        }
 
         UpdateEditor();
     }

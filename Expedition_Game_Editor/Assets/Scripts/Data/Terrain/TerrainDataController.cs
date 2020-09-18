@@ -34,13 +34,14 @@ public class TerrainDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TerrainDataManager.GetData(searchProperties)
+            dataList = TerrainDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
-
+        
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

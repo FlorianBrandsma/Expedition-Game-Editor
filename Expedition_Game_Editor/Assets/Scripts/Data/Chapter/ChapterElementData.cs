@@ -26,7 +26,7 @@ public class ChapterElementData : ChapterData, IElementData
 
     public bool ChangedTimeSpeed
     {
-        get { return TimeSpeed != OriginalData.TimeSpeed; }
+        get { return !Mathf.Approximately(TimeSpeed, OriginalData.TimeSpeed); }
     }
 
     public bool ChangedPublicNotes

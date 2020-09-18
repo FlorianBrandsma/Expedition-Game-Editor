@@ -24,18 +24,20 @@ public static class TaskSaveDataManager
                     select new TaskSaveElementData()
                     {
                         Id = taskSaveData.Id,
-                        Index = taskSaveData.Index,
-
+                        
                         ObjectiveSaveId = taskSaveData.ObjectiveSaveId,
                         TaskId = taskSaveData.TaskId,
 
                         Complete = taskSaveData.Complete,
 
+                        Index = taskData.Index,
+
                         Name = taskData.Name,
 
                         Repeatable = taskData.Repeatable,
-
-                        PublicNotes = taskData.PublicNotes
+                        
+                        PublicNotes = taskData.PublicNotes,
+                        PrivateNotes = taskData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -57,7 +59,6 @@ public static class TaskSaveDataManager
             var taskSaveData = new TaskSaveBaseData();
 
             taskSaveData.Id = taskSave.Id;
-            taskSaveData.Index = taskSave.Index;
 
             taskSaveData.WorldInteractableId = taskSave.WorldInteractableId;
             taskSaveData.ObjectiveSaveId = taskSave.ObjectiveSaveId;

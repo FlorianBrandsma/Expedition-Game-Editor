@@ -1,49 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 
 public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public ExInputNumber staminaInputNumber;
-    #endregion
 
-    #region Data Variables
-    private float stamina;
-    #endregion
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    #region Properties
-    public float Stamina
+    public InteractableEditor InteractableEditor    { get { return (InteractableEditor)DataEditor; } }
+
+    #region Data properties
+    private float Stamina
     {
-        get { return stamina; }
-        set
-        {
-            stamina = value;
-
-            var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
-            interactableDataList.ForEach(interactableData =>
-            {
-                interactableData.Stamina = value;
-            });
-        }
+        get { return InteractableEditor.Stamina; }
+        set { InteractableEditor.Stamina = value; }
     }
     #endregion
 
-    #region Methods
-    public void UpdateStamina()
-    {
-        Stamina = staminaInputNumber.Value;
-
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -52,24 +25,23 @@ public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegmen
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment() { }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        stamina = interactableData.Stamina;
-    }
-
+    
     public void OpenSegment()
     {
         staminaInputNumber.Value = Stamina;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void UpdateStamina()
+    {
+        Stamina = staminaInputNumber.Value;
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment() { }
 }

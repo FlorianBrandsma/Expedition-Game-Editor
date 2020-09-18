@@ -1,41 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ObjectiveSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private ObjectiveSaveElementData ObjectiveSaveData { get { return (ObjectiveSaveElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public ExToggle completeToggle;
 
-    public void UpdateComplete()
-    {
-        ObjectiveSaveData.Complete = completeToggle.Toggle.isOn;
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-        DataEditor.UpdateEditor();
-    }
-
+    public ObjectiveSaveEditor ObjectiveSaveEditor  { get { return (ObjectiveSaveEditor)DataEditor; } }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        completeToggle.Toggle.isOn = ObjectiveSaveData.Complete;
+        completeToggle.Toggle.isOn = ObjectiveSaveEditor.Complete;
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateComplete()
+    {
+        ObjectiveSaveEditor.Complete = completeToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
 
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

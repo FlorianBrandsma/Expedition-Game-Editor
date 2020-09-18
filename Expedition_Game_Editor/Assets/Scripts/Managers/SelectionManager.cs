@@ -68,7 +68,6 @@ static public class SelectionManager
 
                         elementData.SelectionStatus = Enums.SelectionStatus.Both;
                     }
-                        
 
                     if (displayManager != null)
                         displayManager.CorrectPosition(elementData, displayManager.Display.DataController.Data.dataList);
@@ -85,7 +84,7 @@ static public class SelectionManager
     static public void SelectSet(IElementData setElementData)
     {
         var elementDataList = SelectionElementManager.FindElementData(getElementData);
-        
+
         //First set the result to all relevant elements
         elementDataList.ForEach(x => x.DataElement.SetResult(setElementData));
 

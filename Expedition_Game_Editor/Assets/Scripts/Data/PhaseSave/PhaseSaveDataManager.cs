@@ -35,16 +35,18 @@ public static class PhaseSaveDataManager
                     select new PhaseSaveElementData()
                     {
                         Id = phaseSaveData.Id,
-                        Index = phaseSaveData.Index,
-
+                        
                         ChapterSaveId = phaseSaveData.ChapterSaveId,
                         PhaseId = phaseSaveData.PhaseId,
 
                         Complete = phaseSaveData.Complete,
 
+                        Index = phaseData.Index,
+
                         Name = phaseData.Name,
 
-                        PublicNotes = phaseData.PublicNotes
+                        PublicNotes = phaseData.PublicNotes,
+                        PrivateNotes = phaseData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -65,7 +67,6 @@ public static class PhaseSaveDataManager
             var phaseSaveData = new PhaseSaveBaseData();
 
             phaseSaveData.Id = phaseSave.Id;
-            phaseSaveData.Index = phaseSave.Index;
 
             phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
             phaseSaveData.PhaseId = phaseSave.PhaseId;
@@ -88,7 +89,6 @@ public static class PhaseSaveDataManager
             var phaseSaveData = new PhaseSaveBaseData();
 
             phaseSaveData.Id = phaseSave.Id;
-            phaseSaveData.Index = phaseSave.Index;
 
             phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
             phaseSaveData.PhaseId = phaseSave.PhaseId;

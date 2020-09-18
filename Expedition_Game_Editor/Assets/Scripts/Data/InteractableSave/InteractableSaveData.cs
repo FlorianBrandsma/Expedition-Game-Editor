@@ -4,6 +4,8 @@ public class InteractableSaveData : InteractableSaveBaseData
 {
     public int ModelId              { get; set; }
 
+    public int Index                { get; set; }
+
     public string InteractableName  { get; set; }
 
     public int Health               { get; set; }
@@ -20,6 +22,8 @@ public class InteractableSaveData : InteractableSaveBaseData
     public override void GetOriginalValues(InteractableSaveData originalData)
     {
         ModelId             = originalData.ModelId;
+
+        Index               = originalData.Index;
 
         InteractableName    = originalData.InteractableName;
 
@@ -43,6 +47,8 @@ public class InteractableSaveData : InteractableSaveBaseData
         
         data.ModelId            = ModelId;
 
+        data.Index              = Index;
+
         data.InteractableName   = InteractableName;
 
         data.Health             = Health;
@@ -64,6 +70,8 @@ public class InteractableSaveData : InteractableSaveBaseData
     public virtual void Clone(InteractableSaveElementData elementData)
     {
         elementData.ModelId             = ModelId;
+
+        elementData.Index               = Index;
 
         elementData.InteractableName    = InteractableName;
 

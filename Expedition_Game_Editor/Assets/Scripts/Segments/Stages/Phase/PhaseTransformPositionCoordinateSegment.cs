@@ -1,88 +1,46 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber xInputField, yInputField, zInputField;
-
-    private float positionX, positionY, positionZ;
-    private int terrainTileId;
-
+    
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float PositionX
-    {
-        get { return positionX; }
-        set
-        {
-            positionX = value;
+    public PhaseEditor PhaseEditor              { get { return (PhaseEditor)DataEditor; } }
 
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultPositionX = value;
-            });
-        }
+    #region Data properties
+    private float DefaultPositionX
+    {
+        get { return PhaseEditor.DefaultPositionX; }
+        set { PhaseEditor.DefaultPositionX = value; }
     }
 
-    public float PositionY
+    private float DefaultPositionY
     {
-        get { return positionY; }
-        set
-        {
-            positionY = value;
-
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultPositionY = value;
-            });
-        }
+        get { return PhaseEditor.DefaultPositionY; }
+        set { PhaseEditor.DefaultPositionY = value; }
     }
 
-    public float PositionZ
+    private float DefaultPositionZ
     {
-        get { return positionZ; }
-        set
-        {
-            positionZ = value;
-
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultPositionZ = value;
-            });
-        }
+        get { return PhaseEditor.DefaultPositionZ; }
+        set { PhaseEditor.DefaultPositionZ = value; }
     }
 
-    public int TerrainTileId
+    private int DefaultTime
     {
-        get { return terrainTileId; }
-        set
-        {
-            terrainTileId = value;
-
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.TerrainTileId = value;
-            });       
-        }
+        get { return PhaseEditor.DefaultTime; }
+        set { PhaseEditor.DefaultTime = value; }
     }
 
-    public int Time
+    private int TerrainTileId
     {
-        set
-        {
-            var phaseDataList = DataEditor.DataList.Cast<PhaseElementData>().ToList();
-            phaseDataList.ForEach(phaseData =>
-            {
-                phaseData.DefaultTime = value;
-            });
-        }
+        get { return PhaseEditor.TerrainTileId; }
+        set { PhaseEditor.TerrainTileId = value; }
     }
-    
+    #endregion
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -95,15 +53,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
     {
         if (DataEditor.Loaded) return;
 
-        var phaseData = (PhaseElementData)DataEditor.ElementData;
-
-        positionX = phaseData.DefaultPositionX;
-        positionY = phaseData.DefaultPositionY;
-        positionZ = phaseData.DefaultPositionZ;
-
-        TimeManager.instance.ActiveTime = phaseData.DefaultTime;
-
-        terrainTileId = phaseData.TerrainTileId;
+        TimeManager.instance.ActiveTime = DefaultTime;
     }
 
     public void InitializeSegment()
@@ -118,10 +68,21 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 
         UpdateTime();
     }
+    
+    public void OpenSegment()
+    {
+        xInputField.Value = DefaultPositionX;
+        yInputField.Value = DefaultPositionY;
+        zInputField.Value = DefaultPositionZ;
+
+        gameObject.SetActive(true);
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdatePositionX()
     {
-        PositionX = xInputField.Value;
+        DefaultPositionX = xInputField.Value;
 
         UpdateTile();
 
@@ -130,7 +91,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdatePositionY()
     {
-        PositionY = yInputField.Value;
+        DefaultPositionY = yInputField.Value;
 
         UpdateTile();
 
@@ -139,7 +100,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdatePositionZ()
     {
-        PositionZ = zInputField.Value;
+        DefaultPositionZ = zInputField.Value;
 
         DataEditor.UpdateEditor();
     }
@@ -148,30 +109,18 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
     {
         var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
 
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
-        TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
+        var terrainId = Fixtures.GetTerrain(regionId, DefaultPositionX, DefaultPositionZ);
+        TerrainTileId = Fixtures.GetTerrainTile(terrainId, DefaultPositionX, DefaultPositionZ);
 
         DataEditor.UpdateEditor();
     }
 
     public void UpdateTime()
     {
-        Time = TimeManager.instance.ActiveTime;
+        DefaultTime = TimeManager.instance.ActiveTime;
 
         DataEditor.UpdateEditor();
     }
 
-    public void OpenSegment()
-    {
-        xInputField.Value = PositionX;
-        yInputField.Value = PositionY;
-        zInputField.Value = PositionZ;
-
-        gameObject.SetActive(true);
-    }
-
-    public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }   
 }
-

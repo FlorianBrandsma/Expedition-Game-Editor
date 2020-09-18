@@ -14,7 +14,12 @@ public class GameManager : MonoBehaviour
 
     public GameSaveDataController gameSaveController;
     public GameWorldDataController gameWorldController;
-    
+
+    public DataController WorldObjectDataController             { get; set; } = new DataController(Enums.DataType.WorldObject);
+    public DataController WorldInteractableAgentDataController  { get; set; } = new DataController(Enums.DataType.WorldInteractable);
+    public DataController WorldInteractableObjectDataController { get; set; } = new DataController(Enums.DataType.WorldInteractable);
+    public DataController PartyDataController                   { get; set; } = new DataController(Enums.DataType.Phase);
+
     public LocalNavMeshBuilder localNavMeshBuilder;
 
     public GamePauseAction gamePauseAction;
@@ -137,7 +142,7 @@ public class GameManager : MonoBehaviour
 
         gameSaveController.GetData(searchProperties);
         
-        gameSaveData = gameSaveController.DataList.Cast<GameSaveElementData>().FirstOrDefault();
+        gameSaveData = gameSaveController.Data.dataList.Cast<GameSaveElementData>().FirstOrDefault();
     }
 
     public void OpenGame()
@@ -202,7 +207,24 @@ public class GameManager : MonoBehaviour
 
         gameWorldController.GetData(searchProperties);
         
-        gameWorldData = gameWorldController.DataList.Cast<GameWorldElementData>().FirstOrDefault();
+        gameWorldData = gameWorldController.Data.dataList.Cast<GameWorldElementData>().FirstOrDefault();
+
+        SetDataControllers();
+    }
+
+    private void SetDataControllers()
+    {
+        //Objects
+        WorldObjectDataController.Data.dataList = gameWorldData.RegionDataList.SelectMany(x => x.TerrainDataList.SelectMany(y => y.WorldObjectDataList)).Cast<IElementData>().ToList();
+
+        //Interactable agents
+        WorldInteractableAgentDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Agent).Cast<IElementData>().ToList();
+
+        //Interactable objects
+        WorldInteractableObjectDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Object).Cast<IElementData>().ToList();
+
+        //Party
+        PartyDataController.Data.dataList = gameWorldData.PartyMemberList.Cast<IElementData>().ToList();
     }
 
     private void SetChapterTimeSpeed()
@@ -431,8 +453,8 @@ public class GameManager : MonoBehaviour
         regionData = null;
         partyMemberData = null;
 
-        gameWorldController.DataList = null;
-        gameSaveController.DataList = null;
+        gameWorldController.Data = null;
+        gameSaveController.Data = null;
 
         TimeManager.active = false;
         TimeManager.instance.TimeScale = 1;

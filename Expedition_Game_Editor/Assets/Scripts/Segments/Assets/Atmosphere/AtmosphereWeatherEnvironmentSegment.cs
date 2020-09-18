@@ -1,29 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
 {
-    private AtmosphereElementData AtmosphereData { get { return (AtmosphereElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public Text terrainText;
     public Text regionText;
-    
+
     public RawImage icon;
     public RawImage baseIcon;
+
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
+
+    private AtmosphereEditor AtmosphereEditor       { get { return (AtmosphereEditor)DataEditor; } }
+
+    #region Data properties
+    private string IconPath
+    {
+        get { return AtmosphereEditor.IconPath; }
+    }
+
+    private string BaseTilePath
+    {
+        get { return AtmosphereEditor.BaseTilePath; }
+    }
+
+    private string TerrainName
+    {
+        get { return AtmosphereEditor.TerrainName; }
+    }
+
+    private string RegionName
+    {
+        get { return AtmosphereEditor.RegionName; }
+    }
     #endregion
 
-    #region Data Methods
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -32,22 +44,21 @@ public class AtmosphereWeatherEnvironmentSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment()
-    {
-        icon.texture = Resources.Load<Texture2D>(AtmosphereData.IconPath);
-        baseIcon.texture = Resources.Load<Texture2D>(AtmosphereData.BaseTilePath);
-
-        terrainText.text = AtmosphereData.TerrainName;
-        regionText.text = AtmosphereData.RegionName;
-
-    }
-
     public void InitializeData() { }
 
+    public void InitializeSegment()
+    {
+        icon.texture = Resources.Load<Texture2D>(IconPath);
+        baseIcon.texture = Resources.Load<Texture2D>(BaseTilePath);
+
+        terrainText.text = TerrainName;
+        regionText.text = RegionName;
+
+    }
+    
     public void OpenSegment() { }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void CloseSegment() { }
 }

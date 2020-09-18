@@ -31,7 +31,7 @@ public class InteractableElementData : InteractableData, IElementData
 
     public bool ChangedScale
     {
-        get { return Scale != OriginalData.Scale; }
+        get { return !Mathf.Approximately(Scale, OriginalData.Scale); }
     }
 
     public bool ChangedHealth
@@ -51,17 +51,17 @@ public class InteractableElementData : InteractableData, IElementData
 
     public bool ChangedWeight
     {
-        get { return Weight != OriginalData.Weight; }
+        get { return !Mathf.Approximately(Weight, OriginalData.Weight); }
     }
 
     public bool ChangedSpeed
     {
-        get { return Speed != OriginalData.Speed; }
+        get { return !Mathf.Approximately(Speed, OriginalData.Speed); }
     }
 
     public bool ChangedStamina
     {
-        get { return Stamina != OriginalData.Stamina; }
+        get { return !Mathf.Approximately(Stamina, OriginalData.Stamina); }
     }
 
     public bool Changed

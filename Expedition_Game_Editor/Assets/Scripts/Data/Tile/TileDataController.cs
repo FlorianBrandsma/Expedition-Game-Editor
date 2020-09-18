@@ -34,13 +34,14 @@ public class TileDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TileDataManager.GetData(searchProperties)
+            dataList = TileDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

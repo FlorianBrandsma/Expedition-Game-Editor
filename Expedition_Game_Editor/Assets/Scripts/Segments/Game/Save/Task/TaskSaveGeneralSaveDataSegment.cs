@@ -1,42 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TaskSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private TaskSaveElementData TaskSaveData { get { return (TaskSaveElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public ExToggle completeToggle;
 
-    public void UpdateComplete()
-    {
-        TaskSaveData.Complete = completeToggle.Toggle.isOn;
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-        DataEditor.UpdateEditor();
-    }
-
+    public TaskSaveEditor TaskSaveEditor        { get { return (TaskSaveEditor)DataEditor; } }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        completeToggle.Toggle.isOn = TaskSaveData.Complete;
+        completeToggle.Toggle.isOn = TaskSaveEditor.Complete;
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateComplete()
+    {
+        TaskSaveEditor.Complete = completeToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
+    
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

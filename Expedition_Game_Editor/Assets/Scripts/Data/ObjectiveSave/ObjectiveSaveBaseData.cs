@@ -8,8 +8,6 @@ public class ObjectiveSaveBaseData
     public int QuestSaveId  { get; set; }
     public int ObjectiveId  { get; set; }
 
-    public int Index        { get; set; }
-
     public bool Complete    { get; set; }
 
     public virtual void GetOriginalValues(ObjectiveSaveData originalData)
@@ -19,8 +17,6 @@ public class ObjectiveSaveBaseData
         SaveId      = originalData.SaveId;
         QuestSaveId = originalData.QuestSaveId;
         ObjectiveId = originalData.ObjectiveId;
-
-        Index       = originalData.Index;
 
         Complete    = originalData.Complete;
 }
@@ -32,8 +28,6 @@ public class ObjectiveSaveBaseData
         data.SaveId         = SaveId;
         data.QuestSaveId    = QuestSaveId;
         data.ObjectiveId    = ObjectiveId;
-
-        data.Index          = Index;
 
         data.Complete       = Complete;
     }

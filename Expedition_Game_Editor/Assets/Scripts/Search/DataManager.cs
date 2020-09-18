@@ -40,7 +40,8 @@ static public class DataManager
     
     static public void ReplaceRouteData(IDataController dataController)
     {
-        var activeForms = RenderManager.layoutManager.forms.Where(x => x != dataController.SegmentController.MainPath.form && x.activeInPath).ToList();
+        //Replaces data in all active forms
+        var activeForms = RenderManager.layoutManager.forms.Where(x => x.activeInPath).ToList();
         var activeRoutes = activeForms.SelectMany(x => x.activePath.routeList).Where(x => x.data != null && x.data.dataController == dataController).ToList();
 
         activeRoutes.ForEach(x => x.data = dataController.Data);

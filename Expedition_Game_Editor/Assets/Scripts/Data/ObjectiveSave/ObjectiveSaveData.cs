@@ -2,6 +2,8 @@
 
 public class ObjectiveSaveData : ObjectiveSaveBaseData
 {
+    public int Index            { get; set; }
+
     public string Name          { get; set; }
 
     public string PublicNotes   { get; set; }
@@ -9,6 +11,8 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
 
     public override void GetOriginalValues(ObjectiveSaveData originalData)
     {
+        Index           = originalData.Index;
+
         Name            = originalData.Name;
 
         PublicNotes     = originalData.PublicNotes;
@@ -20,7 +24,9 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
     public ObjectiveSaveData Clone()
     {
         var data = new ObjectiveSaveData();
-        
+
+        data.Index          = Index;
+
         data.Name           = Name;
 
         data.PublicNotes    = PublicNotes;
@@ -33,6 +39,8 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
 
     public virtual void Clone(ObjectiveSaveElementData elementData)
     {
+        elementData.Index           = Index;
+
         elementData.Name            = Name;
 
         elementData.PublicNotes     = PublicNotes;

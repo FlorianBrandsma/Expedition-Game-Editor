@@ -87,9 +87,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public void InitializeChildElement()
     {
         if (childProperty == SelectionManager.Property.None) return;
-
-
-
+        
         ElementChild.DataElement.Data   = EditorElement.DataElement.Data;
         ElementChild.DataElement.Id     = EditorElement.DataElement.Id;
         

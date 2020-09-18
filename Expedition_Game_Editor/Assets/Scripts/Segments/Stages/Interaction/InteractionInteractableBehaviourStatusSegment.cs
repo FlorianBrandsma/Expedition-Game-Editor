@@ -6,22 +6,18 @@ using System.Linq;
 
 public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISegment
 {
-    private InteractionElementData InteractionData { get { return (InteractionElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public Text nameText;
     public Text stateText;
     public Text locationText;
 
     public DataElement editButton;
     public RawImage buttonIcon;
-    #endregion
+    
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    #region Segment
+    private InteractionEditor InteractionEditor     { get { return (InteractionEditor)DataEditor; } }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -30,14 +26,13 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment() { }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void CloseSegment() { }
 }

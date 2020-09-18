@@ -4,17 +4,50 @@ using System.Linq;
 
 public class QuestSaveEditor : MonoBehaviour, IEditor
 {
-    public QuestSaveData questSaveData;
+    private QuestSaveData questSaveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == questSaveData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == questSaveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
+
+    #region Data properties
+    public int Id
+    {
+        get { return questSaveData.Id; }
+    }
     
+    public bool Complete
+    {
+        get { return questSaveData.Complete; }
+        set
+        {
+            questSaveData.Complete = value;
+
+            DataList.ForEach(x => ((QuestSaveElementData)x).Complete = value);
+        }
+    }
+
+    public string Name
+    {
+        get { return questSaveData.Name; }
+    }
+
+    public string PublicNotes
+    {
+        get { return questSaveData.PublicNotes; }
+    }
+
+    public string PrivateNotes
+    {
+        get { return questSaveData.PrivateNotes; }
+    }
+    #endregion
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -32,7 +65,10 @@ public class QuestSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        questSaveData = (QuestSaveData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

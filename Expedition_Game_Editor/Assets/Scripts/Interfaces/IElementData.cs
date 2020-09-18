@@ -14,8 +14,8 @@ public interface IElementData
 
     void Update();
     void UpdateSearch();
+    void SetOriginalValues();
 
-    //void SetOriginalValues();
     bool Changed { get; }
     void ClearChanges();
     IElementData Clone();

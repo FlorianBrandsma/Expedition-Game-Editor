@@ -248,7 +248,7 @@ public static class PhaseDataManager
             data.PrivateNotes = elementData.PrivateNotes;
     }
 
-    static public void UpdateIndex(TaskElementData elementData)
+    static public void UpdateIndex(PhaseElementData elementData)
     {
         var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 

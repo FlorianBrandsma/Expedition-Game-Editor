@@ -44,34 +44,35 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = WorldInteractableDataManager.GetData(searchProperties)
+            dataList = WorldInteractableDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var worldInteractableData = (WorldInteractableElementData)searchElement.ElementData;
+        var searchWorldInteractableElementData = (WorldInteractableElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var interactableData = (InteractableElementData)resultData;
+                var resultInteractableElementData = (InteractableElementData)resultElementData;
 
-                worldInteractableData.InteractableId = interactableData.Id;
+                searchWorldInteractableElementData.InteractableId   = resultInteractableElementData.Id;
 
-                worldInteractableData.ModelId = interactableData.ModelId;
+                searchWorldInteractableElementData.ModelId          = resultInteractableElementData.ModelId;
 
-                worldInteractableData.ModelPath = interactableData.ModelPath;
+                searchWorldInteractableElementData.ModelPath        = resultInteractableElementData.ModelPath;
 
-                worldInteractableData.InteractableName = interactableData.Name;
-                worldInteractableData.ModelIconPath = interactableData.ModelIconPath;
+                searchWorldInteractableElementData.InteractableName = resultInteractableElementData.Name;
+                searchWorldInteractableElementData.ModelIconPath    = resultInteractableElementData.ModelIconPath;
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + resultData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

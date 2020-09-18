@@ -34,13 +34,14 @@ public class TaskSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TaskSaveDataManager.GetData(searchProperties)
+            dataList = TaskSaveDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultDataElement) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

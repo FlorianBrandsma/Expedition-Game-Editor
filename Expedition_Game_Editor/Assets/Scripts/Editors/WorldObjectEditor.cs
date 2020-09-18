@@ -4,20 +4,20 @@ using System.Linq;
 
 public class WorldObjectEditor : MonoBehaviour, IEditor
 {
-    public WorldObjectData worldObjectData;
+    private WorldObjectData worldObjectData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
     public List<IElementData> DataList
     {
-        get { return new List<IElementData>() { EditData }; }
+        get { return SelectionElementManager.FindElementData(EditData).Concat(new[] { EditData }).Distinct().ToList(); }
     }
 
     public List<IElementData> ElementDataList
@@ -32,7 +32,173 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    #region Data properties
+    public int Id
+    {
+        get { return worldObjectData.Id; }
+    }
+    
+    public int TerrainId
+    {
+        get { return worldObjectData.TerrainId; }
+        set
+        {
+            worldObjectData.TerrainId = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).TerrainId = value);
+        }
+    }
+
+    public int TerrainTileId
+    {
+        get { return worldObjectData.TerrainTileId; }
+        set
+        {
+            worldObjectData.TerrainTileId = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).TerrainTileId = value);
+        }
+    }
+
+    public float PositionX
+    {
+        get { return worldObjectData.PositionX; }
+        set
+        {
+            worldObjectData.PositionX = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).PositionX = value);
+        }
+    }
+
+    public float PositionY
+    {
+        get { return worldObjectData.PositionY; }
+        set
+        {
+            worldObjectData.PositionY = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).PositionY = value);
+        }
+    }
+
+    public float PositionZ
+    {
+        get { return worldObjectData.PositionZ; }
+        set
+        {
+            worldObjectData.PositionZ = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).PositionZ = value);
+        }
+    }
+
+    public int RotationX
+    {
+        get { return worldObjectData.RotationX; }
+        set
+        {
+            worldObjectData.RotationX = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).RotationX = value);
+        }
+    }
+
+    public int RotationY
+    {
+        get { return worldObjectData.RotationY; }
+        set
+        {
+            worldObjectData.RotationY = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).RotationY = value);
+        }
+    }
+
+    public int RotationZ
+    {
+        get { return worldObjectData.RotationZ; }
+        set
+        {
+            worldObjectData.RotationZ = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).RotationZ = value);
+        }
+    }
+
+    public float Scale
+    {
+        get { return worldObjectData.Scale; }
+        set
+        {
+            worldObjectData.Scale = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Scale = value);
+        }
+    }
+
+    public string ModelName
+    {
+        get { return worldObjectData.ModelName; }
+        set
+        {
+            worldObjectData.ModelName = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelName = value);
+        }
+    }
+
+    public string ModelIconPath
+    {
+        get { return worldObjectData.ModelIconPath; }
+        set
+        {
+            worldObjectData.ModelIconPath = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelIconPath = value);
+        }
+    }
+
+    public float Height
+    {
+        get { return worldObjectData.Height; }
+        set
+        {
+            worldObjectData.Height = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Height = value);
+        }
+    }
+
+    public float Width
+    {
+        get { return worldObjectData.Width; }
+        set
+        {
+            worldObjectData.Width = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Width = value);
+        }
+    }
+
+    public float Depth
+    {
+        get { return worldObjectData.Depth; }
+        set
+        {
+            worldObjectData.Depth = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Depth = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        worldObjectData = (WorldObjectData)ElementData.Clone();
+    }
+    
+    public void OpenEditor() { }
 
     public void UpdateEditor()
     {
@@ -40,10 +206,6 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
         SetEditor();
     }
-
-    public void UpdateIndex(int index) { }
-
-    public void OpenEditor() { }
 
     public void SetEditor()
     {
@@ -58,6 +220,8 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
     public void ApplyChanges()
     {
         EditData.Update();
+        
+        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();

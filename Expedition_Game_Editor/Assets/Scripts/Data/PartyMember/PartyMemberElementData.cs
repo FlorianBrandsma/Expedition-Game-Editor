@@ -33,7 +33,14 @@ public class PartyMemberElementData : PartyMemberData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        PartyMemberDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 

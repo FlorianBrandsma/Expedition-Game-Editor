@@ -10,11 +10,9 @@ public class GameWorldDataController : MonoBehaviour, IDataController
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     
-    public Data Data                            { get; set; }
-    
+    public Data Data                            { get; set; } 
     public Enums.DataType DataType              { get { return Enums.DataType.GameWorld; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
-    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -37,13 +35,14 @@ public class GameWorldDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = GameWorldDataManager.GetData(searchProperties)
+            dataList = GameWorldDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

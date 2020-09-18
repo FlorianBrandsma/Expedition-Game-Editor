@@ -35,5 +35,5 @@ public class GameSaveSegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void SetSearchResult(IElementData elementData) { }
 }

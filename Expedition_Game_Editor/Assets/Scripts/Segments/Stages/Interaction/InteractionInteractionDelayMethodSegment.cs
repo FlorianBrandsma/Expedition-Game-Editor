@@ -7,57 +7,30 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
     public ExInputNumber delayDurationInputNumber;
     public ExToggle hideDelayIndicatorToggle;
 
-    private int delayMethod;
-    private int delayDuration;
-    private bool hideDelayIndicator;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+
+    #region Data properties
     public int DelayMethod
     {
-        get { return delayMethod; }
-        set
-        {
-            delayMethod = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.DelayMethod = delayMethod;
-            });
-        }
+        get { return InteractionEditor.DelayMethod; }
+        set { InteractionEditor.DelayMethod = value; }
     }
 
     public int DelayDuration
     {
-        get { return delayDuration; }
-        set
-        {
-            delayDuration = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.DelayDuration = delayDuration;
-            });
-        }
+        get { return InteractionEditor.DelayDuration; }
+        set { InteractionEditor.DelayDuration = value; }
     }
 
     public bool HideDelayIndicator
     {
-        get { return hideDelayIndicator; }
-        set
-        {
-            hideDelayIndicator = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.HideDelayIndicator = hideDelayIndicator;
-            });
-        }
+        get { return InteractionEditor.HideDelayIndicator; }
+        set { InteractionEditor.HideDelayIndicator = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -67,18 +40,18 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        delayMethod = interactionData.DelayMethod;
-        delayDuration = interactionData.DelayDuration;
-        hideDelayIndicator = interactionData.HideDelayIndicator;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
+    
+    public void OpenSegment()
+    {
+        delayMethodDropdown.Dropdown.value = DelayMethod;
+        delayDurationInputNumber.Value = DelayDuration;
+        hideDelayIndicatorToggle.Toggle.isOn = HideDelayIndicator;
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateDelayMethod()
     {
@@ -101,14 +74,5 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void OpenSegment()
-    {
-        delayMethodDropdown.Dropdown.value = delayMethod;
-        delayDurationInputNumber.Value = delayDuration;
-        hideDelayIndicatorToggle.Toggle.isOn = hideDelayIndicator;
-    }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

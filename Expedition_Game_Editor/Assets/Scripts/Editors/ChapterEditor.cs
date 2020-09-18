@@ -4,15 +4,15 @@ using System.Linq;
 
 public class ChapterEditor : MonoBehaviour, IEditor
 {
-    public ChapterData chapterData;
+    private ChapterData chapterData;
 
-    public List<PartyMemberElementData> partyMemberDataList = new List<PartyMemberElementData>();
-    public List<ChapterInteractableElementData> chapterInteractableDataList = new List<ChapterInteractableElementData>();
-    public List<ChapterRegionElementData> chapterRegionDataList = new List<ChapterRegionElementData>();
+    public List<PartyMemberElementData> partyMemberElementDataList                  = new List<PartyMemberElementData>();
+    public List<ChapterInteractableElementData> chapterInteractableElementDataList  = new List<ChapterInteractableElementData>();
+    public List<ChapterRegionElementData> chapterRegionElementDataList              = new List<ChapterRegionElementData>();
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == chapterData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == chapterData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,20 +32,78 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
             DataList.ForEach(x => { if (x != null) list.Add(x); });
 
+            partyMemberElementDataList.ForEach(x => list.Add(x));
+            chapterInteractableElementDataList.ForEach(x => list.Add(x));
+            chapterRegionElementDataList.ForEach(x => list.Add(x));
+
             return list;
         }
     }
-    
-    public void InitializeEditor() { }
+
+    #region Data properties
+    public int Id
+    {
+        get { return chapterData.Id; }
+    }
+
+    public int Index
+    {
+        get { return chapterData.Index; }
+    }
+
+    public string Name
+    {
+        get { return chapterData.Name; }
+        set
+        {
+            chapterData.Name = value;
+
+            DataList.ForEach(x => ((ChapterElementData)x).Name = value);
+        }
+    }
+
+    public float TimeSpeed
+    {
+        get { return chapterData.TimeSpeed; }
+        set
+        {
+            chapterData.TimeSpeed = value;
+
+            DataList.ForEach(x => ((ChapterElementData)x).TimeSpeed = value);
+        }
+    }
+
+    public string PublicNotes
+    {
+        get { return chapterData.PublicNotes; }
+        set
+        {
+            chapterData.PublicNotes = value;
+
+            DataList.ForEach(x => ((ChapterElementData)x).PublicNotes = value);
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return chapterData.PrivateNotes; }
+        set
+        {
+            chapterData.PrivateNotes = value;
+
+            DataList.ForEach(x => ((ChapterElementData)x).PrivateNotes = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        chapterData = (ChapterData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void SetEditor()
     {
         PathController.layoutSection.SetActionButtons();
     }
@@ -55,31 +113,11 @@ public class ChapterEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    //public void ApplyChanges()
-    //{
-    //    chapterRegionDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
-
-    //    ChapterData.Update();
-
-    //    ElementDataList.ForEach(x =>
-    //    {
-    //        if (DataManager.Equals(x, ChapterData))
-    //            x.Copy(ChapterData);
-    //        else
-    //            x.Update();
-
-    //        if(SelectionElementManager.SelectionActive(x.DataElement))
-    //            x.DataElement.UpdateElement();
-    //    });
-
-    //    UpdateEditor();
-
-    //    UpdatePhaseElements();
-    //}
-
     public void ApplyChanges()
     {
-        EditData.Update();
+        chapterRegionElementDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
+        
+        ElementDataList.ForEach(x => x.Update());
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();
@@ -251,16 +289,14 @@ public class ChapterEditor : MonoBehaviour, IEditor
         */
     }
 
-    private void UpdatePhaseElements() { }
-
     public void CancelEdit()
     {
-        //partyMemberDataList.Clear();
-        //chapterInteractableDataList.Clear();
-        //chapterRegionDataList.Clear();
+        partyMemberElementDataList.Clear();
+        chapterInteractableElementDataList.Clear();
+        chapterRegionElementDataList.Clear();
 
         ElementDataList.ForEach(x => x.ClearChanges());
-        
+
         Loaded = false;
     }
 

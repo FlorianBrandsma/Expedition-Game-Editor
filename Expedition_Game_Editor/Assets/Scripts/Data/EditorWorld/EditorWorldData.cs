@@ -14,10 +14,7 @@ public class EditorWorldData
     public string TileSetName           { get; set; }
 
     public Vector3 StartPosition        { get; set; }
-
-    public List<TerrainElementData> TerrainDataList { get; set; } = new List<TerrainElementData>();
-    public List<PhaseElementData> PhaseDataList     { get; set; } = new List<PhaseElementData>();
-
+    
     public virtual void GetOriginalValues(EditorWorldData originalData)
     {
         Id              = originalData.Id;
@@ -48,7 +45,7 @@ public class EditorWorldData
         data.TileSetName    = TileSetName;
 
         data.StartPosition  = StartPosition;
-
+        
         return data;
     }
 

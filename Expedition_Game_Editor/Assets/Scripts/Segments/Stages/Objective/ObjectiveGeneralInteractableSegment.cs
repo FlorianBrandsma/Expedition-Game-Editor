@@ -5,11 +5,11 @@ using System.Linq;
 
 public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 {
-    private ObjectiveEditor ObjectiveEditor { get { return (ObjectiveEditor)DataEditor; } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
-    
+    private ObjectiveEditor ObjectiveEditor     { get { return (ObjectiveEditor)DataEditor; } }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -25,17 +25,16 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
         if (DataEditor.Loaded) return;
 
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
-        searchParameters.objectiveId = new List<int>() { ObjectiveEditor.objectiveData.Id };
+        searchParameters.objectiveId = new List<int>() { ObjectiveEditor.Id };
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Object };
-        searchParameters.isDefault = Convert.ToInt32(false);
+        searchParameters.isDefault = false;
 
         SegmentController.DataController.GetData(searchProperties);
 
         var worldInteractableList = SegmentController.DataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
-        worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableDataList.Add(x));
+        worldInteractableList.ForEach(x => ObjectiveEditor.worldInteractableElementDataList.Add(x));
     }
 
     public void OpenSegment()
@@ -44,10 +43,21 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement)
+    public void SetSearchResult(IElementData elementData)
     {
+        SetSearchWorldInteractable((WorldInteractableElementData)elementData);
+
         DataEditor.UpdateEditor();
     }
+
+    private void SetSearchWorldInteractable(WorldInteractableElementData resultElementData)
+    {
+        var elementData = ObjectiveEditor.worldInteractableElementDataList.Where(x => x.Id == resultElementData.Id).First();
+
+        elementData.InteractableId      = resultElementData.InteractableId;
+        elementData.InteractableName    = resultElementData.InteractableName;
+        elementData.ModelIconPath       = resultElementData.ModelIconPath;
+    }
+
+    public void CloseSegment() { }
 }

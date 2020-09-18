@@ -77,6 +77,8 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             multiGrid.EditorElement.DataElement.Data = PrimaryDataController.Data;
             multiGrid.EditorElement.DataElement.Id = elementData.Id;
 
+            multiGrid.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+
             //Debugging
             multiGrid.name = elementData.DebugName + elementData.Id;
 

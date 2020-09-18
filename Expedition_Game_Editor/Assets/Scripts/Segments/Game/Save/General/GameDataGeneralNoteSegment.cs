@@ -11,15 +11,75 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     public NoteType noteType;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public Text notesText;
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
     
-    //Data Variables
-    private string notes;
+    public string Notes
+    {
+        get { return noteType == NoteType.Public ? PublicNotes : PrivateNotes; }
+    }
+
+    #region Data properties
+    public string PublicNotes
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.ChapterSave:
+                    return ((ChapterSaveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.PhaseSave:
+                    return ((PhaseSaveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.QuestSave:
+                    return ((QuestSaveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.ObjectiveSave:
+                    return ((ObjectiveSaveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.TaskSave:
+                    return ((TaskSaveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.InteractionSave:
+                    return ((InteractionSaveEditor)DataEditor).PublicNotes;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.ChapterSave:
+                    return ((ChapterSaveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.PhaseSave:
+                    return ((PhaseSaveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.QuestSave:
+                    return ((QuestSaveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.ObjectiveSave:
+                    return ((ObjectiveSaveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.TaskSave:
+                    return ((TaskSaveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.InteractionSave:
+                    return ((InteractionSaveEditor)DataEditor).PrivateNotes;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+    }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -29,93 +89,19 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         InitializeDependencies();
-
-        if (DataEditor.Loaded) return;
-
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.ChapterSave:        InitializeChapterSaveData();        break;
-            case Enums.DataType.PhaseSave:          InitializePhaseSaveData();          break;
-            case Enums.DataType.QuestSave:          InitializeQuestSaveData();          break;
-            case Enums.DataType.ObjectiveSave:      InitializeObjectiveSaveData();      break;
-            case Enums.DataType.TaskSave:           InitializeTaskSaveData();           break;
-            case Enums.DataType.InteractionSave:    InitializeInteractionSaveData();    break;
-
-            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
-        }
     }
 
-    private void InitializeChapterSaveData()
-    {
-        var chapterSaveData = (ChapterSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = chapterSaveData.PublicNotes;
-        else
-            notes = chapterSaveData.PrivateNotes;
-    }
-
-    private void InitializePhaseSaveData()
-    {
-        var phaseSaveData = (PhaseSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = phaseSaveData.PublicNotes;
-        else
-            notes = phaseSaveData.PrivateNotes;
-    }
-
-    private void InitializeQuestSaveData()
-    {
-        var questSaveData = (QuestSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = questSaveData.PublicNotes;
-        else
-            notes = questSaveData.PrivateNotes;
-    }
-
-    private void InitializeObjectiveSaveData()
-    {
-        var objectiveSaveData = (ObjectiveSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = objectiveSaveData.PublicNotes;
-        else
-            notes = objectiveSaveData.PrivateNotes;
-    }
-
-    private void InitializeTaskSaveData()
-    {
-        var taskSaveData = (TaskSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = taskSaveData.PublicNotes;
-        else
-            notes = taskSaveData.PrivateNotes;
-    }
-
-    private void InitializeInteractionSaveData()
-    {
-        var interactionSaveData = (InteractionSaveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = interactionSaveData.PublicNotes;
-        else
-            notes = interactionSaveData.PrivateNotes;
-    }
-
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        notesText.text = notes;
+        notesText.text = Notes;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }
 }

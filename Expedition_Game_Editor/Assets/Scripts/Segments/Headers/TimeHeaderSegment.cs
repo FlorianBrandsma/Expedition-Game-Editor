@@ -1,130 +1,168 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 public class TimeHeaderSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public GameObject defaultHeader;
     public GameObject timeInput;
     public ExInputNumber startTimeInput, endTimeInput;
     public Text idText;
-    #endregion
 
-    #region Data Variables
-    private int id;
-    private int index;
-    private bool isDefault;
-    private int startTime;
-    private int endTime;
-    private string modelIcon;
-    #endregion
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    #region Data Properties    
+    #region Data properties
+    public int Id
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).Id;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).Id;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
+            }
+        }
+    }
+
+    public bool Default
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).Default;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).Default;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return false; }
+            }
+        }
+    }
+
     private int StartTime
     {
-        get { return startTime; }
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).StartTime;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).StartTime;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
+            }
+        }
         set
         {
-            startTime = value;
-
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
-                    atmosphereData.StartTime = value;
+                    var atmosphereEditor = (AtmosphereEditor)DataEditor;
+                    atmosphereEditor.StartTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.ElementData;
-                    interactionData.StartTime = value;
+                    var interactionEditor = (InteractionEditor)DataEditor;
+                    interactionEditor.StartTime = value;
 
                     break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
     private int EndTime
     {
-        get { return endTime; }
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).EndTime;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).EndTime;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
+            }
+        }
         set
         {
-            endTime = value;
-
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Atmosphere:
 
-                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
-                    atmosphereData.EndTime = value;
+                    var atmosphereEditor = (AtmosphereEditor)DataEditor;
+                    atmosphereEditor.EndTime = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.ElementData;
-                    interactionData.EndTime = value;
+                    var interactionEditor = (InteractionEditor)DataEditor;
+                    interactionEditor.EndTime = value;
 
                     break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
+            }
+        }
+    }
+
+    private bool TimeConflict
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).TimeConflict;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).TimeConflict;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return false; }
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+
+                    var atmosphereEditor = (AtmosphereEditor)DataEditor;
+                    atmosphereEditor.TimeConflict = value;
+
+                    break;
+
+                case Enums.DataType.Interaction:
+
+                    var interactionEditor = (InteractionEditor)DataEditor;
+                    interactionEditor.TimeConflict = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
     #endregion
 
-    #region Methods
-    public void UpdateStartTime()
-    {
-        StartTime = int.Parse(startTimeInput.inputField.text) * TimeManager.secondsInHour;
-
-        CheckTime();
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateEndTime()
-    {
-        EndTime = int.Parse(endTimeInput.inputField.text) * TimeManager.secondsInHour + (TimeManager.secondsInHour - 1);
-        
-        CheckTime();
-
-        DataEditor.UpdateEditor();
-    }
-
-    private void CheckTime()
-    {
-        var timeConflict = isDefault ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.ElementData);
-
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Atmosphere:
-
-                var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
-                atmosphereData.TimeConflict = timeConflict;
-
-                break;
-
-            case Enums.DataType.Interaction:
-
-                var interactionData = (InteractionElementData)DataEditor.ElementData;
-                interactionData.TimeConflict = timeConflict;
-
-                break;
-        }
-        
-        startTimeInput.InputInvalid = timeConflict;
-        endTimeInput.InputInvalid = timeConflict;
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -138,64 +176,59 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
         InitializeDependencies();
 
         if (DataEditor.Loaded) return;
-
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Atmosphere: InitializeAtmosphereData(); break;
-            case Enums.DataType.Interaction: InitializeInteractionData(); break;
-        }
     }
 
     public void InitializeSegment()
     {
         CheckTime();
     }
-    
-    private void InitializeAtmosphereData()
+
+    private void CheckTime()
     {
-        var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
+        TimeConflict = Default ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.ElementData);
 
-        id          = atmosphereData.Id;
-
-        isDefault   = atmosphereData.Default;
-
-        startTime   = atmosphereData.StartTime;
-        endTime     = atmosphereData.EndTime;
-    }
-
-    private void InitializeInteractionData()
-    {
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        id          = interactionData.Id;
-
-        isDefault   = interactionData.Default;
-
-        startTime   = interactionData.StartTime;
-        endTime     = interactionData.EndTime;
+        startTimeInput.InputInvalid = TimeConflict;
+        endTimeInput.InputInvalid = TimeConflict;
     }
 
     public void OpenSegment()
     {
-        idText.text = id.ToString();
+        idText.text = Id.ToString();
 
-        defaultHeader.SetActive(isDefault);
-        timeInput.SetActive(!isDefault);
+        defaultHeader.SetActive(Default);
+        timeInput.SetActive(!Default);
 
-        if(!isDefault)
+        if(!Default)
         {
-            startTimeInput.inputField.text  = TimeSpan.FromSeconds(startTime).Hours.ToString();
-            endTimeInput.inputField.text    = TimeSpan.FromSeconds(endTime).Hours.ToString();
+            startTimeInput.inputField.text  = TimeSpan.FromSeconds(StartTime).Hours.ToString();
+            endTimeInput.inputField.text    = TimeSpan.FromSeconds(EndTime).Hours.ToString();
         }
 
         gameObject.SetActive(true);
     }
 
+    public void UpdateStartTime()
+    {
+        StartTime = int.Parse(startTimeInput.inputField.text) * TimeManager.secondsInHour;
+
+        CheckTime();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateEndTime()
+    {
+        EndTime = int.Parse(endTimeInput.inputField.text) * TimeManager.secondsInHour + (TimeManager.secondsInHour - 1);
+
+        CheckTime();
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void SetSearchResult(IElementData elementData) { }
+
     public void CloseSegment()
     {
         gameObject.SetActive(false);
     }
-
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
 }

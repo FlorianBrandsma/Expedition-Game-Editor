@@ -201,7 +201,7 @@ public class Search
         public List<int> interactableId = new List<int>();
         public List<int> modelId = new List<int>();
 
-        public int isDefault = -1;
+        public bool? isDefault = null;
 
         public List<int> interactionIndex = new List<int>();
 
@@ -294,6 +294,8 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> phaseId = new List<int>();
+
+        public Enums.RegionType type;
 
         public enum RequestType
         {

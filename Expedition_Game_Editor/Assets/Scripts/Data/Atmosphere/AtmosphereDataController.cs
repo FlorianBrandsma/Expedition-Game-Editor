@@ -10,10 +10,8 @@ public class AtmosphereDataController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 
     public Data Data                            { get; set; }
-
     public Enums.DataType DataType              { get { return Enums.DataType.Atmosphere; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
-    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -36,13 +34,14 @@ public class AtmosphereDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = AtmosphereDataManager.GetData(searchProperties)
+            dataList = AtmosphereDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

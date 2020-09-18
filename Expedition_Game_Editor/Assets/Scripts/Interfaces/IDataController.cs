@@ -14,6 +14,6 @@ public interface IDataController
 
     void InitializeController();
     void GetData(SearchProperties searchProperties);
-    void SetData(DataElement currentDataElement, IElementData resultElementData);
+    void SetData(IElementData searchElementData, IElementData resultElementData);
     void ToggleElement(EditorElement editorElement);
 }

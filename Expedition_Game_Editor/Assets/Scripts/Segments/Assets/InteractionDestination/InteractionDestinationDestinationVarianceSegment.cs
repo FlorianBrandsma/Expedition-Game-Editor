@@ -10,28 +10,16 @@ public class InteractionDestinationDestinationVarianceSegment : MonoBehaviour, I
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float PositionVariance
+    public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
+
+    #region Data properties
+    private float PositionVariance
     {
-        get { return positionVariance; }
-        set
-        {
-            positionVariance = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.PositionVariance = value;
-            });
-        }
+        get { return InteractionDestinationEditor.PositionVariance; }
+        set { InteractionDestinationEditor.PositionVariance = value; }
     }
-
-    public void UpdatePositionVariance()
-    {
-        PositionVariance = positionVarianceInputField.Value;
-        
-        DataEditor.UpdateEditor();
-    }
-
+    #endregion
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -40,14 +28,7 @@ public class InteractionDestinationDestinationVarianceSegment : MonoBehaviour, I
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
-
-        positionVariance = interactionDestinationData.PositionVariance;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment() { }
 
@@ -58,7 +39,14 @@ public class InteractionDestinationDestinationVarianceSegment : MonoBehaviour, I
         gameObject.SetActive(true);
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void UpdatePositionVariance()
+    {
+        PositionVariance = positionVarianceInputField.Value;
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void CloseSegment() { }
 }

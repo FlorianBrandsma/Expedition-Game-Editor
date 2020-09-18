@@ -14,6 +14,11 @@ public class ObjectiveElementData : ObjectiveData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
+
     public bool ChangedName
     {
         get { return Name != OriginalData.Name; }
@@ -43,7 +48,23 @@ public class ObjectiveElementData : ObjectiveData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        ObjectiveDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
+
+    public void UpdateIndex()
+    {
+        if (!ChangedIndex) return;
+
+        ObjectiveDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
 
     public void UpdateSearch() { }
 

@@ -37,7 +37,7 @@ public class LayoutSection : MonoBehaviour
             if (PreviousTargetControllerData == null && TargetController.PathController.route.data != null)
                 return false;
 
-            if (PreviousTargetControllerData != null && !TargetController.PathController.route.ElementData.Equals(PreviousTargetControllerData))
+            if (PreviousTargetControllerData != null && !DataManager.Equals(TargetController.PathController.route.ElementData, PreviousTargetControllerData))
                 return false;
 
             return true;

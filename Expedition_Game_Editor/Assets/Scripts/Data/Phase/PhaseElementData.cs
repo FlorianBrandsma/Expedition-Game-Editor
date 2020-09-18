@@ -14,6 +14,11 @@ public class PhaseElementData : PhaseData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
+
     public bool ChangedName
     {
         get { return Name != OriginalData.Name; }
@@ -26,17 +31,17 @@ public class PhaseElementData : PhaseData, IElementData
 
     public bool ChangedDefaultPositionX
     {
-        get { return DefaultPositionX != OriginalData.DefaultPositionX; }
+        get { return !Mathf.Approximately(DefaultPositionX, OriginalData.DefaultPositionX); }
     }
 
     public bool ChangedDefaultPositionY
     {
-        get { return DefaultPositionY != OriginalData.DefaultPositionY; }
+        get { return !Mathf.Approximately(DefaultPositionY, OriginalData.DefaultPositionY); }
     }
 
     public bool ChangedDefaultPositionZ
     {
-        get { return DefaultPositionZ != OriginalData.DefaultPositionZ; }
+        get { return !Mathf.Approximately(DefaultPositionZ, OriginalData.DefaultPositionZ); }
     }
 
     public bool ChangedDefaultRotationX
@@ -81,7 +86,23 @@ public class PhaseElementData : PhaseData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        PhaseDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
+
+    public void UpdateIndex()
+    {
+        if (!ChangedIndex) return;
+
+        PhaseDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
 
     public void UpdateSearch() { }
 

@@ -4,17 +4,50 @@ using System.Linq;
 
 public class TaskSaveEditor : MonoBehaviour, IEditor
 {
-    public TaskSaveData taskSaveData;
+    private TaskSaveData taskSaveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == taskSaveData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == taskSaveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
+
+    #region Data properties
+    public int Id
+    {
+        get { return taskSaveData.Id; }
+    }
     
+    public bool Complete
+    {
+        get { return taskSaveData.Complete; }
+        set
+        {
+            taskSaveData.Complete = value;
+
+            DataList.ForEach(x => ((TaskSaveElementData)x).Complete = value);
+        }
+    }
+
+    public string Name
+    {
+        get { return taskSaveData.Name; }
+    }
+
+    public string PublicNotes
+    {
+        get { return taskSaveData.PublicNotes; }
+    }
+
+    public string PrivateNotes
+    {
+        get { return taskSaveData.PrivateNotes; }
+    }
+    #endregion
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -32,7 +65,10 @@ public class TaskSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        taskSaveData = (TaskSaveData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

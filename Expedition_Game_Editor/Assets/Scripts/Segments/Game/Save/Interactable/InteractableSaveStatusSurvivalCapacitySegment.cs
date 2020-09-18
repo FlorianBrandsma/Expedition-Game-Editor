@@ -3,30 +3,30 @@ using UnityEngine.UI;
 
 public class InteractableSaveStatusSurvivalCapacitySegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public Text healthText, hungerText, thirstText;
-    #endregion
 
-    #region Data Variables
-    private int health;
-    private int hunger;
-    private int thirst;
-    #endregion
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    #region Methods
-    public void SetSizeValues()
+    public InteractableSaveEditor InteractableSaveEditor { get { return (InteractableSaveEditor)DataEditor; } }
+
+    #region Data properties
+    private int Health
     {
-        healthText.text = (health).ToString();
-        hungerText.text = (hunger).ToString();
-        thirstText.text = (thirst).ToString();
+        get { return InteractableSaveEditor.Health; }
+    }
+
+    private int Hunger
+    {
+        get { return InteractableSaveEditor.Hunger; }
+    }
+
+    private int Thirst
+    {
+        get { return InteractableSaveEditor.Thirst; }
     }
     #endregion
 
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -35,26 +35,23 @@ public class InteractableSaveStatusSurvivalCapacitySegment : MonoBehaviour, ISeg
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment()
     {
         SetSizeValues();
     }
 
-    public void InitializeData()
+    public void SetSizeValues()
     {
-        if (DataEditor.Loaded) return;
-
-        var interactableSaveData = (InteractableSaveElementData)DataEditor.ElementData;
-
-        health = interactableSaveData.Health;
-        hunger = interactableSaveData.Hunger;
-        thirst = interactableSaveData.Thirst;
+        healthText.text = (Health).ToString();
+        hungerText.text = (Hunger).ToString();
+        thirstText.text = (Thirst).ToString();
     }
-
-    public void OpenSegment() { }
     
-    public void CloseSegment() { }
+    public void OpenSegment() { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void CloseSegment() { }
 }

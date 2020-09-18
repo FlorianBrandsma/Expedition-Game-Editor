@@ -4,11 +4,11 @@ using System.Linq;
 
 public class AtmosphereEditor : MonoBehaviour, IEditor
 {
-    public AtmosphereData atmosphereData;
+    private AtmosphereData atmosphereData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == atmosphereData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == atmosphereData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -31,61 +31,137 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
             return list;
         }
     }
-    
-    public void InitializeEditor() { }
 
-    public void OpenEditor() { }
-
-    public void UpdateEditor()
+    #region Data properties
+    public int Id
     {
-        SetEditor();
+        get { return atmosphereData.Id; }
     }
 
-    public void SetEditor()
+    public bool Default
+    {
+        get { return atmosphereData.Default; }
+    }
+
+    public int StartTime
+    {
+        get { return atmosphereData.StartTime; }
+        set
+        {
+            atmosphereData.StartTime = value;
+
+            DataList.ForEach(x => ((AtmosphereElementData)x).StartTime = value);
+        }
+    }
+
+    public int EndTime
+    {
+        get { return atmosphereData.EndTime; }
+        set
+        {
+            atmosphereData.EndTime = value;
+
+            DataList.ForEach(x => ((AtmosphereElementData)x).EndTime = value);
+        }
+    }
+    
+    public string PublicNotes
+    {
+        get { return atmosphereData.PublicNotes; }
+        set
+        {
+            atmosphereData.PublicNotes = value;
+
+            DataList.ForEach(x => ((AtmosphereElementData)x).PublicNotes = value);
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return atmosphereData.PrivateNotes; }
+        set
+        {
+            atmosphereData.PrivateNotes = value;
+
+            DataList.ForEach(x => ((AtmosphereElementData)x).PrivateNotes = value);
+        }
+    }
+    
+    public string TerrainName
+    {
+        get { return atmosphereData.TerrainName; }
+    }
+
+    public string RegionName
+    {
+        get { return atmosphereData.RegionName; }
+    }
+
+    public string IconPath
+    {
+        get { return atmosphereData.IconPath; }
+    }
+
+    public string BaseTilePath
+    {
+        get { return atmosphereData.BaseTilePath; }
+    }
+
+    public bool TimeConflict
+    {
+        get { return atmosphereData.TimeConflict; }
+        set
+        {
+            atmosphereData.TimeConflict = value;
+
+            DataList.ForEach(x => ((AtmosphereElementData)x).TimeConflict = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        atmosphereData = (AtmosphereData)ElementData.Clone();
+    }
+
+    public void OpenEditor()
+    {
+        StartTime       = atmosphereData.StartTime;
+        EndTime         = atmosphereData.EndTime;
+
+        PublicNotes     = atmosphereData.PublicNotes;
+        PrivateNotes    = atmosphereData.PrivateNotes;
+
+        TimeConflict    = atmosphereData.TimeConflict;
+    }
+
+    public void UpdateEditor()
     {
         PathController.layoutSection.SetActionButtons();
     }
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed) && !atmosphereData.TimeConflict;
+        return ElementDataList.Any(x => x.Changed) && !TimeConflict;
     }
-
-    //public void ApplyChanges()
-    //{
-    //    var changedTime = AtmosphereData.ChangedStartTime || AtmosphereData.ChangedEndTime;
-
-    //    AtmosphereData.Update();
-
-    //    //If time was changed, reset the entire editor so that the atmosphere segment may reload.
-    //    //Elements don't need to be updated as the reset takes care of that.
-    //    if (changedTime)
-    //    {
-    //        RenderManager.ResetPath(true);
-
-    //    } else {
-
-    //        ElementDataList.ForEach(x =>
-    //        {
-    //            if (DataManager.Equals(x, AtmosphereData))
-    //                x.Copy(AtmosphereData);
-    //            else
-    //                x.Update();
-
-    //            if (SelectionElementManager.SelectionActive(x.DataElement))
-    //                x.DataElement.UpdateElement();
-    //        });
-
-    //        UpdateEditor();
-    //    }
-    //}
 
     public void ApplyChanges()
     {
+        var changedTime =   ((AtmosphereElementData)EditData).ChangedStartTime || 
+                            ((AtmosphereElementData)EditData).ChangedEndTime;
+
         EditData.Update();
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
+        if (changedTime)
+        {
+            Data.dataList = Data.dataList.OrderByDescending(x => ((AtmosphereElementData)x).Default).ThenBy(x => ((AtmosphereElementData)x).StartTime).ToList();
+            SelectionElementManager.UpdateElements(ElementData);
+
+        } else {
+
+            if (SelectionElementManager.SelectionActive(EditData.DataElement))
+                EditData.DataElement.UpdateElement();
+        }
 
         UpdateEditor();
     }

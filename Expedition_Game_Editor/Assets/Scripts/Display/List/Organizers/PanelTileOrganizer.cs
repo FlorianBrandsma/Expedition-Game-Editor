@@ -64,6 +64,8 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             panelTile.EditorElement.DataElement.Data = DataController.Data;
             panelTile.EditorElement.DataElement.Id = elementData.Id;
 
+            panelTile.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+
             panelTile.GetComponent<ExPanelTile>().InitializeChildElement();
 
             //Debugging

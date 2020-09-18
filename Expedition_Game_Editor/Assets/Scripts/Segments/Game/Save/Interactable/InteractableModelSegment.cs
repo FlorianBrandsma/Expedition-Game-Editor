@@ -1,21 +1,16 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 
 public class InteractableModelSegment : MonoBehaviour, ISegment
 {
     private ModelElementData modelElementData;
+    
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    private ModelDataController ModelDataController { get { return GetComponent<ModelDataController>(); } }
 
     public void InitializeDependencies() { }
-
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
 
     public void InitializeData()
     {
@@ -32,19 +27,28 @@ public class InteractableModelSegment : MonoBehaviour, ISegment
             default: Debug.Log("CASE MISSING: " + dataType); break;
         }
 
-#warning Looks bad with new method
-        SegmentController.DataController.Data.dataList = new List<IElementData>() { modelElementData };
+        ModelDataController.Data = new Data()
+        {
+            dataController = ModelDataController,
+            dataList = new List<IElementData>() { modelElementData }
+        };
+        
     }
 
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+    
     private void InitializeInteractableSaveData()
     {
         var interactableSaveElementData = (InteractableSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.InteractableSave).ElementData;
 
         modelElementData = new ModelElementData()
         {
-            Id = interactableSaveElementData.ModelId,
-            Path = interactableSaveElementData.ModelPath,
-            IconPath = interactableSaveElementData.ModelIconPath
+            Id          = interactableSaveElementData.ModelId,
+            Path        = interactableSaveElementData.ModelPath,
+            IconPath    = interactableSaveElementData.ModelIconPath
         };
     }
 
@@ -54,7 +58,7 @@ public class InteractableModelSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }
 }

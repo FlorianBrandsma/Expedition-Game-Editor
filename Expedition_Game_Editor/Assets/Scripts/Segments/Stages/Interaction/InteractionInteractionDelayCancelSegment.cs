@@ -7,57 +7,30 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
     public ExToggle cancelDelayOnMovementToggle;
     public ExToggle cancelDelayOnHitToggle;
 
-    private bool cancelDelayOnInput;
-    private bool cancelDelayOnMovement;
-    private bool cancelDelayOnHit;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+
+    #region Data properties
     public bool CancelDelayOnInput
     {
-        get { return cancelDelayOnInput; }
-        set
-        {
-            cancelDelayOnInput = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.CancelDelayOnInput = cancelDelayOnInput;
-            });
-        }
+        get { return InteractionEditor.CancelDelayOnInput; }
+        set { InteractionEditor.CancelDelayOnInput = value; }
     }
 
     public bool CancelDelayOnMovement
     {
-        get { return cancelDelayOnMovement; }
-        set
-        {
-            cancelDelayOnMovement = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.CancelDelayOnMovement = cancelDelayOnMovement;
-            });
-        }
+        get { return InteractionEditor.CancelDelayOnMovement; }
+        set { InteractionEditor.CancelDelayOnMovement = value; }
     }
 
     public bool CancelDelayOnHit
     {
-        get { return cancelDelayOnHit; }
-        set
-        {
-            cancelDelayOnHit = value;
-
-            var interactionDataList = DataEditor.DataList.Cast<InteractionElementData>().ToList();
-            interactionDataList.ForEach(interactionData =>
-            {
-                interactionData.CancelDelayOnHit = cancelDelayOnHit;
-            });
-        }
+        get { return InteractionEditor.CancelDelayOnHit; }
+        set { InteractionEditor.CancelDelayOnHit = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -67,16 +40,18 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
+    public void InitializeData() { }
+    
+    public void InitializeSegment() { }
+
+    public void OpenSegment()
     {
-        if (DataEditor.Loaded) return;
-
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        cancelDelayOnInput = interactionData.CancelDelayOnInput;
-        cancelDelayOnMovement = interactionData.CancelDelayOnMovement;
-        cancelDelayOnHit = interactionData.CancelDelayOnHit;
+        cancelDelayOnInputToggle.Toggle.isOn = CancelDelayOnInput;
+        cancelDelayOnMovementToggle.Toggle.isOn = CancelDelayOnMovement;
+        cancelDelayOnHitToggle.Toggle.isOn = CancelDelayOnHit;
     }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateCancelDelayOnInput()
     {
@@ -98,17 +73,6 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-
-    public void InitializeSegment() { }
-
-    public void OpenSegment()
-    {
-        cancelDelayOnInputToggle.Toggle.isOn = cancelDelayOnInput;
-        cancelDelayOnMovementToggle.Toggle.isOn = cancelDelayOnMovement;
-        cancelDelayOnHitToggle.Toggle.isOn = cancelDelayOnHit;
-    }
-
+    
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

@@ -24,16 +24,18 @@ public static class ObjectiveSaveDataManager
                     select new ObjectiveSaveElementData()
                     {
                         Id = objectiveSaveData.Id,
-                        Index = objectiveSaveData.Index,
-
+                        
                         QuestSaveId = objectiveSaveData.QuestSaveId,
                         ObjectiveId = objectiveSaveData.ObjectiveId,
 
                         Complete = objectiveSaveData.Complete,
 
+                        Index = objectiveData.Index,
+
                         Name = objectiveData.Name,
 
-                        PublicNotes = objectiveData.PublicNotes
+                        PublicNotes = objectiveData.PublicNotes,
+                        PrivateNotes = objectiveData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -54,7 +56,6 @@ public static class ObjectiveSaveDataManager
             var objectiveSaveData = new ObjectiveSaveBaseData();
 
             objectiveSaveData.Id = objectiveSave.Id;
-            objectiveSaveData.Index = objectiveSave.Index;
 
             objectiveSaveData.QuestSaveId = objectiveSave.QuestSaveId;
             objectiveSaveData.ObjectiveId = objectiveSave.ObjectiveId;

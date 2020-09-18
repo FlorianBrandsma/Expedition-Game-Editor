@@ -6,40 +6,50 @@ using System.Linq;
 
 public class TerrainHeaderSegment : MonoBehaviour, ISegment
 {
-    private TerrainElementData TerrainData { get { return (TerrainElementData)DataEditor.ElementData; } }
+    public IconDataController iconDataController;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-    
-    #region UI
-    public EditorElement editorElement;
+    public EditorElement iconEditorElement;
     public InputField inputField;
     public Text idText;
-    #endregion
+    
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+    
+    private TerrainEditor TerrainEditor         { get { return (TerrainEditor)DataEditor; } }
 
-    #region Methods
-    public void UpdateName()
+    private IconElementData IconElementData   { get { return (IconElementData)iconEditorElement.DataElement.ElementData; } }
+
+    #region Data properties
+    private int Id
     {
-        var terrainData = (TerrainElementData)DataEditor.ElementData;
-        terrainData.Name = inputField.text;
-        
-        DataEditor.UpdateEditor();
+        get { return TerrainEditor.Id; }
     }
 
-    private void UpdateIcon(IconElementData iconElementData)
+    private int IconId
     {
-        var terrainData = (TerrainElementData)DataEditor.ElementData;
-
-        terrainData.IconId = iconElementData.Id;
-        terrainData.IconPath = iconElementData.Path;
-
-        DataEditor.UpdateEditor();
+        get { return TerrainEditor.IconId; }
+        set { TerrainEditor.IconId = value; }
     }
 
+    private string Name
+    {
+        get { return TerrainEditor.Name; }
+        set { TerrainEditor.Name = value; }
+    }
+
+    private string IconPath
+    {
+        get { return TerrainEditor.IconPath; }
+        set { TerrainEditor.IconPath = value; }
+    }
+
+    private string BaseTilePath
+    {
+        get { return TerrainEditor.BaseTilePath; }
+        set { TerrainEditor.BaseTilePath = value; }
+    }
     #endregion
 
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -48,67 +58,93 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment()
     {
-        editorElement.DataElement.InitializeElement(editorElement.GetComponent<IDataController>());
+        var iconElementData = new IconElementData()
+        {
+            Id = IconId,
+            Path = IconPath,
+            BaseIconPath = BaseTilePath,
+            DataElement = iconEditorElement.DataElement
+        };
+
+        iconElementData.SetOriginalValues();
+
+        var iconData = new Data();
+
+        iconData.dataController = iconDataController;
+        iconData.dataList = new List<IElementData>() { iconElementData };
+        iconData.searchProperties = iconDataController.SearchProperties;
+
+        iconEditorElement.DataElement.Data = iconData;
+        iconEditorElement.DataElement.Id = IconId;
+
+        SetIconData();
+
+        iconEditorElement.DataElement.InitializeElement();
     }
     
-    public void InitializeData() { }
+    private void SetIconData()
+    {
+        iconDataController.Data = iconEditorElement.DataElement.Data;
+
+        IconElementData.Id = IconId;
+        IconElementData.Path = IconPath;
+        IconElementData.BaseIconPath = BaseTilePath;
+    }
 
     public void OpenSegment()
     {
+        idText.text = Id.ToString();
+        inputField.text = Name;
+
+        SelectionElementManager.Add(iconEditorElement);
+        SelectionManager.SelectData(iconEditorElement.DataElement.Data.dataList);
+
+        iconEditorElement.DataElement.SetElement();
+        iconEditorElement.SetOverlay();
+
         gameObject.SetActive(true);
-
-        idText.text = TerrainData.Id.ToString();
-        inputField.text = TerrainData.Name;
-
-        var iconElementData = new IconElementData();
-
-        iconElementData.Id              = TerrainData.IconId;
-        iconElementData.Path            = TerrainData.IconPath;
-        iconElementData.BaseIconPath    = TerrainData.BaseTilePath;
-
-        iconElementData.DataElement = editorElement.DataElement;
-
-        editorElement.DataElement.Data.dataList = new List<IElementData>() { iconElementData };
-        editorElement.DataElement.Id = iconElementData.Id;
-
-        SelectionElementManager.Add(editorElement);
-        SelectionManager.SelectData(editorElement.DataElement.Data.dataList);
-
-        var searchProperties = SegmentController.DataController.SearchProperties;
-
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
-        searchParameters.category = Enum.GetValues(typeof(Enums.IconCategory)).Cast<int>().ToList();
-
-        editorElement.DataElement.Data.searchProperties = searchProperties;
-
-        editorElement.DataElement.SetElement();
-
-        editorElement.SetOverlay(); 
     }
 
-    public void CloseSegment()
+    public void SetSearchResult(IElementData elementData)
     {
-        SelectionElementManager.elementPool.Remove(editorElement);
-
-        gameObject.SetActive(false);
-    }
-
-    public void SetSearchResult(DataElement dataElement)
-    {
-        switch (dataElement.Data.dataController.DataType)
+        switch (elementData.DataType)
         {
             case Enums.DataType.Icon:
 
-                var iconElementData = (IconElementData)dataElement.ElementData;
-
+                var iconElementData = (IconElementData)elementData;
                 UpdateIcon(iconElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + dataElement.Data.dataController.DataType); break;
+            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
         }
     }
-    #endregion
+
+    public void UpdateIcon(IconElementData iconElementData)
+    {
+        IconId = iconElementData.Id;
+        IconPath = iconElementData.Path;
+
+        SetIconData();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateName()
+    {
+        Name = inputField.text;
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment()
+    {
+        SelectionElementManager.elementPool.Remove(iconEditorElement);
+
+        gameObject.SetActive(false);
+    }
 }

@@ -1,22 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 using System.Collections.Generic;
 
 public class AssetHeaderSegment : MonoBehaviour, ISegment
 {
-    public ModelDataController modelController;
-    private ModelElementData ModelElementData { get { return (ModelElementData)iconEditorElement.DataElement.ElementData; } }
-
+    public ModelDataController modelDataController;
+    
     public ExIndexSwitch indexSwitch;
     public EditorElement iconEditorElement;
     public InputField inputField;
     public Text idText;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public int Id
+    private ModelElementData ModelElementData   { get { return (ModelElementData)iconEditorElement.DataElement.ElementData; } }
+
+    #region Data properties
+    private int Id
     {
         get
         {
@@ -25,12 +26,15 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).Id;
 
-                default: return -1;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Id;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
     }
 
-    public int Index
+    private int Index
     {
         get
         {
@@ -39,12 +43,15 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).Index;
 
-                default: return -1;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Index;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
     }
 
-    public string Name
+    private string Name
     {
         get
         {
@@ -53,7 +60,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).Name;
 
-                default: return "Error";
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Name;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
         set
@@ -63,23 +73,23 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
                     itemEditor.Name = value;
 
                     break;
 
                 case Enums.DataType.Interactable:
 
-                    var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-                    interactableData.Name = value;
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.Name = value;
 
                     break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public int ModelId
+    private int ModelId
     {
         get
         {
@@ -88,7 +98,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).ModelId;
 
-                default: return -1;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).ModelId;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
         set
@@ -98,15 +111,23 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
                     itemEditor.ModelId = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.ModelId = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public string ModelPath
+    private string ModelPath
     {
         get
         {
@@ -115,7 +136,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).ModelPath;
 
-                default: return "Error";
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).ModelPath;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
         set
@@ -125,15 +149,23 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
                     itemEditor.ModelPath = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.ModelPath = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public string ModelIconPath
+    private string ModelIconPath
     {
         get
         {
@@ -142,7 +174,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
                     return ((ItemEditor)DataEditor).ModelIconPath;
 
-                default: return "Error";
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).ModelIconPath;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
         set
@@ -152,24 +187,35 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
                     itemEditor.ModelIconPath = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.ModelIconPath = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public float ModelHeight
+    private float Height
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelHeight;
+                    return ((ItemEditor)DataEditor).Height;
 
-                default: return -1;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Height;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
         set
@@ -179,24 +225,35 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
-                    itemEditor.ModelHeight = value;
+                    itemEditor.Height = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.Height = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public float ModelWidth
+    private float Width
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelWidth;
+                    return ((ItemEditor)DataEditor).Width;
 
-                default: return -1;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Width;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
         set
@@ -206,24 +263,35 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
-                    itemEditor.ModelWidth = value;
+                    itemEditor.Width = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.Width = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-    public float ModelDepth
+    private float Depth
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelDepth;
+                    return ((ItemEditor)DataEditor).Depth;
 
-                default: return 404;
+                case Enums.DataType.Interactable:
+                    return ((InteractableEditor)DataEditor).Depth;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
         set
@@ -233,39 +301,26 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Item:
 
                     var itemEditor = (ItemEditor)DataEditor;
-
-                    itemEditor.ModelDepth = value;
+                    itemEditor.Depth = value;
 
                     break;
+
+                case Enums.DataType.Interactable:
+
+                    var interactableEditor = (InteractableEditor)DataEditor;
+                    interactableEditor.Depth = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
-
-    public void UpdateName()
-    {
-        Name = inputField.text;
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateModel(ModelElementData modelElementData)
-    {
-        ModelId = modelElementData.Id;
-        ModelPath = modelElementData.Path;
-        ModelIconPath = modelElementData.IconPath;
-
-        ModelHeight = modelElementData.Height;
-        ModelWidth = modelElementData.Width;
-        ModelDepth = modelElementData.Depth;
-
-        SetModelData();
-        
-        DataEditor.UpdateEditor();
-    }
-
+    #endregion
+    
     public void InitializeDependencies()
     {
-        modelController.InitializeController();
+        modelDataController.InitializeController();
 
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
 
@@ -281,32 +336,40 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         switch (DataEditor.Data.dataController.DataType)
         {
-            case Enums.DataType.Item:           InitializeItemData();           break;
-            case Enums.DataType.Interactable:   InitializeInteractableData();   break;
+            case Enums.DataType.Item:           InitializeItemProperties();         break;
+            case Enums.DataType.Interactable:   InitializeInteractableProperties(); break;
         }
 
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, Index);
     }
 
-    private void InitializeItemData()
+    private void InitializeItemProperties()
     {
         GetComponent<ObjectProperties>().castShadow = false;
     }
 
-    private void InitializeInteractableData()
+    private void InitializeInteractableProperties()
     {
         GetComponent<ObjectProperties>().castShadow = true;
     }
 
     public void InitializeSegment()
     {
+        var modelElementData = new ModelElementData()
+        {
+            Id = ModelId,
+            DataElement = iconEditorElement.DataElement
+        };
+
+        modelElementData.SetOriginalValues();
+
         var modelData = new Data();
 
-        modelData.dataController = modelController;
-        modelData.dataList = new List<IElementData>() { new ModelElementData() { Id = ModelId, DataElement = iconEditorElement.DataElement } };
-        modelData.searchProperties = modelController.SearchProperties;
-
+        modelData.dataController = modelDataController;
+        modelData.dataList = new List<IElementData>() { modelElementData };
+        modelData.searchProperties = modelDataController.SearchProperties;
+        
         iconEditorElement.DataElement.Data = modelData;
         iconEditorElement.DataElement.Id = ModelId;
         
@@ -317,7 +380,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     
     private void SetModelData()
     {
-        modelController.Data = iconEditorElement.DataElement.Data;
+        modelDataController.Data = iconEditorElement.DataElement.Data;
 
         ModelElementData.Id = ModelId;
         ModelElementData.Path = ModelPath;
@@ -330,11 +393,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             indexSwitch.Activate();
 
         idText.text = Id.ToString();
-
         inputField.text = Name;
 
         SelectionElementManager.Add(iconEditorElement);
-
         SelectionManager.SelectData(iconEditorElement.DataElement.Data.dataList);
 
         iconEditorElement.DataElement.SetElement();
@@ -343,6 +404,43 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
+    public void SetSearchResult(IElementData elementData)
+    {
+        switch (elementData.DataType)
+        {
+            case Enums.DataType.Model:
+
+                var modelElementData = (ModelElementData)elementData;
+                UpdateModel(modelElementData);
+
+                break;
+
+            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+        }
+    }
+
+    public void UpdateModel(ModelElementData modelElementData)
+    {
+        ModelId = modelElementData.Id;
+        ModelPath = modelElementData.Path;
+        ModelIconPath = modelElementData.IconPath;
+
+        Height = modelElementData.Height;
+        Width = modelElementData.Width;
+        Depth = modelElementData.Depth;
+
+        SetModelData();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateName()
+    {
+        Name = inputField.text;
+
+        DataEditor.UpdateEditor();
+    }
+    
     public void CloseSegment()
     {
         if (indexSwitch != null)
@@ -351,21 +449,5 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         SelectionElementManager.elementPool.Remove(iconEditorElement);
 
         gameObject.SetActive(false);
-    }
-
-    public void SetSearchResult(DataElement dataElement)
-    {
-        switch(dataElement.Data.dataController.DataType)
-        {
-            case Enums.DataType.Model:
-
-                var modelElementData = (ModelElementData)dataElement.ElementData;
-
-                UpdateModel(modelElementData);
-                
-                break;
-
-            default: Debug.Log("CASE MISSING"); break;
-        }
     }
 }

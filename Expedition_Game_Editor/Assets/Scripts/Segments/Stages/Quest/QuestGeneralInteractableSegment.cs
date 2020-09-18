@@ -4,11 +4,11 @@ using System.Linq;
 
 public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
 {
-    private QuestEditor QuestEditor { get { return (QuestEditor)DataEditor; } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
-    
+    private QuestEditor QuestEditor             { get { return (QuestEditor)DataEditor; } }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -17,8 +17,6 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         if (DataEditor.Loaded) return;
@@ -26,7 +24,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
-        searchParameters.phaseId = new List<int>() { QuestEditor.questData.PhaseId };
+        searchParameters.phaseId = new List<int>() { QuestEditor.PhaseId };
 
         SegmentController.DataController.GetData(searchProperties);
 
@@ -42,7 +40,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         {
             var worldInteractableElementData = (WorldInteractableElementData)x;
 
-            if (worldInteractableElementData.QuestId == QuestEditor.questData.Id)
+            if (worldInteractableElementData.QuestId == QuestEditor.Id)
                 worldInteractableElementData.ElementStatus = Enums.ElementStatus.Enabled;
             else if (worldInteractableElementData.QuestId == 0)
                 worldInteractableElementData.ElementStatus = Enums.ElementStatus.Disabled;
@@ -51,16 +49,15 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         });
     }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement)
-    {
-        DataEditor.UpdateEditor();
-    }
+    public void CloseSegment() { }
 }

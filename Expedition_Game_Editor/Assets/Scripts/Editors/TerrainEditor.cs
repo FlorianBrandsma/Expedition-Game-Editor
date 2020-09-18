@@ -4,11 +4,11 @@ using System.Linq;
 
 public class TerrainEditor : MonoBehaviour, IEditor
 {
-    public TerrainData terrainData;
+    private TerrainData terrainData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == terrainData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == terrainData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,9 +32,76 @@ public class TerrainEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    #region Data properties
+    public int Id
+    {
+        get { return terrainData.Id; }
+    }
 
-    public void OpenEditor() { }
+    public int IconId
+    {
+        get { return terrainData.IconId; }
+        set
+        {
+            terrainData.IconId = value;
+
+            DataList.ForEach(x => ((TerrainElementData)x).IconId = value);
+        }
+    }
+
+    public int Index
+    {
+        get { return terrainData.Index; }
+    }
+    
+    public string Name
+    {
+        get { return terrainData.Name; }
+        set
+        {
+            terrainData.Name = value;
+
+            DataList.ForEach(x => ((TerrainElementData)x).Name = value);
+        }
+    }
+
+    public string IconPath
+    {
+        get { return terrainData.IconPath; }
+        set
+        {
+            terrainData.IconPath = value;
+
+            DataList.ForEach(x => ((TerrainElementData)x).IconPath = value);
+        }
+    }
+
+    public string BaseTilePath
+    {
+        get { return terrainData.BaseTilePath; }
+        set
+        {
+            terrainData.BaseTilePath = value;
+
+            DataList.ForEach(x => ((TerrainElementData)x).BaseTilePath = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        terrainData = (TerrainData)ElementData.Clone();
+    }
+
+    public void OpenEditor()
+    {
+        IconId = terrainData.IconId;
+        
+        Name = terrainData.Name;
+
+        IconPath = terrainData.IconPath;
+        BaseTilePath = terrainData.BaseTilePath;
+    }
 
     public void UpdateEditor()
     {
@@ -64,7 +131,7 @@ public class TerrainEditor : MonoBehaviour, IEditor
     public void CancelEdit()
     {
         ElementDataList.ForEach(x => x.ClearChanges());
-
+        
         Loaded = false;
     }
 

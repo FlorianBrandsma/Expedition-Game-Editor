@@ -51,7 +51,7 @@ public class InteractionElementData : InteractionData, IElementData
 
     public bool ChangedInteractionRange
     {
-        get { return InteractionRange != OriginalData.InteractionRange; }
+        get { return !Mathf.Approximately(InteractionRange, OriginalData.InteractionRange); }
     }
 
     public bool ChangedDelayMethod
@@ -109,7 +109,14 @@ public class InteractionElementData : InteractionData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        InteractionDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 

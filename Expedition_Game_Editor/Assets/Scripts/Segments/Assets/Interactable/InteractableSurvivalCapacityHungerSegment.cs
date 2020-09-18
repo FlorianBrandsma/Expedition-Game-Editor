@@ -1,49 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 
 public class InteractableSurvivalCapacityHungerSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    #region UI
     public ExInputNumber hungerInputNumber;
-    #endregion
 
-    #region Data Variables
-    private int hunger;
-    #endregion
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    #region Properties
-    public int Hunger
+    public InteractableEditor InteractableEditor    { get { return (InteractableEditor)DataEditor; } }
+
+    #region Data properties
+    private int Hunger
     {
-        get { return hunger; }
-        set
-        {
-            hunger = value;
-
-            var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
-            interactableDataList.ForEach(interactableData =>
-            {
-                interactableData.Hunger = value;
-            });
-        }
+        get { return InteractableEditor.Hunger; }
+        set { InteractableEditor.Hunger = value; }
     }
     #endregion
 
-    #region Methods
-    public void UpdateHunger()
-    {
-        Hunger = (int)hungerInputNumber.Value;
-
-        DataEditor.UpdateEditor();
-    }
-    #endregion
-
-    #region Segment
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -52,24 +25,23 @@ public class InteractableSurvivalCapacityHungerSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment() { }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        hunger = interactableData.Hunger;
-    }
-
+    
     public void OpenSegment()
     {
         hungerInputNumber.Value = Hunger;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void UpdateHunger()
+    {
+        Hunger = (int)hungerInputNumber.Value;
+
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment() { }
 }

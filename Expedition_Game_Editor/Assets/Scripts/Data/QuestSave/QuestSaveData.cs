@@ -2,6 +2,8 @@
 
 public class QuestSaveData : QuestSaveBaseData
 {
+    public int Index            { get; set; }
+
     public string Name          { get; set; }
 
     public string PublicNotes   { get; set; }
@@ -9,6 +11,8 @@ public class QuestSaveData : QuestSaveBaseData
 
     public override void GetOriginalValues(QuestSaveData originalData)
     {
+        Index           = originalData.Index;
+
         Name            = originalData.Name;
 
         PublicNotes     = originalData.PublicNotes;
@@ -20,7 +24,9 @@ public class QuestSaveData : QuestSaveBaseData
     public QuestSaveData Clone()
     {
         var data = new QuestSaveData();
-        
+
+        data.Index          = Index;
+
         data.Name           = Name;
 
         data.PublicNotes    = PublicNotes;
@@ -33,6 +39,8 @@ public class QuestSaveData : QuestSaveBaseData
 
     public virtual void Clone(QuestSaveElementData elementData)
     {
+        elementData.Index           = Index;
+
         elementData.Name            = Name;
 
         elementData.PublicNotes     = PublicNotes;

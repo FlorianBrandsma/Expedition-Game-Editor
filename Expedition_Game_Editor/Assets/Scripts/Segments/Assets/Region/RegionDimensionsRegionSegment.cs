@@ -1,32 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData RegionElementData { get { return (RegionElementData)DataEditor.ElementData; } }
-
-    #region UI
     public ExInputNumber sizeInputNumber;
     public Text heightText;
-    #endregion
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    public void UpdateSize()
-    {
-        var regionDataList = DataEditor.DataList.Cast<RegionElementData>().ToList();
-        regionDataList.ForEach(regionData =>
-        {
-            regionData.RegionSize = (int)sizeInputNumber.Value;
-            heightText.text = regionData.RegionSize.ToString();
-        });
-
-        DataEditor.UpdateEditor();
-    }
     
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+
+    public RegionEditor RegionEditor            { get { return (RegionEditor)DataEditor; } }
+
+    public int RegionSize
+    {
+        get { return RegionEditor.RegionSize; }
+        set { RegionEditor.RegionSize = value; }
+    }
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -43,11 +33,26 @@ public class RegionDimensionsRegionSegment : MonoBehaviour, ISegment
     {
         SegmentController.EnableSegment(false);
 
-        sizeInputNumber.Value = RegionElementData.RegionSize;
-        heightText.text = RegionElementData.RegionSize.ToString();
+        sizeInputNumber.Value = RegionSize;
+
+        SetSizeValues();
     }
 
-    public void CloseSegment() { }
+    public void SetSizeValues()
+    {
+        heightText.text = RegionSize.ToString();
+    }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void UpdateSize()
+    {
+        RegionSize = (int)sizeInputNumber.Value;
+
+        SetSizeValues();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void CloseSegment() { }
 }

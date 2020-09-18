@@ -268,9 +268,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         StopAgent();
         
-        //GameElement.DataElement.data.elementData.DataElement = null;
-        //GameElement.DataElement.data.elementData = null;
-
+        GameElement.DataElement.ElementData.DataElement = null;
+        
         position = new Vector3();
         rotation = new Vector3();
 

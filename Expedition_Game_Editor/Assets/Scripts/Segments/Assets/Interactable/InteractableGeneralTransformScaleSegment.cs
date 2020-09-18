@@ -1,32 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 {
     public Text heightText, widthText, depthText;
     public ExInputNumber inputField;
 
-    private float scale;
+    public SegmentController SegmentController      { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                       { get; set; }
 
-    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                   { get; set; }
+    public InteractableEditor InteractableEditor    { get { return (InteractableEditor)DataEditor; } }
 
-    public float Scale
+    #region Data properties
+    private float Scale
     {
-        get { return scale; }
-        set
-        {
-            scale = value;
-
-            var interactableDataList = DataEditor.DataList.Cast<InteractableElementData>().ToList();
-            interactableDataList.ForEach(interactableData =>
-            {
-                interactableData.Scale = value;
-            });
-        }
+        get { return InteractableEditor.Scale; }
+        set { InteractableEditor.Scale = value; }
     }
-    
+
+    private float Height
+    {
+        get { return InteractableEditor.Height; }
+        set { InteractableEditor.Height = value; }
+    }
+
+    private float Width
+    {
+        get { return InteractableEditor.Width; }
+        set { InteractableEditor.Width = value; }
+    }
+
+    private float Depth
+    {
+        get { return InteractableEditor.Depth; }
+        set { InteractableEditor.Depth = value; }
+    }
+    #endregion
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -35,14 +45,7 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        scale = interactableData.Scale;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment()
     {
@@ -51,12 +54,19 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 
     public void SetSizeValues()
     {
-        var interactableData = (InteractableElementData)DataEditor.ElementData;
-
-        heightText.text = (interactableData.Height * scale).ToString();
-        widthText.text = (interactableData.Width * scale).ToString();
-        depthText.text = (interactableData.Depth * scale).ToString();
+        heightText.text = (Height * Scale).ToString();
+        widthText.text  = (Width * Scale).ToString();
+        depthText.text  = (Depth * Scale).ToString();
     }
+    
+    public void OpenSegment()
+    {
+        SetSizeValues();
+
+        inputField.Value = Scale;
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateScale()
     {
@@ -66,15 +76,6 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-
-    public void OpenSegment()
-    {
-        SetSizeValues();
-
-        inputField.Value = Scale;
-    }
-
+    
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

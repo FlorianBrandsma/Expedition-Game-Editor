@@ -34,26 +34,29 @@ public class TerrainTileDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TerrainTileDataManager.GetData(searchProperties)
+            dataList = TerrainTileDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var terrainTileData = (TerrainTileElementData)searchElement.ElementData;
+        var searchTerrainTileElementData = (TerrainTileElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Tile:
 
-                var resultElementData = (TileElementData)resultData;
+                var resultTileElementData = (TileElementData)resultElementData;
 
-                terrainTileData.TileId = resultElementData.Id;
-                terrainTileData.IconPath = resultElementData.Icon;
+                searchTerrainTileElementData.TileId     = resultTileElementData.Id;
+                searchTerrainTileElementData.IconPath   = resultTileElementData.Icon;
                 
                 break;
+
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

@@ -24,16 +24,18 @@ public static class ChapterSaveDataManager
                     select new ChapterSaveElementData()
                     {
                         Id = chapterSaveData.Id,
-                        Index = chapterSaveData.Index,
                         
                         SaveId = chapterSaveData.SaveId,
                         ChapterId = chapterSaveData.ChapterId,
 
                         Complete = chapterSaveData.Complete,
 
+                        Index = chapterData.Index,
+
                         Name = chapterData.Name,
 
-                        PublicNotes = chapterData.PublicNotes
+                        PublicNotes = chapterData.PublicNotes,
+                        PrivateNotes = chapterData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -54,7 +56,6 @@ public static class ChapterSaveDataManager
             var chapterSaveData = new ChapterSaveBaseData();
 
             chapterSaveData.Id = chapterSave.Id;
-            chapterSaveData.Index = chapterSave.Index;
 
             chapterSaveData.SaveId = chapterSave.SaveId;
             chapterSaveData.ChapterId = chapterSave.ChapterId;

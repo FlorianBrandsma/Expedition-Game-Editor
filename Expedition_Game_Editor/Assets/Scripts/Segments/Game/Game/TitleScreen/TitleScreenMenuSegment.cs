@@ -1,25 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TitleScreenMenuSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
-
     public Button continueButton;
     public Button newGameButton;
     public Button loadGameButton;
     public Button editorButton;
     public Button exitGameButton;
 
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+    
     public void InitializeDependencies() { }
-
-    public void InitializeSegment() { }
 
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
         InitializeEditorButton();
@@ -32,15 +30,9 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
         editorButton.gameObject.SetActive(true);
     }
 
-    public void ContinueGame()
-    {
-        
-    }
+    public void ContinueGame() { }
 
-    public void NewGame()
-    {
-
-    }
+    public void NewGame() { }
 
     public void LoadGame()
     {
@@ -59,9 +51,7 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
         GlobalManager.CloseApplication();
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

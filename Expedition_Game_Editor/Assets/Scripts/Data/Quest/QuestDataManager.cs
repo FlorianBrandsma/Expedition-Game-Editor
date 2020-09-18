@@ -74,7 +74,7 @@ public static class QuestDataManager
             data.PrivateNotes = elementData.PrivateNotes;
     }
 
-    static public void UpdateIndex(TaskElementData elementData)
+    static public void UpdateIndex(QuestElementData elementData)
     {
         var data = Fixtures.questList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 

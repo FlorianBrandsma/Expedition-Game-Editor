@@ -4,10 +4,10 @@ using System.Linq;
 
 public class PhaseSaveRegionsRegionSegment : MonoBehaviour, ISegment
 {
-    private PhaseSaveEditor PhaseSaveEditor { get { return (PhaseSaveEditor)DataEditor; } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    private PhaseSaveEditor PhaseSaveEditor     { get { return (PhaseSaveEditor)DataEditor; } }
 
     public void InitializeDependencies()
     {
@@ -17,8 +17,6 @@ public class PhaseSaveRegionsRegionSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         if (DataEditor.Loaded) return;
@@ -26,18 +24,22 @@ public class PhaseSaveRegionsRegionSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Region);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
-        searchParameters.phaseId = new List<int>() { PhaseSaveEditor.phaseSaveData.PhaseId };
+
+        searchParameters.phaseId = new List<int>() { PhaseSaveEditor.PhaseId };
+        searchParameters.type = Enums.RegionType.Game;
 
         SegmentController.DataController.GetData(searchProperties);
     }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }
 }

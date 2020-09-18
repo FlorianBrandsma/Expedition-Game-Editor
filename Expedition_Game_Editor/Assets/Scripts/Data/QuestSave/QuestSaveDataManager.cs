@@ -24,8 +24,7 @@ public static class QuestSaveDataManager
                     select new QuestSaveElementData()
                     {
                         Id = questSaveData.Id,
-                        Index = questSaveData.Index,
-
+                        
                         PhaseSaveId = questSaveData.PhaseSaveId,
                         QuestId = questSaveData.QuestId,
 
@@ -33,7 +32,10 @@ public static class QuestSaveDataManager
 
                         Name = questData.Name,
 
-                        PublicNotes = questData.PublicNotes
+                        Index = questData.Index,
+
+                        PublicNotes = questData.PublicNotes,
+                        PrivateNotes = questData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -54,13 +56,12 @@ public static class QuestSaveDataManager
             var questSaveData = new QuestSaveBaseData();
 
             questSaveData.Id = questSave.Id;
-            questSaveData.Index = questSave.Index;
 
             questSaveData.PhaseSaveId = questSave.PhaseSaveId;
             questSaveData.QuestId = questSave.QuestId;
 
             questSaveData.Complete = questSave.Complete;
-
+            
             questSaveDataList.Add(questSaveData);
         }
     }

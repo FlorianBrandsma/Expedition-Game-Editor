@@ -82,10 +82,6 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         if (selectionStatus == Enums.SelectionStatus.None || glow == null) return;
 
-        //Debug.Log(DataElement.ElementData.Id + ":" + selectionStatus + ":" + DataElement.ElementData.SelectionStatus);
-
-        //Debug.Log(this + ":" + selectionStatus + ":" + DataElement.ElementData.SelectionStatus);
-
         //Kind of a band-aid fix, but it works (for now)
         //Cancelling selection after changing index cancels all selections
         if (selectionStatus == DataElement.ElementData.SelectionStatus || DataElement.ElementData.SelectionStatus == Enums.SelectionStatus.Both)
@@ -156,12 +152,8 @@ public class EditorElement : MonoBehaviour, ISelectionElement
             case SelectionManager.Property.None: break;
 
             case SelectionManager.Property.Get:
-
-                var elementData = DataElement.ElementData;
-
                 RenderManager.Render(editorPath.path);
-
-                SelectionManager.SelectSearch(elementData);
+                SelectionManager.SelectSearch(DataElement.ElementData);
 
                 break;
 

@@ -4,14 +4,61 @@ using System.Linq;
 
 public class InteractableSaveEditor : MonoBehaviour, IEditor
 {
-    public InteractableSaveData interactableSaveData;
+    private InteractableSaveData interactableSaveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == interactableSaveData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == interactableSaveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
+
+    #region Data properties
+    public int Id
+    {
+        get { return interactableSaveData.Id; }
+    }
+
+    public string InteractableName
+    {
+        get { return interactableSaveData.InteractableName; }
+    }
+
+    public string ModelIconPath
+    {
+        get { return interactableSaveData.ModelIconPath; }
+    }
+
+    public int Health
+    {
+        get { return interactableSaveData.Health; }
+    }
+
+    public int Hunger
+    {
+        get { return interactableSaveData.Hunger; }
+    }
+
+    public int Thirst
+    {
+        get { return interactableSaveData.Thirst; }
+    }
+
+    public float Weight
+    {
+        get { return interactableSaveData.Weight; }
+    }
+
+    public float Speed
+    {
+        get { return interactableSaveData.Speed; }
+    }
+
+    public float Stamina
+    {
+        get { return interactableSaveData.Stamina; }
+    }
+    #endregion
 
     public bool Loaded { get; set; }
     
@@ -32,7 +79,10 @@ public class InteractableSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        interactableSaveData = (InteractableSaveData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

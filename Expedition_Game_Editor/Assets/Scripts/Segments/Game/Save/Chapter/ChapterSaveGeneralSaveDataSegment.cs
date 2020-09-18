@@ -1,42 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChapterSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
 {
-    private ChapterSaveElementData ChapterSaveData { get { return (ChapterSaveElementData)DataEditor.ElementData; } }
-
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public ExToggle completeToggle;
 
-    public void UpdateComplete()
-    {
-        ChapterSaveData.Complete = completeToggle.Toggle.isOn;
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-        DataEditor.UpdateEditor();
-    }
-
+    public ChapterSaveEditor ChapterSaveEditor { get { return (ChapterSaveEditor)DataEditor; } }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData() { }
 
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        completeToggle.Toggle.isOn = ChapterSaveData.Complete;
+        completeToggle.Toggle.isOn = ChapterSaveEditor.Complete;
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateComplete()
+    {
+        ChapterSaveEditor.Complete = completeToggle.Toggle.isOn;
+
+        DataEditor.UpdateEditor();
+    }
 
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

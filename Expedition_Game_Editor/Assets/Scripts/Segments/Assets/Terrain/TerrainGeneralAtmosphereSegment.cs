@@ -1,34 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
-using System.Collections;
-using System.Linq;
 
 public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public DataElement editButton;
 
-    public IEditor DataEditor { get; set; }
-
-    #region UI
-    public EditorElement editButton;
-    #endregion
-
-    #region Data Variables
-    #endregion
-
-    #region Methods
-    private void InitializeEditButton()
-    {
-        //Cut the path to the region
-        editButton.DataElement.Path = SegmentController.Path.TrimToLastType(Enums.DataType.Region);
-
-        //Take the data from the last selected terrain
-        editButton.DataElement.InitializeElement(SegmentController.Path.FindLastRoute(Enums.DataType.Terrain));
-    }
-    #endregion
-
-    #region Segment
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -37,17 +15,30 @@ public class TerrainGeneralAtmosphereSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
+    public void InitializeData() { }
+
     public void InitializeSegment()
     {
         InitializeEditButton();
     }
 
-    public void InitializeData() { }
+    private void InitializeEditButton()
+    {
+        //Take the data from the last selected terrain
+        var terrainRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Terrain);
+
+        editButton.Id = terrainRoute.id;
+        editButton.Data = terrainRoute.data;
+
+        //Cut the path to the region
+        editButton.Path = SegmentController.Path.TrimToLastType(Enums.DataType.Region);
+
+        editButton.InitializeElement();
+    }
 
     public void OpenSegment() { }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
-    #endregion
+    public void CloseSegment() { }
 }

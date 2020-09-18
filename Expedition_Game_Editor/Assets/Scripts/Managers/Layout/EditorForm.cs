@@ -59,6 +59,8 @@ public class EditorForm : MonoBehaviour
 
         if (activePath.routeList.Count == 0) return;
 
+        activeInPath = true;
+
         TimeManager.instance.PauseTime(pauseTime);
 
         //Flesh out the path and determine the target controller
@@ -75,7 +77,7 @@ public class EditorForm : MonoBehaviour
 
         path.type = Path.Type.Loaded;
 
-        activeInPath = true;
+        
     }
 
     public void OpenView()
@@ -246,7 +248,12 @@ public class EditorForm : MonoBehaviour
         if(pauseTime)
             TimeManager.instance.PauseTime(false);
 
-        RenderManager.Render(new Path(new List<Route>(), this));
+        Path path = new Path()
+        {
+            form = this
+        };
+
+        RenderManager.Render(path);
     }
     #endregion
 }

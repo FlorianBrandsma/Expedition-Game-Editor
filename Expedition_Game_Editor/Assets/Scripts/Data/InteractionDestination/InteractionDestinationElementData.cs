@@ -31,22 +31,22 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
 
     public bool ChangedPositionX
     {
-        get { return PositionX != OriginalData.PositionX; }
+        get { return !Mathf.Approximately(PositionX, OriginalData.PositionX); }
     }
 
     public bool ChangedPositionY
     {
-        get { return PositionY != OriginalData.PositionY; }
+        get { return !Mathf.Approximately(PositionY, OriginalData.PositionY); }
     }
 
     public bool ChangedPositionZ
     {
-        get { return PositionZ != OriginalData.PositionZ; }
+        get { return !Mathf.Approximately(PositionZ, OriginalData.PositionZ); }
     }
 
     public bool ChangedPositionVariance
     {
-        get { return PositionVariance != OriginalData.PositionVariance; }
+        get { return !Mathf.Approximately(PositionVariance, OriginalData.PositionVariance); }
     }
 
     public bool ChangedRotationX
@@ -76,7 +76,7 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
 
     public bool ChangedPatience
     {
-        get { return Patience != OriginalData.Patience; }
+        get { return !Mathf.Approximately(Patience, OriginalData.Patience); }
     }
 
     public bool Changed
@@ -91,7 +91,14 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        InteractionDestinationDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 

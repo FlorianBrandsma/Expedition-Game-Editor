@@ -34,34 +34,35 @@ public class ModelDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ModelDataManager.GetData(searchProperties)
+            dataList = ModelDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var modelData = (ModelElementData)searchElement.ElementData;
+        var searchModelElementData = (ModelElementData)searchElementData;
 
-        searchElement.Id = resultData.Id;
+        searchModelElementData.DataElement.Id = resultElementData.Id;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Model:
 
-                var resultElementData = (ModelElementData)resultData;
+                var resultModelElementData = (ModelElementData)resultElementData;
+                
+                searchModelElementData.Id       = resultModelElementData.Id;
+                searchModelElementData.IconId   = resultModelElementData.IconId;
+                searchModelElementData.Path     = resultModelElementData.Path;
+                searchModelElementData.Name     = resultModelElementData.Name;
 
-                modelData.Id = resultElementData.Id;
-                modelData.IconId = resultElementData.IconId;
-                modelData.Path = resultElementData.Path;
-                modelData.Name = resultElementData.Name;
+                searchModelElementData.Height   = resultModelElementData.Height;
+                searchModelElementData.Width    = resultModelElementData.Width;
+                searchModelElementData.Depth    = resultModelElementData.Depth;
 
-                modelData.Height = resultElementData.Height;
-                modelData.Width = resultElementData.Width;
-                modelData.Depth = resultElementData.Depth;
-
-                modelData.IconPath = resultElementData.IconPath;
+                searchModelElementData.IconPath = resultModelElementData.IconPath;
                 
                 break;
         }

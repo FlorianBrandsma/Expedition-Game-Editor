@@ -36,17 +36,17 @@ public class WorldObjectElementData : WorldObjectData, IElementData
 
     public bool ChangedPositionX
     {
-        get { return PositionX != OriginalData.PositionX; }
+        get { return !Mathf.Approximately(PositionX, OriginalData.PositionX); }
     }
 
     public bool ChangedPositionY
     {
-        get { return PositionY != OriginalData.PositionY; }
+        get { return !Mathf.Approximately(PositionY, OriginalData.PositionY); }
     }
 
     public bool ChangedPositionZ
     {
-        get { return PositionZ != OriginalData.PositionZ; }
+        get { return !Mathf.Approximately(PositionZ, OriginalData.PositionZ); }
     }
 
     public bool ChangedRotationX
@@ -66,7 +66,7 @@ public class WorldObjectElementData : WorldObjectData, IElementData
 
     public bool ChangedScale
     {
-        get { return Scale != OriginalData.Scale; }
+        get { return !Mathf.Approximately(Scale, OriginalData.Scale); }
     }
 
     public bool ChangedAnimation
@@ -86,7 +86,14 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        WorldObjectDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
 
     public void UpdateSearch() { }
 

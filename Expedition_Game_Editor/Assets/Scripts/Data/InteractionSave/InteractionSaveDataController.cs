@@ -10,10 +10,8 @@ public class InteractionSaveDataController : MonoBehaviour, IDataController
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     
     public Data Data                            { get; set; }
-
     public Enums.DataType DataType              { get { return Enums.DataType.InteractionSave; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
-    public List<IElementData> DataList          { get; set; }
 
     public SearchProperties SearchProperties
     {
@@ -36,13 +34,14 @@ public class InteractionSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = InteractionSaveDataManager.GetData(searchProperties)
+            dataList = InteractionSaveDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultDataElement) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

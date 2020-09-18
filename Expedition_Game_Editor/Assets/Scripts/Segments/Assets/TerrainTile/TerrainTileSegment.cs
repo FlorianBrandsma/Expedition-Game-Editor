@@ -10,26 +10,26 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
     private TerrainDataController       TerrainController       { get { return GetComponent<TerrainDataController>(); } }
     private TerrainTileDataController   TerrainTileController   { get { return GetComponent<TerrainTileDataController>(); } }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
     public void InitializeDependencies() { }
-
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
 
     public void InitializeData()
     {
         if (SegmentController.Loaded) return;
-        
+
         regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         GetTerrainData();
         GetTerrainTileData();
     }
 
+    public void InitializeSegment()
+    {
+        InitializeData();
+    }
+    
     private void GetTerrainData()
     {
         var searchProperties = new SearchProperties(Enums.DataType.Terrain);
@@ -56,10 +56,10 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = TerrainController;
     }
 
-    public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement)
+    public void SetSearchResult(IElementData elementData)
     {
-        dataElement.ElementData.Update(); 
+        elementData.Update();
     }
+
+    public void CloseSegment() { }
 }

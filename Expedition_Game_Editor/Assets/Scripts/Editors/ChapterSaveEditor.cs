@@ -4,17 +4,50 @@ using System.Linq;
 
 public class ChapterSaveEditor : MonoBehaviour, IEditor
 {
-    public ChapterSaveData chapterSaveData;
+    private ChapterSaveData chapterSaveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == chapterSaveData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == chapterSaveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
+
+    #region Data properties
+    public int Id
+    {
+        get { return chapterSaveData.Id; }
+    }
     
+    public bool Complete
+    {
+        get { return chapterSaveData.Complete; }
+        set
+        {
+            chapterSaveData.Complete = value;
+
+            DataList.ForEach(x => ((ChapterSaveElementData)x).Complete = value);
+        }
+    }
+
+    public string Name
+    {
+        get { return chapterSaveData.Name; }
+    }
+
+    public string PublicNotes
+    {
+        get { return chapterSaveData.PublicNotes; }
+    }
+
+    public string PrivateNotes
+    {
+        get { return chapterSaveData.PrivateNotes; }
+    }
+    #endregion
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -32,7 +65,10 @@ public class ChapterSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        chapterSaveData = (ChapterSaveData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

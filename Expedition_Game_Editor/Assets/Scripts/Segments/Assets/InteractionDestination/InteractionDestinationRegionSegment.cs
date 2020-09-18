@@ -8,12 +8,7 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
     public IEditor DataEditor                   { get; set; }
 
     public void InitializeDependencies() { }
-
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
-
+    
     public void InitializeData()
     {
         if (SegmentController.Loaded) return;
@@ -31,7 +26,14 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
         
         searchParameters.phaseId = new List<int>() { phaseId };
 
+        searchParameters.type = Enums.RegionType.InteractionDestination;
+
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    public void InitializeSegment()
+    {
+        InitializeData();
     }
 
     public void OpenSegment()
@@ -40,7 +42,7 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }
 }

@@ -29,10 +29,11 @@ public static class InteractableSaveDataManager
                     join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
                     select new InteractableSaveElementData()
                     {
-                        Id = interactableData.Id,
-                        Index = interactableData.Index,
-
+                        Id = interactableSaveData.Id,
+                        
                         ModelId = interactableData.ModelId,
+
+                        Index = interactableData.Index,
 
                         InteractableName = interactableData.Name,
 
@@ -69,7 +70,6 @@ public static class InteractableSaveDataManager
             var interactableSaveData = new InteractableSaveBaseData();
 
             interactableSaveData.Id = interactableSave.Id;
-            interactableSaveData.Index = interactableSave.Index;
 
             interactableSaveData.SaveId = interactableSave.SaveId;
             interactableSaveData.InteractableId = interactableSave.InteractableId;

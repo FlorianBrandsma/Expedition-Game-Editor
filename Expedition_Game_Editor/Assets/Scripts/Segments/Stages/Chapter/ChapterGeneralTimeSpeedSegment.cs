@@ -1,29 +1,21 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber timeSpeedInputNumber;
 
-    private float timeSpeed;
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public ChapterEditor ChapterEditor          { get { return (ChapterEditor)DataEditor; } }
 
-    public float TimeSpeed
+    #region Data properties
+    private float TimeSpeed
     {
-        get { return timeSpeed; }
-        set
-        {
-            timeSpeed = value;
-
-            var chapterDataList = DataEditor.DataList.Cast<ChapterElementData>().ToList();
-            chapterDataList.ForEach(chapterData =>
-            {
-                chapterData.TimeSpeed = timeSpeed;
-            });
-        }
+        get { return ChapterEditor.TimeSpeed; }
+        set { ChapterEditor.TimeSpeed = value; }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -33,14 +25,7 @@ public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var chapterData = (ChapterElementData)DataEditor.ElementData;
-
-        timeSpeed = chapterData.TimeSpeed;
-    }
+    public void InitializeData() { }
 
     public void InitializeSegment()
     {
@@ -49,8 +34,12 @@ public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
 
     private void InitializeDropdown()
     {
-        timeSpeedInputNumber.Value = timeSpeed;
+        timeSpeedInputNumber.Value = TimeSpeed;
     }
+    
+    public void OpenSegment() { }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdateTimeSpeed()
     {
@@ -58,10 +47,6 @@ public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-
-    public void OpenSegment() { }
-
+    
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

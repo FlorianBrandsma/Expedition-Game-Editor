@@ -1,75 +1,77 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour, ISegment
 {
     public ExInputNumber xInputField, yInputField, zInputField;
 
-    private float positionX, positionY, positionZ;
-    private int terrainTileId;
-
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public float PositionX
-    {
-        get { return positionX; }
-        set
-        {
-            positionX = value;
+    public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
 
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.PositionX = value;
-            });
-        }
+    #region Data properties
+    private float PositionX
+    {
+        get { return InteractionDestinationEditor.PositionX; }
+        set { InteractionDestinationEditor.PositionX = value; }
     }
 
-    public float PositionY
+    private float PositionY
     {
-        get { return positionY; }
-        set
-        {
-            positionY = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.PositionY = value;
-            });
-        }
+        get { return InteractionDestinationEditor.PositionY; }
+        set { InteractionDestinationEditor.PositionY = value; }
     }
 
-    public float PositionZ
+    private float PositionZ
     {
-        get { return positionZ; }
-        set
-        {
-            positionZ = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.PositionZ = value;
-            });
-        }
+        get { return InteractionDestinationEditor.PositionZ; }
+        set { InteractionDestinationEditor.PositionZ = value; }
     }
 
-    public int TerrainTileId
+    private int TerrainId
     {
-        get { return terrainTileId; }
-        set
-        {
-            terrainTileId = value;
-
-            var interactionDestinationDataList = DataEditor.DataList.Cast<InteractionDestinationElementData>().ToList();
-            interactionDestinationDataList.ForEach(interactionDestinationData =>
-            {
-                interactionDestinationData.TerrainTileId = value;
-            });
-        }
+        get { return InteractionDestinationEditor.TerrainId; }
+        set { InteractionDestinationEditor.TerrainId = value; }
     }
+
+    private int TerrainTileId
+    {
+        get { return InteractionDestinationEditor.TerrainTileId; }
+        set { InteractionDestinationEditor.TerrainTileId = value; }
+    }
+    #endregion
+    
+    public void InitializeDependencies()
+    {
+        DataEditor = SegmentController.EditorController.PathController.DataEditor;
+
+        if (!DataEditor.EditorSegments.Contains(SegmentController))
+            DataEditor.EditorSegments.Add(SegmentController);
+    }
+
+    public void InitializeData() { }
+
+    public void InitializeSegment()
+    {
+        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
+
+        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
+                                     regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
+
+        xInputField.max = regionSize.x;
+        yInputField.max = regionSize.y;
+    }
+    
+    public void OpenSegment()
+    {
+        xInputField.Value = PositionX;
+        yInputField.Value = PositionY;
+        zInputField.Value = PositionZ;
+
+        gameObject.SetActive(true);
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
 
     public void UpdatePositionX()
     {
@@ -100,54 +102,11 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
     {
         var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
 
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
-        TerrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
+        TerrainId = Fixtures.GetTerrain(regionId, PositionX, PositionZ);
+        TerrainTileId = Fixtures.GetTerrainTile(TerrainId, PositionX, PositionZ);
 
         DataEditor.UpdateEditor();
     }
 
-    public void InitializeDependencies()
-    {
-        DataEditor = SegmentController.EditorController.PathController.DataEditor;
-
-        if (!DataEditor.EditorSegments.Contains(SegmentController))
-            DataEditor.EditorSegments.Add(SegmentController);
-    }
-
-    public void InitializeData()
-    {
-        if (DataEditor.Loaded) return;
-
-        var interactionDestinationData = (InteractionDestinationElementData)DataEditor.ElementData;
-
-        positionX = interactionDestinationData.PositionX;
-        positionY = interactionDestinationData.PositionY;
-        positionZ = interactionDestinationData.PositionZ;
-        
-        terrainTileId = interactionDestinationData.TerrainTileId;
-    }
-
-    public void InitializeSegment()
-    {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
-
-        var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
-                                     regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
-
-        xInputField.max = regionSize.x;
-        yInputField.max = regionSize.y;
-    }
-    
-    public void OpenSegment()
-    {
-        xInputField.Value = PositionX;
-        yInputField.Value = PositionY;
-        zInputField.Value = PositionZ;
-
-        gameObject.SetActive(true);
-    }
-
     public void CloseSegment() { }
-
-    public void SetSearchResult(DataElement dataElement) { }
 }

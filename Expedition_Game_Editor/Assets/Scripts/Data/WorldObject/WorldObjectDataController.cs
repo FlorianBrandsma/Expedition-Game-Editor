@@ -34,34 +34,37 @@ public class WorldObjectDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = WorldObjectDataManager.GetData(searchProperties)
+            dataList = WorldObjectDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var worldObjectData = (WorldObjectElementData)searchElement.ElementData;
+        var searchWorldObjectElementData = (WorldObjectElementData)searchElementData;
         
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Model:
 
-                var resultElementData = (ModelElementData)resultData;
+                var resultModelElementData = (ModelElementData)resultElementData;
 
-                worldObjectData.ModelId = resultElementData.Id;
+                searchWorldObjectElementData.ModelId        = resultModelElementData.Id;
 
-                worldObjectData.ModelPath = resultElementData.Path;
+                searchWorldObjectElementData.ModelPath      = resultModelElementData.Path;
 
-                worldObjectData.ModelName = resultElementData.Name;
-                worldObjectData.ModelIconPath = resultElementData.IconPath;
+                searchWorldObjectElementData.ModelName      = resultModelElementData.Name;
+                searchWorldObjectElementData.ModelIconPath  = resultModelElementData.IconPath;
                 
-                worldObjectData.Height = resultElementData.Height;
-                worldObjectData.Width = resultElementData.Width;
-                worldObjectData.Depth = resultElementData.Depth;
+                searchWorldObjectElementData.Height         = resultModelElementData.Height;
+                searchWorldObjectElementData.Width          = resultModelElementData.Width;
+                searchWorldObjectElementData.Depth          = resultModelElementData.Depth;
 
                 break;
+
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

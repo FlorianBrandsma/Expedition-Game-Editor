@@ -34,25 +34,26 @@ public class ChapterRegionDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ChapterRegionDataManager.GetData(searchProperties)
+            dataList = ChapterRegionDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var chapterRegionData = (ChapterRegionElementData)searchElement.ElementData;
+        var searchChapterRegionElementData = (ChapterRegionElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Region:
 
-                var resultElementData = (RegionElementData)resultData;
+                var resultRegionElementData = (RegionElementData)resultElementData;
 
-                chapterRegionData.RegionId = resultElementData.Id;
-                chapterRegionData.Name = resultElementData.Name;
-                chapterRegionData.TileIconPath = resultElementData.TileIconPath;
+                searchChapterRegionElementData.RegionId     = resultRegionElementData.Id;
+                searchChapterRegionElementData.Name         = resultRegionElementData.Name;
+                searchChapterRegionElementData.TileIconPath = resultRegionElementData.TileIconPath;
 
                 break;
         }

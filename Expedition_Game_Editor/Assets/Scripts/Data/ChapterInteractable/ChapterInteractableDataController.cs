@@ -34,27 +34,30 @@ public class ChapterInteractableDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ChapterInteractableDataManager.GetData(searchProperties)
+            dataList = ChapterInteractableDataManager.GetData(searchProperties),
+            searchProperties = this.searchProperties
         };
 
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(DataElement searchElement, IElementData resultData)
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
-        var chapterInteractableData = (ChapterInteractableElementData)searchElement.ElementData;
+        var searchChapterInteractableElementData = (ChapterInteractableElementData)searchElementData;
 
-        switch (resultData.DataType)
+        switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:
 
-                var resultElementData = (InteractableElementData)resultData;
+                var resultInteractableElementData = (InteractableElementData)resultElementData;
 
-                chapterInteractableData.InteractableId = resultElementData.Id;
-                chapterInteractableData.InteractableName = resultElementData.Name;
-                chapterInteractableData.ModelIconPath = resultElementData.ModelIconPath;
+                searchChapterInteractableElementData.InteractableId     = resultInteractableElementData.Id;
+                searchChapterInteractableElementData.InteractableName   = resultInteractableElementData.Name;
+                searchChapterInteractableElementData.ModelIconPath      = resultInteractableElementData.ModelIconPath;
 
                 break;
+
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

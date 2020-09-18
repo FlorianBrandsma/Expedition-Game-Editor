@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour, ISegment
 {
-    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
 
     public void InitializeDependencies()
     {
@@ -26,7 +24,7 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
         var searchProperties = new SearchProperties(Enums.DataType.InteractionDestination);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
-        searchParameters.interactionId = new List<int>() { InteractionEditor.interactionData.Id };
+        searchParameters.interactionId = new List<int>() { InteractionEditor.Id };
 
         SegmentController.DataController.GetData(searchProperties);
     }
@@ -39,7 +37,7 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void CloseSegment() { }
 }

@@ -41,7 +41,7 @@ public static class RegionDataManager
                         RegionSize = regionData.RegionSize,
                         TerrainSize = regionData.TerrainSize,
 
-                        // type = regionController.regionType,
+                        Type = searchParameters.type,
 
                         TileSize = tileSetData.TileSize,
                         TileIconPath = tileData.First().tileData.IconPath

@@ -14,6 +14,11 @@ public class TaskElementData : TaskData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
+
     public bool ChangedName
     {
         get { return Name != OriginalData.Name; }
@@ -48,7 +53,23 @@ public class TaskElementData : TaskData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Update()
+    {
+        if (!Changed) return;
+
+        TaskDataManager.UpdateData(this);
+
+        SetOriginalValues();
+    }
+
+    public void UpdateIndex()
+    {
+        if (!ChangedIndex) return;
+
+        TaskDataManager.UpdateIndex(this);
+
+        OriginalData.Index = Index;
+    }
 
     public void UpdateSearch() { }
 

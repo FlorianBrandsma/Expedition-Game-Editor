@@ -20,6 +20,8 @@ public class EditorPath
             return;
         }
 
+        Debug.Log(editorElement.selectionProperty + " " + editorElement.DataElement.ElementData.DataType);
+
         switch (editorElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.Chapter:

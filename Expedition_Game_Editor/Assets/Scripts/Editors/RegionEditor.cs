@@ -4,11 +4,11 @@ using System.Linq;
 
 public class RegionEditor : MonoBehaviour, IEditor
 {
-    public RegionData regionData;
+    private RegionData regionData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == regionData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == regionData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -32,16 +32,87 @@ public class RegionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    #region Data properties
+    public int Id
+    {
+        get { return regionData.Id; }
+    }
+
+    public int TileSetId
+    {
+        get { return regionData.TileSetId; }
+        set
+        {
+            regionData.TileSetId = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).TileSetId = value);
+        }
+    }
+
+    public int Index
+    {
+        get { return regionData.Index; }
+        set
+        {
+            regionData.Index = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).Index = value);
+        }
+    }
+
+    public string Name
+    {
+        get { return regionData.Name; }
+        set
+        {
+            regionData.Name = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).Name = value);
+        }
+    }
+
+    public int RegionSize
+    {
+        get { return regionData.RegionSize; }
+        set
+        {
+            regionData.RegionSize = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).RegionSize = value);
+        }
+
+    }
+    public int TerrainSize
+    {
+        get { return regionData.TerrainSize; }
+        set
+        {
+            regionData.TerrainSize = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).TerrainSize = value);
+        }
+    }
+
+    public string TileIconPath
+    {
+        get { return regionData.TileIconPath; }
+        set
+        {
+            regionData.TileIconPath = value;
+
+            DataList.ForEach(x => ((RegionElementData)x).TileIconPath = value);
+        }
+    }
+    #endregion
+
+    public void InitializeEditor()
+    {
+        regionData = (RegionData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 
     public void UpdateEditor()
-    {
-        SetEditor();
-    }
-
-    public void SetEditor()
     {
         PathController.layoutSection.SetActionButtons();
     }

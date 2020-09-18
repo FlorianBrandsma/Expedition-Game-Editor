@@ -102,7 +102,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
             else
                 iconPath = elementData.OriginalData.IconPath; 
         }
-
+        
         id = elementData.Id;
         header = elementData.Name;
         baseTilePath = elementData.BaseTilePath;

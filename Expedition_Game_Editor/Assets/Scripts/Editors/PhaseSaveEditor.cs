@@ -4,17 +4,55 @@ using System.Linq;
 
 public class PhaseSaveEditor : MonoBehaviour, IEditor
 {
-    public PhaseSaveData phaseSaveData;
+    private PhaseSaveData phaseSaveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == phaseSaveData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == phaseSaveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
+    #region Data properties
+    public int Id
+    {
+        get { return phaseSaveData.Id; }
+    }
+
+    public int PhaseId
+    {
+        get { return phaseSaveData.PhaseId; }
+    }
+
+    public bool Complete
+    {
+        get { return phaseSaveData.Complete; }
+        set
+        {
+            phaseSaveData.Complete = value;
+
+            DataList.ForEach(x => ((PhaseSaveElementData)x).Complete = value);
+        }
+    }
+
+    public string Name
+    {
+        get { return phaseSaveData.Name; }
+    }
+
+    public string PublicNotes
+    {
+        get { return phaseSaveData.PublicNotes; }
+    }
+
+    public string PrivateNotes
+    {
+        get { return phaseSaveData.PrivateNotes; }
+    }
+    #endregion
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -32,7 +70,10 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public void InitializeEditor() { }
+    public void InitializeEditor()
+    {
+        phaseSaveData = (PhaseSaveData)ElementData.Clone();
+    }
 
     public void OpenEditor() { }
 

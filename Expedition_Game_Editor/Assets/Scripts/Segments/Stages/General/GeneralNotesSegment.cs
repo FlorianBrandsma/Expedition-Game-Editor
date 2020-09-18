@@ -12,113 +12,200 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     public NoteType noteType;
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-
-    public IEditor DataEditor { get; set; }
-
-    //UI
     public InputField inputField;
-    
-    //Data Variables
-    private string notes;
+
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
     public string Notes
     {
-        get { return notes; }
+        get { return noteType == NoteType.Public ? PublicNotes : PrivateNotes; }
         set
         {
-            notes = value;
+            if (noteType == NoteType.Public)
+                PublicNotes = value;
+            else
+                PrivateNotes = value;
+        }
+    }
 
+    #region Data properties
+    public string PublicNotes
+    {
+        get
+        {
             switch (DataEditor.Data.dataController.DataType)
             {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Chapter:
+                    return ((ChapterEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Quest:
+                    return ((QuestEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Objective:
+                    return ((ObjectiveEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Task:
+                    return ((TaskEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).PublicNotes;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+
+                    var atmosphereEditor = (AtmosphereEditor)DataEditor;
+                    atmosphereEditor.PublicNotes = value;
+
+                    break;
+
                 case Enums.DataType.Chapter:
 
-                    var chapterData = (ChapterElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        chapterData.PublicNotes = value;
-                    else
-                        chapterData.PrivateNotes = value;
+                    var chapterEditor = (ChapterEditor)DataEditor;
+                    chapterEditor.PublicNotes = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
-                    var phaseData = (PhaseElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        phaseData.PublicNotes = value;
-                    else
-                        phaseData.PrivateNotes = value;
+                    var phaseEditor = (PhaseEditor)DataEditor;
+                    phaseEditor.PublicNotes = value;
 
                     break;
 
                 case Enums.DataType.Quest:
 
-                    var questData = (QuestElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        questData.PublicNotes = value;
-                    else
-                        questData.PrivateNotes = value;
+                    var questEditor = (QuestEditor)DataEditor;
+                    questEditor.PublicNotes = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
-                    var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        objectiveData.PublicNotes = value;
-                    else
-                        objectiveData.PrivateNotes = value;
+                    var objectiveEditor = (ObjectiveEditor)DataEditor;
+                    objectiveEditor.PublicNotes = value;
 
                     break;
 
                 case Enums.DataType.Task:
 
-                    var taskData = (TaskElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        taskData.PublicNotes = value;
-                    else
-                        taskData.PrivateNotes = value;
+                    var taskEditor = (TaskEditor)DataEditor;
+                    taskEditor.PublicNotes = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
-                    var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        interactionData.PublicNotes = value;
-                    else
-                        interactionData.PrivateNotes = value;
+                    var interactionEditor = (InteractionEditor)DataEditor;
+                    interactionEditor.PublicNotes = value;
 
                     break;
 
-                case Enums.DataType.Atmosphere:
-
-                    var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
-
-                    if (noteType == NoteType.Public)
-                        atmosphereData.PublicNotes = value;
-                    else
-                        atmosphereData.PrivateNotes = value;
-
-                    break;
-
-                default: Debug.Log("CASE MISSING"); break;
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
 
-
-    public void UpdateNotes()
+    public string PrivateNotes
     {
-        Notes = inputField.text;
-        DataEditor.UpdateEditor();
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+                    return ((AtmosphereEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Chapter:
+                    return ((ChapterEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Quest:
+                    return ((QuestEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Objective:
+                    return ((ObjectiveEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Task:
+                    return ((TaskEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Interaction:
+                    return ((InteractionEditor)DataEditor).PrivateNotes;
+
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
+            }
+        }
+        set
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Atmosphere:
+
+                    var atmosphereEditor = (AtmosphereEditor)DataEditor;
+                    atmosphereEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Chapter:
+
+                    var chapterEditor = (ChapterEditor)DataEditor;
+                    chapterEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Phase:
+
+                    var phaseEditor = (PhaseEditor)DataEditor;
+                    phaseEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Quest:
+
+                    var questEditor = (QuestEditor)DataEditor;
+                    questEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Objective:
+
+                    var objectiveEditor = (ObjectiveEditor)DataEditor;
+                    objectiveEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Task:
+
+                    var taskEditor = (TaskEditor)DataEditor;
+                    taskEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Interaction:
+
+                    var interactionEditor = (InteractionEditor)DataEditor;
+                    interactionEditor.PrivateNotes = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
+            }
+        }
     }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -128,104 +215,27 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
             DataEditor.EditorSegments.Add(SegmentController);
     }
 
-    public void InitializeSegment() { }
-
     public void InitializeData()
     {
         InitializeDependencies();
 
-        if(DataEditor.Loaded) return;
-
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Chapter:    InitializeChapterData();    break;
-            case Enums.DataType.Phase:      InitializePhaseData();      break;
-            case Enums.DataType.Quest:      InitializeQuestData();      break;
-            case Enums.DataType.Objective:  InitializeObjectiveData();  break;
-            case Enums.DataType.Task:       InitializeTaskData();       break;
-            case Enums.DataType.Interaction:InitializeInteractionData();break;
-            case Enums.DataType.Atmosphere: InitializeAtmosphereData(); break;
-
-            default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType);  break;
-        }
+        if (DataEditor.Loaded) return;
     }
 
-    private void InitializeChapterData()
-    {
-        var chapterData = (ChapterElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = chapterData.PublicNotes;
-        else
-            notes = chapterData.PrivateNotes;
-    }
-
-    private void InitializePhaseData()
-    {
-        var phaseData = (PhaseElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = phaseData.PublicNotes;
-        else
-            notes = phaseData.PrivateNotes;
-    }
-
-    private void InitializeQuestData()
-    {
-        var questData = (QuestElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = questData.PublicNotes;
-        else
-            notes = questData.PrivateNotes;
-    }
-
-    private void InitializeObjectiveData()
-    {
-        var objectiveData = (ObjectiveElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = objectiveData.PublicNotes;
-        else
-            notes = objectiveData.PrivateNotes;
-    }
-
-    private void InitializeTaskData()
-    {
-        var taskData = (TaskElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = taskData.PublicNotes;
-        else
-            notes = taskData.PrivateNotes;
-    }
-
-    private void InitializeInteractionData()
-    {
-        var interactionData = (InteractionElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = interactionData.PublicNotes;
-        else
-            notes = interactionData.PrivateNotes;
-    }
-
-    private void InitializeAtmosphereData()
-    {
-        var atmosphereData = (AtmosphereElementData)DataEditor.ElementData;
-
-        if (noteType == NoteType.Public)
-            notes = atmosphereData.PublicNotes;
-        else
-            notes = atmosphereData.PrivateNotes;
-    }
-
+    public void InitializeSegment() { }
+    
     public void OpenSegment()
     {
-        inputField.text = notes;
+        inputField.text = Notes;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData elementData) { }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void UpdateNotes()
+    {
+        Notes = inputField.text;
+        DataEditor.UpdateEditor();
+    }
+    
+    public void CloseSegment() { }
 }

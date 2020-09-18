@@ -8,8 +8,6 @@ public class QuestSaveBaseData
     public int PhaseSaveId  { get; set; }
     public int QuestId      { get; set; }
 
-    public int Index        { get; set; }
-
     public bool Complete    { get; set; }
 
     public virtual void GetOriginalValues(QuestSaveData originalData)
@@ -19,8 +17,6 @@ public class QuestSaveBaseData
         SaveId      = originalData.SaveId;
         PhaseSaveId = originalData.PhaseSaveId;
         QuestId     = originalData.QuestId;
-
-        Index       = originalData.Index;
 
         Complete    = originalData.Complete;
     }
@@ -32,8 +28,6 @@ public class QuestSaveBaseData
         data.SaveId         = SaveId;
         data.PhaseSaveId    = PhaseSaveId;
         data.QuestId        = QuestId;
-
-        data.Index          = Index;
 
         data.Complete       = Complete;
     }

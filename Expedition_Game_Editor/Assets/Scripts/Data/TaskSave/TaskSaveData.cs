@@ -2,6 +2,8 @@
 
 public class TaskSaveData : TaskSaveBaseData
 {
+    public int Index            { get; set; }
+
     public string Name          { get; set; }
 
     public bool Repeatable      { get; set; }
@@ -11,6 +13,8 @@ public class TaskSaveData : TaskSaveBaseData
 
     public override void GetOriginalValues(TaskSaveData originalData)
     {
+        Index           = originalData.Index;
+
         Name            = originalData.Name;
 
         Repeatable      = originalData.Repeatable;
@@ -24,7 +28,9 @@ public class TaskSaveData : TaskSaveBaseData
     public TaskSaveData Clone()
     {
         var data = new TaskSaveData();
-        
+
+        data.Index          = Index;
+
         data.Name           = Name;
 
         data.Repeatable     = Repeatable;
@@ -39,6 +45,8 @@ public class TaskSaveData : TaskSaveBaseData
 
     public virtual void Clone(TaskSaveElementData elementData)
     {
+        elementData.Index           = Index;
+
         elementData.Name            = Name;
 
         elementData.Repeatable      = Repeatable;

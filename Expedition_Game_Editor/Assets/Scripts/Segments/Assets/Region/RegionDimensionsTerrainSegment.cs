@@ -1,30 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 {
-    private RegionElementData RegionElementData { get { return (RegionElementData)DataEditor.ElementData; } }
-
-    #region UI
     public ExInputNumber sizeInputNumber;
     public Text heightText;
-    #endregion
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
 
-    public IEditor DataEditor { get; set; }
+    public RegionEditor RegionEditor            { get { return (RegionEditor)DataEditor; } }
 
-    public void UpdateSize()
+    public int TerrainSize
     {
-        var regionDataList = DataEditor.DataList.Cast<RegionElementData>().ToList();
-        regionDataList.ForEach(regionData =>
-        {
-            regionData.TerrainSize = (int)sizeInputNumber.Value;
-            heightText.text = regionData.TerrainSize.ToString();
-        });
-
-        DataEditor.UpdateEditor();
+        get { return RegionEditor.TerrainSize; }
+        set { RegionEditor.TerrainSize = value; }
     }
     
     public void InitializeDependencies()
@@ -43,11 +33,26 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
     {
         SegmentController.EnableSegment(false);
 
-        sizeInputNumber.Value = RegionElementData.TerrainSize;
-        heightText.text = RegionElementData.TerrainSize.ToString();
+        sizeInputNumber.Value = TerrainSize;
+
+        SetSizeValues();
     }
 
-    public void CloseSegment() { }
+    public void SetSizeValues()
+    {
+        heightText.text = TerrainSize.ToString();
+    }
 
-    public void SetSearchResult(DataElement dataElement) { }
+    public void UpdateSize()
+    {
+        TerrainSize = (int)sizeInputNumber.Value;
+
+        SetSizeValues();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void CloseSegment() { }
 }
