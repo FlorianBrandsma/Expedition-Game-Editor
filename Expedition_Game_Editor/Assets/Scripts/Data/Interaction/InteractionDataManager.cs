@@ -88,7 +88,7 @@ public static class InteractionDataManager
                                                                                                                         interactionDestinationData.FirstOrDefault().regionData, 
                                                                                                                         terrainDataList) : "-",
 
-                        DefaultTimes = interactionData.Default ? DefaultTimes(taskData.Id) : new List<int>(),
+                        DefaultTimes = interactionData.Default ? DefaultTimes() : new List<int>(),
 
                     }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
 
@@ -216,7 +216,7 @@ public static class InteractionDataManager
         terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
     }
 
-    private static List<int> DefaultTimes(int taskId)
+    private static List<int> DefaultTimes()
     {
         var timeFrameList = (from interactionData in interactionDataList.Where(x => !x.Default)
                              select new TimeManager.TimeFrame()

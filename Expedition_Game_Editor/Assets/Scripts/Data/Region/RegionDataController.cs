@@ -8,7 +8,8 @@ public class RegionDataController : MonoBehaviour, IDataController
     public SearchProperties searchProperties;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
-    
+
+
     public Data Data                            { get; set; }
     public Enums.DataType DataType              { get { return Enums.DataType.Region; } }
     public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
@@ -31,7 +32,6 @@ public class RegionDataController : MonoBehaviour, IDataController
 
     public void GetData(SearchProperties searchProperties)
     {
-        //Could include region type in search properties here
         Data = new Data()
         {
             dataController = this,

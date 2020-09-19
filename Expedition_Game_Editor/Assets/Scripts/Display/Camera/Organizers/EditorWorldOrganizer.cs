@@ -693,8 +693,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         {
             selectedInteractionDestinations.ForEach(x =>
             {
-                //if(x.DebugName + x.Id == "InteractionDestination421")
-                    //Debug.Log(x.DebugName + x.Id);
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
             });
@@ -781,12 +779,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         inactiveInteractionDestinationList.ForEach(x => 
         {
-            if(x.Id != x.DataElement.Id)
-                Debug.Log(x.Id + ":" + x.DataElement.Id);
-
-            //inactive interaction destination id and the data element's id rarely match
-            //if (x.DebugName + x.Id == "InteractionDestination421")
-                //Debug.Log(x.DebugName + x.Id + ":" + x.TerrainTileId);
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
             SelectionElementManager.CloseElement(x.DataElement);
         });

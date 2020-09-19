@@ -11,16 +11,16 @@ static public class RenderManager
 
     static public Enums.LoadType loadType;
     
-    static public void Render(Path testPath)
+    static public void Render(Path path)
     {
-        var path = testPath.Clone();
+        var mainPath = path.Clone();
 
-        Debug.Log(PathString(path));
+        Debug.Log(PathString(mainPath));
         
         SelectionManager.CancelGetSelection();
 
         //Set up data along the path
-        path.form.InitializePath(path);
+        mainPath.form.InitializePath(mainPath);
 
         //Get target routes for selecting elements
         SelectionManager.GetRouteList();
@@ -29,15 +29,15 @@ static public class RenderManager
         DeloadForms();
 
         //Open visible elements along the path
-        OpenView(path);
+        OpenView(mainPath);
 
         //Opening view only needs to initialize editors, so lists can be set
-        ResetLayer(path);
+        ResetLayer(mainPath);
         
         //Performed at the end so it doesn't interfere with the current (de)activation process
-        InitializeSecondaryPaths(path);
+        InitializeSecondaryPaths(mainPath);
         
-        HistoryManager.AddHistory(path);
+        HistoryManager.AddHistory(mainPath);
     }
 
     static private void InitializeSecondaryPaths(Path path)
@@ -134,11 +134,10 @@ static public class RenderManager
         for (int i = 0; i < path.routeList.Count; i++)
         {
             if (path.routeList[i].data != null)
-                str += path.routeList[i].ElementData.DataType + "-" + path.routeList[i].ElementData.Id + "/";
+                str += path.routeList[i].data.dataController.DataType + "-" + path.routeList[i].id + "/";
             else
                 str += "Null-0/";
         }
-            
 
         return str;
     }

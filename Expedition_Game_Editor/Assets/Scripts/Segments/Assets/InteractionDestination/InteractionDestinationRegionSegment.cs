@@ -25,7 +25,6 @@ public class InteractionDestinationRegionSegment : MonoBehaviour, ISegment
             phaseId = SegmentController.Path.FindLastRoute(Enums.DataType.Phase).ElementData.Id;
         
         searchParameters.phaseId = new List<int>() { phaseId };
-
         searchParameters.type = Enums.RegionType.InteractionDestination;
 
         SegmentController.DataController.GetData(searchProperties);

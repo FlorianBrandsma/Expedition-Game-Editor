@@ -70,31 +70,6 @@ public class Route
         route.controllerIndex = controllerIndex;
         route.id = id;
 
-        //if (data != null)
-        //{
-        //    var routeList = path.routeList;
-
-        //    var i = routeList.IndexOf(this);
-
-        //    if (i > 0 && routeList[i - 1].data != null)
-        //    {
-        //        var previousRoute = path.routeList[i - 1];
-
-        //        if (data == routeList[i - 1].data)
-        //        {
-        //            Debug.Log("Copy from " + previousRoute.data.dataController);
-        //            route.data = path.routeList[i - 1].data;
-        //        }
-
-        //    }
-        //    else
-        //    {
-
-        //        Debug.Log("Clone from " + data.dataController);
-        //        route.data = data.Clone();
-        //    }
-        //}
-
         route.path = path;
 
         route.selectionStatus = selectionStatus;

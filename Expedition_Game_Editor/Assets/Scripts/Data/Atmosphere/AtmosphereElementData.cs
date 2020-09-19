@@ -64,9 +64,8 @@ public class AtmosphereElementData : AtmosphereData, IElementData
     public void ClearChanges()
     {
         if (!Changed) return;
-        Debug.Log("Clear changes " + StartTime);
+
         GetOriginalValues();
-        Debug.Log("Clear changes " + StartTime);
     }
 
     public void GetOriginalValues()

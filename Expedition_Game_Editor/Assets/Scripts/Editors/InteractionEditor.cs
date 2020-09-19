@@ -267,8 +267,6 @@ public class InteractionEditor : MonoBehaviour, IEditor
     public void InitializeEditor()
     {
         interactionData = (InteractionData)ElementData.Clone();
-        Debug.Log("init editor");
-        Debug.Log(interactionData.ModelIconPath);
     }
 
     public void OpenEditor() { }
@@ -298,6 +296,10 @@ public class InteractionEditor : MonoBehaviour, IEditor
         if (changedTime)
         {
             Data.dataList = Data.dataList.OrderByDescending(x => ((InteractionElementData)x).Default).ThenBy(x => ((InteractionElementData)x).StartTime).ToList();
+
+            var defaultInteraction = (InteractionElementData)Data.dataList.Where(x => ((InteractionElementData)x).Default).First();
+            defaultInteraction.DefaultTimes = DefaultTimes();
+
             SelectionElementManager.UpdateElements(ElementData);
 
         } else {
@@ -307,6 +309,21 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
 
         UpdateEditor();
+    }
+
+    private List<int> DefaultTimes()
+    {
+        var timeFrameList = (from interactionData in Data.dataList.Cast<InteractionElementData>().Where(x => !x.Default)
+                             select new TimeManager.TimeFrame()
+                             {
+                                 StartTime = interactionData.StartTime,
+                                 EndTime = interactionData.EndTime
+
+                             }).ToList();
+
+        var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
+
+        return defaultTimes;
     }
 
     public void CancelEdit()

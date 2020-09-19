@@ -96,7 +96,7 @@ public class Path
 
     public Route FindLastRoute(Enums.DataType dataType)
     {
-        return routeList.Where(x => x.data != null).ToList().FindLast(x => x.ElementData.DataType == dataType);
+        return routeList.Where(x => x.data != null).ToList().FindLast(x => x.data.dataController.DataType == dataType);
     }
 
     public Route GetLastRoute()
@@ -138,12 +138,12 @@ public class Path
                 
                 if(i > 0 && originalRoute.data == originalRouteList[i - 1].data)
                 {
-                    Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
+                    //Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
                     route.data = path.routeList[i - 1].data;
                 } else {
-                    Debug.Log("Clone from " + originalRoute.data.dataController);
+                    //Debug.Log("Clone from " + originalRoute.data.dataController);
                     route.data = originalRoute.data.Clone();
-                }               
+                }
             }
 
             route.path = path;
@@ -161,46 +161,5 @@ public class Path
         path.start = start;
         
         return path;
-    }
-
-    public void ReplaceAllData(Data data)
-    {
-        //routeList.ForEach(route => 
-        //{
-        //    if (route.GeneralData.DataType == ((GeneralData)data.elementData).DataType)
-        //    {
-        //        //var oldDataController = route.data.dataController;
-        //        //if (data.dataController.DataType == Enums.DataType.Region)
-        //        //{
-        //        //    Debug.Log(((RegionController)data.dataController).regionType);
-        //        //}
-                    
-                
-        //        //This overwrites the data controller, which should NOT happen
-        //        route.data = data;
-
-        //        //route.data.dataList = data.dataList;
-        //        //route.data.dataController.DataList = data.dataController.DataList;
-        //        //route.data.elementData = data.elementData;
-
-        //        //route.data.dataController = oldDataController;
-        //    }
-
-        //});
-    }
-
-    public void ReplaceDataLists(int start, Enums.DataType dataType, List<IElementData> dataList, IElementData elementData = null)
-    {
-        //routeList.ForEach(route =>
-        //{
-        //    if (route.GeneralData.DataType == dataType)
-        //    {
-        //        route.data.dataList = dataList;
-        //        route.data.dataController.DataList = dataList;
-
-        //        if (elementData != null)
-        //            route.data.elementData = elementData;
-        //    }
-        //});
     }
 }

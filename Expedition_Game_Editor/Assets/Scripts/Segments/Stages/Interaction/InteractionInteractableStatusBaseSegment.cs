@@ -45,14 +45,14 @@ public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
     public void InitializeSegment()
     {
         icon.texture = Resources.Load<Texture2D>(ModelIconPath);
-        Debug.Log(ModelIconPath);
+
         nameText.text = InteractableName;
         locationText.text = LocationName;
     }
 
     public void InitializeData() { }
 
-    public void OpenSegment() { Debug.Log("test2"); }
+    public void OpenSegment() { }
 
     public void CloseSegment() { }
 

@@ -75,14 +75,6 @@ public class TerrainElementData : TerrainData, IElementData
     public void GetOriginalValues()
     {
         base.GetOriginalValues(OriginalData);
-
-        Debug.Log("TEEEEEEEEEST " + WorldObjectDataList.Count);
-
-        //AtmosphereDataList = originalData.AtmosphereDataList;
-        //TerrainTileDataList = originalData.TerrainTileDataList;
-        //WorldInteractableDataList = originalData.WorldInteractableDataList;
-        //InteractionDestinationDataList = originalData.InteractionDestinationDataList;
-        //WorldObjectDataList = originalData.WorldObjectDataList;
     }
 
     public new IElementData Clone()
