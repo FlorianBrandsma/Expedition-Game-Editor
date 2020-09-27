@@ -16366,7 +16366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconDataController: {fileID: 1008383610}
-  iconEditorElement: {fileID: 1008383608}
+  iconEditorElement: {fileID: 1008383611}
   inputField: {fileID: 639981325}
   idText: {fileID: 733101247}
 --- !u!224 &527584522
@@ -27806,7 +27806,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &893177510 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114876992051588700, guid: 15cc202bc726849429641411fd665057,
+  m_CorrespondingSourceObject: {fileID: 114039183608107512, guid: 15cc202bc726849429641411fd665057,
     type: 3}
   m_PrefabInstance: {fileID: 893177508}
   m_PrefabAsset: {fileID: 0}
@@ -32893,18 +32893,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1008383606}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1008383608 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114876992051588700, guid: 15cc202bc726849429641411fd665057,
-    type: 3}
-  m_PrefabInstance: {fileID: 1008383606}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008383607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1008383609 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000011475066136, guid: 15cc202bc726849429641411fd665057,
@@ -32928,6 +32916,18 @@ MonoBehaviour:
     elementType: 2
     iconType: 2
     autoUpdate: 0
+--- !u!114 &1008383611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114039183608107512, guid: 15cc202bc726849429641411fd665057,
+    type: 3}
+  m_PrefabInstance: {fileID: 1008383606}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008383607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1008773454
 GameObject:
   m_ObjectHideFlags: 0
@@ -64513,7 +64513,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indexSwitch: {fileID: 1301556738}
-  dataElement: {fileID: 0}
   inputText: {fileID: 2012731569}
   idText: {fileID: 374673409}
 --- !u!1 &2017041841

@@ -6,13 +6,18 @@ public class GameElement : MonoBehaviour
 {
     public DataElement DataElement { get { return GetComponent<DataElement>(); } }
 
-    public void UpdateElement()
+    public void InitializeElement()
     {
-        SetElement();
+        GetComponent<IElement>().InitializeElement();
     }
-
+    
     public void SetElement()
     {
         GetComponent<IElement>().SetElement();
+    }
+
+    public void UpdateElement()
+    {
+        SetElement();
     }
 }

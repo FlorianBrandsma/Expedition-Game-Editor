@@ -487,7 +487,8 @@ static public class Fixtures
                     RotationY = 130,
                     RotationZ = 0,
 
-                    PositionVariance = 0
+                    PositionVariance = 0,
+                    Patience = 10
                 },
                 new InteractionDestinationBaseData()
                 {
@@ -499,7 +500,8 @@ static public class Fixtures
                     RotationY = 130,
                     RotationZ = 0,
 
-                    PositionVariance = 0
+                    PositionVariance = 0,
+                    Patience = 0
                 },
                 new InteractionDestinationBaseData()
                 {
@@ -511,7 +513,8 @@ static public class Fixtures
                     RotationY = 130,
                     RotationZ = 0,
 
-                    PositionVariance = 0
+                    PositionVariance = 0,
+                    Patience = 20
                 }
             };
 
@@ -537,7 +540,7 @@ static public class Fixtures
                 }
             };
 
-            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
+            //CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
 
             /*Pool*/
             var poolDestinationList = new List<InteractionDestinationBaseData>()
@@ -556,7 +559,7 @@ static public class Fixtures
                 }
             };
 
-            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
+            //CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
 
             var regionSize = GetRegionSize(region.Id);
 
@@ -1245,7 +1248,7 @@ static public class Fixtures
                         }
                     };
 
-                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
+                    //CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
                 }
             }
         }

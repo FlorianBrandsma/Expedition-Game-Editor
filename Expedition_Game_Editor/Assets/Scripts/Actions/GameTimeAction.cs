@@ -40,7 +40,7 @@ public class GameTimeAction : MonoBehaviour, IAction
     {
         if (Dropdown == null) return;
         
-        TimeManager.instance.SetGameTime(selectedHour * TimeManager.secondsInHour);
+        //TimeManager.instance.ActiveTime = (selectedHour * TimeManager.secondsInHour);
     }
 
     public void CloseAction() { }

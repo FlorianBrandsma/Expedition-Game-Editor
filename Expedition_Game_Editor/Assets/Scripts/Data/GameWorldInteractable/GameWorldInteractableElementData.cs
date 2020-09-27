@@ -13,6 +13,8 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
+    public AgentState AgentState { get; set; }
+    
     public GameInteractionElementData ActiveInteraction
     {
         get { return Interaction; }

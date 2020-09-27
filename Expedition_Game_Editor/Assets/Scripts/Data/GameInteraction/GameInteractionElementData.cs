@@ -13,13 +13,13 @@ public class GameInteractionElementData : GameInteractionData, IElementData
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
+    public float CurrentPatience                    { get; set; }
+
     public int ActiveDestinationIndex
     {
         get { return DestinationIndex; }
         set
         {
-            Arrived = false;
-
             if (value >= InteractionDestinationDataList.Count)
                 value = 0;
 

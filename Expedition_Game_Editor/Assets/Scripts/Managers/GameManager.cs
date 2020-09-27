@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameRegionElementData regionData;
     public GamePartyMemberElementData partyMemberData;
 
+    private List<TerrainTileData> activeTileList;
+
     public GameSaveDataController gameSaveController;
     public GameWorldDataController gameWorldController;
 
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
     public DataController WorldInteractableAgentDataController  { get; set; } = new DataController(Enums.DataType.WorldInteractable);
     public DataController WorldInteractableObjectDataController { get; set; } = new DataController(Enums.DataType.WorldInteractable);
     public DataController PartyDataController                   { get; set; } = new DataController(Enums.DataType.Phase);
+
+    public GameWorldOrganizer Organizer                         { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
 
     public LocalNavMeshBuilder localNavMeshBuilder;
 
@@ -76,9 +80,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public GameWorldOrganizer Organizer { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
-
+    
     public List<TaskSaveElementData> activeTaskSaveList = new List<TaskSaveElementData>();
 
     private float tempActiveRange = 222.25f;
@@ -150,10 +152,10 @@ public class GameManager : MonoBehaviour
         //Game is technically opened twice when returning from the data editor
         //The closing of other forms triggers the reaction
         gameWorldController.Display.DataController = gameWorldController;
+        
+        InitializePhase();
 
         InitializeLocalNavMesh();
-
-        InitializePhase();
 
         localNavMeshBuilder.UpdateNavMesh();
 
@@ -251,6 +253,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void InitializeLocalNavMesh()
+    {
+        Debug.Log("Replace temporary tile size with actual region tile size");
+        localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
+    }
+
     private void InitializePartyMember()
     {
         //The first party member of a chapter is the default
@@ -303,14 +311,11 @@ public class GameManager : MonoBehaviour
                                                                                                  x.Last().Repeatable ? x.Last() : 
                                                                                                                        null).ToList();
         
-
         TimeManager.activeWorldInteractableList = gameWorldData.WorldInteractableDataList.Where(x => x.InteractionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
         
-        TimeManager.activeInteractionList = gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList.Where(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
-        
-        GetInteractionTimes();
+        GetInteractionTimeEvents();
 
-        UpdateWorld();
+        gameWorldData.WorldInteractableDataList.ForEach(x => ResetInteractable(x));
     }
 
     private void ChangeRegion()
@@ -325,110 +330,49 @@ public class GameManager : MonoBehaviour
         //CheckTime();
     }
     
-    private void GetInteractionTimes()
+    private void GetInteractionTimeEvents()
     {
-        TimeManager.interactionTimeList = new List<int>();
-
-        TimeManager.activeWorldInteractableList.SelectMany(x => x.InteractionDataList.Where(y => !y.Default)).ToList().ForEach(x => TimeManager.AddInteractionTimeEvent(x));
+        TimeManager.timeEventList = new List<TimeManager.TimeEvent>();     
+        TimeManager.activeWorldInteractableList.ForEach(x => TimeManager.AddTimeEvent(x));
     }
 
-    public void UpdateWorld()
+    public void ResetInteractable(GameWorldInteractableElementData worldInteractableElementData)
     {
-        Debug.Log("Check time and update world");
+        //Deactivate all interactions of the world interactable
+        DeactivateInteraction(worldInteractableElementData);
 
-        //Check time to see which interactions and atmospheres are active
+        //Check which of their interaction contains the active time
+        ValidateInteractionTime(worldInteractableElementData);
 
-        DeactivateInteractionTime();
-
-        //For every interactable, check which of their interactions contains the active time
-        ValidateInteractionTime();
-        
-        //Update all world interactables based on the new active times
-        UpdateWorldInteractables();
-
-        //Here's the deal: only update the world if any interactable came from a tile that isn't active or when it's going to a tile that isn't active
-        //Collect the active terrains when building the world
-
-        //(Re)build the world according to the active data
-        SetWorldData();
-
-        localNavMeshBuilder.UpdateNavMesh(true);
+        //Update the world interactables based on the new active time
+        UpdateWorldInteractable(worldInteractableElementData);
     }
 
-    private void InitializeLocalNavMesh()
+    private void DeactivateInteraction(GameWorldInteractableElementData worldInteractableElementData)
     {
-        localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
-    }
-
-    private void SetWorldData()
-    {
-        Organizer.SetData();
-    }
-
-    private void DeactivateInteractionTime()
-    {
-        gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList).ToList().ForEach(y => 
+        worldInteractableElementData.InteractionDataList.ForEach(x =>
         {
-            y.ContainsActiveTime = false;
+            x.ContainsActiveTime = false;
         });
     }
 
-    private void ValidateInteractionTime()
+    private void ValidateInteractionTime(GameWorldInteractableElementData worldInteractableElementData)
     {
         //Validate times of interactions which belong to the active task saves
-        TimeManager.activeWorldInteractableList.SelectMany(x => x.InteractionDataList).GroupBy(y => y.TaskId)
-                                               .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
-                                               .OrderBy(z => z.Default).First()).ToList()
-                                               .ForEach(x => 
-                                               {
-                                                   x.ContainsActiveTime = true;
-                                               });
+        worldInteractableElementData.InteractionDataList.GroupBy(y => y.TaskId)
+                                                        .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
+                                                        .OrderBy(z => z.Default).First()).ToList()
+                                                        .ForEach(x =>
+                                                        {
+                                                            x.ContainsActiveTime = true;
+                                                        });
 
-        TimeManager.activeWorldInteractableList.ForEach(x => x.ActiveInteraction = x.InteractionDataList.Where(y => y.ContainsActiveTime).First());
+        worldInteractableElementData.ActiveInteraction = worldInteractableElementData.InteractionDataList.Where(y => y.ContainsActiveTime).First();
     }
 
-    private void UpdateWorldInteractables()
+    public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
     {
-        gameWorldData.WorldInteractableDataList.ForEach(x => UpdateWorldInteractable(x));
-    }
-
-    public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableData)
-    {
-        var interactionData = worldInteractableData.ActiveInteraction;
-        
-        if(worldInteractableData.DataElement != null)
-        {
-            //If the active world interactable contains no active time, deactivate it
-            if (interactionData == null)
-            {
-                worldInteractableData.TerrainTileId = 0;
-
-            } else {
-                
-                switch((Enums.InteractableType)worldInteractableData.Type)
-                {
-                    case Enums.InteractableType.Agent:
-
-                        //If the active world interactable (agent) contains active time, update the transform
-                        worldInteractableData.DataElement.Element.UpdateElement();
-                        break;
-
-                    case Enums.InteractableType.Object:
-
-                        //World interactable objects can relocate instantly by changing the terrain tile id
-                        worldInteractableData.TerrainTileId = interactionData.InteractionDestinationDataList.First().TerrainTileId;
-                        break;
-                }
-            }
-
-        } else if (interactionData != null) {
-
-            //If the inactive world interactable contains an active time, activate it
-            worldInteractableData.TerrainTileId = interactionData.InteractionDestinationDataList.First().TerrainTileId;
-        }
-        
-        //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out
-        //Possible better solution: all interactables should have an intro and outro animation based on their state which plays when they (de)activate
+        Organizer.UpdateWorldInteractable(worldInteractableElementData);
     }
 
     public void SaveData()

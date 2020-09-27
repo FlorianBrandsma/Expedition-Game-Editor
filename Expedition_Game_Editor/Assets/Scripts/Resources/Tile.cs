@@ -6,6 +6,8 @@ public class Tile : MonoBehaviour, IPoolable
     public Enums.DataType DataType  { get; set; }
     public IElementData ElementData { get; set; }
 
+    public GameElement GameElement  { get { return GetComponent<GameElement>(); } }
+
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return Enums.ElementType.Tile; } }
     public int Id                           { get; set; }

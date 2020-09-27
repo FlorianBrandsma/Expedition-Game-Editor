@@ -7,8 +7,8 @@ public class TimeManager : MonoBehaviour
 {
     public class TimeFrame
     {
-        public int StartTime { get; set; }
-        public int EndTime { get; set; }
+        public int StartTime    { get; set; }
+        public int EndTime      { get; set; }
 
         public bool CheckTimeConflict(TimeFrame changedTime)
         {
@@ -48,6 +48,12 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    public class TimeEvent
+    {
+        public int Time { get; set; }
+        public List<GameWorldInteractableElementData> WorldInteractableDataList { get; set; } = new List<GameWorldInteractableElementData>();
+    }
+
     static public TimeManager instance;
 
     static public bool active;
@@ -75,10 +81,9 @@ public class TimeManager : MonoBehaviour
 
     private float activeTimeScale = 1;
 
-    private int activeHour;
-    private int activeTime;
-    
-    static public List<int> interactionTimeList;
+    private TimeFrame activeTime = new TimeFrame();
+
+    static public List<TimeEvent> timeEventList;
     static public List<GameInteractionElementData> activeInteractionList;
     static public List<GameWorldInteractableElementData> activeWorldInteractableList;
 
@@ -107,30 +112,19 @@ public class TimeManager : MonoBehaviour
 
     public int ActiveTime
     {
-        get { return activeTime; }
+        get { return activeTime.EndTime; }
         set
         {
-            activeTime = value;
-            
-            SetLighting(activeTime);
+            activeTime.StartTime = activeTime.EndTime;
+            activeTime.EndTime = value;
+
+            SetLighting(activeTime.EndTime);
+
+            if (active)
+                SetGameTime(activeTime.EndTime);
         }
     }
-    
-    private int ActiveHour
-    {
-        get { return activeHour; }
-        set
-        {
-            if (activeHour == value) return;
 
-            Debug.Log("Check time");
-
-            GameManager.instance.UpdateWorld();
-
-            activeHour = value;
-        }
-    }
-    
     public void Awake()
     {
         instance = this;
@@ -149,9 +143,13 @@ public class TimeManager : MonoBehaviour
             float gameTimeCounter = counter * gameTimeSpeed;
 
             if (ActiveTime + Mathf.FloorToInt(gameTimeCounter) < (hoursInDay * secondsInHour) - 1)
+            {
                 ActiveTime += Mathf.FloorToInt(gameTimeCounter);
-            else
-                ActiveTime = 0;
+
+            } else {
+                
+                ActiveTime -= ((hoursInDay * secondsInHour) - Mathf.FloorToInt(gameTimeCounter));
+            }
 
             GameManager.instance.gameSaveData.PlayerSaveData.GameTime = ActiveTime;
 
@@ -159,18 +157,17 @@ public class TimeManager : MonoBehaviour
             if (GameManager.instance.gameTimeAction.Dropdown != null)
             {
                 GameManager.instance.gameTimeAction.UpdateAction();
-
-            } else {
-
-                ActiveHour = ActiveTime / secondsInHour;
             }
 
-            activeWorldInteractableList.Where(x => x.ActiveInteraction.Arrived).ToList().ForEach(x =>
+            //Reduce interactable patience
+            activeWorldInteractableList.ForEach(x =>
             {
+                if (x.AgentState != AgentState.Idle || x.ActiveInteraction.CurrentPatience < 0) return;
+
                 if (x.ActiveInteraction.InteractionDestinationDataList.Count > 1 || x.ActiveInteraction.CurrentPatience > 0)
                 {
                     x.ActiveInteraction.CurrentPatience -= counter;
-
+                    
                     if (x.ActiveInteraction.CurrentPatience < 0)
                     {
                         x.ActiveInteraction.ActiveDestinationIndex++;
@@ -184,17 +181,19 @@ public class TimeManager : MonoBehaviour
     
     public void InitializeTime()
     {
-        activeTime = defaultTime;
+        activeTime.EndTime = defaultTime;
     }
 
     public void InitializeGameTime(int time)
     {
+        ResetInteractionTimes();
+
         ActiveTime = time;
     }
 
     public void ResetInteractionTimes()
     {
-        interactionTimeList = new List<int>();
+        timeEventList = new List<TimeEvent>();
     }
 
     public void PauseTime(bool pause)
@@ -204,9 +203,9 @@ public class TimeManager : MonoBehaviour
     
     public void SetEditorTime(int time, bool resetEditor = false)
     {
-        activeTime = time;
+        activeTime.EndTime = time;
 
-        SetLighting(activeTime);
+        SetLighting(activeTime.EndTime);
 
         //No need to reload data for interactions - it's there and filtered by the organizer
         if (resetEditor)
@@ -215,17 +214,17 @@ public class TimeManager : MonoBehaviour
 
     public void SetGameTime(int time)
     {
-        activeTime = time;
-
-        SetLighting(activeTime);
-        
-        if(interactionTimeList.Contains(activeTime))
-            GameManager.instance.UpdateWorld();
+        //Sometimes calls this double when end time matches exactly with the active time (will match with start as well)
+        timeEventList.Where(timeEvent => TimeInFrame(timeEvent.Time, activeTime.StartTime, activeTime.EndTime)).ToList().ForEach(timeEvent =>
+        {
+            Debug.Log("There was a time event between " + activeTime.StartTime + " and " + activeTime.EndTime);
+            timeEvent.WorldInteractableDataList.ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
+        });
     }
 
     public void SetLighting()
     {
-        SetLighting(activeTime);
+        SetLighting(activeTime.EndTime);
     }
 
     public void ResetLighting()
@@ -333,12 +332,16 @@ public class TimeManager : MonoBehaviour
         if (startTime <= endTime)
         {
             if (time >= startTime && time <= endTime)
+            {
                 return true;
+            }
 
         } else {
 
-            if (time <= startTime && time >= 0 || time >= endTime && time <= hoursInDay)
+            if(time <= endTime && time >= 0 || time >= startTime && time <= hoursInDay * secondsInHour)
+            {
                 return true;
+            }
         }
 
         return false;
@@ -391,13 +394,28 @@ public class TimeManager : MonoBehaviour
         return conflict;
     }
 
-    static public void AddInteractionTimeEvent(GameInteractionElementData interactionData)
+    static public void AddTimeEvent(GameWorldInteractableElementData worldInteractableData)
     {
-        //Add new time event to list if time does not yet exist
-        if (!interactionTimeList.Contains(interactionData.StartTime))
-            interactionTimeList.Add(interactionData.StartTime);
+        //Collect the interaction times of all non-default interactions
+        var interactionTimeList = worldInteractableData.InteractionDataList.Where(x => !x.Default).Select(x => new { StartTime = x.StartTime, EndTime = x.EndTime + 1 }).ToList();
 
-        if (!interactionTimeList.Contains(interactionData.EndTime + 1))
-            interactionTimeList.Add(interactionData.EndTime + 1);
+        interactionTimeList.ForEach(interactionTime => {
+
+            //Add new time event to list if time does not yet exist
+            if (!timeEventList.Select(timeEvent => timeEvent.Time).Contains(interactionTime.StartTime))
+            {
+                timeEventList.Add(new TimeEvent() { Time = interactionTime.StartTime });
+            }
+
+            if (!timeEventList.Select(timeEvent => timeEvent.Time).Contains(interactionTime.EndTime))
+            {
+                timeEventList.Add(new TimeEvent() { Time = interactionTime.EndTime });
+            }
+        });
+
+        //Find the event where one of the collection's times contains the event time and add the interactable to that event
+        timeEventList.Where(timeEvent => interactionTimeList.Select(interactionTime => interactionTime.StartTime).Contains(timeEvent.Time) || 
+                                         interactionTimeList.Select(interactionTime => interactionTime.EndTime).Contains(timeEvent.Time)).ToList()
+                     .ForEach(x => x.WorldInteractableDataList.Add(worldInteractableData));
     }
 }

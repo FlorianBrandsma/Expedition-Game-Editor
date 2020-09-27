@@ -6,11 +6,11 @@ using System.Linq;
 
 public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 {
-    private List<Tile> tileList = new List<Tile>();
-    
+    private List<GameTerrainTileElementData> tileList = new List<GameTerrainTileElementData>();
+
     private GameWorldElementData GameWorldData  { get { return GameManager.instance.gameWorldData; } }
     private GameRegionElementData RegionData    { get { return GameManager.instance.regionData; } }
-
+    
     private ExGameWorldElement gameWorldElementPrefab;
     private ExGameWorldAgent gameWorldAgentPrefab;
 
@@ -48,7 +48,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         if (data == null) return;
 
         SetActiveRect();
-
+        
+        //Close all inactive tiles and elements on the tiles
         CloseInactiveElements();
 
         foreach (GameTerrainElementData terrainData in RegionData.TerrainDataList)
@@ -85,91 +86,97 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    private void SetTerrainTile(GameTerrainTileElementData terrainTileData)
+    private void SetTerrainTile(GameTerrainTileElementData terrainTileElementData)
     {
-        Tile prefab = Resources.Load<Tile>("Objects/Tile/" + RegionData.TileSetName + "/" + terrainTileData.TileId);
+        Tile prefab = Resources.Load<Tile>("Objects/Tile/" + RegionData.TileSetName + "/" + terrainTileElementData.TileId);
 
-        Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.TileId);
-        tileList.Add(tile);
+        Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileElementData.TileId);
+        tileList.Add(terrainTileElementData);
 
         tile.gameObject.SetActive(true);
 
         tile.transform.SetParent(CameraManager.content, false);
-        tile.transform.localPosition = new Vector3(terrainTileData.GridElement.startPosition.x, tile.transform.localPosition.y, terrainTileData.GridElement.startPosition.y);
+        tile.transform.localPosition = new Vector3(terrainTileElementData.GridElement.startPosition.x, tile.transform.localPosition.y, terrainTileElementData.GridElement.startPosition.y);
 
         tile.DataType = Enums.DataType.GameTerrainTile;
-        tile.ElementData = terrainTileData;
+        tile.ElementData = terrainTileElementData;
+        terrainTileElementData.DataElement = tile.GameElement.DataElement;
 
-        terrainTileData.Active = true;
+        terrainTileElementData.Active = true;
     }
-
+    
     private void SetWorldObjects(int terrainTileId = 0)
     {
         var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => ((GameWorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        SetWorldElements(WorldObjectDataController, worldObjectDataList);
+        worldObjectDataList.ForEach(elementData => SetObjectElement(WorldObjectDataController, elementData));
     }
     
     private void SetWorldInteractableAgents(int terrainTileId)
     {
         var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => x.DataElement == null && 
                                                                                                        ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
-        SetWorldAgents(WorldInteractableAgentDataController, worldInteractableAgentDataList);
+
+        worldInteractableAgentDataList.ForEach(elementData => SetAgentElement(WorldInteractableAgentDataController, elementData));
     }
 
     private void SetWorldInteractableObjects(int terrainTileId)
     {
         var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Where(x => x.DataElement == null &&
                                                                                                          ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
-        SetWorldElements(WorldInteractableObjectDataController, worldInteractableObjectDataList);
-    }
 
+        worldInteractableObjectDataList.ForEach(elementData => SetObjectElement(WorldInteractableObjectDataController, elementData));
+    }
+    
     private void SetPartyMembers()
     {
         var partyMemberDataList = PartyDataController.Data.dataList.Where(x => x.DataElement == null).ToList();
 
-        SetWorldAgents(PartyDataController, partyMemberDataList);
+        partyMemberDataList.ForEach(elementData => SetAgentElement(PartyDataController, elementData));
     }
-
-    private void SetWorldElements(IDataController dataController, List<IElementData> dataList)
+    
+    private void SetWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        if (dataList.Count == 0) return;
-        
-        foreach(IElementData elementData in dataList)
+        switch ((Enums.InteractableType)gameWorldInteractableElementData.Type)
         {
-            var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
-            gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
-
-            elementData.DataElement = gameWorldElement.GameElement.DataElement;
-            
-            gameWorldElement.GameElement.DataElement.Data = dataController.Data;
-            gameWorldElement.GameElement.DataElement.Id = elementData.Id;
-
-            //Debugging
-            gameWorldElement.name = elementData.DebugName + elementData.Id;
-
-            SetElement(gameWorldElement.GameElement);
+            case Enums.InteractableType.Agent:  SetAgentElement(WorldInteractableAgentDataController, gameWorldInteractableElementData);    break;
+            case Enums.InteractableType.Object: SetObjectElement(WorldInteractableObjectDataController, gameWorldInteractableElementData);  break;
         }
     }
 
-    private void SetWorldAgents(IDataController dataController, List<IElementData> dataList)
+    public void SetObjectElement(IDataController dataController, IElementData elementData)
     {
-        foreach (IElementData elementData in dataList)
-        {
-            //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
-            var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab, elementData.Id);
-            gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
+        var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
+        gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
 
-            elementData.DataElement = gameWorldAgent.GameElement.DataElement;
-
-            gameWorldAgent.GameElement.DataElement.Data = dataController.Data;
-            gameWorldAgent.GameElement.DataElement.Id = elementData.Id;
+        elementData.DataElement = gameWorldElement.GameElement.DataElement;
             
-            //Debugging
-            gameWorldAgent.name = elementData.DebugName + "Agent" + elementData.Id;
+        gameWorldElement.GameElement.DataElement.Data = dataController.Data;
+        gameWorldElement.GameElement.DataElement.Id = elementData.Id;
 
-            SetElement(gameWorldAgent.GameElement);
-        }
+        //Debugging
+        gameWorldElement.name = elementData.DebugName + elementData.Id;
+
+        SetElement(gameWorldElement.GameElement);
+    }
+
+    private void SetAgentElement(IDataController dataController, IElementData elementData)
+    {
+        //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
+        var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab, elementData.Id);
+        gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
+
+        elementData.DataElement = gameWorldAgent.GameElement.DataElement;
+
+        gameWorldAgent.GameElement.DataElement.Data = dataController.Data;
+        gameWorldAgent.GameElement.DataElement.Id = elementData.Id;
+            
+        //Debugging
+        gameWorldAgent.name = elementData.DebugName + "Agent" + elementData.Id;
+
+        gameWorldAgent.GameElement.InitializeElement();
+
+        SetElement(gameWorldAgent.GameElement);
     }
 
     private void SetElement(GameElement element)
@@ -179,6 +186,52 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         element.SetElement();
     }
     
+    public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
+    {
+        Debug.Log("Update " + worldInteractableElementData.InteractableName);
+
+        //If the active world interactable contains no active time, deactivate it
+        if (worldInteractableElementData.ActiveInteraction == null)
+        {
+            worldInteractableElementData.TerrainTileId = 0;
+
+        } else {
+            
+            worldInteractableElementData.TerrainTileId = worldInteractableElementData.ActiveInteraction.InteractionDestinationDataList.First().TerrainTileId;
+        }
+
+        var active = tileList.Select(x => x.Id).Contains(worldInteractableElementData.TerrainTileId);
+
+        if (worldInteractableElementData.DataElement == null)
+        {
+            //Spawn interactables without an element that are deemed active
+            if (active)
+            {
+                Debug.Log("SPAWN ME! " + worldInteractableElementData.InteractableName);
+                SetWorldInteractable(worldInteractableElementData);
+            }
+
+        } else {
+
+            if (active)
+            {
+                //Update the destination of active agents
+                if ((Enums.InteractableType)worldInteractableElementData.Type == Enums.InteractableType.Agent)
+                {
+                    worldInteractableElementData.DataElement.Element.UpdateElement();
+                }
+
+            } else {
+
+                //Despawn interactables with an element that are deemed inactive
+                Debug.Log("DESPAWN ME! " + worldInteractableElementData.InteractableName);
+            }
+        }
+
+        //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out
+        //Possible better solution: all interactables should have an intro and outro animation based on their state which plays when they (de)activate
+    }
+
     private void SetActiveRect()
     {
         var cameraTransform = CameraManager.cam.transform;
@@ -191,7 +244,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void CloseInactiveElements()
     {
-        var inactiveTiles = tileList.Where(x => !activeRect.Overlaps(((GameTerrainTileElementData)x.ElementData).GridElement.rect, true)).ToList();
+        var inactiveTiles = tileList.Where(x => !activeRect.Overlaps(x.GridElement.rect, true)).ToList();
         ClearTiles(inactiveTiles);
     }
 
@@ -229,12 +282,12 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         ClearTiles(tileList);
     }
     
-    private void ClearTiles(List<Tile> inactiveTileList)
+    private void ClearTiles(List<GameTerrainTileElementData> inactiveTileList)
     {
         inactiveTileList.ForEach(x =>
         {
-            ClearTileElements((GameTerrainTileElementData)x.ElementData);
-            PoolManager.ClosePoolObject(x);
+            ClearTileElements(x);
+            PoolManager.ClosePoolObject(x.DataElement.Poolable);
         });
 
         tileList.RemoveAll(x => inactiveTileList.Contains(x));

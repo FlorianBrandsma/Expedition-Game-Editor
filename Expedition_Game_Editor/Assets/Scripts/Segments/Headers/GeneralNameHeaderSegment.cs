@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
 {
     public ExIndexSwitch indexSwitch;
-    public DataElement dataElement;
     public ExInputText inputText;
     public Text idText;
 

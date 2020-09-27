@@ -34,11 +34,7 @@ public class GameInteractionData
 
     public int ObjectiveId                  { get; set; }
     public int WorldInteractableId          { get; set; }
-
-    public float CurrentPatience            { get; set; }
-
-    public bool Arrived                     { get; set; }
-
+    
     public int DestinationIndex             { get; set; } = -1;
 
     public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
@@ -76,10 +72,6 @@ public class GameInteractionData
 
         ObjectiveId                 = originalData.ObjectiveId;
         WorldInteractableId         = originalData.WorldInteractableId;
-
-        CurrentPatience             = originalData.CurrentPatience;
-
-        Arrived                     = originalData.Arrived;
 
         DestinationIndex            = originalData.DestinationIndex;
     }
@@ -120,11 +112,7 @@ public class GameInteractionData
         data.ObjectiveId                = ObjectiveId;
         data.WorldInteractableId        = WorldInteractableId;
 
-        data.CurrentPatience            = CurrentPatience;
-
-        data.Arrived = Arrived;
-
-        data.DestinationIndex = DestinationIndex;
+        data.DestinationIndex           = DestinationIndex;
 
         return data;
     }
@@ -162,10 +150,6 @@ public class GameInteractionData
 
         elementData.ObjectiveId                 = ObjectiveId;
         elementData.WorldInteractableId         = WorldInteractableId;
-
-        elementData.CurrentPatience             = CurrentPatience;
-
-        elementData.Arrived                     = Arrived;
 
         elementData.DestinationIndex            = DestinationIndex;
     }

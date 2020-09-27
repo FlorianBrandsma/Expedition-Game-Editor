@@ -632,9 +632,6 @@ public class PathManager
         {
             this.editorElement = editorElement;
             this.route = route;
-
-#warning Fix this
-            //route.data = new Data(route.data.dataController, route.ElementData, editorElement.DataElement.data.dataController.SearchProperties);
         }
 
         public Path Get()

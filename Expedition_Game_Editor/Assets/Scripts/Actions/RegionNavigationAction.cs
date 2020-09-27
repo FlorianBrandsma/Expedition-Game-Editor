@@ -328,7 +328,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             GetData(routeList[i].data.dataController);
         }
 
-        RenderManager.Render(PathController.route.path);
+        RenderManager.loadType = Enums.LoadType.Reload;
+        RenderManager.ResetPath(PathController.route.path);
     }
 
     private void GetData(IDataController dataController)
