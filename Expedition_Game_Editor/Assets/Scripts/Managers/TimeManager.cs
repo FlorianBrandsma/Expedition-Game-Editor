@@ -85,8 +85,7 @@ public class TimeManager : MonoBehaviour
 
     static public List<TimeEvent> timeEventList;
     static public List<GameInteractionElementData> activeInteractionList;
-    static public List<GameWorldInteractableElementData> activeWorldInteractableList;
-
+    
     public float TimeScale
     {
         get { return Time.timeScale; }
@@ -159,26 +158,48 @@ public class TimeManager : MonoBehaviour
                 GameManager.instance.gameTimeAction.UpdateAction();
             }
 
-            //Reduce interactable patience
-            activeWorldInteractableList.ForEach(x =>
+            MovementManager.movableWorldInteractableList.ForEach(x =>
             {
-                if (x.AgentState != AgentState.Idle || x.ActiveInteraction.CurrentPatience < 0) return;
-
-                if (x.ActiveInteraction.InteractionDestinationDataList.Count > 1 || x.ActiveInteraction.CurrentPatience > 0)
-                {
-                    x.ActiveInteraction.CurrentPatience -= counter;
-                    
-                    if (x.ActiveInteraction.CurrentPatience < 0)
-                    {
-                        x.ActiveInteraction.ActiveDestinationIndex++;
-                        
-                        GameManager.instance.UpdateWorldInteractable(x);
-                    }
-                }
+                CountTravelTime(x, counter);
+                CountPatience(x, counter);
             });
         }
     }
     
+    private void CountTravelTime(GameWorldInteractableElementData worldInteractableElementData, float counter)
+    {
+        if (worldInteractableElementData.DataElement != null || worldInteractableElementData.AgentState != AgentState.Move || worldInteractableElementData.TravelTime < 0) return;
+
+        if (worldInteractableElementData.TravelTime > 0)
+        {
+            worldInteractableElementData.TravelTime -= counter;
+            //Debug.Log("TRAVEL TIME: " + elementData.TravelTime);
+            if(worldInteractableElementData.TravelTime < 0)
+            {           
+                MovementManager.Arrive(worldInteractableElementData);
+            }
+        }
+    }
+
+    private void CountPatience(GameWorldInteractableElementData worldInteractableElementData, float counter)
+    {
+        if (worldInteractableElementData.AgentState != AgentState.Idle || worldInteractableElementData.ActiveInteraction.CurrentPatience < 0) return;
+        
+        if (worldInteractableElementData.ActiveInteraction.InteractionDestinationDataList.Count > 1 || 
+            worldInteractableElementData.ActiveInteraction.CurrentPatience > 0)
+        {
+            worldInteractableElementData.ActiveInteraction.CurrentPatience -= counter;
+
+            //Debug.Log("PATIENCE: " + worldInteractableElementData.ActiveInteraction.CurrentPatience);
+
+            if (worldInteractableElementData.ActiveInteraction.CurrentPatience < 0)
+            {
+                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex++;
+                GameManager.instance.UpdateWorldInteractable(worldInteractableElementData);
+            }
+        }
+    }
+
     public void InitializeTime()
     {
         activeTime.EndTime = defaultTime;
@@ -214,10 +235,11 @@ public class TimeManager : MonoBehaviour
 
     public void SetGameTime(int time)
     {
+        //Check if the active time was inbetween any event's timeframe in order to activate the event.
         //Sometimes calls this double when end time matches exactly with the active time (will match with start as well)
         timeEventList.Where(timeEvent => TimeInFrame(timeEvent.Time, activeTime.StartTime, activeTime.EndTime)).ToList().ForEach(timeEvent =>
         {
-            Debug.Log("There was a time event between " + activeTime.StartTime + " and " + activeTime.EndTime);
+            //Debug.Log("There was a time event between " + activeTime.StartTime + " and " + activeTime.EndTime);
             timeEvent.WorldInteractableDataList.ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
         });
     }

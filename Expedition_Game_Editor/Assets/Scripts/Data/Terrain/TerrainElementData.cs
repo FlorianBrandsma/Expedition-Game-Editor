@@ -54,13 +54,13 @@ public class TerrainElementData : TerrainData, IElementData
 
     public void SetOriginalValues()
     {
-        OriginalData = base.Clone();
-
         AtmosphereDataList.ForEach(x => x.SetOriginalValues());
         TerrainTileDataList.ForEach(x => x.SetOriginalValues());
         WorldInteractableDataList.ForEach(x => x.SetOriginalValues());
         InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
         WorldObjectDataList.ForEach(x => x.SetOriginalValues());
+
+        OriginalData = base.Clone();
 
         ClearChanges();
     }

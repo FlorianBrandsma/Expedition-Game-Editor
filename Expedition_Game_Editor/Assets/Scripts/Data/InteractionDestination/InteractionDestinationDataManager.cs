@@ -54,9 +54,9 @@ public static class InteractionDestinationDataManager
                     join modelData                  in modelDataList                on interactableData.ModelId                 equals modelData.Id
                     join iconData                   in iconDataList                 on modelData.IconId                         equals iconData.Id
 
-                    join regionData                 in regionDataList               on interactionDestinationData.RegionId      equals regionData.Id
-                    join terrainData                in terrainDataList              on regionData.Id                            equals terrainData.RegionId
-                    join terrainTileData            in terrainTileDataList          on terrainData.Id                           equals terrainTileData.TerrainId
+                    join terrainTileData            in terrainTileDataList          on interactionDestinationData.TerrainTileId equals terrainTileData.Id
+                    join terrainData                in terrainDataList              on terrainTileData.TerrainId                equals terrainData.Id
+                    join regionData                 in regionDataList               on terrainData.RegionId                     equals regionData.Id
                     join tileData                   in tileDataList                 on terrainTileData.TileId                   equals tileData.Id
                     join tileSetData                in tileSetDataList              on regionData.TileSetId                     equals tileSetData.Id
 

@@ -488,7 +488,7 @@ static public class Fixtures
                     RotationZ = 0,
 
                     PositionVariance = 0,
-                    Patience = 10
+                    Patience = 5
                 },
                 new InteractionDestinationBaseData()
                 {
@@ -503,6 +503,32 @@ static public class Fixtures
                     PositionVariance = 0,
                     Patience = 0
                 },
+                //new InteractionDestinationBaseData()
+                //{
+                //    PositionX = 15.875f,
+                //    PositionY = 0.2f,
+                //    PositionZ = 15.875f,
+
+                //    RotationX = 0,
+                //    RotationY = 130,
+                //    RotationZ = 0,
+
+                //    PositionVariance = 0,
+                //    Patience = 5
+                //},
+                //new InteractionDestinationBaseData()
+                //{
+                //    PositionX = 15.875f,
+                //    PositionY = 0.2f,
+                //    PositionZ = 460.375f,
+
+                //    RotationX = 0,
+                //    RotationY = 130,
+                //    RotationZ = 0,
+
+                //    PositionVariance = 0,
+                //    Patience = 5
+                //},
                 new InteractionDestinationBaseData()
                 {
                     PositionX = 223f,
@@ -514,7 +540,7 @@ static public class Fixtures
                     RotationZ = 0,
 
                     PositionVariance = 0,
-                    Patience = 20
+                    Patience = 5
                 }
             };
 
@@ -540,7 +566,7 @@ static public class Fixtures
                 }
             };
 
-            //CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
+            CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
 
             /*Pool*/
             var poolDestinationList = new List<InteractionDestinationBaseData>()
@@ -555,11 +581,26 @@ static public class Fixtures
                     RotationY = 180,
                     RotationZ = 0,
 
-                    PositionVariance = 0
-                }
+                    PositionVariance = 0,
+                    Patience = 5
+                },
+
+                //new InteractionDestinationBaseData()
+                //{
+                //    PositionX = 245.125f,
+                //    PositionY = 0f,
+                //    PositionZ = 242.375f,
+
+                //    RotationX = 0,
+                //    RotationY = 180,
+                //    RotationZ = 0,
+
+                //    PositionVariance = 0,
+                //    Patience = 5
+                //}
             };
 
-            //CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
+            CreateWorldInteractable(Enums.InteractableType.Object, 7, region.Id, poolDestinationList);
 
             var regionSize = GetRegionSize(region.Id);
 
@@ -1248,13 +1289,13 @@ static public class Fixtures
                         }
                     };
 
-                    //CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
+                    CreateTask(worldInteractable, objective.Id, index, randomRegion.Id, randomDestinationList);
                 }
             }
         }
     }
     
-    static public float GetRegionSize(int regionId)
+    static private float GetRegionSize(int regionId)
     {
         var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
         var tileSet = tileSetList.Where(x => x.Id == region.TileSetId).FirstOrDefault();
@@ -1265,7 +1306,7 @@ static public class Fixtures
         return regionSize;
     }
 
-    static public int GetTerrain(int regionId, float posX, float posZ)
+    static private int GetTerrain(int regionId, float posX, float posZ)
     {
         var region = regionList.Where(x => x.Id == regionId).FirstOrDefault();
         var tileSet = tileSetList.Where(x => x.Id == region.TileSetId).FirstOrDefault();
@@ -1283,7 +1324,7 @@ static public class Fixtures
         return terrainId;
     }
 
-    static public int GetTerrainTile(int terrainId, float posX, float posZ)
+    static private int GetTerrainTile(int terrainId, float posX, float posZ)
     {
         var terrain = terrainList.Where(x => x.Id == terrainId).FirstOrDefault();
         var region = regionList.Where(x => x.Id == terrain.RegionId).FirstOrDefault();

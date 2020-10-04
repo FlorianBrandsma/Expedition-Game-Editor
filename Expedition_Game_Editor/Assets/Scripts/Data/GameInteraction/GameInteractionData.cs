@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class GameInteractionData
 {
@@ -36,9 +35,7 @@ public class GameInteractionData
     public int WorldInteractableId          { get; set; }
     
     public int DestinationIndex             { get; set; } = -1;
-
-    public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
-
+    
     public virtual void GetOriginalValues(GameInteractionData originalData)
     {
         GameWorldInteractableData   = originalData.GameWorldInteractableData;

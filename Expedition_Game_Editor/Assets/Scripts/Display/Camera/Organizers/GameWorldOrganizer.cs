@@ -157,6 +157,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         //Debugging
         gameWorldElement.name = elementData.DebugName + elementData.Id;
 
+        gameWorldElement.GameElement.InitializeElement();
+
         SetElement(gameWorldElement.GameElement);
     }
 
@@ -186,50 +188,67 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         element.SetElement();
     }
     
+    private void ResetWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
+    {
+        CloseWorldInteractable(worldInteractableElementData);
+        SetWorldInteractable(worldInteractableElementData);
+    }
+
     public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
     {
-        Debug.Log("Update " + worldInteractableElementData.InteractableName);
-
         //If the active world interactable contains no active time, deactivate it
         if (worldInteractableElementData.ActiveInteraction == null)
         {
             worldInteractableElementData.TerrainTileId = 0;
 
         } else {
+
+            //Apply variance here and then pull the terrain tile id from the position
+            MovementManager.SetDestinationPosition(worldInteractableElementData.ActiveInteraction.ActiveDestination);
             
-            worldInteractableElementData.TerrainTileId = worldInteractableElementData.ActiveInteraction.InteractionDestinationDataList.First().TerrainTileId;
+            worldInteractableElementData.TerrainTileId = worldInteractableElementData.ActiveInteraction.ActiveDestination.TerrainTileId;
         }
 
-        var active = tileList.Select(x => x.Id).Contains(worldInteractableElementData.TerrainTileId);
+        var onActiveTile = tileList.Select(x => x.Id).Contains(worldInteractableElementData.TerrainTileId);
 
         if (worldInteractableElementData.DataElement == null)
         {
             //Spawn interactables without an element that are deemed active
-            if (active)
+            if (onActiveTile)
             {
-                Debug.Log("SPAWN ME! " + worldInteractableElementData.InteractableName);
                 SetWorldInteractable(worldInteractableElementData);
+
+            } else {
+                
+                //Move the agent off-screen
+                if (worldInteractableElementData.Type == Enums.InteractableType.Agent)
+                {
+                    MovementManager.StartTravel(worldInteractableElementData);
+                }
             }
 
         } else {
 
-            if (active)
+            if (onActiveTile)
             {
                 //Update the destination of active agents
-                if ((Enums.InteractableType)worldInteractableElementData.Type == Enums.InteractableType.Agent)
+                if (worldInteractableElementData.Type == Enums.InteractableType.Agent)
                 {
                     worldInteractableElementData.DataElement.Element.UpdateElement();
+                }
+
+                //Reset the interactable instead of just changing the position so a "disappearing" effect can be applied
+                if (worldInteractableElementData.Type == Enums.InteractableType.Object)
+                {
+                    ResetWorldInteractable(worldInteractableElementData);
                 }
 
             } else {
 
                 //Despawn interactables with an element that are deemed inactive
-                Debug.Log("DESPAWN ME! " + worldInteractableElementData.InteractableName);
+                CloseWorldInteractable(worldInteractableElementData);
             }
         }
-
-        //If terrain tile id is not within the active region, make the interactable (agent) walk away in a random direction as they fade out
-        //Possible better solution: all interactables should have an intro and outro animation based on their state which plays when they (de)activate
     }
 
     private void SetActiveRect()
@@ -316,9 +335,17 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
         inactiveWorldInteractableList.ForEach(x =>
         {
-            PoolManager.ClosePoolObject(x.DataElement.Poolable);
-            x.DataElement.Element.CloseElement();
+            CloseWorldInteractable(x);
         });
+    }
+
+    private void CloseWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
+    {
+        PoolManager.ClosePoolObject(worldInteractableElementData.DataElement.Poolable);
+        worldInteractableElementData.DataElement.Element.CloseElement();
+
+        if(worldInteractableElementData.Type == Enums.InteractableType.Agent)
+            MovementManager.StartTravel(worldInteractableElementData);
     }
 
     private void ClearPartyMembers()

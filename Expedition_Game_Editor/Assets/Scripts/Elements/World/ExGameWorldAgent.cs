@@ -13,8 +13,6 @@ public enum AgentState
 public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 {
     private Model model;
-    
-    private Vector3 startPosition;
 
     private Vector3 position;
     private Vector3 rotation;
@@ -42,7 +40,9 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         {
             switch (GameElement.DataElement.ElementData.DataType)
             {
-                case Enums.DataType.GameWorldInteractable: return ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState;
+                case Enums.DataType.GameWorldInteractable:
+                    return ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState;
+
                 default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); return AgentState.Idle;
             }
         }
@@ -50,7 +50,12 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         {
             switch (GameElement.DataElement.ElementData.DataType)
             {
-                case Enums.DataType.GameWorldInteractable: ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState = value; break;
+                case Enums.DataType.GameWorldInteractable:
+
+                    ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState = value;
+
+                    break;
+
                 default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
             }
         }
@@ -82,13 +87,13 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         switch (GameElement.DataElement.ElementData.DataType)
         {
-            case Enums.DataType.GameWorldInteractable: SetGameWorldInteractableAgent(); break;
-            case Enums.DataType.GamePartyMember: SetGamePartyMemberAgent(); break;
+            case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableAgent();    break;
+            case Enums.DataType.GamePartyMember:        SetGamePartyMemberAgent();          break;
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
 
-        transform.localPosition = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
+        transform.localPosition = new Vector3(position.x, position.y, -position.z);
         transform.localEulerAngles = new Vector3(rotation.x, rotation.y, rotation.z);
 
         transform.localScale = new Vector3(scale, scale, scale);
@@ -100,7 +105,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
             StartCoroutine(WakeAgent());
         }
     }
-
+    
     private void SetGameWorldInteractableAgent()
     {
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
@@ -109,9 +114,9 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
-        var interactionDestinationData = interactionData.ActiveInteractionDestination;
+        var interactionDestinationData = interactionData.ActiveDestination;
         
-        position = new Vector3(interactionDestinationData.PositionX, interactionDestinationData.PositionY, interactionDestinationData.PositionZ);
+        position = interactionDestinationData.Position;
         rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
 
         scale = elementData.Scale;
@@ -152,6 +157,15 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         model.gameObject.SetActive(true);
     }
 
+    private IEnumerator WakeAgent()
+    {
+        yield return new WaitForSecondsRealtime(1);
+
+        AgentState = AgentState.Idle;
+
+        SetDestination();
+    }
+
     public void UpdateElement()
     {
         SetDestination();
@@ -169,11 +183,11 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         if (!Agent.isOnNavMesh) return;
 
-        Agent.destination = new Vector3(startPosition.x + position.x, startPosition.y + position.y, -position.z);
+        Agent.destination = new Vector3(position.x, position.y, -position.z);
 
+        //Immediately arrive at destination if the new destination distance is too short
         if (AgentState == AgentState.Idle && Vector3.Distance(gameObject.transform.position, Agent.destination) <= Agent.stoppingDistance)
         {
-            //Immediately arrive at destination if the new destination distance is too short
             ArriveDestination();
         }
     }
@@ -181,13 +195,11 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     private void SetGameWorldInteractableDestination()
     {
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+        
+        var interactionDestinationData = elementData.ActiveInteraction.ActiveDestination;
 
-        var interactionData = elementData.ActiveInteraction;
-        var interactionDestinationData = interactionData.ActiveInteractionDestination;
-
-        position = new Vector3(interactionDestinationData.PositionX + Random.Range(-interactionDestinationData.PositionVariance, interactionDestinationData.PositionVariance), 
-                               interactionDestinationData.PositionY, 
-                               interactionDestinationData.PositionZ + Random.Range(-interactionDestinationData.PositionVariance, interactionDestinationData.PositionVariance));
+        //elementData.Position = new Vector3()
+        position = interactionDestinationData.Position;
     }
 
     private void SetGamePartyMemberDestination()
@@ -217,11 +229,15 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void UpdateGameWorldInteractableAgent()
     {
+        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+
         if (AgentState == AgentState.Idle && Vector3.Distance(gameObject.transform.position, Agent.destination) >= Agent.stoppingDistance)
         {
             AgentState = AgentState.Move;
         }
-        
+
+        elementData.Position = new Vector3(transform.position.x, transform.position.y, -transform.position.z);
+
         //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
         if (AgentState == AgentState.Move && !Moving && Vector3.Distance(gameObject.transform.position, Agent.destination) < Agent.stoppingDistance)
             ArriveDestination();
@@ -231,6 +247,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void ArriveDestination()
     {
+        //This belongs in the movement manager, or at least a version of it
         switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable: ArriveGameWorldInteractableAgent(); break;
@@ -238,20 +255,32 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
-
-        AgentState = AgentState.Idle;
     }
 
     private void ArriveGameWorldInteractableAgent()
     {
-        var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
-        var interactionData = elementData.ActiveInteraction;
-        var destinationData = interactionData.ActiveInteractionDestination;
+        var worldInteractableElementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+
+        var destinationData = worldInteractableElementData.ActiveInteraction.ActiveDestination;
+
+        MovementManager.Arrive(worldInteractableElementData);
 
         if (!destinationData.FreeRotation && destinationData.Patience > 0)
         {
             StopAllCoroutines();
             StartCoroutine(Rotate(rotation.y));
+        }
+    }
+
+    private IEnumerator Rotate(float angle)
+    {
+        var rotateSpeed = 10;
+
+        while (Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
+        {
+            //Take destination's patience into account: rotation must always be stopped when patience runs out
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * TimeManager.gameTimeSpeed * Time.deltaTime);
+            yield return null;
         }
     }
 
@@ -263,28 +292,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         Agent.ResetPath();
     }
-
-    IEnumerator WakeAgent()
-    {
-        yield return new WaitForSecondsRealtime(1);
-
-        AgentState = AgentState.Idle;
-
-        UpdateElement();
-    }
-
-    IEnumerator Rotate(float angle)
-    {
-        var rotateSpeed = 10;
-
-        while(Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
-        {
-            //Take destination's patience into account: rotation must always be stopped when patience runs out
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * TimeManager.gameTimeSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
-
+    
     public void CloseElement()
     {
         StopAgent();

@@ -5,7 +5,6 @@ public class GameInteractionDestinationData
     public int Id                   { get; set; }
 
     public int RegionId             { get; set; }
-    public int TerrainId            { get; set; }
     public int TerrainTileId        { get; set; }
 
     public float PositionX          { get; set; }
@@ -28,7 +27,6 @@ public class GameInteractionDestinationData
         Id                  = originalData.Id;
 
         RegionId            = originalData.RegionId;
-        TerrainId           = originalData.TerrainId;
         TerrainTileId       = originalData.TerrainTileId;
 
         PositionX           = originalData.PositionX;
@@ -54,7 +52,6 @@ public class GameInteractionDestinationData
         data.Id                 = Id;
 
         data.RegionId           = RegionId;
-        data.TerrainId          = TerrainId;
         data.TerrainTileId      = TerrainTileId;
 
         data.PositionX          = PositionX;
@@ -80,7 +77,6 @@ public class GameInteractionDestinationData
         elementData.Id                  = Id;
 
         elementData.RegionId            = RegionId;
-        elementData.TerrainId           = TerrainId;
         elementData.TerrainTileId       = TerrainTileId;
 
         elementData.PositionX           = PositionX;

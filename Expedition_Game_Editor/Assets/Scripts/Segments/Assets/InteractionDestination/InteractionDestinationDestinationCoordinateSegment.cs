@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour, ISegment
 {
+    private RegionElementData regionData;
+
     public ExInputNumber xInputField, yInputField, zInputField;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
     public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
-
+    
     #region Data properties
     private float PositionX
     {
@@ -53,7 +56,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
 
     public void InitializeSegment()
     {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
@@ -85,9 +88,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
     public void UpdatePositionY()
     {
         PositionY = yInputField.Value;
-
-        UpdateTile();
-
+        
         DataEditor.UpdateEditor();
     }
 
@@ -95,15 +96,18 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
     {
         PositionZ = zInputField.Value;
 
+        UpdateTile();
+
         DataEditor.UpdateEditor();
     }
 
     public void UpdateTile()
     {
-        var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
+        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
+        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
 
-        TerrainId = Fixtures.GetTerrain(regionId, PositionX, PositionZ);
-        TerrainTileId = Fixtures.GetTerrainTile(TerrainId, PositionX, PositionZ);
+        TerrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, PositionX, PositionZ);
+        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, PositionX, PositionZ);
 
         DataEditor.UpdateEditor();
     }

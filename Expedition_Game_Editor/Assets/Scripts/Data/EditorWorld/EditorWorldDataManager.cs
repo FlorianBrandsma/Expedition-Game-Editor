@@ -120,13 +120,13 @@ public static class EditorWorldDataManager
 
                     WorldInteractableDataList = regionType != Enums.RegionType.InteractionDestination ? (
                     from worldInteractableData      in worldInteractableDataList
-                    join taskData                   in taskDataList                     on worldInteractableData.Id             equals taskData.WorldInteractableId
-                    join interactionData            in interactionDataList              on taskData.Id                          equals interactionData.TaskId
-                    join interactionDestinationData in interactionDestinationDataList   on interactionData.Id                   equals interactionDestinationData.InteractionId
-                    join interactableData           in interactableDataList             on worldInteractableData.InteractableId equals interactableData.Id
-                    join modelData                  in modelDataList                    on interactableData.ModelId             equals modelData.Id
-                    join iconData                   in iconDataList                     on modelData.IconId                     equals iconData.Id
+                    join interactableData           in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                    join modelData                  in modelDataList        on interactableData.ModelId             equals modelData.Id
+                    join iconData                   in iconDataList         on modelData.IconId                     equals iconData.Id
+                    join taskData                   in taskDataList         on worldInteractableData.Id             equals taskData.WorldInteractableId
+                    join interactionData            in interactionDataList  on taskData.Id                          equals interactionData.TaskId
 
+                    from interactionDestinationData in interactionDestinationDataList.Where(x => interactionData.Id == x.InteractionId).Take(1)
                     where interactionDestinationData.TerrainId == terrainData.Id
                     select new WorldInteractableElementData()
                     {
@@ -302,7 +302,7 @@ public static class EditorWorldDataManager
                     DefaultRotationY = phaseData.DefaultRotationY,
                     DefaultRotationZ = phaseData.DefaultRotationZ,
 
-                    TerrainTileId = TerrainTileId(regionData.Id, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
+                    TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
 
                     ModelId = partyMemberData.First().modelData.Id,
                     ModelPath = partyMemberData.First().modelData.Path,
@@ -523,12 +523,12 @@ public static class EditorWorldDataManager
         return startPosition;
     }
 
-    private static int TerrainTileId(int regionId, float positionX, float positionZ)
-    {
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+    //private static int TerrainTileId(int regionId, float positionX, float positionZ)
+    //{
+    //    var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
 
-        var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
+    //    var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
 
-        return terrainTileId;
-    }
+    //    return terrainTileId;
+    //}
 }

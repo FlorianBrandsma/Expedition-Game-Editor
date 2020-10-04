@@ -1,36 +1,31 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class GameWorldInteractableData
 {
-    public int Id                   { get; set; }
+    public int Id                       { get; set; }
     
-    public int TerrainTileId        { get; set; }
-    public int ModelId              { get; set; }
+    public int TerrainTileId            { get; set; }
+    public int ModelId                  { get; set; }
 
-    public int Type                 { get; set; }
+    public Enums.InteractableType Type  { get; set; }
 
-    public string ModelPath         { get; set; }
-    public string ModelIconPath     { get; set; }
+    public string ModelPath             { get; set; }
+    public string ModelIconPath         { get; set; }
 
-    public string InteractableName  { get; set; }
+    public string InteractableName      { get; set; }
 
-    public int Health               { get; set; }
-    public int Hunger               { get; set; }
-    public int Thirst               { get; set; }
+    public int Health                   { get; set; }
+    public int Hunger                   { get; set; }
+    public int Thirst                   { get; set; }
 
-    public float Weight             { get; set; }
-    public float Speed              { get; set; }
-    public float Stamina            { get; set; }
+    public float Weight                 { get; set; }
+    public float Speed                  { get; set; }
+    public float Stamina                { get; set; }
 
-    public float Scale              { get; set; }
-
-    //public float CurrentPatience;
+    public float Scale                  { get; set; }
 
     public GameInteractionElementData Interaction { get; set; }
-
-    public List<GameInteractionElementData> InteractionDataList { get; set; } = new List<GameInteractionElementData>();
-
+    
     public virtual void GetOriginalValues(GameWorldInteractableData originalData)
     {
         Id                  = originalData.Id;

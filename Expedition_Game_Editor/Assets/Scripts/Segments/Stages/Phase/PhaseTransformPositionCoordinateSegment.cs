@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
+    private RegionElementData regionData;
+
     public ExInputNumber xInputField, yInputField, zInputField;
     
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -58,7 +61,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
@@ -92,9 +95,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
     public void UpdatePositionY()
     {
         DefaultPositionY = yInputField.Value;
-
-        UpdateTile();
-
+        
         DataEditor.UpdateEditor();
     }
 
@@ -102,16 +103,19 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
     {
         DefaultPositionZ = zInputField.Value;
 
+        UpdateTile();
+
         DataEditor.UpdateEditor();
     }
 
     public void UpdateTile()
     {
-        var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
+        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
+        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
 
-        var terrainId = Fixtures.GetTerrain(regionId, DefaultPositionX, DefaultPositionZ);
-        TerrainTileId = Fixtures.GetTerrainTile(terrainId, DefaultPositionX, DefaultPositionZ);
-
+        var terrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, DefaultPositionX, DefaultPositionZ);
+        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, DefaultPositionX, DefaultPositionZ);
+        
         DataEditor.UpdateEditor();
     }
 

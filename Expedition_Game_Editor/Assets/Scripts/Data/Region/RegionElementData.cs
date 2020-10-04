@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class RegionElementData : RegionData, IElementData
 {
@@ -83,6 +84,8 @@ public class RegionElementData : RegionData, IElementData
 
     public void SetOriginalValues()
     {
+        TerrainDataList.ForEach(x => x.SetOriginalValues());
+
         OriginalData = base.Clone();
 
         ClearChanges();
@@ -97,6 +100,8 @@ public class RegionElementData : RegionData, IElementData
 
     public void GetOriginalValues()
     {
+        TerrainDataList.ForEach(x => x.GetOriginalValues());
+
         base.GetOriginalValues(OriginalData);
     }
 
@@ -107,6 +112,8 @@ public class RegionElementData : RegionData, IElementData
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
+
+        data.TerrainDataList = new List<TerrainElementData>(TerrainDataList.Select(x => (TerrainElementData)x.Clone()).ToList());
 
         base.Clone(data);
 

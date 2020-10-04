@@ -221,10 +221,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.AtmosphereDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        worldData.TerrainDataList.SelectMany(x => x.AtmosphereDataList.GroupBy(y => y.TerrainId)
-                                                                      .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
-                                                                      .OrderBy(z => z.Default).First())).ToList()
-                                                                      .ForEach(x => x.ContainsActiveTime = true);
+        worldData.TerrainDataList.SelectMany(x => x.AtmosphereDataList).GroupBy(y => y.TerrainId)
+                                                                       .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
+                                                                       .OrderBy(z => z.Default).First()).ToList()
+                                                                       .ForEach(x => x.ContainsActiveTime = true);
     }
 
     private void ValidateInteractionDestinationTime()
@@ -232,15 +232,15 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldData.TerrainDataList.ForEach(x => x.InteractionDestinationDataList.ForEach(y => y.ContainsActiveTime = false));
 
         //Create groups of interaction destinations as interactions, using destination values that were taken from their parent interaction
-        var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList.GroupBy(y => y.InteractionId)
-                                                                                                         .Select(grp => new
-                                                                                                         {
-                                                                                                             grp.First().TaskId,
-                                                                                                             grp.First().StartTime,
-                                                                                                             grp.First().EndTime,
-                                                                                                             grp.First().Default,
-                                                                                                             InteractionDestinationList = grp.ToList()
-                                                                                                         })).ToList();
+        var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList).GroupBy(y => y.InteractionId)
+                                                                                                          .Select(grp => new
+                                                                                                          {
+                                                                                                              grp.First().TaskId,
+                                                                                                              grp.First().StartTime,
+                                                                                                              grp.First().EndTime,
+                                                                                                              grp.First().Default,
+                                                                                                              InteractionDestinationList = grp.ToList()
+                                                                                                          }).ToList();
 
         interactionGroup.GroupBy(x => x.TaskId).Select(x => x.Where(y => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, y.StartTime, y.EndTime) || y.Default)
                                                                          .OrderBy(y => y.Default).First()).ToList()
@@ -251,10 +251,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.WorldInteractableDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.GroupBy(y => y.TaskGroup)
-                                                                             .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
-                                                                             .OrderBy(z => z.Default).First())).ToList()
-                                                                             .ForEach(x => x.ContainsActiveTime = true);
+        worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList).GroupBy(y => y.TaskGroup)
+                                                                              .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
+                                                                              .OrderBy(z => z.Default).First()).ToList()
+                                                                              .ForEach(x => x.ContainsActiveTime = true);
     }
     
     public void SelectData()

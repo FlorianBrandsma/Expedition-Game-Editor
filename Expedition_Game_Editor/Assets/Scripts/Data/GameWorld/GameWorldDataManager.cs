@@ -133,7 +133,7 @@ public static class GameWorldDataManager
             {
                 Id = worldInteractableData.Id,
                 
-                Type = worldInteractableData.Type,
+                Type = (Enums.InteractableType)worldInteractableData.Type,
 
                 TerrainTileId = 0,
 
@@ -197,7 +197,6 @@ public static class GameWorldDataManager
                         Id = interactionDestinationData.Id,
 
                         RegionId = interactionDestinationData.RegionId,
-                        TerrainId = interactionDestinationData.TerrainId,
                         TerrainTileId = interactionDestinationData.TerrainTileId,
 
                         PositionX = interactionDestinationData.PositionX,
@@ -243,6 +242,8 @@ public static class GameWorldDataManager
                 {
                     Id = terrainData.Id,
 
+                    Index = terrainData.Index,
+
                     Name = terrainData.Name,
 
                     GridElement = TerrainGridElement(terrainData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize),
@@ -271,6 +272,8 @@ public static class GameWorldDataManager
                         Id = terrainTileData.Id,
 
                         TileId = terrainTileData.TileId,
+
+                        Index = terrainTileData.Index,
 
                         Active = false,
 
@@ -314,7 +317,7 @@ public static class GameWorldDataManager
 
             }).ToList()
         };
-        
+
         return new List<IElementData>() { gameWorldData };
     }
 

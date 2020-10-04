@@ -15,6 +15,7 @@ public static class PhaseDataManager
 
     private static List<RegionBaseData> regionDataList;
     private static List<TerrainBaseData> terrainDataList;
+    private static List<TerrainTileBaseData> terrainTileDataList;
     private static List<TileSetBaseData> tileSetDataList;
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
@@ -34,6 +35,7 @@ public static class PhaseDataManager
         GetRegionData();
         GetTileSetData();
         GetTerrainData();
+        GetTerrainTileData();
 
         var list = (from phaseData      in phaseDataList
                     join chapterData    in chapterDataList  on phaseData.ChapterId          equals chapterData.Id
@@ -73,7 +75,8 @@ public static class PhaseDataManager
                         PublicNotes = phaseData.PublicNotes,
                         PrivateNotes = phaseData.PrivateNotes,
 
-                        TerrainTileId = TerrainTileId(phaseData.DefaultRegionId, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
+                        #warning This should really come from base data. Save terrain tile id and get region from there
+                        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
 
                         PartyMemberId = partyMemberData.First().partyMemberData.Id,
                         
@@ -201,13 +204,12 @@ public static class PhaseDataManager
         terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
     }
 
-    private static int TerrainTileId(int regionId, float positionX, float positionZ)
+    private static void GetTerrainTileData()
     {
-        var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
+        var terrainTileSearchParameters = new Search.TerrainTile();
+        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
 
-        var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
-
-        return terrainTileId;
+        terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
     }
 
     public static void UpdateData(PhaseElementData elementData)

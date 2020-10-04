@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameInteractionElementData : GameInteractionData, IElementData
 {
@@ -15,6 +16,8 @@ public class GameInteractionElementData : GameInteractionData, IElementData
 
     public float CurrentPatience                    { get; set; }
 
+    public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
+
     public int ActiveDestinationIndex
     {
         get { return DestinationIndex; }
@@ -29,14 +32,14 @@ public class GameInteractionElementData : GameInteractionData, IElementData
         }
     }
 
-    public GameInteractionDestinationElementData ActiveInteractionDestination
+    public GameInteractionDestinationElementData ActiveDestination
     {
         get
         {
             return InteractionDestinationDataList[ActiveDestinationIndex];
         }
     }
-
+    
     #region Changed
     public bool Changed { get { return false; } }
     #endregion
@@ -48,6 +51,8 @@ public class GameInteractionElementData : GameInteractionData, IElementData
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
+
+        InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
     }

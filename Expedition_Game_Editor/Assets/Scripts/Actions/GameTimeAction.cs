@@ -39,8 +39,9 @@ public class GameTimeAction : MonoBehaviour, IAction
     public void SetTime(int selectedHour)
     {
         if (Dropdown == null) return;
-        
-        //TimeManager.instance.ActiveTime = (selectedHour * TimeManager.secondsInHour);
+
+        //Forces the game time to be set more often than necessary in dev mode
+        TimeManager.instance.ActiveTime = (selectedHour * TimeManager.secondsInHour);
     }
 
     public void CloseAction() { }

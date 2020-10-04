@@ -3,8 +3,10 @@
 public class GameTerrainTileData
 {
     public int Id                   { get; set; }
-
+    
     public int TileId               { get; set; }
+
+    public int Index                { get; set; }
 
     public bool Active              { get; set; }
 
@@ -15,6 +17,8 @@ public class GameTerrainTileData
         Id          = originalData.Id;
 
         TileId      = originalData.TileId;
+
+        Index       = originalData.Index;
 
         Active      = originalData.Active;
 
@@ -29,6 +33,8 @@ public class GameTerrainTileData
 
         data.TileId         = TileId;
 
+        data.Index          = Index;
+
         data.Active         = Active;
 
         data.GridElement    = GridElement;
@@ -41,6 +47,8 @@ public class GameTerrainTileData
         elementData.Id          = Id;
 
         elementData.TileId      = TileId;
+
+        elementData.Index       = Index;
 
         elementData.Active      = Active;
 

@@ -3,6 +3,8 @@ using System.Linq;
 
 public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 {
+    private RegionElementData regionData;
+
     public ExInputNumber xInputField, yInputField, zInputField;
     public ExToggle bindToTile;
 
@@ -49,7 +51,7 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void InitializeSegment()
     {
-        var regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
+        regionData = (RegionElementData)SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData;
 
         var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
@@ -83,15 +85,15 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
     public void UpdatePositionY()
     {
         PositionY = yInputField.Value;
-
-        UpdateTile();
-
+        
         DataEditor.UpdateEditor();
     }
 
     public void UpdatePositionZ()
     {
         PositionZ = zInputField.Value;
+
+        UpdateTile();
 
         DataEditor.UpdateEditor();
     }
@@ -102,10 +104,11 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 
         if (bindToTile.Toggle.isOn)
         {
-            var regionId = SegmentController.Path.FindLastRoute(Enums.DataType.Region).ElementData.Id;
+            var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
+            var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
 
-            var terrainId = Fixtures.GetTerrain(regionId, PositionX, PositionZ);
-            TerrainTileId = Fixtures.GetTerrainTile(terrainId, PositionX, PositionZ);
+            var terrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, PositionX, PositionZ);
+            TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, PositionX, PositionZ);
 
         } else {
             

@@ -30,6 +30,33 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     public int Id                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
+    public AgentState AgentState
+    {
+        get
+        {
+            switch (GameElement.DataElement.ElementData.DataType)
+            {
+                case Enums.DataType.GameWorldInteractable:
+                    return ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState;
+
+                default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); return AgentState.Idle;
+            }
+        }
+        set
+        {
+            switch (GameElement.DataElement.ElementData.DataType)
+            {
+                case Enums.DataType.GameWorldInteractable:
+
+                    ((GameWorldInteractableElementData)GameElement.DataElement.ElementData).AgentState = value;
+
+                    break;
+
+                default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
+            }
+        }
+    }
+
     public IPoolable Instantiate()
     {
         var newElement = Instantiate(this);
@@ -37,7 +64,11 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         return newElement;
     }
 
-    public void InitializeElement() { }
+    public void InitializeElement()
+    {
+        if(GameElement.DataElement.ElementData.DataType == Enums.DataType.GameWorldInteractable)
+            AgentState = AgentState.Idle;
+    }
 
     public void UpdateElement()
     {
@@ -76,7 +107,9 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-        
+
+        Obstacle.carving = true;
+
         SetModel();
     }
 
@@ -88,12 +121,14 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
         model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
-        var interactionDestinationData = interactionData.ActiveInteractionDestination;
+        var interactionDestinationData = interactionData.ActiveDestination;
 
         position = new Vector3(interactionDestinationData.PositionX, interactionDestinationData.PositionY, interactionDestinationData.PositionZ);
         rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
 
         scale = elementData.Scale;
+
+        Obstacle.carving = false;
 
         SetModel();
     }
@@ -117,7 +152,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     private void SetBoxObstacle()
     {
         var collider = model.GetComponent<BoxCollider>();
-
+        
         Obstacle.shape = model.obstacleShape;
 
         Obstacle.size = collider.size;
@@ -138,7 +173,6 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     public void CloseElement()
     {
         GameElement.DataElement.ElementData.DataElement = null;
-        //GameElement.DataElement.ElementData = null;
 
         if (model == null) return;
 

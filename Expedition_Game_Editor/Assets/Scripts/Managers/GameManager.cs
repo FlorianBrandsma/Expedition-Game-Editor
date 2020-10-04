@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GamePartyMemberElementData partyMemberData;
 
     private List<TerrainTileData> activeTileList;
+    private List<GameWorldInteractableElementData> activeWorldInteractableList;
 
     public GameSaveDataController gameSaveController;
     public GameWorldDataController gameWorldController;
@@ -220,10 +221,10 @@ public class GameManager : MonoBehaviour
         WorldObjectDataController.Data.dataList = gameWorldData.RegionDataList.SelectMany(x => x.TerrainDataList.SelectMany(y => y.WorldObjectDataList)).Cast<IElementData>().ToList();
 
         //Interactable agents
-        WorldInteractableAgentDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Agent).Cast<IElementData>().ToList();
+        WorldInteractableAgentDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Agent).Cast<IElementData>().ToList();
 
         //Interactable objects
-        WorldInteractableObjectDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == (int)Enums.InteractableType.Object).Cast<IElementData>().ToList();
+        WorldInteractableObjectDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Object).Cast<IElementData>().ToList();
 
         //Party
         PartyDataController.Data.dataList = gameWorldData.PartyMemberList.Cast<IElementData>().ToList();
@@ -255,8 +256,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLocalNavMesh()
     {
-        Debug.Log("Replace temporary tile size with actual region tile size");
-        localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (31.75f * 5), 50, TempActiveRange + (31.75f * 5));
+        localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (regionData.TileSize * 5), 50, TempActiveRange + (regionData.TileSize * 5));
     }
 
     private void InitializePartyMember()
@@ -311,11 +311,15 @@ public class GameManager : MonoBehaviour
                                                                                                  x.Last().Repeatable ? x.Last() : 
                                                                                                                        null).ToList();
         
-        TimeManager.activeWorldInteractableList = gameWorldData.WorldInteractableDataList.Where(x => x.InteractionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
+        activeWorldInteractableList = gameWorldData.WorldInteractableDataList.Where(x => x.InteractionDataList.Any(y => activeTaskSaveList.Select(z => z.TaskId).Contains(y.TaskId))).ToList();
         
         GetInteractionTimeEvents();
 
         gameWorldData.WorldInteractableDataList.ForEach(x => ResetInteractable(x));
+
+        //Only interactacbles which have multiple destinations or those which are bound to the active region are being moved
+        MovementManager.movableWorldInteractableList = activeWorldInteractableList.Where(x => x.ActiveInteraction.InteractionDestinationDataList.Count > 1 || 
+                                                                                              (x.ActiveInteraction.ActiveDestination.RegionId == ActiveRegionId && x.ActiveInteraction.ActiveDestination.PositionVariance > 0)).ToList();
     }
 
     private void ChangeRegion()
@@ -333,7 +337,7 @@ public class GameManager : MonoBehaviour
     private void GetInteractionTimeEvents()
     {
         TimeManager.timeEventList = new List<TimeManager.TimeEvent>();     
-        TimeManager.activeWorldInteractableList.ForEach(x => TimeManager.AddTimeEvent(x));
+        activeWorldInteractableList.ForEach(x => TimeManager.AddTimeEvent(x));
     }
 
     public void ResetInteractable(GameWorldInteractableElementData worldInteractableElementData)

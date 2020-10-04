@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameWorldElementData : GameWorldData, IElementData
 {
@@ -12,7 +13,15 @@ public class GameWorldElementData : GameWorldData, IElementData
     public Enums.SelectionStatus SelectionStatus    { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
-    
+
+    public List<GameRegionElementData> RegionDataList       { get; set; } = new List<GameRegionElementData>();
+    public List<GamePartyMemberElementData> PartyMemberList { get; set; } = new List<GamePartyMemberElementData>();
+
+    //[Might have to go in terrain to preserve the possibility to generate terrains]
+    //There's actually no real way to know what terrain a world interactable belongs to
+    //Generated interactables/interactions can be bound to a terrain by id and removed from the list when necessary
+    public List<GameWorldInteractableElementData> WorldInteractableDataList { get; set; } = new List<GameWorldInteractableElementData>();
+
     #region Changed
     public bool Changed { get { return false; } }
     #endregion
@@ -24,6 +33,8 @@ public class GameWorldElementData : GameWorldData, IElementData
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
+
+        WorldInteractableDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
     }

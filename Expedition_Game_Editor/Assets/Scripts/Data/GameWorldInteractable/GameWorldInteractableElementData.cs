@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameWorldInteractableElementData : GameWorldInteractableData, IElementData
 {
@@ -13,7 +14,12 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
-    public AgentState AgentState { get; set; }
+    public AgentState AgentState    { get; set; }
+
+    public Vector3 Position         { get; set; }
+    public float TravelTime         { get; set; }
+
+    public List<GameInteractionElementData> InteractionDataList { get; set; } = new List<GameInteractionElementData>();
     
     public GameInteractionElementData ActiveInteraction
     {
@@ -25,7 +31,7 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
             Interaction.ActiveDestinationIndex = 0;
         }
     }
-
+    
     #region Changed
     public bool Changed { get { return false; } }
     #endregion
@@ -37,6 +43,8 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
+
+        InteractionDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
     }
