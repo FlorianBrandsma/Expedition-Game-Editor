@@ -2203,7 +2203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1832129054}
   content: {fileID: 684827318}
-  overlayParent: {fileID: 0}
+  overlayParent: {fileID: 667584424}
   overlayManager: {fileID: 667584425}
   cameraParent: {fileID: 0}
   displayRect: {fileID: 1658898467}
@@ -11015,7 +11015,7 @@ MonoBehaviour:
   selectionProperty: 0
   timeBasedLighting: 0
   enableScroll: 0
-  enableStatusIcons: 0
+  enableStatusIcons: 1
   enableTerrainInfo: 0
   enableGameUI: 1
 --- !u!114 &848345538
@@ -28279,6 +28279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraManager: {fileID: 133624376}
+  targetList: []
 --- !u!4 &1821248243
 Transform:
   m_ObjectHideFlags: 0

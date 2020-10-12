@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011070767522}
   - component: {fileID: 208301561920423510}
+  - component: {fileID: 135549711195138156}
   - component: {fileID: 114760462808476482}
   - component: {fileID: 114286888310384298}
   - component: {fileID: 114678211915021916}
-  m_Layer: 0
-  m_Name: GameWorldElement
+  m_Layer: 2
+  m_Name: GameWorldInteractableObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,10 +47,23 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
-  m_Carve: 1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!135 &135549711195138156
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012841250562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114760462808476482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44435608f7167c048a8dca93b91a15a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &114678211915021916
 MonoBehaviour:
   m_ObjectHideFlags: 0

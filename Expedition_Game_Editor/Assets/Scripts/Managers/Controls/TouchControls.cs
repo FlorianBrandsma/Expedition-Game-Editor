@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class TouchControls : MonoBehaviour, IPlayerController
 {
-    private TouchOverlay TouchOverlay { get { return PlayerControlManager.instance.cameraManager.overlayManager.TouchOverlay; } }
+    public TouchOverlay TouchOverlay { get { return PlayerControlManager.instance.cameraManager.overlayManager.TouchOverlay; } }
     
     private float minSensitivity = 0.1f;
 

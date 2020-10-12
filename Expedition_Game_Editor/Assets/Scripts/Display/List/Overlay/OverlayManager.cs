@@ -19,10 +19,10 @@ public class OverlayManager : MonoBehaviour
     public PagingOverlay PagingOverlay { get; set; }
     public HeaderOverlay HeaderOverlay { get; set; }
 
-    public StatusIconOverlay StatusIconOverlay { get; set; }
-    public TerrainHeaderOverlay TerrainHeaderOverlay { get; set; }
-    public GameOverlay GameOverlay { get; set; }
-    public TouchOverlay TouchOverlay { get; set; }
+    public StatusIconOverlay StatusIconOverlay          { get; set; }
+    public TerrainHeaderOverlay TerrainHeaderOverlay    { get; set; }
+    public GameOverlay GameOverlay                      { get; set; }
+    public TouchOverlay TouchOverlay                    { get; set; }
     
     public IDisplayManager  DisplayManager { get; set; }
 

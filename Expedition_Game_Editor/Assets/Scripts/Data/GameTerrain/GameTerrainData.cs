@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameTerrainData
 {
@@ -9,7 +10,12 @@ public class GameTerrainData
     public string Name              { get; set; }
 
     public GridElement GridElement  { get; set; }
-    
+
+    public List<GameAtmosphereElementData> AtmosphereDataList               { get; set; } = new List<GameAtmosphereElementData>();
+    public List<GameTerrainTileElementData> TerrainTileDataList             { get; set; } = new List<GameTerrainTileElementData>();
+    public List<GameWorldInteractableElementData> WorldInteractableDataList { get; set; } = new List<GameWorldInteractableElementData>();
+    public List<GameWorldObjectElementData> WorldObjectDataList             { get; set; } = new List<GameWorldObjectElementData>();
+
     public virtual void GetOriginalValues(GameTerrainData originalData)
     {
         Id          = originalData.Id;

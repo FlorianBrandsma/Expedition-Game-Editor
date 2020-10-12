@@ -388,9 +388,11 @@ static public class DataManager
             data.StartTime = interaction.StartTime;
             data.EndTime = interaction.EndTime;
 
+            data.ArrivalType = interaction.ArrivalType;
+
             data.TriggerAutomatically = interaction.TriggerAutomatically;
             data.BeNearDestination = interaction.BeNearDestination;
-            data.FaceAgent = interaction.FaceAgent;
+            data.FaceInteractable = interaction.FaceInteractable;
             data.FacePartyLeader = interaction.FacePartyLeader;
             data.HideInteractionIndicator = interaction.HideInteractionIndicator;
 

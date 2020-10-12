@@ -11,9 +11,11 @@ public class InteractionBaseData
     public int StartTime                    { get; set; }
     public int EndTime                      { get; set; }
 
+    public int ArrivalType                  { get; set; }
+
     public bool TriggerAutomatically        { get; set; }
     public bool BeNearDestination           { get; set; }
-    public bool FaceAgent                   { get; set; }
+    public bool FaceInteractable            { get; set; }
     public bool FacePartyLeader             { get; set; }
     public bool HideInteractionIndicator    { get; set; }
 
@@ -41,9 +43,11 @@ public class InteractionBaseData
         StartTime                   = originalData.StartTime;
         EndTime                     = originalData.EndTime;
 
+        ArrivalType                 = originalData.ArrivalType;
+
         TriggerAutomatically        = originalData.TriggerAutomatically;
         BeNearDestination           = originalData.BeNearDestination;
-        FaceAgent                   = originalData.FaceAgent;
+        FaceInteractable                   = originalData.FaceInteractable;
         FacePartyLeader             = originalData.FacePartyLeader;
         HideInteractionIndicator    = originalData.HideInteractionIndicator;
 
@@ -72,9 +76,11 @@ public class InteractionBaseData
         data.StartTime                  = StartTime;
         data.EndTime                    = EndTime;
 
+        data.ArrivalType                = ArrivalType;
+
         data.TriggerAutomatically       = TriggerAutomatically;
         data.BeNearDestination          = BeNearDestination;
-        data.FaceAgent                  = FaceAgent;
+        data.FaceInteractable                  = FaceInteractable;
         data.FacePartyLeader            = FacePartyLeader;
         data.HideInteractionIndicator   = HideInteractionIndicator;
 

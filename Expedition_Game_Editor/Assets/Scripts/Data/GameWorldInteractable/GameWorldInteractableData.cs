@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameWorldInteractableData
 {
@@ -22,7 +23,13 @@ public class GameWorldInteractableData
     public float Speed                  { get; set; }
     public float Stamina                { get; set; }
 
+    public float Height                 { get; set; }
+    public float Width                  { get; set; }
+    public float Depth                  { get; set; }
+
     public float Scale                  { get; set; }
+    
+    public List<GameInteractionElementData> InteractionDataList { get; set; } = new List<GameInteractionElementData>();
 
     public GameInteractionElementData Interaction { get; set; }
     
@@ -47,6 +54,10 @@ public class GameWorldInteractableData
         Weight              = originalData.Weight;
         Speed               = originalData.Speed;
         Stamina             = originalData.Stamina;
+
+        Height              = originalData.Height;
+        Width               = originalData.Width;
+        Depth               = originalData.Depth;
 
         Scale               = originalData.Scale;
 
@@ -77,9 +88,15 @@ public class GameWorldInteractableData
         data.Speed              = Speed;
         data.Stamina            = Stamina;
 
+        data.Height             = Height;
+        data.Width              = Width;
+        data.Depth              = Depth;
+
         data.Scale              = Scale;
 
         data.Interaction        = Interaction;
+
+        InteractionDataList.ForEach(x => x.SetOriginalValues());
 
         return data;
     }
@@ -105,6 +122,10 @@ public class GameWorldInteractableData
         elementData.Weight              = Weight;
         elementData.Speed               = Speed;
         elementData.Stamina             = Stamina;
+
+        elementData.Height              = Height;
+        elementData.Width               = Width;
+        elementData.Depth               = Depth;
 
         elementData.Scale               = Scale;
 

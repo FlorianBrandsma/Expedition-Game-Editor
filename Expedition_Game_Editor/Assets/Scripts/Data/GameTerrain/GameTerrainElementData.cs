@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class GameTerrainElementData : GameTerrainData, IElementData
 {
@@ -13,12 +12,7 @@ public class GameTerrainElementData : GameTerrainData, IElementData
     public Enums.SelectionStatus SelectionStatus    { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
-
-    public List<GameAtmosphereElementData> AtmosphereDataList               { get; set; } = new List<GameAtmosphereElementData>();
-    public List<GameTerrainTileElementData> TerrainTileDataList             { get; set; } = new List<GameTerrainTileElementData>();
-    public List<GameWorldInteractableElementData> WorldInteractableDataList { get; set; } = new List<GameWorldInteractableElementData>();
-    public List<GameWorldObjectElementData> WorldObjectDataList             { get; set; } = new List<GameWorldObjectElementData>();
-
+    
     #region Changed
     public bool Changed { get { return false; } }
     #endregion

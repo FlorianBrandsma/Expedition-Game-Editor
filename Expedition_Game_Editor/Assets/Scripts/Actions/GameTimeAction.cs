@@ -33,14 +33,14 @@ public class GameTimeAction : MonoBehaviour, IAction
 
         Dropdown.Dropdown.captionText.text = TimeManager.FormatTime(TimeManager.instance.ActiveTime);
 
-        Dropdown.Dropdown.value = TimeManager.instance.ActiveTime / TimeManager.secondsInHour;
+        //Forces the game time to be set more often than necessary in dev mode
+        //Dropdown.Dropdown.value = TimeManager.instance.ActiveTime / TimeManager.secondsInHour;
     }
 
     public void SetTime(int selectedHour)
     {
         if (Dropdown == null) return;
-
-        //Forces the game time to be set more often than necessary in dev mode
+        
         TimeManager.instance.ActiveTime = (selectedHour * TimeManager.secondsInHour);
     }
 

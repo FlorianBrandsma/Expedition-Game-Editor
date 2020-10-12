@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class GameWorldInteractableElementData : GameWorldInteractableData, IElementData
 {
@@ -18,9 +17,9 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
 
     public Vector3 Position         { get; set; }
     public float TravelTime         { get; set; }
-
-    public List<GameInteractionElementData> InteractionDataList { get; set; } = new List<GameInteractionElementData>();
     
+    public bool Backtracing         { get; set; }
+
     public GameInteractionElementData ActiveInteraction
     {
         get { return Interaction; }
@@ -28,6 +27,7 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
         {
             Interaction = value;
 
+            Backtracing = false;
             Interaction.ActiveDestinationIndex = 0;
         }
     }
@@ -43,9 +43,7 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
-
-        InteractionDataList.ForEach(x => x.SetOriginalValues());
-
+        
         ClearChanges();
     }
 

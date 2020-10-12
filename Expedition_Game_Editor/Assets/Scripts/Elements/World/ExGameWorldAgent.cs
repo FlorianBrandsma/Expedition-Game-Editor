@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using System.Linq;
 using System.Collections;
 
 public enum AgentState
@@ -10,29 +9,28 @@ public enum AgentState
     Move
 }
 
-public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
+public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 {
-    private Model model;
-
     private Vector3 position;
     private Vector3 rotation;
     private float scale;
 
     private float speed;
 
-    public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
+    public GameElement GameElement              { get { return GetComponent<GameElement>(); } }
 
-    public NavMeshAgent Agent               { get { return GetComponent<NavMeshAgent>(); } }
-    public Animator Animator                { get { return model.Animator; } }
-    
-    private bool Moving                     { get { return Agent.velocity.x > 0.1f || Agent.velocity.z > 0.1f; } }
+    private NavMeshAgent Agent                  { get { return GetComponent<NavMeshAgent>(); } }
+    private SphereCollider interactionCollider  { get { return GetComponent<SphereCollider>(); } }
+    public Animator Animator                    { get { return GameElement.Model.Animator; } }
 
-    public Color ElementColor               { set { } }
+    private bool Moving                         { get { return Agent.velocity.x > 0.1f || Agent.velocity.z > 0.1f; } }
 
-    public Transform Transform              { get { return GetComponent<Transform>(); } }
-    public Enums.ElementType ElementType    { get { return Enums.ElementType.GameWorldAgent; } }
-    public int Id                           { get; set; }
-    public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
+    public Color ElementColor                   { set { } }
+
+    public Transform Transform                  { get { return GetComponent<Transform>(); } }
+    public Enums.ElementType ElementType        { get { return Enums.ElementType.GameWorldAgent; } }
+    public int Id                               { get; set; }
+    public bool IsActive                        { get { return gameObject.activeInHierarchy; } }
 
     public AgentState AgentState
     {
@@ -82,8 +80,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void SetAgent()
     {
-        if (model != null)
-            model.gameObject.SetActive(false);
+        if (GameElement.Model != null)
+            GameElement.Model.gameObject.SetActive(false);
 
         switch (GameElement.DataElement.ElementData.DataType)
         {
@@ -111,17 +109,18 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
 
         var prefab = Resources.Load<Model>(elementData.ModelPath);
-        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        GameElement.Model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveDestination;
         
         position = interactionDestinationData.Position;
         rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
-
         scale = elementData.Scale;
 
         speed = elementData.Speed;
+
+        interactionCollider.radius = elementData.Interaction.InteractionRange;
 
         SetModel();
     }
@@ -130,8 +129,8 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (GamePartyMemberElementData)GameElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        GameElement.Model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         if (elementData.Id == GameManager.instance.ActivePartyMemberId)
         {
@@ -152,9 +151,9 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void SetModel()
     {
-        model.transform.SetParent(transform, false);
+        GameElement.Model.transform.SetParent(transform, false);
 
-        model.gameObject.SetActive(true);
+        GameElement.Model.gameObject.SetActive(true);
     }
 
     private IEnumerator WakeAgent()
@@ -198,7 +197,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         
         var interactionDestinationData = elementData.ActiveInteraction.ActiveDestination;
 
-        //elementData.Position = new Vector3()
         position = interactionDestinationData.Position;
     }
 
@@ -247,7 +245,6 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
     private void ArriveDestination()
     {
-        //This belongs in the movement manager, or at least a version of it
         switch (GameElement.DataElement.ElementData.DataType)
         {
             case Enums.DataType.GameWorldInteractable: ArriveGameWorldInteractableAgent(); break;
@@ -260,10 +257,10 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
     private void ArriveGameWorldInteractableAgent()
     {
         var worldInteractableElementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+        
+        MovementManager.Arrive(worldInteractableElementData);
 
         var destinationData = worldInteractableElementData.ActiveInteraction.ActiveDestination;
-
-        MovementManager.Arrive(worldInteractableElementData);
 
         if (!destinationData.FreeRotation && destinationData.Patience > 0)
         {
@@ -284,6 +281,20 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (GameElement.DataElement.ElementData.DataType != Enums.DataType.GamePartyMember) return;
+
+        PlayerControlManager.instance.targetList.Add(other.GetComponent<GameElement>());
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (GameElement.DataElement.ElementData.DataType != Enums.DataType.GamePartyMember) return;
+
+        PlayerControlManager.instance.RemoveTarget(other.GetComponent<GameElement>());
+    }
+
     private void StopAgent()
     {
         if (!Agent.isOnNavMesh) return;
@@ -298,7 +309,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
         StopAgent();
         
         StopAllCoroutines();
-
+        
         GameElement.DataElement.ElementData.DataElement = null;
         
         position = new Vector3();
@@ -306,10 +317,7 @@ public class ExGameWorldAgent : MonoBehaviour, IElement, IPoolable
 
         scale = 0;
 
-        if (model == null) return;
-
-        PoolManager.ClosePoolObject(model);
-        model = null;
+        GameElement.CloseElement();
     }
 
     public void ClosePoolable()

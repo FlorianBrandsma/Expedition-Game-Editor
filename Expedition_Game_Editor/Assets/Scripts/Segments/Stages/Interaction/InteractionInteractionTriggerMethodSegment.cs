@@ -5,7 +5,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
 {
     public ExToggle triggerAutomaticallyToggle;
     public ExToggle beNearDestinationToggle;
-    public ExToggle faceAgentToggle;
+    public ExToggle faceInteractableToggle;
     public ExToggle facePartyLeaderToggle;
     public ExToggle hideInteractionIndicatorToggle;
 
@@ -27,10 +27,10 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         set { InteractionEditor.BeNearDestination = value; }
     }
 
-    public bool FaceAgent
+    public bool FaceInteractable
     {
-        get { return InteractionEditor.FaceAgent; }
-        set { InteractionEditor.FaceAgent = value; }
+        get { return InteractionEditor.FaceInteractable; }
+        set { InteractionEditor.FaceInteractable = value; }
     }
 
     public bool FacePartyLeader
@@ -62,7 +62,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
     {
         triggerAutomaticallyToggle.Toggle.isOn = TriggerAutomatically;
         beNearDestinationToggle.Toggle.isOn = BeNearDestination;
-        faceAgentToggle.Toggle.isOn = FaceAgent;
+        faceInteractableToggle.Toggle.isOn = FaceInteractable;
         facePartyLeaderToggle.Toggle.isOn = FacePartyLeader;
         hideInteractionIndicatorToggle.Toggle.isOn = HideInteractionIndicator;
     }
@@ -83,9 +83,9 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         DataEditor.UpdateEditor();
     }
 
-    public void UpdateFaceAgent()
+    public void UpdateFaceInteractable()
     {
-        FaceAgent = faceAgentToggle.Toggle.isOn;
+        FaceInteractable = faceInteractableToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
     }

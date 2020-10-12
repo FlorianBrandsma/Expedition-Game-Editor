@@ -182,6 +182,27 @@ public class Enums
         Touch
     }
 
+    public enum GameButtonType
+    {
+        Primary,
+        Secondary
+    }
+
+    public enum ButtonEventType
+    {
+        Interact,
+        Cancel,
+        Attack,
+        Defend
+    }
+
+    public enum ArrivalType
+    {
+        Stay,
+        Backtrace,
+        Repeat
+    }
+
     public enum InteractionDelayMethod
     {
         Wait

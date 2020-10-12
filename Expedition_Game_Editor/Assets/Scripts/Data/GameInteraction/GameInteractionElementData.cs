@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
+
 
 public class GameInteractionElementData : GameInteractionData, IElementData
 {
@@ -15,17 +15,12 @@ public class GameInteractionElementData : GameInteractionData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     public float CurrentPatience                    { get; set; }
-
-    public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
-
+    
     public int ActiveDestinationIndex
     {
         get { return DestinationIndex; }
         set
         {
-            if (value >= InteractionDestinationDataList.Count)
-                value = 0;
-
             CurrentPatience = InteractionDestinationDataList[value].Patience;
 
             DestinationIndex = value;
@@ -51,9 +46,7 @@ public class GameInteractionElementData : GameInteractionData, IElementData
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
-
-        InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
-
+        
         ClearChanges();
     }
 

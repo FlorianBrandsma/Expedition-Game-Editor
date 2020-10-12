@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -152,6 +151,10 @@ public static class GameWorldDataManager
                 Speed = interactableData.Speed,
                 Stamina = interactableData.Stamina,
 
+                Height = modelData.Height,
+                Width = modelData.Width,
+                Depth = modelData.Depth,
+
                 Scale = interactableData.Scale,
 
                 InteractionDataList = (
@@ -170,9 +173,11 @@ public static class GameWorldDataManager
                     StartTime = interactionData.StartTime,
                     EndTime = interactionData.EndTime,
 
+                    ArrivalType = (Enums.ArrivalType)interactionData.ArrivalType,
+
                     TriggerAutomatically = interactionData.TriggerAutomatically,
                     BeNearDestination = interactionData.BeNearDestination,
-                    FaceAgent = interactionData.FaceAgent,
+                    FaceInteractable = interactionData.FaceInteractable,
                     FacePartyLeader = interactionData.FacePartyLeader,
                     HideInteractionIndicator = interactionData.HideInteractionIndicator,
 

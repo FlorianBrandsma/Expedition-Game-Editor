@@ -5,6 +5,45 @@ using System.Linq;
 static public class MovementManager
 {
     static public List<GameWorldInteractableElementData> movableWorldInteractableList;
+    
+    static public void SetDestination(GameWorldInteractableElementData worldInteractableElementData)
+    {
+        var interactionData = worldInteractableElementData.ActiveInteraction;
+        
+        //When the world interactable is at its final destination...
+        if(interactionData.ActiveDestinationIndex == interactionData.InteractionDestinationDataList.Count - 1)
+        {
+            //Stay at the destination, but possibly apply position variance by re-assigning the active destination index
+            if (interactionData.ArrivalType == Enums.ArrivalType.Stay)
+            {
+                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex = interactionData.ActiveDestinationIndex;
+                return;
+            }
+            
+            if (interactionData.ArrivalType == Enums.ArrivalType.Backtrace)
+            {
+                worldInteractableElementData.Backtracing = true;
+            }
+            
+            if (interactionData.ArrivalType == Enums.ArrivalType.Repeat)
+            {
+                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex = 0;
+                return;
+            }
+        }
+
+        if(interactionData.ActiveDestinationIndex == 0 && worldInteractableElementData.Backtracing)
+        {
+            worldInteractableElementData.Backtracing = false;
+        }
+
+        if (!worldInteractableElementData.Backtracing)
+        {
+            worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex++;
+        } else {
+            worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex--;
+        }
+    }
 
     static public void SetDestinationPosition(GameInteractionDestinationElementData destinationElementData)
     {

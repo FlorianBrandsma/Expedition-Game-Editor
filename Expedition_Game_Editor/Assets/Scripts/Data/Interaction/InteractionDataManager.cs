@@ -60,9 +60,11 @@ public static class InteractionDataManager
                         StartTime = interactionData.StartTime,
                         EndTime = interactionData.EndTime,
                         
+                        ArrivalType = interactionData.ArrivalType,
+
                         TriggerAutomatically = interactionData.TriggerAutomatically,
                         BeNearDestination = interactionData.BeNearDestination,
-                        FaceAgent = interactionData.FaceAgent,
+                        FaceInteractable = interactionData.FaceInteractable,
                         FacePartyLeader = interactionData.FacePartyLeader,
                         HideInteractionIndicator = interactionData.HideInteractionIndicator,
 
@@ -117,9 +119,11 @@ public static class InteractionDataManager
             interactionData.StartTime = interaction.StartTime;
             interactionData.EndTime = interaction.EndTime;
 
+            interactionData.ArrivalType = interaction.ArrivalType;
+
             interactionData.TriggerAutomatically = interaction.TriggerAutomatically;
             interactionData.BeNearDestination = interaction.BeNearDestination;
-            interactionData.FaceAgent = interaction.FaceAgent;
+            interactionData.FaceInteractable = interaction.FaceInteractable;
             interactionData.FacePartyLeader = interaction.FacePartyLeader;
             interactionData.HideInteractionIndicator = interaction.HideInteractionIndicator;
 
@@ -241,14 +245,17 @@ public static class InteractionDataManager
         if (elementData.ChangedEndTime)
             data.EndTime = elementData.EndTime;
 
+        if (elementData.ChangedArrivalType)
+            data.ArrivalType = elementData.ArrivalType;
+
         if (elementData.ChangedTriggerAutomatically)
             data.TriggerAutomatically = elementData.TriggerAutomatically;
 
         if (elementData.ChangedBeNearDestination)
             data.BeNearDestination = elementData.BeNearDestination;
 
-        if (elementData.FaceAgent)
-            data.FaceAgent = elementData.FaceAgent;
+        if (elementData.FaceInteractable)
+            data.FaceInteractable = elementData.FaceInteractable;
 
         if (elementData.ChangedFacePartyLeader)
             data.FacePartyLeader = elementData.FacePartyLeader;

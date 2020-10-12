@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class GameRegionElementData : GameRegionData, IElementData
 {
@@ -13,9 +12,7 @@ public class GameRegionElementData : GameRegionData, IElementData
     public Enums.SelectionStatus SelectionStatus    { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
-
-    public List<GameTerrainElementData> TerrainDataList { get; set; } = new List<GameTerrainElementData>();
-
+    
     public float Size
     {
         get { return RegionSize * TerrainSize * TileSize; }

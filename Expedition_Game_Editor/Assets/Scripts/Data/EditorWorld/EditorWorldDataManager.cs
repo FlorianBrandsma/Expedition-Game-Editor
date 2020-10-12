@@ -522,13 +522,4 @@ public static class EditorWorldDataManager
 
         return startPosition;
     }
-
-    //private static int TerrainTileId(int regionId, float positionX, float positionZ)
-    //{
-    //    var terrainId = Fixtures.GetTerrain(regionId, positionX, positionZ);
-
-    //    var terrainTileId = Fixtures.GetTerrainTile(terrainId, positionX, positionZ);
-
-    //    return terrainTileId;
-    //}
 }

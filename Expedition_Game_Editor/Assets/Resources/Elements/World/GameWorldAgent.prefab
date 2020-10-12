@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011070767522}
   - component: {fileID: 195399536978689116}
+  - component: {fileID: 135220607142009246}
   - component: {fileID: 114845141767654712}
   - component: {fileID: 114547814418821880}
   - component: {fileID: 114003998045745332}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GameWorldAgent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,6 +57,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &135220607142009246
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012841250562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114845141767654712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44435608f7167c048a8dca93b91a15a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionIcon: {fileID: 0}
+  OnSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &114003998045745332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,4 +112,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6802c3c1ead1634aa5f10e36dbf13d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMoving: 0

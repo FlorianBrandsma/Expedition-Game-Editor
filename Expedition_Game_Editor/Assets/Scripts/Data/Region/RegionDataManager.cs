@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,12 +27,6 @@ public static class RegionDataManager
 
         var list = (from regionData     in regionDataList
                     join tileSetData    in tileSetDataList on regionData.TileSetId equals tileSetData.Id
-
-                    //join leftJoin in (from terrainData in terrainDataList
-                    //                  select new { terrainData }) on regionData.Id equals leftJoin.terrainData.RegionId into terrainData
-
-                    //join leftJoin in (from terrainTileData in terrainTileDataList
-                    //                  select new { terrainTileData }) on terrainData.FirstOrDefault().terrainData.Id equals leftJoin.terrainTileData.TerrainId into terrainTileData
 
                     join leftJoin in (from tileData in tileDataList
                                       select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData

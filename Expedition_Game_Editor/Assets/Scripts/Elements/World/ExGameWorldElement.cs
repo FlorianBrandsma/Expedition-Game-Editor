@@ -2,10 +2,8 @@
 using UnityEngine.AI;
 using System.Linq;
 
-public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
+public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolable
 {
-    private Model model;
-
     private Vector3 startPosition = Vector3.zero;
 
     private Vector3 position;
@@ -18,17 +16,19 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     private float height;
 
     private float scale;
+
+    public GameElement GameElement              { get { return GetComponent<GameElement>(); } }
+
+    public NavMeshObstacle Obstacle             { get { return GetComponent<NavMeshObstacle>(); } }
+    private SphereCollider interactionCollider  { get { return GetComponent<SphereCollider>(); } }
     
-    public NavMeshObstacle Obstacle         { get { return GetComponent<NavMeshObstacle>(); } }
 
-    public GameElement GameElement          { get { return GetComponent<GameElement>(); } }
+    public Color ElementColor                   { set { } }
 
-    public Color ElementColor               { set { } }
-
-    public Transform Transform              { get { return GetComponent<Transform>(); } }
-    public Enums.ElementType ElementType    { get { return Enums.ElementType.GameWorldElement; } }
-    public int Id                           { get; set; }
-    public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
+    public Transform Transform                  { get { return GetComponent<Transform>(); } }
+    public Enums.ElementType ElementType        { get { return Enums.ElementType.GameWorldElement; } }
+    public int Id                               { get; set; }
+    public bool IsActive                        { get { return gameObject.activeInHierarchy; } }
 
     public AgentState AgentState
     {
@@ -78,8 +78,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        if (model != null)
-            model.gameObject.SetActive(false);
+        if (GameElement.Model != null)
+            GameElement.Model.gameObject.SetActive(false);
 
         switch (GameElement.DataElement.ElementData.DataType)
         {
@@ -100,15 +100,13 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (GameWorldObjectElementData)GameElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        GameElement.Model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        Obstacle.carving = true;
 
         SetModel();
     }
@@ -117,8 +115,8 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        GameElement.Model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
 
         var interactionData = elementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveDestination;
@@ -128,21 +126,21 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
         scale = elementData.Scale;
 
-        Obstacle.carving = false;
+        interactionCollider.radius = elementData.Interaction.InteractionRange;
 
         SetModel();
     }
 
     private void SetModel()
     {
-        model.transform.SetParent(transform, false);
+        GameElement.Model.transform.SetParent(transform, false);
 
-        model.gameObject.SetActive(true);
+        GameElement.Model.gameObject.SetActive(true);
     }
 
     private void SetObstacle()
     {
-        switch(model.obstacleShape)
+        switch(GameElement.Model.obstacleShape)
         {
             case NavMeshObstacleShape.Box:      SetBoxObstacle();       break;
             case NavMeshObstacleShape.Capsule:  SetCapsuleObstacle();   break;
@@ -151,9 +149,9 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetBoxObstacle()
     {
-        var collider = model.GetComponent<BoxCollider>();
+        var collider = GameElement.Model.GetComponent<BoxCollider>();
         
-        Obstacle.shape = model.obstacleShape;
+        Obstacle.shape = GameElement.Model.obstacleShape;
 
         Obstacle.size = collider.size;
         Obstacle.center = collider.center;
@@ -161,9 +159,9 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
 
     private void SetCapsuleObstacle()
     {
-        var collider = model.GetComponent<CapsuleCollider>();
+        var collider = GameElement.Model.GetComponent<CapsuleCollider>();
 
-        Obstacle.shape = model.obstacleShape;
+        Obstacle.shape = GameElement.Model.obstacleShape;
 
         Obstacle.center = collider.center;
         Obstacle.radius = collider.radius;
@@ -174,10 +172,7 @@ public class ExGameWorldElement : MonoBehaviour, IElement, IPoolable
     {
         GameElement.DataElement.ElementData.DataElement = null;
 
-        if (model == null) return;
-
-        PoolManager.ClosePoolObject(model);
-        model = null;
+        GameElement.CloseElement();
     }
 
     public void ClosePoolable()

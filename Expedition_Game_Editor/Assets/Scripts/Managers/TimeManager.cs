@@ -173,7 +173,7 @@ public class TimeManager : MonoBehaviour
         if (worldInteractableElementData.TravelTime > 0)
         {
             worldInteractableElementData.TravelTime -= counter;
-            //Debug.Log("TRAVEL TIME: " + elementData.TravelTime);
+            
             if(worldInteractableElementData.TravelTime < 0)
             {           
                 MovementManager.Arrive(worldInteractableElementData);
@@ -190,11 +190,9 @@ public class TimeManager : MonoBehaviour
         {
             worldInteractableElementData.ActiveInteraction.CurrentPatience -= counter;
 
-            //Debug.Log("PATIENCE: " + worldInteractableElementData.ActiveInteraction.CurrentPatience);
-
             if (worldInteractableElementData.ActiveInteraction.CurrentPatience < 0)
             {
-                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex++;
+                MovementManager.SetDestination(worldInteractableElementData);
                 GameManager.instance.UpdateWorldInteractable(worldInteractableElementData);
             }
         }
@@ -239,7 +237,6 @@ public class TimeManager : MonoBehaviour
         //Sometimes calls this double when end time matches exactly with the active time (will match with start as well)
         timeEventList.Where(timeEvent => TimeInFrame(timeEvent.Time, activeTime.StartTime, activeTime.EndTime)).ToList().ForEach(timeEvent =>
         {
-            //Debug.Log("There was a time event between " + activeTime.StartTime + " and " + activeTime.EndTime);
             timeEvent.WorldInteractableDataList.ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
         });
     }

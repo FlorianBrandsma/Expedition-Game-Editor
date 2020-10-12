@@ -1,16 +1,32 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerControlManager : MonoBehaviour
 {
     static public PlayerControlManager instance;
 
+    static public bool Enabled { get; set; }
+
     private IPlayerController playerController;
 
-    private PlayerSaveElementData PlayerData            { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
-    private GamePartyMemberElementData ActiveCharacter  { get { return GameManager.instance.partyMemberData; } }
-    private Animator ActiveAnimator                     { get { return ((ExGameWorldAgent)ActiveCharacter.DataElement.Element).Animator; } }
+    private bool defending;
 
     private Enums.ControlType controlType;
+    private GameElement selectionTarget;
+    private ExStatusIcon selectionIcon;
+    
+    public CameraManager cameraManager;
+
+    public List<GameElement> targetList = new List<GameElement>();
+    
+    private StatusIconOverlay StatusIconOverlay             { get { return cameraManager.overlayManager.StatusIconOverlay; } }
+
+    private PlayerSaveElementData PlayerData                { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
+    private GamePartyMemberElementData ActiveCharacterData  { get { return GameManager.instance.partyMemberData; } }
+    private GameElement ActiveCharacter                     { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
+    private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.Element).Animator; } }
+    
     public Enums.ControlType ControlType
     {
         get { return controlType; }
@@ -21,17 +37,170 @@ public class PlayerControlManager : MonoBehaviour
         }
     }
 
-    public CameraManager cameraManager;
-
-    public GameWorldInteractableElementData playerCharacter;
-
-    static public bool Enabled { get; set; }
-
     private void Awake()
     {
         instance = this;
     }
-    
+
+    private void Update()
+    {
+        if (targetList.Count == 0 || TimeManager.instance.Paused) return;
+
+        CheckTargetTriggers();
+
+        if(selectionIcon != null)
+        {
+            selectionIcon.UpdatePosition();
+        }
+    }
+
+    private void CheckTargetTriggers()
+    {
+        List<GameElement> eligibleTargets = new List<GameElement>(targetList);
+
+        //Check if target is faced by the player character
+        foreach (var target in targetList)
+        {
+            var targetData = (GameWorldInteractableElementData)target.DataElement.ElementData;
+
+            //If the player character must face the interactable
+            if (targetData.Interaction.FaceInteractable)
+            {
+                var directionToTarget = (target.transform.position - ActiveCharacter.transform.position).normalized;
+                
+                if (Vector3.Angle(ActiveCharacter.transform.forward, directionToTarget) < ActiveCharacter.fieldOfView / 2f)
+                {
+                    RaycastHit hit;
+
+                    //Remove eligible target if nothing is hit by the raycast or if the raycast hit an object other than the target
+                    if (!Physics.Raycast(ActiveCharacter.transform.position + ActiveCharacter.transform.up, directionToTarget, out hit, targetData.Interaction.InteractionRange) || 
+                        hit.collider.gameObject != target.Model.gameObject )
+                    {
+                        eligibleTargets.Remove(target);
+                        continue;
+                    }
+
+                } else {
+
+                    //Remove eligible target if the target is outside of the player character's field of view
+                    eligibleTargets.Remove(target);
+                    continue;
+                }
+            }
+
+            //If the interactable must face the player character
+            if (targetData.Interaction.FacePartyLeader)
+            {
+                var directionToPlayer = (ActiveCharacter.transform.position - target.transform.position).normalized;
+
+                if (Vector3.Angle(target.transform.forward, directionToPlayer) < target.fieldOfView / 2f)
+                {
+                    RaycastHit hit;
+
+                    //Remove eligible target if nothing is hit by the raycast or if the raycast hit an object other than the player
+                    if (!Physics.Raycast(target.transform.position + target.transform.up, directionToPlayer, out hit, targetData.Interaction.InteractionRange) ||
+                        hit.collider.gameObject != ActiveCharacter.Model.gameObject)
+                    {
+                        eligibleTargets.Remove(target);
+                        continue;
+                    }
+
+                } else {
+
+                    //Remove eligible target if the target is outside of the target's field of view
+                    eligibleTargets.Remove(target);
+                    continue;
+                }
+            }
+
+            //If the interactable must be near its final destination
+            if (targetData.Interaction.BeNearDestination)
+            {
+                //Target can only be near it's destination if it's standing still...
+                if (targetData.Interaction.ArrivalType == Enums.ArrivalType.Stay)
+                {
+                    //... at its final destination
+                    if (targetData.Interaction.DestinationIndex != targetData.Interaction.InteractionDestinationDataList.Count - 1 ||
+                       targetData.AgentState != AgentState.Idle)
+                    {
+                        eligibleTargets.Remove(target);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        //If there are multiple eligible targets, pick the one closest to the player character's forward facing direction
+        if(eligibleTargets.Count > 1)
+        {
+            var closestTarget = eligibleTargets.First();
+
+            for(int i = 1; i < eligibleTargets.Count; i++)
+            {
+                var incomingDirectionToTarget = (eligibleTargets[i].transform.position - ActiveCharacter.transform.position).normalized;
+                var currentDirectionToTarget = (closestTarget.transform.position - ActiveCharacter.transform.position).normalized;
+
+                if (Vector3.Angle(ActiveCharacter.transform.forward, incomingDirectionToTarget) < Vector3.Angle(ActiveCharacter.transform.forward, currentDirectionToTarget))
+                    closestTarget = eligibleTargets[i];
+            }
+
+            SetTarget(closestTarget);
+
+        } else {
+
+            SetTarget(eligibleTargets.FirstOrDefault());
+        }
+    }
+
+    private void SetTarget(GameElement target)
+    {
+        if (selectionTarget == target) return;
+
+        if (selectionTarget != null)
+            selectionTarget.CancelSelection();
+
+        selectionTarget = target;
+
+        UpdateControls();
+
+        if (selectionTarget != null)
+        {
+            SetTargetIcon();
+            AutoTriggerInteractionEvent();
+        }
+    }
+
+    private void SetTargetIcon()
+    {
+        var targetData = (GameWorldInteractableElementData)selectionTarget.DataElement.ElementData;
+
+        if (targetData.Interaction.HideInteractionIndicator) return;
+
+        selectionIcon = StatusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection);
+        selectionIcon.SetIconTarget(selectionTarget.DataElement);
+
+        selectionTarget.selectionIcon = selectionIcon.gameObject;
+    }
+
+    private void AutoTriggerInteractionEvent()
+    {
+        var targetData = (GameWorldInteractableElementData)selectionTarget.DataElement.ElementData;
+
+        if (targetData.Interaction.TriggerAutomatically) return;
+
+        InteractionEvent();
+    }
+
+    public void RemoveTarget(GameElement gameElement)
+    {
+        if (gameElement == selectionTarget)
+        {
+            SetTarget(null);
+        }
+
+        targetList.Remove(gameElement);
+    }
+
     public void InitializeControls()
     {
         DestroyImmediate((Object)GetComponent<IPlayerController>());
@@ -44,15 +213,61 @@ public class PlayerControlManager : MonoBehaviour
         }
     }
 
+    private void UpdateControls()
+    {
+        switch (ControlType)
+        {
+            case Enums.ControlType.Touch: UpdateTouchControls(); break;
+
+            default: Debug.Log("CASE MISSING: " + ControlType); break;
+        }
+    }
+
+    private void UpdateTouchControls()
+    {
+        var controls = (TouchControls)playerController;
+
+        if(selectionTarget == null)
+        {
+            controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Primary, Enums.ButtonEventType.Attack);
+
+        } else {
+
+            controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Primary, Enums.ButtonEventType.Interact);
+        }
+    }
+
+    public void InteractionEvent()
+    {
+        Debug.Log("Interact with " + selectionTarget);
+    }
+
+    public void CancelEvent()
+    {
+        Debug.Log("Cancel");
+    }
+
+    public void AttackEvent()
+    {
+        Debug.Log("Attack");
+    }
+
+    public void DefendEvent()
+    {
+        defending = !defending;
+        
+        Debug.Log((defending ? "Start" : "Stop") + " defending");
+    }
+
     public void SetPlayerCharacter()
     {
         Debug.Log("Set character");
 
-        if(ActiveCharacter.DataElement != null)
+        if(ActiveCharacterData.DataElement != null)
         {
-            PlayerData.PositionX = ActiveCharacter.DataElement.transform.localPosition.x;
-            PlayerData.PositionY = ActiveCharacter.DataElement.transform.localPosition.y;
-            PlayerData.PositionZ = ActiveCharacter.DataElement.transform.localPosition.z;
+            PlayerData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
+            PlayerData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
+            PlayerData.PositionZ = ActiveCharacterData.DataElement.transform.localPosition.z;
         }
         
         MoveCamera();
@@ -60,23 +275,23 @@ public class PlayerControlManager : MonoBehaviour
 
     public void MovePlayerCharacter(float sensitivity)
     {
-        var speed = ActiveCharacter.Speed * sensitivity;
+        var speed = ActiveCharacterData.Speed * sensitivity;
         
-        ActiveCharacter.DataElement.transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        ActiveCharacterData.DataElement.transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         ActiveAnimator.SetBool("IsMoving", true);
-        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacter.Scale);
+        ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacterData.Scale);
 
-        PlayerData.PositionX = ActiveCharacter.DataElement.transform.localPosition.x;
-        PlayerData.PositionY = ActiveCharacter.DataElement.transform.localPosition.y;
-        PlayerData.PositionZ = -ActiveCharacter.DataElement.transform.localPosition.z;
+        PlayerData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
+        PlayerData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
+        PlayerData.PositionZ = -ActiveCharacterData.DataElement.transform.localPosition.z;
 
         MoveCamera();
     }
 
     public void RotatePlayerCharacter(float angle)
     {
-        ActiveCharacter.DataElement.transform.eulerAngles = new Vector3(0, -angle, 0);
+        ActiveCharacterData.DataElement.transform.eulerAngles = new Vector3(0, -angle, 0);
     }
 
     private void MoveCamera()

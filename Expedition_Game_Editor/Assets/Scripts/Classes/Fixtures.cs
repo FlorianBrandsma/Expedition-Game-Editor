@@ -568,6 +568,11 @@ static public class Fixtures
 
             CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
 
+            //for (int i = 0; i < 300; i++)
+            //{
+            //    CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
+            //}
+            
             /*Pool*/
             var poolDestinationList = new List<InteractionDestinationBaseData>()
             {
@@ -669,13 +674,15 @@ static public class Fixtures
         interaction.StartTime = startTime;
         interaction.EndTime = endTime;
 
+        interaction.ArrivalType = interactionDestinationList.Count > 1 ? (int)Enums.ArrivalType.Backtrace : (int)Enums.ArrivalType.Stay;
+
         interaction.TriggerAutomatically = false;
         interaction.BeNearDestination = true;
-        interaction.FaceAgent = true;
+        interaction.FaceInteractable = true;
         interaction.FacePartyLeader = false;
         interaction.HideInteractionIndicator = false;
 
-        interaction.InteractionRange = 2;
+        interaction.InteractionRange = 5;
 
         interaction.DelayMethod = 0;
         interaction.DelayDuration = 0;
@@ -1010,9 +1017,11 @@ static public class Fixtures
                                 interaction.StartTime = interactionSource.StartTime;
                                 interaction.EndTime = interactionSource.EndTime;
 
+                                interaction.ArrivalType = interactionSource.ArrivalType;
+
                                 interaction.TriggerAutomatically = interactionSource.TriggerAutomatically;
                                 interaction.BeNearDestination = interactionSource.BeNearDestination;
-                                interaction.FaceAgent = interactionSource.FaceAgent;
+                                interaction.FaceInteractable = interactionSource.FaceInteractable;
                                 interaction.FacePartyLeader = interactionSource.FacePartyLeader;
                                 interaction.HideInteractionIndicator = interactionSource.HideInteractionIndicator;
 

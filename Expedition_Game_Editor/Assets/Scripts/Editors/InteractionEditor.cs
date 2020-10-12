@@ -65,6 +65,17 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
+    public int ArrivalType
+    {
+        get { return interactionData.ArrivalType; }
+        set
+        {
+            interactionData.ArrivalType = value;
+
+            DataList.ForEach(x => ((InteractionElementData)x).ArrivalType = value);
+        }
+    }
+
     public bool TriggerAutomatically
     {
         get { return interactionData.TriggerAutomatically; }
@@ -87,14 +98,14 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public bool FaceAgent
+    public bool FaceInteractable
     {
-        get { return interactionData.FaceAgent; }
+        get { return interactionData.FaceInteractable; }
         set
         {
-            interactionData.FaceAgent = value;
+            interactionData.FaceInteractable = value;
 
-            DataList.ForEach(x => ((InteractionElementData)x).FaceAgent = value);
+            DataList.ForEach(x => ((InteractionElementData)x).FaceInteractable = value);
         }
     }
 

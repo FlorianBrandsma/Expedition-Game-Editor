@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameInteractionData
 {
@@ -15,9 +16,11 @@ public class GameInteractionData
     public int StartTime                    { get; set; }
     public int EndTime                      { get; set; }
 
+    public Enums.ArrivalType ArrivalType    { get; set; }
+
     public bool TriggerAutomatically        { get; set; }
     public bool BeNearDestination           { get; set; }
-    public bool FaceAgent                   { get; set; }
+    public bool FaceInteractable            { get; set; }
     public bool FacePartyLeader             { get; set; }
     public bool HideInteractionIndicator    { get; set; }
 
@@ -35,7 +38,9 @@ public class GameInteractionData
     public int WorldInteractableId          { get; set; }
     
     public int DestinationIndex             { get; set; } = -1;
-    
+
+    public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
+
     public virtual void GetOriginalValues(GameInteractionData originalData)
     {
         GameWorldInteractableData   = originalData.GameWorldInteractableData;
@@ -53,7 +58,7 @@ public class GameInteractionData
 
         TriggerAutomatically        = originalData.TriggerAutomatically;
         BeNearDestination           = originalData.BeNearDestination;
-        FaceAgent                   = originalData.FaceAgent;
+        FaceInteractable                   = originalData.FaceInteractable;
         FacePartyLeader             = originalData.FacePartyLeader;
         HideInteractionIndicator    = originalData.HideInteractionIndicator;
 
@@ -92,7 +97,7 @@ public class GameInteractionData
 
         data.TriggerAutomatically       = TriggerAutomatically;
         data.BeNearDestination          = BeNearDestination;
-        data.FaceAgent                  = FaceAgent;
+        data.FaceInteractable                  = FaceInteractable;
         data.FacePartyLeader            = FacePartyLeader;
         data.HideInteractionIndicator   = HideInteractionIndicator;
 
@@ -110,6 +115,8 @@ public class GameInteractionData
         data.WorldInteractableId        = WorldInteractableId;
 
         data.DestinationIndex           = DestinationIndex;
+
+        InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
 
         return data;
     }
@@ -131,7 +138,7 @@ public class GameInteractionData
 
         elementData.TriggerAutomatically        = TriggerAutomatically;
         elementData.BeNearDestination           = BeNearDestination;
-        elementData.FaceAgent                   = FaceAgent;
+        elementData.FaceInteractable                   = FaceInteractable;
         elementData.FacePartyLeader             = FacePartyLeader;
         elementData.HideInteractionIndicator    = HideInteractionIndicator;
 

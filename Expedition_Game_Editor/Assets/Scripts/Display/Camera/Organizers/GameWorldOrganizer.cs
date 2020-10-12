@@ -11,8 +11,10 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private GameWorldElementData GameWorldData  { get { return GameManager.instance.gameWorldData; } }
     private GameRegionElementData RegionData    { get { return GameManager.instance.regionData; } }
     
-    private ExGameWorldElement gameWorldElementPrefab;
+    private ExGameWorldElement gameWorldObjectPrefab;
+    private ExGameWorldElement gameWorldInteractableObjectPrefab;
     private ExGameWorldAgent gameWorldAgentPrefab;
+    private ExGameWorldAgent gameWorldPartyMemberPrefab;
 
     private Rect activeRect;
     private Vector2 positionTracker = new Vector2();
@@ -32,8 +34,10 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     public void InitializeOrganizer()
     {
-        gameWorldElementPrefab  = Resources.Load<ExGameWorldElement>("Elements/World/GameWorldElement");
-        gameWorldAgentPrefab    = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldAgent");
+        gameWorldObjectPrefab               = Resources.Load<ExGameWorldElement>("Elements/World/GameWorldObject");
+        gameWorldInteractableObjectPrefab   = Resources.Load<ExGameWorldElement>("Elements/World/GameWorldInteractableObject");
+        gameWorldAgentPrefab                = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldAgent");
+        gameWorldPartyMemberPrefab          = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldPartyMember");
     }
 
     public void SelectData() { }
@@ -109,7 +113,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => ((GameWorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        worldObjectDataList.ForEach(elementData => SetObjectElement(WorldObjectDataController, elementData));
+        worldObjectDataList.ForEach(elementData => SetElement(WorldObjectDataController, elementData, gameWorldObjectPrefab));
     }
     
     private void SetWorldInteractableAgents(int terrainTileId)
@@ -117,7 +121,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => x.DataElement == null && 
                                                                                                        ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        worldInteractableAgentDataList.ForEach(elementData => SetAgentElement(WorldInteractableAgentDataController, elementData));
+        worldInteractableAgentDataList.ForEach(elementData => SetElement(WorldInteractableAgentDataController, elementData, gameWorldAgentPrefab));
     }
 
     private void SetWorldInteractableObjects(int terrainTileId)
@@ -125,47 +129,29 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Where(x => x.DataElement == null &&
                                                                                                          ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        worldInteractableObjectDataList.ForEach(elementData => SetObjectElement(WorldInteractableObjectDataController, elementData));
+        worldInteractableObjectDataList.ForEach(elementData => SetElement(WorldInteractableObjectDataController, elementData, gameWorldInteractableObjectPrefab));
     }
     
     private void SetPartyMembers()
     {
         var partyMemberDataList = PartyDataController.Data.dataList.Where(x => x.DataElement == null).ToList();
 
-        partyMemberDataList.ForEach(elementData => SetAgentElement(PartyDataController, elementData));
+        partyMemberDataList.ForEach(elementData => SetElement(PartyDataController, elementData, gameWorldPartyMemberPrefab));
     }
     
     private void SetWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        switch ((Enums.InteractableType)gameWorldInteractableElementData.Type)
+        switch (gameWorldInteractableElementData.Type)
         {
-            case Enums.InteractableType.Agent:  SetAgentElement(WorldInteractableAgentDataController, gameWorldInteractableElementData);    break;
-            case Enums.InteractableType.Object: SetObjectElement(WorldInteractableObjectDataController, gameWorldInteractableElementData);  break;
+            case Enums.InteractableType.Agent:  SetElement(WorldInteractableAgentDataController, gameWorldInteractableElementData, gameWorldAgentPrefab);    break;
+            case Enums.InteractableType.Object: SetElement(WorldInteractableObjectDataController, gameWorldInteractableElementData, gameWorldInteractableObjectPrefab);  break;
         }
     }
 
-    public void SetObjectElement(IDataController dataController, IElementData elementData)
-    {
-        var gameWorldElement = (ExGameWorldElement)PoolManager.SpawnObject(gameWorldElementPrefab);
-        gameWorldElement.GameElement.transform.SetParent(CameraManager.content, false);
-
-        elementData.DataElement = gameWorldElement.GameElement.DataElement;
-            
-        gameWorldElement.GameElement.DataElement.Data = dataController.Data;
-        gameWorldElement.GameElement.DataElement.Id = elementData.Id;
-
-        //Debugging
-        gameWorldElement.name = elementData.DebugName + elementData.Id;
-
-        gameWorldElement.GameElement.InitializeElement();
-
-        SetElement(gameWorldElement.GameElement);
-    }
-
-    private void SetAgentElement(IDataController dataController, IElementData elementData)
+    private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab)
     {
         //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
-        var gameWorldAgent = (ExGameWorldAgent)PoolManager.SpawnObject(gameWorldAgentPrefab, elementData.Id);
+        var gameWorldAgent = (IGameElement)PoolManager.SpawnObject(prefab);
         gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
 
         elementData.DataElement = gameWorldAgent.GameElement.DataElement;
@@ -174,18 +160,13 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         gameWorldAgent.GameElement.DataElement.Id = elementData.Id;
             
         //Debugging
-        gameWorldAgent.name = elementData.DebugName + "Agent" + elementData.Id;
+        gameWorldAgent.GameElement.name = elementData.DebugName + elementData.Id;
 
         gameWorldAgent.GameElement.InitializeElement();
 
-        SetElement(gameWorldAgent.GameElement);
-    }
+        gameWorldAgent.GameElement.gameObject.SetActive(true);
 
-    private void SetElement(GameElement element)
-    {
-        element.gameObject.SetActive(true);
-
-        element.SetElement();
+        gameWorldAgent.GameElement.SetElement();
     }
     
     private void ResetWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)

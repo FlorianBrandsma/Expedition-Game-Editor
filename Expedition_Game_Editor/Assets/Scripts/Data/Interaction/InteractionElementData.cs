@@ -24,6 +24,11 @@ public class InteractionElementData : InteractionData, IElementData
         get { return EndTime != OriginalData.EndTime; }
     }
 
+    public bool ChangedArrivalType
+    {
+        get { return ArrivalType != OriginalData.ArrivalType; }
+    }
+
     public bool ChangedTriggerAutomatically
     {
         get { return TriggerAutomatically != OriginalData.TriggerAutomatically; }
@@ -34,9 +39,9 @@ public class InteractionElementData : InteractionData, IElementData
         get { return BeNearDestination != OriginalData.BeNearDestination; }
     }
 
-    public bool ChangedFaceAgent
+    public bool ChangedFaceInteractable
     {
-        get { return FaceAgent != OriginalData.FaceAgent; }
+        get { return FaceInteractable != OriginalData.FaceInteractable; }
     }
 
     public bool ChangedFacePartyLeader
@@ -98,8 +103,8 @@ public class InteractionElementData : InteractionData, IElementData
     {
         get
         {
-            return ChangedStartTime             || ChangedEndTime                   ||
-                    ChangedTriggerAutomatically || ChangedBeNearDestination         || ChangedFaceAgent             ||
+            return  ChangedStartTime            || ChangedEndTime                   || ChangedArrivalType           ||
+                    ChangedTriggerAutomatically || ChangedBeNearDestination         || ChangedFaceInteractable      ||
                     ChangedFacePartyLeader      || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
                     ChangedDelayMethod          || ChangedDelayDuration             ||
                     ChangedHideDelayIndicator   || ChangedCancelDelayOnInput        || ChangedCancelDelayOnMovement ||

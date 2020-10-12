@@ -8,18 +8,20 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	public StatusIconOverlay.StatusIconType statusIconType;
 
-	public Camera cam;
+    public Camera cam;
 	public IElementData targetElementData;
 	public Transform target;
 	public Vector3 screenPos;
 	public RectTransform parentRect;
-
+    
 	#region Data Variables
 	private float height, width, depth;
 	private float scale;
-	#endregion
-	
-	public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
+    #endregion
+
+    public float HorizontalOffset           { get; set; }
+
+    public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
 	public RawImage RawImage                { get { return GetComponent<RawImage>(); } }
 
 	public Transform Transform              { get { return GetComponent<Transform>(); } }
@@ -32,9 +34,25 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		return Instantiate(this);
 	}
 
+	public void SetIconTarget(DataElement dataElement)
+	{
+		targetElementData = dataElement.ElementData;
+		target = dataElement.transform;
+
+		InitializeData();
+	}
+
+	public void UpdateIcon()
+	{
+		if (target == null) return;
+
+		InitializeData();
+		UpdatePosition();
+	}
+
 	public void UpdatePosition()
 	{
-		InitializeData();
+		if (target == null) return;
 		
 		switch (statusIconType)
 		{
@@ -51,6 +69,8 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			case Enums.DataType.InteractionDestination: InitializeInteractionDestinationData(); break;
 			case Enums.DataType.WorldObject:            InitializeWorldObjectData();            break;
 			case Enums.DataType.Phase:                  InitializePhaseData();                  break;
+
+			case Enums.DataType.GameWorldInteractable:  InitializeGameWorldInteractable();      break;
 
 			default: Debug.Log("CASE MISSING: " + targetElementData.DataType); break;
 		}
@@ -92,16 +112,25 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		depth = phaseData.Depth     * phaseData.Scale;
 	}
 
+	private void InitializeGameWorldInteractable()
+	{
+		var gameWorldInteractableData = (GameWorldInteractableElementData)targetElementData;
+
+		height = gameWorldInteractableData.Height   * gameWorldInteractableData.Scale;
+		width = gameWorldInteractableData.Width     * gameWorldInteractableData.Scale;
+		depth = gameWorldInteractableData.Depth     * gameWorldInteractableData.Scale;
+	}
+
 	private void UpdateSelectionPosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + height,
-													   cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
-
+                                                       cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
+        
 		var widthCap = statusIconManager.WidthCap;
 		var heightCap = statusIconManager.HeightCap;
 		
-		transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
+		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 
 		if (transform.localPosition.x > widthCap)
 			transform.localPosition = new Vector3(widthCap, transform.localPosition.y, 0);
@@ -120,13 +149,15 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + (height / 2),
-													   cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
+                                                       cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
 
 		transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 	}
 
 	public void ClosePoolable()
 	{
+        HorizontalOffset = 0;
+
 		gameObject.SetActive(false);
 	}
 }

@@ -70,11 +70,21 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                 
                 var editorElement = hit.collider.GetComponent<Model>().EditorElement;
 
-                editorElement.InvokeSelection();
+                SelectElement(editorElement);
             }
 
             allowSelection = true;
         }
+    }
+
+    private void SelectElement(EditorElement editorElement)
+    {
+        var route = DataController.SegmentController.MainPath.FindLastRoute(editorElement.DataElement.ElementData.DataType);
+
+        //Don't try to select an element if it is already selected
+        if (route != null && editorElement.DataElement.Id == route.id) return;
+
+        editorElement.InvokeSelection();
     }
 
     public void InitializeOrganizer()
@@ -641,13 +651,24 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         if (element.glow != null && element.glow.activeInHierarchy) return;
 
-        var statusIconOverlay = CameraManager.overlayManager.StatusIconOverlay;
+        ExStatusIcon statusIcon = null;
 
+        var statusIconOverlay = CameraManager.overlayManager.StatusIconOverlay;
+        
         if (element.elementStatus == Enums.ElementStatus.Locked)
-            element.lockIcon = statusIconOverlay.StatusIcon(element, StatusIconOverlay.StatusIconType.Lock);
+        {
+            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Lock);
+            element.lockIcon = statusIcon.gameObject;
+        }
 
         if (element.DataElement.ElementData.SelectionStatus != Enums.SelectionStatus.None)
-            element.glow = statusIconOverlay.StatusIcon(element, StatusIconOverlay.StatusIconType.Selection);
+        {
+            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection);
+            element.glow = statusIcon.gameObject;
+        }
+
+        if(statusIcon != null)
+            statusIcon.SetIconTarget(element.DataElement);
     }
 
     public void ResetData(List<IElementData> filter) { }

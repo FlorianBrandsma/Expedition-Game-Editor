@@ -64,7 +64,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
         if (glow == null) return;
 
         if (glow.GetComponent<ExStatusIcon>() != null)
-            glow.GetComponent<ExStatusIcon>().UpdatePosition();
+            glow.GetComponent<ExStatusIcon>().UpdateIcon();
     }
 
     public void SetOverlay()
