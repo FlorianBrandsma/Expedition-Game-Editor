@@ -285,14 +285,18 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
     {
         if (GameElement.DataElement.ElementData.DataType != Enums.DataType.GamePartyMember) return;
 
-        PlayerControlManager.instance.targetList.Add(other.GetComponent<GameElement>());
+        var worldInteractableElementData = (GameWorldInteractableElementData)other.GetComponent<GameElement>().DataElement.ElementData;
+
+        PlayerControlManager.instance.potentialTargetList.Add(worldInteractableElementData);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (GameElement.DataElement.ElementData.DataType != Enums.DataType.GamePartyMember) return;
 
-        PlayerControlManager.instance.RemoveTarget(other.GetComponent<GameElement>());
+        var worldInteractableElementData = (GameWorldInteractableElementData)other.GetComponent<GameElement>().DataElement.ElementData;
+
+        PlayerControlManager.instance.RemoveSelectionTarget(worldInteractableElementData);
     }
 
     private void StopAgent()
@@ -310,12 +314,16 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         
         StopAllCoroutines();
         
-        GameElement.DataElement.ElementData.DataElement = null;
-        
         position = new Vector3();
         rotation = new Vector3();
 
         scale = 0;
+
+        if(GameElement.DataElement.ElementData.DataType == Enums.DataType.GameWorldInteractable)
+        {
+            var gameWorldInteractableElementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+            PlayerControlManager.instance.RemoveSelectionTarget(gameWorldInteractableElementData);
+        }
 
         GameElement.CloseElement();
     }

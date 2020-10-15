@@ -1,36 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 public class GameOverlay : MonoBehaviour, IOverlay
 {
+    private ExLoadingBar loadingBarPrefab;
+
     private OverlayManager OverlayManager { get { return GetComponent<OverlayManager>(); } }
-    
-    public void InitializeOverlay(IDisplayManager displayManager)
+
+    private void Awake()
     {
-        //listProperties = (ListProperties)displayManager.Display;
+        loadingBarPrefab = Resources.Load<ExLoadingBar>("Elements/UI/LoadingBar");
     }
 
-    public void ActivateOverlay(IOrganizer organizer)
+    public void InitializeOverlay(IDisplayManager displayManager) { }
+
+    public void ActivateOverlay(IOrganizer organizer) { }
+
+    public ExLoadingBar SpawnLoadingBar(Enums.DelayMethod delayMethod)
     {
-        //var prefab = Resources.Load<ExText>("Elements/UI/Text");
-        //headerText = (ExText)PoolManager.SpawnObject(prefab);
+        var loadingBar = (ExLoadingBar)PoolManager.SpawnObject(loadingBarPrefab);
+        
+        loadingBar.transform.SetParent(OverlayManager.content, false);
+        loadingBar.RectTransform.anchoredPosition = new Vector2(0, 100);
 
-        //headerText.transform.SetParent(OverlayManager.horizontal_min, false);
-        //headerText.transform.localPosition = new Vector2(0, 0);
+        loadingBar.methodText.text = Enum.GetName(typeof(Enums.DelayMethod), delayMethod);
 
-        //headerText.gameObject.SetActive(true);
+        loadingBar.gameObject.SetActive(true);
+
+        return loadingBar;
     }
 
-    public void UpdateOverlay()
-    {
-        //Debug.Log("Update game overlay");
-    }
+    public void UpdateOverlay() { }
 
-    public void SetOverlay()
-    {
-        //Debug.Log("Set game overlay");
-    }
+    public void SetOverlay() { }
     
     public void CloseOverlay()
     {

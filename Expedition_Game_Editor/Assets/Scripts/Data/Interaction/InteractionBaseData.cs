@@ -22,7 +22,7 @@ public class InteractionBaseData
     public float InteractionRange           { get; set; }
 
     public int DelayMethod                  { get; set; }
-    public int DelayDuration                { get; set; }
+    public float DelayDuration              { get; set; }
     public bool HideDelayIndicator          { get; set; }
 
     public bool CancelDelayOnInput          { get; set; }

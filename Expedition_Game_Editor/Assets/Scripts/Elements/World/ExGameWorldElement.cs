@@ -20,7 +20,7 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
     public GameElement GameElement              { get { return GetComponent<GameElement>(); } }
 
     public NavMeshObstacle Obstacle             { get { return GetComponent<NavMeshObstacle>(); } }
-    private SphereCollider interactionCollider  { get { return GetComponent<SphereCollider>(); } }
+    private SphereCollider InteractionCollider  { get { return GetComponent<SphereCollider>(); } }
     
 
     public Color ElementColor                   { set { } }
@@ -126,7 +126,7 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
 
         scale = elementData.Scale;
 
-        interactionCollider.radius = elementData.Interaction.InteractionRange;
+        InteractionCollider.radius = elementData.Interaction.InteractionRange;
 
         SetModel();
     }
@@ -170,7 +170,11 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
 
     public void CloseElement()
     {
-        GameElement.DataElement.ElementData.DataElement = null;
+        if(GameElement.DataElement.ElementData.DataType == Enums.DataType.GameWorldInteractable)
+        {
+            var gameWorldInteractableElementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
+            PlayerControlManager.instance.RemoveSelectionTarget(gameWorldInteractableElementData);
+        }
 
         GameElement.CloseElement();
     }

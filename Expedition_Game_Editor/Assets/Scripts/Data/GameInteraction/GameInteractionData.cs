@@ -26,8 +26,8 @@ public class GameInteractionData
 
     public float InteractionRange           { get; set; }
 
-    public int DelayMethod                  { get; set; }
-    public int DelayDuration                { get; set; }
+    public Enums.DelayMethod DelayMethod    { get; set; }
+    public float DelayDuration              { get; set; }
     public bool HideDelayIndicator          { get; set; }
 
     public bool CancelDelayOnInput          { get; set; }
@@ -58,7 +58,7 @@ public class GameInteractionData
 
         TriggerAutomatically        = originalData.TriggerAutomatically;
         BeNearDestination           = originalData.BeNearDestination;
-        FaceInteractable                   = originalData.FaceInteractable;
+        FaceInteractable            = originalData.FaceInteractable;
         FacePartyLeader             = originalData.FacePartyLeader;
         HideInteractionIndicator    = originalData.HideInteractionIndicator;
 
@@ -97,7 +97,7 @@ public class GameInteractionData
 
         data.TriggerAutomatically       = TriggerAutomatically;
         data.BeNearDestination          = BeNearDestination;
-        data.FaceInteractable                  = FaceInteractable;
+        data.FaceInteractable           = FaceInteractable;
         data.FacePartyLeader            = FacePartyLeader;
         data.HideInteractionIndicator   = HideInteractionIndicator;
 
@@ -138,7 +138,7 @@ public class GameInteractionData
 
         elementData.TriggerAutomatically        = TriggerAutomatically;
         elementData.BeNearDestination           = BeNearDestination;
-        elementData.FaceInteractable                   = FaceInteractable;
+        elementData.FaceInteractable            = FaceInteractable;
         elementData.FacePartyLeader             = FacePartyLeader;
         elementData.HideInteractionIndicator    = HideInteractionIndicator;
 

@@ -29,6 +29,8 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
 
             Backtracing = false;
             Interaction.ActiveDestinationIndex = 0;
+
+            InteractionManager.CancelInteraction(this);
         }
     }
     

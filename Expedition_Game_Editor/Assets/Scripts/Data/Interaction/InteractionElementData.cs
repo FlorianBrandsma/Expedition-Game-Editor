@@ -66,7 +66,7 @@ public class InteractionElementData : InteractionData, IElementData
 
     public bool ChangedDelayDuration
     {
-        get { return DelayDuration != OriginalData.DelayDuration; }
+        get { return !Mathf.Approximately(DelayDuration, OriginalData.DelayDuration); }
     }
 
     public bool ChangedHideDelayIndicator

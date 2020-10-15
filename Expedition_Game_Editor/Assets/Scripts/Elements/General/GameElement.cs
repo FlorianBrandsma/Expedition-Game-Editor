@@ -57,8 +57,8 @@ public class GameElement : MonoBehaviour, ISelectionElement
     {
         CancelSelection();
 
-        PlayerControlManager.instance.RemoveTarget(this);
-        
+        DataElement.ElementData.DataElement = null;
+
         if (Model == null) return;
 
         PoolManager.ClosePoolObject(Model);

@@ -568,11 +568,11 @@ static public class Fixtures
 
             CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
 
-            //for (int i = 0; i < 300; i++)
+            //for (int i = 0; i < 100; i++)
             //{
             //    CreateWorldInteractable(Enums.InteractableType.Agent, 5, region.Id, mageDestinationList);
             //}
-            
+
             /*Pool*/
             var poolDestinationList = new List<InteractionDestinationBaseData>()
             {
@@ -684,12 +684,12 @@ static public class Fixtures
 
         interaction.InteractionRange = 5;
 
-        interaction.DelayMethod = 0;
-        interaction.DelayDuration = 0;
-        interaction.HideDelayIndicator = true;
+        interaction.DelayMethod = (int)Enums.DelayMethod.Waiting;
+        interaction.DelayDuration = 3f;
+        interaction.HideDelayIndicator = false;
 
         interaction.CancelDelayOnInput = true;
-        interaction.CancelDelayOnMovement = true;
+        interaction.CancelDelayOnMovement = false;
         interaction.CancelDelayOnHit = false;
 
         interaction.PublicNotes = "These are public interaction notes";

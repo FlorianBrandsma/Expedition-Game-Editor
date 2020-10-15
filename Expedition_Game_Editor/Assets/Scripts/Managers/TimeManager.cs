@@ -69,7 +69,7 @@ public class TimeManager : MonoBehaviour
     public Gradient nightDayFogColor;
     public AnimationCurve fogDensityCurve;
     public float fogScale = 1f;
-
+    
     static public int hoursInDay = 24;
     static public int secondsInHour = 3600;
 
@@ -135,7 +135,7 @@ public class TimeManager : MonoBehaviour
 
     private void Update()
     {
-        if (active)
+        if (active && !Paused)
         {
             float counter = 1 * Time.deltaTime;
 
@@ -163,6 +163,8 @@ public class TimeManager : MonoBehaviour
                 CountTravelTime(x, counter);
                 CountPatience(x, counter);
             });
+            
+            CountInteractionDelay(counter);
         }
     }
     
@@ -194,6 +196,28 @@ public class TimeManager : MonoBehaviour
             {
                 MovementManager.SetDestination(worldInteractableElementData);
                 GameManager.instance.UpdateWorldInteractable(worldInteractableElementData);
+            }
+        }
+    }
+
+    private void CountInteractionDelay(float counter)
+    {
+        if (InteractionManager.interactionTarget == null) return;
+        
+        if (!PlayerControlManager.instance.eligibleSelectionTargets.Contains(InteractionManager.interactionTarget))
+        {
+            InteractionManager.CancelInteraction();
+            return;
+        }
+        
+        if(InteractionManager.interactionDelay > 0)
+        {
+            InteractionManager.interactionDelay -= counter;
+            InteractionManager.UpdateLoadingBar();
+
+            if (InteractionManager.interactionDelay < 0)
+            {
+                InteractionManager.Interact();
             }
         }
     }
@@ -240,7 +264,7 @@ public class TimeManager : MonoBehaviour
             timeEvent.WorldInteractableDataList.ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
         });
     }
-
+    
     public void SetLighting()
     {
         SetLighting(activeTime.EndTime);

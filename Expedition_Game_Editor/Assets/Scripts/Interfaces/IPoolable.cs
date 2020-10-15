@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public interface IPoolable
 {
     Transform Transform { get; }
-
     Enums.ElementType ElementType { get; }
     int Id { get; set; }
     bool IsActive { get; }

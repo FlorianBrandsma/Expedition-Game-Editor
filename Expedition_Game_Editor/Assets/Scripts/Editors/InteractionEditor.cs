@@ -153,7 +153,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public int DelayDuration
+    public float DelayDuration
     {
         get { return interactionData.DelayDuration; }
         set

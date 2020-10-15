@@ -155,7 +155,8 @@ public class Enums
         GameWorldElement,
         GameWorldAgent,
         Joystick,
-        InputNumber
+        InputNumber,
+        LoadingBar
     }
 
     public enum ElementStatus
@@ -203,9 +204,11 @@ public class Enums
         Repeat
     }
 
-    public enum InteractionDelayMethod
+    public enum DelayMethod
     {
-        Wait
+        Nothing,
+        Waiting,
+        Gathering
     }
 
     public enum HistoryGroup

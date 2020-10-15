@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Linq;
+using UnityEngine.UI;
+using System;
 
 public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
 {
@@ -19,7 +20,7 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
         set { InteractionEditor.DelayMethod = value; }
     }
 
-    public int DelayDuration
+    public float DelayDuration
     {
         get { return InteractionEditor.DelayDuration; }
         set { InteractionEditor.DelayDuration = value; }
@@ -42,7 +43,15 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
 
     public void InitializeData() { }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        delayMethodDropdown.Dropdown.captionText.text = Enum.GetName(typeof(Enums.DelayMethod), DelayMethod);
+
+        foreach (var display in Enum.GetValues(typeof(Enums.DelayMethod)))
+        {
+            delayMethodDropdown.Dropdown.options.Add(new Dropdown.OptionData(display.ToString()));
+        }
+    }
     
     public void OpenSegment()
     {
@@ -74,5 +83,8 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void CloseSegment() { }
+    public void CloseSegment()
+    {
+        delayMethodDropdown.Dropdown.options.Clear();
+    }
 }

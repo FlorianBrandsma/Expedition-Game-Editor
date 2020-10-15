@@ -23,13 +23,13 @@ public class TouchOverlay : MonoBehaviour, IOverlay
 
     public void InitializeOverlay(IDisplayManager displayManager)
     {
-        primaryButton   = TouchButton(Enums.GameButtonType.Primary);
-        secondaryButton = TouchButton(Enums.GameButtonType.Secondary);
+        primaryButton   = SpawnTouchButton(Enums.GameButtonType.Primary);
+        secondaryButton = SpawnTouchButton(Enums.GameButtonType.Secondary);
     }
 
     public void ActivateOverlay(IOrganizer organizer) { }
 
-    public ExTouchButton TouchButton(Enums.GameButtonType buttonType)
+    private ExTouchButton SpawnTouchButton(Enums.GameButtonType buttonType)
     {
         var prefab = Resources.Load<ExTouchButton>("Elements/UI/TouchButton");
         var touchButton = (ExTouchButton)PoolManager.SpawnObject(prefab);

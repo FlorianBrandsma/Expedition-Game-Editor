@@ -378,7 +378,7 @@ public class GameManager : MonoBehaviour
     {
         Organizer.UpdateWorldInteractable(worldInteractableElementData);
     }
-
+    
     public void SaveData()
     {
         gameSaveData.Update();

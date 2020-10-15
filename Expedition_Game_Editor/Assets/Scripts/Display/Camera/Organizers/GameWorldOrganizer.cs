@@ -151,7 +151,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab)
     {
         //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
-        var gameWorldAgent = (IGameElement)PoolManager.SpawnObject(prefab);
+        var gameWorldAgent = (IGameElement)PoolManager.SpawnObject(prefab, (int)elementData.DataType);
         gameWorldAgent.GameElement.transform.SetParent(CameraManager.content, false);
 
         elementData.DataElement = gameWorldAgent.GameElement.DataElement;

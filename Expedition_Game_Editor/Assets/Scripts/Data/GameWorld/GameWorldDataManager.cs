@@ -183,7 +183,7 @@ public static class GameWorldDataManager
 
                     InteractionRange = interactionData.InteractionRange,
 
-                    DelayMethod = interactionData.DelayMethod,
+                    DelayMethod = (Enums.DelayMethod)interactionData.DelayMethod,
                     DelayDuration = interactionData.DelayDuration,
                     HideDelayIndicator = interactionData.HideDelayIndicator,
 
