@@ -271,6 +271,20 @@ public class Search
         public RequestType requestType;
     }
 
+    public class Scene
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> outcomeId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class EditorWorld
     {
         public List<int> id = new List<int>();

@@ -85,13 +85,15 @@ public class Path
 
     public Route FindFirstRoute(Enums.DataType dataType)
     {
-        foreach(Route route in routeList)
-        {
-            if (route.ElementData.DataType == dataType)
-                return route;
-        }
+        //foreach(Route route in routeList)
+        //{
+        //    if (route.ElementData.DataType == dataType)
+        //        return route;
+        //}
 
-        return null;
+        //return null;
+
+        return routeList.Where(x => x.data != null).ToList().Find(x => x.data.dataController.DataType == dataType);
     }
 
     public Route FindLastRoute(Enums.DataType dataType)

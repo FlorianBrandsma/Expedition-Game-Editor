@@ -30,6 +30,7 @@ public class Enums
         Interaction,
         InteractionDestination,
         Outcome,
+        Scene,
         EditorWorld,
         Game,
         GameWorld,
@@ -156,7 +157,8 @@ public class Enums
         GameWorldAgent,
         Joystick,
         InputNumber,
-        LoadingBar
+        LoadingBar,
+        TouchButton
     }
 
     public enum ElementStatus
@@ -206,7 +208,7 @@ public class Enums
 
     public enum DelayMethod
     {
-        Nothing,
+        Instant,
         Waiting,
         Gathering
     }
@@ -238,6 +240,8 @@ public class Enums
         Outcome,
         OutcomeSelection,
         Menu,
-        MenuSelection
+        MenuSelection,
+        Scene,
+        SceneSelection
     }
 }

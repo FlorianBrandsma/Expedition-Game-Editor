@@ -132,6 +132,9 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.Interaction:            SetInteractionElement();            break;
             case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
             case Enums.DataType.Outcome:                SetOutcomeElement();                break;
+
+            case Enums.DataType.Scene:                  SetSceneElement();                  break;
+
             case Enums.DataType.Region:                 SetRegionElement();                 break;
             case Enums.DataType.Atmosphere:             SetAtmosphereElement();             break;
             case Enums.DataType.Model:                  SetModelElement();                  break;
@@ -351,7 +354,19 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (OutcomeElementData)EditorElement.DataElement.ElementData;
 
         header = Enum.GetName(typeof(Enums.OutcomeType), elementData.Type);
-        description = (Enums.OutcomeType)elementData.Type == Enums.OutcomeType.Positive ? "Requirements passed" : "Requirements failed";
+        description = elementData.PublicNotes;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+        descriptionText.text = description;
+    }
+
+    private void SetSceneElement()
+    {
+        var elementData = (SceneElementData)EditorElement.DataElement.ElementData;
+
+        header = elementData.Name;
+        description = elementData.PublicNotes;
 
         idText.text = elementData.Id.ToString();
         headerText.text = header;

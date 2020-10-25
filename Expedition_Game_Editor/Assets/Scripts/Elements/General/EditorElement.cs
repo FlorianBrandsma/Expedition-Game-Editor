@@ -187,6 +187,10 @@ public class EditorElement : MonoBehaviour, ISelectionElement
                 RenderManager.Render(editorPath.path);
                 break;
 
+            case SelectionManager.Property.OpenOutcomeScenes:
+                RenderManager.Render(editorPath.path);
+                break;
+
             default: Debug.Log("CASE MISSING: " + selectionProperty); break;
         }
     }

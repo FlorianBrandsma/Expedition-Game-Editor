@@ -24,7 +24,8 @@ static public class SelectionManager
         OpenOutcomeEditor,
         LoadSave,
         OpenPhaseSaveRegion,
-        OpenPhaseSaveRegionWorldInteractable
+        OpenPhaseSaveRegionWorldInteractable,
+        OpenOutcomeScenes
     }
 
     static public List<Route> routeList = new List<Route>();

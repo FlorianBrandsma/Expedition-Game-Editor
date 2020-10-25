@@ -415,6 +415,35 @@ static public class DataManager
         return dataList;
     }
 
+    static public List<OutcomeBaseData> GetOutcomeData(Search.Outcome searchParameters)
+    {
+        var dataList = new List<OutcomeBaseData>();
+
+        foreach (OutcomeBaseData outcome in Fixtures.outcomeList)
+        {
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(outcome.Id)) continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(outcome.InteractionId)) continue;
+
+            var data = new OutcomeBaseData();
+
+            data.Id = outcome.Id;
+
+            data.InteractionId = outcome.InteractionId;
+
+            data.Type = outcome.Type;
+
+            data.CompleteTask = outcome.CompleteTask;
+            data.ResetObjective = outcome.ResetObjective;
+
+            data.PublicNotes = outcome.PublicNotes;
+            data.PrivateNotes = outcome.PrivateNotes;
+
+            dataList.Add(data);
+        }
+
+        return dataList;
+    }
+
     static public List<InteractionDestinationBaseData> GetInteractionDestinationData(Search.InteractionDestination searchParameters)
     {
         var dataList = new List<InteractionDestinationBaseData>();

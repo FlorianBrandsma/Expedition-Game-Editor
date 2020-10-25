@@ -149,34 +149,108 @@ public class PathManager
         }
     }
 
+    //public class Structure
+    //{
+    //    Path path;
+    //    Route route;
+
+    //    int enter = 0;
+    //    int edit = 1;
+    //    int open = 0;
+
+    //    EditorForm form = RenderManager.layoutManager.forms[0];
+
+    //    public Structure(EditorElement editorElement, Route route) //Combine existing path with new route
+    //    {
+    //        this.route = route;
+
+    //        path = editorElement.DataElement.segmentController.Path;
+    //    }
+
+    //    public Path Enter()
+    //    {
+    //        route.controllerIndex = enter;
+
+    //        path.routeList.Add(route);
+
+    //        //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
+    //        //newPath.type = path.type;
+
+    //        return path;
+    //    }
+
     public class Outcome
     {
         Path pathSource;
         Route route;
 
+        int enter = 0;
+        int openOutcomeScenes = 1;
+
         EditorForm form = RenderManager.layoutManager.forms[0];
 
-        public Outcome(DataElement dataElement, Route route)
+        public Outcome(EditorElement editorElement, Route route)
         {
             this.route = route;
 
-            pathSource = dataElement.DisplayManager.Display.DataController.SegmentController.Path;
+            pathSource = editorElement.DataElement.segmentController.Path;
         }
 
-        public Path OutcomeEditor()
+        public Path Enter()
         {
-            int open = 0;
+            route.controllerIndex = enter;
 
-            route.controllerIndex = open;
-            
             Path path = new Path()
             {
-                routeList = pathSource.CombineRoute(new List<Route>() { route }),
+                routeList = pathSource.routeList.Concat(new List<Route>() { route }).ToList(),
                 form = form,
                 start = pathSource.start
             };
 
-            path.routeList.ForEach(x => x.path = path);
+            return path;
+        }
+
+        public Path OpenOutcomeScenes()
+        {
+            route.controllerIndex = openOutcomeScenes;
+
+            Path path = new Path()
+            {
+                routeList = pathSource.FindLastRoute(Enums.DataType.Interaction).path.routeList.Concat(new List<Route>() { route }).ToList(),
+                form = form,
+                start = pathSource.start
+            };
+
+            return path;
+        }
+    }
+
+    public class Scene
+    {
+        Path pathSource;
+        Route route;
+
+        int enter = 0;
+
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public Scene(EditorElement editorElement, Route route)
+        {
+            this.route = route;
+
+            pathSource = editorElement.DataElement.segmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            route.controllerIndex = enter;
+
+            Path path = new Path()
+            {
+                routeList = pathSource.routeList.Concat(new List<Route>() { route }).ToList(),
+                form = form,
+                start = pathSource.start
+            };
 
             return path;
         }

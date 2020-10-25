@@ -32,6 +32,82 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         }
     }
 
+    #region Data properties
+    public int Id
+    {
+        get { return outcomeData.Id; }
+    }
+
+    public bool CompleteTask
+    {
+        get { return outcomeData.CompleteTask; }
+        set
+        {
+            outcomeData.CompleteTask = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CompleteTask = value);
+        }
+    }
+
+    public bool ResetObjective
+    {
+        get { return outcomeData.ResetObjective; }
+        set
+        {
+            outcomeData.ResetObjective = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).ResetObjective = value);
+        }
+    }
+
+    public string PublicNotes
+    {
+        get { return outcomeData.PublicNotes; }
+        set
+        {
+            outcomeData.PublicNotes = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).PublicNotes = value);
+        }
+    }
+
+    public string PrivateNotes
+    {
+        get { return outcomeData.PrivateNotes; }
+        set
+        {
+            outcomeData.PrivateNotes = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).PrivateNotes = value);
+        }
+    }
+
+    public string ModelIconPath
+    {
+        get { return outcomeData.ModelIconPath; }
+    }
+
+    public bool DefaultInteraction
+    {
+        get { return outcomeData.DefaultInteraction; }
+    }
+
+    public int InteractionStartTime
+    {
+        get { return outcomeData.InteractionStartTime; }
+    }
+
+    public int InteractionEndTime
+    {
+        get { return outcomeData.InteractionEndTime; }
+    }
+
+    public string TaskName
+    {
+        get { return outcomeData.TaskName; }
+    }
+    #endregion
+
     public void InitializeEditor()
     {
         outcomeData = (OutcomeData)ElementData.Clone();

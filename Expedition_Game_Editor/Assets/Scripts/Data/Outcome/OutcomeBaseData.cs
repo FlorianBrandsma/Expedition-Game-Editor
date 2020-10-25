@@ -8,6 +8,12 @@ public class OutcomeBaseData
 
     public int Type             { get; set; }
 
+    public bool CompleteTask    { get; set; }
+    public bool ResetObjective  { get; set; }
+
+    public string PublicNotes   { get; set; }
+    public string PrivateNotes  { get; set; }
+
     public virtual void GetOriginalValues(OutcomeData originalData)
     {
         Id              = originalData.Id;
@@ -15,6 +21,12 @@ public class OutcomeBaseData
         InteractionId   = originalData.InteractionId;
 
         Type            = originalData.Type;
+
+        CompleteTask    = originalData.CompleteTask;
+        ResetObjective  = originalData.ResetObjective;
+
+        PublicNotes     = originalData.PublicNotes;
+        PrivateNotes    = originalData.PrivateNotes;
     }
 
     public virtual void Clone(OutcomeData data)
@@ -24,5 +36,11 @@ public class OutcomeBaseData
         data.InteractionId  = InteractionId;
 
         data.Type           = Type;
+
+        data.CompleteTask   = CompleteTask;
+        data.ResetObjective = ResetObjective;
+
+        data.PublicNotes    = PublicNotes;
+        data.PrivateNotes   = PrivateNotes;
     }
 }

@@ -27,7 +27,7 @@ public class SearchProperties
         {
             case Enums.DataType.None: return;
             case Enums.DataType.Icon:                   searchParameters = new[] { new Search.Icon() };                     break;
-            case Enums.DataType.Model:          searchParameters = new[] { new Search.Model() };            break;
+            case Enums.DataType.Model:                  searchParameters = new[] { new Search.Model() };                    break;
             case Enums.DataType.Item:                   searchParameters = new[] { new Search.Item() };                     break;
             case Enums.DataType.Interactable:           searchParameters = new[] { new Search.Interactable() };             break;
             case Enums.DataType.Region:                 searchParameters = new[] { new Search.Region() };                   break;
@@ -48,6 +48,7 @@ public class SearchProperties
             case Enums.DataType.Interaction:            searchParameters = new[] { new Search.Interaction() };              break;
             case Enums.DataType.InteractionDestination: searchParameters = new[] { new Search.InteractionDestination() };   break;
             case Enums.DataType.Outcome:                searchParameters = new[] { new Search.Outcome() };                  break;
+            case Enums.DataType.Scene:                  searchParameters = new[] { new Search.Scene() };                    break;
             case Enums.DataType.EditorWorld:            searchParameters = new[] { new Search.EditorWorld() };              break;
 
             case Enums.DataType.GameWorld:              searchParameters = new[] { new Search.GameWorld() };                break;

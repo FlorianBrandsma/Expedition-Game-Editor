@@ -35,6 +35,9 @@ public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Task:
                     return ((TaskEditor)DataEditor).Id;
 
+                case Enums.DataType.Scene:
+                    return ((SceneEditor)DataEditor).Id;
+
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
@@ -64,6 +67,9 @@ public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Task:
                     return ((TaskEditor)DataEditor).Index;
 
+                case Enums.DataType.Scene:
+                    return ((SceneEditor)DataEditor).Index;
+
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
@@ -92,6 +98,9 @@ public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Task:
                     return ((TaskEditor)DataEditor).Name;
+
+                case Enums.DataType.Scene:
+                    return ((SceneEditor)DataEditor).Name;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -142,6 +151,13 @@ public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
 
                     break;
 
+                case Enums.DataType.Scene:
+
+                    var sceneEditor = (SceneEditor)DataEditor;
+                    sceneEditor.Name = value;
+
+                    break;
+
                 default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
@@ -161,12 +177,11 @@ public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
         InitializeDependencies();
 
         if (DataEditor.Loaded) return;
-
-
+        
         if (indexSwitch != null)
             indexSwitch.InitializeSwitch(this, Index);
-
     }
+
     public void InitializeSegment()
     {
         inputText.InitializeElement();

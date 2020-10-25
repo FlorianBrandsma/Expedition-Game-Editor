@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour
     private void SetDataControllers()
     {
         //Objects
-        WorldObjectDataController.Data.dataList = gameWorldData.RegionDataList.SelectMany(x => x.TerrainDataList.SelectMany(y => y.WorldObjectDataList)).Cast<IElementData>().ToList();
+        WorldObjectDataController.Data.dataList = gameWorldData.RegionDataList.SelectMany(x => x.GameTerrainDataList.SelectMany(y => y.GameWorldObjectDataList)).Cast<IElementData>().ToList();
 
         //Interactable agents
         WorldInteractableAgentDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Agent).Cast<IElementData>().ToList();

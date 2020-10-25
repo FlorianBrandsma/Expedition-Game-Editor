@@ -241,7 +241,7 @@ public static class GameWorldDataManager
                 TileSetName = tileSetData.Name,
                 TileSize = tileSetData.TileSize,
 
-                TerrainDataList = (
+                GameTerrainDataList = (
                 from terrainData in terrainDataList.Where(x => x.RegionId == regionData.Id)
                 select new GameTerrainElementData
                 {
@@ -253,7 +253,7 @@ public static class GameWorldDataManager
 
                     GridElement = TerrainGridElement(terrainData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize),
                     
-                    AtmosphereDataList = (
+                    GameAtmosphereDataList = (
                     from atmosphereData in atmosphereDataList
                     where atmosphereData.TerrainId == terrainData.Id
                     select new GameAtmosphereElementData()
@@ -269,7 +269,7 @@ public static class GameWorldDataManager
 
                     }).ToList(),
 
-                    TerrainTileDataList = (
+                    GameTerrainTileDataList = (
                     from terrainTileData in terrainTileDataList
                     where terrainTileData.TerrainId == terrainData.Id
                     select new GameTerrainTileElementData()
@@ -286,7 +286,7 @@ public static class GameWorldDataManager
                         
                     }).ToList(),
 
-                    WorldObjectDataList = (
+                    GameWorldObjectDataList = (
                     from worldObjectData    in worldObjectDataList
                     join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
                     join iconData           in iconDataList     on modelData.IconId         equals iconData.Id

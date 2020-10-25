@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 public class StageNavigationAction : MonoBehaviour, IAction
@@ -30,6 +29,7 @@ public class StageNavigationAction : MonoBehaviour, IAction
             case Enums.DataType.WorldInteractable:  SetWorldInteractableOptions();  break;
             case Enums.DataType.Task:               SetTaskOptions();               break;
             case Enums.DataType.Interaction:        SetInteractionOptions();        break;
+            case Enums.DataType.Outcome:            SetOutcomeOptions();            break;
 
             case Enums.DataType.Terrain:            SetTerrainOptions();            break;
 
@@ -90,6 +90,12 @@ public class StageNavigationAction : MonoBehaviour, IAction
     {
         var elementDataList = Data.dataList.Cast<InteractionElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime) + " - " + TimeManager.FormatTime(x.EndTime))));
+    }
+
+    private void SetOutcomeOptions()
+    {
+        var elementDataList = Data.dataList.Cast<OutcomeElementData>().ToList();
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(Enum.GetName(typeof(Enums.OutcomeType), x.Type))));
     }
 
     private void SetTerrainOptions()

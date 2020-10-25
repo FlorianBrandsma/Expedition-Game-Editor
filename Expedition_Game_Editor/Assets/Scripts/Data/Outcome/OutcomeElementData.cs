@@ -14,7 +14,34 @@ public class OutcomeElementData : OutcomeData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
-    public bool Changed { get { return false; } }
+    public bool ChangedCompleteTask
+    {
+        get { return CompleteTask != OriginalData.CompleteTask; }
+    }
+
+    public bool ChangedResetObjective
+    {
+        get { return ResetObjective != OriginalData.ResetObjective; }
+    }
+
+    public bool ChangedPublicNotes
+    {
+        get { return PublicNotes != OriginalData.PublicNotes; }
+    }
+
+    public bool ChangedPrivateNotes
+    {
+        get { return PrivateNotes != OriginalData.PrivateNotes; }
+    }
+
+    public bool Changed
+    {
+        get
+        {
+            return  ChangedCompleteTask ||  ChangedResetObjective ||
+                    ChangedPublicNotes  ||  ChangedPrivateNotes;
+        }
+    }
     #endregion
 
     public void Update()

@@ -15,7 +15,7 @@ public class GameRegionData
     public string TileSetName       { get; set; }
     public float TileSize           { get; set; }
 
-    public List<GameTerrainElementData> TerrainDataList { get; set; } = new List<GameTerrainElementData>();
+    public List<GameTerrainElementData> GameTerrainDataList { get; set; } = new List<GameTerrainElementData>();
 
     public virtual void GetOriginalValues(GameRegionData originalData)
     {

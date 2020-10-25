@@ -13,7 +13,7 @@ public class ExTouchButton : MonoBehaviour, IPoolable
     public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
-    public Enums.ElementType ElementType    { get { return Enums.ElementType.Joystick; } }
+    public Enums.ElementType ElementType    { get { return Enums.ElementType.TouchButton; } }
     public int Id                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 

@@ -137,10 +137,22 @@ public class EditorPath
 
             case Enums.DataType.Outcome:
 
-                PathManager.Structure outcome = new PathManager.Structure(editorElement, route);
+                PathManager.Outcome outcome = new PathManager.Outcome(editorElement, route);
 
                 if (editorElement.selectionProperty == SelectionManager.Property.Enter)
                     path = outcome.Enter();
+
+                if (editorElement.selectionProperty == SelectionManager.Property.OpenOutcomeScenes)
+                    path = outcome.OpenOutcomeScenes();
+
+                break;
+
+            case Enums.DataType.Scene:
+
+                PathManager.Scene scene = new PathManager.Scene(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                    path = scene.Enter();
 
                 break;
 

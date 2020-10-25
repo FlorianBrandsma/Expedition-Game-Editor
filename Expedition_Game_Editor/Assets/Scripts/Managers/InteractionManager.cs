@@ -35,7 +35,7 @@ static public class InteractionManager
         interactionDelay = interactionTarget.Interaction.DelayDuration;
 
         //Delay duration is at least 0.1s if active
-        if (interactionTarget.Interaction.DelayMethod != Enums.DelayMethod.Nothing)
+        if (interactionTarget.Interaction.DelayMethod != Enums.DelayMethod.Instant)
         {
             if(!interactionTarget.Interaction.HideDelayIndicator)
                 loadingBar = PlayerControlManager.instance.cameraManager.overlayManager.GameOverlay.SpawnLoadingBar(interactionTarget.Interaction.DelayMethod);
@@ -66,9 +66,9 @@ static public class InteractionManager
         CancelInteraction();
     }
 
-    static public void CancelInteraction(GameWorldInteractableElementData worldInteractableElementData)
+    static public void CancelInteraction(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        if (interactionTarget == worldInteractableElementData)
+        if (interactionTarget == gameWorldInteractableElementData)
             CancelInteraction();
     }
 

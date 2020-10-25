@@ -33,7 +33,7 @@ public class TaskBaseData
 
         PublicNotes         = originalData.PublicNotes;
         PrivateNotes        = originalData.PrivateNotes;
-}
+    }
 
     public virtual void Clone(TaskData data)
     {

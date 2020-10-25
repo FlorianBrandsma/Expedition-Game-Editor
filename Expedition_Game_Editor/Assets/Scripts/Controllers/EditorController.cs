@@ -38,11 +38,6 @@ public class EditorController : MonoBehaviour
     {
         if (PathController.DataEditor == null) return;
 
-        //Re-assigns the loaded element to an editor in case you return to an opened editor
-        //Example: change the model of an interactable with the interaction interactable status editor open
-        //When data is obtained, old data still exists; it is not replaced where it was used
-        //ResetEditorData();
-
         if(!PathController.DataEditor.Loaded)
             PathController.DataEditor.InitializeEditor();
 
@@ -50,18 +45,6 @@ public class EditorController : MonoBehaviour
         {
             x.Segment.InitializeData();
         });
-    }
-
-    public void ResetEditorData()
-    {
-        //if (RenderManager.loadType == Enums.LoadType.Normal) return;
-        
-        //var data = PathController.DataEditor.Data;
-
-        //var elementData = data.dataList.Where(x => x.Id == data.elementData.Id).FirstOrDefault();
-
-        //if (elementData != null)
-        //    data.elementData = elementData;
     }
 
     public void CloseEditor() { }

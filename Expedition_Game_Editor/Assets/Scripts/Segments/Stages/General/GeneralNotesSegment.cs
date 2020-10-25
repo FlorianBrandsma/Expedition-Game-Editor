@@ -57,6 +57,12 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Interaction:
                     return ((InteractionEditor)DataEditor).PublicNotes;
 
+                case Enums.DataType.Outcome:
+                    return ((OutcomeEditor)DataEditor).PublicNotes;
+
+                case Enums.DataType.Scene:
+                    return ((SceneEditor)DataEditor).PublicNotes;
+
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
@@ -113,6 +119,20 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                     break;
 
+                case Enums.DataType.Outcome:
+
+                    var outcomeEditor = (OutcomeEditor)DataEditor;
+                    outcomeEditor.PublicNotes = value;
+
+                    break;
+
+                case Enums.DataType.Scene:
+
+                    var sceneEditor = (SceneEditor)DataEditor;
+                    sceneEditor.PublicNotes = value;
+
+                    break;
+
                 default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
@@ -144,6 +164,12 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.Interaction:
                     return ((InteractionEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Outcome:
+                    return ((OutcomeEditor)DataEditor).PrivateNotes;
+
+                case Enums.DataType.Scene:
+                    return ((SceneEditor)DataEditor).PrivateNotes;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -198,6 +224,20 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
                     var interactionEditor = (InteractionEditor)DataEditor;
                     interactionEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Outcome:
+
+                    var outcomeEditor = (OutcomeEditor)DataEditor;
+                    outcomeEditor.PrivateNotes = value;
+
+                    break;
+
+                case Enums.DataType.Scene:
+
+                    var sceneEditor = (SceneEditor)DataEditor;
+                    sceneEditor.PrivateNotes = value;
 
                     break;
 

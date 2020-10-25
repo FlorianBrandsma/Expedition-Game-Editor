@@ -75,6 +75,8 @@ public class ExIndexSwitch : MonoBehaviour
                 case Enums.DataType.Objective:      UpdateObjectiveIndex(i);    break;
                 case Enums.DataType.Task:           UpdateTaskIndex(i);         break;
 
+                case Enums.DataType.Scene:          UpdateSceneIndex(i);        break;
+
                 default: Debug.Log("CASE MISSING " + elementData.DataType); break;
             }
         }
@@ -156,6 +158,15 @@ public class ExIndexSwitch : MonoBehaviour
     private void UpdateTaskIndex(int index)
     {
         var elementData = (TaskElementData)dataList[index];
+
+        elementData.Index = index;
+
+        elementData.UpdateIndex();
+    }
+
+    private void UpdateSceneIndex(int index)
+    {
+        var elementData = (SceneElementData)dataList[index];
 
         elementData.Index = index;
 

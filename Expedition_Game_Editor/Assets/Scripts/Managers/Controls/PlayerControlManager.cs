@@ -48,6 +48,7 @@ public class PlayerControlManager : MonoBehaviour
     {
         if (potentialTargetList.Count == 0 || TimeManager.instance.Paused) return;
 
+        //Of the potential targets, check which one will be eligible for selection
         CheckTargetTriggers();
 
         if(selectionIcon != null)
@@ -185,16 +186,16 @@ public class PlayerControlManager : MonoBehaviour
         SelectionTarget.DataElement.GetComponent<GameElement>().selectionIcon = selectionIcon.gameObject;
     }
     
-    public void RemoveSelectionTarget(GameWorldInteractableElementData gameElement)
+    public void RemoveSelectionTarget(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        InteractionManager.CancelInteraction(gameElement);
+        InteractionManager.CancelInteraction(gameWorldInteractableElementData);
 
-        if (gameElement == SelectionTarget)
+        if (gameWorldInteractableElementData == SelectionTarget)
         {
             SetSelectionTarget(null);
         }
 
-        potentialTargetList.Remove(gameElement);
+        potentialTargetList.Remove(gameWorldInteractableElementData);
     }
     
     public void InitializeControls()

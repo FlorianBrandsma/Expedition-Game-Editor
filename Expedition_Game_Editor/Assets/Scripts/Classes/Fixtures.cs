@@ -24,6 +24,7 @@ static public class Fixtures
     static public int interactablesInObjective = 2;
     static public int sideWorldInteractables = 1;
     static public int interactionsPerWorldInteractable = 2;
+    static public int scenesPerOutcome = 2;
     static public int baseTasks = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
@@ -54,6 +55,7 @@ static public class Fixtures
     static public List<InteractionBaseData>             interactionList             = new List<InteractionBaseData>();
     static public List<InteractionDestinationBaseData>  interactionDestinationList  = new List<InteractionDestinationBaseData>();
     static public List<OutcomeBaseData>                 outcomeList                 = new List<OutcomeBaseData>();
+    static public List<SceneBaseData>                   sceneList                   = new List<SceneBaseData>();
 
     static public List<SaveBaseData>                    saveList                    = new List<SaveBaseData>();
     static public List<PlayerSaveBaseData>              playerSaveList              = new List<PlayerSaveBaseData>();
@@ -699,7 +701,7 @@ static public class Fixtures
             CreateInteractionDestination(interaction, regionId, interactionDestination);
         });
 
-        CreateOutcome(interaction, Enums.OutcomeType.Positive);
+        CreateOutcome(interaction, regionId, Enums.OutcomeType.Positive);
 
         interactionList.Add(interaction);
     }
@@ -737,19 +739,57 @@ static public class Fixtures
         interactionDestinationList.Add(interactionDestination);
     }
 
-    static public void CreateOutcome(InteractionBaseData interaction, Enums.OutcomeType type)
+    static public void CreateOutcome(InteractionBaseData interaction, int regionId, Enums.OutcomeType type)
     {
         var outcome = new OutcomeBaseData();
 
         int id = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
 
         outcome.Id = id;
+        
+        outcome.InteractionId = interaction.Id;
 
         outcome.Type = (int)type;
 
-        outcome.InteractionId = interaction.Id;
+        outcome.CompleteTask = true;
+        outcome.ResetObjective = false;
 
+        outcome.PublicNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
+
+        for(int i = 0; i < scenesPerOutcome; i++)
+        {
+            CreateScene(outcome, regionId, i);
+        }
+        
         outcomeList.Add(outcome);
+    }
+
+    static private void CreateScene(OutcomeBaseData outcome, int regionId, int index)
+    {
+        var scene = new SceneBaseData();
+
+        int id = sceneList.Count > 0 ? (sceneList[sceneList.Count - 1].Id + 1) : 1;
+
+        scene.Id = id;
+
+        scene.OutcomeId = outcome.Id;
+        scene.RegionId = regionId;
+
+        scene.Index = index;
+
+        scene.Name = "Scene " + (index + 1);
+
+        scene.FreezeTime = false;
+        scene.FreezeMovement = false;
+        scene.AutoContinue = false;
+
+        scene.SceneDuration = 0;
+        scene.ShotDuration = 0;
+
+        scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;
+        scene.PrivateNotes = "";
+
+        sceneList.Add(scene);
     }
 
     static public void CreateWorldObject(int modelId, int regionId, Vector3 position, Vector3 rotation)
@@ -1082,10 +1122,46 @@ static public class Fixtures
                                     int outcomeId = outcomeList.Count > 0 ? (outcomeList[outcomeList.Count - 1].Id + 1) : 1;
 
                                     outcome.Id = outcomeId;
+                                    
+                                    outcome.InteractionId = interaction.Id;
 
                                     outcome.Type = outcomeSource.Type;
 
-                                    outcome.InteractionId = interaction.Id;
+                                    outcome.CompleteTask = outcomeSource.CompleteTask;
+                                    outcome.ResetObjective = outcomeSource.ResetObjective;
+
+                                    outcome.PublicNotes = outcomeSource.PublicNotes;
+                                    outcome.PrivateNotes = outcomeSource.PrivateNotes;
+
+                                    var sceneSourceList = sceneList.Where(x => x.OutcomeId == outcomeSource.Id).OrderBy(x => x.Index).Distinct().ToList();
+
+                                    foreach(SceneBaseData sceneSource in sceneSourceList)
+                                    {
+                                        var scene = new SceneBaseData();
+
+                                        int sceneId = sceneList.Count > 0 ? (sceneList[sceneList.Count - 1].Id + 1) : 1;
+
+                                        scene.Id = sceneId;
+
+                                        scene.OutcomeId = outcome.Id;
+                                        scene.RegionId = sceneSource.RegionId;
+
+                                        scene.Index = sceneSource.Index;
+
+                                        scene.Name = sceneSource.Name;
+
+                                        scene.FreezeTime = sceneSource.FreezeTime;
+                                        scene.FreezeMovement = sceneSource.FreezeMovement;
+                                        scene.AutoContinue = sceneSource.AutoContinue;
+
+                                        scene.SceneDuration = sceneSource.SceneDuration;
+                                        scene.ShotDuration = sceneSource.ShotDuration;
+
+                                        scene.PublicNotes = sceneSource.PublicNotes;
+                                        scene.PrivateNotes = sceneSource.PrivateNotes;
+
+                                        sceneList.Add(scene);
+                                    }
 
                                     outcomeList.Add(outcome);
                                 }

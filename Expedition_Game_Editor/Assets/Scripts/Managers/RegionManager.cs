@@ -19,7 +19,7 @@ static public class RegionManager
     {
         var terrainId = GetGameTerrainId(regionData, regionData.TileSize, posX, posZ);
 
-        var terrainTiles = regionData.TerrainDataList.Where(x => x.Id == terrainId).First().TerrainTileDataList;
+        var terrainTiles = regionData.GameTerrainDataList.Where(x => x.Id == terrainId).First().GameTerrainTileDataList;
 
         var terrainSize = regionData.TerrainSize * regionData.TileSize;
 
@@ -51,7 +51,7 @@ static public class RegionManager
         
         var terrainIndex = (regionData.RegionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
-        var terrainId = regionData.TerrainDataList.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
+        var terrainId = regionData.GameTerrainDataList.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();
 
         return terrainId;
     }
