@@ -56,6 +56,9 @@ static public class Fixtures
     static public List<InteractionDestinationBaseData>  interactionDestinationList  = new List<InteractionDestinationBaseData>();
     static public List<OutcomeBaseData>                 outcomeList                 = new List<OutcomeBaseData>();
     static public List<SceneBaseData>                   sceneList                   = new List<SceneBaseData>();
+    static public List<SceneShotBaseData>               sceneShotList               = new List<SceneShotBaseData>();
+    static public List<SceneActorBaseData>              sceneActorList              = new List<SceneActorBaseData>();
+    static public List<ScenePropBaseData>               scenePropList               = new List<ScenePropBaseData>();
 
     static public List<SaveBaseData>                    saveList                    = new List<SaveBaseData>();
     static public List<PlayerSaveBaseData>              playerSaveList              = new List<PlayerSaveBaseData>();
@@ -465,7 +468,7 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateWorldObject(16, region.Id, new Vector3(245f, -0.2f, 236.5f), new Vector3(355, 155, 0));
+            CreateWorldObject(16, region.Id, new Vector3(245f, 0f, 236.5f), new Vector3(355, 155, 0));
 
             /*Rock*/
             CreateWorldObject(17, region.Id, new Vector3(230f, 0f, 241.75f), new Vector3(0, 180, 0));
@@ -780,7 +783,6 @@ static public class Fixtures
         scene.Name = "Scene " + (index + 1);
 
         scene.FreezeTime = false;
-        scene.FreezeMovement = false;
         scene.AutoContinue = false;
 
         scene.SceneDuration = 0;
@@ -789,7 +791,44 @@ static public class Fixtures
         scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;
         scene.PrivateNotes = "";
 
+        var shotStartCameraPosition = new Vector3(230f, 7.5f, 247.5f);
+        var shotStartCameraRotation = new Vector3(30, 60, 0);
+
+        CreateSceneShot(scene, Enums.SceneShotType.Start, shotStartCameraPosition, shotStartCameraRotation);
+
+        var shotEndCameraPosition = new Vector3(242.5f, 7.5f, 250f);
+        var shotEndCameraRotation = new Vector3(30, 330, 0);
+
+        CreateSceneShot(scene, Enums.SceneShotType.End, shotEndCameraPosition, shotEndCameraRotation);
+
         sceneList.Add(scene);
+    }
+
+    static private void CreateSceneShot(SceneBaseData scene, Enums.SceneShotType shotType, Vector3 cameraPosition, Vector3 cameraRotation)
+    {
+        var sceneShot = new SceneShotBaseData();
+
+        int id = sceneShotList.Count > 0 ? (sceneShotList[sceneShotList.Count - 1].Id + 1) : 1;
+
+        sceneShot.Id = id;
+
+        sceneShot.SceneId = scene.Id;
+
+        sceneShot.Type = (int)shotType;
+
+        sceneShot.ChangePosition = true;
+
+        sceneShot.PositionX = cameraPosition.x;
+        sceneShot.PositionY = cameraPosition.y;
+        sceneShot.PositionZ = cameraPosition.z;
+
+        sceneShot.ChangeRotation = true;
+
+        sceneShot.RotationX = (int)cameraRotation.x;
+        sceneShot.RotationY = (int)cameraRotation.y;
+        sceneShot.RotationZ = (int)cameraRotation.z;
+        
+        sceneShotList.Add(sceneShot);
     }
 
     static public void CreateWorldObject(int modelId, int regionId, Vector3 position, Vector3 rotation)
@@ -1144,14 +1183,13 @@ static public class Fixtures
                                         scene.Id = sceneId;
 
                                         scene.OutcomeId = outcome.Id;
-                                        scene.RegionId = sceneSource.RegionId;
+                                        scene.RegionId = region.Id;
 
                                         scene.Index = sceneSource.Index;
 
                                         scene.Name = sceneSource.Name;
 
                                         scene.FreezeTime = sceneSource.FreezeTime;
-                                        scene.FreezeMovement = sceneSource.FreezeMovement;
                                         scene.AutoContinue = sceneSource.AutoContinue;
 
                                         scene.SceneDuration = sceneSource.SceneDuration;
@@ -1159,6 +1197,35 @@ static public class Fixtures
 
                                         scene.PublicNotes = sceneSource.PublicNotes;
                                         scene.PrivateNotes = sceneSource.PrivateNotes;
+
+                                        var sceneShotSourceList = sceneShotList.Where(x => x.SceneId == sceneSource.Id).Distinct().ToList();
+
+                                        foreach(SceneShotBaseData sceneShotSource in sceneShotSourceList)
+                                        {
+                                            var sceneShot = new SceneShotBaseData();
+
+                                            int sceneShotId = sceneShotList.Count > 0 ? (sceneShotList[sceneShotList.Count - 1].Id + 1) : 1;
+
+                                            sceneShot.Id = sceneShotId;
+
+                                            sceneShot.SceneId = scene.Id;
+
+                                            sceneShot.Type = sceneShotSource.Type;
+
+                                            sceneShot.ChangePosition = sceneShotSource.ChangePosition;
+
+                                            sceneShot.PositionX = sceneShotSource.PositionX;
+                                            sceneShot.PositionY = sceneShotSource.PositionY;
+                                            sceneShot.PositionZ = sceneShotSource.PositionZ;
+
+                                            sceneShot.ChangeRotation = sceneShotSource.ChangeRotation;
+
+                                            sceneShot.RotationX = sceneShotSource.RotationX;
+                                            sceneShot.RotationY = sceneShotSource.RotationY;
+                                            sceneShot.RotationZ = sceneShotSource.RotationZ;
+
+                                            sceneShotList.Add(sceneShot);
+                                        }
 
                                         sceneList.Add(scene);
                                     }

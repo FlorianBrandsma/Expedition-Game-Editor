@@ -51,7 +51,6 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             default: Debug.Log("CASE MISSING: " + cameraProperties.OrganizerType); break;
         }
 
-        //Don't do this in games. Actually base it off border
         InitializeViewportRect();
         
         if (Organizer == null) return;
@@ -185,6 +184,12 @@ public class CameraManager : MonoBehaviour, IDisplayManager
             ScrollRectContent.transform.localPosition = new Vector3(localPosition.x, localPosition.z, ScrollRectContent.transform.localPosition.z);
             Organizer.UpdateData();
         }
+    }
+
+    public void EnableScrolling(bool enable)
+    {
+        ScrollRect.horizontal = enable;
+        ScrollRect.vertical = enable;
     }
 
     public void ClearCamera()

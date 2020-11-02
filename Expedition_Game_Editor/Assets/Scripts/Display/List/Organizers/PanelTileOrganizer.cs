@@ -10,7 +10,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
     
     private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
-    private PanelTileProperties panelTileProperties { get { return (PanelTileProperties)DisplayManager.Display.Properties; } }
+    private PanelTileProperties PanelTileProperties { get { return (PanelTileProperties)DisplayManager.Display.Properties; } }
 
     private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
 

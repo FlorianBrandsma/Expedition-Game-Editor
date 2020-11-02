@@ -197,10 +197,15 @@ public static class WorldInteractableDataManager
     {
         var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
-        if (elementData.ChangedInteractableId)
-            data.InteractableId = elementData.InteractableId;
-        
         if (elementData.ChangedQuestId)
             data.QuestId = elementData.QuestId;
+    }
+
+    public static void UpdateSearch(WorldInteractableElementData elementData)
+    {
+        var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (elementData.ChangedInteractableId)
+            data.InteractableId = elementData.InteractableId;
     }
 }

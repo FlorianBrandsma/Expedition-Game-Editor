@@ -85,14 +85,6 @@ public class Path
 
     public Route FindFirstRoute(Enums.DataType dataType)
     {
-        //foreach(Route route in routeList)
-        //{
-        //    if (route.ElementData.DataType == dataType)
-        //        return route;
-        //}
-
-        //return null;
-
         return routeList.Where(x => x.data != null).ToList().Find(x => x.data.dataController.DataType == dataType);
     }
 
@@ -142,7 +134,9 @@ public class Path
                 {
                     //Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
                     route.data = path.routeList[i - 1].data;
+
                 } else {
+
                     //Debug.Log("Clone from " + originalRoute.data.dataController);
                     route.data = originalRoute.data.Clone();
                 }

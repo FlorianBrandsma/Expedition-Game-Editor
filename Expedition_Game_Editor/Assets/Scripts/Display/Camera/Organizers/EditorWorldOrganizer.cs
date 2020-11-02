@@ -111,8 +111,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         SetWorldSize();
 
-        CameraManager.cam.transform.localPosition = new Vector3(0, 10, -(worldData.TileSize * 0.5f));
-        SetCameraPosition();
+        //CameraManager.cam.transform.localPosition = new Vector3(0, 0, -(worldData.TileSize * 0.5f));
+        SetCamera();
     }
     
     private void GetSelectedElement(Path path, Enums.DataType dataType, Enums.InteractableType interactableType = 0)
@@ -287,7 +287,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     
     public void UpdateData()
     {
-        SetCameraPosition();
+        SetCamera();
 
         if (ScrollRect.content.localPosition.x >= positionTracker.x + worldData.TileSize ||
             ScrollRect.content.localPosition.x <= positionTracker.x - worldData.TileSize ||
@@ -302,17 +302,43 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
 
-    public void SetCameraPosition()
+    public void SetCamera()
     {
-        var worldSize = worldData.RegionSize * worldData.TerrainSize * worldData.TileSize;
+        var defaultCameraPosition = new Vector3(0, 10, -15.875f);
+        var defaultCameraRotation = new Vector3(40, 0, 0);
 
-        CameraManager.cameraParent.transform.localPosition = new Vector3(CameraManager.ScrollRectContent.localPosition.x + (worldSize / 2),
-                                                                         CameraManager.cameraParent.transform.localPosition.y,
-                                                                         CameraManager.ScrollRectContent.localPosition.y - (worldSize / 2));
+        var sceneShotRoute = DataController.SegmentController.MainPath.FindLastRoute(Enums.DataType.SceneShot);
 
+        if (worldData.RegionType != Enums.RegionType.Scene || sceneShotRoute != null && ((SceneShotElementData)sceneShotRoute.ElementData).Type == (int)Enums.SceneShotType.Base)
+        {
+            var worldSize = worldData.RegionSize * worldData.TerrainSize * worldData.TileSize;
+
+            CameraManager.cameraParent.transform.localPosition = new Vector3(defaultCameraPosition.x + CameraManager.ScrollRectContent.localPosition.x + (worldSize / 2),
+                                                                             defaultCameraPosition.y,
+                                                                             defaultCameraPosition.z + CameraManager.ScrollRectContent.localPosition.y - (worldSize / 2));
+
+            CameraManager.cameraParent.transform.localEulerAngles = defaultCameraRotation;
+
+            CameraManager.EnableScrolling(true);
+            
+        } else {
+
+            var sceneShotElementData = (SceneShotElementData)sceneShotRoute.ElementData;
+
+            CameraManager.cameraParent.transform.localPosition      = new Vector3(sceneShotElementData.PositionX, 
+                                                                                  sceneShotElementData.PositionY, 
+                                                                                  -sceneShotElementData.PositionZ);
+
+            CameraManager.cameraParent.transform.localEulerAngles   = new Vector3(sceneShotElementData.RotationX, 
+                                                                                  sceneShotElementData.RotationY, 
+                                                                                  sceneShotElementData.RotationZ);
+
+            CameraManager.EnableScrolling(false);
+        }
+        
         SetActiveRect();
     }
-
+    
     private void SetActiveRect()
     {
         var cameraTransform = CameraManager.cameraParent.transform;

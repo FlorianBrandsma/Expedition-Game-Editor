@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using System.Linq;
 
 public class DataElement : MonoBehaviour
@@ -29,8 +27,9 @@ public class DataElement : MonoBehaviour
     public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
     {
         DisplayManager = displayManager;
-
-        segmentController = DisplayManager.Display.DataController.SegmentController;
+        
+        if(DisplayManager != null)
+            segmentController = DisplayManager.Display.DataController.SegmentController;
 
         //Can be overwritten
         //data.dataController = DisplayManager.Display.DataController;
@@ -64,7 +63,7 @@ public class DataElement : MonoBehaviour
             if (Data.dataController.SearchProperties.autoUpdate)
                 ElementData.UpdateSearch();
         }
-
+        
         //Apply combined search and result data
         segmentController.GetComponent<ISegment>().SetSearchResult(ElementData);
     }

@@ -78,7 +78,7 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     {
         get
         {
-            return  ChangedRegionId     || ChangedTerrainId || ChangedTerrainTileId || 
+            return  ChangedModelId      || ChangedRegionId  || ChangedTerrainId     || ChangedTerrainTileId || 
                     ChangedPositionX    || ChangedPositionY || ChangedPositionZ     || 
                     ChangedRotationX    || ChangedRotationY || ChangedRotationZ     || 
                     ChangedScale        || ChangedAnimation;
@@ -95,7 +95,19 @@ public class WorldObjectElementData : WorldObjectData, IElementData
         SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
+    public void UpdateSearch()
+    {
+        if (!Changed) return;
+
+        WorldObjectDataManager.UpdateSearch(this);
+
+        OriginalData.ModelId = ModelId;
+
+        OriginalData.ModelName = ModelName;
+
+        OriginalData.ModelPath = ModelPath;
+        OriginalData.ModelIconPath = ModelIconPath;
+    }
 
     public void SetOriginalValues()
     {

@@ -1,0 +1,190 @@
+﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+
+public class SceneShotEditor : MonoBehaviour, IEditor
+{
+    private SceneShotData sceneShotData;
+
+    public CameraManager cameraManager;
+
+    public Data Data                                { get { return PathController.route.data; } }
+    public IElementData ElementData                 { get { return PathController.route.ElementData; } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == sceneShotData.Id).FirstOrDefault(); } }
+
+    private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
+
+    public bool Loaded                              { get; set; }
+
+    public List<IElementData> DataList
+    {
+        get { return SelectionElementManager.FindElementData(EditData).Concat(new[] { EditData }).Distinct().ToList(); }
+    }
+
+    public List<IElementData> ElementDataList
+    {
+        get
+        {
+            var list = new List<IElementData>();
+
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
+
+            return list;
+        }
+    }
+
+    #region Data properties
+    public int Id
+    {
+        get { return sceneShotData.Id; }
+    }
+
+    public int SceneId
+    {
+        get { return sceneShotData.SceneId; }
+    }
+
+    public bool ChangePosition
+    {
+        get { return sceneShotData.ChangePosition; }
+        set
+        {
+            sceneShotData.ChangePosition = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).ChangePosition = value);
+        }
+    }
+
+    public float PositionX
+    {
+        get { return sceneShotData.PositionX; }
+        set
+        {
+            sceneShotData.PositionX = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).PositionX = value);
+        }
+    }
+
+    public float PositionY
+    {
+        get { return sceneShotData.PositionY; }
+        set
+        {
+            sceneShotData.PositionY = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).PositionY = value);
+        }
+    }
+
+    public float PositionZ
+    {
+        get { return sceneShotData.PositionZ; }
+        set
+        {
+            sceneShotData.PositionZ = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).PositionZ = value);
+        }
+    }
+
+    public bool ChangeRotation
+    {
+        get { return sceneShotData.ChangeRotation; }
+        set
+        {
+            sceneShotData.ChangeRotation = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).ChangeRotation = value);
+        }
+    }
+
+    public int RotationX
+    {
+        get { return sceneShotData.RotationX; }
+        set
+        {
+            sceneShotData.RotationX = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).RotationX = value);
+        }
+    }
+
+    public int RotationY
+    {
+        get { return sceneShotData.RotationY; }
+        set
+        {
+            sceneShotData.RotationY = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).RotationY = value);
+        }
+    }
+
+    public int RotationZ
+    {
+        get { return sceneShotData.RotationZ; }
+        set
+        {
+            sceneShotData.RotationZ = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).RotationZ = value);
+        }
+    }
+    
+    public string Description
+    {
+        get { return sceneShotData.Description; }
+    }
+
+    #endregion
+
+    public void InitializeEditor()
+    {
+        sceneShotData = (SceneShotData)ElementData.Clone();
+    }
+
+    public void OpenEditor() { }
+
+    public void UpdateEditor()
+    {
+        ElementDataList.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
+
+        cameraManager.UpdateData();
+        cameraManager.UpdateOverlay();
+
+        SetEditor();
+    }
+
+    public void SetEditor()
+    {
+        PathController.layoutSection.SetActionButtons();
+    }
+
+    public bool Changed()
+    {
+        return ElementDataList.Any(x => x.Changed);
+    }
+
+    public void ApplyChanges()
+    {
+        EditData.Update();
+
+        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
+
+        if (SelectionElementManager.SelectionActive(EditData.DataElement))
+            EditData.DataElement.UpdateElement();
+
+        UpdateEditor();
+    }
+
+    public void CancelEdit()
+    {
+        ElementDataList.ForEach(x => x.ClearChanges());
+
+        Loaded = false;
+    }
+
+    public void CloseEditor() { }
+}

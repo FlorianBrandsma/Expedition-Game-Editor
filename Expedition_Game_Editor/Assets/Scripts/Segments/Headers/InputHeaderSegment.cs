@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class GeneralNameHeaderSegment : MonoBehaviour, ISegment
+public class InputHeaderSegment : MonoBehaviour, ISegment
 {
     public ExIndexSwitch indexSwitch;
     public ExInputText inputText;

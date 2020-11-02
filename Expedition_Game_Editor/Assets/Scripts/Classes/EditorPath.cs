@@ -156,6 +156,15 @@ public class EditorPath
 
                 break;
 
+            case Enums.DataType.SceneShot:
+
+                PathManager.SceneShot sceneShot = new PathManager.SceneShot(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                    path = sceneShot.Enter();
+
+                break;
+
             case Enums.DataType.Region:
 
                 PathManager.Region region = new PathManager.Region(editorElement, route);
@@ -169,9 +178,12 @@ public class EditorPath
                 if (editorElement.selectionProperty == SelectionManager.Property.Open)
                     path = region.Open();
 
+                if (editorElement.selectionProperty == SelectionManager.Property.OpenSceneRegion)
+                    path = region.OpenSceneRegion();
+
                 if (editorElement.selectionProperty == SelectionManager.Property.OpenPhaseSaveRegion)
                     path = region.OpenPhaseSaveRegion();
-
+                
                 break;
 
             case Enums.DataType.Atmosphere:

@@ -8,7 +8,7 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
 
     private EditorWorldOrganizer worldOrganizer;
 
-    private OverlayManager overlayManager { get { return GetComponent<OverlayManager>(); } }
+    private OverlayManager OverlayManager { get { return GetComponent<OverlayManager>(); } }
 
     public void InitializeOverlay(IDisplayManager displayManager) { }
 
@@ -19,7 +19,7 @@ public class TerrainHeaderOverlay : MonoBehaviour, IOverlay
         var prefab = Resources.Load<ExText>("Elements/UI/Text");
         terrainInfoText = (ExText)PoolManager.SpawnObject(prefab);
 
-        terrainInfoText.transform.SetParent(overlayManager.horizontal_min, false);
+        terrainInfoText.transform.SetParent(OverlayManager.horizontal_min, false);
         terrainInfoText.transform.localPosition = new Vector2(0, 0);
 
         terrainInfoText.gameObject.SetActive(true);

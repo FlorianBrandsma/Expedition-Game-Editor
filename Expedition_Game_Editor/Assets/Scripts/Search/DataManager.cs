@@ -1,43 +1,10 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 static public class DataManager
 {
     #region Functions
-    //static public void GetData(IDataController dataController, SearchProperties searchProperties)
-    //{
-    //    //Cancel the selection of data that is about to be overwritten while it still has active elements.
-    //    //Results in some double cancel calls, but necessary to do via DataList for selected data without elements
-
-    //    //if (dataController.Data != null)
-    //    //    SelectionManager.CancelSelection(dataController.Data.dataList);
-
-    //    //dataController.Data = new Data()
-    //    //{
-    //    //    dataController = dataController,
-    //    //    dataList = dataController.DataManager.GetData(searchProperties)
-    //    //};
-
-    //    //Replace the route data of all active forms (excluding the one the data is obtained for) with the new data
-    //    //where the data controller is the same
-
-    //    //var activeForms = RenderManager.layoutManager.forms.Where(x => x != dataController.SegmentController.MainPath.form && x.activeInPath).ToList();
-    //    //var activeRoutes = activeForms.SelectMany(x => x.activePath.routeList).Where(x => x.data != null && x.data.dataController == dataController).ToList();
-        
-    //    //activeRoutes.ForEach(x => x.data = dataController.Data);
-        
-    //    //An editor might be forced to reload, but it might not reload other lists of the same type,
-    //    //which are at least used by the region navigation (example: changing time)
-    //    //if (dataController.SegmentController != null)
-    //    //{
-    //    //    var segmentController = dataController.SegmentController;
-    //    //    segmentController.MainPath.ReplaceDataLists(segmentController.EditorController.PathController.step, dataController.DataType, dataList);
-    //    //}
-    //}
-    
     static public void ReplaceRouteData(IDataController dataController)
     {
         //Replaces data in all active forms
@@ -117,7 +84,8 @@ static public class DataManager
 
         foreach(InteractableBaseData interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(interactable.Id)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactable.Id))          continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(interactable.Id))    continue;
 
             var data = new InteractableBaseData();
             
@@ -615,8 +583,9 @@ static public class DataManager
 
         foreach (RegionBaseData region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(region.Id))            continue;
-            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(region.Id))            continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(region.Id))      continue;
+            if (searchParameters.phaseId.Count      > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
 
             var data = new RegionBaseData();
             

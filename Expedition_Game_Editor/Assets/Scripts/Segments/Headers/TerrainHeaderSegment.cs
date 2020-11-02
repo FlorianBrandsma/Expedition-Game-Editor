@@ -17,7 +17,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
     
     private TerrainEditor TerrainEditor         { get { return (TerrainEditor)DataEditor; } }
 
-    private IconElementData IconElementData   { get { return (IconElementData)iconEditorElement.DataElement.ElementData; } }
+    private IconElementData IconElementData     { get { return (IconElementData)iconEditorElement.DataElement.ElementData; } }
 
     #region Data properties
     private int Id
@@ -65,19 +65,22 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         var iconElementData = new IconElementData()
         {
             Id = IconId,
+
             Path = IconPath,
             BaseIconPath = BaseTilePath,
+
             DataElement = iconEditorElement.DataElement
         };
 
         iconElementData.SetOriginalValues();
 
-        var iconData = new Data();
-
-        iconData.dataController = iconDataController;
-        iconData.dataList = new List<IElementData>() { iconElementData };
-        iconData.searchProperties = iconDataController.SearchProperties;
-
+        var iconData = new Data()
+        {
+            dataController = iconDataController,
+            dataList = new List<IElementData>() { iconElementData },
+            searchProperties = iconDataController.SearchProperties
+        };
+        
         iconEditorElement.DataElement.Data = iconData;
         iconEditorElement.DataElement.Id = IconId;
 

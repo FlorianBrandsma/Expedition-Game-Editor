@@ -134,6 +134,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.Outcome:                SetOutcomeElement();                break;
 
             case Enums.DataType.Scene:                  SetSceneElement();                  break;
+            case Enums.DataType.SceneShot:              SetSceneShotElement();              break;
 
             case Enums.DataType.Region:                 SetRegionElement();                 break;
             case Enums.DataType.Atmosphere:             SetAtmosphereElement();             break;
@@ -373,11 +374,21 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         descriptionText.text = description;
     }
 
+    private void SetSceneShotElement()
+    {
+        var elementData = (SceneShotElementData)EditorElement.DataElement.ElementData;
+
+        header = elementData.Description;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+    }
+
     private void SetRegionElement()
     {
         var elementData = (RegionElementData)EditorElement.DataElement.ElementData;
 
-        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get ||EditorElement.selectionProperty == SelectionManager.Property.OpenSceneRegion)
         {
             header      = elementData.Name;
             iconPath    = elementData.TileIconPath;
@@ -388,7 +399,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         
         idText.text     = elementData.Id.ToString();
         headerText.text = header;
-        IconBaseTexture     = Resources.Load<Texture2D>(iconPath);
+        IconBaseTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetAtmosphereElement()

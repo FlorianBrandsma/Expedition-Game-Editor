@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SaveDataHeaderSegment : MonoBehaviour, ISegment
+public class TitleHeaderSegment : MonoBehaviour, ISegment
 {
     public Text idText;
     public Text headerText;
@@ -16,6 +16,9 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
+                case Enums.DataType.SceneShot:
+                    return ((SceneShotEditor)DataEditor).Id;
+
                 case Enums.DataType.ChapterSave:
                     return ((ChapterSaveEditor)DataEditor).Id;
 
@@ -33,7 +36,7 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.InteractionSave:
                     return ((InteractionSaveEditor)DataEditor).Id;
-
+                    
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
@@ -45,6 +48,9 @@ public class SaveDataHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
+                case Enums.DataType.SceneShot:
+                    return ((SceneShotEditor)DataEditor).Description;
+
                 case Enums.DataType.ChapterSave:
                     return ((ChapterSaveEditor)DataEditor).Name;
 

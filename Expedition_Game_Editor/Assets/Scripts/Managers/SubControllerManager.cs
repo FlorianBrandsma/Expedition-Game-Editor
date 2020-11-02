@@ -23,9 +23,15 @@ public class SubControllerManager : MonoBehaviour
     
     public Axis axis;
 
-    public void SetTabs(PathController pathController, Path main_path)
+    private Path path;
+
+    private int ActiveTabIndex { get { return path.Trim(pathController.step + 1).routeList[pathController.step].controllerIndex; } }
+
+    public void SetTabs(PathController pathController, Path path)
     {
         this.pathController = pathController;
+
+        this.path = path;
 
         controllers = pathController.controllers;
 
@@ -55,7 +61,7 @@ public class SubControllerManager : MonoBehaviour
                 newTab.gameObject.SetActive(true);
             }
 
-            SelectTab(main_path.Trim(pathController.step + 1).routeList[pathController.step].controllerIndex);
+            SelectTab();
 
         } else if(controllers.Length == 1) {
 
@@ -109,17 +115,19 @@ public class SubControllerManager : MonoBehaviour
 
     private void InitializePath(int selectedTab)
     {
+        if (ActiveTabIndex == selectedTab) return;
+
         pathController.route.path.Add(selectedTab);
 
         RenderManager.Render(pathController.route.path);
     }
 
-    private void SelectTab(int selectedTab)
+    private void SelectTab()
     {
         for (int i = 0; i < tabList.Count; i++) 
         {
             var tab = tabList[i];
-            tab.Image.sprite = i == selectedTab ? tab.tabActive : tab.tabInactive;
+            tab.Image.sprite = i == ActiveTabIndex ? tab.tabActive : tab.tabInactive;
         }
     }
 

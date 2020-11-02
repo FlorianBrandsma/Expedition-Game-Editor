@@ -59,6 +59,7 @@ public class Search
     public class Interactable
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public List<int> type = new List<int>();
 
@@ -285,6 +286,48 @@ public class Search
         public RequestType requestType;
     }
 
+    public class SceneShot
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> sceneId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class SceneActor
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> sceneId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class SceneProp
+    {
+        public List<int> id = new List<int>();
+
+        public List<int> sceneId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class EditorWorld
     {
         public List<int> id = new List<int>();
@@ -306,6 +349,7 @@ public class Search
     public class Region
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public List<int> phaseId = new List<int>();
 

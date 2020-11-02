@@ -7,6 +7,9 @@ public class SceneDataManager : MonoBehaviour
     private static List<SceneBaseData> sceneDataList;
 
     private static List<RegionBaseData> regionDataList;
+    private static List<TerrainBaseData> terrainDataList;
+    private static List<TileSetBaseData> tileSetDataList;
+    private static List<TileBaseData> tileDataList;
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
@@ -17,9 +20,17 @@ public class SceneDataManager : MonoBehaviour
         if (sceneDataList.Count == 0) return new List<IElementData>();
 
         GetRegionData();
+        GetTerrainData();
+        GetTileSetData();
+        GetTileData();
 
-        var list = (from sceneData  in sceneDataList
-                    join regionData in regionDataList on sceneData.RegionId equals regionData.Id
+        var list = (from sceneData      in sceneDataList
+                    join regionData     in regionDataList   on sceneData.RegionId   equals regionData.Id
+                    join tileSetData    in tileSetDataList  on regionData.TileSetId equals tileSetData.Id
+
+                    join leftJoin in (from tileData in tileDataList
+                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
+
                     select new SceneElementData()
                     {
                         Id = sceneData.Id,
@@ -32,7 +43,6 @@ public class SceneDataManager : MonoBehaviour
                         Name = sceneData.Name,
 
                         FreezeTime = sceneData.FreezeTime,
-                        FreezeMovement = sceneData.FreezeMovement,
                         AutoContinue = sceneData.AutoContinue,
 
                         SceneDuration = sceneData.SceneDuration,
@@ -41,8 +51,16 @@ public class SceneDataManager : MonoBehaviour
                         PublicNotes = sceneData.PublicNotes,
                         PrivateNotes = sceneData.PrivateNotes,
 
-                        RegionName = regionData.Name
+                        PhaseId = regionData.PhaseId,
 
+                        RegionName = regionData.Name,
+
+                        RegionSize = regionData.RegionSize,
+                        TerrainSize = regionData.TerrainSize,
+                        TileSize = tileSetData.TileSize,
+
+                        TileIconPath = tileData.First().tileData.IconPath
+                        
                     }).OrderBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
@@ -71,7 +89,6 @@ public class SceneDataManager : MonoBehaviour
             outcomeData.Name = scene.Name;
 
             outcomeData.FreezeTime = scene.FreezeTime;
-            outcomeData.FreezeMovement = scene.FreezeMovement;
             outcomeData.AutoContinue = scene.AutoContinue;
 
             outcomeData.SceneDuration = scene.SceneDuration;
@@ -92,18 +109,42 @@ public class SceneDataManager : MonoBehaviour
         regionDataList = DataManager.GetRegionData(regionSearchParameters);
     }
 
+    private static void GetTerrainData()
+    {
+        var terrainSearchParameters = new Search.Terrain();
+        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+
+        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+    }
+
+    private static void GetTileSetData()
+    {
+        var tileSetSearchParameters = new Search.TileSet();
+        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+
+        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+    }
+
+    private static void GetTileData()
+    {
+        var tileSearchParameters = new Search.Tile();
+        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+
+        tileDataList = DataManager.GetTileData(tileSearchParameters);
+    }
+
     public static void UpdateData(SceneElementData elementData)
     {
         var data = Fixtures.sceneList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (elementData.ChangedRegionId)
+            data.RegionId = elementData.RegionId;
 
         if (elementData.ChangedName)
             data.Name = elementData.Name;
 
         if (elementData.ChangedFreezeTime)
             data.FreezeTime = elementData.FreezeTime;
-
-        if (elementData.ChangedFreezeMovement)
-            data.FreezeMovement = elementData.FreezeMovement;
 
         if (elementData.ChangedAutoContinue)
             data.AutoContinue = elementData.AutoContinue;

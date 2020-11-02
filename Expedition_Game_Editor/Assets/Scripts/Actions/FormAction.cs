@@ -12,7 +12,7 @@ public class FormAction : MonoBehaviour, IAction
     private bool closedManually;
 
     public bool autoOpen;
-
+    public int controllerIndex;
     private ExButton actionButton;
     public EditorForm editorForm;
 
@@ -38,19 +38,24 @@ public class FormAction : MonoBehaviour, IAction
         if (autoOpen)
         {
             if (!editorForm.activeInPath)
-                RenderManager.Render(new PathManager.Form(editorForm).Initialize());
+                RenderManager.Render(new PathManager.Form(editorForm, controllerIndex).Initialize());
         }
-        
+
+        SetButton();
+
         closedManually = false;
     }
 
     private void InitializeButton()
     {
         actionButton = ActionManager.instance.AddFormButton(actionProperties);
-
-        actionButton.icon.texture = editorForm.activeInPath ? openIcon : closeIcon;
-
+        
         actionButton.Button.onClick.AddListener(delegate { Interact(); });
+    }
+
+    private void SetButton()
+    {
+        actionButton.icon.texture = editorForm.activeInPath ? closeIcon : openIcon;
     }
 
     public void Interact()
@@ -59,17 +64,20 @@ public class FormAction : MonoBehaviour, IAction
         {
             closedManually = true;
             editorForm.CloseForm();
+
         } else {
 
             closedManually = false;
             OpenForm();
-        }      
+        }
+
+        SetButton();
     }
 
     public void OpenForm()
     {
-        Path path = (new PathManager.Form(editorForm).Initialize());
-
+        Path path = (new PathManager.Form(editorForm, controllerIndex).Initialize());
+        
         RenderManager.Render(path);
     }
 

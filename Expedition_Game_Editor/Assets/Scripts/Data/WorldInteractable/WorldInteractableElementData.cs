@@ -42,7 +42,19 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
         SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
+    public void UpdateSearch()
+    {
+        if (!Changed) return;
+
+        WorldInteractableDataManager.UpdateSearch(this);
+
+        OriginalData.InteractableId = InteractableId;
+
+        OriginalData.InteractableName = InteractableName;
+
+        OriginalData.ModelPath = ModelPath;
+        OriginalData.ModelIconPath = ModelIconPath;
+    }
 
     public void SetOriginalValues()
     {

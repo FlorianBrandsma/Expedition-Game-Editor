@@ -44,17 +44,10 @@ public class ChapterCharactersPartyAgentSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        var searchProperties = SegmentController.DataController.SearchProperties;
+        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.Interactable>().First();
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
-
-        var idList = ChapterEditor.partyMemberElementDataList.Select(x => x.InteractableId).Union(
-                     ChapterEditor.chapterInteractableElementDataList.Select(x => x.InteractableId)).Distinct().ToList();
-
-        //Find interactables where id is not in the list
-        var list = DataManager.GetInteractableData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
-
-        searchParameters.id = list;
+        searchParameters.excludeId = ChapterEditor.partyMemberElementDataList.Select(x => x.InteractableId).Union(
+                                     ChapterEditor.chapterInteractableElementDataList.Select(x => x.InteractableId)).Distinct().ToList();
     }
 
     public void SetSearchResult(IElementData elementData)

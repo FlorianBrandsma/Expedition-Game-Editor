@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Collections;
 
 public class RegionDisplayAction : MonoBehaviour, IAction
 {
     public ActionProperties actionProperties;
 
-    private PathController pathController { get { return GetComponent<PathController>(); } }
+    private PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeAction(Path path) { }
 
@@ -25,7 +24,7 @@ public class RegionDisplayAction : MonoBehaviour, IAction
 
         dropdown.Dropdown.value = (int)RegionManager.activeDisplay;
 
-        dropdown.Dropdown.onValueChanged.AddListener(delegate { RegionManager.SetDisplay(dropdown.Dropdown.value, pathController.route.path); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { RegionManager.SetDisplay(dropdown.Dropdown.value, PathController.route.path); });
     }
 
     public void CloseAction() {}

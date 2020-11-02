@@ -223,8 +223,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: InvokeSelection
+      - m_Target: {fileID: 114039183608107512}
+        m_MethodName: SelectElement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

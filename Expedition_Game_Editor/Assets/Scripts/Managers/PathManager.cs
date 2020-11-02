@@ -12,16 +12,17 @@ public class PathManager
     {
         EditorForm form;
 
-        List<int> source = new List<int>() { 0 };
+        int controllerIndex;
 
-        public Form(EditorForm form)
+        public Form(EditorForm form, int controllerIndex)
         {
             this.form = form;
+            this.controllerIndex = controllerIndex;
         }
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+            return CreatePath(CreateRoutes(new List<int>() { controllerIndex }, form, Enums.SelectionStatus.Main), form);
         }
     }
     #endregion
@@ -64,9 +65,6 @@ public class PathManager
 
             path.routeList.Add(route);
 
-            //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            //newPath.type = path.type;
-
             return path;
         }
 
@@ -76,9 +74,6 @@ public class PathManager
 
             path.routeList.Add(route);
 
-            //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            //newPath.type = path.type;
-
             return path;
         }
 
@@ -87,9 +82,6 @@ public class PathManager
             route.controllerIndex = open;
 
             path.routeList.Add(route);
-
-            //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-            //newPath.type = path.type;
 
             return path;
         }
@@ -149,36 +141,6 @@ public class PathManager
         }
     }
 
-    //public class Structure
-    //{
-    //    Path path;
-    //    Route route;
-
-    //    int enter = 0;
-    //    int edit = 1;
-    //    int open = 0;
-
-    //    EditorForm form = RenderManager.layoutManager.forms[0];
-
-    //    public Structure(EditorElement editorElement, Route route) //Combine existing path with new route
-    //    {
-    //        this.route = route;
-
-    //        path = editorElement.DataElement.segmentController.Path;
-    //    }
-
-    //    public Path Enter()
-    //    {
-    //        route.controllerIndex = enter;
-
-    //        path.routeList.Add(route);
-
-    //        //Path newPath = new Path(path.CombineRoute(new List<Route>() { route }), form, path.start);
-    //        //newPath.type = path.type;
-
-    //        return path;
-    //    }
-
     public class Outcome
     {
         Path pathSource;
@@ -235,6 +197,37 @@ public class PathManager
         EditorForm form = RenderManager.layoutManager.forms[0];
 
         public Scene(EditorElement editorElement, Route route)
+        {
+            this.route = route;
+
+            pathSource = editorElement.DataElement.segmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            route.controllerIndex = enter;
+
+            Path path = new Path()
+            {
+                routeList = pathSource.routeList.Concat(new List<Route>() { route }).ToList(),
+                form = form,
+                start = pathSource.start
+            };
+
+            return path;
+        }
+    }
+
+    public class SceneShot
+    {
+        Path pathSource;
+        Route route;
+
+        int enter = 0;
+
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public SceneShot(EditorElement editorElement, Route route)
         {
             this.route = route;
 
@@ -482,6 +475,20 @@ public class PathManager
             Route customRoute = new Route(1, route, editorElement.selectionStatus);
 
             path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            path.type = Path.Type.New;
+
+            return path;
+        }
+
+        public Path OpenSceneRegion()
+        {
+            List<int> open = new List<int>() { 1, (int)regionElementData.Type };
+
+            //Only uses the data, not the index
+            Route customRoute = new Route(0, route, editorElement.selectionStatus);
+
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            
             path.type = Path.Type.New;
 
             return path;

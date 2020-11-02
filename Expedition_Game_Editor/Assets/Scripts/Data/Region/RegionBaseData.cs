@@ -29,7 +29,7 @@ public class RegionBaseData
 
         RegionSize      = originalData.RegionSize;
         TerrainSize     = originalData.TerrainSize;
-}
+    }
 
     public virtual void Clone(RegionData data)
     {

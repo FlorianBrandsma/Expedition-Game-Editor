@@ -38,6 +38,22 @@ public class SceneEditor : MonoBehaviour, IEditor
         get { return sceneData.Id; }
     }
 
+    public int OutcomeId
+    {
+        get { return sceneData.OutcomeId; }
+    }
+
+    public int RegionId
+    {
+        get { return sceneData.RegionId; }
+        set
+        {
+            sceneData.RegionId = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).RegionId = value);
+        }
+    }
+
     public int Index
     {
         get { return sceneData.Index; }
@@ -64,16 +80,7 @@ public class SceneEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => ((SceneElementData)x).FreezeTime = value);
         }
     }
-    public bool FreezeMovement
-    {
-        get { return sceneData.FreezeMovement; }
-        set
-        {
-            sceneData.FreezeMovement = value;
 
-            DataList.ForEach(x => ((SceneElementData)x).FreezeMovement = value);
-        }
-    }
     public bool AutoContinue
     {
         get { return sceneData.AutoContinue; }
@@ -128,6 +135,66 @@ public class SceneEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => ((SceneElementData)x).PrivateNotes = value);
         }
     }
+
+    public int PhaseId
+    {
+        get { return sceneData.PhaseId; }
+    }
+
+    public string RegionName
+    {
+        get { return sceneData.RegionName; }
+        set
+        {
+            sceneData.RegionName = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).RegionName = value);
+        }
+    }
+
+    public int RegionSize
+    {
+        get { return sceneData.RegionSize; }
+        set
+        {
+            sceneData.RegionSize = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).RegionSize = value);
+        }
+    }
+
+    public int TerrainSize
+    {
+        get { return sceneData.TerrainSize; }
+        set
+        {
+            sceneData.TerrainSize = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).TerrainSize = value);
+        }
+    }
+
+    public float TileSize
+    {
+        get { return sceneData.TileSize; }
+        set
+        {
+            sceneData.TileSize = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).TileSize = value);
+        }
+    }
+
+    public string TileIconPath
+    {
+        get { return sceneData.TileIconPath; }
+        set
+        {
+            sceneData.TileIconPath = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).TileIconPath = value);
+        }
+    }  
     #endregion
 
     public void InitializeEditor()

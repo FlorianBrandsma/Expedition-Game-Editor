@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,9 +21,9 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     public void InitializeAction(Path path)
     {
         navigationList = path.routeList.Where(x => x.data != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
-                                      .Select(x => x.data.dataController.DataType).Distinct().ToList();
+                                       .Select(x => x.data.dataController.DataType).Distinct().ToList();
 
-        var regionRouteSource = PathController.route.path.FindLastRoute(Enums.DataType.Region);
+        var regionRouteSource = path.FindLastRoute(Enums.DataType.Region);
 
         var regionRoute = new Route()
         {
@@ -47,10 +48,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             {
                 path.Add(regionRoute);
             }
-                
+
             if (RegionManager.regionType == Enums.RegionType.InteractionDestination)
             {
-                var interactionDestinationRouteSource = PathController.route.path.FindLastRoute(Enums.DataType.InteractionDestination);
+                var interactionDestinationRouteSource = path.FindLastRoute(Enums.DataType.InteractionDestination);
 
                 var interactionDestinationRoute = new Route()
                 {
@@ -65,7 +66,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
             } else if (RegionManager.regionType == Enums.RegionType.Party) {
 
-                var phaseRouteSource = PathController.route.path.FindLastRoute(Enums.DataType.Phase);
+                var phaseRouteSource = path.FindLastRoute(Enums.DataType.Phase);
 
                 var phaseRoute = new Route()
                 {
@@ -84,7 +85,30 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             }
         }
 
-        InitializeStructureData();
+        //Adds the scene shot route to the path of a scene region if it hasn't already been added and the scene shot type is not "base"
+        if (RegionManager.regionType == Enums.RegionType.Scene && path.routeList.Last().data.dataController.DataType != Enums.DataType.SceneShot)
+        {
+            var sceneShotRouteSource = path.FindLastRoute(Enums.DataType.SceneShot);
+
+            var sceneShotData = (SceneShotElementData)sceneShotRouteSource.ElementData;
+
+            if ((Enums.SceneShotType)sceneShotData.Type != Enums.SceneShotType.Base)
+            {
+                var sceneShotRoute = new Route()
+                {
+                    controllerIndex = 3,
+                    id = sceneShotRouteSource.id,
+                    data = sceneShotRouteSource.data,
+                    path = path,
+
+                    selectionStatus = sceneShotRouteSource.selectionStatus
+                };
+
+                path.Add(sceneShotRoute);
+            }
+        }
+
+        InitializeStructureData(path);
     }
 
     private void InitializeData(Route regionRoute)
@@ -94,14 +118,18 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         if (PathController.route.path.type == Path.Type.New)
         {
-            if (RegionManager.regionType == Enums.RegionType.InteractionDestination || RegionManager.regionType == Enums.RegionType.Party)
+            if (RegionManager.regionType == Enums.RegionType.InteractionDestination || 
+                RegionManager.regionType == Enums.RegionType.Party                  || 
+                RegionManager.regionType == Enums.RegionType.Scene)
+            {
                 RegionManager.activeDisplay = RegionManager.Display.World;
-            else
+            } else {
                 RegionManager.activeDisplay = RegionManager.Display.Tiles;
+            }
         }
     }
 
-    private void InitializeStructureData()
+    private void InitializeStructureData(Path path)
     {
         routeList.Clear();
 
@@ -116,8 +144,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             var route = routeList[i];
             var dataType = route.data.dataController.DataType;
 
-            var mainRoute = PathController.layoutSection.EditorForm.activePath.FindLastRoute(dataType);
-            
+            var mainRoute = path.FindLastRoute(dataType);
+
             //World interactable doesn't always reset as the id can be the same in multiple objectives
             if (!ListContainsElement(route, mainRoute.id))
             {
@@ -125,9 +153,13 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 route.id = mainRoute.id;
 
                 ResetData(route);
-            }
-            else
-            {
+
+            } else {
+
+                //Route data should be constant throughout the controllers, but adding routes in initialization
+                //seems to mess with that. Below assigns the data of the main path to that saved by the controller
+                route.data = mainRoute.data;
+
                 if (route.data.dataController.DataType == Enums.DataType.Interaction)
                     CheckTime((InteractionElementData)route.ElementData);
 
@@ -467,18 +499,21 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         switch (dataType)
         {
-            case Enums.DataType.Chapter:                SetChapterOptions(dropdown, data);                break;
-            case Enums.DataType.Phase:                  SetPhaseOptions(dropdown, data);                  break;
-            case Enums.DataType.Quest:                  SetQuestOptions(dropdown, data);                  break;
-            case Enums.DataType.Objective:              SetObjectiveOptions(dropdown, data);              break;
-            case Enums.DataType.WorldInteractable:      SetWorldInteractableOptions(dropdown, data);      break;
-            case Enums.DataType.Task:                   SetTaskOptions(dropdown, data);                   break;
-            case Enums.DataType.Interaction:            SetInteractionOptions(dropdown, data);            break;
-            case Enums.DataType.InteractionDestination: SetInteractionDestinationOptions(dropdown, data); break;
-            case Enums.DataType.Region:                 SetRegionOptions(dropdown, data);                 break;
+            case Enums.DataType.Chapter:                SetChapterOptions(dropdown, data);                  break;
+            case Enums.DataType.Phase:                  SetPhaseOptions(dropdown, data);                    break;
+            case Enums.DataType.Quest:                  SetQuestOptions(dropdown, data);                    break;
+            case Enums.DataType.Objective:              SetObjectiveOptions(dropdown, data);                break;
+            case Enums.DataType.WorldInteractable:      SetWorldInteractableOptions(dropdown, data);        break;
+            case Enums.DataType.Task:                   SetTaskOptions(dropdown, data);                     break;
+            case Enums.DataType.Interaction:            SetInteractionOptions(dropdown, data);              break;
+            case Enums.DataType.InteractionDestination: SetInteractionDestinationOptions(dropdown, data);   break;
+            case Enums.DataType.Region:                 SetRegionOptions(dropdown, data);                   break;
+            case Enums.DataType.Outcome:                SetOutcomeOptions(dropdown, data);                  break;
+            case Enums.DataType.Scene:                  SetSceneOptions(dropdown, data);                    break;
+            case Enums.DataType.SceneShot:              SetSceneShotOptions(dropdown, data);                break;
 
-            case Enums.DataType.ChapterSave:            SetChapterSaveOptions(dropdown, data);            break;
-            case Enums.DataType.PhaseSave:              SetPhaseSaveOptions(dropdown, data);              break;
+            case Enums.DataType.ChapterSave:            SetChapterSaveOptions(dropdown, data);              break;
+            case Enums.DataType.PhaseSave:              SetPhaseSaveOptions(dropdown, data);                break;
             
             default: Debug.Log("CASE MISSING: " + dataType); break;
         }
@@ -545,6 +580,24 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var elementDataList = data.dataList.Cast<RegionElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+    }
+
+    private void SetOutcomeOptions(ExDropdown dropdown, Data data)
+    {
+        var elementDataList = data.dataList.Cast<OutcomeElementData>().ToList();
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(Enum.GetName(typeof(Enums.OutcomeType), x.Type))));
+    }
+
+    private void SetSceneOptions(ExDropdown dropdown, Data data)
+    {
+        var elementDataList = data.dataList.Cast<SceneElementData>().ToList();
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
+    }
+
+    private void SetSceneShotOptions(ExDropdown dropdown, Data data)
+    {
+        var elementDataList = data.dataList.Cast<SceneShotElementData>().ToList();
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Description)));
     }
 
     private void SetChapterSaveOptions(ExDropdown dropdown, Data data)

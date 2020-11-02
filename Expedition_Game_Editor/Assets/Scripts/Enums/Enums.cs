@@ -31,6 +31,9 @@ public class Enums
         InteractionDestination,
         Outcome,
         Scene,
+        SceneShot,
+        SceneActor,
+        SceneProp,
         EditorWorld,
         Game,
         GameWorld,
@@ -106,6 +109,7 @@ public class Enums
         Phase,
         Party,
         InteractionDestination,
+        Scene,
         Game
     }
 
@@ -211,6 +215,13 @@ public class Enums
         Instant,
         Waiting,
         Gathering
+    }
+
+    public enum SceneShotType
+    {
+        Base,
+        Start,
+        End
     }
 
     public enum HistoryGroup

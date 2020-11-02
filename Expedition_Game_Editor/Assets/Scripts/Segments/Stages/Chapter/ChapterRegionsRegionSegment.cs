@@ -44,16 +44,9 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
     private void SetSearchParameters()
     {
-        var searchProperties = SegmentController.DataController.SearchProperties;
+        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.Region>().First();
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
-
-        var idList = ChapterEditor.chapterRegionElementDataList.Select(x => x.RegionId).Distinct().ToList();
-
-        //Find interactables where id is not in the list
-        var regionList = DataManager.GetRegionData().Where(x => !idList.Contains(x.Id)).Select(x => x.Id).Distinct().ToList();
-
-        searchParameters.id = regionList;
+        searchParameters.excludeId = ChapterEditor.chapterRegionElementDataList.Select(x => x.RegionId).Distinct().ToList();
         searchParameters.phaseId = new List<int>() { 0 };
     }
 

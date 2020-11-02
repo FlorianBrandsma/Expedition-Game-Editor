@@ -12,7 +12,6 @@ public class SceneBaseData
     public string Name          { get; set; }
 
     public bool FreezeTime      { get; set; }
-    public bool FreezeMovement  { get; set; }
     public bool AutoContinue    { get; set; }
 
     public float SceneDuration  { get; set; }
@@ -33,7 +32,6 @@ public class SceneBaseData
         Name            = originalData.Name;
 
         FreezeTime      = originalData.FreezeTime;
-        FreezeMovement  = originalData.FreezeMovement;
         AutoContinue    = originalData.AutoContinue;
 
         SceneDuration   = originalData.SceneDuration;
@@ -55,7 +53,6 @@ public class SceneBaseData
         data.Name           = Name;
 
         data.FreezeTime     = FreezeTime;
-        data.FreezeMovement = FreezeMovement;
         data.AutoContinue   = AutoContinue;
 
         data.SceneDuration  = SceneDuration;

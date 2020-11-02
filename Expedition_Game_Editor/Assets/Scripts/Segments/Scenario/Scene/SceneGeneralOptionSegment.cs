@@ -3,7 +3,6 @@
 public class SceneGeneralOptionSegment : MonoBehaviour, ISegment
 {
     public ExToggle freezeTimeToggle;
-    public ExToggle freezeMovementToggle;
     public ExToggle autoContinueToggle;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -16,12 +15,6 @@ public class SceneGeneralOptionSegment : MonoBehaviour, ISegment
     {
         get { return SceneEditor.FreezeTime; }
         set { SceneEditor.FreezeTime = value; }
-    }
-
-    private bool FreezeMovement
-    {
-        get { return SceneEditor.FreezeMovement; }
-        set { SceneEditor.FreezeMovement = value; }
     }
 
     private bool AutoContinue
@@ -46,7 +39,6 @@ public class SceneGeneralOptionSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         freezeTimeToggle.Toggle.isOn = FreezeTime;
-        freezeMovementToggle.Toggle.isOn = FreezeMovement;
         autoContinueToggle.Toggle.isOn = AutoContinue;
 
         gameObject.SetActive(true);
@@ -57,13 +49,6 @@ public class SceneGeneralOptionSegment : MonoBehaviour, ISegment
     public void UpdateFreezeTime()
     {
         FreezeTime = freezeTimeToggle.Toggle.isOn;
-
-        DataEditor.UpdateEditor();
-    }
-
-    public void UpdateFreezeMovement()
-    {
-        FreezeMovement = freezeMovementToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
     }

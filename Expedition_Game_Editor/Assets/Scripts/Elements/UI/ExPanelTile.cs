@@ -67,8 +67,14 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     public void InitializeChildElement()
     {
-        if (properties.childProperty != SelectionManager.Property.None)
-            ChildButtonData = EditorElement.DataElement.Data;
+        if (properties.childProperty == SelectionManager.Property.None) return;
+
+        ElementChild.DataElement.Data = EditorElement.DataElement.Data;
+        ElementChild.DataElement.Id = EditorElement.DataElement.Id;
+
+        ElementChild.DataElement.Path = EditorElement.DataElement.Path;
+
+        InitializeEdit();
     }
 
     private void InitializeIcon()

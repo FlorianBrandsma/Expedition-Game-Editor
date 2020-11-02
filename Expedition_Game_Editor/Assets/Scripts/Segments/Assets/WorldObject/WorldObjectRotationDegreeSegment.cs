@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
 using System.Linq;
 
 public class WorldObjectRotationDegreeSegment : MonoBehaviour, ISegment

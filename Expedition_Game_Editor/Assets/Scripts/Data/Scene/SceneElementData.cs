@@ -34,11 +34,6 @@ public class SceneElementData : SceneData, IElementData
         get { return FreezeTime != OriginalData.FreezeTime; }
     }
 
-    public bool ChangedFreezeMovement
-    {
-        get { return FreezeMovement != OriginalData.FreezeMovement; }
-    }
-
     public bool ChangedAutoContinue
     {
         get { return AutoContinue != OriginalData.AutoContinue; }
@@ -68,7 +63,7 @@ public class SceneElementData : SceneData, IElementData
     {
         get
         {
-            return  ChangedRegionId         || ChangedName          || ChangedFreezeTime    || ChangedFreezeMovement || ChangedAutoContinue ||
+            return  ChangedRegionId         || ChangedName          || ChangedFreezeTime    || ChangedAutoContinue ||
                     ChangedSceneDuration    || ChangedShotDuration  || ChangedPublicNotes   || ChangedPrivateNotes;
         }
     }

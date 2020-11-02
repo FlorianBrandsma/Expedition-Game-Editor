@@ -87,8 +87,9 @@ public static class RegionDataManager
 
         foreach(RegionBaseData region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(region.Id)) continue;
-            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(region.PhaseId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(region.Id))            continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(region.Id))      continue;
+            if (searchParameters.phaseId.Count      > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
 
             var regionData = new RegionBaseData();
 

@@ -742,7 +742,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000012748057420, guid: 0ed8f8093b5844d42af4e82e56180847, type: 3}
       propertyPath: m_Name
-      value: SaveDataHeader (segment)
+      value: TitleDataHeader (segment)
       objectReference: {fileID: 0}
     - target: {fileID: 1000012748057420, guid: 0ed8f8093b5844d42af4e82e56180847, type: 3}
       propertyPath: m_IsActive
@@ -9922,6 +9922,7 @@ MonoBehaviour:
     autoUpdate: 0
   searchInteractable:
     id: 
+    excludeId: 
     type: 
     requestType: 0
 --- !u!114 &767829445
@@ -16280,6 +16281,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 0
+  controllerIndex: 0
   editorForm: {fileID: 678599411}
   openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
   closeIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
@@ -21222,6 +21224,7 @@ MonoBehaviour:
     autoUpdate: 0
   searchInteractable:
     id: 
+    excludeId: 
     type: 
     requestType: 0
 --- !u!114 &1417940965
@@ -23175,6 +23178,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 1
+  controllerIndex: 0
   editorForm: {fileID: 1374861249}
   openIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
   closeIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
@@ -26590,6 +26594,7 @@ MonoBehaviour:
     autoUpdate: 0
   searchInteractable:
     id: 
+    excludeId: 
     type: 
     requestType: 0
 --- !u!114 &1709482468
@@ -27032,6 +27037,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 1
+  controllerIndex: 0
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
   closeIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}

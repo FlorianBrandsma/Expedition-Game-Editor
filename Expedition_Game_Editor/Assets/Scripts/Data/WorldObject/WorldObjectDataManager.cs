@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -151,5 +150,13 @@ public static class WorldObjectDataManager
         
         if (elementData.ChangedAnimation)
             data.Animation = elementData.Animation;
+    }
+
+    public static void UpdateSearch(WorldObjectElementData elementData)
+    {
+        var data = Fixtures.worldObjectList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (elementData.ChangedModelId)
+            data.ModelId = elementData.ModelId;
     }
 }

@@ -42,8 +42,7 @@ static public class SelectionElementManager
     {
         if (elementData == null) return new List<IElementData>();
 
-        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData)
-                                                   .Select(x => x.DataElement.ElementData).Distinct().ToList();
+        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData).Select(x => x.DataElement.ElementData).Distinct().ToList();
 
         return elementDataList;
     }
@@ -57,9 +56,8 @@ static public class SelectionElementManager
 
     static public List<EditorElement> FindSelectionElements(List<EditorElement> elementList, IElementData elementData)
     {
-        return elementList.Where(x => x.selectionStatus == Enums.SelectionStatus.Main &&
-                                                        x.DataElement.ElementData != null)
-                                            .Where(x => DataManager.Equals(x.DataElement.ElementData, elementData)).ToList();
+        return elementList.Where(x => x.selectionProperty != SelectionManager.Property.Set && x.selectionStatus == Enums.SelectionStatus.Main && 
+                                      x.DataElement.ElementData != null && DataManager.Equals(x.DataElement.ElementData, elementData)).ToList();
     }
 
     static public void CloseElement(DataElement dataElement)
