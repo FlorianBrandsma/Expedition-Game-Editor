@@ -101,8 +101,10 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     {
         switch (EditorElement.DataElement.Data.dataController.DataType)
         {
-            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();    break;
-            case Enums.DataType.WorldObject:        SetWorldObjectElement();          break;
+            case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
+            case Enums.DataType.WorldObject:        SetWorldObjectElement();        break;
+            case Enums.DataType.SceneActor:         SetSceneActorElement();         break;
+            case Enums.DataType.SceneProp:          SetScenePropElement();          break;
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
@@ -122,6 +124,28 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     private void SetWorldObjectElement()
     {
         var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = elementData.ModelName;
+
+        if (properties.icon)
+            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+    }
+
+    private void SetSceneActorElement()
+    {
+        var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = elementData.InteractableName;
+
+        if (properties.icon)
+            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+    }
+
+    private void SetScenePropElement()
+    {
+        var elementData = (ScenePropElementData)EditorElement.DataElement.ElementData;
 
         idText.text = elementData.Id.ToString();
         headerText.text = elementData.ModelName;

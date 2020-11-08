@@ -4,7 +4,7 @@ public class PhaseData : PhaseBaseData
 {
     public int TerrainTileId        { get; set; }
 
-    public int PartyMemberId        { get; set; }
+    public int WorldInteractableId  { get; set; }
 
     public int ModelId              { get; set; }
     public string ModelPath         { get; set; }
@@ -24,7 +24,7 @@ public class PhaseData : PhaseBaseData
     {
         TerrainTileId       = originalData.TerrainTileId;
 
-        PartyMemberId       = originalData.PartyMemberId;
+        WorldInteractableId = originalData.WorldInteractableId;
 
         ModelId             = originalData.ModelId;
         ModelPath           = originalData.ModelPath;
@@ -47,23 +47,23 @@ public class PhaseData : PhaseBaseData
     {
         var data = new PhaseData();
         
-        data.TerrainTileId      = TerrainTileId;
+        data.TerrainTileId          = TerrainTileId;
 
-        data.PartyMemberId      = PartyMemberId;
+        data.WorldInteractableId    = WorldInteractableId;
 
-        data.ModelId            = ModelId;
-        data.ModelPath          = ModelPath;
+        data.ModelId                = ModelId;
+        data.ModelPath              = ModelPath;
 
-        data.ModelIconPath      = ModelIconPath;
+        data.ModelIconPath          = ModelIconPath;
 
-        data.Height             = Height;
-        data.Width              = Width;
-        data.Depth              = Depth;
+        data.Height                 = Height;
+        data.Width                  = Width;
+        data.Depth                  = Depth;
 
-        data.Scale              = Scale;
+        data.Scale                  = Scale;
 
-        data.InteractableName   = InteractableName;
-        data.LocationName       = LocationName;
+        data.InteractableName       = InteractableName;
+        data.LocationName           = LocationName;
 
         base.Clone(data);
 
@@ -74,7 +74,7 @@ public class PhaseData : PhaseBaseData
     {
         elementData.TerrainTileId       = TerrainTileId;
 
-        elementData.PartyMemberId       = PartyMemberId;
+        elementData.WorldInteractableId = WorldInteractableId;
 
         elementData.ModelId             = ModelId;
         elementData.ModelPath           = ModelPath;

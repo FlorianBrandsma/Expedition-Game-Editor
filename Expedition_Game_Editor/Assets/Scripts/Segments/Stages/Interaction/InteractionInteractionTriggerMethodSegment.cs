@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegment
 {
     public ExToggle triggerAutomaticallyToggle;
     public ExToggle beNearDestinationToggle;
     public ExToggle faceInteractableToggle;
-    public ExToggle facePartyLeaderToggle;
+    public ExToggle faceControllableToggle;
     public ExToggle hideInteractionIndicatorToggle;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -15,31 +14,31 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
     private InteractionEditor InteractionEditor { get { return (InteractionEditor)DataEditor; } }
 
     #region Data properties
-    public bool TriggerAutomatically
+    private bool TriggerAutomatically
     {
         get { return InteractionEditor.TriggerAutomatically; }
         set { InteractionEditor.TriggerAutomatically = value; }
     }
 
-    public bool BeNearDestination
+    private bool BeNearDestination
     {
         get { return InteractionEditor.BeNearDestination; }
         set { InteractionEditor.BeNearDestination = value; }
     }
 
-    public bool FaceInteractable
+    private bool FaceInteractable
     {
         get { return InteractionEditor.FaceInteractable; }
         set { InteractionEditor.FaceInteractable = value; }
     }
 
-    public bool FacePartyLeader
+    private bool FaceControllable
     {
-        get { return InteractionEditor.FacePartyLeader; }
-        set { InteractionEditor.FacePartyLeader = value; }
+        get { return InteractionEditor.FaceControllable; }
+        set { InteractionEditor.FaceControllable = value; }
     }
 
-    public bool HideInteractionIndicator
+    private bool HideInteractionIndicator
     {
         get { return InteractionEditor.HideInteractionIndicator; }
         set { InteractionEditor.HideInteractionIndicator = value; }
@@ -63,7 +62,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         triggerAutomaticallyToggle.Toggle.isOn = TriggerAutomatically;
         beNearDestinationToggle.Toggle.isOn = BeNearDestination;
         faceInteractableToggle.Toggle.isOn = FaceInteractable;
-        facePartyLeaderToggle.Toggle.isOn = FacePartyLeader;
+        faceControllableToggle.Toggle.isOn = FaceControllable;
         hideInteractionIndicatorToggle.Toggle.isOn = HideInteractionIndicator;
     }
 
@@ -90,9 +89,9 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         DataEditor.UpdateEditor();
     }
 
-    public void UpdateFacePartyLeader()
+    public void UpdateFaceControllable()
     {
-        FacePartyLeader = facePartyLeaderToggle.Toggle.isOn;
+        FaceControllable = faceControllableToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
     }

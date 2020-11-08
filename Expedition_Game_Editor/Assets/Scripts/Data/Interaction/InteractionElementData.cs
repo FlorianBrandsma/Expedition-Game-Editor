@@ -44,9 +44,9 @@ public class InteractionElementData : InteractionData, IElementData
         get { return FaceInteractable != OriginalData.FaceInteractable; }
     }
 
-    public bool ChangedFacePartyLeader
+    public bool ChangedFaceControllable
     {
-        get { return FacePartyLeader != OriginalData.FacePartyLeader; }
+        get { return FaceControllable != OriginalData.FaceControllable; }
     }
 
     public bool ChangedHideInteractionIndicator
@@ -105,7 +105,7 @@ public class InteractionElementData : InteractionData, IElementData
         {
             return  ChangedStartTime            || ChangedEndTime                   || ChangedArrivalType           ||
                     ChangedTriggerAutomatically || ChangedBeNearDestination         || ChangedFaceInteractable      ||
-                    ChangedFacePartyLeader      || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
+                    ChangedFaceControllable      || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
                     ChangedDelayMethod          || ChangedDelayDuration             ||
                     ChangedHideDelayIndicator   || ChangedCancelDelayOnInput        || ChangedCancelDelayOnMovement ||
                     ChangedCancelDelayOnHit     ||

@@ -82,7 +82,6 @@ public class PathController : MonoBehaviour
 
         if (step < mainPath.routeList.Count)
         {
-            //Debug.Log(this);
             controllers[mainPath.routeList[step].controllerIndex].OpenPath(mainPath, step + 1, this);
         }
     }

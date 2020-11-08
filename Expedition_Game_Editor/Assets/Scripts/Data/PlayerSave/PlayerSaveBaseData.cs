@@ -6,7 +6,7 @@ public class PlayerSaveBaseData
 
     public int SaveId           { get; set; }
     public int RegionId         { get; set; }
-    public int PartyMemberId    { get; set; }
+    public int WorldInteractableId    { get; set; }
 
     public float PositionX      { get; set; }
     public float PositionY      { get; set; }
@@ -23,7 +23,7 @@ public class PlayerSaveBaseData
 
         SaveId          = originalData.SaveId;
         RegionId        = originalData.RegionId;
-        PartyMemberId   = originalData.PartyMemberId;
+        WorldInteractableId   = originalData.WorldInteractableId;
 
         PositionX       = originalData.PositionX;
         PositionY       = originalData.PositionY;
@@ -41,7 +41,7 @@ public class PlayerSaveBaseData
 
         data.SaveId         = SaveId;
         data.RegionId       = RegionId;
-        data.PartyMemberId  = PartyMemberId;
+        data.WorldInteractableId  = WorldInteractableId;
 
         data.PositionX      = PositionX;
         data.PositionY      = PositionY;

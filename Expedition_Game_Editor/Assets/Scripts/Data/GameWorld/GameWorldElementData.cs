@@ -14,8 +14,8 @@ public class GameWorldElementData : GameWorldData, IElementData
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
-    public List<GameRegionElementData> RegionDataList       { get; set; } = new List<GameRegionElementData>();
-    public List<GamePartyMemberElementData> PartyMemberList { get; set; } = new List<GamePartyMemberElementData>();
+    public List<GameRegionElementData> RegionDataList               { get; set; } = new List<GameRegionElementData>();
+    public List<GameWorldInteractableElementData> WorldInteractableControllableDataList   { get; set; } = new List<GameWorldInteractableElementData>();
 
     //[Might have to go in terrain to preserve the possibility to generate terrains]
     //There's actually no real way to know what terrain a world interactable belongs to

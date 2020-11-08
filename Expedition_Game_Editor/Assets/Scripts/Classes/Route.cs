@@ -67,6 +67,7 @@ public class Route
     {
         var route = new Route();
 
+        route.data = data.Clone();
         route.controllerIndex = controllerIndex;
         route.id = id;
 

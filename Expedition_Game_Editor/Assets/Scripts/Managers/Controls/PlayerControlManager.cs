@@ -25,7 +25,7 @@ public class PlayerControlManager : MonoBehaviour
     private StatusIconOverlay StatusIconOverlay             { get { return cameraManager.overlayManager.StatusIconOverlay; } }
 
     private PlayerSaveElementData PlayerData                { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
-    private GamePartyMemberElementData ActiveCharacterData  { get { return GameManager.instance.partyMemberData; } }
+    private GameWorldInteractableElementData ActiveCharacterData  { get { return GameManager.instance.controllableWorldInteractableData; } }
     private GameElement ActiveCharacter                     { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
     private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.Element).Animator; } }
     
@@ -92,7 +92,7 @@ public class PlayerControlManager : MonoBehaviour
             }
 
             //If the interactable must face the player character
-            if (targetData.Interaction.FacePartyLeader)
+            if (targetData.Interaction.FaceControllable)
             {
                 var directionToPlayer = (ActiveCharacter.transform.position - target.DataElement.transform.position).normalized;
 

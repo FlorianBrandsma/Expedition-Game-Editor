@@ -65,7 +65,7 @@ public static class InteractionDataManager
                         TriggerAutomatically = interactionData.TriggerAutomatically,
                         BeNearDestination = interactionData.BeNearDestination,
                         FaceInteractable = interactionData.FaceInteractable,
-                        FacePartyLeader = interactionData.FacePartyLeader,
+                        FaceControllable = interactionData.FaceControllable,
                         HideInteractionIndicator = interactionData.HideInteractionIndicator,
 
                         InteractionRange = interactionData.InteractionRange,
@@ -124,7 +124,7 @@ public static class InteractionDataManager
             interactionData.TriggerAutomatically = interaction.TriggerAutomatically;
             interactionData.BeNearDestination = interaction.BeNearDestination;
             interactionData.FaceInteractable = interaction.FaceInteractable;
-            interactionData.FacePartyLeader = interaction.FacePartyLeader;
+            interactionData.FaceControllable = interaction.FaceControllable;
             interactionData.HideInteractionIndicator = interaction.HideInteractionIndicator;
 
             interactionData.InteractionRange = interaction.InteractionRange;
@@ -257,8 +257,8 @@ public static class InteractionDataManager
         if (elementData.FaceInteractable)
             data.FaceInteractable = elementData.FaceInteractable;
 
-        if (elementData.ChangedFacePartyLeader)
-            data.FacePartyLeader = elementData.FacePartyLeader;
+        if (elementData.ChangedFaceControllable)
+            data.FaceControllable = elementData.FaceControllable;
 
         if (elementData.ChangedHideInteractionIndicator)
             data.HideInteractionIndicator = elementData.HideInteractionIndicator;

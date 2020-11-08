@@ -12,7 +12,6 @@ public class SceneData : SceneBaseData
 
     public string TileIconPath  { get; set; }
     
-
     public override void GetOriginalValues(SceneData originalData)
     {
         PhaseId = originalData.PhaseId;

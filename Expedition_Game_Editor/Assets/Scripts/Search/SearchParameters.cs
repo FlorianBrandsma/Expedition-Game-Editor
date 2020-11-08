@@ -37,7 +37,6 @@ public class SearchProperties
             case Enums.DataType.TerrainTile:            searchParameters = new[] { new Search.TerrainTile() };              break;
             case Enums.DataType.WorldObject:            searchParameters = new[] { new Search.WorldObject() };              break;
             case Enums.DataType.Chapter:                searchParameters = new[] { new Search.Chapter() };                  break;
-            case Enums.DataType.PartyMember:            searchParameters = new[] { new Search.PartyMember() };              break;
             case Enums.DataType.ChapterInteractable:    searchParameters = new[] { new Search.ChapterInteractable() };      break;
             case Enums.DataType.ChapterRegion:          searchParameters = new[] { new Search.ChapterRegion() };            break;
             case Enums.DataType.Phase:                  searchParameters = new[] { new Search.Phase() };                    break;

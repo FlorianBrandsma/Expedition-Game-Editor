@@ -138,28 +138,6 @@ static public class DataManager
         return dataList;
     }
 
-    static public List<PartyMemberBaseData> GetPartyMemberData(Search.PartyMember searchParameters)
-    {
-        var dataList = new List<PartyMemberBaseData>();
-
-        foreach(PartyMemberBaseData partyMember in Fixtures.partyMemberList)
-        {
-            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(partyMember.ChapterId)) continue;
-            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(partyMember.InteractableId)) continue;
-
-            var data = new PartyMemberBaseData();
-
-            data.Id = partyMember.Id;
-
-            data.ChapterId = partyMember.ChapterId;
-            data.InteractableId = partyMember.InteractableId;
-
-            dataList.Add(data);
-        }
-
-        return dataList;
-    }
-
     static public List<ChapterInteractableBaseData> GetChapterInteractableData(Search.ChapterInteractable searchParameters)
     {
         var dataList = new List<ChapterInteractableBaseData>();
@@ -280,23 +258,24 @@ static public class DataManager
 
         foreach (WorldInteractableBaseData worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                             continue;
-            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.Type))                         continue;
-            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))           continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                     continue;
+            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.Type))                 continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))       continue;
+            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))   continue;
 
             var data = new WorldInteractableBaseData();
 
             data.Id = worldInteractable.Id;
-            data.Index = worldInteractable.Index;
-
-            data.Type = worldInteractable.Type;
-
+            
+            data.ChapterId = worldInteractable.ChapterId;
             data.PhaseId = worldInteractable.PhaseId;
             data.QuestId = worldInteractable.QuestId;
             data.ObjectiveId = worldInteractable.ObjectiveId;
 
             data.ChapterInteractableId = worldInteractable.ChapterInteractableId;
             data.InteractableId = worldInteractable.InteractableId;
+
+            data.Type = worldInteractable.Type;
 
             dataList.Add(data);
         }
@@ -361,7 +340,7 @@ static public class DataManager
             data.TriggerAutomatically = interaction.TriggerAutomatically;
             data.BeNearDestination = interaction.BeNearDestination;
             data.FaceInteractable = interaction.FaceInteractable;
-            data.FacePartyLeader = interaction.FacePartyLeader;
+            data.FaceControllable = interaction.FaceControllable;
             data.HideInteractionIndicator = interaction.HideInteractionIndicator;
 
             data.InteractionRange = interaction.InteractionRange;
@@ -654,7 +633,7 @@ static public class DataManager
 
             data.SaveId = playerSave.SaveId;
             data.RegionId = playerSave.RegionId;
-            data.PartyMemberId = playerSave.PartyMemberId;
+            data.WorldInteractableId = playerSave.WorldInteractableId;
             
             data.PositionX = playerSave.PositionX;
             data.PositionY = playerSave.PositionY;

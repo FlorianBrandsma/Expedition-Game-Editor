@@ -81,7 +81,7 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
         
         searchParameters.phaseId = new List<int>() { Id };
-        searchParameters.type = Enums.RegionType.Party;
+        searchParameters.type = Enums.RegionType.Controllable;
 
         SegmentController.DataController.GetData(searchProperties);
       

@@ -49,7 +49,7 @@ public class TitleHeaderSegment : MonoBehaviour, ISegment
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.SceneShot:
-                    return ((SceneShotEditor)DataEditor).Description;
+                    return SceneShotManager.ShotDescription(((SceneShotEditor)DataEditor).Type);
 
                 case Enums.DataType.ChapterSave:
                     return ((ChapterSaveEditor)DataEditor).Name;

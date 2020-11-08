@@ -54,7 +54,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.WorldInteractable:      SetWorldInteractableElement();      break;
             case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
             case Enums.DataType.WorldObject:            SetWorldObjectElement();            break;
-            case Enums.DataType.Phase:                  SetPartyElement();                  break;
+            case Enums.DataType.Phase:                  SetPhaseElement();                  break;
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
         }
@@ -109,7 +109,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         SetModel();
     }
 
-    private void SetPartyElement()
+    private void SetPhaseElement()
     {
         var elementData = (PhaseElementData)EditorElement.DataElement.ElementData;
 

@@ -8,7 +8,7 @@ public class SceneShotDataController : MonoBehaviour, IDataController
     
     public Data Data                            { get; set; }
     public Enums.DataType DataType              { get { return Enums.DataType.SceneShot; } }
-    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.Navigation; } }
+    public Enums.DataCategory DataCategory      { get { return Enums.DataCategory.None; } }
 
     public SearchProperties SearchProperties
     {

@@ -19,7 +19,6 @@ public class Enums
         TerrainTile,
         WorldObject,
         Chapter,
-        PartyMember,
         ChapterInteractable,
         ChapterRegion,
         Phase,
@@ -45,7 +44,6 @@ public class Enums
         GameInteractionDestination,
         GameWorldInteractable,
         GameWorldObject,
-        GamePartyMember,
         Save,
         GameSave,
         PlayerSave,
@@ -94,7 +92,8 @@ public class Enums
     public enum InteractableType
     {
         Agent,
-        Object
+        Object,
+        Controllable
     }
 
     public enum OutcomeType
@@ -107,7 +106,7 @@ public class Enums
     {
         Base,
         Phase,
-        Party,
+        Controllable,
         InteractionDestination,
         Scene,
         Game
@@ -117,7 +116,10 @@ public class Enums
     {
         InteractionDestination,
         Object,
-        Party
+        Controllable,
+        Shot,
+        Actor,
+        Prop
     }
 
     public enum DisplayType
@@ -215,6 +217,14 @@ public class Enums
         Instant,
         Waiting,
         Gathering
+    }
+
+    public enum SpeechMethod
+    {
+        Think,
+        Whisper,
+        Speak,
+        Shout
     }
 
     public enum SceneShotType

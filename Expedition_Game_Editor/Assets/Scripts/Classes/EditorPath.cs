@@ -165,6 +165,24 @@ public class EditorPath
 
                 break;
 
+            case Enums.DataType.SceneActor:
+
+                PathManager.SceneActor sceneActor = new PathManager.SceneActor(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                    path = sceneActor.Open();
+
+                break;
+
+            case Enums.DataType.SceneProp:
+
+                PathManager.SceneProp sceneProp = new PathManager.SceneProp(editorElement, route);
+
+                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                    path = sceneProp.Open();
+
+                break;
+
             case Enums.DataType.Region:
 
                 PathManager.Region region = new PathManager.Region(editorElement, route);

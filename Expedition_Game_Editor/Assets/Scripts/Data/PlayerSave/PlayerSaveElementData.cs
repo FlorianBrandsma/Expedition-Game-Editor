@@ -19,9 +19,9 @@ public class PlayerSaveElementData : PlayerSaveData, IElementData
         get { return RegionId != OriginalData.RegionId; }
     }
 
-    public bool ChangedPartyMemberId
+    public bool ChangedWorldInteractableId
     {
-        get { return PartyMemberId != OriginalData.PartyMemberId; }
+        get { return WorldInteractableId != OriginalData.WorldInteractableId; }
     }
 
     //public bool ChangedPlayedSeconds
@@ -33,7 +33,7 @@ public class PlayerSaveElementData : PlayerSaveData, IElementData
     {
         get
         {
-            return ChangedRegionId || ChangedPartyMemberId;
+            return ChangedRegionId || ChangedWorldInteractableId;
         }
     }
     #endregion

@@ -11,8 +11,7 @@ static public class RegionManager
     }
 
     static public Display activeDisplay;
-    static public Enums.SceneShotType activeShotType;
-
+    
     //Keeps track of the active region type
     static public Enums.RegionType regionType;
 
@@ -127,13 +126,6 @@ static public class RegionManager
     static public void SetDisplay(int display, Path path)
     {
         activeDisplay = (Display)display;
-
-        RenderManager.Render(path);
-    }
-
-    static public void SetShot(int shot, Path path)
-    {
-        activeShotType = (Enums.SceneShotType)shot;
 
         RenderManager.Render(path);
     }

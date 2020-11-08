@@ -109,14 +109,14 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public bool FacePartyLeader
+    public bool FaceControllable
     {
-        get { return interactionData.FacePartyLeader; }
+        get { return interactionData.FaceControllable; }
         set
         {
-            interactionData.FacePartyLeader = value;
+            interactionData.FaceControllable = value;
 
-            DataList.ForEach(x => ((InteractionElementData)x).FacePartyLeader = value);
+            DataList.ForEach(x => ((InteractionElementData)x).FaceControllable = value);
         }
     }
 

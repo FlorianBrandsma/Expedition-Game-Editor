@@ -9,7 +9,7 @@ public static class SaveDataManager
 
     private static List<PlayerSaveBaseData> playerSaveDataList;
 
-    private static List<PartyMemberBaseData> partyMemberDataList;
+    private static List<WorldInteractableBaseData> worldInteractableDataList;
     private static List<InteractableBaseData> interactableDataList;
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
@@ -31,7 +31,7 @@ public static class SaveDataManager
 
         GetPlayerSaveData();
 
-        GetPartyMemberData();
+        GetWorldInteractableData();
         GetInteractableData();
         GetModelData();
         GetIconData();
@@ -44,18 +44,18 @@ public static class SaveDataManager
         GetChapterData();
 
         var list = (from saveData in saveDataList
-                    join playerSaveData     in playerSaveDataList       on saveData.Id                      equals playerSaveData.SaveId
+                    join playerSaveData         in playerSaveDataList           on saveData.Id                          equals playerSaveData.SaveId
 
-                    join partyMemberData    in partyMemberDataList      on playerSaveData.PartyMemberId     equals partyMemberData.Id
-                    join interactableData   in interactableDataList     on partyMemberData.InteractableId   equals interactableData.Id
-                    join modelData          in modelDataList            on interactableData.ModelId         equals modelData.Id
-                    join iconData           in iconDataList             on modelData.IconId                 equals iconData.Id
+                    join worldInteractableData  in worldInteractableDataList    on playerSaveData.WorldInteractableId   equals worldInteractableData.Id
+                    join interactableData       in interactableDataList         on worldInteractableData.InteractableId equals interactableData.Id
+                    join modelData              in modelDataList                on interactableData.ModelId             equals modelData.Id
+                    join iconData               in iconDataList                 on modelData.IconId                     equals iconData.Id
 
-                    join regionData         in regionDataList           on playerSaveData.RegionId          equals regionData.Id
-                    join tileSetData        in tileSetDataList          on regionData.TileSetId             equals tileSetData.Id
+                    join regionData             in regionDataList               on playerSaveData.RegionId              equals regionData.Id
+                    join tileSetData            in tileSetDataList              on regionData.TileSetId                 equals tileSetData.Id
 
-                    join phaseData          in phaseDataList            on regionData.PhaseId               equals phaseData.Id
-                    join chapterData        in chapterDataList          on phaseData.ChapterId              equals chapterData.Id
+                    join phaseData              in phaseDataList                on regionData.PhaseId                   equals phaseData.Id
+                    join chapterData            in chapterDataList              on phaseData.ChapterId                  equals chapterData.Id
                     select new SaveElementData()
                     {
                         Id = saveData.Id,
@@ -105,18 +105,18 @@ public static class SaveDataManager
         playerSaveDataList = DataManager.GetPlayerSaveData(searchParameters);
     }
 
-    private static void GetPartyMemberData()
+    private static void GetWorldInteractableData()
     {
-        var searchParameters = new Search.PartyMember();
-        searchParameters.id = playerSaveDataList.Select(x => x.PartyMemberId).Distinct().ToList();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.id = playerSaveDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        partyMemberDataList = DataManager.GetPartyMemberData(searchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
         var searchParameters = new Search.Interactable();
-        searchParameters.id = partyMemberDataList.Select(x => x.InteractableId).Distinct().ToList();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
         interactableDataList = DataManager.GetInteractableData(searchParameters);
     }

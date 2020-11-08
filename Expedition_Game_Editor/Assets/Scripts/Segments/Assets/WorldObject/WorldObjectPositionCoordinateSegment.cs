@@ -57,7 +57,7 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
 
         xInputField.max = regionSize.x;
-        yInputField.max = regionSize.y;
+        zInputField.max = regionSize.y;
     }
 
     public void OpenSegment()

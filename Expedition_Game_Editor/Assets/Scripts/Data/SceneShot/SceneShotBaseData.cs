@@ -25,6 +25,7 @@ public class SceneShotBaseData
         Id              = originalData.Id;
 
         SceneId         = originalData.SceneId;
+
         Type            = originalData.Type;
 
         ChangePosition  = originalData.ChangePosition;
@@ -45,6 +46,7 @@ public class SceneShotBaseData
         data.Id             = Id;
 
         data.SceneId        = SceneId;
+
         data.Type           = Type;
 
         data.ChangePosition = ChangePosition;

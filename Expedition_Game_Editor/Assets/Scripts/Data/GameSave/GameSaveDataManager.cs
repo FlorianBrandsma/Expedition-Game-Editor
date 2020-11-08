@@ -38,7 +38,7 @@ public static class GameSaveDataManager
 
                                   SaveId = playerSaveData.Id,
                                   RegionId = playerSaveData.RegionId,
-                                  PartyMemberId = playerSaveData.PartyMemberId,
+                                  WorldInteractableId = playerSaveData.WorldInteractableId,
 
                                   PositionX = playerSaveData.PositionX,
                                   PositionY = playerSaveData.PositionY,

@@ -65,7 +65,7 @@ public static class WorldInteractableDataManager
                         Width = modelData.Width,
                         Depth = modelData.Depth
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -81,6 +81,7 @@ public static class WorldInteractableDataManager
             if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
             if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
             if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.chapterId.Count                > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))                           continue;
             if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
             if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.QuestId))                               continue;
             if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
@@ -92,6 +93,7 @@ public static class WorldInteractableDataManager
 
             worldInteractableData.Type = worldInteractable.Type;
             
+            worldInteractableData.ChapterId = worldInteractable.ChapterId;
             worldInteractableData.PhaseId = worldInteractable.PhaseId;
             worldInteractableData.QuestId = worldInteractable.QuestId;
             worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
@@ -117,6 +119,7 @@ public static class WorldInteractableDataManager
             if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
             if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
             if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.chapterId.Count                > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))                           continue;
             if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
             if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.QuestId))                               continue;
             if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
@@ -128,6 +131,7 @@ public static class WorldInteractableDataManager
 
             worldInteractableData.Type = worldInteractable.Type;
             
+            worldInteractableData.ChapterId = worldInteractable.ChapterId;
             worldInteractableData.PhaseId = worldInteractable.PhaseId;
             worldInteractableData.QuestId = worldInteractable.QuestId;
             worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
@@ -196,7 +200,10 @@ public static class WorldInteractableDataManager
     public static void UpdateData(WorldInteractableElementData elementData)
     {
         var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
+
+        if (elementData.ChangedInteractableId)
+            data.InteractableId = elementData.InteractableId;
+
         if (elementData.ChangedQuestId)
             data.QuestId = elementData.QuestId;
     }

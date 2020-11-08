@@ -121,7 +121,6 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.Chapter:                SetChapterElement();                break;
-            case Enums.DataType.PartyMember:            SetPartyMemberElement();            break;
             case Enums.DataType.ChapterInteractable:    SetChapterInteractableElement();    break;
             case Enums.DataType.ChapterRegion:          SetChapterRegionElement();          break;
             case Enums.DataType.Phase:                  SetPhaseElement();                  break;
@@ -179,19 +178,6 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         idText.text             = elementData.Id.ToString();
         headerText.text         = header;
         descriptionText.text    = description;
-    }
-
-    private void SetPartyMemberElement()
-    {
-        var elementData = (PartyMemberElementData)EditorElement.DataElement.ElementData;
-
-        header          = elementData.InteractableName;
-        iconPath        = elementData.ModelIconPath;
-
-        idText.text     = elementData.Id.ToString();
-        headerText.text = header;
-
-        IconTexture     = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetChapterInteractableElement()
@@ -378,7 +364,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (SceneShotElementData)EditorElement.DataElement.ElementData;
 
-        header = elementData.Description;
+        header = SceneShotManager.ShotDescription((Enums.SceneShotType)elementData.Type);
 
         idText.text = elementData.Id.ToString();
         headerText.text = header;

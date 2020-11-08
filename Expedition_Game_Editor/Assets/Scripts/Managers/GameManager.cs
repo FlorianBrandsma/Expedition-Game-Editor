@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameSaveElementData gameSaveData;
     public GameWorldElementData gameWorldData;
     public GameRegionElementData regionData;
-    public GamePartyMemberElementData partyMemberData;
+    public GameWorldInteractableElementData controllableWorldInteractableData;
 
     private List<TerrainTileData> activeTileList;
     private List<GameWorldInteractableElementData> activeWorldInteractableList;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public DataController WorldObjectDataController             { get; set; } = new DataController(Enums.DataType.WorldObject);
     public DataController WorldInteractableAgentDataController  { get; set; } = new DataController(Enums.DataType.WorldInteractable);
     public DataController WorldInteractableObjectDataController { get; set; } = new DataController(Enums.DataType.WorldInteractable);
-    public DataController PartyDataController                   { get; set; } = new DataController(Enums.DataType.Phase);
+    public DataController WorldInteractableControllableDataController                   { get; set; } = new DataController(Enums.DataType.Phase);
 
     public GameWorldOrganizer Organizer                         { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     private int activePhaseId;
     private int activeRegionId;
-    private int activePartyMemberId;
+    private int activeWorldInteractableControllableId;
 
     public int ActivePhaseId
     {
@@ -65,19 +65,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int ActivePartyMemberId
+    public int ActiveWorldInteractableControllableId
     {
 
-        get { return activePartyMemberId; }
+        get { return activeWorldInteractableControllableId; }
         set
         {
-            if (activePartyMemberId != value)
+            if (activeWorldInteractableControllableId != value)
             {
-                activePartyMemberId = value;
+                activeWorldInteractableControllableId = value;
 
-                gameSaveData.PlayerSaveData.PartyMemberId = value;
+                gameSaveData.PlayerSaveData.WorldInteractableId = value;
                 
-                ChangePartyMember();
+                ChangeControllable();
             }
         }
     }
@@ -191,8 +191,8 @@ public class GameManager : MonoBehaviour
         //Set the active region based on the save data or else from the phase defaults
         InitializeRegion();
 
-        //Set the active party member based on the save data or else from the phase defaults
-        InitializePartyMember();
+        //Set the active controllable agent based on the save data or else from the phase defaults
+        InitializeControllable();
 
         //Set the time based on the save data or else from the phase defaults, which is already set
         TimeManager.instance.InitializeGameTime(gameSaveData.PlayerSaveData.GameTime);
@@ -226,8 +226,8 @@ public class GameManager : MonoBehaviour
         //Interactable objects
         WorldInteractableObjectDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Object).Cast<IElementData>().ToList();
 
-        //Party
-        PartyDataController.Data.dataList = gameWorldData.PartyMemberList.Cast<IElementData>().ToList();
+        //Interactable controllables
+        WorldInteractableControllableDataController.Data.dataList = gameWorldData.WorldInteractableControllableDataList.Cast<IElementData>().ToList();
     }
 
     private void SetChapterTimeSpeed()
@@ -259,19 +259,19 @@ public class GameManager : MonoBehaviour
         localNavMeshBuilder.m_Size = new Vector3(TempActiveRange + (regionData.TileSize * 5), 50, TempActiveRange + (regionData.TileSize * 5));
     }
 
-    private void InitializePartyMember()
+    private void InitializeControllable()
     {
-        //The first party member of a chapter is the default
-        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.PartyMemberId))
-            ActivePartyMemberId = gameWorldData.PartyMemberList.First().Id;
+        //The first controllable agent of a chapter is the default
+        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
+            ActiveWorldInteractableControllableId = gameWorldData.WorldInteractableControllableDataList.First().Id;
         else
-            ActivePartyMemberId = gameSaveData.PlayerSaveData.PartyMemberId;
+            ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
     }
 
-    public void ChangePartyMember()
+    public void ChangeControllable()
     {
-        Debug.Log("Change party member");
-        partyMemberData = gameWorldData.PartyMemberList.Where(x => x.Id == gameSaveData.PlayerSaveData.PartyMemberId).First();
+        Debug.Log("Change controllable");
+        controllableWorldInteractableData = gameWorldData.WorldInteractableControllableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
 
         PlayerControlManager.instance.SetPlayerCharacter();
     }
@@ -395,11 +395,11 @@ public class GameManager : MonoBehaviour
         
         activePhaseId = 0;
         activeRegionId = 0;
-        activePartyMemberId = 0;
+        activeWorldInteractableControllableId = 0;
 
         gameWorldData = null;
         regionData = null;
-        partyMemberData = null;
+        controllableWorldInteractableData = null;
 
         gameWorldController.Data = null;
         gameSaveController.Data = null;

@@ -1,18 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScenePropBaseData : MonoBehaviour
+public class ScenePropBaseData
 {
-    // Start is called before the first frame update
-    void Start()
+    public int Id               { get; set; }
+
+    public int SceneId          { get; set; }
+    public int ModelId          { get; set; }
+    public int RegionId         { get; set; }
+    public int TerrainId        { get; set; }
+    public int TerrainTileId    { get; set; }
+    
+    public float PositionX      { get; set; }
+    public float PositionY      { get; set; }
+    public float PositionZ      { get; set; }
+
+    public int RotationX        { get; set; }
+    public int RotationY        { get; set; }
+    public int RotationZ        { get; set; }
+
+    public virtual void GetOriginalValues(ScenePropData originalData)
     {
-        
+        Id              = originalData.Id;
+
+        SceneId         = originalData.SceneId;
+        ModelId         = originalData.ModelId;
+        RegionId        = originalData.RegionId;
+        TerrainId       = originalData.TerrainId;
+        TerrainTileId   = originalData.TerrainTileId;
+
+        PositionX       = originalData.PositionX;
+        PositionY       = originalData.PositionY;
+        PositionZ       = originalData.PositionZ;
+
+        RotationX       = originalData.RotationX;
+        RotationY       = originalData.RotationY;
+        RotationZ       = originalData.RotationZ;
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void Clone(ScenePropData data)
     {
-        
+        data.Id             = Id;
+
+        data.SceneId        = SceneId;
+        data.ModelId        = ModelId;
+        data.RegionId       = RegionId;
+        data.TerrainId      = TerrainId;
+        data.TerrainTileId  = TerrainTileId;
+
+        data.PositionX      = PositionX;
+        data.PositionY      = PositionY;
+        data.PositionZ      = PositionZ;
+
+        data.RotationX      = RotationX;
+        data.RotationY      = RotationY;
+        data.RotationZ      = RotationZ;
     }
 }
+

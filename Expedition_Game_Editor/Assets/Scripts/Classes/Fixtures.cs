@@ -16,7 +16,7 @@ static public class Fixtures
     static public int terrainsInRegions = 3;
     static public int terrainTilesInTerrains = 5;
     static public int chapters = 3;
-    static public int partyMembersInChapter = 1;
+    static public int chapterWorldInteractableInChapter = 1;
     static public int chapterInteractablesInChapter = 3;
     static public int phasesInChapter = 4;
     static public int questsInPhase = 4;
@@ -44,7 +44,6 @@ static public class Fixtures
     static public List<TerrainBaseData>                 terrainList                 = new List<TerrainBaseData>();
     static public List<TerrainTileBaseData>             terrainTileList             = new List<TerrainTileBaseData>();
     static public List<ChapterBaseData>                 chapterList                 = new List<ChapterBaseData>();
-    static public List<PartyMemberBaseData>             partyMemberList             = new List<PartyMemberBaseData>();
     static public List<ChapterInteractableBaseData>     chapterInteractableList     = new List<ChapterInteractableBaseData>();
     static public List<ChapterRegionBaseData>           chapterRegionList           = new List<ChapterRegionBaseData>();
     static public List<PhaseBaseData>                   phaseList                   = new List<PhaseBaseData>();
@@ -84,7 +83,7 @@ static public class Fixtures
         LoadTerrainTiles();
         LoadWorldObjects();
         LoadChapters();
-        LoadChapterPartyMembers();
+        LoadChapterWorldInteractables();
         LoadChapterInteractables();
         LoadChapterRegions();
         LoadPhases();
@@ -468,7 +467,7 @@ static public class Fixtures
             var middleTile = terrainTiles[terrainTiles.Count / 2];
 
             /*Skull*/
-            CreateWorldObject(16, region.Id, new Vector3(245f, 0f, 236.5f), new Vector3(355, 155, 0));
+            CreateWorldObject(16, region.Id, new Vector3(245f, -0.2f, 236.5f), new Vector3(355, 155, 0));
 
             /*Rock*/
             CreateWorldObject(17, region.Id, new Vector3(230f, 0f, 241.75f), new Vector3(0, 180, 0));
@@ -632,13 +631,13 @@ static public class Fixtures
         worldInteractable.Type = (int)type;
 
         worldInteractable.InteractableId = interactableId;
-        
+
+        worldInteractableList.Add(worldInteractable);
+
         for (int index = 0; index < baseTasks; index++)
         {
             CreateTask(worldInteractable, 0, index, regionId, interactionDestinationList);
         }
-        
-        worldInteractableList.Add(worldInteractable);
     }
 
     static public void CreateTask(WorldInteractableBaseData worldInteractable, int objectiveId, int taskIndex, int regionId, List<InteractionDestinationBaseData> interactionDestinationList)
@@ -656,12 +655,12 @@ static public class Fixtures
         task.Name = "Just a task" + (objectiveId == 0 ? "" : " with an objective " + task.ObjectiveId);
 
         task.PublicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
-        
+
+        taskList.Add(task);
+
         CreateInteraction(task, true, 0, 0, regionId, interactionDestinationList);
         CreateInteraction(task, false, 0, (5 * TimeManager.secondsInHour) - 1, regionId, interactionDestinationList);
         CreateInteraction(task, false, 9 * TimeManager.secondsInHour, (16 * TimeManager.secondsInHour) - 1, regionId, interactionDestinationList);
-        
-        taskList.Add(task);
     }
 
     static public void CreateInteraction(TaskBaseData task, bool isDefault, int startTime, int endTime, int regionId, List<InteractionDestinationBaseData> interactionDestinationList)
@@ -684,7 +683,7 @@ static public class Fixtures
         interaction.TriggerAutomatically = false;
         interaction.BeNearDestination = true;
         interaction.FaceInteractable = true;
-        interaction.FacePartyLeader = false;
+        interaction.FaceControllable = false;
         interaction.HideInteractionIndicator = false;
 
         interaction.InteractionRange = 5;
@@ -699,14 +698,14 @@ static public class Fixtures
 
         interaction.PublicNotes = "These are public interaction notes";
 
+        interactionList.Add(interaction);
+
         interactionDestinationList.ForEach(interactionDestination =>
         {
             CreateInteractionDestination(interaction, regionId, interactionDestination);
         });
 
         CreateOutcome(interaction, regionId, Enums.OutcomeType.Positive);
-
-        interactionList.Add(interaction);
     }
 
     static public void CreateInteractionDestination(InteractionBaseData interaction, int regionId, InteractionDestinationBaseData interactionDestinationSource)
@@ -759,12 +758,12 @@ static public class Fixtures
 
         outcome.PublicNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
 
-        for(int i = 0; i < scenesPerOutcome; i++)
+        outcomeList.Add(outcome);
+
+        for (int i = 0; i < scenesPerOutcome; i++)
         {
             CreateScene(outcome, regionId, i);
         }
-        
-        outcomeList.Add(outcome);
     }
 
     static private void CreateScene(OutcomeBaseData outcome, int regionId, int index)
@@ -799,9 +798,87 @@ static public class Fixtures
         var shotEndCameraPosition = new Vector3(242.5f, 7.5f, 250f);
         var shotEndCameraRotation = new Vector3(30, 330, 0);
 
+        //Create an actor based on the interactee
+        var interaction = interactionList.Where(x => x.Id == outcome.InteractionId).FirstOrDefault();
+        var task = taskList.Where(x => x.Id == interaction.TaskId).FirstOrDefault();
+        var worldInteractable = worldInteractableList.Where(x => x.Id == task.WorldInteractableId).FirstOrDefault();
+
+        CreateSceneActor(scene, worldInteractable);
+        
+        //Create an actor based on the interactor
+        var region = regionList.Where(x => x.Id == scene.RegionId).FirstOrDefault();
+        var phase = phaseList.Where(x => x.Id == region.PhaseId).FirstOrDefault();
+
+        if(phase != null)
+        {
+            var chapter = chapterList.Where(x => x.Id == phase.ChapterId).FirstOrDefault();
+            var chapterWorldInteractable = worldInteractableList.Where(x => x.ChapterId == chapter.Id).FirstOrDefault();
+
+            CreateSceneActor(scene, chapterWorldInteractable);
+        }
+        
+        CreateSceneProp(scene);
+
         CreateSceneShot(scene, Enums.SceneShotType.End, shotEndCameraPosition, shotEndCameraRotation);
 
         sceneList.Add(scene);
+    }
+
+    static private void CreateSceneActor(SceneBaseData scene, WorldInteractableBaseData worldInteractable)
+    {
+        var outcome = outcomeList.Where(x => x.Id == scene.OutcomeId).FirstOrDefault();
+        var interactable = interactableList.Where(x => x.Id == worldInteractable.InteractableId).FirstOrDefault();
+
+        var sceneActor = new SceneActorBaseData();
+
+        int id = sceneActorList.Count > 0 ? (sceneActorList[sceneActorList.Count - 1].Id + 1) : 1;
+
+        sceneActor.Id = id;
+
+        sceneActor.SceneId = scene.Id;
+        sceneActor.WorldInteractableId = worldInteractable.Id;
+
+        sceneActor.ChangePosition = true;
+        sceneActor.FreezePosition = true;
+
+        sceneActor.SpeechMethod = (int)Enums.SpeechMethod.Speak;
+        sceneActor.SpeechText = "Hello, my name is " + interactable.Name  + ". I belong to scene " + scene.Id;
+        sceneActor.ShowTextBox = true;
+
+        sceneActor.PositionX = 238.5f;
+        sceneActor.PositionY = 0f;
+        sceneActor.PositionZ = 238.5f;
+
+        sceneActor.ChangeRotation = false;
+        sceneActor.FaceTarget = true;
+
+        sceneActor.RotationX = 0;
+        sceneActor.RotationY = 0;
+        sceneActor.RotationZ = 0;
+
+        sceneActorList.Add(sceneActor);
+    }
+
+    static private void CreateSceneProp(SceneBaseData scene)
+    {
+        var sceneProp = new ScenePropBaseData();
+
+        int id = scenePropList.Count > 0 ? (scenePropList[scenePropList.Count - 1].Id + 1) : 1;
+
+        sceneProp.Id = id;
+
+        sceneProp.SceneId = scene.Id;
+        sceneProp.ModelId = 2;
+
+        sceneProp.PositionX = 238.5f;
+        sceneProp.PositionY = 0;
+        sceneProp.PositionZ = 238.5f;
+
+        sceneProp.RotationX = 0;
+        sceneProp.RotationY = 0;
+        sceneProp.RotationZ = 0;
+
+        scenePropList.Add(sceneProp);
     }
 
     static private void CreateSceneShot(SceneBaseData scene, Enums.SceneShotType shotType, Vector3 cameraPosition, Vector3 cameraRotation)
@@ -879,24 +956,26 @@ static public class Fixtures
         }
     }
 
-    static public void LoadChapterPartyMembers()
+    static public void LoadChapterWorldInteractables()
     {
         foreach (ChapterBaseData chapter in chapterList)
         {
-            for (int i = 0; i < partyMembersInChapter; i++)
+            for (int i = 0; i < chapterWorldInteractableInChapter; i++)
             {
-                var partyMember = new PartyMemberBaseData();
+                var worldInteractable = new WorldInteractableBaseData();
 
-                int id = partyMemberList.Count > 0 ? (partyMemberList[partyMemberList.Count - 1].Id + 1) : 1;
+                int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
-                partyMember.Id = id;
+                worldInteractable.Id = id;
 
-                partyMember.ChapterId = chapter.Id;
+                worldInteractable.ChapterId = chapter.Id;
 
-                var partyMemberInteractableId = 1;
-                partyMember.InteractableId = partyMemberInteractableId;
+                var interactableId = 1;
+                worldInteractable.InteractableId = interactableId;
 
-                partyMemberList.Add(partyMember);
+                worldInteractable.Type = (int)Enums.InteractableType.Controllable;
+
+                worldInteractableList.Add(worldInteractable);
             }
         }
     }
@@ -907,8 +986,8 @@ static public class Fixtures
         {
             List<int> randomInteractables = new List<int>();
 
-            var partyMemberIds = partyMemberList.Where(x => x.ChapterId == chapter.Id).Select(x => x.InteractableId).Distinct().ToList();
-            interactableList.Where(x => !partyMemberIds.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
+            var interactableIdList = worldInteractableList.Where(x => x.ChapterId == chapter.Id).Select(x => x.InteractableId).Distinct().ToList();
+            interactableList.Where(x => !interactableIdList.Contains(x.Id)).Distinct().ToList().ForEach(x => randomInteractables.Add(x.Id));
 
             for (int i = 0; i < chapterInteractablesInChapter; i++)
             {
@@ -1059,10 +1138,12 @@ static public class Fixtures
                         int worldInteractableId = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
                         worldInteractable.Id = worldInteractableId;
+                        
+                        worldInteractable.InteractableId = worldInteractableSource.InteractableId;
 
                         worldInteractable.Type = worldInteractableSource.Type;
 
-                        worldInteractable.InteractableId = worldInteractableSource.InteractableId;
+                        worldInteractableList.Add(worldInteractable);
 
                         var taskSourceList = taskList.Where(x => x.WorldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
@@ -1079,6 +1160,8 @@ static public class Fixtures
                             task.ObjectiveId = taskSource.ObjectiveId;
 
                             task.Name = "Just a task" + (taskSource.ObjectiveId == 0 ? "" : " with an objective " + task.ObjectiveId);
+
+                            taskList.Add(task);
 
                             var interactionSourceList = interactionList.Where(x => x.TaskId == taskSource.Id).OrderBy(x => x.Default).ThenBy(x => x.StartTime).Distinct().ToList();
 
@@ -1101,7 +1184,7 @@ static public class Fixtures
                                 interaction.TriggerAutomatically = interactionSource.TriggerAutomatically;
                                 interaction.BeNearDestination = interactionSource.BeNearDestination;
                                 interaction.FaceInteractable = interactionSource.FaceInteractable;
-                                interaction.FacePartyLeader = interactionSource.FacePartyLeader;
+                                interaction.FaceControllable = interactionSource.FaceControllable;
                                 interaction.HideInteractionIndicator = interactionSource.HideInteractionIndicator;
 
                                 interaction.InteractionRange = interactionSource.InteractionRange;
@@ -1116,6 +1199,8 @@ static public class Fixtures
 
                                 interaction.PublicNotes = interactionSource.PublicNotes;
                                 interaction.PrivateNotes = interactionSource.PrivateNotes;
+
+                                interactionList.Add(interaction);
 
                                 var interactionDestinationSourceList = interactionDestinationList.Where(x => x.InteractionId == interactionSource.Id).Distinct().ToList();
 
@@ -1172,6 +1257,8 @@ static public class Fixtures
                                     outcome.PublicNotes = outcomeSource.PublicNotes;
                                     outcome.PrivateNotes = outcomeSource.PrivateNotes;
 
+                                    outcomeList.Add(outcome);
+
                                     var sceneSourceList = sceneList.Where(x => x.OutcomeId == outcomeSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
                                     foreach(SceneBaseData sceneSource in sceneSourceList)
@@ -1197,6 +1284,8 @@ static public class Fixtures
 
                                         scene.PublicNotes = sceneSource.PublicNotes;
                                         scene.PrivateNotes = sceneSource.PrivateNotes;
+
+                                        sceneList.Add(scene);
 
                                         var sceneShotSourceList = sceneShotList.Where(x => x.SceneId == sceneSource.Id).Distinct().ToList();
 
@@ -1226,20 +1315,10 @@ static public class Fixtures
 
                                             sceneShotList.Add(sceneShot);
                                         }
-
-                                        sceneList.Add(scene);
                                     }
-
-                                    outcomeList.Add(outcome);
                                 }
-
-                                interactionList.Add(interaction);
                             }
-
-                            taskList.Add(task);
                         }
-
-                        worldInteractableList.Add(worldInteractable);
                     }
 
                     var worldObjectSourceList = worldObjectList.Where(x => x.RegionId == regionSource.Id).Distinct().ToList();
@@ -1329,9 +1408,7 @@ static public class Fixtures
                     int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
                     worldInteractable.Id = id;
-
-                    worldInteractable.Type = (int)Enums.InteractableType.Agent;
-
+                    
                     var chapterInteractable = chapterInteractables[i];
 
                     worldInteractable.ChapterInteractableId = chapterInteractable.Id;
@@ -1344,6 +1421,8 @@ static public class Fixtures
                     questIds.RemoveAt(randomQuestId);
 
                     worldInteractable.InteractableId = chapterInteractable.InteractableId;
+
+                    worldInteractable.Type = (int)Enums.InteractableType.Agent;
 
                     worldInteractableList.Add(worldInteractable);
                 }
@@ -1388,14 +1467,13 @@ static public class Fixtures
                 int id = worldInteractableList.Count > 0 ? (worldInteractableList[worldInteractableList.Count - 1].Id + 1) : 1;
 
                 worldInteractable.Id = id;
-                worldInteractable.Index = i;
-
-                worldInteractable.Type = (int)Enums.InteractableType.Object;
 
                 worldInteractable.ObjectiveId = objective.Id;
 
                 int randomInteractable = Random.Range(0, randomInteractables.Count);
                 worldInteractable.InteractableId = randomInteractables[randomInteractable];
+
+                worldInteractable.Type = (int)Enums.InteractableType.Object;
 
                 worldInteractableList.Add(worldInteractable);
             }
@@ -1536,12 +1614,12 @@ static public class Fixtures
 
         playerSave.SaveId = save.Id;
 
-        var firstChapter        = chapterList.OrderBy(x => x.Index).First();
-        var firstPhase          = phaseList.Where(x => x.ChapterId == firstChapter.Id).OrderBy(x => x.Index).First();
-        var firstPartyMember    = partyMemberList.Where(x => x.ChapterId == firstChapter.Id).First();
+        var firstChapter            = chapterList.OrderBy(x => x.Index).First();
+        var firstPhase              = phaseList.Where(x => x.ChapterId == firstChapter.Id).OrderBy(x => x.Index).First();
+        var firstWorldInteractable  = worldInteractableList.Where(x => x.ChapterId == firstChapter.Id).First();
 
         playerSave.RegionId = firstPhase.DefaultRegionId;
-        playerSave.PartyMemberId = firstPartyMember.Id;
+        playerSave.WorldInteractableId = firstWorldInteractable.Id;
 
         playerSave.PositionX = firstPhase.DefaultPositionX;
         playerSave.PositionY = firstPhase.DefaultPositionY;

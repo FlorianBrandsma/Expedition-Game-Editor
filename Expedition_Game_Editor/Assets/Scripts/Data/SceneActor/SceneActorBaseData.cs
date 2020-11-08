@@ -2,60 +2,88 @@
 
 public class SceneActorBaseData
 {
-    public int Id { get; set; }
+    public int Id                   { get; set; }
 
-    public int SceneId { get; set; }
+    public int SceneId              { get; set; }
+    public int WorldInteractableId  { get; set; }
+    public int RegionId             { get; set; }
+    public int TerrainId            { get; set; }
+    public int TerrainTileId        { get; set; }
+    
+    public int SpeechMethod         { get; set; }
+    public string SpeechText        { get; set; }
+    public bool ShowTextBox         { get; set; }
 
-    //public string Name { get; set; }
+    public bool ChangePosition      { get; set; }
+    public bool FreezePosition      { get; set; }
 
-    //public bool FreezeTime { get; set; }
-    //public bool AutoContinue { get; set; }
+    public float PositionX          { get; set; }
+    public float PositionY          { get; set; }
+    public float PositionZ          { get; set; }
 
-    //public float SceneDuration { get; set; }
-    //public float ShotDuration { get; set; }
+    public bool ChangeRotation      { get; set; }
+    public bool FaceTarget          { get; set; }
 
-    //public string PublicNotes { get; set; }
-    //public string PrivateNotes { get; set; }
+    public int RotationX            { get; set; }
+    public int RotationY            { get; set; }
+    public int RotationZ            { get; set; }
 
-    //public virtual void GetOriginalValues(SceneData originalData)
-    //{
-    //    Id = originalData.Id;
+    public virtual void GetOriginalValues(SceneActorData originalData)
+    {
+        Id                  = originalData.Id;
 
-    //    OutcomeId = originalData.OutcomeId;
-    //    RegionId = originalData.RegionId;
+        SceneId             = originalData.SceneId;
+        WorldInteractableId = originalData.WorldInteractableId;
+        RegionId            = originalData.RegionId;
+        TerrainId           = originalData.TerrainId;
+        TerrainTileId       = originalData.TerrainTileId;
+        
+        SpeechMethod        = originalData.SpeechMethod;
+        SpeechText          = originalData.SpeechText;
+        ShowTextBox         = originalData.ShowTextBox;
 
-    //    Index = originalData.Index;
+        ChangePosition      = originalData.ChangePosition;
+        FreezePosition      = originalData.FreezePosition;
 
-    //    Name = originalData.Name;
+        PositionX           = originalData.PositionX;
+        PositionY           = originalData.PositionY;
+        PositionZ           = originalData.PositionZ;
 
-    //    FreezeTime = originalData.FreezeTime;
-    //    AutoContinue = originalData.AutoContinue;
+        ChangeRotation      = originalData.ChangeRotation;
+        FaceTarget          = originalData.FaceTarget;
 
-    //    SceneDuration = originalData.SceneDuration;
-    //    ShotDuration = originalData.ShotDuration;
+        RotationX           = originalData.RotationX;
+        RotationY           = originalData.RotationY;
+        RotationZ           = originalData.RotationZ;
+    }
 
-    //    PublicNotes = originalData.PublicNotes;
-    //    PrivateNotes = originalData.PrivateNotes;
-    //}
+    public virtual void Clone(SceneActorData data)
+    {
+        data.Id                     = Id;
 
-    //public virtual void Clone(SceneData data)
-    //{
-    //    data.Id = Id;
+        data.SceneId                = SceneId;
+        data.WorldInteractableId    = WorldInteractableId;
+        data.RegionId               = RegionId;
+        data.TerrainId              = TerrainId;
+        data.TerrainTileId          = TerrainTileId;
 
-    //    data.OutcomeId = OutcomeId;
-    //    data.RegionId = RegionId;
+        data.SpeechMethod           = SpeechMethod;
+        data.SpeechText             = SpeechText;
+        data.ShowTextBox            = ShowTextBox;
 
-    //    data.Index = Index;
+        data.ChangePosition         = ChangePosition;
+        data.FreezePosition         = FreezePosition;
 
-    //    data.Name = Name;
+        data.PositionX              = PositionX;
+        data.PositionY              = PositionY;
+        data.PositionZ              = PositionZ;
 
-    //    data.FreezeTime = FreezeTime;
-    //    data.AutoContinue = AutoContinue;
+        data.ChangeRotation         = ChangeRotation;
+        data.FaceTarget             = FaceTarget;
 
-    //    data.SceneDuration = SceneDuration;
-    //    data.ShotDuration = ShotDuration;
-
-    //    data.PublicNotes = PublicNotes;
-    //    data.PrivateNotes = PrivateNotes;
-    //}
+        data.RotationX              = RotationX;
+        data.RotationY              = RotationY;
+        data.RotationZ              = RotationZ;
+    }
 }
+

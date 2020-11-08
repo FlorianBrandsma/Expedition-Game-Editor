@@ -35,10 +35,8 @@ public static class SceneShotDataManager
 
                         RotationX = sceneShotData.RotationX,
                         RotationY = sceneShotData.RotationY,
-                        RotationZ = sceneShotData.RotationZ,
-
-                        Description = "Shot " + System.Enum.GetName(typeof(Enums.SceneShotType), sceneShotData.Type).ToLower()
-
+                        RotationZ = sceneShotData.RotationZ
+                        
                     }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());

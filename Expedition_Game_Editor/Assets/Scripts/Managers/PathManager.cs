@@ -248,6 +248,72 @@ public class PathManager
             return path;
         }
     }
+
+    public class SceneActor
+    {
+        Path path;
+        Route route;
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public SceneActor(EditorElement editorElement, Route route)
+        {
+            this.route = route;
+        }
+
+        public Path Open()
+        {
+            List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Actor };
+
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+
+            var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
+
+            Path path = new Path()
+            {
+                routeList = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes),
+                form = form,
+                start = form.activePath.start,
+                type = form.activePath.type
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
+        }
+    }
+
+    public class SceneProp
+    {
+        Path path;
+        Route route;
+        EditorForm form = RenderManager.layoutManager.forms[0];
+
+        public SceneProp(EditorElement editorElement, Route route)
+        {
+            this.route = route;
+        }
+
+        public Path Open()
+        {
+            List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Prop };
+
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+
+            var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
+
+            Path path = new Path()
+            {
+                routeList = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes),
+                form = form,
+                start = form.activePath.start,
+                type = form.activePath.type
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
+        }
+    }
     #endregion
 
     public class InteractionDestination

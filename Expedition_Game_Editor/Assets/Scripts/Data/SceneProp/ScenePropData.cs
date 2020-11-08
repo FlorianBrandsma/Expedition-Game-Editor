@@ -1,18 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScenePropData : MonoBehaviour
+public class ScenePropData : ScenePropBaseData
 {
-    // Start is called before the first frame update
-    void Start()
+    public string ModelName     { get; set; }
+    public string ModelIconPath { get; set; }
+
+    public override void GetOriginalValues(ScenePropData originalData)
     {
-        
+        ModelName = originalData.ModelName;
+        ModelIconPath = originalData.ModelIconPath;
+
+        base.GetOriginalValues(originalData);
     }
 
-    // Update is called once per frame
-    void Update()
+    public ScenePropData Clone()
     {
-        
+        var data = new ScenePropData();
+
+        data.ModelName = ModelName;
+        data.ModelIconPath = ModelIconPath;
+
+        base.Clone(data);
+
+        return data;
+    }
+
+    public virtual void Clone(ScenePropElementData elementData)
+    {
+        elementData.ModelName = ModelName;
+        elementData.ModelIconPath = ModelIconPath;
+
+        base.Clone(elementData);
     }
 }

@@ -14,7 +14,6 @@ public class SceneShotElementData : SceneShotData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
-
     public bool ChangedChangePosition
     {
         get { return ChangePosition != OriginalData.ChangePosition; }

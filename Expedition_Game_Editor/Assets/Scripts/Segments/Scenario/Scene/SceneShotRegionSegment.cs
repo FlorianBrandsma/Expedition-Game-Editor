@@ -122,8 +122,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         
         regionButton.child.DataElement.Id = RegionId;
 
-        Debug.Log(regionButton.DataElement.Id + ":" + regionButton.child.DataElement.Id);
-
         InitializeSearchParameters();
     }
 

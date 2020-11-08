@@ -8,7 +8,7 @@ public static class PhaseDataManager
     private static List<PhaseBaseData> phaseDataList;
 
     private static List<ChapterBaseData> chapterDataList;
-    private static List<PartyMemberBaseData> partyMemberDataList;
+    private static List<WorldInteractableBaseData> worldInteractableDataList;
     private static List<InteractableBaseData> interactableDataList;
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
@@ -27,7 +27,7 @@ public static class PhaseDataManager
         if (phaseDataList.Count == 0) return new List<IElementData>();
 
         GetChapterData();
-        GetPartyMemberData();
+        GetWorldInteractableData();
         GetInteractableData();
         GetModelData();
         GetIconData();
@@ -43,11 +43,11 @@ public static class PhaseDataManager
                     join regionData     in regionDataList   on phaseData.DefaultRegionId    equals regionData.Id
                     join tileSetData    in tileSetDataList  on regionData.TileSetId         equals tileSetData.Id
 
-                    join leftJoin in (from partyMemberData  in partyMemberDataList
-                                      join interactableData in interactableDataList on partyMemberData.InteractableId   equals interactableData.Id
+                    join leftJoin in (from worldInteractableData  in worldInteractableDataList
+                                      join interactableData in interactableDataList on worldInteractableData.InteractableId   equals interactableData.Id
                                       join modelData        in modelDataList        on interactableData.ModelId         equals modelData.Id
                                       join iconData         in iconDataList         on modelData.IconId                 equals iconData.Id
-                                      select new { partyMemberData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.partyMemberData.ChapterId into partyMemberData
+                                      select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
 
                     select new PhaseElementData()
                     {
@@ -68,7 +68,7 @@ public static class PhaseDataManager
                         DefaultRotationY = phaseData.DefaultRotationY,
                         DefaultRotationZ = phaseData.DefaultRotationZ,
 
-                        Scale = partyMemberData.First().interactableData.Scale,
+                        Scale = worldInteractableData.First().interactableData.Scale,
 
                         DefaultTime = phaseData.DefaultTime,
 
@@ -78,18 +78,18 @@ public static class PhaseDataManager
                         #warning This should really come from base data. Save terrain tile id and get region from there
                         TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
 
-                        PartyMemberId = partyMemberData.First().partyMemberData.Id,
+                        WorldInteractableId = worldInteractableData.First().worldInteractableData.Id,
                         
-                        ModelId = partyMemberData.First().modelData.Id,
-                        ModelPath = partyMemberData.First().modelData.Path,
+                        ModelId = worldInteractableData.First().modelData.Id,
+                        ModelPath = worldInteractableData.First().modelData.Path,
 
-                        ModelIconPath = partyMemberData.First().iconData.Path,
+                        ModelIconPath = worldInteractableData.First().iconData.Path,
                         
-                        Height = partyMemberData.First().modelData.Height,
-                        Width = partyMemberData.First().modelData.Width,
-                        Depth = partyMemberData.First().modelData.Depth,
+                        Height = worldInteractableData.First().modelData.Height,
+                        Width = worldInteractableData.First().modelData.Width,
+                        Depth = worldInteractableData.First().modelData.Depth,
 
-                        InteractableName = partyMemberData.First().interactableData.Name,
+                        InteractableName = worldInteractableData.First().interactableData.Name,
                         LocationName = RegionManager.LocationName(phaseData.DefaultPositionX, phaseData.DefaultPositionZ, tileSetData.TileSize, regionData, terrainDataList)
                         
                     }).OrderBy(x => x.Index).ToList();
@@ -138,78 +138,74 @@ public static class PhaseDataManager
 
     private static void GetChapterData()
     {
-        var chapterSearchParameters = new Search.Chapter();
+        var searchParameters = new Search.Chapter();
+        searchParameters.id = phaseDataList.Select(x => x.ChapterId).Distinct().ToList();
 
-        chapterSearchParameters.id = phaseDataList.Select(x => x.ChapterId).Distinct().ToList();
-
-        chapterDataList = DataManager.GetChapterData(chapterSearchParameters);
+        chapterDataList = DataManager.GetChapterData(searchParameters);
     }
 
-    private static void GetPartyMemberData()
+    private static void GetWorldInteractableData()
     {
-        var partyMemberSearchParameters = new Search.PartyMember();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
 
-        partyMemberSearchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
-
-        partyMemberDataList = DataManager.GetPartyMemberData(partyMemberSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = partyMemberDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     private static void GetRegionData()
     {
-        var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = phaseDataList.Select(x => x.DefaultRegionId).Distinct().ToList();
+        var searchParameters = new Search.Region();
+        searchParameters.id = phaseDataList.Select(x => x.DefaultRegionId).Distinct().ToList();
 
-        regionDataList = DataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTerrainData()
     {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Terrain();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
     private static void GetTerrainTileData()
     {
-        var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.TerrainTile();
+        searchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
+        terrainTileDataList = DataManager.GetTerrainTileData(searchParameters);
     }
 
     public static void UpdateData(PhaseElementData elementData)

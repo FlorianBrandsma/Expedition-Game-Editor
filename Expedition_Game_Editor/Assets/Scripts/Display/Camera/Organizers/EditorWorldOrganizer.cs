@@ -15,7 +15,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private List<WorldInteractableElementData> selectedWorldInteractableAgents      = new List<WorldInteractableElementData>();
     private List<WorldInteractableElementData> selectedWorldInteractableObjects     = new List<WorldInteractableElementData>();
     private List<InteractionDestinationElementData> selectedInteractionDestinations = new List<InteractionDestinationElementData>();
-    private List<PhaseElementData> selectedParty                                    = new List<PhaseElementData>();
+    private List<PhaseElementData> selectedPhase                                    = new List<PhaseElementData>();
     
     private List<IElementData> selectableDataList;
     
@@ -38,7 +38,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private DataController worldInteractableAgentController     = new DataController(Enums.DataType.WorldInteractable);
     private DataController worldInteractableObjectController    = new DataController(Enums.DataType.WorldInteractable);
     private DataController interactionDestinationController     = new DataController(Enums.DataType.InteractionDestination);
-    private DataController partyController                      = new DataController(Enums.DataType.Phase);
+    private DataController phaseController                      = new DataController(Enums.DataType.Phase);
     
     private ExScrollRect ScrollRect { get { return GetComponent<ExScrollRect>(); } }
 
@@ -103,15 +103,14 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         //Get selected world objects
         GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.WorldObject);
 
-        //Get selected phase if the region type is "party"
-        if(worldData.RegionType == Enums.RegionType.Party)
+        //Get selected phase if the region type is "controllable"
+        if(worldData.RegionType == Enums.RegionType.Controllable)
             GetSelectedElement(DataController.SegmentController.MainPath, Enums.DataType.Phase);
 
         InitializeControllers();
         
         SetWorldSize();
 
-        //CameraManager.cam.transform.localPosition = new Vector3(0, 0, -(worldData.TileSize * 0.5f));
         SetCamera();
     }
     
@@ -159,7 +158,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void GetSelectedPhases(List<Route> routes)
     {
-        selectedParty = worldData.PhaseDataList.Where(x => routes.Select(y => y.ElementData.Id).Contains(x.Id)).Distinct().ToList();
+        selectedPhase = worldData.PhaseDataList.Where(x => routes.Select(y => y.ElementData.Id).Contains(x.Id)).Distinct().ToList();
     }
 
     private void InitializeControllers()
@@ -168,12 +167,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         worldInteractableAgentController.SegmentController  = DataController.SegmentController;
         worldInteractableObjectController.SegmentController = DataController.SegmentController;
         interactionDestinationController.SegmentController  = DataController.SegmentController;
-        partyController.SegmentController                   = DataController.SegmentController;
+        phaseController.SegmentController                   = DataController.SegmentController;
         
         worldInteractableAgentController.DataCategory   = Enums.DataCategory.Navigation;
         worldInteractableObjectController.DataCategory  = Enums.DataCategory.Navigation;
         interactionDestinationController.DataCategory   = Enums.DataCategory.Navigation;
-        partyController.DataCategory                    = Enums.DataCategory.Navigation;
+        phaseController.DataCategory                    = Enums.DataCategory.Navigation;
 
         GetData();
     }
@@ -204,9 +203,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         interactionDestinationController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList).Cast<IElementData>().ToList();
         
-        partyController.Data = new Data()
+        phaseController.Data = new Data()
         {
-            dataController = partyController,
+            dataController = phaseController,
             dataList = worldData.PhaseDataList.Cast<IElementData>().ToList()
         };
     }
@@ -309,7 +308,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         var sceneShotRoute = DataController.SegmentController.MainPath.FindLastRoute(Enums.DataType.SceneShot);
 
-        if (worldData.RegionType != Enums.RegionType.Scene || sceneShotRoute != null && ((SceneShotElementData)sceneShotRoute.ElementData).Type == (int)Enums.SceneShotType.Base)
+        if (worldData.RegionType != Enums.RegionType.Scene || SceneShotManager.activeShotType == Enums.SceneShotType.Base /*sceneShotRoute != null && ((SceneShotElementData)sceneShotRoute.ElementData).Type == (int)Enums.SceneShotType.Base*/)
         {
             var worldSize = worldData.RegionSize * worldData.TerrainSize * worldData.TileSize;
 
@@ -323,7 +322,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             
         } else {
 
-            var sceneShotElementData = (SceneShotElementData)sceneShotRoute.ElementData;
+            var sceneShotElementData = SceneShotManager.GetActiveElementData(sceneShotRoute);
 
             CameraManager.cameraParent.transform.localPosition      = new Vector3(sceneShotElementData.PositionX, 
                                                                                   sceneShotElementData.PositionY, 
@@ -376,8 +375,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         if (selectedWorldObjects.Count > 0)
             SetWorldElements(worldObjectController, selectedWorldObjects.Cast<IElementData>().ToList());
 
-        if (selectedParty.Count > 0)
-            SetWorldElements(partyController, selectedParty.Cast<IElementData>().ToList());
+        if (selectedPhase.Count > 0)
+            SetWorldElements(phaseController, selectedPhase.Cast<IElementData>().ToList());
 
         SetData(DataController.Data.dataList);
     }
@@ -432,8 +431,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             //Set interactions that are bound to this terrain tile
             SetInteractionDestinations(terrainTileData.Id);
 
-            //Set default party representation of the active phase if it is bound to this tile 
-            SetParty(terrainTileData.Id);
+            //Set default controllable representation of the active phase if it is bound to this tile 
+            SetPhase(terrainTileData.Id);
         }
     }
     
@@ -489,12 +488,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         SetWorldElements(interactionDestinationController, interactionDestinationDataList);
     }
 
-    private void SetParty(int terrainTileId)
+    private void SetPhase(int terrainTileId)
     {
-        var partyDataList = partyController.Data.dataList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id) && 
+        var phaseDataList = phaseController.Data.dataList.Where(x => !selectedPhase.Select(y => y.Id).Contains(x.Id) && 
                                                                      ((PhaseElementData)x).TerrainTileId == terrainTileId).ToList();
 
-        SetWorldElements(partyController, partyDataList);
+        SetWorldElements(phaseController, phaseDataList);
     }
 
     private void SetWorldElements(IDataController dataController, List<IElementData> dataList)
@@ -544,7 +543,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             case Enums.DataType.WorldObject:            SetWorldObjectStatus(element);              break;
             case Enums.DataType.WorldInteractable:      SetWorldInteractableStatus(element);        break;
             case Enums.DataType.InteractionDestination: SetInteractionDestinationStatus(element);   break;
-            case Enums.DataType.Phase:                  SetPartyStatus(element);                    break;
+            case Enums.DataType.Phase:                  SetPhaseStatus(element);                    break;
             
             default: Debug.Log("CASE MISSING: " + element.DataElement.ElementData.DataType); break;
         }
@@ -552,7 +551,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetWorldObjectStatus(EditorElement element)
     {
-        if (worldData.RegionType == Enums.RegionType.InteractionDestination || worldData.RegionType == Enums.RegionType.Party || worldData.RegionType == Enums.RegionType.Game)
+        if (worldData.RegionType == Enums.RegionType.InteractionDestination || worldData.RegionType == Enums.RegionType.Controllable || worldData.RegionType == Enums.RegionType.Game)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -563,8 +562,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var worldInteractableDataElement = (WorldInteractableElementData)element.DataElement.ElementData;
 
-        //Locked when editing default party transform
-        if (worldData.RegionType == Enums.RegionType.Party)
+        //Locked when editing default controllable transform
+        if (worldData.RegionType == Enums.RegionType.Controllable)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -586,8 +585,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         var interactionDestinationDataElement = (InteractionDestinationElementData)element.DataElement.ElementData;
 
-        //Locked when editing default party transform
-        if (worldData.RegionType == Enums.RegionType.Party)
+        //Locked when editing default controllable transform
+        if (worldData.RegionType == Enums.RegionType.Controllable)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -648,12 +647,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
     }
     
-    private void SetPartyStatus(EditorElement element)
+    private void SetPhaseStatus(EditorElement element)
     {
-        var partyDataElement = (PhaseElementData)element.DataElement.ElementData;
+        var phaseDataElement = (PhaseElementData)element.DataElement.ElementData;
 
-        //Locked when not editing default party transform
-        if (worldData.RegionType != Enums.RegionType.Party)
+        //Locked when not editing default controllable transform
+        if (worldData.RegionType != Enums.RegionType.Controllable)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
@@ -745,9 +744,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             });
         }
 
-        if(selectedParty.Count > 0)
+        if(selectedPhase.Count > 0)
         {
-            selectedParty.ForEach(x =>
+            selectedPhase.ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -772,7 +771,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ClearWorldInteractableAgents(terrainTileData);
         ClearWorldInteractableObjects(terrainTileData);
         ClearInteractionDestinations(terrainTileData);
-        ClearParty(terrainTileData);
+        ClearPhase(terrainTileData);
     }
 
     private void ClearWorldObjects(TerrainTileElementData terrainTileData)
@@ -831,14 +830,14 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         });
     }
 
-    private void ClearParty(TerrainTileElementData terrainTileData)
+    private void ClearPhase(TerrainTileElementData terrainTileData)
     {
-        var partyElementList = partyController.Data.dataList.Cast<PhaseElementData>().Where(x => x.DataElement != null).ToList();
+        var phaseElementList = phaseController.Data.dataList.Cast<PhaseElementData>().Where(x => x.DataElement != null).ToList();
 
-        var inactivePartyList = partyElementList.Where(x => !selectedParty.Select(y => y.Id).Contains(x.Id) &&
-                                                            x.TerrainTileId == terrainTileData.Id).ToList();
+        var inactivePhaseList = phaseElementList.Where(x => !selectedPhase.Select(y => y.Id).Contains(x.Id) &&
+                                                       x.TerrainTileId == terrainTileData.Id).ToList();
 
-        inactivePartyList.ForEach(x =>
+        inactivePhaseList.ForEach(x =>
         {
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
             SelectionElementManager.CloseElement(x.DataElement);

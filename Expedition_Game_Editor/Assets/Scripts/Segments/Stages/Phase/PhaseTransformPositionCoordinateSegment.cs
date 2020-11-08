@@ -67,7 +67,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
 
         xInputField.max = regionSize.x;
-        yInputField.max = regionSize.y;
+        zInputField.max = regionSize.y;
 
         UpdateTime();
     }

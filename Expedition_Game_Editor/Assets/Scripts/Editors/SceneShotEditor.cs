@@ -45,6 +45,11 @@ public class SceneShotEditor : MonoBehaviour, IEditor
         get { return sceneShotData.SceneId; }
     }
 
+    public Enums.SceneShotType Type
+    {
+        get { return (Enums.SceneShotType)sceneShotData.Type; }
+    }
+
     public bool ChangePosition
     {
         get { return sceneShotData.ChangePosition; }
@@ -132,12 +137,6 @@ public class SceneShotEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => ((SceneShotElementData)x).RotationZ = value);
         }
     }
-    
-    public string Description
-    {
-        get { return sceneShotData.Description; }
-    }
-
     #endregion
 
     public void InitializeEditor()

@@ -53,11 +53,12 @@ public class SearchController : MonoBehaviour
 
         switch (searchParameters.dataType)
         {
-            case Enums.DataType.Tile:           dataController = gameObject.AddComponent<TileDataController>();             break;
-            case Enums.DataType.Icon:           dataController = gameObject.AddComponent<IconDataController>();             break;
-            case Enums.DataType.Model:          dataController = gameObject.AddComponent<ModelDataController>();            break;
-            case Enums.DataType.Interactable:   dataController = gameObject.AddComponent<InteractableDataController>();     break;
-            case Enums.DataType.Region:         dataController = gameObject.AddComponent<RegionDataController>();           break;
+            case Enums.DataType.Tile:               dataController = gameObject.AddComponent<TileDataController>();                 break;
+            case Enums.DataType.Icon:               dataController = gameObject.AddComponent<IconDataController>();                 break;
+            case Enums.DataType.Model:              dataController = gameObject.AddComponent<ModelDataController>();                break;
+            case Enums.DataType.Interactable:       dataController = gameObject.AddComponent<InteractableDataController>();         break;
+            case Enums.DataType.WorldInteractable:  dataController = gameObject.AddComponent<WorldInteractableDataController>();    break;
+            case Enums.DataType.Region:             dataController = gameObject.AddComponent<RegionDataController>();               break;
 
             default: Debug.Log("CASE MISSING:" + searchParameters.dataType); break;
         }

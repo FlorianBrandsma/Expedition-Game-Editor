@@ -1,10 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 static public class HistoryManager
 {
@@ -17,7 +12,9 @@ static public class HistoryManager
         if (historyPath.Count > 0 && path.historyGroup == historyPath[historyPath.Count - 1].historyGroup)
         {
             historyPath[historyPath.Count - 1] = path;
+
         } else {
+
             historyPath.Add(path);
         }
     }

@@ -6,7 +6,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 {
     private ChapterData chapterData;
 
-    public List<PartyMemberElementData> partyMemberElementDataList                  = new List<PartyMemberElementData>();
+    public List<WorldInteractableElementData> worldInteractableElementDataList      = new List<WorldInteractableElementData>();
     public List<ChapterInteractableElementData> chapterInteractableElementDataList  = new List<ChapterInteractableElementData>();
     public List<ChapterRegionElementData> chapterRegionElementDataList              = new List<ChapterRegionElementData>();
 
@@ -32,7 +32,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
             DataList.ForEach(x => { if (x != null) list.Add(x); });
 
-            partyMemberElementDataList.ForEach(x => list.Add(x));
+            worldInteractableElementDataList.ForEach(x => list.Add(x));
             chapterInteractableElementDataList.ForEach(x => list.Add(x));
             chapterRegionElementDataList.ForEach(x => list.Add(x));
 
@@ -291,7 +291,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        partyMemberElementDataList.Clear();
+        worldInteractableElementDataList.Clear();
         chapterInteractableElementDataList.Clear();
         chapterRegionElementDataList.Clear();
 

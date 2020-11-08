@@ -14,7 +14,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private ExGameWorldElement gameWorldObjectPrefab;
     private ExGameWorldElement gameWorldInteractableObjectPrefab;
     private ExGameWorldAgent gameWorldAgentPrefab;
-    private ExGameWorldAgent gameWorldPartyMemberPrefab;
+    private ExGameWorldAgent gameWorldControllablePrefab;
 
     private Rect activeRect;
     private Vector2 positionTracker = new Vector2();
@@ -27,17 +27,17 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 
     private IDataController DataController      { get { return DisplayManager.Display.DataController; } }
 
-    private DataController WorldObjectDataController                { get { return GameManager.instance.WorldObjectDataController; } }
-    private DataController WorldInteractableAgentDataController     { get { return GameManager.instance.WorldInteractableAgentDataController; } }
-    private DataController WorldInteractableObjectDataController    { get { return GameManager.instance.WorldInteractableObjectDataController; } }
-    private DataController PartyDataController                      { get { return GameManager.instance.PartyDataController; } }
+    private DataController WorldObjectDataController                    { get { return GameManager.instance.WorldObjectDataController; } }
+    private DataController WorldInteractableAgentDataController         { get { return GameManager.instance.WorldInteractableAgentDataController; } }
+    private DataController WorldInteractableObjectDataController        { get { return GameManager.instance.WorldInteractableObjectDataController; } }
+    private DataController WorldInteractableControllableDataController  { get { return GameManager.instance.WorldInteractableControllableDataController; } }
 
     public void InitializeOrganizer()
     {
         gameWorldObjectPrefab               = Resources.Load<ExGameWorldElement>("Elements/World/GameWorldObject");
         gameWorldInteractableObjectPrefab   = Resources.Load<ExGameWorldElement>("Elements/World/GameWorldInteractableObject");
         gameWorldAgentPrefab                = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldAgent");
-        gameWorldPartyMemberPrefab          = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldPartyMember");
+        gameWorldControllablePrefab         = Resources.Load<ExGameWorldAgent>("Elements/World/GameWorldControllable");
     }
 
     public void SelectData() { }
@@ -62,7 +62,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         //Set elements that are not bound to a tile
         SetWorldObjects();
         
-        SetPartyMembers();
+        SetControllables();
     }
     
     private void SetTerrain(GameTerrainElementData gameTerrainData)
@@ -119,24 +119,24 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetWorldInteractableAgents(int terrainTileId)
     {
         var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => x.DataElement == null && 
-                                                                                                       ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+                                                                                                           ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
 
         worldInteractableAgentDataList.ForEach(elementData => SetElement(WorldInteractableAgentDataController, elementData, gameWorldAgentPrefab));
     }
 
     private void SetWorldInteractableObjects(int terrainTileId)
     {
-        var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Where(x => x.DataElement == null &&
-                                                                                                         ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Where(x => x.DataElement == null && 
+                                                                                                             ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
 
         worldInteractableObjectDataList.ForEach(elementData => SetElement(WorldInteractableObjectDataController, elementData, gameWorldInteractableObjectPrefab));
     }
     
-    private void SetPartyMembers()
+    private void SetControllables()
     {
-        var partyMemberDataList = PartyDataController.Data.dataList.Where(x => x.DataElement == null).ToList();
+        var worldInteractableControllableDataList = WorldInteractableControllableDataController.Data.dataList.Where(x => x.DataElement == null).ToList();
 
-        partyMemberDataList.ForEach(elementData => SetElement(PartyDataController, elementData, gameWorldPartyMemberPrefab));
+        worldInteractableControllableDataList.ForEach(elementData => SetElement(WorldInteractableControllableDataController, elementData, gameWorldControllablePrefab));
     }
     
     private void SetWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
@@ -329,9 +329,9 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
             MovementManager.StartTravel(gameWorldInteractableElementData);
     }
 
-    private void ClearPartyMembers()
+    private void ClearWorldInteractableControllables()
     {
-        GameWorldData.PartyMemberList.ForEach(x =>
+        GameWorldData.WorldInteractableControllableDataList.ForEach(x =>
         {
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
             x.DataElement.Element.CloseElement();
@@ -341,7 +341,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     public void CloseOrganizer()
     {
         ClearOrganizer();
-        ClearPartyMembers();
+        ClearWorldInteractableControllables();
 
         positionTracker = new Vector2();
 

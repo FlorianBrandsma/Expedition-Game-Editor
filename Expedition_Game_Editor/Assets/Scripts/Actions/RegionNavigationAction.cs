@@ -64,13 +64,13 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
                 path.Add(interactionDestinationRoute);
 
-            } else if (RegionManager.regionType == Enums.RegionType.Party) {
+            } else if (RegionManager.regionType == Enums.RegionType.Controllable) {
 
                 var phaseRouteSource = path.FindLastRoute(Enums.DataType.Phase);
 
                 var phaseRoute = new Route()
                 {
-                    controllerIndex = (int)Enums.WorldSelectionType.Party,
+                    controllerIndex = (int)Enums.WorldSelectionType.Controllable,
                     id = phaseRouteSource.id,
                     data = phaseRouteSource.data,
                     path = phaseRouteSource.path,
@@ -84,30 +84,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 path.Add(regionRoute);
             }
         }
-
-        //Adds the scene shot route to the path of a scene region if it hasn't already been added and the scene shot type is not "base"
-        if (RegionManager.regionType == Enums.RegionType.Scene && path.routeList.Last().data.dataController.DataType != Enums.DataType.SceneShot)
-        {
-            var sceneShotRouteSource = path.FindLastRoute(Enums.DataType.SceneShot);
-
-            var sceneShotData = (SceneShotElementData)sceneShotRouteSource.ElementData;
-
-            if ((Enums.SceneShotType)sceneShotData.Type != Enums.SceneShotType.Base)
-            {
-                var sceneShotRoute = new Route()
-                {
-                    controllerIndex = 3,
-                    id = sceneShotRouteSource.id,
-                    data = sceneShotRouteSource.data,
-                    path = path,
-
-                    selectionStatus = sceneShotRouteSource.selectionStatus
-                };
-
-                path.Add(sceneShotRoute);
-            }
-        }
-
+        
         InitializeStructureData(path);
     }
 
@@ -119,10 +96,11 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         if (PathController.route.path.type == Path.Type.New)
         {
             if (RegionManager.regionType == Enums.RegionType.InteractionDestination || 
-                RegionManager.regionType == Enums.RegionType.Party                  || 
+                RegionManager.regionType == Enums.RegionType.Controllable           || 
                 RegionManager.regionType == Enums.RegionType.Scene)
             {
                 RegionManager.activeDisplay = RegionManager.Display.World;
+                SceneShotManager.activeShotType = Enums.SceneShotType.Base;
             } else {
                 RegionManager.activeDisplay = RegionManager.Display.Tiles;
             }
@@ -510,7 +488,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             case Enums.DataType.Region:                 SetRegionOptions(dropdown, data);                   break;
             case Enums.DataType.Outcome:                SetOutcomeOptions(dropdown, data);                  break;
             case Enums.DataType.Scene:                  SetSceneOptions(dropdown, data);                    break;
-            case Enums.DataType.SceneShot:              SetSceneShotOptions(dropdown, data);                break;
 
             case Enums.DataType.ChapterSave:            SetChapterSaveOptions(dropdown, data);              break;
             case Enums.DataType.PhaseSave:              SetPhaseSaveOptions(dropdown, data);                break;
@@ -592,12 +569,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var elementDataList = data.dataList.Cast<SceneElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
-    }
-
-    private void SetSceneShotOptions(ExDropdown dropdown, Data data)
-    {
-        var elementDataList = data.dataList.Cast<SceneShotElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Description)));
     }
 
     private void SetChapterSaveOptions(ExDropdown dropdown, Data data)
