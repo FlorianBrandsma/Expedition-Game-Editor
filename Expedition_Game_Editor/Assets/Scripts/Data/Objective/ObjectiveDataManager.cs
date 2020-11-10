@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,25 +43,10 @@ public static class ObjectiveDataManager
 
         foreach(ObjectiveBaseData objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.Id)) continue;
-            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.QuestId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.Id))             continue;
+            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.QuestId))   continue;
 
-            var objectiveData = new ObjectiveBaseData();
-            
-            objectiveData.Id = objective.Id;
-            
-            objectiveData.QuestId = objective.QuestId;
-
-            objectiveData.Index = objective.Index;
-
-            objectiveData.Name = objective.Name;
-
-            objectiveData.Journal = objective.Journal;
-
-            objectiveData.PublicNotes = objective.PublicNotes;
-            objectiveData.PrivateNotes = objective.PrivateNotes;
-
-            objectiveDataList.Add(objectiveData);
+            objectiveDataList.Add(objective);
         }
     }
 

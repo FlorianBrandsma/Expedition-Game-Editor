@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,10 +42,10 @@ public static class PhaseDataManager
                     join regionData     in regionDataList   on phaseData.DefaultRegionId    equals regionData.Id
                     join tileSetData    in tileSetDataList  on regionData.TileSetId         equals tileSetData.Id
 
-                    join leftJoin in (from worldInteractableData  in worldInteractableDataList
-                                      join interactableData in interactableDataList on worldInteractableData.InteractableId   equals interactableData.Id
-                                      join modelData        in modelDataList        on interactableData.ModelId         equals modelData.Id
-                                      join iconData         in iconDataList         on modelData.IconId                 equals iconData.Id
+                    join leftJoin in (from worldInteractableData    in worldInteractableDataList
+                                      join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                                      join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
+                                      join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
                                       select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
 
                     select new PhaseElementData()
@@ -105,34 +104,10 @@ public static class PhaseDataManager
 
         foreach(PhaseBaseData phase in Fixtures.phaseList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.Id)) continue;
-            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(phase.ChapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(phase.Id))                 continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(phase.ChapterId))   continue;
 
-            var phaseData = new PhaseBaseData();
-
-            phaseData.Id = phase.Id;
-            phaseData.Index = phase.Index;
-
-            phaseData.ChapterId = phase.ChapterId;
-
-            phaseData.Name = phase.Name;
-
-            phaseData.DefaultRegionId = phase.DefaultRegionId;
-
-            phaseData.DefaultPositionX = phase.DefaultPositionX;
-            phaseData.DefaultPositionY = phase.DefaultPositionY;
-            phaseData.DefaultPositionZ = phase.DefaultPositionZ;
-
-            phaseData.DefaultRotationX = phase.DefaultRotationX;
-            phaseData.DefaultRotationY = phase.DefaultRotationY;
-            phaseData.DefaultRotationZ = phase.DefaultRotationZ;
-
-            phaseData.DefaultTime = phase.DefaultTime;
-
-            phaseData.PublicNotes = phase.PublicNotes;
-            phaseData.PrivateNotes = phase.PrivateNotes;
-
-            phaseDataList.Add(phaseData);
+            phaseDataList.Add(phase);
         }
     }
 

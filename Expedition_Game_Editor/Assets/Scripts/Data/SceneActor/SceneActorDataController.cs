@@ -38,7 +38,24 @@ public class SceneActorDataController : MonoBehaviour, IDataController
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
+    {
+        var searchSceneActorElementData = (SceneActorElementData)searchElementData;
+
+        switch (resultElementData.DataType)
+        {
+            case Enums.DataType.WorldInteractable:
+
+                var resultWorldInteractableElementData = (WorldInteractableElementData)resultElementData;
+
+                searchSceneActorElementData.WorldInteractableId = resultWorldInteractableElementData.Id;
+
+                searchSceneActorElementData.InteractableName = resultWorldInteractableElementData.InteractableName;
+                searchSceneActorElementData.ModelIconPath = resultWorldInteractableElementData.ModelIconPath;
+
+                break;
+        }
+    }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

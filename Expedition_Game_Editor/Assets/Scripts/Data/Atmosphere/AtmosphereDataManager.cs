@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -75,65 +74,51 @@ public static class AtmosphereDataManager
 
         foreach (AtmosphereBaseData atmosphere in Fixtures.atmosphereList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
-            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.TerrainId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(atmosphere.Id))                continue;
+            if (searchParameters.terrainId.Count    > 0 && !searchParameters.terrainId.Contains(atmosphere.TerrainId))  continue;
 
-            var atmosphereData = new AtmosphereBaseData();
-
-            atmosphereData.Id = atmosphere.Id;
-
-            atmosphereData.TerrainId = atmosphere.TerrainId;
-
-            atmosphereData.Default = atmosphere.Default;
-
-            atmosphereData.StartTime = atmosphere.StartTime;
-            atmosphereData.EndTime = atmosphere.EndTime;
-
-            atmosphereData.PublicNotes = atmosphere.PublicNotes;
-            atmosphereData.PrivateNotes = atmosphere.PrivateNotes;
-
-            atmosphereDataList.Add(atmosphereData);
+            atmosphereDataList.Add(atmosphere);
         }
     }
 
     private static void GetTerrainData()
     {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.id = atmosphereDataList.Select(x => x.TerrainId).Distinct().ToList();
+        var searchParameters = new Search.Terrain();
+        searchParameters.id = atmosphereDataList.Select(x => x.TerrainId).Distinct().ToList();
 
-        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
     private static void GetRegionData()
     {
-        var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = terrainDataList.Select(x => x.RegionId).Distinct().ToList();
+        var searchParameters = new Search.Region();
+        searchParameters.id = terrainDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = DataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = terrainDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = terrainDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(AtmosphereElementData elementData)

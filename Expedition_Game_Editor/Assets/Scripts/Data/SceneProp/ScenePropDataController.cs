@@ -38,7 +38,24 @@ public class ScenePropDataController : MonoBehaviour, IDataController
         DataManager.ReplaceRouteData(this);
     }
 
-    public void SetData(IElementData searchElementData, IElementData resultElementData) { }
+    public void SetData(IElementData searchElementData, IElementData resultElementData)
+    {
+        var searchScenePropElementData = (ScenePropElementData)searchElementData;
+
+        switch (resultElementData.DataType)
+        {
+            case Enums.DataType.Model:
+
+                var resultModelElementData = (ModelElementData)resultElementData;
+
+                searchScenePropElementData.ModelId = resultModelElementData.Id;
+
+                searchScenePropElementData.ModelName = resultModelElementData.Name;
+                searchScenePropElementData.ModelIconPath = resultModelElementData.IconPath;
+
+                break;
+        }
+    }
 
     public void ToggleElement(EditorElement editorElement) { }
 }

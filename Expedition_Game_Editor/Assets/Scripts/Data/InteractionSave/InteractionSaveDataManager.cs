@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,26 +52,17 @@ public static class InteractionSaveDataManager
         {
             if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactionSave.Id))                   continue;
             if (searchParameters.taskSaveId.Count   > 0 && !searchParameters.taskSaveId.Contains(interactionSave.TaskSaveId))   continue;
-            
-            var interactionSaveData = new InteractionSaveBaseData();
 
-            interactionSaveData.Id = interactionSave.Id;
-
-            interactionSaveData.TaskSaveId = interactionSave.TaskSaveId;
-            interactionSaveData.InteractionId = interactionSave.InteractionId;
-
-            interactionSaveData.Complete = interactionSave.Complete;
-
-            interactionSaveDataList.Add(interactionSaveData);
+            interactionSaveDataList.Add(interactionSave);
         }
     }
 
     private static void GetInteractionData()
     {
-        var interactionSearchParameters = new Search.Interaction();
-        interactionSearchParameters.id = interactionSaveDataList.Select(x => x.InteractionId).Distinct().ToList();
+        var searchParameters = new Search.Interaction();
+        searchParameters.id = interactionSaveDataList.Select(x => x.InteractionId).Distinct().ToList();
 
-        interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
+        interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
     public static void UpdateData(InteractionSaveElementData elementData)

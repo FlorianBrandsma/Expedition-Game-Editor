@@ -77,60 +77,40 @@ public class SceneDataManager : MonoBehaviour
             if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(scene.Id)) continue;
             if (searchParameters.outcomeId.Count    > 0 && !searchParameters.outcomeId.Contains(scene.OutcomeId)) continue;
 
-            var outcomeData = new SceneBaseData();
-
-            outcomeData.Id = scene.Id;
-
-            outcomeData.OutcomeId = scene.OutcomeId;
-            outcomeData.RegionId = scene.RegionId;
-
-            outcomeData.Index = scene.Index;
-
-            outcomeData.Name = scene.Name;
-
-            outcomeData.FreezeTime = scene.FreezeTime;
-            outcomeData.AutoContinue = scene.AutoContinue;
-
-            outcomeData.SceneDuration = scene.SceneDuration;
-            outcomeData.ShotDuration = scene.ShotDuration;
-
-            outcomeData.PublicNotes = scene.PublicNotes;
-            outcomeData.PrivateNotes = scene.PrivateNotes;
-
-            sceneDataList.Add(outcomeData);
+            sceneDataList.Add(scene);
         }
     }
 
     private static void GetRegionData()
     {
-        var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = sceneDataList.Select(x => x.RegionId).Distinct().ToList();
+        var searchParameters = new Search.Region();
+        searchParameters.id = sceneDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = DataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
     private static void GetTerrainData()
     {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Terrain();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     public static void UpdateData(SceneElementData elementData)

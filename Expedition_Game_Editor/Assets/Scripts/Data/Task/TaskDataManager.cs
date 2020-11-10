@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,23 +48,7 @@ public static class TaskDataManager
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.WorldInteractableId))    continue;
             if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.ObjectiveId))                    continue;
 
-            var taskData = new TaskBaseData();
-
-            taskData.Id = task.Id;
-            taskData.Index = task.Index;
-
-            taskData.WorldInteractableId = task.WorldInteractableId;
-            taskData.ObjectiveId = task.ObjectiveId;
-
-            taskData.Name = task.Name;
-
-            taskData.CompleteObjective = task.CompleteObjective;
-            taskData.Repeatable = task.Repeatable;
-
-            taskData.PublicNotes = task.PublicNotes;
-            taskData.PrivateNotes = task.PrivateNotes;
-            
-            taskDataList.Add(taskData);
+            taskDataList.Add(task);
         }
     }
 

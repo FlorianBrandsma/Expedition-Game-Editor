@@ -59,7 +59,7 @@ public class GameInteractionData
         TriggerAutomatically        = originalData.TriggerAutomatically;
         BeNearDestination           = originalData.BeNearDestination;
         FaceInteractable            = originalData.FaceInteractable;
-        FaceControllable             = originalData.FaceControllable;
+        FaceControllable            = originalData.FaceControllable;
         HideInteractionIndicator    = originalData.HideInteractionIndicator;
 
         InteractionRange            = originalData.InteractionRange;
@@ -98,7 +98,7 @@ public class GameInteractionData
         data.TriggerAutomatically       = TriggerAutomatically;
         data.BeNearDestination          = BeNearDestination;
         data.FaceInteractable           = FaceInteractable;
-        data.FaceControllable            = FaceControllable;
+        data.FaceControllable           = FaceControllable;
         data.HideInteractionIndicator   = HideInteractionIndicator;
 
         data.InteractionRange           = InteractionRange;
@@ -139,7 +139,7 @@ public class GameInteractionData
         elementData.TriggerAutomatically        = TriggerAutomatically;
         elementData.BeNearDestination           = BeNearDestination;
         elementData.FaceInteractable            = FaceInteractable;
-        elementData.FaceControllable             = FaceControllable;
+        elementData.FaceControllable            = FaceControllable;
         elementData.HideInteractionIndicator    = HideInteractionIndicator;
 
         elementData.InteractionRange            = InteractionRange;

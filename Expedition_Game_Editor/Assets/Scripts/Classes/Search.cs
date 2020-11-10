@@ -20,6 +20,7 @@ public class Search
     public class Model
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public enum RequestType
         {
@@ -174,6 +175,7 @@ public class Search
     public class WorldInteractable
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public List<int> type = new List<int>();
 
@@ -196,7 +198,8 @@ public class Search
         {
             Custom,
             GetRegionWorldInteractables,
-            GetQuestAndObjectiveWorldInteractables
+            GetQuestAndObjectiveWorldInteractables,
+            GetSceneActorWorldInteractables
         }
 
         public RequestType requestType;
@@ -303,6 +306,7 @@ public class Search
     public class SceneProp
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public List<int> sceneId = new List<int>();
 

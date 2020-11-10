@@ -106,7 +106,14 @@ public class SceneActorElementData : SceneActorData, IElementData
 
     public void UpdateSearch()
     {
-        Debug.Log("UPDATE ME");
+        if (!Changed) return;
+
+        SceneActorDataManager.UpdateSearch(this);
+
+        OriginalData.WorldInteractableId = WorldInteractableId;
+
+        OriginalData.InteractableName = InteractableName;
+        OriginalData.ModelIconPath = ModelIconPath;
     }
 
     public void SetOriginalValues()

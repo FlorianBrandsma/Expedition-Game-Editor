@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,13 +38,7 @@ public static class IconDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(icon.Id)) continue;
             if (searchParameters.category.Count > 0 && !searchParameters.category.Contains(icon.Category)) continue;
 
-            var iconData = new IconBaseData();
-
-            iconData.Id = icon.Id;
-
-            iconData.Path = icon.Path;
-
-            iconDataList.Add(iconData);
+            iconDataList.Add(icon);
         }
     }
 }

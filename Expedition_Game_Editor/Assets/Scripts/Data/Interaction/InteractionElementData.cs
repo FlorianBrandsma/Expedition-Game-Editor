@@ -105,7 +105,7 @@ public class InteractionElementData : InteractionData, IElementData
         {
             return  ChangedStartTime            || ChangedEndTime                   || ChangedArrivalType           ||
                     ChangedTriggerAutomatically || ChangedBeNearDestination         || ChangedFaceInteractable      ||
-                    ChangedFaceControllable      || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
+                    ChangedFaceControllable     || ChangedHideInteractionIndicator  || ChangedInteractionRange      ||
                     ChangedDelayMethod          || ChangedDelayDuration             ||
                     ChangedHideDelayIndicator   || ChangedCancelDelayOnInput        || ChangedCancelDelayOnMovement ||
                     ChangedCancelDelayOnHit     ||

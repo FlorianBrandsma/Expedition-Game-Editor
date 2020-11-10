@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,21 +40,9 @@ public static class ChapterDataManager
 
         foreach(ChapterBaseData chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) return;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) continue;
 
-            var chapterData = new ChapterBaseData();
-            
-            chapterData.Id = chapter.Id;
-            chapterData.Index = chapter.Index;
-
-            chapterData.Name = chapter.Name;
-
-            chapterData.TimeSpeed = chapter.TimeSpeed;
-
-            chapterData.PublicNotes = chapter.PublicNotes;
-            chapterData.PrivateNotes = chapter.PrivateNotes;
-            
-            chapterDataList.Add(chapterData);
+            chapterDataList.Add(chapter);
         }
     }
 

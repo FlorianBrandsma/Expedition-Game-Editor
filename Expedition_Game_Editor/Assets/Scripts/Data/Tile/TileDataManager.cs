@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,17 +35,10 @@ public static class TileDataManager
 
         foreach (TileBaseData tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.Id)) continue;
-            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.TileSetId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.Id))                  continue;
+            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.TileSetId))    continue;
 
-            var tileData = new TileBaseData();
-
-            tileData.Id = tile.Id;
-
-            tileData.TileSetId = tile.TileSetId;
-            tileData.IconPath = tile.IconPath;
-            
-            tileDataList.Add(tileData);
+            tileDataList.Add(tile);
         }
     }
 }

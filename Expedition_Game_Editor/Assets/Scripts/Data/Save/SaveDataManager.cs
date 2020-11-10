@@ -86,14 +86,7 @@ public static class SaveDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.Id))          continue;
             if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.GameId))  continue;
 
-            var saveData = new SaveBaseData();
-
-            saveData.Id = save.Id;
-            saveData.Index = save.Index;
-
-            saveData.GameId = save.GameId;
-
-            saveDataList.Add(saveData);
+            saveDataList.Add(save);
         }
     }
 
@@ -155,10 +148,10 @@ public static class SaveDataManager
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetPhaseData()

@@ -23,7 +23,7 @@ public class EditorWorldSceneActorSegment : MonoBehaviour, ISegment
 
         SegmentController.DataController.GetData(searchProperties);
 
-        //Objective interactables and region interactables can be picked as actors
+        SetSearchParameters();
     }
 
     public void InitializeSegment()
@@ -37,7 +37,32 @@ public class EditorWorldSceneActorSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    private void SetSearchParameters()
+    {
+        var path = RenderManager.layoutManager.forms.First().activePath;
+
+        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+        searchParameters.requestType = Search.WorldInteractable.RequestType.GetSceneActorWorldInteractables;
+
+        //Region world interactables (all phase regions)
+        searchParameters.regionId = new List<int>() { path.FindLastRoute(Enums.DataType.Region).id };
+
+        //Controllable world interactables
+        searchParameters.chapterId = new List<int>() { path.FindLastRoute(Enums.DataType.Chapter).id };
+        
+        //Phase interactables belonging to the active quest
+        searchParameters.questId = new List<int>() { path.FindLastRoute(Enums.DataType.Quest).id };
+
+        //Temporary objective interactables
+        searchParameters.objectiveId = new List<int>() { path.FindLastRoute(Enums.DataType.Objective).id };
+
+        searchParameters.excludeId = SegmentController.DataController.Data.dataList.Cast<SceneActorElementData>().Select(x => x.WorldInteractableId).ToList();
+    }
+
+    public void SetSearchResult(IElementData elementData)
+    {
+        SetSearchParameters();
+    }
 
     public void CloseSegment() { }
 }

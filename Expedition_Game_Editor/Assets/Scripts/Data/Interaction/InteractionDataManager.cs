@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -105,119 +104,83 @@ public static class InteractionDataManager
 
         foreach(InteractionBaseData interaction in Fixtures.interactionList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id)) continue;
-            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.TaskId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(interaction.Id))           continue;
+            if (searchParameters.taskId.Count   > 0 && !searchParameters.taskId.Contains(interaction.TaskId))   continue;
 
-            var interactionData = new InteractionBaseData();
-
-            interactionData.Id = interaction.Id;
-
-            interactionData.TaskId = interaction.TaskId;
-
-            interactionData.Default = interaction.Default;
-
-            interactionData.StartTime = interaction.StartTime;
-            interactionData.EndTime = interaction.EndTime;
-
-            interactionData.ArrivalType = interaction.ArrivalType;
-
-            interactionData.TriggerAutomatically = interaction.TriggerAutomatically;
-            interactionData.BeNearDestination = interaction.BeNearDestination;
-            interactionData.FaceInteractable = interaction.FaceInteractable;
-            interactionData.FaceControllable = interaction.FaceControllable;
-            interactionData.HideInteractionIndicator = interaction.HideInteractionIndicator;
-
-            interactionData.InteractionRange = interaction.InteractionRange;
-
-            interactionData.DelayMethod = interaction.DelayMethod;
-            interactionData.DelayDuration = interaction.DelayDuration;
-            interactionData.HideDelayIndicator = interaction.HideDelayIndicator;
-
-            interactionData.CancelDelayOnInput = interaction.CancelDelayOnInput;
-            interactionData.CancelDelayOnMovement = interaction.CancelDelayOnMovement;
-            interactionData.CancelDelayOnHit = interaction.CancelDelayOnHit;
-
-            interactionData.PublicNotes = interaction.PublicNotes;
-            interactionData.PrivateNotes = interaction.PrivateNotes;
-
-            interactionDataList.Add(interactionData);
+            interactionDataList.Add(interaction);
         }
     }
 
     private static void GetTaskData()
     {
-        var taskSearchParameters = new Search.Task();
+        var searchParameters = new Search.Task();
+        searchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskSearchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
-
-        taskDataList = DataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(searchParameters);
     }
 
     private static void GetWorldInteractableData()
     {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
-
-        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     private static void GetInteractionDestinationData()
     {
-        var interactionDestinationSearchParameters = new Search.InteractionDestination();
-        interactionDestinationSearchParameters.interactionId = interactionDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.InteractionDestination();
+        searchParameters.interactionId = interactionDataList.Select(x => x.Id).Distinct().ToList();
 
-        interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+        interactionDestinationDataList = DataManager.GetInteractionDestinationData(searchParameters);
     }
 
     private static void GetRegionData()
     {
-        var regionSearchParameters = new Search.Region();
-        regionSearchParameters.id = interactionDestinationDataList.Select(x => x.RegionId).Distinct().ToList();
+        var searchParameters = new Search.Region();
+        searchParameters.id = interactionDestinationDataList.Select(x => x.RegionId).Distinct().ToList();
 
-        regionDataList = DataManager.GetRegionData(regionSearchParameters);
+        regionDataList = DataManager.GetRegionData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTerrainData()
     {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Terrain();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
     private static List<int> DefaultTimes()

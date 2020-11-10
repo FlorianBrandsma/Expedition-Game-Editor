@@ -25,7 +25,7 @@ public class PlayerControlManager : MonoBehaviour
     private StatusIconOverlay StatusIconOverlay             { get { return cameraManager.overlayManager.StatusIconOverlay; } }
 
     private PlayerSaveElementData PlayerData                { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
-    private GameWorldInteractableElementData ActiveCharacterData  { get { return GameManager.instance.controllableWorldInteractableData; } }
+    private GameWorldInteractableElementData ActiveCharacterData  { get { return GameManager.instance.worldInteractableControllableData; } }
     private GameElement ActiveCharacter                     { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
     private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.Element).Animator; } }
     

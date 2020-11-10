@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,19 +43,7 @@ public static class QuestDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(quest.Id)) continue;
             if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(quest.PhaseId)) continue;
 
-            var questData = new QuestBaseData();
-
-            questData.Id = quest.Id;
-            questData.Index = quest.Index;
-
-            questData.PhaseId = quest.PhaseId;
-
-            questData.Name = quest.Name;
-
-            questData.PublicNotes = quest.PublicNotes;
-            questData.PrivateNotes = quest.PrivateNotes;
-
-            questDataList.Add(questData);
+            questDataList.Add(quest);
         }
     }
 

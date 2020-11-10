@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,45 +49,36 @@ public static class ChapterInteractableDataManager
 
         foreach (ChapterInteractableBaseData chapterInteractable in Fixtures.chapterInteractableList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(chapterInteractable.Id)) continue;
-            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.ChapterId)) continue;
-            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.InteractableId)) continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(chapterInteractable.Id))                           continue;
+            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(chapterInteractable.ChapterId))             continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(chapterInteractable.InteractableId))   continue;
 
-            var chapterInteractableData = new ChapterInteractableBaseData();
-
-            chapterInteractableData.Id = chapterInteractable.Id;
-
-            chapterInteractableData.ChapterId = chapterInteractable.ChapterId;
-            chapterInteractableData.InteractableId = chapterInteractable.InteractableId;
-
-            chapterInteractableDataList.Add(chapterInteractableData);
+            chapterInteractableDataList.Add(chapterInteractable);
         }
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = chapterInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = chapterInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(ChapterInteractableElementData elementData)

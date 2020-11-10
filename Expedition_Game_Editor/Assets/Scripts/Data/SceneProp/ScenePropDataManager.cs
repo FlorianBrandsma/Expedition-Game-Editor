@@ -53,52 +53,34 @@ public static class ScenePropDataManager
 
         foreach (ScenePropBaseData sceneProp in Fixtures.scenePropList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneProp.Id))             continue;
-            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneProp.SceneId))   continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(sceneProp.Id))             continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(sceneProp.Id))       continue;
+            if (searchParameters.sceneId.Count      > 0 && !searchParameters.sceneId.Contains(sceneProp.SceneId))   continue;
 
-            var scenePropData = new ScenePropBaseData();
-
-            scenePropData.Id = sceneProp.Id;
-
-            scenePropData.SceneId = sceneProp.SceneId;
-            scenePropData.ModelId = sceneProp.ModelId;
-
-            scenePropData.PositionX = sceneProp.PositionX;
-            scenePropData.PositionY = sceneProp.PositionY;
-            scenePropData.PositionZ = sceneProp.PositionZ;
-
-            scenePropData.RotationX = sceneProp.RotationX;
-            scenePropData.RotationY = sceneProp.RotationY;
-            scenePropData.RotationZ = sceneProp.RotationZ;
-
-            scenePropDataList.Add(scenePropData);
+            scenePropDataList.Add(sceneProp);
         }
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = scenePropDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = scenePropDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(ScenePropElementData elementData)
     {
         var data = Fixtures.scenePropList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-
-        if (elementData.ChangedModelId)
-            data.ModelId = elementData.ModelId;
-
+        
         if (elementData.ChangedPositionX)
             data.PositionX = elementData.PositionX;
 
@@ -116,5 +98,13 @@ public static class ScenePropDataManager
 
         if (elementData.ChangedRotationZ)
             data.RotationZ = elementData.RotationZ;
+    }
+
+    public static void UpdateSearch(ScenePropElementData elementData)
+    {
+        var data = Fixtures.scenePropList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (elementData.ChangedModelId)
+            data.ModelId = elementData.ModelId;
     }
 }

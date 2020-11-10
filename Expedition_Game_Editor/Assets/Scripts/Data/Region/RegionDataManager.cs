@@ -91,52 +91,40 @@ public static class RegionDataManager
             if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(region.Id))      continue;
             if (searchParameters.phaseId.Count      > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
 
-            var regionData = new RegionBaseData();
-
-            regionData.Id = region.Id;
-            regionData.Index = region.Index;
-
-            regionData.ChapterRegionId = region.ChapterRegionId;
-            regionData.PhaseId = region.PhaseId;
-            regionData.TileSetId = region.TileSetId;
-            regionData.Name = region.Name;
-            regionData.RegionSize = region.RegionSize;
-            regionData.TerrainSize = region.TerrainSize;
-
-            regionDataList.Add(regionData);
+            regionDataList.Add(region);
         }
     }
 
     private static void GetTerrainData()
     {
-        var terrainSearchParameters = new Search.Terrain();
-        terrainSearchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Terrain();
+        searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+        terrainDataList = DataManager.GetTerrainData(searchParameters);
     }
 
     private static void GetTerrainTileData()
     {
-        var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.TerrainTile();
+        searchParameters.terrainId = terrainDataList.Select(x => x.Id).Distinct().ToList();
 
-        terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
+        terrainTileDataList = DataManager.GetTerrainTileData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     public static void UpdateData(RegionElementData elementData)

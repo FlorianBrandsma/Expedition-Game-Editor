@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,25 +52,16 @@ public static class ChapterSaveDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.Id))           continue;
             if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.SaveId))   continue;
 
-            var chapterSaveData = new ChapterSaveBaseData();
-
-            chapterSaveData.Id = chapterSave.Id;
-
-            chapterSaveData.SaveId = chapterSave.SaveId;
-            chapterSaveData.ChapterId = chapterSave.ChapterId;
-
-            chapterSaveData.Complete = chapterSave.Complete;
-
-            chapterSaveDataList.Add(chapterSaveData);
+            chapterSaveDataList.Add(chapterSave);
         }
     }
 
     private static void GetChapterData()
     {
-        var chapterSearchParameters = new Search.Chapter();
-        chapterSearchParameters.id = chapterSaveDataList.Select(x => x.ChapterId).Distinct().ToList();
+        var searchParameters = new Search.Chapter();
+        searchParameters.id = chapterSaveDataList.Select(x => x.ChapterId).Distinct().ToList();
 
-        chapterDataList = DataManager.GetChapterData(chapterSearchParameters);
+        chapterDataList = DataManager.GetChapterData(searchParameters);
     }
 
     public static void UpdateData(ChapterSaveElementData elementData)

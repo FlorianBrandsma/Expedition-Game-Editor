@@ -26,13 +26,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private Rect activeRect;
     private Vector2 positionTracker = new Vector2();
 
-    private IDisplayManager DisplayManager      { get { return GetComponent<IDisplayManager>(); } }
-    private CameraManager CameraManager         { get { return (CameraManager)DisplayManager; } }
+    private IDisplayManager DisplayManager          { get { return GetComponent<IDisplayManager>(); } }
+    private CameraManager CameraManager             { get { return (CameraManager)DisplayManager; } }
     
-    private CameraProperties CameraProperties   { get { return (CameraProperties)DisplayManager.Display; } }
-    private EditorWorldProperties WorldProperties     { get { return (EditorWorldProperties)DisplayManager.Display.Properties; } }
+    private CameraProperties CameraProperties       { get { return (CameraProperties)DisplayManager.Display; } }
+    private EditorWorldProperties WorldProperties   { get { return (EditorWorldProperties)DisplayManager.Display.Properties; } }
 
-    private IDataController DataController      { get { return CameraManager.Display.DataController; } }
+    private IDataController DataController          { get { return CameraManager.Display.DataController; } }
 
     private DataController worldObjectController                = new DataController(Enums.DataType.WorldObject);
     private DataController worldInteractableAgentController     = new DataController(Enums.DataType.WorldInteractable);
@@ -308,7 +308,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         var sceneShotRoute = DataController.SegmentController.MainPath.FindLastRoute(Enums.DataType.SceneShot);
 
-        if (worldData.RegionType != Enums.RegionType.Scene || SceneShotManager.activeShotType == Enums.SceneShotType.Base /*sceneShotRoute != null && ((SceneShotElementData)sceneShotRoute.ElementData).Type == (int)Enums.SceneShotType.Base*/)
+        if (worldData.RegionType != Enums.RegionType.Scene || SceneShotManager.activeShotType == Enums.SceneShotType.Base)
         {
             var worldSize = worldData.RegionSize * worldData.TerrainSize * worldData.TileSize;
 
@@ -779,7 +779,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var worldObjectElementList = worldObjectController.Data.dataList.Cast<WorldObjectElementData>().Where(x => x.DataElement != null).ToList();
         
         var inactiveWorldObjectList = worldObjectElementList.Where(x => !selectedWorldObjects.Select(y => y.Id).Contains(x.Id) && 
-                                                                   x.TerrainTileId == terrainTileData.Id).ToList();
+                                                                        x.TerrainTileId == terrainTileData.Id).ToList();
 
         inactiveWorldObjectList.ForEach(x => 
         {
@@ -821,7 +821,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var interactionDestinationElementList = interactionDestinationController.Data.dataList.Cast<InteractionDestinationElementData>().Where(x => x.DataElement != null).ToList();
 
         var inactiveInteractionDestinationList = interactionDestinationElementList.Where(x => !selectedInteractionDestinations.Select(y => y.Id).Contains(x.Id) && 
-                                                                                         x.TerrainTileId == terrainTileData.Id).ToList();
+                                                                                              x.TerrainTileId == terrainTileData.Id).ToList();
 
         inactiveInteractionDestinationList.ForEach(x => 
         {
@@ -835,7 +835,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var phaseElementList = phaseController.Data.dataList.Cast<PhaseElementData>().Where(x => x.DataElement != null).ToList();
 
         var inactivePhaseList = phaseElementList.Where(x => !selectedPhase.Select(y => y.Id).Contains(x.Id) &&
-                                                       x.TerrainTileId == terrainTileData.Id).ToList();
+                                                            x.TerrainTileId == terrainTileData.Id).ToList();
 
         inactivePhaseList.ForEach(x =>
         {

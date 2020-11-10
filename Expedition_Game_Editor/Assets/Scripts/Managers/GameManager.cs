@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameSaveElementData gameSaveData;
     public GameWorldElementData gameWorldData;
     public GameRegionElementData regionData;
-    public GameWorldInteractableElementData controllableWorldInteractableData;
+    public GameWorldInteractableElementData worldInteractableControllableData;
 
     private List<TerrainTileData> activeTileList;
     private List<GameWorldInteractableElementData> activeWorldInteractableList;
@@ -18,12 +18,12 @@ public class GameManager : MonoBehaviour
     public GameSaveDataController gameSaveController;
     public GameWorldDataController gameWorldController;
 
-    public DataController WorldObjectDataController             { get; set; } = new DataController(Enums.DataType.WorldObject);
-    public DataController WorldInteractableAgentDataController  { get; set; } = new DataController(Enums.DataType.WorldInteractable);
-    public DataController WorldInteractableObjectDataController { get; set; } = new DataController(Enums.DataType.WorldInteractable);
-    public DataController WorldInteractableControllableDataController                   { get; set; } = new DataController(Enums.DataType.Phase);
+    public DataController WorldObjectDataController                     { get; set; } = new DataController(Enums.DataType.WorldObject);
+    public DataController WorldInteractableAgentDataController          { get; set; } = new DataController(Enums.DataType.WorldInteractable);
+    public DataController WorldInteractableObjectDataController         { get; set; } = new DataController(Enums.DataType.WorldInteractable);
+    public DataController WorldInteractableControllableDataController   { get; set; } = new DataController(Enums.DataType.Phase);
 
-    public GameWorldOrganizer Organizer                         { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
+    public GameWorldOrganizer Organizer { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
 
     public LocalNavMeshBuilder localNavMeshBuilder;
 
@@ -262,16 +262,19 @@ public class GameManager : MonoBehaviour
     private void InitializeControllable()
     {
         //The first controllable agent of a chapter is the default
-        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
-            ActiveWorldInteractableControllableId = gameWorldData.WorldInteractableControllableDataList.First().Id;
-        else
-            ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
+
+        //This line doesn't make any sense. Disabled logic for now
+        //if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
+
+        ActiveWorldInteractableControllableId = gameWorldData.WorldInteractableControllableDataList.First().Id;
+        
+        //else
+            //ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
     }
 
     public void ChangeControllable()
     {
-        Debug.Log("Change controllable");
-        controllableWorldInteractableData = gameWorldData.WorldInteractableControllableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
+        worldInteractableControllableData = gameWorldData.WorldInteractableControllableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
 
         PlayerControlManager.instance.SetPlayerCharacter();
     }
@@ -399,7 +402,7 @@ public class GameManager : MonoBehaviour
 
         gameWorldData = null;
         regionData = null;
-        controllableWorldInteractableData = null;
+        worldInteractableControllableData = null;
 
         gameWorldController.Data = null;
         gameSaveController.Data = null;

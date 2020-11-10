@@ -72,77 +72,46 @@ public static class SceneActorDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneActor.Id)) continue;
             if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId)) continue;
 
-            var sceneActorData = new SceneActorBaseData();
-
-            sceneActorData.Id = sceneActor.Id;
-
-            sceneActorData.SceneId = sceneActor.SceneId;
-            sceneActorData.WorldInteractableId = sceneActor.WorldInteractableId;
-
-            sceneActorData.SpeechMethod = sceneActor.SpeechMethod;
-            sceneActorData.SpeechText = sceneActor.SpeechText;
-            sceneActorData.ShowTextBox = sceneActor.ShowTextBox;
-
-            sceneActorData.ChangePosition = sceneActor.ChangePosition;
-            sceneActorData.FreezePosition = sceneActor.FreezePosition;
-
-            sceneActorData.PositionX = sceneActor.PositionX;
-            sceneActorData.PositionY = sceneActor.PositionY;
-            sceneActorData.PositionZ = sceneActor.PositionZ;
-
-            sceneActorData.ChangeRotation = sceneActor.ChangeRotation;
-            sceneActorData.FaceTarget = sceneActor.FaceTarget;
-
-            sceneActorData.RotationX = sceneActor.RotationX;
-            sceneActorData.RotationY = sceneActor.RotationY;
-            sceneActorData.RotationZ = sceneActor.RotationZ;
-
-            sceneActorDataList.Add(sceneActorData);
+            sceneActorDataList.Add(sceneActor);
         }
     }
 
     private static void GetWorldInteractableData()
     {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.id = sceneActorDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableSearchParameters.id = sceneActorDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
-
-        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(SceneActorElementData elementData)
     {
         var data = Fixtures.sceneActorList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-
-        if (elementData.ChangedWorldInteractableId)
-            data.WorldInteractableId = elementData.WorldInteractableId;
-
+        
         if (elementData.ChangedSpeechMethod)
             data.SpeechMethod = elementData.SpeechMethod;
 
@@ -181,5 +150,13 @@ public static class SceneActorDataManager
 
         if (elementData.ChangedRotationZ)
             data.RotationZ = elementData.RotationZ;
+    }
+
+    public static void UpdateSearch(SceneActorElementData elementData)
+    {
+        var data = Fixtures.sceneActorList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (elementData.ChangedWorldInteractableId)
+            data.WorldInteractableId = elementData.WorldInteractableId;
     }
 }

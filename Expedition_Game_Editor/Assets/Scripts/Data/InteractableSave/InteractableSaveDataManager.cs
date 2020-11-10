@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,14 +66,7 @@ public static class InteractableSaveDataManager
 
             if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(interactableData.Type)) continue;
 
-            var interactableSaveData = new InteractableSaveBaseData();
-
-            interactableSaveData.Id = interactableSave.Id;
-
-            interactableSaveData.SaveId = interactableSave.SaveId;
-            interactableSaveData.InteractableId = interactableSave.InteractableId;
-
-            interactableSaveDataList.Add(interactableSaveData);
+            interactableSaveDataList.Add(interactableSave);
         }
     }
 

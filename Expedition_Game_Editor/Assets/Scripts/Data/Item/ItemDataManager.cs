@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,36 +53,24 @@ public static class ItemDataManager
             if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.Id)) continue;
             if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.Type)) continue;
 
-            var itemData = new ItemElementData();
-
-            itemData.Id = item.Id;
-            itemData.Index = item.Index;
-
-            itemData.Type = item.Type;
-
-            itemData.ModelId = item.ModelId;
-
-            itemData.Name = item.Name;
-
-            itemDataList.Add(itemData);
+            itemDataList.Add(item);
         }
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = itemDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = itemDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(ItemElementData elementData)

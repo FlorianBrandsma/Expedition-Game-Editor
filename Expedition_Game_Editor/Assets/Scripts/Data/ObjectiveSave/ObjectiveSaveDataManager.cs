@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,25 +52,16 @@ public static class ObjectiveSaveDataManager
             if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.Id))                     continue;
             if (searchParameters.questSaveId.Count  > 0 && !searchParameters.questSaveId.Contains(objectiveSave.QuestSaveId))   continue;
 
-            var objectiveSaveData = new ObjectiveSaveBaseData();
-
-            objectiveSaveData.Id = objectiveSave.Id;
-
-            objectiveSaveData.QuestSaveId = objectiveSave.QuestSaveId;
-            objectiveSaveData.ObjectiveId = objectiveSave.ObjectiveId;
-
-            objectiveSaveData.Complete = objectiveSave.Complete;
-
-            objectiveSaveDataList.Add(objectiveSaveData);
+            objectiveSaveDataList.Add(objectiveSave);
         }
     }
 
     private static void GetObjectiveData()
     {
-        var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = objectiveSaveDataList.Select(x => x.ObjectiveId).Distinct().ToList();
+        var searchParameters = new Search.Objective();
+        searchParameters.id = objectiveSaveDataList.Select(x => x.ObjectiveId).Distinct().ToList();
 
-        objectiveDataList = DataManager.GetObjectiveData(objectiveSearchParameters);
+        objectiveDataList = DataManager.GetObjectiveData(searchParameters);
     }
 
     public static void UpdateData(ObjectiveSaveElementData elementData)

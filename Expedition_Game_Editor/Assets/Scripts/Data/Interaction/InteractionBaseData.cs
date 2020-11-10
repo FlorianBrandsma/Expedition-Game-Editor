@@ -16,7 +16,7 @@ public class InteractionBaseData
     public bool TriggerAutomatically        { get; set; }
     public bool BeNearDestination           { get; set; }
     public bool FaceInteractable            { get; set; }
-    public bool FaceControllable             { get; set; }
+    public bool FaceControllable            { get; set; }
     public bool HideInteractionIndicator    { get; set; }
 
     public float InteractionRange           { get; set; }
@@ -47,8 +47,8 @@ public class InteractionBaseData
 
         TriggerAutomatically        = originalData.TriggerAutomatically;
         BeNearDestination           = originalData.BeNearDestination;
-        FaceInteractable                   = originalData.FaceInteractable;
-        FaceControllable             = originalData.FaceControllable;
+        FaceInteractable            = originalData.FaceInteractable;
+        FaceControllable            = originalData.FaceControllable;
         HideInteractionIndicator    = originalData.HideInteractionIndicator;
 
         InteractionRange            = originalData.InteractionRange;
@@ -80,8 +80,8 @@ public class InteractionBaseData
 
         data.TriggerAutomatically       = TriggerAutomatically;
         data.BeNearDestination          = BeNearDestination;
-        data.FaceInteractable                  = FaceInteractable;
-        data.FaceControllable            = FaceControllable;
+        data.FaceInteractable           = FaceInteractable;
+        data.FaceControllable           = FaceControllable;
         data.HideInteractionIndicator   = HideInteractionIndicator;
 
         data.InteractionRange           = InteractionRange;

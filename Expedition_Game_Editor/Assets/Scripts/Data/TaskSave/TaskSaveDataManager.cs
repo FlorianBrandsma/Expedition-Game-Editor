@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,26 +55,16 @@ public static class TaskSaveDataManager
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.WorldInteractableId))    continue;
             if (searchParameters.objectiveSaveId.Count      > 0 && !searchParameters.objectiveSaveId.Contains(taskSave.ObjectiveSaveId))            continue;
 
-            var taskSaveData = new TaskSaveBaseData();
-
-            taskSaveData.Id = taskSave.Id;
-
-            taskSaveData.WorldInteractableId = taskSave.WorldInteractableId;
-            taskSaveData.ObjectiveSaveId = taskSave.ObjectiveSaveId;
-            taskSaveData.TaskId = taskSave.TaskId;
-
-            taskSaveData.Complete = taskSave.Complete;
-
-            taskSaveDataList.Add(taskSaveData);
+            taskSaveDataList.Add(taskSave);
         }
     }
 
     private static void GetTaskData()
     {
-        var taskSearchParameters = new Search.Task();
-        taskSearchParameters.id = taskSaveDataList.Select(x => x.TaskId).Distinct().ToList();
+        var searchParameters = new Search.Task();
+        searchParameters.id = taskSaveDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskDataList = DataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(searchParameters);
     }
 
     public static void UpdateData(TaskSaveElementData elementData)

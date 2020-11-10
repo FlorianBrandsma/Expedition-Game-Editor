@@ -66,49 +66,27 @@ public static class WorldObjectDataManager
 
         foreach (WorldObjectBaseData worldObject in Fixtures.worldObjectList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.Id)) continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.RegionId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(worldObject.Id))               continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.RegionId))   continue;
 
-            var worldObjectData = new WorldObjectBaseData();
-
-            worldObjectData.Id = worldObject.Id;
-
-            worldObjectData.ModelId = worldObject.ModelId;
-            worldObjectData.RegionId = worldObject.RegionId;
-            worldObjectData.TerrainId = worldObject.TerrainId;
-            worldObjectData.TerrainTileId = worldObject.TerrainTileId;
-
-            worldObjectData.PositionX = worldObject.PositionX;
-            worldObjectData.PositionY = worldObject.PositionY;
-            worldObjectData.PositionZ = worldObject.PositionZ;
-
-            worldObjectData.RotationX = worldObject.RotationX;
-            worldObjectData.RotationY = worldObject.RotationY;
-            worldObjectData.RotationZ = worldObject.RotationZ;
-
-            worldObjectData.Scale = worldObject.Scale;
-
-            worldObjectData.Animation = worldObject.Animation;
-            
-            worldObjectDataList.Add(worldObjectData);
+            worldObjectDataList.Add(worldObject);
         }
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = worldObjectDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = worldObjectDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(WorldObjectElementData elementData)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,24 +51,16 @@ public static class TerrainTileDataManager
                 if(!searchParameters.regionId.Contains(terrain.RegionId)) continue;
             }
 
-            var terrainTileData = new TerrainTileBaseData();
-
-            terrainTileData.Id = terrainTile.Id;
-            terrainTileData.Index = terrainTile.Index;
-
-            terrainTileData.TerrainId = terrainTile.TerrainId;
-            terrainTileData.TileId = terrainTile.TileId;
-
-            terrainTileDataList.Add(terrainTileData);
+            terrainTileDataList.Add(terrainTile);
         }
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     public static void UpdateData(TerrainTileElementData elementData)

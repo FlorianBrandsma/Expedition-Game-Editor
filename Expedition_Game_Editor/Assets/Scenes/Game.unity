@@ -2617,16 +2617,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180582705}
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 912358544}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 10}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &181665062
@@ -23180,8 +23180,8 @@ MonoBehaviour:
   autoOpen: 1
   controllerIndex: 0
   editorForm: {fileID: 1374861249}
-  openIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
-  closeIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
+  openIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
+  closeIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
 --- !u!114 &1558907029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27039,8 +27039,8 @@ MonoBehaviour:
   autoOpen: 1
   controllerIndex: 0
   editorForm: {fileID: 1250721019}
-  openIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
-  closeIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
+  openIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
+  closeIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
 --- !u!114 &1716053773
 MonoBehaviour:
   m_ObjectHideFlags: 0

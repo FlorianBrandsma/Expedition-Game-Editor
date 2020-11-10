@@ -140,102 +140,72 @@ public static class InteractionDestinationDataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(interactionDestination.Id)) continue;
             if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionDestination.InteractionId)) continue;
 
-            var interactionDestinationData = new InteractionDestinationBaseData();
-
-            interactionDestinationData.Id = interactionDestination.Id;
-
-            interactionDestinationData.InteractionId = interactionDestination.InteractionId;
-
-            interactionDestinationData.RegionId = interactionDestination.RegionId;
-            interactionDestinationData.TerrainId = interactionDestination.TerrainId;
-            interactionDestinationData.TerrainTileId = interactionDestination.TerrainTileId;
-
-            interactionDestinationData.PositionX = interactionDestination.PositionX;
-            interactionDestinationData.PositionY = interactionDestination.PositionY;
-            interactionDestinationData.PositionZ = interactionDestination.PositionZ;
-
-            interactionDestinationData.PositionVariance = interactionDestination.PositionVariance;
-
-            interactionDestinationData.RotationX = interactionDestination.RotationX;
-            interactionDestinationData.RotationY = interactionDestination.RotationY;
-            interactionDestinationData.RotationZ = interactionDestination.RotationZ;
-
-            interactionDestinationData.FreeRotation = interactionDestination.FreeRotation;
-
-            interactionDestinationData.Animation = interactionDestination.Animation;
-            interactionDestinationData.Patience = interactionDestination.Patience;
-
-            interactionDestinationDataList.Add(interactionDestinationData);
+            interactionDestinationDataList.Add(interactionDestination);
         }
     }
 
     private static void GetInteractionData()
     {
-        var interactionSearchParameters = new Search.Interaction();
+        var searchParameters = new Search.Interaction();
+        searchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId).Distinct().ToList();
 
-        interactionSearchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId).Distinct().ToList();
-
-        interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
+        interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
     private static void GetTaskData()
     {
-        var taskSearchParameters = new Search.Task();
+        var searchParameters = new Search.Task();
+        searchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskSearchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
-
-        taskDataList = DataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(searchParameters);
     }
 
     private static void GetWorldInteractableData()
     {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
-
-        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     private static void GetObjectiveData()
     {
-        var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
+        var searchParameters = new Search.Objective();
+        searchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
 
-        objectiveDataList = DataManager.GetObjectiveData(objectiveSearchParameters);
+        objectiveDataList = DataManager.GetObjectiveData(searchParameters);
     }
 
     private static void GetQuestData()
     {
-        var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
+        var searchParameters = new Search.Quest();
+        searchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
 
-        questDataList = DataManager.GetQuestData(questSearchParameters);
+        questDataList = DataManager.GetQuestData(searchParameters);
     }
 
     private static void GetRegionData()
@@ -256,26 +226,26 @@ public static class InteractionDestinationDataManager
 
     private static void GetTerrainTileData()
     {
-        var terrainTileSearchParameters = new Search.TerrainTile();
-        terrainTileSearchParameters.id = interactionDestinationDataList.Select(x => x.TerrainTileId).Distinct().ToList();
+        var searchParameters = new Search.TerrainTile();
+        searchParameters.id = interactionDestinationDataList.Select(x => x.TerrainTileId).Distinct().ToList();
 
-        terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
+        terrainTileDataList = DataManager.GetTerrainTileData(searchParameters);
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.id = terrainTileDataList.Select(x => x.TileId).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     public static void UpdateData(InteractionDestinationElementData elementData)

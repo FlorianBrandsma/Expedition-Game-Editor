@@ -53,27 +53,7 @@ public static class SceneShotDataManager
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneShot.Id))             continue;
             if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId))   continue;
 
-            var sceneShotData = new SceneShotBaseData();
-
-            sceneShotData.Id = sceneShot.Id;
-
-            sceneShotData.SceneId = sceneShot.SceneId;
-            
-            sceneShotData.Type = sceneShot.Type;
-
-            sceneShotData.ChangePosition = sceneShot.ChangePosition;
-            
-            sceneShotData.PositionX = sceneShot.PositionX;
-            sceneShotData.PositionY = sceneShot.PositionY;
-            sceneShotData.PositionZ = sceneShot.PositionZ;
-
-            sceneShotData.ChangeRotation = sceneShot.ChangeRotation;
-
-            sceneShotData.RotationX = sceneShot.RotationX;
-            sceneShotData.RotationY = sceneShot.RotationY;
-            sceneShotData.RotationZ = sceneShot.RotationZ;
-
-            sceneShotDataList.Add(sceneShotData);
+            sceneShotDataList.Add(sceneShot);
         }
     }
 

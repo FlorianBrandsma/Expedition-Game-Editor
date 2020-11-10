@@ -21,6 +21,8 @@ public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
         //List and show (on the world) all props that belong to the scene. It is assumed the position is meant for the scene region
 
         SegmentController.DataController.GetData(searchProperties);
+
+        SetSearchParameters();
     }
 
     public void InitializeSegment()
@@ -34,7 +36,16 @@ public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    private void SetSearchParameters()
+    {
+        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.Model>().First();
+        searchParameters.excludeId = SegmentController.DataController.Data.dataList.Cast<ScenePropElementData>().Select(x => x.ModelId).ToList();
+    }
+
+    public void SetSearchResult(IElementData elementData)
+    {
+        SetSearchParameters();
+    }
 
     public void CloseSegment() { }
 }

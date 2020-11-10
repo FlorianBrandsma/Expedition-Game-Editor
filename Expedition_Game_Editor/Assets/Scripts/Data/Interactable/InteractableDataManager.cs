@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -69,46 +68,24 @@ public static class InteractableDataManager
             if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(interactable.Id))    continue;
             if (searchParameters.type.Count         > 0 && !searchParameters.type.Contains(interactable.Type))      continue;
 
-            var interactableData = new InteractableBaseData();
-
-            interactableData.Id = interactable.Id;
-            interactableData.Index = interactable.Index;
-
-            interactableData.Type = interactable.Type;
-
-            interactableData.ModelId = interactable.ModelId;
-
-            interactableData.Name = interactable.Name;
-
-            interactableData.Scale = interactable.Scale;
-
-            interactableData.Health = interactable.Health;
-            interactableData.Hunger = interactable.Hunger;
-            interactableData.Thirst = interactable.Thirst;
-
-            interactableData.Weight = interactable.Weight;
-            interactableData.Speed = interactable.Speed;
-            interactableData.Stamina = interactable.Stamina;
-            
-            interactableDataList.Add(interactableData);
+            interactableDataList.Add(interactable);
         }
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(InteractableElementData elementData)

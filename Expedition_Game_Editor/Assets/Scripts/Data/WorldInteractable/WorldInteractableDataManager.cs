@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +29,11 @@ public static class WorldInteractableDataManager
             case Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables:
 
                 GetQuestAndObjectiveWorldInteractableData(searchParameters);
+                break;
+
+            case Search.WorldInteractable.RequestType.GetSceneActorWorldInteractables:
+
+                GetSceneActorWorldInteractableData(searchParameters);
                 break;
         }
         
@@ -87,21 +90,7 @@ public static class WorldInteractableDataManager
             if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
             if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.InteractableId))                 continue;
 
-            var worldInteractableData = new WorldInteractableBaseData();
-
-            worldInteractableData.Id = worldInteractable.Id;
-
-            worldInteractableData.Type = worldInteractable.Type;
-            
-            worldInteractableData.ChapterId = worldInteractable.ChapterId;
-            worldInteractableData.PhaseId = worldInteractable.PhaseId;
-            worldInteractableData.QuestId = worldInteractable.QuestId;
-            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
-
-            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
-            worldInteractableData.InteractableId = worldInteractable.InteractableId;
-
-            worldInteractableDataList.Add(worldInteractableData);
+            worldInteractableDataList.Add(worldInteractable);
         }
     }
 
@@ -125,21 +114,7 @@ public static class WorldInteractableDataManager
             if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
             if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.InteractableId))                 continue;
 
-            var worldInteractableData = new WorldInteractableBaseData();
-
-            worldInteractableData.Id = worldInteractable.Id;
-
-            worldInteractableData.Type = worldInteractable.Type;
-            
-            worldInteractableData.ChapterId = worldInteractable.ChapterId;
-            worldInteractableData.PhaseId = worldInteractable.PhaseId;
-            worldInteractableData.QuestId = worldInteractable.QuestId;
-            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
-
-            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
-            worldInteractableData.InteractableId = worldInteractable.InteractableId;
-
-            worldInteractableDataList.Add(worldInteractableData);
+            worldInteractableDataList.Add(worldInteractable);
         }
     }
 
@@ -154,47 +129,55 @@ public static class WorldInteractableDataManager
 
         foreach (WorldInteractableBaseData worldInteractable in worldInteractableList)
         {
-            var worldInteractableData = new WorldInteractableBaseData();
+            worldInteractableDataList.Add(worldInteractable);
+        }
+    }
 
-            worldInteractableData.Id = worldInteractable.Id;
+    private static void GetSceneActorWorldInteractableData(Search.WorldInteractable searchParameters)
+    {
+        worldInteractableDataList = new List<WorldInteractableBaseData>();
 
-            worldInteractableData.Type = worldInteractable.Type;
+        var interactionDestinations = Fixtures.interactionDestinationList.Where(x => searchParameters.regionId.Contains(x.RegionId)).ToList();
+        var interactions            = Fixtures.interactionList.Where(x => interactionDestinations.Select(y => y.InteractionId).Contains(x.Id)).ToList();
+        var tasks                   = Fixtures.taskList.Where(x => interactions.Select(y => y.TaskId).Contains(x.Id) && x.ObjectiveId == 0).ToList();
 
-            worldInteractableData.PhaseId = worldInteractable.PhaseId;
-            worldInteractableData.QuestId = worldInteractable.QuestId;
-            worldInteractableData.ObjectiveId = worldInteractable.ObjectiveId;
+        var regionWorldInteractables    = Fixtures.worldInteractableList.Where(x => tasks.Select(y => y.WorldInteractableId).Contains(x.Id)).ToList();
+        var chapterWorldInteractables   = Fixtures.worldInteractableList.Where(x => searchParameters.chapterId.Contains(x.ChapterId)).ToList();
+        var questWorldInteractables     = Fixtures.worldInteractableList.Where(x => searchParameters.questId.Contains(x.QuestId)).ToList();
+        var objectiveWorldInteractables = Fixtures.worldInteractableList.Where(x => searchParameters.objectiveId.Contains(x.ObjectiveId)).ToList();
 
-            worldInteractableData.ChapterInteractableId = worldInteractable.ChapterInteractableId;
-            worldInteractableData.InteractableId = worldInteractable.InteractableId;
+        var worldInteractableList = regionWorldInteractables.Union(chapterWorldInteractables).Union(questWorldInteractables).Union(objectiveWorldInteractables).ToList();
 
-            worldInteractableDataList.Add(worldInteractableData);
+        foreach (WorldInteractableBaseData worldInteractable in worldInteractableList)
+        {
+            if (searchParameters.excludeId.Count > 0 && searchParameters.excludeId.Contains(worldInteractable.Id)) continue;
+
+            worldInteractableDataList.Add(worldInteractable);
         }
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(WorldInteractableElementData elementData)

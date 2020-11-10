@@ -71,7 +71,14 @@ public class ScenePropElementData : ScenePropData, IElementData
 
     public void UpdateSearch()
     {
-        Debug.Log("UPDATE ME");
+        if (!Changed) return;
+
+        ScenePropDataManager.UpdateSearch(this);
+
+        OriginalData.ModelId = ModelId;
+
+        OriginalData.ModelName = ModelName;
+        OriginalData.ModelIconPath = ModelIconPath;
     }
 
     public void SetOriginalValues()

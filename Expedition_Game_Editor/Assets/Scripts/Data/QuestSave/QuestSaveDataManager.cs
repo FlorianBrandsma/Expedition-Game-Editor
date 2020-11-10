@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,25 +52,16 @@ public static class QuestSaveDataManager
             if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.Id))                     continue;
             if (searchParameters.phaseSaveId.Count  > 0 && !searchParameters.phaseSaveId.Contains(questSave.PhaseSaveId))   continue;
 
-            var questSaveData = new QuestSaveBaseData();
-
-            questSaveData.Id = questSave.Id;
-
-            questSaveData.PhaseSaveId = questSave.PhaseSaveId;
-            questSaveData.QuestId = questSave.QuestId;
-
-            questSaveData.Complete = questSave.Complete;
-            
-            questSaveDataList.Add(questSaveData);
+            questSaveDataList.Add(questSave);
         }
     }
 
     private static void GetQuestData()
     {
-        var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = questSaveDataList.Select(x => x.QuestId).Distinct().ToList();
+        var searchParameters = new Search.Quest();
+        searchParameters.id = questSaveDataList.Select(x => x.QuestId).Distinct().ToList();
 
-        questDataList = DataManager.GetQuestData(questSearchParameters);
+        questDataList = DataManager.GetQuestData(searchParameters);
     }
 
     public static void UpdateData(QuestSaveElementData elementData)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,8 +53,8 @@ public static class ChapterRegionDataManager
 
         foreach(ChapterRegionBaseData chapterRegion in Fixtures.chapterRegionList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterRegion.Id)) continue;
-            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.ChapterId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapterRegion.Id))                 continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.ChapterId))   continue;
 
             var chapterRegionData = new ChapterRegionBaseData();
 
@@ -78,18 +77,18 @@ public static class ChapterRegionDataManager
 
     private static void GetTileSetData()
     {
-        var tileSetSearchParameters = new Search.TileSet();
-        tileSetSearchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
+        var searchParameters = new Search.TileSet();
+        searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
-        tileSetDataList = DataManager.GetTileSetData(tileSetSearchParameters);
+        tileSetDataList = DataManager.GetTileSetData(searchParameters);
     }
 
     private static void GetTileData()
     {
-        var tileSearchParameters = new Search.Tile();
-        tileSearchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
+        var searchParameters = new Search.Tile();
+        searchParameters.tileSetId = tileSetDataList.Select(x => x.Id).Distinct().ToList();
 
-        tileDataList = DataManager.GetTileData(tileSearchParameters);
+        tileDataList = DataManager.GetTileData(searchParameters);
     }
 
     public static void UpdateData(ChapterRegionElementData elementData)

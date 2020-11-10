@@ -74,75 +74,56 @@ public static class OutcomeDataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(outcome.Id)) continue;
             if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(outcome.InteractionId)) continue;
             
-            var outcomeData = new OutcomeBaseData();
-
-            outcomeData.Id = outcome.Id;
-            
-            outcomeData.InteractionId = outcome.InteractionId;
-
-            outcomeData.Type = outcome.Type;
-
-            outcomeData.CompleteTask = outcome.CompleteTask;
-            outcomeData.ResetObjective = outcome.ResetObjective;
-
-            outcomeData.PublicNotes = outcome.PublicNotes;
-            outcomeData.PrivateNotes = outcome.PrivateNotes;
-
-            outcomeDataList.Add(outcomeData);
+            outcomeDataList.Add(outcome);
         }
     }
 
     private static void GetInteractionData()
     {
-        var interactionSearchParameters = new Search.Interaction();
+        var searchParameters = new Search.Interaction();
+        searchParameters.id = outcomeDataList.Select(x => x.InteractionId).Distinct().ToList();
 
-        interactionSearchParameters.id = outcomeDataList.Select(x => x.InteractionId).Distinct().ToList();
-
-        interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
+        interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
     private static void GetTaskData()
     {
-        var taskSearchParameters = new Search.Task();
+        var searchParameters = new Search.Task();
+        searchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
 
-        taskSearchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
-
-        taskDataList = DataManager.GetTaskData(taskSearchParameters);
+        taskDataList = DataManager.GetTaskData(searchParameters);
     }
 
     private static void GetWorldInteractableData()
     {
-        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        var searchParameters = new Search.WorldInteractable();
+        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
 
-        worldInteractableSearchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
-
-        worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
 
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Distinct().ToList();
-
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     public static void UpdateData(OutcomeElementData elementData)

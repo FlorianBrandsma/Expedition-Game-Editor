@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,16 +63,7 @@ public static class PhaseSaveDataManager
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phaseSave.Id))                         continue;
             if (searchParameters.chapterSaveId.Count    > 0 && !searchParameters.chapterSaveId.Contains(phaseSave.ChapterSaveId))   continue;
 
-            var phaseSaveData = new PhaseSaveBaseData();
-
-            phaseSaveData.Id = phaseSave.Id;
-
-            phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
-            phaseSaveData.PhaseId = phaseSave.PhaseId;
-
-            phaseSaveData.Complete = phaseSave.Complete;
-
-            phaseSaveDataList.Add(phaseSaveData);
+            phaseSaveDataList.Add(phaseSave);
         }
     }
 
@@ -86,25 +76,16 @@ public static class PhaseSaveDataManager
 
         foreach(PhaseSaveBaseData phaseSave in phaseSaveList)
         {
-            var phaseSaveData = new PhaseSaveBaseData();
-
-            phaseSaveData.Id = phaseSave.Id;
-
-            phaseSaveData.ChapterSaveId = phaseSave.ChapterSaveId;
-            phaseSaveData.PhaseId = phaseSave.PhaseId;
-
-            phaseSaveData.Complete = phaseSave.Complete;
-
-            phaseSaveDataList.Add(phaseSaveData);
+            phaseSaveDataList.Add(phaseSave);
         }
     }
 
     private static void GetPhaseData()
     {
-        var phaseSearchParameters = new Search.Phase();
-        phaseSearchParameters.id = phaseSaveDataList.Select(x => x.PhaseId).Distinct().ToList();
+        var searchParameters = new Search.Phase();
+        searchParameters.id = phaseSaveDataList.Select(x => x.PhaseId).Distinct().ToList();
 
-        phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+        phaseDataList = DataManager.GetPhaseData(searchParameters);
     }
 
     public static void UpdateData(PhaseSaveElementData elementData)

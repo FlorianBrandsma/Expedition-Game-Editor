@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,29 +49,18 @@ public static class ModelDataManager
 
         foreach(ModelBaseData model in Fixtures.modelList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(model.Id)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(model.Id))         continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(model.Id))   continue;
 
-            var modelData = new ModelBaseData();
-
-            modelData.Id = model.Id;
-
-            modelData.Name = model.Name;
-            modelData.Path = model.Path;
-            modelData.IconId = model.IconId;
-
-            modelData.Height = model.Height;
-            modelData.Width = model.Width;
-            modelData.Depth = model.Depth;
-
-            modelDataList.Add(modelData);
+            modelDataList.Add(model);
         }
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 }

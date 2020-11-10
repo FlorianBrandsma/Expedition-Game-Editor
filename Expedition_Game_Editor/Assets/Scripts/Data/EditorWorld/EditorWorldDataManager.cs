@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -416,7 +415,6 @@ public static class EditorWorldDataManager
     private static void GetChapterData()
     {
         var searchParameters = new Search.Chapter();
-
         searchParameters.id = phaseDataList.Select(x => x.ChapterId).Distinct().ToList();
 
         chapterDataList = DataManager.GetChapterData(searchParameters);
@@ -425,7 +423,6 @@ public static class EditorWorldDataManager
     private static void GetChapterWorldInteractableData()
     {
         var searchParameters = new Search.WorldInteractable();
-
         searchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
 
         chapterWorldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
@@ -433,43 +430,42 @@ public static class EditorWorldDataManager
 
     private static void GetInteractableData()
     {
-        var interactableSearchParameters = new Search.Interactable();
+        var searchParameters = new Search.Interactable();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Union(chapterWorldInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
 
-        interactableSearchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Union(chapterWorldInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
-
-        interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+        interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
-        var modelSearchParameters = new Search.Model();
-        modelSearchParameters.id = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId).Distinct().ToList()).Distinct().ToList();
+        var searchParameters = new Search.Model();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId).Distinct().ToList()).Distinct().ToList();
 
-        modelDataList = DataManager.GetModelData(modelSearchParameters);
+        modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
-        var iconSearchParameters = new Search.Icon();
-        iconSearchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        var searchParameters = new Search.Icon();
+        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
-        iconDataList = DataManager.GetIconData(iconSearchParameters);
+        iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     private static void GetObjectiveData()
     {
-        var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
+        var searchParameters = new Search.Objective();
+        searchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
 
-        objectiveDataList = DataManager.GetObjectiveData(objectiveSearchParameters);
+        objectiveDataList = DataManager.GetObjectiveData(searchParameters);
     }
 
     private static void GetQuestData()
     {
-        var questSearchParameters = new Search.Quest();
-        questSearchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
+        var searchParameters = new Search.Quest();
+        searchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
 
-        questDataList = DataManager.GetQuestData(questSearchParameters);
+        questDataList = DataManager.GetQuestData(searchParameters);
     }
 
     private static GridElement TerrainGridElement(int index, int regionSize, int terrainSize, float tileSize)
