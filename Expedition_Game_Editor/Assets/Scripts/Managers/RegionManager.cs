@@ -56,6 +56,17 @@ static public class RegionManager
         return terrainId;
     }
 
+    static public int GetTerrainTileId(RegionElementData regionData, float posX, float posZ)
+    {
+        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
+        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
+
+        var terrainId = GetTerrainId(regionData, terrainDataList, regionData.TileSize, posX, posZ);
+        var terrainTileId = GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, posX, posZ);
+
+        return terrainTileId;
+    }
+
     static public int GetTerrainTileId(RegionBaseData regionData, List<TerrainBaseData> terrainDataList, List<TerrainTileBaseData> terrainTileDataList, float tileSize, float posX, float posZ)
     {
         var terrainId = GetTerrainId(regionData, terrainDataList, tileSize, posX, posZ);

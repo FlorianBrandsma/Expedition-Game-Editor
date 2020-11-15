@@ -49,9 +49,18 @@ public class SceneActorDataController : MonoBehaviour, IDataController
                 var resultWorldInteractableElementData = (WorldInteractableElementData)resultElementData;
 
                 searchSceneActorElementData.WorldInteractableId = resultWorldInteractableElementData.Id;
+                searchSceneActorElementData.ModelId             = resultWorldInteractableElementData.ModelId;
 
-                searchSceneActorElementData.InteractableName = resultWorldInteractableElementData.InteractableName;
-                searchSceneActorElementData.ModelIconPath = resultWorldInteractableElementData.ModelIconPath;
+                searchSceneActorElementData.ModelPath           = resultWorldInteractableElementData.ModelPath;
+                searchSceneActorElementData.ModelIconPath       = resultWorldInteractableElementData.ModelIconPath;
+
+                searchSceneActorElementData.InteractableName    = resultWorldInteractableElementData.InteractableName;
+
+                searchSceneActorElementData.Height              = resultWorldInteractableElementData.Height;
+                searchSceneActorElementData.Width               = resultWorldInteractableElementData.Width;
+                searchSceneActorElementData.Depth               = resultWorldInteractableElementData.Depth;
+
+                searchSceneActorElementData.Scale               = resultWorldInteractableElementData.Scale;
 
                 break;
         }

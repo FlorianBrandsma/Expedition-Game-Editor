@@ -392,7 +392,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         var questRoute      = FindRouteByDataType(Enums.DataType.Quest);
         var objectiveRoute  = FindRouteByDataType(Enums.DataType.Objective);
-
+        
         if (questRoute != null)
         {
             searchParameters.requestType = Search.WorldInteractable.RequestType.GetQuestAndObjectiveWorldInteractables;

@@ -54,14 +54,16 @@ public class DataElement : MonoBehaviour
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
-
+        
         //Replace search data with result data
         Data.dataController.SetData(ElementData, resultData);
-        
+
         if(Data.dataController.SearchProperties != null)
         {
             if (Data.dataController.SearchProperties.autoUpdate)
+            {
                 ElementData.UpdateSearch();
+            }  
         }
         
         //Apply combined search and result data

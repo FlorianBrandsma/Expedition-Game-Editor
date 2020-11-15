@@ -6,6 +6,8 @@ public class SceneDataManager : MonoBehaviour
 {
     private static List<SceneBaseData> sceneDataList;
 
+    private static List<OutcomeBaseData> outcomeDataList;
+
     private static List<RegionBaseData> regionDataList;
     private static List<TerrainBaseData> terrainDataList;
     private static List<TileSetBaseData> tileSetDataList;
@@ -19,12 +21,16 @@ public class SceneDataManager : MonoBehaviour
 
         if (sceneDataList.Count == 0) return new List<IElementData>();
 
+        GetOutcomeData();
+
         GetRegionData();
         GetTerrainData();
         GetTileSetData();
         GetTileData();
 
         var list = (from sceneData      in sceneDataList
+                    join outcomeData    in outcomeDataList  on sceneData.OutcomeId  equals outcomeData.Id
+
                     join regionData     in regionDataList   on sceneData.RegionId   equals regionData.Id
                     join tileSetData    in tileSetDataList  on regionData.TileSetId equals tileSetData.Id
 
@@ -51,6 +57,7 @@ public class SceneDataManager : MonoBehaviour
                         PublicNotes = sceneData.PublicNotes,
                         PrivateNotes = sceneData.PrivateNotes,
 
+                        InteractionId = outcomeData.InteractionId,
                         PhaseId = regionData.PhaseId,
 
                         RegionName = regionData.Name,
@@ -79,6 +86,14 @@ public class SceneDataManager : MonoBehaviour
 
             sceneDataList.Add(scene);
         }
+    }
+
+    private static void GetOutcomeData()
+    {
+        var searchParameters = new Search.Outcome();
+        searchParameters.id = sceneDataList.Select(x => x.OutcomeId).Distinct().ToList();
+
+        outcomeDataList = DataManager.GetOutcomeData(searchParameters);
     }
 
     private static void GetRegionData()

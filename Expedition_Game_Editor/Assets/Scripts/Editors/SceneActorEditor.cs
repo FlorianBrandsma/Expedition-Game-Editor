@@ -205,12 +205,12 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public string InteractableName
     {
-        get { return sceneActorData.InteractableName; }
+        get { return ((SceneActorData)EditData).InteractableName; }
     }
 
     public string ModelIconPath
     {
-        get { return sceneActorData.ModelIconPath; }
+        get { return ((SceneActorData)EditData).ModelIconPath; }
     }
     #endregion
 

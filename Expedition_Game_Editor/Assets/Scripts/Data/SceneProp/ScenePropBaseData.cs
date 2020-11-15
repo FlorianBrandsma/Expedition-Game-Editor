@@ -6,7 +6,6 @@ public class ScenePropBaseData
 
     public int SceneId          { get; set; }
     public int ModelId          { get; set; }
-    public int RegionId         { get; set; }
     public int TerrainId        { get; set; }
     public int TerrainTileId    { get; set; }
     
@@ -24,7 +23,6 @@ public class ScenePropBaseData
 
         SceneId         = originalData.SceneId;
         ModelId         = originalData.ModelId;
-        RegionId        = originalData.RegionId;
         TerrainId       = originalData.TerrainId;
         TerrainTileId   = originalData.TerrainTileId;
 
@@ -43,7 +41,6 @@ public class ScenePropBaseData
 
         data.SceneId        = SceneId;
         data.ModelId        = ModelId;
-        data.RegionId       = RegionId;
         data.TerrainId      = TerrainId;
         data.TerrainTileId  = TerrainTileId;
 

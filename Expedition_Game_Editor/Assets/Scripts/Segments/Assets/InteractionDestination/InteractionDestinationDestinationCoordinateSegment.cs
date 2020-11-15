@@ -103,11 +103,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
 
     public void UpdateTile()
     {
-        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
-        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
-
-        TerrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, PositionX, PositionZ);
-        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, PositionX, PositionZ);
+        TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
 
         DataEditor.UpdateEditor();
     }

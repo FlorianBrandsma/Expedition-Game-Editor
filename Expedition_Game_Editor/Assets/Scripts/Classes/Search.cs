@@ -190,8 +190,6 @@ public class Search
         public List<int> interactableId = new List<int>();
         public List<int> modelId = new List<int>();
 
-        public bool? isDefault = null;
-
         public List<int> interactionIndex = new List<int>();
 
         public enum RequestType
@@ -266,6 +264,7 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> outcomeId = new List<int>();
+        public List<int> regionId = new List<int>();
 
         public enum RequestType
         {
@@ -295,6 +294,8 @@ public class Search
 
         public List<int> sceneId = new List<int>();
 
+        public bool? changePosition = null;
+        
         public enum RequestType
         {
             Custom

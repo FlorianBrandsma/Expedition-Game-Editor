@@ -53,26 +53,26 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.WorldObject:
+                //case Enums.DataType.WorldObject:
 
-                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
-                    worldObjectEditor.ModelName = value;
+                //    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                //    worldObjectEditor.ModelName = value;
 
-                    break;
+                //    break;
 
-                case Enums.DataType.Phase:
+                //case Enums.DataType.Phase:
 
-                    var phaseEditor = (PhaseEditor)DataEditor;
-                    phaseEditor.InteractableName = value;
+                //    var phaseEditor = (PhaseEditor)DataEditor;
+                //    phaseEditor.InteractableName = value;
 
-                    break;
+                //    break;
 
-                case Enums.DataType.InteractionDestination:
+                //case Enums.DataType.InteractionDestination:
 
-                    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
-                    interactionDestinationEditor.InteractableName = value;
+                //    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
+                //    interactionDestinationEditor.InteractableName = value;
 
-                    break;
+                //    break;
 
                 default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
@@ -101,26 +101,26 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.WorldObject:
+                //case Enums.DataType.WorldObject:
 
-                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
-                    worldObjectEditor.ModelIconPath = value;
+                //    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                //    worldObjectEditor.ModelIconPath = value;
 
-                    break;
+                //    break;
 
-                case Enums.DataType.Phase:
+                //case Enums.DataType.Phase:
 
-                    var phaseEditor = (PhaseEditor)DataEditor;
-                    phaseEditor.ModelIconPath = value;
+                //    var phaseEditor = (PhaseEditor)DataEditor;
+                //    phaseEditor.ModelIconPath = value;
 
-                    break;
+                //    break;
 
-                case Enums.DataType.InteractionDestination:
+                //case Enums.DataType.InteractionDestination:
 
-                    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
-                    interactionDestinationEditor.ModelIconPath = value;
+                //    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
+                //    interactionDestinationEditor.ModelIconPath = value;
 
-                    break;
+                //    break;
 
                 default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }

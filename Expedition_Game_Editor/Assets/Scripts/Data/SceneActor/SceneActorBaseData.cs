@@ -6,7 +6,6 @@ public class SceneActorBaseData
 
     public int SceneId              { get; set; }
     public int WorldInteractableId  { get; set; }
-    public int RegionId             { get; set; }
     public int TerrainId            { get; set; }
     public int TerrainTileId        { get; set; }
     
@@ -34,7 +33,6 @@ public class SceneActorBaseData
 
         SceneId             = originalData.SceneId;
         WorldInteractableId = originalData.WorldInteractableId;
-        RegionId            = originalData.RegionId;
         TerrainId           = originalData.TerrainId;
         TerrainTileId       = originalData.TerrainTileId;
         
@@ -63,7 +61,6 @@ public class SceneActorBaseData
 
         data.SceneId                = SceneId;
         data.WorldInteractableId    = WorldInteractableId;
-        data.RegionId               = RegionId;
         data.TerrainId              = TerrainId;
         data.TerrainTileId          = TerrainTileId;
 

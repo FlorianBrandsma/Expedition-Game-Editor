@@ -139,57 +139,27 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public string ModelName
     {
-        get { return worldObjectData.ModelName; }
-        set
-        {
-            worldObjectData.ModelName = value;
-
-            DataList.ForEach(x => ((WorldObjectElementData)x).ModelName = value);
-        }
+        get { return ((WorldObjectData)EditData).ModelName; }
     }
 
     public string ModelIconPath
     {
-        get { return worldObjectData.ModelIconPath; }
-        set
-        {
-            worldObjectData.ModelIconPath = value;
-
-            DataList.ForEach(x => ((WorldObjectElementData)x).ModelIconPath = value);
-        }
+        get { return ((WorldObjectData)EditData).ModelIconPath; }
     }
 
     public float Height
     {
-        get { return worldObjectData.Height; }
-        set
-        {
-            worldObjectData.Height = value;
-
-            DataList.ForEach(x => ((WorldObjectElementData)x).Height = value);
-        }
+        get { return ((WorldObjectData)EditData).Height; }
     }
 
     public float Width
     {
-        get { return worldObjectData.Width; }
-        set
-        {
-            worldObjectData.Width = value;
-
-            DataList.ForEach(x => ((WorldObjectElementData)x).Width = value);
-        }
+        get { return ((WorldObjectData)EditData).Width; }
     }
 
     public float Depth
     {
-        get { return worldObjectData.Depth; }
-        set
-        {
-            worldObjectData.Depth = value;
-
-            DataList.ForEach(x => ((WorldObjectElementData)x).Depth = value);
-        }
+        get { return ((WorldObjectData)EditData).Depth; }
     }
     #endregion
 

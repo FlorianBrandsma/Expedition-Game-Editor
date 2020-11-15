@@ -152,39 +152,6 @@ public class SceneEditor : MonoBehaviour, IEditor
         }
     }
 
-    public int RegionSize
-    {
-        get { return sceneData.RegionSize; }
-        set
-        {
-            sceneData.RegionSize = value;
-
-            DataList.ForEach(x => ((SceneElementData)x).RegionSize = value);
-        }
-    }
-
-    public int TerrainSize
-    {
-        get { return sceneData.TerrainSize; }
-        set
-        {
-            sceneData.TerrainSize = value;
-
-            DataList.ForEach(x => ((SceneElementData)x).TerrainSize = value);
-        }
-    }
-
-    public float TileSize
-    {
-        get { return sceneData.TileSize; }
-        set
-        {
-            sceneData.TileSize = value;
-
-            DataList.ForEach(x => ((SceneElementData)x).TileSize = value);
-        }
-    }
-
     public string TileIconPath
     {
         get { return sceneData.TileIconPath; }

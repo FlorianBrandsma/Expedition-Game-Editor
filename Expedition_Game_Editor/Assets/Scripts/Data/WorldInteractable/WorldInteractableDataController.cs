@@ -70,6 +70,12 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
                 searchWorldInteractableElementData.InteractableName = resultInteractableElementData.Name;
                 searchWorldInteractableElementData.ModelIconPath    = resultInteractableElementData.ModelIconPath;
 
+                searchWorldInteractableElementData.Height           = resultInteractableElementData.Height;
+                searchWorldInteractableElementData.Width            = resultInteractableElementData.Width;
+                searchWorldInteractableElementData.Depth            = resultInteractableElementData.Depth;
+
+                searchWorldInteractableElementData.Scale            = resultInteractableElementData.Scale;
+
                 break;
 
             default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;

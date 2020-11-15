@@ -2,8 +2,9 @@
 
 public class SceneData : SceneBaseData
 {
+    public int InteractionId    { get; set; }
     public int PhaseId          { get; set; }
-
+    
     public string RegionName    { get; set; }
 
     public int RegionSize       { get; set; }
@@ -14,15 +15,16 @@ public class SceneData : SceneBaseData
     
     public override void GetOriginalValues(SceneData originalData)
     {
-        PhaseId = originalData.PhaseId;
+        InteractionId   = originalData.InteractionId;
+        PhaseId         = originalData.PhaseId;
+        
+        RegionName      = originalData.RegionName;
 
-        RegionName = originalData.RegionName;
+        RegionSize      = originalData.RegionSize;
+        TerrainSize     = originalData.TerrainSize;
+        TileSize        = originalData.TileSize;
 
-        RegionSize = originalData.RegionSize;
-        TerrainSize = originalData.TerrainSize;
-        TileSize = originalData.TileSize;
-
-        TileIconPath = originalData.TileIconPath;
+        TileIconPath    = originalData.TileIconPath;
         
         base.GetOriginalValues(originalData);
     }
@@ -31,15 +33,16 @@ public class SceneData : SceneBaseData
     {
         var data = new SceneData();
 
-        data.PhaseId = PhaseId;
+        data.InteractionId  = InteractionId;
+        data.PhaseId        = PhaseId;
 
-        data.RegionName = RegionName;
+        data.RegionName     = RegionName;
 
-        data.RegionSize = RegionSize;
-        data.TerrainSize = TerrainSize;
-        data.TileSize = TileSize;
+        data.RegionSize     = RegionSize;
+        data.TerrainSize    = TerrainSize;
+        data.TileSize       = TileSize;
 
-        data.TileIconPath = TileIconPath;
+        data.TileIconPath   = TileIconPath;
         
         base.Clone(data);
 
@@ -48,15 +51,16 @@ public class SceneData : SceneBaseData
 
     public virtual void Clone(SceneElementData elementData)
     {
-        elementData.PhaseId = PhaseId;
+        elementData.InteractionId   = InteractionId;
+        elementData.PhaseId         = PhaseId;
 
-        elementData.RegionName = RegionName;
+        elementData.RegionName      = RegionName;
 
-        elementData.RegionSize = RegionSize;
-        elementData.TerrainSize = TerrainSize;
-        elementData.TileSize = TileSize;
+        elementData.RegionSize      = RegionSize;
+        elementData.TerrainSize     = TerrainSize;
+        elementData.TileSize        = TileSize;
 
-        elementData.TileIconPath = TileIconPath;
+        elementData.TileIconPath    = TileIconPath;
         
         base.Clone(elementData);
     }

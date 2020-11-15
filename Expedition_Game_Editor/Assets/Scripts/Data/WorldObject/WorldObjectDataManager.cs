@@ -133,7 +133,7 @@ public static class WorldObjectDataManager
     public static void UpdateSearch(WorldObjectElementData elementData)
     {
         var data = Fixtures.worldObjectList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-
+        
         if (elementData.ChangedModelId)
             data.ModelId = elementData.ModelId;
     }

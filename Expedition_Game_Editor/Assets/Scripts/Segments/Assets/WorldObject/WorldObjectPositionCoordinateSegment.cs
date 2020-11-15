@@ -104,11 +104,7 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 
         if (bindToTile.Toggle.isOn)
         {
-            var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
-            var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
-
-            var terrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, PositionX, PositionZ);
-            TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, PositionX, PositionZ);
+            TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
 
         } else {
             

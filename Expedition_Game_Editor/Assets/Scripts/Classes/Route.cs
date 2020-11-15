@@ -62,19 +62,4 @@ public class Route
 
         path = route.path;
     }
-
-    public Route Clone()
-    {
-        var route = new Route();
-
-        route.data = data.Clone();
-        route.controllerIndex = controllerIndex;
-        route.id = id;
-
-        route.path = path;
-
-        route.selectionStatus = selectionStatus;
-
-        return route;
-    }
 }

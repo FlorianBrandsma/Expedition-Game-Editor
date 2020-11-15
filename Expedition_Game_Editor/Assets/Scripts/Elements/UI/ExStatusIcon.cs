@@ -69,6 +69,8 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			case Enums.DataType.InteractionDestination: InitializeInteractionDestinationData(); break;
 			case Enums.DataType.WorldObject:            InitializeWorldObjectData();            break;
 			case Enums.DataType.Phase:                  InitializePhaseData();                  break;
+			case Enums.DataType.SceneActor:             InitializeSceneActorData();             break;
+			case Enums.DataType.SceneProp:              InitializeScenePropData();              break;
 
 			case Enums.DataType.GameWorldInteractable:  InitializeGameWorldInteractable();      break;
 
@@ -108,17 +110,35 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		var phaseData = (PhaseElementData)targetElementData;
 
 		height = phaseData.Height   * phaseData.Scale;
-		width = phaseData.Width     * phaseData.Scale;
-		depth = phaseData.Depth     * phaseData.Scale;
+		width  = phaseData.Width    * phaseData.Scale;
+		depth  = phaseData.Depth    * phaseData.Scale;
 	}
 
-	private void InitializeGameWorldInteractable()
+    private void InitializeSceneActorData()
+    {
+        var sceneActorData = (SceneActorElementData)targetElementData;
+
+        height = sceneActorData.Height * sceneActorData.Scale;
+        width  = sceneActorData.Width  * sceneActorData.Scale;
+        depth  = sceneActorData.Depth  * sceneActorData.Scale;
+    }
+
+    private void InitializeScenePropData()
+    {
+        var scenePropData = (ScenePropElementData)targetElementData;
+
+        height = scenePropData.Height * scenePropData.Scale;
+        width  = scenePropData.Width  * scenePropData.Scale;
+        depth  = scenePropData.Depth  * scenePropData.Scale;
+    }
+
+    private void InitializeGameWorldInteractable()
 	{
 		var gameWorldInteractableData = (GameWorldInteractableElementData)targetElementData;
 
 		height = gameWorldInteractableData.Height   * gameWorldInteractableData.Scale;
-		width = gameWorldInteractableData.Width     * gameWorldInteractableData.Scale;
-		depth = gameWorldInteractableData.Depth     * gameWorldInteractableData.Scale;
+		width  = gameWorldInteractableData.Width    * gameWorldInteractableData.Scale;
+		depth  = gameWorldInteractableData.Depth    * gameWorldInteractableData.Scale;
 	}
 
 	private void UpdateSelectionPosition()

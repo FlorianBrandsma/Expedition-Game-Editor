@@ -23,19 +23,16 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
     private float Height
     {
         get { return WorldObjectEditor.Height; }
-        set { WorldObjectEditor.Height = value; }
     }
 
     private float Width
     {
         get { return WorldObjectEditor.Width; }
-        set { WorldObjectEditor.Width = value; }
     }
 
     private float Depth
     {
         get { return WorldObjectEditor.Depth; }
-        set { WorldObjectEditor.Depth = value; }
     }
     #endregion
 

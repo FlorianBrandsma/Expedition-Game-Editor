@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 public class EditorWorldDataController : MonoBehaviour, IDataController
 {
     public SearchProperties searchProperties;
+
+    public WorldObjectDataController WorldObjectDataController                          { get { return GetComponent<WorldObjectDataController>(); } }
+    public WorldInteractableDataController WorldInteractableAgentDataController         { get { return GetComponents<WorldInteractableDataController>()[0]; } }
+    public WorldInteractableDataController WorldInteractableObjectDataController        { get { return GetComponents<WorldInteractableDataController>()[1]; } }
+    public InteractionDestinationDataController InteractionDestinationDataController    { get { return GetComponent<InteractionDestinationDataController>(); } }
+    public PhaseDataController PhaseDataController                                      { get { return GetComponent<PhaseDataController>(); } }
+    public SceneActorDataController SceneActorDataController                            { get { return GetComponent<SceneActorDataController>(); } }
+    public ScenePropDataController ScenePropDataController                              { get { return GetComponent<ScenePropDataController>(); } }
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
 

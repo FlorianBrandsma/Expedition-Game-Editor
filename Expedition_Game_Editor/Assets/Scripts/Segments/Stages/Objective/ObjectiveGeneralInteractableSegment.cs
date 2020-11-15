@@ -29,7 +29,6 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
 
         searchParameters.objectiveId = new List<int>() { ObjectiveEditor.Id };
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Object };
-        searchParameters.isDefault = false;
 
         SegmentController.DataController.GetData(searchProperties);
 

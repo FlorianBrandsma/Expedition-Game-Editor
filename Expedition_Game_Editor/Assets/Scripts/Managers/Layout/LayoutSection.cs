@@ -151,7 +151,7 @@ public class LayoutSection : MonoBehaviour
             previousElementDataList.ForEach(x => x.ClearChanges());
 
             previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
-                                .ForEach(x => x.DataElement.UpdateElement());
+                                   .ForEach(x => x.DataElement.UpdateElement());
         }
 
         if (!Active) dataEditor = null;

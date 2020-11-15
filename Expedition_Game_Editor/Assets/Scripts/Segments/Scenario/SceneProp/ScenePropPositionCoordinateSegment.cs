@@ -10,7 +10,7 @@ public class ScenePropPositionCoordinateSegment : MonoBehaviour, ISegment
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public ScenePropEditor ScenePropEditor    { get { return (ScenePropEditor)DataEditor; } }
+    public ScenePropEditor ScenePropEditor      { get { return (ScenePropEditor)DataEditor; } }
 
     #region Data properties
     private float PositionX
@@ -97,11 +97,7 @@ public class ScenePropPositionCoordinateSegment : MonoBehaviour, ISegment
 
     private void UpdateTile()
     {
-        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
-        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
-
-        var terrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, PositionX, PositionZ);
-        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, PositionX, PositionZ);
+        TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
 
         DataEditor.UpdateEditor();
     }

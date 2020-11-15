@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Linq;
 
 public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 {
@@ -55,6 +53,8 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.InteractionDestination: SetInteractionDestinationElement(); break;
             case Enums.DataType.WorldObject:            SetWorldObjectElement();            break;
             case Enums.DataType.Phase:                  SetPhaseElement();                  break;
+            case Enums.DataType.SceneActor:             SetSceneActorElement();             break;
+            case Enums.DataType.SceneProp:              SetScenePropElement();              break;
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
         }
@@ -118,6 +118,36 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
         position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
         rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
+
+        scale = elementData.Scale;
+
+        SetModel();
+    }
+
+    private void SetSceneActorElement()
+    {
+        var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
+
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
+
+        scale = elementData.Scale;
+
+        SetModel();
+    }
+
+    private void SetScenePropElement()
+    {
+        var elementData = (ScenePropElementData)EditorElement.DataElement.ElementData;
+
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
 

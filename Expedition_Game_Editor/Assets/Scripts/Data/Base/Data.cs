@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Data
@@ -9,6 +8,12 @@ public class Data
     public SearchProperties searchProperties;
 
     public Data() { }
+
+    public Data(IDataController dataController)
+    {
+        this.dataController = dataController;
+        searchProperties = dataController.SearchProperties;
+    }
 
     public Data Clone()
     {
@@ -21,7 +26,9 @@ public class Data
 
         data.searchProperties = searchProperties;
 
-        dataController.Data = data;
+        //Disabled because of issues with editors opened from a different form. Data was cloned and given to
+        //the data controller where it would otherwise be copied
+        //dataController.Data = data;
 
         return data;
     }

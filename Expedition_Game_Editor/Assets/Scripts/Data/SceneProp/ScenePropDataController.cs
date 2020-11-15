@@ -48,10 +48,16 @@ public class ScenePropDataController : MonoBehaviour, IDataController
 
                 var resultModelElementData = (ModelElementData)resultElementData;
 
-                searchScenePropElementData.ModelId = resultModelElementData.Id;
+                searchScenePropElementData.ModelId          = resultModelElementData.Id;
 
-                searchScenePropElementData.ModelName = resultModelElementData.Name;
-                searchScenePropElementData.ModelIconPath = resultModelElementData.IconPath;
+                searchScenePropElementData.ModelPath        = resultModelElementData.Path;
+                searchScenePropElementData.ModelIconPath    = resultModelElementData.IconPath;
+
+                searchScenePropElementData.ModelName        = resultModelElementData.Name;
+                
+                searchScenePropElementData.Height           = resultModelElementData.Height;
+                searchScenePropElementData.Width            = resultModelElementData.Width;
+                searchScenePropElementData.Depth            = resultModelElementData.Depth;
 
                 break;
         }

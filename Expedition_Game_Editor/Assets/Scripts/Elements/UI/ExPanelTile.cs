@@ -69,10 +69,10 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     {
         if (properties.childProperty == SelectionManager.Property.None) return;
 
-        ElementChild.DataElement.Data = EditorElement.DataElement.Data;
-        ElementChild.DataElement.Id = EditorElement.DataElement.Id;
+        ElementChild.DataElement.Data   = EditorElement.DataElement.Data;
+        ElementChild.DataElement.Id     = EditorElement.DataElement.Id;
 
-        ElementChild.DataElement.Path = EditorElement.DataElement.Path;
+        ElementChild.DataElement.Path   = EditorElement.DataElement.Path;
 
         InitializeEdit();
     }

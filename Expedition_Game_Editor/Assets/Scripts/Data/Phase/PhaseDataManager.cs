@@ -74,7 +74,6 @@ public static class PhaseDataManager
                         PublicNotes = phaseData.PublicNotes,
                         PrivateNotes = phaseData.PrivateNotes,
 
-                        #warning This should really come from base data. Save terrain tile id and get region from there
                         TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
 
                         WorldInteractableId = worldInteractableData.First().worldInteractableData.Id,

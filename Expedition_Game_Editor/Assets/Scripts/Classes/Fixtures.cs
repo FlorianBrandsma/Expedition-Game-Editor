@@ -837,7 +837,7 @@ static public class Fixtures
 
         sceneActor.SceneId = scene.Id;
         sceneActor.WorldInteractableId = worldInteractable.Id;
-
+        
         sceneActor.ChangePosition = true;
         sceneActor.FreezePosition = true;
 
@@ -848,6 +848,9 @@ static public class Fixtures
         sceneActor.PositionX = 238.5f;
         sceneActor.PositionY = 0f;
         sceneActor.PositionZ = 238.5f;
+
+        sceneActor.TerrainId = GetTerrain(scene.RegionId, sceneActor.PositionX, sceneActor.PositionZ);
+        sceneActor.TerrainTileId = GetTerrainTile(sceneActor.TerrainId, sceneActor.PositionX, sceneActor.PositionZ);
 
         sceneActor.ChangeRotation = false;
         sceneActor.FaceTarget = true;
@@ -873,6 +876,9 @@ static public class Fixtures
         sceneProp.PositionX = 238.5f;
         sceneProp.PositionY = 0;
         sceneProp.PositionZ = 238.5f;
+
+        sceneProp.TerrainId = GetTerrain(scene.RegionId, sceneProp.PositionX, sceneProp.PositionZ);
+        sceneProp.TerrainTileId = GetTerrainTile(sceneProp.TerrainId, sceneProp.PositionX, sceneProp.PositionZ);
 
         sceneProp.RotationX = 0;
         sceneProp.RotationY = 0;
@@ -1314,6 +1320,70 @@ static public class Fixtures
                                             sceneShot.RotationZ = sceneShotSource.RotationZ;
 
                                             sceneShotList.Add(sceneShot);
+                                        }
+
+                                        var sceneActorSourceList = sceneActorList.Where(x => x.SceneId == sceneSource.Id).Distinct().ToList();
+
+                                        foreach(SceneActorBaseData sceneActorSource in sceneActorSourceList)
+                                        {
+                                            var sceneActor = new SceneActorBaseData();
+
+                                            int sceneActorId = sceneActorList.Count > 0 ? (sceneActorList[sceneActorList.Count - 1].Id + 1) : 1;
+
+                                            sceneActor.Id = sceneActorId;
+
+                                            sceneActor.SceneId = scene.Id;
+                                            sceneActor.WorldInteractableId = sceneActorSource.WorldInteractableId;
+
+                                            sceneActor.ChangePosition = sceneActorSource.ChangePosition;
+                                            sceneActor.FreezePosition = sceneActorSource.FreezePosition;
+
+                                            sceneActor.SpeechMethod = sceneActorSource.SpeechMethod;
+                                            sceneActor.SpeechText = sceneActorSource.SpeechText;
+                                            sceneActor.ShowTextBox = sceneActorSource.ShowTextBox;
+
+                                            sceneActor.PositionX = sceneActorSource.PositionX;
+                                            sceneActor.PositionY = sceneActorSource.PositionY;
+                                            sceneActor.PositionZ = sceneActorSource.PositionZ;
+
+                                            sceneActor.TerrainId = GetTerrain(scene.RegionId, sceneActor.PositionX, sceneActor.PositionZ);
+                                            sceneActor.TerrainTileId = GetTerrainTile(sceneActor.TerrainId, sceneActor.PositionX, sceneActor.PositionZ);
+
+                                            sceneActor.ChangeRotation = sceneActorSource.ChangeRotation;
+                                            sceneActor.FaceTarget = sceneActorSource.FaceTarget;
+
+                                            sceneActor.RotationX = sceneActorSource.RotationX;
+                                            sceneActor.RotationY = sceneActorSource.RotationY;
+                                            sceneActor.RotationZ = sceneActorSource.RotationZ;
+
+                                            sceneActorList.Add(sceneActor);
+                                        }
+
+                                        var scenePropSourceList = scenePropList.Where(x => x.SceneId == sceneSource.Id).Distinct().ToList();
+
+                                        foreach(ScenePropBaseData scenePropSource in scenePropSourceList)
+                                        {
+                                            var sceneProp = new ScenePropBaseData();
+
+                                            int scenePropId = scenePropList.Count > 0 ? (scenePropList[scenePropList.Count - 1].Id + 1) : 1;
+
+                                            sceneProp.Id = scenePropId;
+
+                                            sceneProp.SceneId = scene.Id;
+                                            sceneProp.ModelId = scenePropSource.ModelId;
+
+                                            sceneProp.PositionX = scenePropSource.PositionX;
+                                            sceneProp.PositionY = scenePropSource.PositionY;
+                                            sceneProp.PositionZ = scenePropSource.PositionZ;
+
+                                            sceneProp.TerrainId = GetTerrain(scene.RegionId, sceneProp.PositionX, sceneProp.PositionZ);
+                                            sceneProp.TerrainTileId = GetTerrainTile(sceneProp.TerrainId, sceneProp.PositionX, sceneProp.PositionZ);
+
+                                            sceneProp.RotationX = scenePropSource.RotationX;
+                                            sceneProp.RotationY = scenePropSource.RotationY;
+                                            sceneProp.RotationZ = scenePropSource.RotationZ;
+
+                                            scenePropList.Add(sceneProp);
                                         }
                                     }
                                 }

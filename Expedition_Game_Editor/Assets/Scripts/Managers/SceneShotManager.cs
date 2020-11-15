@@ -23,16 +23,8 @@ static public class SceneShotManager
     {
         //Adds the scene shot route to the path of a scene region if it hasn't already been added and the scene shot type is not "base"
         //Only add the scene shot route when the last route is region so it won't try to add it when opening actors or props
-
-        Debug.Log(path.routeList.Last().data.dataController.DataType);
-
         if (RegionManager.regionType == Enums.RegionType.Scene && path.routeList.Last().data.dataController.DataType == Enums.DataType.Region)
         {
-
-            //path.routeList.Last().data.dataController.DataType == Enums.DataType.Region
-            //Set shot type to base if ... last data type is region? not sure if that works...
-
-
             var sceneShotRouteSource = path.FindLastRoute(Enums.DataType.SceneShot);
             var sceneShotElementData = GetActiveElementData(sceneShotRouteSource);
 

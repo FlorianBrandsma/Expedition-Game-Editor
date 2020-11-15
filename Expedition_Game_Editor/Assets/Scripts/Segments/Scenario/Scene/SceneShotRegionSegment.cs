@@ -42,24 +42,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         get { return SceneEditor.RegionName; }
         set { SceneEditor.RegionName = value; }
     }
-
-    private int RegionSize
-    {
-        get { return SceneEditor.RegionSize; }
-        set { SceneEditor.RegionSize = value; }
-    }
-
-    private int TerrainSize
-    {
-        get { return SceneEditor.TerrainSize; }
-        set { SceneEditor.TerrainSize = value; }
-    }
-
-    private float TileSize
-    {
-        get { return SceneEditor.TileSize; }
-        set { SceneEditor.TileSize = value; }
-    }
     #endregion
 
     public void InitializeDependencies()
@@ -79,33 +61,31 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
 
     private void InitializeSceneButton()
     {
-        var regionElementData = new RegionElementData()
-        {
-            Id = RegionId,
+        //Get region data
+        var searchProperties = new SearchProperties(Enums.DataType.Region);
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
-            Type = Enums.RegionType.Scene,
+        searchParameters.id = new List<int>() { RegionId };
+        searchParameters.type = Enums.RegionType.Scene;
 
-            RegionSize = RegionSize,
-            TerrainSize = TerrainSize,
-            TileSize = TileSize,
+        RegionDataController.GetData(searchProperties);
 
-            DataElement = regionButton.DataElement
-        };
+        var regionElementData = RegionDataController.Data.dataList.FirstOrDefault();
+        regionElementData.DataElement = regionButton.DataElement;
 
-        regionElementData.SetOriginalValues();
-
+        //Assign data
         var regionData = new Data()
         {
             dataController = RegionDataController,
             dataList = new List<IElementData>() { regionElementData },
             searchProperties = RegionDataController.SearchProperties
         };
-        
+
         regionElementData.DataElement.Data = regionData;
         regionElementData.DataElement.Id = RegionId;
 
         regionElementData.DataElement.Path = SegmentController.EditorController.PathController.route.path;
-        
+
         SetRegionData();
 
         regionButton.DataElement.InitializeElement();
@@ -114,8 +94,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     
     private void SetRegionData()
     {
-        RegionDataController.Data = regionButton.DataElement.Data;
-
         RegionElementData.Id = RegionId;
         RegionElementData.TileIconPath = TileIconPath;
         RegionElementData.Name = RegionName;
@@ -161,14 +139,10 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     public void UpdateRegion(RegionElementData regionElementData)
     {
         RegionId = regionElementData.Id;
-        
-        RegionName = regionElementData.Name;
 
         TileIconPath = regionElementData.TileIconPath;
 
-        RegionSize = regionElementData.RegionSize;
-        TerrainSize = regionElementData.TerrainSize;
-        TileSize = regionElementData.TileSize;
+        RegionName = regionElementData.Name;
         
         SetRegionData();
 

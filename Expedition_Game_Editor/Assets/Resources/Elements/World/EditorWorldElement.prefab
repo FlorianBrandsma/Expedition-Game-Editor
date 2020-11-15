@@ -47,23 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentController: {fileID: 0}
   displayParent: {fileID: 0}
-  selectionStatus: 1
-  selectionType: 0
-  selectionProperty: 0
-  elementStatus: 0
-  enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 1, g: 1, b: 1, a: 1}
-  relatedColor: {r: 0, g: 0, b: 0, a: 1}
-  unrelatedColor: {r: 0.4901961, g: 0.4901961, b: 0.4901961, a: 1}
-  hiddenColor: {r: 0, g: 0, b: 0, a: 0}
-  disableSpawn: 0
-  parent: {fileID: 0}
-  child: {fileID: 0}
-  glow: {fileID: 0}
-  lockIcon: {fileID: 0}
-  OnSelection:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &114579610613662984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,8 +65,8 @@ MonoBehaviour:
   elementStatus: 0
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 1, g: 1, b: 1, a: 1}
-  relatedColor: {r: 0, g: 0, b: 0, a: 1}
-  unrelatedColor: {r: 0.4901961, g: 0.4901961, b: 0.4901961, a: 1}
+  relatedColor: {r: 0.4901961, g: 0.4901961, b: 0.4901961, a: 1}
+  unrelatedColor: {r: 0, g: 0, b: 0, a: 1}
   hiddenColor: {r: 0, g: 0, b: 0, a: 0}
   disableSpawn: 0
   parent: {fileID: 0}

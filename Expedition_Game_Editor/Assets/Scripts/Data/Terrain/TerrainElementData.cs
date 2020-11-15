@@ -20,6 +20,8 @@ public class TerrainElementData : TerrainData, IElementData
     public List<WorldInteractableElementData> WorldInteractableDataList             { get; set; } = new List<WorldInteractableElementData>();
     public List<InteractionDestinationElementData> InteractionDestinationDataList   { get; set; } = new List<InteractionDestinationElementData>();
     public List<WorldObjectElementData> WorldObjectDataList                         { get; set; } = new List<WorldObjectElementData>();
+    public List<SceneActorElementData> SceneActorDataList                           { get; set; } = new List<SceneActorElementData>();
+    public List<ScenePropElementData> ScenePropDataList                             { get; set; } = new List<ScenePropElementData>();
 
     #region Changed
     public bool ChangedIconId
@@ -59,6 +61,8 @@ public class TerrainElementData : TerrainData, IElementData
         WorldInteractableDataList.ForEach(x => x.SetOriginalValues());
         InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
         WorldObjectDataList.ForEach(x => x.SetOriginalValues());
+        SceneActorDataList.ForEach(x => x.SetOriginalValues());
+        ScenePropDataList.ForEach(x => x.SetOriginalValues());
 
         OriginalData = base.Clone();
 
@@ -90,6 +94,8 @@ public class TerrainElementData : TerrainData, IElementData
         data.WorldInteractableDataList      = new List<WorldInteractableElementData>(WorldInteractableDataList.Select(x => (WorldInteractableElementData)x.Clone()));
         data.InteractionDestinationDataList = new List<InteractionDestinationElementData>(InteractionDestinationDataList.Select(x => (InteractionDestinationElementData)x.Clone()));
         data.WorldObjectDataList            = new List<WorldObjectElementData>(WorldObjectDataList.Select(x => (WorldObjectElementData)x.Clone()));
+        data.SceneActorDataList             = new List<SceneActorElementData>(SceneActorDataList.Select(x => (SceneActorElementData)x.Clone()));
+        data.ScenePropDataList              = new List<ScenePropElementData>(ScenePropDataList.Select(x => (ScenePropElementData)x.Clone()));
 
         base.Clone(data);
 

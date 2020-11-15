@@ -110,12 +110,8 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdateTile()
     {
-        var terrainDataList = regionData.TerrainDataList.Cast<TerrainBaseData>().ToList();
-        var terrainTileDataList = regionData.TerrainDataList.SelectMany(x => x.TerrainTileDataList).Cast<TerrainTileBaseData>().ToList();
+        TerrainTileId = RegionManager.GetTerrainTileId(regionData, DefaultPositionX, DefaultPositionZ);
 
-        var terrainId = RegionManager.GetTerrainId(regionData, terrainDataList, regionData.TileSize, DefaultPositionX, DefaultPositionZ);
-        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, regionData.TileSize, DefaultPositionX, DefaultPositionZ);
-        
         DataEditor.UpdateEditor();
     }
 

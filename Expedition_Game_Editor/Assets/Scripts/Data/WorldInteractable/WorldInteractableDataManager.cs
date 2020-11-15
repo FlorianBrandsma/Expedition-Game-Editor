@@ -61,12 +61,18 @@ public static class WorldInteractableDataManager
                         ChapterInteractableId = worldInteractableData.ChapterInteractableId,
                         InteractableId = worldInteractableData.InteractableId,
                         
+                        ModelId = modelData.Id,
+
+                        ModelPath = modelData.Path,
+
                         InteractableName =  interactableData.Name,
                         ModelIconPath = iconData.Path,
 
                         Height = modelData.Height,
                         Width = modelData.Width,
-                        Depth = modelData.Depth
+                        Depth = modelData.Depth,
+
+                        Scale = interactableData.Scale
 
                     }).ToList();
 
@@ -146,7 +152,9 @@ public static class WorldInteractableDataManager
         var questWorldInteractables     = Fixtures.worldInteractableList.Where(x => searchParameters.questId.Contains(x.QuestId)).ToList();
         var objectiveWorldInteractables = Fixtures.worldInteractableList.Where(x => searchParameters.objectiveId.Contains(x.ObjectiveId)).ToList();
 
-        var worldInteractableList = regionWorldInteractables.Union(chapterWorldInteractables).Union(questWorldInteractables).Union(objectiveWorldInteractables).ToList();
+        var worldInteractableList = regionWorldInteractables.Union(chapterWorldInteractables)
+                                                            .Union(questWorldInteractables)
+                                                            .Union(objectiveWorldInteractables).ToList();
 
         foreach (WorldInteractableBaseData worldInteractable in worldInteractableList)
         {

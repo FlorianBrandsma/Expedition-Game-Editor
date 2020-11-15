@@ -225,6 +225,53 @@ static public class DataManager
         return dataList;
     }
 
+    static public List<SceneBaseData> GetSceneData(Search.Scene searchParameters)
+    {
+        var dataList = new List<SceneBaseData>();
+
+        foreach (SceneBaseData scene in Fixtures.sceneList)
+        {
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(scene.Id))             continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(scene.RegionId)) continue;
+
+            dataList.Add(scene);
+        }
+
+        return dataList;
+    }
+
+    static public List<SceneActorBaseData> GetSceneActorData(Search.SceneActor searchParameters)
+    {
+        var dataList = new List<SceneActorBaseData>();
+
+        foreach (SceneActorBaseData sceneActor in Fixtures.sceneActorList)
+        {
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneActor.Id))            continue;
+            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId))  continue;
+
+            if (searchParameters.changePosition != null && sceneActor.ChangePosition != searchParameters.changePosition)    continue;
+
+            dataList.Add(sceneActor);
+        }
+
+        return dataList;
+    }
+
+    static public List<ScenePropBaseData> GetScenePropData(Search.SceneProp searchParameters)
+    {
+        var dataList = new List<ScenePropBaseData>();
+
+        foreach (ScenePropBaseData sceneProp in Fixtures.scenePropList)
+        {
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneProp.Id))             continue;
+            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneProp.SceneId))   continue;
+
+            dataList.Add(sceneProp);
+        }
+
+        return dataList;
+    }
+
     static public List<TileSetBaseData> GetTileSetData()
     {
         return GetTileSetData(new Search.TileSet());

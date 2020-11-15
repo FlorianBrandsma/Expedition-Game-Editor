@@ -201,12 +201,23 @@ public class InteractableEditor : MonoBehaviour, IEditor
 
     public void OpenEditor()
     {
+        //Changed data gets wiped when the same data controller is re-opened
         ModelId = interactableData.ModelId;
 
         Name = interactableData.Name;
 
         ModelPath = interactableData.ModelPath;
         ModelIconPath = interactableData.ModelIconPath;
+
+        Scale = interactableData.Scale;
+
+        Health = interactableData.Health;
+        Hunger = interactableData.Hunger;
+        Thirst = interactableData.Thirst;
+
+        Weight = interactableData.Weight;
+        Speed = interactableData.Speed;
+        Stamina = interactableData.Stamina;
 
         Height = interactableData.Height;
         Width = interactableData.Width;

@@ -171,6 +171,20 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
                 break;
 
+            case Enums.DataType.SceneActor:
+
+                var sceneActorData = (SceneActorElementData)elementData;
+                elementPosition = new Vector3(sceneActorData.PositionX, sceneActorData.PositionY, -sceneActorData.PositionZ);
+
+                break;
+
+            case Enums.DataType.SceneProp:
+
+                var scenePropData = (ScenePropElementData)elementData;
+                elementPosition = new Vector3(scenePropData.PositionX, scenePropData.PositionY, -scenePropData.PositionZ);
+
+                break;
+
             default: Debug.Log("CASE MISSING: " + elementData.DataType); return;
         }
 

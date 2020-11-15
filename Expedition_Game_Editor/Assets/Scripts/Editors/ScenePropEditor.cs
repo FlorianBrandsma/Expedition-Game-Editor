@@ -128,12 +128,12 @@ public class ScenePropEditor : MonoBehaviour, IEditor
 
     public string ModelName
     {
-        get { return scenePropData.ModelName; }
+        get { return ((ScenePropData)EditData).ModelName; }
     }
 
     public string ModelIconPath
     {
-        get { return scenePropData.ModelIconPath; }
+        get { return ((ScenePropData)EditData).ModelIconPath; }
     }
     #endregion
 
