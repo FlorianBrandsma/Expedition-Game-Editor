@@ -59,5 +59,7 @@ public class SceneActorActSpeechTextSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

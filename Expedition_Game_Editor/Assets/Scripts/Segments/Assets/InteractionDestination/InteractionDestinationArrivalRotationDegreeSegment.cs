@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour, ISegment
 {
-    public ExToggle freeRotationToggle;
+    public ExToggle changeRotationToggle;
     public ExInputNumber xInputField, yInputField, zInputField;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -12,10 +11,10 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
     public InteractionDestinationEditor InteractionDestinationEditor { get { return (InteractionDestinationEditor)DataEditor; } }
 
     #region Data properties
-    private bool FreeRotation
+    private bool ChangeRotation
     {
-        get { return InteractionDestinationEditor.FreeRotation; }
-        set { InteractionDestinationEditor.FreeRotation = value; }
+        get { return InteractionDestinationEditor.ChangeRotation; }
+        set { InteractionDestinationEditor.ChangeRotation = value; }
     }
 
     private int RotationX
@@ -51,29 +50,22 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
     
     public void OpenSegment()
     {
-        freeRotationToggle.Toggle.isOn = FreeRotation;
+        changeRotationToggle.Toggle.isOn = ChangeRotation;
 
         xInputField.Value = RotationX;
         yInputField.Value = RotationY;
         zInputField.Value = RotationZ;
 
-        EnableInputFields(!FreeRotation);
+        UpdateSegment();
 
         gameObject.SetActive(true);
     }
 
-    private void EnableInputFields(bool enable)
-    {
-        xInputField.EnableElement(enable);
-        yInputField.EnableElement(enable);
-        zInputField.EnableElement(enable);
-    }
-
     public void UpdateFreeRotation()
     {
-        FreeRotation = freeRotationToggle.Toggle.isOn;
+        ChangeRotation = changeRotationToggle.Toggle.isOn;
 
-        EnableInputFields(!FreeRotation);
+        UpdateSegment();
 
         DataEditor.UpdateEditor();
     }
@@ -99,6 +91,18 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
         RotationZ = (int)zInputField.Value;
 
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        EnableInputFields(ChangeRotation);
+    }
+
+    private void EnableInputFields(bool enable)
+    {
+        xInputField.EnableElement(enable);
+        yInputField.EnableElement(enable);
+        zInputField.EnableElement(enable);
     }
 
     public void CloseSegment() { }

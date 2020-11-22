@@ -11,6 +11,8 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
 
+    public bool uniqueSelection;
+
     public Enums.ElementStatus elementStatus;
     public Color enabledColor;
     public Color disabledColor;
@@ -34,12 +36,18 @@ public class EditorElement : MonoBehaviour, ISelectionElement
         GetComponent<IElement>().InitializeElement();
     }
 
-    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
     {
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
+        this.uniqueSelection = uniqueSelection;
+
+        if(DataElement != null && DataElement.Data != null && DataElement.ElementData != null)
+            DataElement.ElementData.UniqueSelection = uniqueSelection;
 
         GetComponent<IElement>().InitializeElement();
+
+        OnSelection.RemoveAllListeners();
 
         if (selectionType != SelectionManager.Type.None)
         {
@@ -98,12 +106,15 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         if (selectionStatus == Enums.SelectionStatus.Child) return;
 
+        if (lockIcon != null)
+            lockIcon.SetActive(false);
+
         switch (elementStatus)
         {
             case Enums.ElementStatus.Enabled:
 
                 Element.ElementColor = enabledColor;
-
+                
                 break;
 
             case Enums.ElementStatus.Disabled:
@@ -207,20 +218,17 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
         Element.CloseElement();
 
-        OnSelection.RemoveAllListeners();
-
         gameObject.SetActive(false);
 
         if (child != null && child.isActiveAndEnabled)
             child.CloseElement();
+
+        DataElement.ElementData.DataElement = null;
     }
 
     public void ResetStatus()
     {
         if (elementStatus == Enums.ElementStatus.Enabled) return;
-
-        if (elementStatus == Enums.ElementStatus.Locked)
-            lockIcon.SetActive(false);
 
         elementStatus = Enums.ElementStatus.Enabled;
 

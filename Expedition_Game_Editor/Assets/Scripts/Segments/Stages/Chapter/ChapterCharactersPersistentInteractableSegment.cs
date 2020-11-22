@@ -68,5 +68,7 @@ public class ChapterCharactersPersistentInteractableSegment : MonoBehaviour, ISe
         elementData.ModelIconPath       = resultElementData.ModelIconPath;
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

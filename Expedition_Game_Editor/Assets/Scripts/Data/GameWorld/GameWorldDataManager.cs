@@ -215,7 +215,7 @@ public static class GameWorldDataManager
                         RotationY = interactionDestinationData.RotationY,
                         RotationZ = interactionDestinationData.RotationZ,
 
-                        FreeRotation = interactionDestinationData.FreeRotation,
+                        FreeRotation = interactionDestinationData.ChangeRotation,
 
                         Animation = interactionDestinationData.Animation,
                         Patience = interactionDestinationData.Patience

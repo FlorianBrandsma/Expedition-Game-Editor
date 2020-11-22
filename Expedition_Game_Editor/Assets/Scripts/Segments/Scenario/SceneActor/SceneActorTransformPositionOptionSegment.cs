@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class SceneActorTransformPositionOptionSegment : MonoBehaviour, ISegment
 {
@@ -41,6 +42,8 @@ public class SceneActorTransformPositionOptionSegment : MonoBehaviour, ISegment
         changePositionToggle.Toggle.isOn = ChangePosition;
         freezePositionToggle.Toggle.isOn = FreezePosition;
 
+        UpdateSegment();
+
         gameObject.SetActive(true);
     }
 
@@ -50,6 +53,10 @@ public class SceneActorTransformPositionOptionSegment : MonoBehaviour, ISegment
     {
         ChangePosition = changePositionToggle.Toggle.isOn;
 
+        SceneActorEditor.EditorWorldOrganizer.ResetSelectedElement(DataEditor.EditData);
+
+        UpdateSegments();
+
         DataEditor.UpdateEditor();
     }
 
@@ -58,6 +65,16 @@ public class SceneActorTransformPositionOptionSegment : MonoBehaviour, ISegment
         FreezePosition = freezePositionToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
+    }
+
+    private void UpdateSegments()
+    {
+        DataEditor.EditorSegments.Where(x => x.gameObject.activeInHierarchy).ToList().ForEach(x => x.UpdateSegment());
+    }
+
+    public void UpdateSegment()
+    {
+        freezePositionToggle.EnableElement(!ChangePosition);
     }
 
     public void CloseSegment() { }

@@ -134,7 +134,7 @@ public class Path
                 {
                     //Debug.Log("Copy from " + path.routeList[i - 1].data.dataController);
                     route.data = path.routeList[i - 1].data;
-
+                    
                 } else {
 
                     //Debug.Log("Clone from " + originalRoute.data.dataController);
@@ -145,7 +145,8 @@ public class Path
             route.path = path;
 
             route.selectionStatus = originalRoute.selectionStatus;
-
+            route.uniqueSelection = originalRoute.uniqueSelection;
+            
             path.routeList.Add(route);
         }
 

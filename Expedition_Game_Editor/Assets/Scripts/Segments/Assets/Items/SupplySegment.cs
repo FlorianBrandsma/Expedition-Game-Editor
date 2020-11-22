@@ -34,5 +34,7 @@ public class SupplySegment : MonoBehaviour, ISegment
 
     public void CloseSegment() { }
 
+    public void UpdateSegment() { }
+
     public void SetSearchResult(IElementData elementData) { }
 }

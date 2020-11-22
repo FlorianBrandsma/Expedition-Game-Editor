@@ -94,6 +94,17 @@ public class SceneShotEditor : MonoBehaviour, IEditor
         }
     }
 
+    public int PositionTargetSceneActorId
+    {
+        get { return sceneShotData.PositionTargetSceneActorId; }
+        set
+        {
+            sceneShotData.PositionTargetSceneActorId = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).PositionTargetSceneActorId = value);
+        }
+    }
+
     public bool ChangeRotation
     {
         get { return sceneShotData.ChangeRotation; }
@@ -135,6 +146,17 @@ public class SceneShotEditor : MonoBehaviour, IEditor
             sceneShotData.RotationZ = value;
 
             DataList.ForEach(x => ((SceneShotElementData)x).RotationZ = value);
+        }
+    }
+
+    public int RotationTargetSceneActorId
+    {
+        get { return sceneShotData.RotationTargetSceneActorId; }
+        set
+        {
+            sceneShotData.RotationTargetSceneActorId = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).RotationTargetSceneActorId = value);
         }
     }
     #endregion

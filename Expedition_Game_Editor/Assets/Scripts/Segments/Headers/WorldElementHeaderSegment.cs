@@ -49,34 +49,6 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
-        set
-        {
-            switch (DataEditor.Data.dataController.DataType)
-            {
-                //case Enums.DataType.WorldObject:
-
-                //    var worldObjectEditor = (WorldObjectEditor)DataEditor;
-                //    worldObjectEditor.ModelName = value;
-
-                //    break;
-
-                //case Enums.DataType.Phase:
-
-                //    var phaseEditor = (PhaseEditor)DataEditor;
-                //    phaseEditor.InteractableName = value;
-
-                //    break;
-
-                //case Enums.DataType.InteractionDestination:
-
-                //    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
-                //    interactionDestinationEditor.InteractableName = value;
-
-                //    break;
-
-                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
-            }
-        }
     }
 
     private string ModelIconPath
@@ -95,34 +67,6 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
                     return ((InteractionDestinationEditor)DataEditor).ModelIconPath;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
-            }
-        }
-        set
-        {
-            switch (DataEditor.Data.dataController.DataType)
-            {
-                //case Enums.DataType.WorldObject:
-
-                //    var worldObjectEditor = (WorldObjectEditor)DataEditor;
-                //    worldObjectEditor.ModelIconPath = value;
-
-                //    break;
-
-                //case Enums.DataType.Phase:
-
-                //    var phaseEditor = (PhaseEditor)DataEditor;
-                //    phaseEditor.ModelIconPath = value;
-
-                //    break;
-
-                //case Enums.DataType.InteractionDestination:
-
-                //    var interactionDestinationEditor = (InteractionDestinationEditor)DataEditor;
-                //    interactionDestinationEditor.ModelIconPath = value;
-
-                //    break;
-
-                default: Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); break;
             }
         }
     }
@@ -158,6 +102,8 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     }
 
     public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateSegment() { }
 
     public void CloseSegment()
     {

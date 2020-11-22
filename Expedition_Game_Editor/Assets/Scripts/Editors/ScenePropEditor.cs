@@ -126,14 +126,40 @@ public class ScenePropEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string ModelName
+    public float Scale
     {
-        get { return ((ScenePropData)EditData).ModelName; }
+        get { return scenePropData.Scale; }
+        set
+        {
+            scenePropData.Scale = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).Scale = value);
+        }
     }
 
     public string ModelIconPath
     {
         get { return ((ScenePropData)EditData).ModelIconPath; }
+    }
+
+    public string ModelName
+    {
+        get { return ((ScenePropData)EditData).ModelName; }
+    }
+    
+    public float Height
+    {
+        get { return ((ScenePropData)EditData).Height; }
+    }
+
+    public float Width
+    {
+        get { return ((ScenePropData)EditData).Width; }
+    }
+
+    public float Depth
+    {
+        get { return ((ScenePropData)EditData).Depth; }
     }
     #endregion
 

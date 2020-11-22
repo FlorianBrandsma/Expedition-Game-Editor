@@ -41,6 +41,8 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         gameButton.onClick.RemoveAllListeners();

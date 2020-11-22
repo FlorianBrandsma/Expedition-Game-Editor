@@ -42,6 +42,8 @@ public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 222000012011814404}
   - component: {fileID: 114000012825630508}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -390,3 +390,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
+  enabledTextColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledTextColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+  label: {fileID: 114000012825630508}

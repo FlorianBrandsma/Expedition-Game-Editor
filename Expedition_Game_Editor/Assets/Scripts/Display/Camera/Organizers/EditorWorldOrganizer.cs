@@ -338,7 +338,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.SceneActorDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        //Create groups of interaction destinations as interactions, using destination values that were taken from their parent interaction
+        //Create groups of scene props as interactions, using destination values that were taken from their parent interaction
         var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.SceneActorDataList).GroupBy(y => y.InteractionId)
                                                                                                              .Select(grp => new
                                                                                                              {
@@ -358,7 +358,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.ScenePropDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        //Create groups of interaction destinations as interactions, using destination values that were taken from their parent interaction
+        //Create groups of scene props as interactions, using destination values that were taken from their parent interaction
         var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.ScenePropDataList).GroupBy(y => y.InteractionId)
                                                                                                             .Select(grp => new
                                                                                                             {
@@ -397,7 +397,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     public void UpdateData()
     {
         SetCamera();
-
+        
         if (ScrollRect.content.localPosition.x >= positionTracker.x + worldData.TileSize ||
             ScrollRect.content.localPosition.x <= positionTracker.x - worldData.TileSize ||
             ScrollRect.content.localPosition.y >= positionTracker.y + worldData.TileSize ||
@@ -409,6 +409,27 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             dataSet = true;
         }
+    }
+    
+    public void ResetSelectedElement(IElementData elementData)
+    {
+        switch(elementData.DataType)
+        {
+            case Enums.DataType.SceneActor: ResetSelectedSceneActor(); break;
+
+            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+        }
+    }
+
+    private void ResetSelectedSceneActor()
+    {
+        selectedSceneActors.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList().ForEach(x =>
+        {
+            PoolManager.ClosePoolObject(x.DataElement.Poolable);
+            SelectionElementManager.CloseElement(x.DataElement);
+        });
+
+        SetWorldElements(SceneActorDataController, selectedSceneActors.Cast<IElementData>().ToList());
     }
 
     public void SetCamera()
@@ -429,9 +450,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             CameraManager.cameraParent.transform.localEulerAngles = defaultCameraRotation;
 
             CameraManager.EnableScrolling(true);
-            
-        } else {
 
+        } else {
+            
             var sceneShotElementData = SceneShotManager.GetActiveElementData(sceneShotRoute);
 
             CameraManager.cameraParent.transform.localPosition      = new Vector3(sceneShotElementData.PositionX, 
@@ -647,7 +668,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             SelectionElementManager.InitializeElement(  worldElement.EditorElement.DataElement, CameraManager.content,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty);
+                                                        DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.UniqueSelection);
 
             worldElement.EditorElement.DataElement.Data = dataController.Data;
             worldElement.EditorElement.DataElement.Id = elementData.Id;
@@ -659,13 +681,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             SetStatus(worldElement.EditorElement);
 
-            if(worldElement.EditorElement.elementStatus == Enums.ElementStatus.Hidden)
-            {
-                PoolManager.ClosePoolObject(worldElement.EditorElement.DataElement.Poolable);
-                SelectionElementManager.CloseElement(worldElement.EditorElement);
+            //if(worldElement.EditorElement.elementStatus == Enums.ElementStatus.Hidden)
+            //{
+            //    PoolManager.ClosePoolObject(worldElement.EditorElement.DataElement.Poolable);
+            //    SelectionElementManager.CloseElement(worldElement.EditorElement);
 
-                continue;
-            }
+            //    continue;
+            //}
 
             //Must be assigned after the status check
             elementData.DataElement = worldElement.EditorElement.DataElement;
@@ -811,29 +833,19 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var sceneActorElementData = (SceneActorElementData)element.DataElement.ElementData;
         var sceneElementData = (SceneElementData)sceneRoute.ElementData;
 
-        //Enabled: actors belonging to the same scene and to the same interaction
-        if (sceneActorElementData.SceneId == sceneElementData.Id &&
-            sceneActorElementData.InteractionId == sceneElementData.Id)
-        {
-            element.elementStatus = Enums.ElementStatus.Enabled;
-            return;
-        }
-
-        //Hidden: Interactions where the active time is not within its timeframe
+        //Hidden: actors where the active time is not within its timeframe
         if (!sceneActorElementData.ContainsActiveTime)
         {
             element.elementStatus = Enums.ElementStatus.Hidden;
             return;
         }
 
-        ////Hidden: Interactions belonging to the same world interactable and objective
-        //if (interactionDestinationElementData.Id != selectedInteractionDestination.Id &&
-        //    interactionDestinationElementData.WorldInteractableId == selectedInteractionDestination.WorldInteractableId &&
-        //    interactionDestinationElementData.ObjectiveId == selectedInteractionDestination.ObjectiveId)
-        //{
-        //    element.elementStatus = Enums.ElementStatus.Hidden;
-        //    return;
-        //}
+        //Hidden: actors whose position does not change or whose position changes but also freezes
+        if (!sceneActorElementData.ChangePosition)
+        {
+            element.elementStatus = Enums.ElementStatus.Hidden;
+            return;
+        }
 
         //Hidden: actors belonging to a different scene but to the same interaction
         if (sceneActorElementData.SceneId != sceneElementData.Id &&
@@ -842,12 +854,20 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             element.elementStatus = Enums.ElementStatus.Hidden;
             return;
         }
-
+        
         //Unrelated: actors belonging to a different scene and to a different interaction
         if (sceneActorElementData.SceneId != sceneElementData.Id &&
             sceneActorElementData.InteractionId != sceneElementData.Id)
         {
             element.elementStatus = Enums.ElementStatus.Unrelated;
+            return;
+        }
+
+        //Enabled: actors belonging to the same scene and to the same interaction
+        if (sceneActorElementData.SceneId == sceneElementData.Id &&
+            sceneActorElementData.InteractionId == sceneElementData.Id)
+        {
+            element.elementStatus = Enums.ElementStatus.Enabled;
             return;
         }
     }
@@ -944,7 +964,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         if(selectedWorldObjects.Count > 0)
         {
-            selectedWorldObjects.ForEach(x => 
+            selectedWorldObjects.Where(x => x.DataElement != null).ToList().ForEach(x => 
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -953,7 +973,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         if(selectedWorldInteractableAgents.Count > 0)
         {
-            selectedWorldInteractableAgents.ForEach(x => 
+            selectedWorldInteractableAgents.Where(x => x.DataElement != null).ToList().ForEach(x => 
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -962,7 +982,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (selectedWorldInteractableObjects.Count > 0)
         {
-            selectedWorldInteractableObjects.ForEach(x => 
+            selectedWorldInteractableObjects.Where(x => x.DataElement != null).ToList().ForEach(x => 
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -971,7 +991,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (selectedInteractionDestinations.Count > 0)
         {
-            selectedInteractionDestinations.ForEach(x =>
+            selectedInteractionDestinations.Where(x => x.DataElement != null).ToList().ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -980,7 +1000,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if(selectedPhase.Count > 0)
         {
-            selectedPhase.ForEach(x =>
+            selectedPhase.Where(x => x.DataElement != null).ToList().ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -989,7 +1009,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (selectedSceneActors.Count > 0)
         {
-            selectedSceneActors.ForEach(x =>
+            selectedSceneActors.Where(x => x.DataElement != null).ToList().ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -998,7 +1018,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (selectedSceneProps.Count > 0)
         {
-            selectedSceneProps.ForEach(x =>
+            selectedSceneProps.Where(x => x.DataElement != null).ToList().ForEach(x =>
             {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
                 SelectionElementManager.CloseElement(x.DataElement);
@@ -1161,7 +1181,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         return worldData.TerrainDataList.Where(x => x.Index == terrainIndex).FirstOrDefault();
     }
-
+    
     public void CloseOrganizer()
     {
         CancelSelection();

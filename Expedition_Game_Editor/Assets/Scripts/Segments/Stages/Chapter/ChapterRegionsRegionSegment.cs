@@ -68,5 +68,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         elementData.TileIconPath = resultElementData.TileIconPath;
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

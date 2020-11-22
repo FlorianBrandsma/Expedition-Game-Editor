@@ -276,6 +276,8 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
         Notes = inputField.text;
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

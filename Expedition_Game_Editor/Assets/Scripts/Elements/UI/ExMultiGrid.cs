@@ -135,7 +135,8 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
             SelectionElementManager.InitializeElement(  innerElement.EditorElement.DataElement, innerGrid,
                                                         EditorElement.DataElement.DisplayManager,
                                                         multiGridProperties.innerSelectionType,
-                                                        multiGridProperties.innerSelectionProperty);
+                                                        multiGridProperties.innerSelectionProperty,
+                                                        multiGridProperties.innerUniqueSelection);
 
             innerElement.EditorElement.parent = EditorElement;
 

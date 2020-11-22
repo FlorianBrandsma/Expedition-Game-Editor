@@ -59,6 +59,7 @@ public class SearchController : MonoBehaviour
             case Enums.DataType.Interactable:       dataController = gameObject.AddComponent<InteractableDataController>();         break;
             case Enums.DataType.WorldInteractable:  dataController = gameObject.AddComponent<WorldInteractableDataController>();    break;
             case Enums.DataType.Region:             dataController = gameObject.AddComponent<RegionDataController>();               break;
+            case Enums.DataType.SceneActor:         dataController = gameObject.AddComponent<SceneActorDataController>();           break;
 
             default: Debug.Log("CASE MISSING:" + searchParameters.dataType); break;
         }

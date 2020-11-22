@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,9 +6,10 @@ static public class SelectionElementManager
 {
     static public List<EditorElement> elementPool = new List<EditorElement>();
     
-    static public void InitializeElement(DataElement dataElement, Transform parent, IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    static public void InitializeElement(DataElement dataElement, Transform parent, IDisplayManager displayManager, 
+                                         SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
     {
-        dataElement.InitializeElement(displayManager, selectionType, selectionProperty);
+        dataElement.InitializeElement(displayManager, selectionType, selectionProperty, uniqueSelection);
 
         dataElement.transform.SetParent(parent, false);
     }
@@ -56,8 +56,16 @@ static public class SelectionElementManager
 
     static public List<EditorElement> FindSelectionElements(List<EditorElement> elementList, IElementData elementData)
     {
-        return elementList.Where(x => x.selectionProperty != SelectionManager.Property.Set && x.selectionStatus == Enums.SelectionStatus.Main && 
-                                      x.DataElement.ElementData != null && DataManager.Equals(x.DataElement.ElementData, elementData)).ToList();
+        var resultList = elementList.Where(x => x.selectionProperty != SelectionManager.Property.Set &&
+                                                x.selectionStatus == Enums.SelectionStatus.Main &&
+                                                x.DataElement.ElementData != null &&
+                                                DataManager.Equals(x.DataElement.ElementData, elementData)).ToList();
+
+        //Only return the source's element 
+        if (elementData.UniqueSelection)
+            resultList = resultList.Where(x => x.DataElement == elementData.DataElement).ToList();
+
+        return resultList;
     }
 
     static public void CloseElement(DataElement dataElement)

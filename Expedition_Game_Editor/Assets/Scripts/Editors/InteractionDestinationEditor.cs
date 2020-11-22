@@ -104,14 +104,14 @@ public class InteractionDestinationEditor : MonoBehaviour, IEditor
         }
     }
 
-    public bool FreeRotation
+    public bool ChangeRotation
     {
-        get { return interactionDestinationData.FreeRotation; }
+        get { return interactionDestinationData.ChangeRotation; }
         set
         {
-            interactionDestinationData.FreeRotation = value;
+            interactionDestinationData.ChangeRotation = value;
 
-            DataList.ForEach(x => ((InteractionDestinationData)x).FreeRotation = value);
+            DataList.ForEach(x => ((InteractionDestinationData)x).ChangeRotation = value);
         }
     }
 

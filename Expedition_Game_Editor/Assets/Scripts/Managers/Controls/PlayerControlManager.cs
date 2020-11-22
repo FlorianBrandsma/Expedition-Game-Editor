@@ -27,7 +27,7 @@ public class PlayerControlManager : MonoBehaviour
     private PlayerSaveElementData PlayerData                { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
     private GameWorldInteractableElementData ActiveCharacterData  { get { return GameManager.instance.worldInteractableControllableData; } }
     private GameElement ActiveCharacter                     { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
-    private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.Element).Animator; } }
+    private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.SelectionElement.Element).Animator; } }
     
     public Enums.ControlType ControlType
     {

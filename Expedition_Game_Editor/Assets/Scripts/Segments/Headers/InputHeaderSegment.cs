@@ -206,7 +206,9 @@ public class InputHeaderSegment : MonoBehaviour, ISegment
         Name = inputText.InputField.text;
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         if (indexSwitch != null)

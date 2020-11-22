@@ -2,6 +2,8 @@
 
 public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 {
+    private int modelId;
+    private string modelPath;
     private Model model;
     
     private Vector3 position;
@@ -59,6 +61,14 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
         }
 
+        if (EditorElement.elementStatus != Enums.ElementStatus.Hidden)
+        {
+            var prefab = Resources.Load<Model>(modelPath);
+            model = (Model)PoolManager.SpawnObject(prefab, modelId);
+
+            SetModel();
+        }
+
         transform.localPosition     = new Vector3(position.x, position.y, -position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
         transform.localScale        = new Vector3(scale, scale, scale);
@@ -68,90 +78,78 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (WorldInteractableElementData)EditorElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetInteractionDestinationElement()
     {
         var elementData = (InteractionDestinationElementData)EditorElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetWorldObjectElement()
     {
         var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetPhaseElement()
     {
         var elementData = (PhaseElementData)EditorElement.DataElement.ElementData;
 
-        var prefab  = Resources.Load<Model>(elementData.ModelPath);
-        model       = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
         rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetSceneActorElement()
     {
         var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<Model>(elementData.ModelPath);
-        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetScenePropElement()
     {
         var elementData = (ScenePropElementData)EditorElement.DataElement.ElementData;
 
-        var prefab = Resources.Load<Model>(elementData.ModelPath);
-        model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+        modelId = elementData.ModelId;
+        modelPath = elementData.ModelPath;
 
         position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
-
-        SetModel();
     }
 
     private void SetModel()

@@ -53,6 +53,8 @@ public class SceneActorActSpeechMethodSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         speechMethodDropdown.Dropdown.options.Clear();

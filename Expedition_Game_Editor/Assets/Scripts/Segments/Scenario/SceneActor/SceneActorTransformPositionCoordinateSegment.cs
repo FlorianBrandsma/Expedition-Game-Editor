@@ -13,6 +13,16 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
     public SceneActorEditor SceneActorEditor    { get { return (SceneActorEditor)DataEditor; } }
 
     #region Data properties
+    private bool ChangePosition
+    {
+        get { return SceneActorEditor.ChangePosition; }
+    }
+
+    private bool FreezePosition
+    {
+        get { return SceneActorEditor.FreezePosition; }
+    }
+
     private float PositionX
     {
         get { return SceneActorEditor.PositionX; }
@@ -65,6 +75,8 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
 
+        UpdateSegment();
+
         gameObject.SetActive(true);
     }
 
@@ -98,8 +110,20 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
     private void UpdateTile()
     {
         TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
-        Debug.Log(TerrainTileId);
+
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        EnableInputFields(ChangePosition);
+    }
+
+    private void EnableInputFields(bool enable)
+    {
+        xInputField.EnableElement(enable);
+        yInputField.EnableElement(enable);
+        zInputField.EnableElement(enable);
     }
 
     public void CloseSegment() { }

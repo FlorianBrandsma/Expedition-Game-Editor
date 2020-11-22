@@ -7,7 +7,7 @@ static public class SceneShotManager
 
     static public SceneShotElementData GetActiveElementData(Route route)
     {
-        var sceneShotElementData = route.data.dataList.Cast<SceneShotElementData>().Where(x => x.Type == (int)activeShotType).First();
+        var sceneShotElementData = (SceneShotElementData)route.data.dataController.Data.dataList.Where(x => ((SceneShotElementData)x).Type == (int)activeShotType).First();
 
         return sceneShotElementData;
     }
@@ -34,10 +34,11 @@ static public class SceneShotManager
                 {
                     controllerIndex = 3,
                     id = sceneShotElementData.Id,
-                    data = sceneShotRouteSource.data,
+                    data = sceneShotRouteSource.data.dataController.Data,
                     path = path,
 
-                    selectionStatus = sceneShotRouteSource.selectionStatus
+                    selectionStatus = sceneShotRouteSource.selectionStatus,
+                    uniqueSelection = sceneShotRouteSource.uniqueSelection
                 };
 
                 path.Add(sceneShotRoute);

@@ -43,5 +43,7 @@ public class TaskSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

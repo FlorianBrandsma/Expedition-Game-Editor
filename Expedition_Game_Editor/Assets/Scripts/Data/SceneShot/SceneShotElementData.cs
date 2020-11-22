@@ -10,6 +10,7 @@ public class SceneShotElementData : SceneShotData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.SceneShot; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
@@ -34,6 +35,11 @@ public class SceneShotElementData : SceneShotData, IElementData
         get { return !Mathf.Approximately(PositionZ, OriginalData.PositionZ); }
     }
 
+    public bool ChangedPositionTargetSceneActorId
+    {
+        get { return PositionTargetSceneActorId != OriginalData.PositionTargetSceneActorId; }
+    }
+
     public bool ChangedChangeRotation
     {
         get { return ChangeRotation != OriginalData.ChangeRotation; }
@@ -54,12 +60,17 @@ public class SceneShotElementData : SceneShotData, IElementData
         get { return RotationZ != OriginalData.RotationZ; }
     }
     
+    public bool ChangedRotationTargetSceneActorId
+    {
+        get { return RotationTargetSceneActorId != OriginalData.RotationTargetSceneActorId; }
+    }
+
     public bool Changed
     {
         get
         {
-            return  ChangedChangePosition || ChangedPositionX || ChangedPositionY || ChangedPositionZ ||
-                    ChangedChangeRotation || ChangedRotationX || ChangedRotationY || ChangedRotationZ;
+            return  ChangedChangePosition || ChangedPositionX || ChangedPositionY || ChangedPositionZ || ChangedPositionTargetSceneActorId ||
+                    ChangedChangeRotation || ChangedRotationX || ChangedRotationY || ChangedRotationZ || ChangedRotationTargetSceneActorId;
         }
     }
     #endregion

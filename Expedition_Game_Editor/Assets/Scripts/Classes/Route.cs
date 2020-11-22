@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 public class Route
@@ -12,6 +10,7 @@ public class Route
     public Path path;
 
     public Enums.SelectionStatus selectionStatus;
+    public bool uniqueSelection;
 
     public IElementData ElementData { get { return data == null ? null : data.dataList.Where(x => x.Id == id).FirstOrDefault(); } }
 
@@ -35,6 +34,7 @@ public class Route
         path = editorElement.DataElement.Path;
 
         selectionStatus = editorElement.selectionStatus;
+        uniqueSelection = editorElement.uniqueSelection;
     }
 
     public Route(int controllerIndex, Route route)
@@ -46,11 +46,12 @@ public class Route
         id = route.id;
         
         selectionStatus = route.selectionStatus;
+        uniqueSelection = route.uniqueSelection;
 
         path = route.path;
     }
 
-    public Route(int controllerIndex, Route route, Enums.SelectionStatus selectionStatus)
+    public Route(int controllerIndex, Route route, Enums.SelectionStatus selectionStatus, bool uniqueSelection)
     {
         this.controllerIndex = controllerIndex;
 
@@ -59,6 +60,7 @@ public class Route
         id = route.id;
 
         this.selectionStatus = selectionStatus;
+        this.uniqueSelection = uniqueSelection;
 
         path = route.path;
     }

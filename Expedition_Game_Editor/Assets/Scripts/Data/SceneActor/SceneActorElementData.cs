@@ -10,6 +10,7 @@ public class SceneActorElementData : SceneActorData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.SceneActor; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
@@ -32,6 +33,11 @@ public class SceneActorElementData : SceneActorData, IElementData
     public bool ChangedShowTextBox
     {
         get { return ShowTextBox != OriginalData.ShowTextBox; }
+    }
+
+    public bool ChangedTargetSceneActorId
+    {
+        get { return TargetSceneActorId != OriginalData.TargetSceneActorId; }
     }
 
     public bool ChangedChangePosition

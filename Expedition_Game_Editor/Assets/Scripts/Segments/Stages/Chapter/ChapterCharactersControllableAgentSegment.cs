@@ -68,5 +68,7 @@ public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
         elementData.ModelIconPath       = resultElementData.ModelIconPath;
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

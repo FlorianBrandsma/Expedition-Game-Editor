@@ -58,5 +58,7 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
         elementData.ModelIconPath       = resultElementData.ModelIconPath;
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

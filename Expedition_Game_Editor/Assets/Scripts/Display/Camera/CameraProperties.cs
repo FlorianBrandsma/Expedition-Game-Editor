@@ -11,6 +11,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
+    public bool uniqueSelection;
 
     public bool timeBasedLighting;
     public bool enableScroll;
@@ -35,6 +36,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public SelectionManager.Property SelectionProperty  { get { return selectionProperty; } }
     public SelectionManager.Type SelectionType          { get { return selectionType; } }
+    public bool UniqueSelection                         { get { return uniqueSelection; } }
 
     public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }
 
@@ -54,7 +56,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
     public void SetDisplay()
     {
         cameraManager.SetProperties();
-        cameraManager.SelectData();
+        cameraManager.CorrectPosition();
         cameraManager.SetCamera();
     }
 

@@ -42,6 +42,8 @@ public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegmen
 
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

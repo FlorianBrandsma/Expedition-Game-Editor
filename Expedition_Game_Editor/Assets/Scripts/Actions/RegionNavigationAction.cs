@@ -32,7 +32,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             data = regionRouteSource.data,
             path = path,
 
-            selectionStatus = regionRouteSource.selectionStatus
+            selectionStatus = regionRouteSource.selectionStatus,
+            uniqueSelection = regionRouteSource.uniqueSelection
         };
         
         InitializeData(regionRoute);
@@ -59,7 +60,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                     id = interactionDestinationRouteSource.id,
                     data = interactionDestinationRouteSource.data,
                     path = interactionDestinationRouteSource.path,
-                    selectionStatus = Enums.SelectionStatus.Main
+                    selectionStatus = Enums.SelectionStatus.Main,
+                    uniqueSelection = false
                 };
 
                 path.Add(interactionDestinationRoute);
@@ -74,7 +76,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                     id = phaseRouteSource.id,
                     data = phaseRouteSource.data,
                     path = phaseRouteSource.path,
-                    selectionStatus = Enums.SelectionStatus.Main
+                    selectionStatus = Enums.SelectionStatus.Main,
+                    uniqueSelection = false
                 };
                 
                 path.Add(phaseRoute);

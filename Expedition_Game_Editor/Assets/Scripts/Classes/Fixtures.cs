@@ -56,6 +56,7 @@ static public class Fixtures
     static public List<OutcomeBaseData>                 outcomeList                 = new List<OutcomeBaseData>();
     static public List<SceneBaseData>                   sceneList                   = new List<SceneBaseData>();
     static public List<SceneShotBaseData>               sceneShotList               = new List<SceneShotBaseData>();
+    static public List<CameraFilterBaseData>            cameraFilterList            = new List<CameraFilterBaseData>();
     static public List<SceneActorBaseData>              sceneActorList              = new List<SceneActorBaseData>();
     static public List<ScenePropBaseData>               scenePropList               = new List<ScenePropBaseData>();
 
@@ -73,6 +74,7 @@ static public class Fixtures
     {
         LoadIcons();
         LoadModels();
+        LoadCameraFilters();
         LoadTileSets();
         LoadTiles();
         LoadItems();
@@ -164,7 +166,7 @@ static public class Fixtures
         /*19*/CreateModel("Tree",           20, new Vector3(1,      1,      4));
         /*20*/CreateModel("Pool",           21, new Vector3(2.75f,  2.5f,   0.75f));
     }
-
+    
     static public void CreateModel(string name, int iconId, Vector3 size)
     {
         var model = new ModelBaseData();
@@ -180,6 +182,31 @@ static public class Fixtures
         model.Depth = size.y;
 
         modelList.Add(model);
+    }
+    #endregion
+
+    #region Camera filters
+    static public void LoadCameraFilters()
+    {
+        /*01*/CreateCameraFilter("Nothing", "Nothing");
+        /*02*/CreateCameraFilter("FadeBlack", "Fade black");
+        /*03*/CreateCameraFilter("FadeWhite", "Fade white");
+    }
+
+    static private void CreateCameraFilter(string path, string name)
+    {
+        var cameraFilter = new CameraFilterBaseData();
+
+        int id = cameraFilterList.Count > 0 ? (cameraFilterList[cameraFilterList.Count - 1].Id + 1) : 1;
+
+        cameraFilter.Id = id;
+
+        cameraFilter.Path = "Textures/CameraFilters/" + path;
+        cameraFilter.IconPath = "Textures/Icons/CameraFilters/" + path;
+
+        cameraFilter.Name = name;
+
+        cameraFilterList.Add(cameraFilter);
     }
     #endregion
 
@@ -487,6 +514,8 @@ static public class Fixtures
                     PositionY = 0.2f,
                     PositionZ = 242.375f,
 
+                    ChangeRotation = true,
+
                     RotationX = 0,
                     RotationY = 130,
                     RotationZ = 0,
@@ -499,6 +528,8 @@ static public class Fixtures
                     PositionX = 230f,
                     PositionY = 0.2f,
                     PositionZ = 235f,
+
+                    ChangeRotation = true,
 
                     RotationX = 0,
                     RotationY = 130,
@@ -539,6 +570,8 @@ static public class Fixtures
                     PositionY = 0.2f,
                     PositionZ = 246f,
 
+                    ChangeRotation = true,
+
                     RotationX = 0,
                     RotationY = 130,
                     RotationZ = 0,
@@ -559,7 +592,7 @@ static public class Fixtures
                     PositionY = 0f,
                     PositionZ = 242.375f,
 
-                    FreeRotation = true,
+                    ChangeRotation = false,
 
                     RotationX = 0,
                     RotationY = 255,
@@ -729,7 +762,7 @@ static public class Fixtures
         interactionDestination.TerrainId = GetTerrain(interactionDestination.RegionId, interactionDestination.PositionX, interactionDestination.PositionZ);
         interactionDestination.TerrainTileId = GetTerrainTile(interactionDestination.TerrainId, interactionDestination.PositionX, interactionDestination.PositionZ);
 
-        interactionDestination.FreeRotation = interactionDestinationSource.FreeRotation;
+        interactionDestination.ChangeRotation = interactionDestinationSource.ChangeRotation;
 
         interactionDestination.RotationX = interactionDestinationSource.RotationX;
         interactionDestination.RotationY = interactionDestinationSource.RotationY;
@@ -839,7 +872,7 @@ static public class Fixtures
         sceneActor.WorldInteractableId = worldInteractable.Id;
         
         sceneActor.ChangePosition = true;
-        sceneActor.FreezePosition = true;
+        sceneActor.FreezePosition = false;
 
         sceneActor.SpeechMethod = (int)Enums.SpeechMethod.Speak;
         sceneActor.SpeechText = "Hello, my name is " + interactable.Name  + ". I belong to scene " + scene.Id;
@@ -883,6 +916,8 @@ static public class Fixtures
         sceneProp.RotationX = 0;
         sceneProp.RotationY = 0;
         sceneProp.RotationZ = 0;
+
+        sceneProp.Scale = 1;
 
         scenePropList.Add(sceneProp);
     }
@@ -1231,7 +1266,7 @@ static public class Fixtures
                                     interactionDestination.TerrainId = GetTerrain(interactionDestination.RegionId, interactionDestination.PositionX, interactionDestination.PositionZ);
                                     interactionDestination.TerrainTileId = GetTerrainTile(interactionDestination.TerrainId, interactionDestination.PositionX, interactionDestination.PositionZ);
 
-                                    interactionDestination.FreeRotation = interactionDestinationSource.FreeRotation;
+                                    interactionDestination.ChangeRotation = interactionDestinationSource.ChangeRotation;
 
                                     interactionDestination.RotationX = interactionDestinationSource.RotationX;
                                     interactionDestination.RotationY = interactionDestinationSource.RotationY;
@@ -1313,11 +1348,15 @@ static public class Fixtures
                                             sceneShot.PositionY = sceneShotSource.PositionY;
                                             sceneShot.PositionZ = sceneShotSource.PositionZ;
 
+                                            sceneShot.PositionTargetSceneActorId = sceneShotSource.PositionTargetSceneActorId;
+
                                             sceneShot.ChangeRotation = sceneShotSource.ChangeRotation;
 
                                             sceneShot.RotationX = sceneShotSource.RotationX;
                                             sceneShot.RotationY = sceneShotSource.RotationY;
                                             sceneShot.RotationZ = sceneShotSource.RotationZ;
+
+                                            sceneShot.RotationTargetSceneActorId = sceneShotSource.RotationTargetSceneActorId;
 
                                             sceneShotList.Add(sceneShot);
                                         }
@@ -1341,6 +1380,8 @@ static public class Fixtures
                                             sceneActor.SpeechMethod = sceneActorSource.SpeechMethod;
                                             sceneActor.SpeechText = sceneActorSource.SpeechText;
                                             sceneActor.ShowTextBox = sceneActorSource.ShowTextBox;
+
+                                            sceneActor.TargetSceneActorId = sceneActorSource.TargetSceneActorId;
 
                                             sceneActor.PositionX = sceneActorSource.PositionX;
                                             sceneActor.PositionY = sceneActorSource.PositionY;
@@ -1382,6 +1423,8 @@ static public class Fixtures
                                             sceneProp.RotationX = scenePropSource.RotationX;
                                             sceneProp.RotationY = scenePropSource.RotationY;
                                             sceneProp.RotationZ = scenePropSource.RotationZ;
+
+                                            sceneProp.Scale = scenePropSource.Scale;
 
                                             scenePropList.Add(sceneProp);
                                         }

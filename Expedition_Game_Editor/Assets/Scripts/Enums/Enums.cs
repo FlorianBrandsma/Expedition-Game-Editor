@@ -31,6 +31,7 @@ public class Enums
         Outcome,
         Scene,
         SceneShot,
+        CameraFilter,
         SceneActor,
         SceneProp,
         EditorWorld,

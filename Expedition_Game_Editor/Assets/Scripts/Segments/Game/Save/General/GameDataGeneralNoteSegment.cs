@@ -103,5 +103,7 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

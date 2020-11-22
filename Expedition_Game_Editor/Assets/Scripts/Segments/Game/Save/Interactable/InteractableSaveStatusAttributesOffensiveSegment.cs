@@ -39,6 +39,8 @@ public class InteractableSaveStatusAttributesOffensiveSegment : MonoBehaviour, I
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         gameObject.SetActive(false);

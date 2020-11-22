@@ -6,6 +6,10 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 {
     private SceneActorData sceneActorData;
 
+    public CameraManager cameraManager;
+
+    public EditorWorldOrganizer EditorWorldOrganizer { get { return (EditorWorldOrganizer)cameraManager.Organizer; } }
+
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
     public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == sceneActorData.Id).FirstOrDefault(); } }
@@ -13,7 +17,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
 
     public List<IElementData> DataList
     {
@@ -90,6 +94,17 @@ public class SceneActorEditor : MonoBehaviour, IEditor
             sceneActorData.ShowTextBox = value;
 
             DataList.ForEach(x => ((SceneActorElementData)x).ShowTextBox = value);
+        }
+    }
+
+    public int TargetSceneActorId
+    {
+        get { return sceneActorData.TargetSceneActorId; }
+        set
+        {
+            sceneActorData.TargetSceneActorId = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).TargetSceneActorId = value);
         }
     }
 

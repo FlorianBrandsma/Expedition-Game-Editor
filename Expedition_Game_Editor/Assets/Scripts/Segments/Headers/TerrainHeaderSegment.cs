@@ -143,7 +143,9 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         SelectionElementManager.elementPool.Remove(iconEditorElement);

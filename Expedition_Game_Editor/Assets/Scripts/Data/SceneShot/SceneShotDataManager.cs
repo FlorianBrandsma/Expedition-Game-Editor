@@ -31,12 +31,16 @@ public static class SceneShotDataManager
                         PositionY = sceneShotData.PositionY,
                         PositionZ = sceneShotData.PositionZ,
 
+                        PositionTargetSceneActorId = sceneShotData.PositionTargetSceneActorId,
+
                         ChangeRotation = sceneShotData.ChangeRotation,
 
                         RotationX = sceneShotData.RotationX,
                         RotationY = sceneShotData.RotationY,
-                        RotationZ = sceneShotData.RotationZ
-                        
+                        RotationZ = sceneShotData.RotationZ,
+
+                        RotationTargetSceneActorId = sceneShotData.RotationTargetSceneActorId
+
                     }).OrderBy(x => x.Id).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
@@ -83,6 +87,9 @@ public static class SceneShotDataManager
         if (elementData.ChangedPositionZ)
             data.PositionZ = elementData.PositionZ;
 
+        if (elementData.ChangedPositionTargetSceneActorId)
+            data.PositionTargetSceneActorId = elementData.PositionTargetSceneActorId;
+
         if (elementData.ChangedChangeRotation)
             data.ChangeRotation = elementData.ChangeRotation;
 
@@ -94,5 +101,8 @@ public static class SceneShotDataManager
 
         if (elementData.ChangedRotationZ)
             data.RotationZ = elementData.RotationZ;
+
+        if (elementData.ChangedRotationTargetSceneActorId)
+            data.RotationTargetSceneActorId = elementData.RotationTargetSceneActorId;
     }
 }

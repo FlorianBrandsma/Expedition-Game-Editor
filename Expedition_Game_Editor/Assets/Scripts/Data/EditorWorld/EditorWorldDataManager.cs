@@ -224,7 +224,7 @@ public static class EditorWorldDataManager
                         RotationY = interactionDestinationData.RotationY,
                         RotationZ = interactionDestinationData.RotationZ,
 
-                        FreeRotation = interactionDestinationData.FreeRotation,
+                        ChangeRotation = interactionDestinationData.ChangeRotation,
 
                         Animation = interactionDestinationData.Animation,
                         Patience = interactionDestinationData.Patience,
@@ -382,8 +382,7 @@ public static class EditorWorldDataManager
                         RotationY = scenePropData.RotationY,
                         RotationZ = scenePropData.RotationZ,
 
-#warning "Probably requires an editor as well then"
-                        Scale = 1,
+                        Scale = scenePropData.Scale,
 
                         InteractionId = interactionData.Id,
                         TaskId = taskData.Id,
@@ -506,18 +505,12 @@ public static class EditorWorldDataManager
         searchParameters.regionId = searchData.regionId;
         
         interactionDestinationDataList = DataManager.GetInteractionDestinationData(searchParameters);
-
-        Debug.Log(interactionDestinationDataList.Count);
     }
 
     private static void GetSceneData(Search.EditorWorld searchData)
     {
         var searchParameters = new Search.Scene();
         searchParameters.regionId = searchData.regionId;
-
-        //Also take into account what scenes are actually available on that region based on
-        //quest id, objective id etc etc.
-        //The phase region should only show scenes of interactions which have an interaction destination on that region
 
         sceneDataList = DataManager.GetSceneData(searchParameters);
     }
@@ -534,7 +527,6 @@ public static class EditorWorldDataManager
     {
         var searchParameters = new Search.SceneActor();
         searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
-        searchParameters.changePosition = true;
 
         sceneActorDataList = DataManager.GetSceneActorData(searchParameters);
     }
@@ -550,11 +542,9 @@ public static class EditorWorldDataManager
     private static void GetInteractionData()
     {
         var searchParameters = new Search.Interaction();
-        searchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId)/*.Union(outcomeDataList.Select(x => x.InteractionId))*/.Distinct().ToList();
+        searchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId).Union(outcomeDataList.Select(x => x.InteractionId)).Distinct().ToList();
 
         interactionDataList = DataManager.GetInteractionData(searchParameters);
-
-        Debug.Log(interactionDataList.Count);
     }
 
     private static void GetTaskData(Search.EditorWorld searchData)
@@ -564,8 +554,6 @@ public static class EditorWorldDataManager
         searchParameters.objectiveId = searchData.objectiveId;
 
         taskDataList = DataManager.GetTaskData(searchParameters);
-
-        Debug.Log(taskDataList.Count);
     }
     
     private static void GetWorldInteractableData()

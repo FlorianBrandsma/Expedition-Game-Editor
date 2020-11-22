@@ -47,6 +47,8 @@ public class ChapterGeneralTimeSpeedSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

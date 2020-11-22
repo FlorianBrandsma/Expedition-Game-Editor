@@ -16,48 +16,58 @@ public static class SceneActorDataManager
 
         GetSceneActorData(searchParameters);
 
-        if (sceneActorDataList.Count == 0) return new List<IElementData>();
+        if (sceneActorDataList.Count == 0 && !searchParameters.includeEmptyElement) return new List<IElementData>();
 
         GetWorldInteractableData();
         GetInteractableData();
         GetModelData();
         GetIconData();
 
-        var list = (from sceneShotData          in sceneActorDataList
-                    join worldInteractableData  in worldInteractableDataList    on sceneShotData.WorldInteractableId    equals worldInteractableData.Id
+        var list = (from sceneActorData         in sceneActorDataList
+                    join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId   equals worldInteractableData.Id
                     join interactableData       in interactableDataList         on worldInteractableData.InteractableId equals interactableData.Id
                     join modelData              in modelDataList                on interactableData.ModelId             equals modelData.Id
                     join iconData               in iconDataList                 on modelData.IconId                     equals iconData.Id
                     select new SceneActorElementData()
                     {
-                        Id = sceneShotData.Id,
+                        Id = sceneActorData.Id,
 
-                        SceneId = sceneShotData.SceneId,
-                        WorldInteractableId = sceneShotData.WorldInteractableId,
+                        SceneId = sceneActorData.SceneId,
+                        WorldInteractableId = sceneActorData.WorldInteractableId,
 
-                        SpeechMethod = sceneShotData.SpeechMethod,
-                        SpeechText = sceneShotData.SpeechText,
-                        ShowTextBox = sceneShotData.ShowTextBox,
+                        SpeechMethod = sceneActorData.SpeechMethod,
+                        SpeechText = sceneActorData.SpeechText,
+                        ShowTextBox = sceneActorData.ShowTextBox,
 
-                        ChangePosition = sceneShotData.ChangePosition,
-                        FreezePosition = sceneShotData.FreezePosition,
+                        TargetSceneActorId = sceneActorData.TargetSceneActorId,
 
-                        PositionX = sceneShotData.PositionX,
-                        PositionY = sceneShotData.PositionY,
-                        PositionZ = sceneShotData.PositionZ,
+                        ChangePosition = sceneActorData.ChangePosition,
+                        FreezePosition = sceneActorData.FreezePosition,
 
-                        ChangeRotation = sceneShotData.ChangeRotation,
-                        FaceTarget = sceneShotData.FaceTarget,
+                        PositionX = sceneActorData.PositionX,
+                        PositionY = sceneActorData.PositionY,
+                        PositionZ = sceneActorData.PositionZ,
 
-                        RotationX = sceneShotData.RotationX,
-                        RotationY = sceneShotData.RotationY,
-                        RotationZ = sceneShotData.RotationZ,
+                        ChangeRotation = sceneActorData.ChangeRotation,
+                        FaceTarget = sceneActorData.FaceTarget,
+
+                        RotationX = sceneActorData.RotationX,
+                        RotationY = sceneActorData.RotationY,
+                        RotationZ = sceneActorData.RotationZ,
 
                         ModelIconPath = iconData.Path,
                         InteractableName = interactableData.Name
 
                     }).OrderBy(x => x.Id).ToList();
 
+        if (searchParameters.includeEmptyElement)
+        {
+            list.Add(new SceneActorElementData()
+            {
+                InteractableName = "None"
+            });
+        }
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
@@ -66,11 +76,12 @@ public static class SceneActorDataManager
     private static void GetSceneActorData(Search.SceneActor searchParameters)
     {
         sceneActorDataList = new List<SceneActorBaseData>();
-
+        
         foreach (SceneActorBaseData sceneActor in Fixtures.sceneActorList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneActor.Id)) continue;
-            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(sceneActor.Id))            continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(sceneActor.Id))      continue;
+            if (searchParameters.sceneId.Count      > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId))  continue;
 
             sceneActorDataList.Add(sceneActor);
         }
@@ -120,6 +131,9 @@ public static class SceneActorDataManager
 
         if (elementData.ChangedShowTextBox)
             data.ShowTextBox = elementData.ShowTextBox;
+
+        if (elementData.ChangedTargetSceneActorId)
+            data.TargetSceneActorId = elementData.TargetSceneActorId;
 
         if (elementData.ChangedChangePosition)
             data.ChangePosition = elementData.ChangePosition;

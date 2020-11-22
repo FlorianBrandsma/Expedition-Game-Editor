@@ -2,8 +2,6 @@
 
 public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
 {
-    public CameraManager cameraManager;
-
     public ExToggle changeRotationToggle;
     public ExInputNumber xInputField, yInputField, zInputField;
 
@@ -13,10 +11,10 @@ public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
     public SceneShotEditor SceneShotEditor      { get { return (SceneShotEditor)DataEditor; } }
 
     #region Data properties
-    private bool ChangePosition
+    private bool ChangeRotation
     {
-        get { return SceneShotEditor.ChangePosition; }
-        set { SceneShotEditor.ChangePosition = value; }
+        get { return SceneShotEditor.ChangeRotation; }
+        set { SceneShotEditor.ChangeRotation = value; }
     }
 
     private int RotationX
@@ -52,11 +50,13 @@ public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        changeRotationToggle.Toggle.isOn = ChangePosition;
+        changeRotationToggle.Toggle.isOn = ChangeRotation;
 
         xInputField.Value = RotationX;
         yInputField.Value = RotationY;
         zInputField.Value = RotationZ;
+
+        UpdateSegment();
 
         gameObject.SetActive(true);
     }
@@ -86,9 +86,23 @@ public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
 
     public void UpdateChangeRotation()
     {
-        ChangePosition = changeRotationToggle.Toggle.isOn;
+        ChangeRotation = changeRotationToggle.Toggle.isOn;
+
+        UpdateSegment();
 
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        EnableInputFields(ChangeRotation);
+    }
+
+    private void EnableInputFields(bool enable)
+    {
+        xInputField.EnableElement(enable);
+        yInputField.EnableElement(enable);
+        zInputField.EnableElement(enable);
     }
 
     public void CloseSegment() { }

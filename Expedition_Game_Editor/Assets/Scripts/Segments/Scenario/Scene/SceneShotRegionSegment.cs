@@ -117,6 +117,15 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         SelectionElementManager.Add(regionButton.child);
         SelectionManager.SelectData(regionButton.DataElement.Data.dataList);
 
+        SetRegionButton();
+    }
+
+    private void SetRegionButton()
+    {
+        var sceneElementData = (SceneElementData)SceneEditor.EditData;
+
+        regionButton.elementStatus = sceneElementData.ChangedRegionId ? Enums.ElementStatus.Locked : Enums.ElementStatus.Enabled;
+
         regionButton.DataElement.SetElement();
         regionButton.SetOverlay();
     }
@@ -147,6 +156,11 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         SetRegionData();
 
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        SetRegionButton();
     }
 
     public void CloseSegment()

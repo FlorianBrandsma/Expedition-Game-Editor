@@ -34,7 +34,9 @@ public class TerrainSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
-
     public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateSegment() { }
+
+    public void CloseSegment() { }
 }

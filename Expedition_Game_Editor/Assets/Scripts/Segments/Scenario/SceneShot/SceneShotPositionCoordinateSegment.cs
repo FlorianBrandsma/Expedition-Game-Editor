@@ -65,6 +65,8 @@ public class SceneShotPositionCoordinateSegment : MonoBehaviour, ISegment
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
 
+        UpdateSegment();
+
         gameObject.SetActive(true);
     }
 
@@ -94,8 +96,22 @@ public class SceneShotPositionCoordinateSegment : MonoBehaviour, ISegment
     public void UpdateChangePosition()
     {
         ChangePosition = changePositionToggle.Toggle.isOn;
-        
+
+        UpdateSegment();
+
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        EnableInputFields(ChangePosition);
+    }
+
+    private void EnableInputFields(bool enable)
+    {
+        xInputField.EnableElement(enable);
+        yInputField.EnableElement(enable);
+        zInputField.EnableElement(enable);
     }
 
     public void CloseSegment() { }

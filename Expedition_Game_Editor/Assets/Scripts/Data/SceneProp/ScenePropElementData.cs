@@ -10,6 +10,7 @@ public class ScenePropElementData : ScenePropData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.SceneProp; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
@@ -48,6 +49,11 @@ public class ScenePropElementData : ScenePropData, IElementData
     {
         get { return RotationZ != OriginalData.RotationZ; }
     }
+
+    public bool ChangedScale
+    {
+        get { return !Mathf.Approximately(Scale, OriginalData.Scale); }
+    }
     
     public bool Changed
     {
@@ -55,7 +61,8 @@ public class ScenePropElementData : ScenePropData, IElementData
         {
             return  ChangedModelId      || 
                     ChangedPositionX    || ChangedPositionY || ChangedPositionZ ||
-                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ;
+                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ ||
+                    ChangedScale;
         }
     }
     #endregion

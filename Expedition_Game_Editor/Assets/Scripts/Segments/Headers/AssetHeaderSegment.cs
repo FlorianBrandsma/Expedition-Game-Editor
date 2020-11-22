@@ -440,7 +440,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
-    
+
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         if (indexSwitch != null)

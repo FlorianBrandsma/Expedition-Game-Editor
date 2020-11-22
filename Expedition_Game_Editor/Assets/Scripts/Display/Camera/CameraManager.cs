@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
 public class CameraManager : MonoBehaviour, IDisplayManager
@@ -87,7 +86,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(true);
     }
 
-    public void SelectData()
+    public void CorrectPosition()
     {
         Organizer.SelectData();
     }

@@ -288,14 +288,28 @@ public class Search
         public RequestType requestType;
     }
 
+    public class CameraFilter
+    {
+        public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
     public class SceneActor
     {
         public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
         public List<int> sceneId = new List<int>();
 
-        public bool? changePosition = null;
-        
+        public bool includeEmptyElement;
+
         public enum RequestType
         {
             Custom

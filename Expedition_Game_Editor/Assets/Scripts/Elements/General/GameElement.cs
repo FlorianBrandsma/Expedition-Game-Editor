@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class GameElement : MonoBehaviour, ISelectionElement
 {
     public DataElement DataElement  { get { return GetComponent<DataElement>(); } }
+    public IElement Element         { get { return GetComponent<IElement>(); } }
 
     public Model Model              { get; set; }
 
@@ -15,10 +16,10 @@ public class GameElement : MonoBehaviour, ISelectionElement
 
     public void InitializeElement()
     {
-        InitializeElement(SelectionManager.Type.Select, SelectionManager.Property.None);
+        InitializeElement(SelectionManager.Type.Select, SelectionManager.Property.None, false);
     }
 
-    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
     {
         GetComponent<IElement>().InitializeElement();
 

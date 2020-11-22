@@ -34,5 +34,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
 
     public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

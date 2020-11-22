@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class SceneActorTransformRotationOptionSegment : MonoBehaviour, ISegment
 {
     public ExToggle changeRotationToggle;
-    public ExToggle FaceTargetToggle;
+    public ExToggle faceTargetToggle;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
@@ -11,6 +12,11 @@ public class SceneActorTransformRotationOptionSegment : MonoBehaviour, ISegment
     private SceneActorEditor SceneActorEditor   { get { return (SceneActorEditor)DataEditor; } }
 
     #region Data properties
+    private int TargetSceneActorId
+    {
+        get { return SceneActorEditor.TargetSceneActorId; }
+    }
+
     private bool ChangeRotation
     {
         get { return SceneActorEditor.ChangeRotation; }
@@ -39,7 +45,9 @@ public class SceneActorTransformRotationOptionSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         changeRotationToggle.Toggle.isOn = ChangeRotation;
-        FaceTargetToggle.Toggle.isOn = FaceTarget;
+        faceTargetToggle.Toggle.isOn = FaceTarget;
+
+        UpdateSegment();
 
         gameObject.SetActive(true);
     }
@@ -50,14 +58,26 @@ public class SceneActorTransformRotationOptionSegment : MonoBehaviour, ISegment
     {
         ChangeRotation = changeRotationToggle.Toggle.isOn;
 
+        UpdateSegments();
+
         DataEditor.UpdateEditor();
     }
 
     public void UpdateFaceTarget()
     {
-        FaceTarget = FaceTargetToggle.Toggle.isOn;
+        FaceTarget = faceTargetToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
+    }
+
+    private void UpdateSegments()
+    {
+        DataEditor.EditorSegments.Where(x => x.gameObject.activeInHierarchy).ToList().ForEach(x => x.UpdateSegment());
+    }
+
+    public void UpdateSegment()
+    {
+        faceTargetToggle.EnableElement(!ChangeRotation && TargetSceneActorId > 0);
     }
 
     public void CloseSegment() { }

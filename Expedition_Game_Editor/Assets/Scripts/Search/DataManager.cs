@@ -16,6 +16,8 @@ static public class DataManager
 
     static public bool Equals(IElementData currentData, IElementData incomingData)
     {
+        if (currentData == null || incomingData == null) return false;
+        
         if (currentData.DataType != incomingData.DataType)
             return false;
 
@@ -248,8 +250,6 @@ static public class DataManager
         {
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneActor.Id))            continue;
             if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId))  continue;
-
-            if (searchParameters.changePosition != null && sceneActor.ChangePosition != searchParameters.changePosition)    continue;
 
             dataList.Add(sceneActor);
         }

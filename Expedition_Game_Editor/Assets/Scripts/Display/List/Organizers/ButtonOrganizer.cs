@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 
 public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -27,7 +24,7 @@ public class ButtonOrganizer : MonoBehaviour, IOrganizer, IList
     {
         SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
-    
+
     public void SetData()
     {
         SetData(DataController.Data.dataList);

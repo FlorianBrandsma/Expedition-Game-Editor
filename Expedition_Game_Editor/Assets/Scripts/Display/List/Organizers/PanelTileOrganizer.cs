@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 
 public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -55,7 +52,8 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             SelectionElementManager.InitializeElement(  panelTile.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty);
+                                                        DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(panelTile.EditorElement);
 

@@ -34,12 +34,12 @@ public class GameDataMenuSegment : MonoBehaviour, ISegment
         GlobalManager.OpenScene(GlobalManager.Scenes.Game);
     }
 
-    public void ApplySegment() { }
+    public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateSegment() { }
 
     public void CloseSegment()
     {
         titleScreenButton.onClick.RemoveAllListeners();
     }
-
-    public void SetSearchResult(IElementData elementData) { }
 }

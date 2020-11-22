@@ -7,10 +7,6 @@ public class SceneData : SceneBaseData
     
     public string RegionName    { get; set; }
 
-    public int RegionSize       { get; set; }
-    public int TerrainSize      { get; set; }
-    public float TileSize       { get; set; }
-
     public string TileIconPath  { get; set; }
     
     public override void GetOriginalValues(SceneData originalData)
@@ -19,10 +15,6 @@ public class SceneData : SceneBaseData
         PhaseId         = originalData.PhaseId;
         
         RegionName      = originalData.RegionName;
-
-        RegionSize      = originalData.RegionSize;
-        TerrainSize     = originalData.TerrainSize;
-        TileSize        = originalData.TileSize;
 
         TileIconPath    = originalData.TileIconPath;
         
@@ -38,10 +30,6 @@ public class SceneData : SceneBaseData
 
         data.RegionName     = RegionName;
 
-        data.RegionSize     = RegionSize;
-        data.TerrainSize    = TerrainSize;
-        data.TileSize       = TileSize;
-
         data.TileIconPath   = TileIconPath;
         
         base.Clone(data);
@@ -55,10 +43,6 @@ public class SceneData : SceneBaseData
         elementData.PhaseId         = PhaseId;
 
         elementData.RegionName      = RegionName;
-
-        elementData.RegionSize      = RegionSize;
-        elementData.TerrainSize     = TerrainSize;
-        elementData.TileSize        = TileSize;
 
         elementData.TileIconPath    = TileIconPath;
         

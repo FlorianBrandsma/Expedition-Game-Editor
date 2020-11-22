@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
 
 public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 {
@@ -54,8 +52,8 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
     public void SetSizeValues()
     {
         heightText.text = (Height * Scale).ToString();
-        widthText.text  = (Width * Scale).ToString();
-        depthText.text  = (Depth * Scale).ToString();
+        widthText.text  = (Width  * Scale).ToString();
+        depthText.text  = (Depth  * Scale).ToString();
     }
     
     public void OpenSegment()
@@ -75,6 +73,8 @@ public class WorldObjectSizeScaleSegment : MonoBehaviour, ISegment
 
         DataEditor.UpdateEditor();
     }
+
+    public void UpdateSegment() { }
 
     public void CloseSegment() { }
 }

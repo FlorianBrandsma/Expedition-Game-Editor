@@ -10,6 +10,7 @@ public class TaskElementData : TaskData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.Task; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 

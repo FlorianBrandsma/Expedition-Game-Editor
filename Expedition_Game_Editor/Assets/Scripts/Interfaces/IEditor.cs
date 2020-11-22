@@ -6,6 +6,7 @@ public interface IEditor
     bool Loaded { get; set; }
     Data Data { get; }
     IElementData ElementData { get; }
+    IElementData EditData { get; }
     List<IElementData> DataList { get; }
     List<IElementData> ElementDataList { get; }
     List<SegmentController> EditorSegments { get; }

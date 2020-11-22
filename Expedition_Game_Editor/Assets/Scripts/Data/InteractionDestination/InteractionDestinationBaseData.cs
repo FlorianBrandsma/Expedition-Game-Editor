@@ -16,7 +16,7 @@ public class InteractionDestinationBaseData
 
     public float PositionVariance   { get; set; }
 
-    public bool FreeRotation        { get; set; }
+    public bool ChangeRotation      { get; set; }
 
     public int RotationX            { get; set; }
     public int RotationY            { get; set; }
@@ -41,7 +41,7 @@ public class InteractionDestinationBaseData
 
         PositionVariance    = originalData.PositionVariance;
 
-        FreeRotation        = originalData.FreeRotation;
+        ChangeRotation      = originalData.ChangeRotation;
 
         RotationX           = originalData.RotationX;
         RotationY           = originalData.RotationY;
@@ -67,7 +67,7 @@ public class InteractionDestinationBaseData
 
         data.PositionVariance   = PositionVariance;
 
-        data.FreeRotation       = FreeRotation;
+        data.ChangeRotation     = ChangeRotation;
 
         data.RotationX          = RotationX;
         data.RotationY          = RotationY;

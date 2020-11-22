@@ -12,6 +12,7 @@ public class RegionElementData : RegionData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.Region; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 

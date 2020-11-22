@@ -63,6 +63,21 @@ public class SceneActorDataController : MonoBehaviour, IDataController
                 searchSceneActorElementData.Scale               = resultWorldInteractableElementData.Scale;
 
                 break;
+
+            case Enums.DataType.SceneActor:
+
+                searchSceneActorElementData.DataElement.Id = resultElementData.Id;
+
+                var resultSceneActorElementData = (SceneActorElementData)resultElementData;
+
+                searchSceneActorElementData.Id = resultSceneActorElementData.Id;
+
+                searchSceneActorElementData.ModelIconPath = resultSceneActorElementData.ModelIconPath;
+                searchSceneActorElementData.InteractableName = resultSceneActorElementData.InteractableName;
+
+                break;
+
+            default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }
 

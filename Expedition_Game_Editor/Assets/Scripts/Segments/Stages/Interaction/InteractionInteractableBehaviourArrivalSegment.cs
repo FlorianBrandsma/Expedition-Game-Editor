@@ -53,6 +53,8 @@ public class InteractionInteractableBehaviourArrivalSegment : MonoBehaviour, ISe
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment()
     {
         arrivalTypeDropdown.Dropdown.options.Clear();

@@ -14,8 +14,6 @@ public class ScenePropData : ScenePropBaseData
     public float Width              { get; set; }
     public float Depth              { get; set; }
 
-    public float Scale              { get; set; }
-
     public bool Default             { get; set; }
 
     public int StartTime            { get; set; }

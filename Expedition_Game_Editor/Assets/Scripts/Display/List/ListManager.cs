@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 
 public class ListManager : MonoBehaviour, IDisplayManager
 {
@@ -77,12 +74,12 @@ public class ListManager : MonoBehaviour, IDisplayManager
         listParent.sizeDelta = List.GetListSize(dataList.Count, true);
 
         listSize = List.GetListSize(dataList.Count, false);
-
+        
         //Select data after the list has been resized, so that the position may be properly corrected
         //"Set" elements never receive this kind of visual feedback
-        if(listProperties.SelectionProperty != SelectionManager.Property.Set)
+        if (listProperties.SelectionProperty != SelectionManager.Property.Set)
             Organizer.SelectData();
-        
+
         if (!listProperties.enablePaging)
             SetData();
 

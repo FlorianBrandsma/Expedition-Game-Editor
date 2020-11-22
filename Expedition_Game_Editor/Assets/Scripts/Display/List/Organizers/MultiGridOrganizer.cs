@@ -68,7 +68,8 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             SelectionElementManager.InitializeElement(  multiGrid.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty);
+                                                        DisplayManager.Display.SelectionProperty, 
+                                                        DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(multiGrid.EditorElement);
 

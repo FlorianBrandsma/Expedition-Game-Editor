@@ -108,5 +108,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

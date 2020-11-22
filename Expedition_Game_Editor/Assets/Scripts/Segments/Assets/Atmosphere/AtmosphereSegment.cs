@@ -43,7 +43,10 @@ public class AtmosphereSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
+
     public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateSegment() { }
 
     public void CloseSegment() { }
 }

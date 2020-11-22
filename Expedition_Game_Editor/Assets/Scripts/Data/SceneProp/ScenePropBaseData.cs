@@ -17,6 +17,8 @@ public class ScenePropBaseData
     public int RotationY        { get; set; }
     public int RotationZ        { get; set; }
 
+    public float Scale          { get; set; }
+
     public virtual void GetOriginalValues(ScenePropData originalData)
     {
         Id              = originalData.Id;
@@ -33,6 +35,8 @@ public class ScenePropBaseData
         RotationX       = originalData.RotationX;
         RotationY       = originalData.RotationY;
         RotationZ       = originalData.RotationZ;
+
+        Scale           = originalData.Scale;
     }
 
     public virtual void Clone(ScenePropData data)
@@ -51,6 +55,8 @@ public class ScenePropBaseData
         data.RotationX      = RotationX;
         data.RotationY      = RotationY;
         data.RotationZ      = RotationZ;
+
+        data.Scale          = Scale;
     }
 }
 

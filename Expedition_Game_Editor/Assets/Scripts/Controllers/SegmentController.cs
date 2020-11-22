@@ -64,7 +64,7 @@ public class SegmentController : MonoBehaviour
 
     public void InitializeDependencies(EditorController editorController)
     {
-        this.EditorController = editorController;
+        EditorController = editorController;
 
         DataControllerList.ForEach(x => x.InitializeController());
         
@@ -80,14 +80,20 @@ public class SegmentController : MonoBehaviour
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();
         
-        if (GetComponent<ISegment>() != null)
-            GetComponent<ISegment>().InitializeSegment();
+        if (Segment != null)
+            Segment.InitializeSegment();
     }
 
     public void OpenSegment()
     {
-        if (GetComponent<ISegment>() != null)
-            GetComponent<ISegment>().OpenSegment();
+        if (Segment != null)
+            Segment.OpenSegment();
+    }
+
+    public void UpdateSegment()
+    {
+        if (Segment != null)
+            Segment.UpdateSegment();
     }
 
     public void CloseSegment()

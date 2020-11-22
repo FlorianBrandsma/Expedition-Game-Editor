@@ -10,22 +10,12 @@ public class IconElementData : IconData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.Icon; } }
     
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
-    public bool ChangedPath
-    {
-        get { return Path != OriginalData.Path; }
-    }
-
-    public bool Changed
-    {
-        get
-        {
-            return ChangedPath;
-        }
-    }
+    public bool Changed { get { return false; } }
     #endregion
 
     public void Update() { }

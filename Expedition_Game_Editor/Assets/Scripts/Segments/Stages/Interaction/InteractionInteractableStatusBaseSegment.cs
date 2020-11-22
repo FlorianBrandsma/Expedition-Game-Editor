@@ -54,7 +54,9 @@ public class InteractionInteractableStatusBaseSegment : MonoBehaviour, ISegment
 
     public void OpenSegment() { }
 
-    public void CloseSegment() { }
-
     public void SetSearchResult(IElementData elementData) { }
+
+    public void UpdateSegment() { }
+
+    public void CloseSegment() { }
 }

@@ -85,7 +85,7 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     private void InitializeEdit()
     {
-        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, properties.childProperty);
+        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, properties.childProperty, ElementChild.uniqueSelection);
 
         ElementChild.gameObject.SetActive(true);
 

@@ -10,6 +10,7 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
     public Enums.DataType DataType                  { get { return Enums.DataType.InteractionDestination; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
@@ -64,9 +65,9 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
         get { return RotationZ != OriginalData.RotationZ; }
     }
 
-    public bool ChangedFreeRotation
+    public bool ChangedChangeRotation
     {
-        get { return FreeRotation != OriginalData.FreeRotation; }
+        get { return ChangeRotation != OriginalData.ChangeRotation; }
     }
 
     public bool ChangedAnimation
@@ -85,7 +86,7 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
         {
             return  ChangedRegionId     || ChangedTerrainId || ChangedTerrainTileId ||
                     ChangedPositionX    || ChangedPositionY || ChangedPositionZ     || ChangedPositionVariance  ||
-                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ     || ChangedFreeRotation      ||
+                    ChangedRotationX    || ChangedRotationY || ChangedRotationZ     || ChangedChangeRotation    ||
                     ChangedAnimation    || ChangedPatience;
         }
     }

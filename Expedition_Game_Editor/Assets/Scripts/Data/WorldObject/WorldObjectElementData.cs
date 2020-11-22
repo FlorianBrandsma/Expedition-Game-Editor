@@ -10,6 +10,7 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.WorldObject; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 

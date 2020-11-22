@@ -104,7 +104,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
     private void InitializeEdit()
     {
-        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, childProperty);
+        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, childProperty, ElementChild.uniqueSelection);
 
         ElementChild.gameObject.SetActive(true);
 
@@ -134,6 +134,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
             case Enums.DataType.Scene:                  SetSceneElement();                  break;
             case Enums.DataType.SceneShot:              SetSceneShotElement();              break;
+            case Enums.DataType.SceneActor:             SetSceneActorElement();             break;
 
             case Enums.DataType.Region:                 SetRegionElement();                 break;
             case Enums.DataType.Atmosphere:             SetAtmosphereElement();             break;
@@ -368,6 +369,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         idText.text = elementData.Id.ToString();
         headerText.text = header;
+    }
+
+    private void SetSceneActorElement()
+    {
+        var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
+
+        header = elementData.InteractableName;
+        iconPath = elementData.ModelIconPath;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+        IconTexture = Resources.Load<Texture2D>(iconPath);
     }
 
     private void SetRegionElement()

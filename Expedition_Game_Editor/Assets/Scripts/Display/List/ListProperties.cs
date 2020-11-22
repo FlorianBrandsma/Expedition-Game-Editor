@@ -12,7 +12,8 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
-    
+    public bool uniqueSelection;
+
     public Vector2 elementSize;
 
     public bool horizontal, vertical;
@@ -42,14 +43,15 @@ public class ListProperties : MonoBehaviour, IDisplay
         }
     }
 
-    public IDisplayManager DisplayManager { get { return listManager; } }
+    public IDisplayManager DisplayManager               { get { return listManager; } }
 
-    public IProperties Properties { get { return GetComponent<IProperties>(); } }
+    public IProperties Properties                       { get { return GetComponent<IProperties>(); } }
 
-    public SelectionManager.Property SelectionProperty { get { return selectionProperty; } }
-    public SelectionManager.Type SelectionType { get { return selectionType; }  }
+    public SelectionManager.Property SelectionProperty  { get { return selectionProperty; } }
+    public SelectionManager.Type SelectionType          { get { return selectionType; }  }
+    public bool UniqueSelection                         { get { return uniqueSelection; } }
 
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
+    public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }
 
     private void OpenList()
     {

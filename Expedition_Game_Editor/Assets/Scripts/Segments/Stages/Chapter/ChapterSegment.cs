@@ -29,5 +29,7 @@ public class ChapterSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(IElementData elementData) { }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

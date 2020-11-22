@@ -13,4 +13,5 @@ public interface IDisplay
 
     SelectionManager.Property SelectionProperty { get; }
     SelectionManager.Type SelectionType { get; }
+    bool UniqueSelection { get; }
 }

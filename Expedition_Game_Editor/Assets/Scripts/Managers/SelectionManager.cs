@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 static public class SelectionManager
 {
@@ -51,23 +52,30 @@ static public class SelectionManager
     static public void SelectData(List<IElementData> dataList, IDisplayManager displayManager = null)
     {
         if (dataList.Count == 0) return;
-
+        
         foreach (IElementData elementData in dataList)
         {
             foreach (Route route in routeList)
             {
-                if (route.id == 0) continue;
-                
                 if (DataManager.Equals(elementData, route.ElementData))
                 {
-                    if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+                    //Only select the element by which the route was opened if "unique selection" is true or when searching
+                    if (route.uniqueSelection)
                     {
-                        elementData.SelectionStatus = route.selectionStatus;
-
-                    } else {
-
-                        elementData.SelectionStatus = Enums.SelectionStatus.Both;
+                        if (elementData.DataElement != route.ElementData.DataElement)
+                            continue;
                     }
+
+                    if (elementData.UniqueSelection != route.uniqueSelection)
+                        continue;
+
+                    if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+                        elementData.SelectionStatus = route.selectionStatus;
+                    else
+                        elementData.SelectionStatus = Enums.SelectionStatus.Both;
+
+                    if (elementData.DataElement != null)
+                        ((EditorElement)elementData.DataElement.SelectionElement).SetOverlay();
 
                     if (displayManager != null)
                         displayManager.CorrectPosition(elementData, displayManager.Display.DataController.Data.dataList);

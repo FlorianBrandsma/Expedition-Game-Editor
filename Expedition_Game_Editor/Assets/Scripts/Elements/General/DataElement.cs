@@ -17,14 +17,13 @@ public class DataElement : MonoBehaviour
 
     public ISelectionElement SelectionElement { get { return GetComponent<ISelectionElement>(); } }
     public IPoolable Poolable   { get { return GetComponent<IPoolable>(); } }
-    public IElement Element     { get { return GetComponent<IElement>(); } }
 
     public void InitializeElement()
     {
         SelectionElement.InitializeElement();
     }
 
-    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty)
+    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
     {
         DisplayManager = displayManager;
         
@@ -34,7 +33,7 @@ public class DataElement : MonoBehaviour
         //Can be overwritten
         //data.dataController = DisplayManager.Display.DataController;
 
-        SelectionElement.InitializeElement(selectionType, selectionProperty);
+        SelectionElement.InitializeElement(selectionType, selectionProperty, uniqueSelection);
     }
 
     public void UpdateElement()
@@ -65,7 +64,7 @@ public class DataElement : MonoBehaviour
                 ElementData.UpdateSearch();
             }  
         }
-        
+
         //Apply combined search and result data
         segmentController.GetComponent<ISegment>().SetSearchResult(ElementData);
     }

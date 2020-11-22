@@ -49,7 +49,7 @@ public class SceneEditor : MonoBehaviour, IEditor
         set
         {
             sceneData.RegionId = value;
-
+            
             DataList.ForEach(x => ((SceneElementData)x).RegionId = value);
         }
     }
@@ -192,6 +192,8 @@ public class SceneEditor : MonoBehaviour, IEditor
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();
+
+        EditorSegments.ForEach(x => x.UpdateSegment());
 
         UpdateEditor();
     }

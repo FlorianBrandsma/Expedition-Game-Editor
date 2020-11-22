@@ -22,7 +22,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(new List<int>() { controllerIndex }, form, Enums.SelectionStatus.Main), form);
+            return CreatePath(CreateRoutes(new List<int>() { controllerIndex }, form, Enums.SelectionStatus.Main, false), form);
         }
     }
     #endregion
@@ -36,7 +36,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
         }
     }
 
@@ -264,7 +264,7 @@ public class PathManager
         {
             List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Actor };
 
-            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main, false);
 
             var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
 
@@ -297,7 +297,7 @@ public class PathManager
         {
             List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Prop };
 
-            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main, false);
 
             var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
 
@@ -338,9 +338,9 @@ public class PathManager
         {
             List<int> open = new List<int>() { 1, (int)Enums.RegionType.InteractionDestination };
 
-            Route customRoute = new Route(1, route, editorElement.selectionStatus);
+            Route customRoute = new Route(1, route, editorElement.selectionStatus, editorElement.uniqueSelection);
 
-            pathSource = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            pathSource = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus, editorElement.uniqueSelection));
             pathSource.type = Path.Type.New;
 
             return pathSource;
@@ -393,19 +393,19 @@ public class PathManager
         public Path Enter()
         {
             EditorForm form = RenderManager.layoutManager.forms[1];
-            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
 
         public Path Edit()
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
-            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
 
         public Path Get()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(get, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(get, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
     }
     #endregion
@@ -454,7 +454,7 @@ public class PathManager
         public Path Edit()
         {
             EditorForm form = RenderManager.layoutManager.forms[0];
-            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
 
         public Path Get()
@@ -501,11 +501,11 @@ public class PathManager
             switch (regionElementData.Type)
             {
                 case Enums.RegionType.Base:
-                    path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
+                    path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
                     break;
 
                 case Enums.RegionType.Phase:
-                    routes = CreateRoutes(enter, route, editorElement.selectionStatus);
+                    routes = CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection);
                     path = ExtendPath(path, routes);
                     break;
 
@@ -531,16 +531,16 @@ public class PathManager
 
         public Path Edit()
         {
-            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(edit, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
 
         public Path Open()
         {
             List<int> open = new List<int>() { 1, (int)regionElementData.Type };
 
-            Route customRoute = new Route(1, route, editorElement.selectionStatus);
+            Route customRoute = new Route(1, route, editorElement.selectionStatus, editorElement.uniqueSelection);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus, editorElement.uniqueSelection));
             path.type = Path.Type.New;
 
             return path;
@@ -551,9 +551,9 @@ public class PathManager
             List<int> open = new List<int>() { 1, (int)regionElementData.Type };
 
             //Only uses the data, not the index
-            Route customRoute = new Route(0, route, editorElement.selectionStatus);
+            Route customRoute = new Route(0, route, editorElement.selectionStatus, editorElement.uniqueSelection);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus, editorElement.uniqueSelection));
             
             path.type = Path.Type.New;
 
@@ -564,9 +564,9 @@ public class PathManager
         {
             List<int> open = new List<int>() { 0, 1, 2, 0, 0 };
 
-            Route customRoute = new Route(1, route, editorElement.selectionStatus);
+            Route customRoute = new Route(1, route, editorElement.selectionStatus, editorElement.uniqueSelection);
 
-            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus));
+            path = ExtendPath(route.path, CreateRoutes(open, customRoute, editorElement.selectionStatus, editorElement.uniqueSelection));
 
             return path;
         }
@@ -696,7 +696,7 @@ public class PathManager
 
             route.controllerIndex = enter;
 
-            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main, false);
             return ExtendPath(form.activePath, routes);
         }
 
@@ -706,7 +706,7 @@ public class PathManager
 
             route.controllerIndex = enter;
 
-            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main, false);
             return ExtendPath(form.activePath, routes);
         }
     }
@@ -726,7 +726,7 @@ public class PathManager
         {
             List<int> source = new List<int>() { (int)Enums.WorldSelectionType.Object };
 
-            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main);
+            List<Route> routes = CreateRoutes(source, route, Enums.SelectionStatus.Main, false);
 
             var combinedRoute = form.activePath.TrimToLastType(Enums.DataType.Region).CombineRoute(routes);
 
@@ -762,7 +762,7 @@ public class PathManager
         public Path Enter()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
     }
     #endregion
@@ -784,7 +784,7 @@ public class PathManager
         public Path Get()
         {
             EditorForm form = RenderManager.layoutManager.forms[2];
-            return CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
+            return CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
         }
     }
     #endregion
@@ -800,7 +800,7 @@ public class PathManager
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
         }
     }
 
@@ -812,7 +812,7 @@ public class PathManager
         
         public Path LoadSave()
         {
-            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main), form);
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
         }
     }
 
@@ -842,7 +842,7 @@ public class PathManager
 
             HistoryManager.ClearHistory();
             
-            path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus), form);
+            path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
             path.type = Path.Type.New;
 
             return path;
@@ -871,7 +871,7 @@ public class PathManager
 
             var controllers = new List<int> { 0, 1, 1, 0 };
 
-            Path newPath = CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus), form);
+            Path newPath = CreatePath(CreateRoutes(controllers, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
             newPath.type = path.type;
 
             return newPath;
@@ -883,17 +883,17 @@ public class PathManager
     #endregion
 
     #region Methods
-    static public List<Route> CreateRoutes(List<int> controllers, EditorForm form, Enums.SelectionStatus selectionStatus)
+    static public List<Route> CreateRoutes(List<int> controllers, EditorForm form, Enums.SelectionStatus selectionStatus, bool uniqueSelection)
     {
-        return CreateRoutes(controllers, new Route(form.activePath), selectionStatus);
+        return CreateRoutes(controllers, new Route(form.activePath), selectionStatus, uniqueSelection);
     }
 
-    static public List<Route> CreateRoutes(List<int> controllers, Route route, Enums.SelectionStatus selectionStatus)
+    static public List<Route> CreateRoutes(List<int> controllers, Route route, Enums.SelectionStatus selectionStatus, bool uniqueSelection)
     {
         List<Route> routes = new List<Route>();
 
         foreach(int controller in controllers)
-            routes.Add(new Route(controller, route, selectionStatus));
+            routes.Add(new Route(controller, route, selectionStatus, uniqueSelection));
 
         return routes;
     }

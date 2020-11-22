@@ -10,6 +10,11 @@ public class SceneActorTransformRotationDegreeSegment : MonoBehaviour, ISegment
     public SceneActorEditor SceneActorEditor    { get { return (SceneActorEditor)DataEditor; } }
 
     #region Data properties
+    private bool ChangeRotation
+    {
+        get { return SceneActorEditor.ChangeRotation; }
+    }
+
     private int RotationX
     {
         get { return SceneActorEditor.RotationX; }
@@ -47,6 +52,8 @@ public class SceneActorTransformRotationDegreeSegment : MonoBehaviour, ISegment
         yInputField.Value = RotationY;
         zInputField.Value = RotationZ;
 
+        UpdateSegment();
+
         gameObject.SetActive(true);
     }
 
@@ -71,6 +78,18 @@ public class SceneActorTransformRotationDegreeSegment : MonoBehaviour, ISegment
         RotationZ = (int)zInputField.Value;
 
         DataEditor.UpdateEditor();
+    }
+
+    public void UpdateSegment()
+    {
+        EnableInputFields(ChangeRotation);
+    }
+
+    private void EnableInputFields(bool enable)
+    {
+        xInputField.EnableElement(enable);
+        yInputField.EnableElement(enable);
+        zInputField.EnableElement(enable);
     }
 
     public void CloseSegment() { }

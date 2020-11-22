@@ -122,5 +122,7 @@ public class PhaseTransformPositionCoordinateSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }   
 }

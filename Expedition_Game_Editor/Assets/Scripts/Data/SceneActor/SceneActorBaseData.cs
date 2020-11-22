@@ -13,6 +13,8 @@ public class SceneActorBaseData
     public string SpeechText        { get; set; }
     public bool ShowTextBox         { get; set; }
 
+    public int TargetSceneActorId   { get; set; }
+
     public bool ChangePosition      { get; set; }
     public bool FreezePosition      { get; set; }
 
@@ -39,6 +41,8 @@ public class SceneActorBaseData
         SpeechMethod        = originalData.SpeechMethod;
         SpeechText          = originalData.SpeechText;
         ShowTextBox         = originalData.ShowTextBox;
+
+        TargetSceneActorId  = originalData.TargetSceneActorId;
 
         ChangePosition      = originalData.ChangePosition;
         FreezePosition      = originalData.FreezePosition;
@@ -67,6 +71,8 @@ public class SceneActorBaseData
         data.SpeechMethod           = SpeechMethod;
         data.SpeechText             = SpeechText;
         data.ShowTextBox            = ShowTextBox;
+
+        data.TargetSceneActorId     = TargetSceneActorId;
 
         data.ChangePosition         = ChangePosition;
         data.FreezePosition         = FreezePosition;

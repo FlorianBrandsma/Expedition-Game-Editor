@@ -10,6 +10,7 @@ public class GameTerrainTileElementData : GameTerrainTileData, IElementData
     public Enums.DataType DataType                  { get { return Enums.DataType.GameTerrainTile; } }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
+    public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
     

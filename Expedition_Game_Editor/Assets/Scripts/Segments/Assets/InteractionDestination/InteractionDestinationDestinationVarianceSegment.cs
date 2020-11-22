@@ -48,5 +48,7 @@ public class InteractionDestinationDestinationVarianceSegment : MonoBehaviour, I
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

@@ -62,10 +62,6 @@ public class SceneDataManager : MonoBehaviour
 
                         RegionName = regionData.Name,
 
-                        RegionSize = regionData.RegionSize,
-                        TerrainSize = regionData.TerrainSize,
-                        TileSize = tileSetData.TileSize,
-
                         TileIconPath = tileData.First().tileData.IconPath
                         
                     }).OrderBy(x => x.Index).ToList();

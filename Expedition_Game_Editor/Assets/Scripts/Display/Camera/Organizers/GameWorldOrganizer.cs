@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,7 +39,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     }
 
     public void SelectData() { }
-    
+
     public void SetData()
     {
         SetData(DataController.Data);
@@ -215,7 +213,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
                 //Update the destination of active agents
                 if (gameWorldInteractableElementData.Type == Enums.InteractableType.Agent)
                 {
-                    gameWorldInteractableElementData.DataElement.Element.UpdateElement();
+                    gameWorldInteractableElementData.DataElement.SelectionElement.Element.UpdateElement();
                 }
 
                 //Reset the interactable instead of just changing the position so a "disappearing" effect can be applied
@@ -306,7 +304,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         inactiveWorldObjectList.ForEach(x =>
         {
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
-            x.DataElement.Element.CloseElement();
+            x.DataElement.SelectionElement.Element.CloseElement();
         });
     }
 
@@ -323,7 +321,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private void CloseWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
         PoolManager.ClosePoolObject(gameWorldInteractableElementData.DataElement.Poolable);
-        gameWorldInteractableElementData.DataElement.Element.CloseElement();
+        gameWorldInteractableElementData.DataElement.SelectionElement.Element.CloseElement();
 
         if(gameWorldInteractableElementData.Type == Enums.InteractableType.Agent)
             MovementManager.StartTravel(gameWorldInteractableElementData);
@@ -334,7 +332,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         GameWorldData.WorldInteractableControllableDataList.ForEach(x =>
         {
             PoolManager.ClosePoolObject(x.DataElement.Poolable);
-            x.DataElement.Element.CloseElement();
+            x.DataElement.SelectionElement.Element.CloseElement();
         });
     }
 

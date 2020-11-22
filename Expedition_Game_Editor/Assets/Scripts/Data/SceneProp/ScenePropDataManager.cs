@@ -37,8 +37,16 @@ public static class ScenePropDataManager
                         RotationY = scenePropData.RotationY,
                         RotationZ = scenePropData.RotationZ,
 
+                        Scale = scenePropData.Scale,
+
+                        ModelPath = modelData.Path,
                         ModelIconPath = iconData.Path,
-                        ModelName = modelData.Name
+
+                        ModelName = modelData.Name,
+
+                        Height = modelData.Height,
+                        Width = modelData.Width,
+                        Depth = modelData.Depth
 
                     }).OrderBy(x => x.Id).ToList();
 
@@ -98,6 +106,9 @@ public static class ScenePropDataManager
 
         if (elementData.ChangedRotationZ)
             data.RotationZ = elementData.RotationZ;
+
+        if (elementData.ChangedScale)
+            data.Scale = elementData.Scale;
     }
 
     public static void UpdateSearch(ScenePropElementData elementData)

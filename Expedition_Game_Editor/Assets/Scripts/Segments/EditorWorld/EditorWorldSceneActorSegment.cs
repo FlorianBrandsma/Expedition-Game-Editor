@@ -76,5 +76,7 @@ public class EditorWorldSceneActorSegment : MonoBehaviour, ISegment
         SetSearchParameters();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

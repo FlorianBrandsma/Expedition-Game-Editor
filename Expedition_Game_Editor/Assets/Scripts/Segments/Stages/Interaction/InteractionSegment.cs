@@ -46,7 +46,7 @@ public class InteractionSegment : MonoBehaviour, ISegment
     
     public void SetSearchResult(IElementData elementData) { }
 
-    public void CloseSegment() { }
+    public void UpdateSegment() { }
 
-    
+    public void CloseSegment() { }
 }

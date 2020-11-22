@@ -86,7 +86,7 @@ public static class InteractionDestinationDataManager
                         RotationY = interactionDestinationData.RotationY,
                         RotationZ = interactionDestinationData.RotationZ,
 
-                        FreeRotation = interactionDestinationData.FreeRotation,
+                        ChangeRotation = interactionDestinationData.ChangeRotation,
 
                         Animation = interactionDestinationData.Animation,
                         Patience = interactionDestinationData.Patience,
@@ -282,8 +282,8 @@ public static class InteractionDestinationDataManager
         if (elementData.ChangedRotationZ)
             data.RotationZ = elementData.RotationZ;
 
-        if (elementData.ChangedFreeRotation)
-            data.FreeRotation = elementData.FreeRotation;
+        if (elementData.ChangedChangeRotation)
+            data.ChangeRotation = elementData.ChangeRotation;
 
         if (elementData.ChangedAnimation)
             data.Animation = elementData.Animation;

@@ -61,5 +61,7 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
         elementData.Update();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

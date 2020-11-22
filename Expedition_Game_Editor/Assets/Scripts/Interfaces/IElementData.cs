@@ -2,9 +2,9 @@
 
 public interface IElementData
 {
-    DataElement DataElement { get; set; }
-
-    Enums.SelectionStatus SelectionStatus { get; set; }
+    DataElement DataElement                 { get; set; }
+    Enums.SelectionStatus SelectionStatus   { get; set; }
+    bool UniqueSelection                    { get; set; }
 
     Enums.DataType DataType { get; }
 

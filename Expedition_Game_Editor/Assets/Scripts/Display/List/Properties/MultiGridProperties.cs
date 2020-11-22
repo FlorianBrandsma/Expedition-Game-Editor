@@ -9,6 +9,7 @@ public class MultiGridProperties : MonoBehaviour, IProperties
     public Enums.ElementType innerElementType;
     public SelectionManager.Type innerSelectionType;
     public SelectionManager.Property innerSelectionProperty;
+    public bool innerUniqueSelection;
 
     [HideInInspector]
     public Vector2 elementSize;

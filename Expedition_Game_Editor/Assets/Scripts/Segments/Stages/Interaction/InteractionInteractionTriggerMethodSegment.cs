@@ -103,5 +103,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         DataEditor.UpdateEditor();
     }
 
+    public void UpdateSegment() { }
+
     public void CloseSegment() { }
 }

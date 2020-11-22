@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
@@ -27,7 +25,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         SelectionManager.SelectData(DataController.Data.dataList, DisplayManager);
     }
-    
+
     public void SetData()
     {
         SetData(DataController.Data.dataList);
@@ -57,7 +55,8 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
             SelectionElementManager.InitializeElement(  tile.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty);
+                                                        DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.UniqueSelection);
             ElementList.Add(tile.EditorElement);
 
             elementData.DataElement = tile.EditorElement.DataElement;
