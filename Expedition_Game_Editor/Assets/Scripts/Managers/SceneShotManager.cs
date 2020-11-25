@@ -7,7 +7,7 @@ static public class SceneShotManager
 
     static public SceneShotElementData GetActiveElementData(Route route)
     {
-        var sceneShotElementData = (SceneShotElementData)route.data.dataController.Data.dataList.Where(x => ((SceneShotElementData)x).Type == (int)activeShotType).First();
+        var sceneShotElementData = route.data.dataController.Data.dataList.Cast<SceneShotElementData>().Where(x => x.Type == (int)activeShotType).First();
 
         return sceneShotElementData;
     }

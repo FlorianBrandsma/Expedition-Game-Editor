@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 {
@@ -69,7 +70,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             SetModel();
         }
 
-        transform.localPosition     = new Vector3(position.x, position.y, -position.z);
+        transform.localPosition     = new Vector3(position.x, position.y, position.z);
         transform.localEulerAngles  = new Vector3(rotation.x, rotation.y, rotation.z);
         transform.localScale        = new Vector3(scale, scale, scale);
     }
@@ -81,7 +82,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
@@ -94,7 +95,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
@@ -107,7 +108,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
@@ -120,7 +121,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, elementData.DefaultPositionZ);
+        position = new Vector3(elementData.DefaultPositionX, elementData.DefaultPositionY, -elementData.DefaultPositionZ);
         rotation = new Vector3(elementData.DefaultRotationX, elementData.DefaultRotationY, elementData.DefaultRotationZ);
 
         scale = elementData.Scale;
@@ -133,9 +134,22 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
+        if (elementData.FaceTarget)
+        {
+            var targetActor = (SceneActorElementData)EditorElement.DataElement.Data.dataList.Where(x => x.Id == elementData.TargetSceneActorId).FirstOrDefault();
+
+            if(targetActor != null)
+            {
+                var targetPosition = new Vector3(targetActor.PositionX, targetActor.PositionY, -targetActor.PositionZ);
+
+                var faceTargetRotation = Quaternion.LookRotation((targetPosition - position).normalized).eulerAngles;
+                rotation = new Vector3(0, faceTargetRotation.y, 0);
+            }
+        }
+        
         scale = elementData.Scale;
     }
 
@@ -146,7 +160,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
 
-        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 
         scale = elementData.Scale;
@@ -188,16 +202,6 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void ClosePoolable()
     {
-        //GameElement.DataElement.data.elementData.DataElement = null;
-        //GameElement.DataElement.data.elementData = null;
-
-        //if(EditorElement.DataElement.ElementData.DataType == Enums.DataType.InteractionDestination)
-        //{
-        //    var elementData = (InteractionDestinationElementData)EditorElement.DataElement.ElementData;
-
-        //    Debug.Log(elementData.DebugName + elementData.Id);
-        //}
-
         gameObject.SetActive(false);
     }
 }

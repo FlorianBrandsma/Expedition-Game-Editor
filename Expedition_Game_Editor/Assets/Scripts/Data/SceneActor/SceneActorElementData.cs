@@ -94,8 +94,8 @@ public class SceneActorElementData : SceneActorData, IElementData
     {
         get
         {
-            return  ChangedWorldInteractableId  || ChangedSpeechMethod      || ChangedSpeechText    || ChangedShowTextBox   ||
-                    ChangedChangePosition       || ChangedFreezePosition    || ChangedPositionX     || ChangedPositionY     || ChangedPositionZ ||
+            return  ChangedWorldInteractableId  || ChangedSpeechMethod      || ChangedSpeechText    || ChangedShowTextBox   || ChangedTargetSceneActorId    ||
+                    ChangedChangePosition       || ChangedFreezePosition    || ChangedPositionX     || ChangedPositionY     || ChangedPositionZ             ||
                     ChangedChangeRotation       || ChangedFaceTarget        || ChangedRotationX     || ChangedRotationY     || ChangedRotationZ;
         }
     }

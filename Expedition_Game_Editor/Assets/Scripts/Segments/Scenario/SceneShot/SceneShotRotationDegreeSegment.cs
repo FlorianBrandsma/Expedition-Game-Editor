@@ -34,6 +34,11 @@ public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
         get { return SceneShotEditor.RotationZ; }
         set { SceneShotEditor.RotationZ = value; }
     }
+
+    private int RotationTargetSceneActorId
+    {
+        get { return SceneShotEditor.RotationTargetSceneActorId; }
+    }
     #endregion
 
     public void InitializeDependencies()
@@ -95,7 +100,8 @@ public class SceneShotRotationDegreeSegment : MonoBehaviour, ISegment
 
     public void UpdateSegment()
     {
-        EnableInputFields(ChangeRotation);
+        changeRotationToggle.EnableElement(RotationTargetSceneActorId == 0);
+        EnableInputFields(ChangeRotation && RotationTargetSceneActorId == 0);
     }
 
     private void EnableInputFields(bool enable)

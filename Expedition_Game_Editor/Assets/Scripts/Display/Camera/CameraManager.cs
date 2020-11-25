@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
         transform.parent.gameObject.SetActive(true);
     }
 
-    public void CorrectPosition()
+    public void SelectData()
     {
         Organizer.SelectData();
     }

@@ -230,8 +230,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             dataController = ScenePropDataController,
             searchProperties = ScenePropDataController.SearchProperties
         };
-
-
+        
         GetData();
     }
 
@@ -397,12 +396,19 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     public void UpdateData()
     {
         SetCamera();
-        
-        if (ScrollRect.content.localPosition.x >= positionTracker.x + worldData.TileSize ||
-            ScrollRect.content.localPosition.x <= positionTracker.x - worldData.TileSize ||
-            ScrollRect.content.localPosition.y >= positionTracker.y + worldData.TileSize ||
-            ScrollRect.content.localPosition.y <= positionTracker.y - worldData.TileSize)
+
+        var worldSize = worldData.RegionSize * worldData.TerrainSize * worldData.TileSize;
+
+        var worldCameraPosition = new Vector2(CameraManager.cameraParent.transform.localPosition.x - worldSize / 2,
+                                              CameraManager.cameraParent.transform.localPosition.z + worldSize / 2);
+
+        if (worldCameraPosition.x >= positionTracker.x + worldData.TileSize ||
+            worldCameraPosition.x <= positionTracker.x - worldData.TileSize ||
+            worldCameraPosition.y >= positionTracker.y + worldData.TileSize ||
+            worldCameraPosition.y <= positionTracker.y - worldData.TileSize)
         {
+            UpdatePositionTracker(worldCameraPosition);
+
             CloseInactiveElements();
             
             SetData(DataController.Data.dataList);
@@ -410,7 +416,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             dataSet = true;
         }
     }
-    
+
+    private void UpdatePositionTracker(Vector2 cameraPosition)
+    {
+        positionTracker = new Vector2(Mathf.Floor((cameraPosition.x + (worldData.TileSize / 2)) / worldData.TileSize) * worldData.TileSize,
+                                      Mathf.Floor((cameraPosition.y + (worldData.TileSize / 2)) / worldData.TileSize) * worldData.TileSize);
+    }
+
     public void ResetSelectedElement(IElementData elementData)
     {
         switch(elementData.DataType)
@@ -455,13 +467,42 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             
             var sceneShotElementData = SceneShotManager.GetActiveElementData(sceneShotRoute);
 
-            CameraManager.cameraParent.transform.localPosition      = new Vector3(sceneShotElementData.PositionX, 
-                                                                                  sceneShotElementData.PositionY, 
-                                                                                  -sceneShotElementData.PositionZ);
+            var sceneCameraPosition = new Vector3();
+            var positionTarget = (SceneActorElementData)SceneActorDataController.Data.dataList.Where(x => x.Id == sceneShotElementData.PositionTargetSceneActorId).FirstOrDefault();
 
-            CameraManager.cameraParent.transform.localEulerAngles   = new Vector3(sceneShotElementData.RotationX, 
-                                                                                  sceneShotElementData.RotationY, 
-                                                                                  sceneShotElementData.RotationZ);
+            if(positionTarget != null)
+            {
+                var targetPosition = new Vector3(positionTarget.PositionX, positionTarget.PositionY, -positionTarget.PositionZ);
+
+                sceneCameraPosition = new Vector3(defaultCameraPosition.x + positionTarget.PositionX,
+                                                  defaultCameraPosition.y + positionTarget.PositionY,
+                                                  defaultCameraPosition.z - positionTarget.PositionZ);
+            } else {
+
+                sceneCameraPosition = new Vector3( sceneShotElementData.PositionX,
+                                                   sceneShotElementData.PositionY,
+                                                  -sceneShotElementData.PositionZ);
+            }
+            
+            CameraManager.cameraParent.transform.localPosition = sceneCameraPosition;
+
+            var sceneCameraRotation = new Vector3();
+            var rotationTarget = (SceneActorElementData)SceneActorDataController.Data.dataList.Where(x => x.Id == sceneShotElementData.RotationTargetSceneActorId).FirstOrDefault();
+            
+            if(rotationTarget != null)
+            {
+                var targetPosition = new Vector3(rotationTarget.PositionX, rotationTarget.PositionY, -rotationTarget.PositionZ);
+
+                sceneCameraRotation = Quaternion.LookRotation((targetPosition - sceneCameraPosition).normalized).eulerAngles;
+                
+            } else {
+
+                sceneCameraRotation = new Vector3(sceneShotElementData.RotationX,
+                                                  sceneShotElementData.RotationY,
+                                                  sceneShotElementData.RotationZ);
+            }
+
+            CameraManager.cameraParent.transform.localEulerAngles = sceneCameraRotation;
 
             CameraManager.EnableScrolling(false);
         }
@@ -491,8 +532,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     
     public void SetData()
     {
-        positionTracker = FixTrackerPosition(ScrollRect.content.localPosition);
-
         //Selected elements only spawn once on start up
         if (selectedInteractionDestinations.Count > 0)
             SetWorldElements(InteractionDestinationDataController, selectedInteractionDestinations.Cast<IElementData>().ToList());
@@ -517,13 +556,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         SetData(DataController.Data.dataList);
     }
-
-    private Vector2 FixTrackerPosition(Vector2 cameraPosition)
-    {
-        return new Vector2(Mathf.Floor((cameraPosition.x + (worldData.TileSize / 2)) / worldData.TileSize) * worldData.TileSize,
-                           Mathf.Floor((cameraPosition.y + (worldData.TileSize / 2)) / worldData.TileSize) * worldData.TileSize);
-    }
-
+    
     private List<IElementData> FilterWorldInteractables(List<IElementData> dataList)
     {
         var worldInteractableDataList = dataList.Where(x => ((WorldInteractableElementData)x).ContainsActiveTime).GroupBy(x => x.Id).Select(x => x.FirstOrDefault()).ToList();
@@ -680,14 +713,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             worldElement.name = elementData.DebugName + elementData.Id;
 
             SetStatus(worldElement.EditorElement);
-
-            //if(worldElement.EditorElement.elementStatus == Enums.ElementStatus.Hidden)
-            //{
-            //    PoolManager.ClosePoolObject(worldElement.EditorElement.DataElement.Poolable);
-            //    SelectionElementManager.CloseElement(worldElement.EditorElement);
-
-            //    continue;
-            //}
 
             //Must be assigned after the status check
             elementData.DataElement = worldElement.EditorElement.DataElement;
@@ -950,7 +975,11 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             statusIcon.SetIconTarget(element.DataElement);
     }
 
-    public void ResetData(List<IElementData> filter) { }
+    public void ResetData(List<IElementData> filter)
+    {
+        ClearOrganizer();
+        SetData();
+    }
     
     public void ClearOrganizer()
     {

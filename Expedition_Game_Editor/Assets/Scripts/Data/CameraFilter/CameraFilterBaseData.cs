@@ -11,21 +11,21 @@ public class CameraFilterBaseData
 
     public virtual void GetOriginalValues(CameraFilterData originalData)
     {
-        Id      = originalData.Id;
+        Id          = originalData.Id;
 
-        Path = originalData.Path;
-        IconPath  = originalData.IconPath;
+        Path        = originalData.Path;
+        IconPath    = originalData.IconPath;
         
-        Name    = originalData.Name;
+        Name        = originalData.Name;
     }
 
     public virtual void Clone(CameraFilterData data)
     {
-        data.Id     = Id;
+        data.Id         = Id;
 
-        data.Path = Path;
-        data.IconPath = IconPath;
+        data.Path       = Path;
+        data.IconPath   = IconPath;
         
-        data.Name   = Name;
+        data.Name       = Name;
     }
 }

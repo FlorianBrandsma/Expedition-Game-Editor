@@ -56,7 +56,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
     public void SetDisplay()
     {
         cameraManager.SetProperties();
-        cameraManager.CorrectPosition();
+        cameraManager.SelectData();
         cameraManager.SetCamera();
     }
 

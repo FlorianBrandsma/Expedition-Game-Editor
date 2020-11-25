@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
@@ -110,8 +109,6 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
     private void UpdateTile()
     {
         TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
-
-        DataEditor.UpdateEditor();
     }
 
     public void UpdateSegment()

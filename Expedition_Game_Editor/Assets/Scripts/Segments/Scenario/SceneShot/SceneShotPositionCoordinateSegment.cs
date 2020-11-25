@@ -34,6 +34,11 @@ public class SceneShotPositionCoordinateSegment : MonoBehaviour, ISegment
         get { return SceneShotEditor.PositionZ; }
         set { SceneShotEditor.PositionZ = value; }
     }
+
+    private int PositionTargetSceneActorId
+    {
+        get { return SceneShotEditor.PositionTargetSceneActorId; }
+    }
     #endregion
 
     public void InitializeDependencies()
@@ -104,7 +109,8 @@ public class SceneShotPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdateSegment()
     {
-        EnableInputFields(ChangePosition);
+        changePositionToggle.EnableElement(PositionTargetSceneActorId == 0);
+        EnableInputFields(ChangePosition && PositionTargetSceneActorId == 0);
     }
 
     private void EnableInputFields(bool enable)

@@ -8,7 +8,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public CameraManager cameraManager;
 
-    public EditorWorldOrganizer EditorWorldOrganizer { get { return (EditorWorldOrganizer)cameraManager.Organizer; } }
+    public EditorWorldOrganizer EditorWorldOrganizer    { get { return (EditorWorldOrganizer)cameraManager.Organizer; } }
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
@@ -42,6 +42,11 @@ public class SceneActorEditor : MonoBehaviour, IEditor
         get { return sceneActorData.Id; }
     }
     
+    public int SceneId
+    {
+        get { return sceneActorData.SceneId; }
+    }
+
     public int TerrainId
     {
         get { return sceneActorData.TerrainId; }
@@ -239,6 +244,14 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     public void UpdateEditor()
     {
         ElementDataList.Where(x => SelectionElementManager.SelectionActive(x.DataElement)).ToList().ForEach(x => x.DataElement.UpdateElement());
+        
+        var targetSceneActorData = Data.dataController.Data.dataList.Cast<SceneActorElementData>().Where(x => x.TargetSceneActorId == Id).FirstOrDefault();
+
+        var targetSceneActorElementData = SelectionElementManager.FindElementData(targetSceneActorData);
+        targetSceneActorElementData.ForEach(x => x.DataElement.UpdateElement());
+
+        cameraManager.UpdateData();
+        cameraManager.UpdateOverlay();
 
         SetEditor();
     }

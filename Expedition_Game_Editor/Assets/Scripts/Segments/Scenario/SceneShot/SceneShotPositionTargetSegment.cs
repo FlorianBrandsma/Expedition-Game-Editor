@@ -122,7 +122,6 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
     private void SetSceneActorButton()
     {
         sceneActorButton.DataElement.SetElement();
-        sceneActorButton.SetOverlay();
     }
 
     public void SetSearchResult(IElementData elementData)

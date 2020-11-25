@@ -1375,6 +1375,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -4155,6 +4156,7 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 3
+  uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
@@ -5076,6 +5078,7 @@ MonoBehaviour:
   listManager: {fileID: 612962439}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   elementSize: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
@@ -9892,6 +9895,7 @@ MonoBehaviour:
   listManager: {fileID: 1456563036}
   selectionType: 1
   selectionProperty: 10
+  uniqueSelection: 0
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
@@ -10676,6 +10680,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -11014,6 +11019,7 @@ MonoBehaviour:
   cameraManager: {fileID: 133624376}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   timeBasedLighting: 0
   enableScroll: 0
   enableStatusIcons: 1
@@ -11994,6 +12000,13 @@ GameObject:
   - component: {fileID: 899072712}
   - component: {fileID: 899072709}
   - component: {fileID: 899072708}
+  - component: {fileID: 899072719}
+  - component: {fileID: 899072718}
+  - component: {fileID: 899072717}
+  - component: {fileID: 899072716}
+  - component: {fileID: 899072715}
+  - component: {fileID: 899072714}
+  - component: {fileID: 899072713}
   m_Layer: 5
   m_Name: World (segment-cameraProperties-region)
   m_TagString: Untagged
@@ -12042,6 +12055,7 @@ MonoBehaviour:
   cameraManager: {fileID: 1246982541}
   selectionType: 1
   selectionProperty: 10
+  uniqueSelection: 0
   timeBasedLighting: 1
   enableScroll: 1
   enableStatusIcons: 1
@@ -12085,6 +12099,135 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c6d135fbc7bf3b4b93c842c340f6904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+--- !u!114 &899072713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f2c010ec38b7d6428cceb0b0c96df78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+--- !u!114 &899072714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c757f83b0fb7d43aac6f2ad711dfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+--- !u!114 &899072715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b0342745c687f4c9302cc9ccc4ebf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+--- !u!114 &899072716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbea769a74029b1448d95a7479a98c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+--- !u!114 &899072717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97afdd8583fef640ab82285cc1fc942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+  searchInteractable:
+    id: 
+    excludeId: 
+    type: 
+    requestType: 0
+--- !u!114 &899072718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97afdd8583fef640ab82285cc1fc942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
+  searchInteractable:
+    id: 
+    excludeId: 
+    type: 
+    requestType: 0
+--- !u!114 &899072719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899072706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759519782a6dc46428dd527a334585bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   searchProperties:
@@ -12853,6 +12996,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -12978,6 +13122,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -13208,6 +13353,7 @@ MonoBehaviour:
   listManager: {fileID: 229265788}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   elementSize: {x: 0, y: 0}
   horizontal: 0
   vertical: 0
@@ -15463,6 +15609,7 @@ MonoBehaviour:
   listManager: {fileID: 42552450}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   elementSize: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
@@ -17430,6 +17577,7 @@ MonoBehaviour:
   listManager: {fileID: 46085798}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
@@ -18828,6 +18976,7 @@ MonoBehaviour:
   listManager: {fileID: 897254788}
   selectionType: 1
   selectionProperty: 9
+  uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
@@ -19745,6 +19894,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -20945,6 +21095,7 @@ MonoBehaviour:
   listManager: {fileID: 2073422343}
   selectionType: 1
   selectionProperty: 2
+  uniqueSelection: 0
   elementSize: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
@@ -21194,6 +21345,7 @@ MonoBehaviour:
   listManager: {fileID: 2092735544}
   selectionType: 1
   selectionProperty: 10
+  uniqueSelection: 0
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
@@ -23526,6 +23678,7 @@ MonoBehaviour:
   listManager: {fileID: 78246134}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   elementSize: {x: 0, y: 0}
   horizontal: 0
   vertical: 1
@@ -24558,6 +24711,7 @@ MonoBehaviour:
   cameraManager: {fileID: 1494783355}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   timeBasedLighting: 0
   enableScroll: 0
   enableStatusIcons: 0
@@ -26631,6 +26785,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 1
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
@@ -27631,6 +27786,7 @@ MonoBehaviour:
   cameraManager: {fileID: 1494783355}
   selectionType: 0
   selectionProperty: 0
+  uniqueSelection: 0
   timeBasedLighting: 0
   enableScroll: 0
   enableStatusIcons: 0
@@ -27705,6 +27861,7 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 2
   selectionProperty: 4
+  uniqueSelection: 0
   elementSize: {x: 0, y: 70}
   horizontal: 0
   vertical: 1
