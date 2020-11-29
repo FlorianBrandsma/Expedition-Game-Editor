@@ -49,6 +49,7 @@ public class SearchProperties
             case Enums.DataType.Outcome:                searchParameters = new[] { new Search.Outcome() };                  break;
             case Enums.DataType.Scene:                  searchParameters = new[] { new Search.Scene() };                    break;
             case Enums.DataType.SceneShot:              searchParameters = new[] { new Search.SceneShot() };                break;
+            case Enums.DataType.CameraFilter:           searchParameters = new[] { new Search.CameraFilter() };             break;
             case Enums.DataType.SceneActor:             searchParameters = new[] { new Search.SceneActor() };               break;
             case Enums.DataType.SceneProp:              searchParameters = new[] { new Search.SceneProp() };                break;
             case Enums.DataType.EditorWorld:            searchParameters = new[] { new Search.EditorWorld() };              break;

@@ -24,6 +24,8 @@ public class SceneShotBaseData
 
     public int RotationTargetSceneActorId   { get; set; } 
 
+    public int CameraFilterId               { get; set; }
+
     public virtual void GetOriginalValues(SceneShotData originalData)
     {
         Id                          = originalData.Id;
@@ -47,6 +49,8 @@ public class SceneShotBaseData
         RotationZ                   = originalData.RotationZ;
 
         RotationTargetSceneActorId  = originalData.RotationTargetSceneActorId;
+
+        CameraFilterId              = originalData.CameraFilterId;
     }
 
     public virtual void Clone(SceneShotData data)
@@ -72,5 +76,7 @@ public class SceneShotBaseData
         data.RotationZ                  = RotationZ;
 
         data.RotationTargetSceneActorId = RotationTargetSceneActorId;
+
+        data.CameraFilterId             = CameraFilterId;
     }
 }

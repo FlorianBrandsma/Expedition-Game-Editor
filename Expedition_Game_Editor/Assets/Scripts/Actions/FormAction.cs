@@ -12,7 +12,9 @@ public class FormAction : MonoBehaviour, IAction
     private bool closedManually;
 
     public bool autoOpen;
+    public bool resetPath;
     public int controllerIndex;
+
     private ExButton actionButton;
     public EditorForm editorForm;
 
@@ -29,6 +31,12 @@ public class FormAction : MonoBehaviour, IAction
     public void SetAction(Path path)
     {
         InitializeButton();
+
+        if (resetPath)
+        {
+            RenderManager.loadType = Enums.LoadType.Reload;
+            editorForm.CloseForm();
+        }
     }
 
     public void SetForm()

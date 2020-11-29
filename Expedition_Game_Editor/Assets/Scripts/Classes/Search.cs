@@ -293,6 +293,8 @@ public class Search
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
+        public bool includeEmptyElement;
+
         public enum RequestType
         {
             Custom

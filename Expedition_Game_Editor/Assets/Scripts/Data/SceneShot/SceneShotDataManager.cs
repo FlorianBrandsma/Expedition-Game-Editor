@@ -39,7 +39,9 @@ public static class SceneShotDataManager
                         RotationY = sceneShotData.RotationY,
                         RotationZ = sceneShotData.RotationZ,
 
-                        RotationTargetSceneActorId = sceneShotData.RotationTargetSceneActorId
+                        RotationTargetSceneActorId = sceneShotData.RotationTargetSceneActorId,
+
+                        CameraFilterId = sceneShotData.CameraFilterId
 
                     }).OrderBy(x => x.Id).ToList();
 
@@ -104,5 +106,8 @@ public static class SceneShotDataManager
 
         if (elementData.ChangedRotationTargetSceneActorId)
             data.RotationTargetSceneActorId = elementData.RotationTargetSceneActorId;
+
+        if (elementData.ChangedCameraFilterId)
+            data.CameraFilterId = elementData.CameraFilterId;
     }
 }

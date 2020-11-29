@@ -154,6 +154,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec8c9ab69d056540b1d4d764d7be510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraFilterButton: {fileID: 1753188350}
+--- !u!114 &9266440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9266438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70be4d3fae3493c47aedf29f4a5454ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 26
+    elementType: 1
+    iconType: 2
+    autoUpdate: 0
 --- !u!1001 &9582216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11808,6 +11826,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 1
+  resetPath: 0
   controllerIndex: 0
   editorForm: {fileID: 1374861249}
   openIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
@@ -11847,6 +11866,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 0
+  resetPath: 0
   controllerIndex: 0
   editorForm: {fileID: 778174905}
   openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
@@ -18487,6 +18507,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 1
+  resetPath: 0
   controllerIndex: 1
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
@@ -49026,16 +49047,11 @@ PrefabInstance:
         type: 3}
       propertyPath: segmentController
       value: 
-      objectReference: {fileID: 1796782314}
+      objectReference: {fileID: 1939023669}
     - target: {fileID: 114750103952363034, guid: 70a13019297fa6140a557f933f311b8c,
         type: 3}
-      propertyPath: selectionType
+      propertyPath: disableSpawn
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114750103952363034, guid: 70a13019297fa6140a557f933f311b8c,
-        type: 3}
-      propertyPath: selectionProperty
-      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 224000011588913382, guid: 70a13019297fa6140a557f933f311b8c,
         type: 3}
@@ -49046,21 +49062,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011871614240, guid: 70a13019297fa6140a557f933f311b8c,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011871614240, guid: 70a13019297fa6140a557f933f311b8c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224000011871614240, guid: 70a13019297fa6140a557f933f311b8c,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224000011871614240, guid: 70a13019297fa6140a557f933f311b8c,
         type: 3}
@@ -49191,7 +49192,7 @@ PrefabInstance:
         type: 3}
       propertyPath: segmentController
       value: 
-      objectReference: {fileID: 1796782314}
+      objectReference: {fileID: 1939023669}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70a13019297fa6140a557f933f311b8c, type: 3}
 --- !u!114 &1195777425 stripped
@@ -69931,6 +69932,7 @@ MonoBehaviour:
     width: 30
   activeInPath: 0
   autoOpen: 1
+  resetPath: 0
   controllerIndex: 0
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
@@ -70668,6 +70670,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segments:
   - {fileID: 848345538}
+--- !u!114 &1753188350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114750103952363034, guid: 70a13019297fa6140a557f933f311b8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1195510786}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1757018591
 GameObject:
   m_ObjectHideFlags: 0

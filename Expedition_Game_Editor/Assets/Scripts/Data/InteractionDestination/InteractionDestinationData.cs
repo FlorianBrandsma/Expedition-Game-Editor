@@ -2,11 +2,11 @@
 
 public class InteractionDestinationData : InteractionDestinationBaseData
 {
-    public int QuestId                  { get; set; }
-    public int ObjectiveId              { get; set; }
-    public int WorldInteractableId      { get; set; }
     public int TaskId                   { get; set; }
-
+    public int WorldInteractableId      { get; set; }
+    public int ObjectiveId              { get; set; }
+    public int QuestId                  { get; set; }
+    
     public int ModelId                  { get; set; }
     public string ModelPath             { get; set; }
 
@@ -37,11 +37,11 @@ public class InteractionDestinationData : InteractionDestinationBaseData
 
     public override void GetOriginalValues(InteractionDestinationData originalData)
     {
-        QuestId             = originalData.QuestId;
-        ObjectiveId         = originalData.ObjectiveId;
-        WorldInteractableId = originalData.WorldInteractableId;
         TaskId              = originalData.TaskId;
-
+        WorldInteractableId = originalData.WorldInteractableId;
+        ObjectiveId         = originalData.ObjectiveId;
+        QuestId             = originalData.QuestId;
+        
         ModelId             = originalData.ModelId;
         ModelPath           = originalData.ModelPath;
 
@@ -77,11 +77,11 @@ public class InteractionDestinationData : InteractionDestinationBaseData
     {
         var data = new InteractionDestinationData();
         
-        data.QuestId                = QuestId;
-        data.ObjectiveId            = ObjectiveId;
-        data.WorldInteractableId    = WorldInteractableId;
         data.TaskId                 = TaskId;
-
+        data.WorldInteractableId    = WorldInteractableId;
+        data.ObjectiveId            = ObjectiveId;
+        data.QuestId                = QuestId;
+        
         data.ModelId                = ModelId;
         data.ModelPath              = ModelPath;
 
@@ -117,11 +117,11 @@ public class InteractionDestinationData : InteractionDestinationBaseData
 
     public virtual void Clone(InteractionDestinationElementData elementData)
     {
-        elementData.QuestId             = QuestId;
-        elementData.ObjectiveId         = ObjectiveId;
-        elementData.WorldInteractableId = WorldInteractableId;
         elementData.TaskId              = TaskId;
-
+        elementData.WorldInteractableId = WorldInteractableId;
+        elementData.ObjectiveId         = ObjectiveId;
+        elementData.QuestId             = QuestId;
+        
         elementData.ModelId             = ModelId;
         elementData.ModelPath           = ModelPath;
 

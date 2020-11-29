@@ -8,20 +8,20 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	public StatusIconOverlay.StatusIconType statusIconType;
 
-    public Camera cam;
+	public Camera cam;
 	public IElementData targetElementData;
 	public Transform target;
 	public Vector3 screenPos;
 	public RectTransform parentRect;
-    
+	
 	#region Data Variables
 	private float height, width, depth;
 	private float scale;
-    #endregion
+	#endregion
 
-    public float HorizontalOffset           { get; set; }
+	public float HorizontalOffset           { get; set; }
 
-    public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
+	public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
 	public RawImage RawImage                { get { return GetComponent<RawImage>(); } }
 
 	public Transform Transform              { get { return GetComponent<Transform>(); } }
@@ -114,25 +114,25 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		depth  = phaseData.Depth    * phaseData.Scale;
 	}
 
-    private void InitializeSceneActorData()
-    {
-        var sceneActorData = (SceneActorElementData)targetElementData;
+	private void InitializeSceneActorData()
+	{
+		var sceneActorData = (SceneActorElementData)targetElementData;
 
-        height = sceneActorData.Height * sceneActorData.Scale;
-        width  = sceneActorData.Width  * sceneActorData.Scale;
-        depth  = sceneActorData.Depth  * sceneActorData.Scale;
-    }
+		height = sceneActorData.Height * sceneActorData.Scale;
+		width  = sceneActorData.Width  * sceneActorData.Scale;
+		depth  = sceneActorData.Depth  * sceneActorData.Scale;
+	}
 
-    private void InitializeScenePropData()
-    {
-        var scenePropData = (ScenePropElementData)targetElementData;
+	private void InitializeScenePropData()
+	{
+		var scenePropData = (ScenePropElementData)targetElementData;
 
-        height = scenePropData.Height * scenePropData.Scale;
-        width  = scenePropData.Width  * scenePropData.Scale;
-        depth  = scenePropData.Depth  * scenePropData.Scale;
-    }
+		height = scenePropData.Height * scenePropData.Scale;
+		width  = scenePropData.Width  * scenePropData.Scale;
+		depth  = scenePropData.Depth  * scenePropData.Scale;
+	}
 
-    private void InitializeGameWorldInteractable()
+	private void InitializeGameWorldInteractable()
 	{
 		var gameWorldInteractableData = (GameWorldInteractableElementData)targetElementData;
 
@@ -143,14 +143,28 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void UpdateSelectionPosition()
 	{
-		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
-													   target.position.y + height,
-                                                       cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
+        var maxHeight = 12;
+
+        var fixedHeight = (height > maxHeight ? maxHeight : height);
         
-		var widthCap = statusIconManager.WidthCap;
+        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
+													   target.position.y + fixedHeight,
+                                                       target.position.z)) * statusIconManager.Multiplier;
+
+        if (screenPos.z < 0)
+        {
+            //When the target is behind the camera, the WorldToScreenPoint values get messed up.
+            //The target is always in the bottom of the screen, so only its horizontal position relative to the
+            //camera matters
+            screenPos = (target.transform.position - cam.transform.position) * parentRect.rect.width;
+        }
+
+        var widthCap = statusIconManager.WidthCap;
 		var heightCap = statusIconManager.HeightCap;
 		
-		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
+		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), 
+                                               screenPos.y - (parentRect.rect.height / 2), 
+                                               0);
 
 		if (transform.localPosition.x > widthCap)
 			transform.localPosition = new Vector3(widthCap, transform.localPosition.y, 0);
@@ -165,18 +179,18 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			transform.localPosition = new Vector3(transform.localPosition.x, -heightCap, 0);
 	}
 
-	private void UpdateLockPosition()
+    private void UpdateLockPosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + (height / 2),
-                                                       cam.transform.position.z < target.position.z ? target.position.z : cam.transform.position.z)) * statusIconManager.Multiplier;
+													   target.position.z)) * statusIconManager.Multiplier;
 
-		transform.localPosition = new Vector3(-15 + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
+		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 	}
 
 	public void ClosePoolable()
 	{
-        HorizontalOffset = 0;
+		HorizontalOffset = 0;
 
 		gameObject.SetActive(false);
 	}

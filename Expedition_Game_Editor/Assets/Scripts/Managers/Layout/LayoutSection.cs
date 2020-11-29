@@ -27,7 +27,7 @@ public class LayoutSection : MonoBehaviour
             if (!EditorForm.loaded)
                 return false;
 
-            if (RenderManager.loadType == Enums.LoadType.Reload)
+            if (RenderManager.loadType == Enums.LoadType.Reload || RenderManager.loadType == Enums.LoadType.Return)
                 return false;
 
             //Empty editor controllers are added to enforce loading (e.g. items, interactables)

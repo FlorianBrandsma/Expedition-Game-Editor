@@ -8,7 +8,7 @@ public class ScenePropEditor : MonoBehaviour, IEditor
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == scenePropData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == scenePropData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();

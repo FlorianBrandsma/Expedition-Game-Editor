@@ -134,6 +134,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
             case Enums.DataType.Scene:                  SetSceneElement();                  break;
             case Enums.DataType.SceneShot:              SetSceneShotElement();              break;
+            case Enums.DataType.CameraFilter:           SetCameraFilterElement();           break;
             case Enums.DataType.SceneActor:             SetSceneActorElement();             break;
 
             case Enums.DataType.Region:                 SetRegionElement();                 break;
@@ -369,6 +370,18 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         idText.text = elementData.Id.ToString();
         headerText.text = header;
+    }
+
+    private void SetCameraFilterElement()
+    {
+        var elementData = (CameraFilterElementData)EditorElement.DataElement.ElementData;
+
+        header = elementData.Name;
+        iconBasePath = elementData.IconPath;
+
+        idText.text = elementData.Id.ToString();
+        headerText.text = header;
+        IconBaseTexture = Resources.Load<Texture2D>(iconBasePath);
     }
 
     private void SetSceneActorElement()

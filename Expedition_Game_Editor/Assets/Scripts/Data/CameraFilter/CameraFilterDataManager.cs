@@ -12,7 +12,7 @@ public static class CameraFilterDataManager
 
         GetCameraFilterData(searchParameters);
 
-        if (cameraFilterDataList.Count == 0) return new List<IElementData>();
+        if (cameraFilterDataList.Count == 0 && !searchParameters.includeEmptyElement) return new List<IElementData>();
 
         var list = (from cameraFilterData in cameraFilterDataList
                     select new CameraFilterElementData()
@@ -25,6 +25,15 @@ public static class CameraFilterDataManager
                         Name = cameraFilterData.Name
 
                     }).OrderBy(x => x.Id).ToList();
+
+        if (searchParameters.includeEmptyElement)
+        {
+            list.Insert(0, new CameraFilterElementData()
+            {
+                Name = "None",
+                IconPath = "Textures/Icons/CameraFilters/None"
+            });
+        }
 
         list.ForEach(x => x.SetOriginalValues());
 

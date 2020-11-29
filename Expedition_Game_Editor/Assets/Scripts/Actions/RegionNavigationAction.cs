@@ -113,12 +113,29 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void InitializeStructureData(Path path)
     {
         routeList.Clear();
-
+        
         navigationList.ForEach(dataType =>
         {
             var route = PathController.route.path.FindLastRoute(dataType);
             routeList.Add(route);
         });
+
+        var sceneRoute = FindRouteByDataType(Enums.DataType.Scene);
+
+        if(sceneRoute != null)
+        {
+            var sceneActorRoute = path.FindLastRoute(Enums.DataType.SceneActor);
+            var scenePropRoute = path.FindLastRoute(Enums.DataType.SceneProp);
+
+            if (sceneActorRoute != null)
+            {
+                sceneRoute.id = ((SceneActorElementData)(sceneActorRoute.ElementData)).SceneId;
+
+            } else if (scenePropRoute != null) {
+
+                sceneRoute.id = ((ScenePropElementData)(scenePropRoute.ElementData)).SceneId;
+            }
+        }
         
         for (int i = routeList.Count - 1; i >= 0; i--)
         {
@@ -167,35 +184,175 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     
     private void ResetData(Route route)
     {
-        if (route.data.dataController.DataType == Enums.DataType.InteractionDestination)
-            GetInteractionDestinationDependencies(route.ElementData);
+        var dataType = route.data.dataController.DataType;
+
+        if(dataType == Enums.DataType.InteractionDestination || dataType == Enums.DataType.Scene)
+            GetDependencies(dataType);
 
         GetData(route.data.dataController);
     }
 
-    private void GetInteractionDestinationDependencies(IElementData elementData)
+    private void GetDependencies(Enums.DataType dataType)
     {
-        var interactionDestinationData = (InteractionDestinationElementData)elementData;
+        var route = FindRouteByDataType(dataType);
+        var searchProperties = new SearchProperties(dataType);
 
-        var interactionRoute = FindRouteByDataType(Enums.DataType.Interaction);
-        interactionRoute.id = interactionDestinationData.InteractionId;
+        var nextDataType = Enums.DataType.None;
 
-        var taskRoute = FindRouteByDataType(Enums.DataType.Task);
-        taskRoute.id = interactionDestinationData.TaskId;
+        switch(dataType)
+        {
+            case Enums.DataType.Quest:                  nextDataType = GetQuestDependencies(searchProperties);                  break;
+            case Enums.DataType.Objective:              nextDataType = GetObjectiveDependencies(searchProperties);              break;
+            case Enums.DataType.WorldInteractable:      nextDataType = GetWorldInteractableDependencies(searchProperties);      break;
+            case Enums.DataType.Task:                   nextDataType = GetTaskDependencies(searchProperties);                   break;
+            case Enums.DataType.Interaction:            nextDataType = GetInteractionDependencies(searchProperties);            break;
+            case Enums.DataType.InteractionDestination: nextDataType = GetInteractionDestinationDependencies(searchProperties); break;
+            case Enums.DataType.Outcome:                nextDataType = GetOutcomeDependencies(searchProperties);                break;
+            case Enums.DataType.Scene:                  nextDataType = GetSceneDependencies(searchProperties);                  break;
+            
+            default: Debug.Log("CASE MISSING: " + dataType); break;
+        }
 
-        var worldInteractableRoute = FindRouteByDataType(Enums.DataType.WorldInteractable);
-        worldInteractableRoute.id = interactionDestinationData.WorldInteractableId;
+        route.data.dataList.ForEach(x => 
+        {
+            //Close active elements before overwriting data
+            if (x.DataElement != null)
+                PoolManager.ClosePoolObject(x.DataElement.Poolable);
+        });
 
-        var questRoute = FindRouteByDataType(Enums.DataType.Quest);
+        route.data.dataController.GetData(searchProperties);
 
-        if (questRoute != null)
-            questRoute.id = interactionDestinationData.QuestId;
+        if(route.data.dataList.Count > 0)
+        {
+            route.id = route.data.dataList.FirstOrDefault().Id;
 
-        var objectiveRoute = FindRouteByDataType(Enums.DataType.Objective);
+            if (nextDataType != Enums.DataType.None)
+                GetDependencies(nextDataType);
 
-        if (objectiveRoute != null)
-            objectiveRoute.id = interactionDestinationData.ObjectiveId;
+            route.data.dataList = new List<IElementData>();
+        }
     }
+
+    private Enums.DataType GetQuestDependencies(SearchProperties searchProperties)
+    {
+        var objectiveRoute = FindRouteByDataType(Enums.DataType.Objective);
+        var objectiveElementData = (ObjectiveElementData)objectiveRoute.data.dataList.First();
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
+        searchParameters.id = new List<int>() { objectiveElementData.QuestId };
+        
+        return Enums.DataType.None;
+    }
+
+    private Enums.DataType GetObjectiveDependencies(SearchProperties searchProperties)
+    {
+        var taskRoute = FindRouteByDataType(Enums.DataType.Task);
+        var taskElementData = (TaskElementData)taskRoute.data.dataList.First();
+        
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
+        searchParameters.id = new List<int>() { taskElementData.ObjectiveId };
+        
+        return Enums.DataType.Quest;
+    }
+
+    private Enums.DataType GetWorldInteractableDependencies(SearchProperties searchProperties)
+    {
+        var taskRoute = FindRouteByDataType(Enums.DataType.Task);
+        var taskElementData = (TaskElementData)taskRoute.data.dataList.First();
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+        searchParameters.id = new List<int>() { taskElementData.WorldInteractableId };
+
+        if (FindRouteByDataType(Enums.DataType.Objective) != null)
+            return Enums.DataType.Objective;
+        else
+            return Enums.DataType.None;
+    }
+
+    private Enums.DataType GetTaskDependencies(SearchProperties searchProperties)
+    {
+        var interactionRoute = FindRouteByDataType(Enums.DataType.Interaction);
+        var interactionElementData = (InteractionElementData)interactionRoute.data.dataList.First();
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
+        searchParameters.id = new List<int>() { interactionElementData.TaskId };
+        
+        return Enums.DataType.WorldInteractable;
+    }
+
+    private Enums.DataType GetInteractionDependencies(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
+
+        var interactionDestinationRoute = FindRouteByDataType(Enums.DataType.InteractionDestination);
+        
+        if (interactionDestinationRoute != null)
+        {
+            var interactionDestinationElementData = (InteractionDestinationElementData)interactionDestinationRoute.data.dataList.First();
+            searchParameters.id = new List<int>() { interactionDestinationElementData.InteractionId };
+        }
+
+        var outcomeRoute = FindRouteByDataType(Enums.DataType.Outcome);
+
+        if(outcomeRoute != null)
+        {
+            var outcomeElementData = (OutcomeElementData)outcomeRoute.data.dataList.First();
+            searchParameters.id = new List<int>() { outcomeElementData.InteractionId };
+        }
+        
+        return Enums.DataType.Task;
+    }
+
+    private Enums.DataType GetInteractionDestinationDependencies(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
+        searchParameters.id = new List<int>() { FindRouteByDataType(Enums.DataType.InteractionDestination).id };
+        
+        return Enums.DataType.Interaction;
+    }
+
+    private Enums.DataType GetOutcomeDependencies(SearchProperties searchProperties)
+    {
+        var sceneRoute = FindRouteByDataType(Enums.DataType.Scene);
+        var sceneElementData = (SceneElementData)sceneRoute.data.dataList.First();
+
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
+        searchParameters.id = new List<int>() { sceneElementData.OutcomeId };
+
+        return Enums.DataType.Interaction;
+    }
+
+    private Enums.DataType GetSceneDependencies(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Scene>().First();
+        searchParameters.id = new List<int>() { FindRouteByDataType(Enums.DataType.Scene).id };
+
+        return Enums.DataType.Outcome;
+    }
+
+    //private void GetInteractionDestinationDependencies(IElementData elementData)
+    //{
+    //    var interactionDestinationData = (InteractionDestinationElementData)elementData;
+
+    //    var interactionRoute = FindRouteByDataType(Enums.DataType.Interaction);
+    //    interactionRoute.id = interactionDestinationData.InteractionId;
+
+    //    var taskRoute = FindRouteByDataType(Enums.DataType.Task);
+    //    taskRoute.id = interactionDestinationData.TaskId;
+
+    //    var worldInteractableRoute = FindRouteByDataType(Enums.DataType.WorldInteractable);
+    //    worldInteractableRoute.id = interactionDestinationData.WorldInteractableId;
+
+    //    var questRoute = FindRouteByDataType(Enums.DataType.Quest);
+
+    //    if (questRoute != null)
+    //        questRoute.id = interactionDestinationData.QuestId;
+
+    //    var objectiveRoute = FindRouteByDataType(Enums.DataType.Objective);
+
+    //    if (objectiveRoute != null)
+    //        objectiveRoute.id = interactionDestinationData.ObjectiveId;
+    //}
 
     #region Data Filter
     //Remove all dead ends from data
@@ -347,20 +504,22 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     private void GetData(IDataController dataController)
     {
-        SearchProperties searchProperties = new SearchProperties(dataController.DataType);
+        var searchProperties = new SearchProperties(dataController.DataType);
 
         switch (dataController.DataType)
         {
-            case Enums.DataType.Phase:                  GetPhaseData(searchProperties);                 break;
-            case Enums.DataType.Quest:                  GetQuestData(searchProperties);                 break;
-            case Enums.DataType.Objective:              GetObjectiveData(searchProperties);             break;
-            case Enums.DataType.WorldInteractable:      GetWorldInteractableData(searchProperties);     break;
-            case Enums.DataType.Task:                   GetTaskData(searchProperties);                  break;
-            case Enums.DataType.Interaction:            GetInteractionData(searchProperties);           break;
-            case Enums.DataType.InteractionDestination: GetInteractionDestinationData(searchProperties);break;
-            case Enums.DataType.Region:                 GetRegionData(searchProperties);                break;
+            case Enums.DataType.Phase:                  SetPhaseSearchParameters(searchProperties);                 break;
+            case Enums.DataType.Quest:                  SetQuestSearchParameters(searchProperties);                 break;
+            case Enums.DataType.Objective:              SetObjectiveSearchParameters(searchProperties);             break;
+            case Enums.DataType.WorldInteractable:      SetWorldInteractableSearchParameters(searchProperties);     break;
+            case Enums.DataType.Task:                   SetTaskSearchParameters(searchProperties);                  break;
+            case Enums.DataType.Interaction:            SetInteractionSearchParameters(searchProperties);           break;
+            case Enums.DataType.InteractionDestination: SetInteractionDestinationSearchParameters(searchProperties);break;
+            case Enums.DataType.Outcome:                SetOutcomeSearchParameters(searchProperties);               break;
+            case Enums.DataType.Scene:                  SetSceneSearchParameters(searchProperties);                 break;
+            case Enums.DataType.Region:                 SetRegionSearchParameters(searchProperties);                break;
 
-            case Enums.DataType.PhaseSave:              GetPhaseSaveData(searchProperties);             break;
+            case Enums.DataType.PhaseSave:              SetPhaseSaveSearchParameters(searchProperties);             break;
 
             default: Debug.Log("CASE MISSING: " + dataController.DataType); break;
         }
@@ -370,26 +529,26 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         SelectOption(dataController.DataType);
     }
 
-    #region Get Data
-    private void GetPhaseData(SearchProperties searchProperties)
+    #region Set search parameters
+    private void SetPhaseSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
         searchParameters.chapterId = new List<int>() { FindRouteByDataType(Enums.DataType.Chapter).id };
     }
 
-    private void GetQuestData(SearchProperties searchProperties)
+    private void SetQuestSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Quest>().First();
         searchParameters.phaseId = new List<int>() { FindRouteByDataType(Enums.DataType.Phase).id };
     }
 
-    private void GetObjectiveData(SearchProperties searchProperties)
+    private void SetObjectiveSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
         searchParameters.questId = new List<int>() { FindRouteByDataType(Enums.DataType.Quest).id };
     }
 
-    private void GetWorldInteractableData(SearchProperties searchProperties)
+    private void SetWorldInteractableSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
@@ -414,7 +573,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         }
     }
 
-    private void GetTaskData(SearchProperties searchProperties)
+    private void SetTaskSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
 
@@ -422,23 +581,35 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         if(objectiveRoute != null)
             searchParameters.objectiveId = new List<int>() { objectiveRoute.id };
-
+        
         searchParameters.worldInteractableId = new List<int>() { FindRouteByDataType(Enums.DataType.WorldInteractable).id };
     }
 
-    private void GetInteractionData(SearchProperties searchProperties)
+    private void SetInteractionSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
         searchParameters.taskId = new List<int>() { FindRouteByDataType(Enums.DataType.Task).id };
     }
 
-    private void GetInteractionDestinationData(SearchProperties searchProperties)
+    private void SetInteractionDestinationSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
         searchParameters.interactionId = new List<int>() { FindRouteByDataType(Enums.DataType.Interaction).id };
     }
 
-    private void GetRegionData(SearchProperties searchProperties)
+    private void SetOutcomeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
+        searchParameters.interactionId = new List<int>() { FindRouteByDataType(Enums.DataType.Interaction).id };
+    }
+
+    private void SetSceneSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Scene>().First();
+        searchParameters.outcomeId = new List<int>() { FindRouteByDataType(Enums.DataType.Outcome).id };
+    }
+
+    private void SetRegionSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
         
@@ -464,7 +635,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         searchParameters.type       = RegionManager.regionType;
     }
 
-    private void GetPhaseSaveData(SearchProperties searchProperties)
+    private void SetPhaseSaveSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
         searchParameters.requestType = Search.PhaseSave.RequestType.GetPhaseSaveByChapter;

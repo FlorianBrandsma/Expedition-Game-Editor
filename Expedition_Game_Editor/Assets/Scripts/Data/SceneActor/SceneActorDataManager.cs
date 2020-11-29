@@ -62,7 +62,7 @@ public static class SceneActorDataManager
 
         if (searchParameters.includeEmptyElement)
         {
-            list.Add(new SceneActorElementData()
+            list.Insert(0, new SceneActorElementData()
             {
                 InteractableName = "None"
             });

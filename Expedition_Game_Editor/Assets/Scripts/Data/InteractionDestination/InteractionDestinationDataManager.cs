@@ -90,12 +90,12 @@ public static class InteractionDestinationDataManager
 
                         Animation = interactionDestinationData.Animation,
                         Patience = interactionDestinationData.Patience,
-                        
-                        QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+
+                        TaskId = interactionData.TaskId,
                         ObjectiveId = taskData.ObjectiveId,
                         WorldInteractableId = taskData.WorldInteractableId,
-                        TaskId = interactionData.TaskId,
+                        QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
+                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
                         
                         ModelId = modelData.Id,
                         ModelPath = modelData.Path,

@@ -188,9 +188,8 @@ static public class Fixtures
     #region Camera filters
     static public void LoadCameraFilters()
     {
-        /*01*/CreateCameraFilter("Nothing", "Nothing");
-        /*02*/CreateCameraFilter("FadeBlack", "Fade black");
-        /*03*/CreateCameraFilter("FadeWhite", "Fade white");
+        /*01*/CreateCameraFilter("FadeBlack", "Fade black");
+        /*02*/CreateCameraFilter("FadeWhite", "Fade white");
     }
 
     static private void CreateCameraFilter(string path, string name)

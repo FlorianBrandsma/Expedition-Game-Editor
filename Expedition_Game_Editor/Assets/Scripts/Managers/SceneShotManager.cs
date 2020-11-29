@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 static public class SceneShotManager
 {
@@ -8,7 +9,7 @@ static public class SceneShotManager
     static public SceneShotElementData GetActiveElementData(Route route)
     {
         var sceneShotElementData = route.data.dataController.Data.dataList.Cast<SceneShotElementData>().Where(x => x.Type == (int)activeShotType).First();
-
+        
         return sceneShotElementData;
     }
 
@@ -26,6 +27,19 @@ static public class SceneShotManager
         if (RegionManager.regionType == Enums.RegionType.Scene && path.routeList.Last().data.dataController.DataType == Enums.DataType.Region)
         {
             var sceneShotRouteSource = path.FindLastRoute(Enums.DataType.SceneShot);
+            var sceneRoute = path.FindLastRoute(Enums.DataType.Scene);
+            
+            if (!ListContainsElement(sceneShotRouteSource, sceneRoute.id))
+            {
+                var dataController = sceneShotRouteSource.data.dataController;
+                var searchProperties = new SearchProperties(dataController.DataType);
+
+                var searchParameters = searchProperties.searchParameters.Cast<Search.SceneShot>().First();
+                searchParameters.sceneId = new List<int>() { sceneRoute.id };
+
+                dataController.GetData(searchProperties);
+            }
+            
             var sceneShotElementData = GetActiveElementData(sceneShotRouteSource);
 
             if ((Enums.SceneShotType)sceneShotElementData.Type != Enums.SceneShotType.Base)
@@ -44,6 +58,11 @@ static public class SceneShotManager
                 path.Add(sceneShotRoute);
             }
         }
+    }
+
+    static private bool ListContainsElement(Route sceneShotRoute, int sceneId)
+    {
+        return sceneShotRoute.data.dataList.Cast<SceneShotElementData>().First().SceneId == sceneId;
     }
 
     static public void SetShot(Enums.SceneShotType shot, Path path)

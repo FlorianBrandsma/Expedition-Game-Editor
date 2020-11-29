@@ -65,12 +65,18 @@ public class SceneShotElementData : SceneShotData, IElementData
         get { return RotationTargetSceneActorId != OriginalData.RotationTargetSceneActorId; }
     }
 
+    public bool ChangedCameraFilterId
+    {
+        get { return CameraFilterId != OriginalData.CameraFilterId; }
+    }
+
     public bool Changed
     {
         get
         {
             return  ChangedChangePosition || ChangedPositionX || ChangedPositionY || ChangedPositionZ || ChangedPositionTargetSceneActorId ||
-                    ChangedChangeRotation || ChangedRotationX || ChangedRotationY || ChangedRotationZ || ChangedRotationTargetSceneActorId;
+                    ChangedChangeRotation || ChangedRotationX || ChangedRotationY || ChangedRotationZ || ChangedRotationTargetSceneActorId ||
+                    ChangedCameraFilterId;
         }
     }
     #endregion

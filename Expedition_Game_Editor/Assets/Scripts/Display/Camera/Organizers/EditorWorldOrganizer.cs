@@ -47,7 +47,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private bool allowSelection = true;
     private bool dataSet;
-
+    
     void Update()
     {
         var ray = CameraManager.cam.ScreenPointToRay(Input.mousePosition);
@@ -58,13 +58,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         if (Input.GetMouseButtonUp(0))
         {
-            var fingerId = -1;
+            //var fingerId = -1;
 
-            if (Input.touchCount > 0)
-                fingerId = Input.GetTouch(0).fingerId;
+            //if (Input.touchCount > 0)
+            //    fingerId = Input.GetTouch(0).fingerId;
 
             //Selecting through UI elements is blocked, unless it's the element that's required to scroll the camera
-            if (EventSystem.current.IsPointerOverGameObject(fingerId) && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
+            if (IsPointerOverUIObject() && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
                 return;
             
             if (allowSelection && Physics.Raycast(ray, out hit) && hit.collider.GetComponent<Model>() != null)
@@ -78,6 +78,17 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
             allowSelection = true;
         }
+    }
+
+    private bool IsPointerOverUIObject()
+    {
+        var eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        return results.Count > 0;
     }
 
     private void SelectElement(EditorElement editorElement)
@@ -179,12 +190,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void GetSelectedSceneActors(List<Route> routes)
     {
-        selectedSceneActors = worldData.TerrainDataList.SelectMany(x => x.SceneActorDataList.Where(y => routes.Select(z => z.ElementData.Id).Contains(y.Id))).Distinct().ToList();
+        selectedSceneActors = worldData.TerrainDataList.SelectMany(x => x.SceneActorDataList.Where(y => routes.Select(z => z.id).Contains(y.Id))).Distinct().ToList();
     }
 
     private void GetSelectedSceneProps(List<Route> routes)
     {
-        selectedSceneProps = worldData.TerrainDataList.SelectMany(x => x.ScenePropDataList.Where(y => routes.Select(z => z.ElementData.Id).Contains(y.Id))).Distinct().ToList();
+        selectedSceneProps = worldData.TerrainDataList.SelectMany(x => x.ScenePropDataList.Where(y => routes.Select(z => z.id).Contains(y.Id))).Distinct().ToList();
     }
 
     private void InitializeControllers()
@@ -260,7 +271,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         //Only show interactables where the active time is within their first interaction's timeframe
         WorldInteractableAgentDataController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Agent)).Cast<IElementData>().ToList());
-        
+
         //Only show interactables where the active time is within their first interaction's timeframe
         WorldInteractableObjectDataController.Data.dataList = FilterWorldInteractables(worldData.TerrainDataList.SelectMany(x => x.WorldInteractableDataList.Where(y => y.Type == (int)Enums.InteractableType.Object)).Cast<IElementData>().ToList());
         
@@ -644,7 +655,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => !selectedWorldInteractableAgents.Select(y => y.Id).Contains(x.Id) && 
                                                                                                            ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
-        
+        //Debug.Log(worldInteractableAgentDataList.Count);
         SetWorldElements(WorldInteractableAgentDataController, worldInteractableAgentDataList);
     }
     
@@ -884,7 +895,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         if (sceneActorElementData.SceneId != sceneElementData.Id &&
             sceneActorElementData.InteractionId != sceneElementData.Id)
         {
-            element.elementStatus = Enums.ElementStatus.Unrelated;
+            element.elementStatus = Enums.ElementStatus.Locked;
+            //element.elementStatus = Enums.ElementStatus.Unrelated;
             return;
         }
 
@@ -933,7 +945,8 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         if (scenePropElementData.SceneId != sceneElementData.Id &&
             scenePropElementData.InteractionId != sceneElementData.InteractionId)
         {
-            element.elementStatus = Enums.ElementStatus.Unrelated;
+            element.elementStatus = Enums.ElementStatus.Locked;
+            //element.elementStatus = Enums.ElementStatus.Unrelated;
             return;
         }
     }
@@ -1093,12 +1106,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void ClearWorldInteractableAgents(TerrainTileElementData terrainTileData)
     {
-        var testList = WorldInteractableAgentDataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
-
         var worldInteractableAgentElementList = WorldInteractableAgentDataController.Data.dataList.Cast<WorldInteractableElementData>().Where(x => x.DataElement != null).ToList();
 
         var inactiveWorldInteractableAgentList = worldInteractableAgentElementList.Where(x => !selectedWorldInteractableAgents.Select(y => y.Id).Contains(x.Id) && 
                                                                                               x.TerrainTileId == terrainTileData.Id).ToList();
+
+        //Debug.Log(worldInteractableAgentElementList.Count);
 
         inactiveWorldInteractableAgentList.ForEach(x => 
         {

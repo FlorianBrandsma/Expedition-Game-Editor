@@ -2,12 +2,12 @@
 
 public class SceneData : SceneBaseData
 {
-    public int InteractionId    { get; set; }
-    public int PhaseId          { get; set; }
-    
-    public string RegionName    { get; set; }
+    public int InteractionId        { get; set; }
+    public int PhaseId              { get; set; }
 
-    public string TileIconPath  { get; set; }
+    public string RegionName        { get; set; }
+
+    public string TileIconPath      { get; set; }
     
     public override void GetOriginalValues(SceneData originalData)
     {

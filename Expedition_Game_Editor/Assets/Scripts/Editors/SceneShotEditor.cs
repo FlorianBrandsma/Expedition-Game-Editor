@@ -159,6 +159,17 @@ public class SceneShotEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => ((SceneShotElementData)x).RotationTargetSceneActorId = value);
         }
     }
+
+    public int CameraFilterId
+    {
+        get { return sceneShotData.CameraFilterId; }
+        set
+        {
+            sceneShotData.CameraFilterId = value;
+
+            DataList.ForEach(x => ((SceneShotElementData)x).CameraFilterId = value);
+        }
+    }
     #endregion
 
     public void InitializeEditor()
