@@ -217,7 +217,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             //Close active elements before overwriting data
             if (x.DataElement != null)
+            {
                 PoolManager.ClosePoolObject(x.DataElement.Poolable);
+                SelectionElementManager.CloseElement(x.DataElement);
+            }
         });
 
         route.data.dataController.GetData(searchProperties);

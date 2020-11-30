@@ -236,8 +236,6 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public void InitializeEditor()
     {
-        Debug.Log("INIT");
-
         sceneActorData = (SceneActorData)ElementData.Clone();
     }
     

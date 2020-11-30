@@ -113,7 +113,6 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         SelectionElementManager.Add(sceneActorButton);
-        SelectionElementManager.Add(sceneActorButton.child);
         SelectionManager.SelectData(sceneActorButton.DataElement.Data.dataList);
 
         SetSceneActorButton();
@@ -155,7 +154,6 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
 
     public void CloseSegment()
     {
-        SelectionElementManager.elementPool.Remove(sceneActorButton);
-        SelectionElementManager.elementPool.Remove(sceneActorButton.child);
+        SelectionElementManager.Remove(sceneActorButton);
     }
 }

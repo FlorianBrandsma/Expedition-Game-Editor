@@ -58,11 +58,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         if (Input.GetMouseButtonUp(0))
         {
-            //var fingerId = -1;
-
-            //if (Input.touchCount > 0)
-            //    fingerId = Input.GetTouch(0).fingerId;
-
             //Selecting through UI elements is blocked, unless it's the element that's required to scroll the camera
             if (IsPointerOverUIObject() && EventSystem.current.currentSelectedGameObject != CameraManager.gameObject)
                 return;
@@ -655,7 +650,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => !selectedWorldInteractableAgents.Select(y => y.Id).Contains(x.Id) && 
                                                                                                            ((WorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
-        //Debug.Log(worldInteractableAgentDataList.Count);
+
         SetWorldElements(WorldInteractableAgentDataController, worldInteractableAgentDataList);
     }
     
@@ -1110,8 +1105,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         var inactiveWorldInteractableAgentList = worldInteractableAgentElementList.Where(x => !selectedWorldInteractableAgents.Select(y => y.Id).Contains(x.Id) && 
                                                                                               x.TerrainTileId == terrainTileData.Id).ToList();
-
-        //Debug.Log(worldInteractableAgentElementList.Count);
 
         inactiveWorldInteractableAgentList.ForEach(x => 
         {

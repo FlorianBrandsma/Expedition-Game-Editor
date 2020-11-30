@@ -448,7 +448,7 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Deactivate();
 
-        SelectionElementManager.elementPool.Remove(iconEditorElement);
+        SelectionElementManager.Remove(iconEditorElement);
 
         gameObject.SetActive(false);
     }

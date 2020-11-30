@@ -108,7 +108,6 @@ public class SceneShotEffectFilterSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         SelectionElementManager.Add(cameraFilterButton);
-        SelectionElementManager.Add(cameraFilterButton.child);
         SelectionManager.SelectData(cameraFilterButton.DataElement.Data.dataList);
 
         SetSceneActorButton();
@@ -150,7 +149,6 @@ public class SceneShotEffectFilterSegment : MonoBehaviour, ISegment
 
     public void CloseSegment()
     {
-        SelectionElementManager.elementPool.Remove(cameraFilterButton);
-        SelectionElementManager.elementPool.Remove(cameraFilterButton.child);
+        SelectionElementManager.Remove(cameraFilterButton);
     }
 }

@@ -148,7 +148,7 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void CloseSegment()
     {
-        SelectionElementManager.elementPool.Remove(iconEditorElement);
+        SelectionElementManager.Remove(iconEditorElement);
 
         gameObject.SetActive(false);
     }

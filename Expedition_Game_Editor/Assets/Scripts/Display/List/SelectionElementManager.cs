@@ -22,6 +22,14 @@ static public class SelectionElementManager
             Add(element.child);
     }
 
+    static public void Remove(EditorElement element)
+    {
+        elementPool.Remove(element);
+
+        if (element.child != null)
+            Remove(element.child);
+    }
+
     //Reload the display of active elements that match the argument. Exclusively used by index switching
     static public void UpdateElements(IElementData elementData)
     {
@@ -42,7 +50,8 @@ static public class SelectionElementManager
     {
         if (elementData == null) return new List<IElementData>();
 
-        var elementDataList = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData).Select(x => x.DataElement.ElementData).Distinct().ToList();
+        var activeSelectionElements = FindSelectionElements(elementPool.Where(x => x.gameObject.activeInHierarchy).ToList(), elementData);
+        var elementDataList = activeSelectionElements.Select(x => x.DataElement.ElementData).Distinct().ToList();
 
         return elementDataList;
     }

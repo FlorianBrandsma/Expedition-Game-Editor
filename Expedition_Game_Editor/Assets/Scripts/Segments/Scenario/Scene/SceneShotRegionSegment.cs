@@ -114,7 +114,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         SelectionElementManager.Add(regionButton);
-        SelectionElementManager.Add(regionButton.child);
         SelectionManager.SelectData(regionButton.DataElement.Data.dataList);
 
         SetRegionButton();
@@ -165,7 +164,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
 
     public void CloseSegment()
     {
-        SelectionElementManager.elementPool.Remove(regionButton);
-        SelectionElementManager.elementPool.Remove(regionButton.child);
+        SelectionElementManager.Remove(regionButton);
     }
 }
