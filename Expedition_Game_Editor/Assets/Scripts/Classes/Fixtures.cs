@@ -788,6 +788,11 @@ static public class Fixtures
         outcome.CompleteTask = true;
         outcome.ResetObjective = false;
 
+        outcome.CancelScenarioType = (int)Enums.CancelScenarioType.Cancel;
+        outcome.CancelScenarioOnInput = true;
+        outcome.CancelScenarioOnRange = true;
+        outcome.CancelScenarioOnHit = false;
+
         outcome.PublicNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
 
         outcomeList.Add(outcome);
@@ -1293,6 +1298,11 @@ static public class Fixtures
 
                                     outcome.CompleteTask = outcomeSource.CompleteTask;
                                     outcome.ResetObjective = outcomeSource.ResetObjective;
+
+                                    outcome.CancelScenarioType = outcomeSource.CancelScenarioType;
+                                    outcome.CancelScenarioOnInput = outcomeSource.CancelScenarioOnInput;
+                                    outcome.CancelScenarioOnRange = outcomeSource.CancelScenarioOnRange;
+                                    outcome.CancelScenarioOnHit = outcomeSource.CancelScenarioOnHit;
 
                                     outcome.PublicNotes = outcomeSource.PublicNotes;
                                     outcome.PrivateNotes = outcomeSource.PrivateNotes;

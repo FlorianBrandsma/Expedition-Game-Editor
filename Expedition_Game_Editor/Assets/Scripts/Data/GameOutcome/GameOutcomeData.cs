@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
-public class OutcomeBaseData
+public class GameOutcomeData
 {
     public int Id                       { get; set; }
-    
-    public int InteractionId            { get; set; }
 
     public int Type                     { get; set; }
 
@@ -16,14 +15,11 @@ public class OutcomeBaseData
     public bool CancelScenarioOnRange   { get; set; }
     public bool CancelScenarioOnHit     { get; set; }
 
-    public string PublicNotes           { get; set; }
-    public string PrivateNotes          { get; set; }
+    public List<GameSceneElementData> SceneDataList { get; set; } = new List<GameSceneElementData>();
 
-    public virtual void GetOriginalValues(OutcomeData originalData)
+    public virtual void GetOriginalValues(GameOutcomeData originalData)
     {
         Id                      = originalData.Id;
-
-        InteractionId           = originalData.InteractionId;
 
         Type                    = originalData.Type;
 
@@ -34,16 +30,13 @@ public class OutcomeBaseData
         CancelScenarioOnInput   = originalData.CancelScenarioOnInput;
         CancelScenarioOnRange   = originalData.CancelScenarioOnRange;
         CancelScenarioOnHit     = originalData.CancelScenarioOnHit;
-
-        PublicNotes             = originalData.PublicNotes;
-        PrivateNotes            = originalData.PrivateNotes;
     }
 
-    public virtual void Clone(OutcomeData data)
+    public GameOutcomeData Clone()
     {
+        var data = new GameOutcomeData();
+        
         data.Id                     = Id;
-
-        data.InteractionId          = InteractionId;
 
         data.Type                   = Type;
 
@@ -55,7 +48,23 @@ public class OutcomeBaseData
         data.CancelScenarioOnRange  = CancelScenarioOnRange;
         data.CancelScenarioOnHit    = CancelScenarioOnHit;
 
-        data.PublicNotes            = PublicNotes;
-        data.PrivateNotes           = PrivateNotes;
+        SceneDataList.ForEach(x => x.SetOriginalValues());
+
+        return data;
+    }
+
+    public virtual void Clone(GameOutcomeElementData elementData)
+    {
+        elementData.Id                      = Id;
+
+        elementData.Type                    = Type;
+
+        elementData.CompleteTask            = CompleteTask;
+        elementData.ResetObjective          = ResetObjective;
+
+        elementData.CancelScenarioType      = CancelScenarioType;
+        elementData.CancelScenarioOnInput   = CancelScenarioOnInput;
+        elementData.CancelScenarioOnRange   = CancelScenarioOnRange;
+        elementData.CancelScenarioOnHit     = CancelScenarioOnHit;
     }
 }

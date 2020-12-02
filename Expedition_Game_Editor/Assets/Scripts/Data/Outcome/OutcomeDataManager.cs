@@ -46,6 +46,11 @@ public static class OutcomeDataManager
                         CompleteTask = outcomeData.CompleteTask,
                         ResetObjective = outcomeData.ResetObjective,
 
+                        CancelScenarioType = outcomeData.CancelScenarioType,
+                        CancelScenarioOnInput = outcomeData.CancelScenarioOnInput,
+                        CancelScenarioOnRange = outcomeData.CancelScenarioOnRange,
+                        CancelScenarioOnHit = outcomeData.CancelScenarioOnHit,
+
                         PublicNotes = outcomeData.PublicNotes,
                         PrivateNotes = outcomeData.PrivateNotes,
 
@@ -135,6 +140,18 @@ public static class OutcomeDataManager
 
         if (elementData.ChangedResetObjective)
             data.ResetObjective = elementData.ResetObjective;
+
+        if (elementData.ChangedCancelScenarioType)
+            data.CancelScenarioType = elementData.CancelScenarioType;
+
+        if (elementData.ChangedCancelScenarioOnInput)
+            data.CancelScenarioOnInput = elementData.CancelScenarioOnInput;
+
+        if (elementData.ChangedCancelScenarioOnRange)
+            data.CancelScenarioOnRange = elementData.CancelScenarioOnRange;
+
+        if (elementData.ChangedCancelScenarioOnHit)
+            data.CancelScenarioOnHit = elementData.CancelScenarioOnHit;
 
         if (elementData.ChangedPublicNotes)
             data.PublicNotes = elementData.PublicNotes;

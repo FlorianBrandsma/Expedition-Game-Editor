@@ -25,6 +25,26 @@ public class OutcomeElementData : OutcomeData, IElementData
         get { return ResetObjective != OriginalData.ResetObjective; }
     }
 
+    public bool ChangedCancelScenarioType
+    {
+        get { return CancelScenarioType != OriginalData.CancelScenarioType; }
+    }
+
+    public bool ChangedCancelScenarioOnInput
+    {
+        get { return CancelScenarioOnInput != OriginalData.CancelScenarioOnInput; }
+    }
+
+    public bool ChangedCancelScenarioOnRange
+    {
+        get { return CancelScenarioOnRange != OriginalData.CancelScenarioOnRange; }
+    }
+
+    public bool ChangedCancelScenarioOnHit
+    {
+        get { return CancelScenarioOnHit != OriginalData.CancelScenarioOnHit; }
+    }
+
     public bool ChangedPublicNotes
     {
         get { return PublicNotes != OriginalData.PublicNotes; }
@@ -39,8 +59,9 @@ public class OutcomeElementData : OutcomeData, IElementData
     {
         get
         {
-            return  ChangedCompleteTask ||  ChangedResetObjective ||
-                    ChangedPublicNotes  ||  ChangedPrivateNotes;
+            return  ChangedCompleteTask             ||  ChangedResetObjective       || ChangedCancelScenarioType    || 
+                    ChangedCancelScenarioOnInput    || ChangedCancelScenarioOnRange || ChangedCancelScenarioOnHit   ||
+                    ChangedPublicNotes              ||  ChangedPrivateNotes;
         }
     }
     #endregion

@@ -16,8 +16,16 @@ public static class GameWorldDataManager
     private static List<WorldObjectBaseData> worldObjectDataList;
     private static List<TaskBaseData> taskDataList;
     private static List<InteractionBaseData> interactionDataList;
+
     private static List<InteractionDestinationBaseData> interactionDestinationDataList;
 
+    private static List<OutcomeBaseData> outcomeDataList;
+    private static List<SceneBaseData> sceneDataList;
+    private static List<SceneActorBaseData> sceneActorDataList;
+    private static List<ScenePropBaseData> scenePropDataList;
+    private static List<SceneShotBaseData> sceneShotDataList;
+    private static List<CameraFilterBaseData> cameraFilterDataList;
+    
     private static List<WorldInteractableBaseData> worldInteractableDataList;
     private static List<InteractableBaseData> interactableDataList;
     private static List<ModelBaseData> modelDataList;
@@ -52,6 +60,14 @@ public static class GameWorldDataManager
 
         GetInteractionDestinationData();
         GetInteractionData();
+
+        GetOutcomeData();
+        GetSceneData();
+        GetSceneActorData();
+        GetScenePropData();
+        GetSceneShotData();
+        GetCameraFilterData();
+
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
@@ -220,8 +236,141 @@ public static class GameWorldDataManager
                         Animation = interactionDestinationData.Animation,
                         Patience = interactionDestinationData.Patience
 
-                    }).ToList()
+                    }).ToList(),
                     
+                    OutcomeDataList = (
+                    from outcomeData in outcomeDataList
+                    where interactionData.Id == outcomeData.InteractionId
+                    select new GameOutcomeElementData()
+                    {
+                        Id = outcomeData.Id,
+
+                        Type = outcomeData.Type,
+
+                        CompleteTask = outcomeData.CompleteTask,
+                        ResetObjective = outcomeData.ResetObjective,
+
+                        CancelScenarioType = outcomeData.CancelScenarioType,
+                        CancelScenarioOnInput = outcomeData.CancelScenarioOnInput,
+                        CancelScenarioOnRange = outcomeData.CancelScenarioOnRange,
+                        CancelScenarioOnHit = outcomeData.CancelScenarioOnHit,
+
+                        SceneDataList = (
+                        from sceneData in sceneDataList
+                        where outcomeData.Id == sceneData.OutcomeId
+                        select new GameSceneElementData()
+                        {
+                            Id = sceneData.Id,
+
+                            RegionId = sceneData.RegionId,
+
+                            FreezeTime = sceneData.FreezeTime,
+                            AutoContinue = sceneData.AutoContinue,
+
+                            SceneDuration = sceneData.SceneDuration,
+                            ShotDuration = sceneData.ShotDuration,
+
+                            SceneShotDataList = (
+                            from sceneShotData      in sceneShotDataList
+                            join cameraFilterData   in cameraFilterDataList on sceneShotData.CameraFilterId equals cameraFilterData.Id
+
+                            join leftJoin in (from sceneActorData in sceneActorDataList
+                                              select new { sceneActorData }) on sceneShotData.PositionTargetSceneActorId equals leftJoin.sceneActorData.Id into positionTargetSceneActorData
+
+                            join leftJoin in (from sceneActorData in sceneActorDataList
+                                              select new { sceneActorData }) on sceneShotData.RotationTargetSceneActorId equals leftJoin.sceneActorData.Id into rotationTargetSceneActorData
+
+                            where sceneData.Id == sceneShotData.SceneId
+                            select new GameSceneShotElementData()
+                            {
+                                Id = sceneShotData.Id,
+
+                                Type = sceneShotData.Type,
+
+                                ChangePosition = sceneShotData.ChangePosition,
+
+                                PositionX = sceneShotData.PositionX,
+                                PositionY = sceneShotData.PositionY,
+                                PositionZ = sceneShotData.PositionZ,
+
+                                PositionTargetWorldInteractableId = positionTargetSceneActorData.FirstOrDefault() != null ? positionTargetSceneActorData.FirstOrDefault().sceneActorData.WorldInteractableId : 0,
+
+                                ChangeRotation = sceneShotData.ChangeRotation,
+
+                                RotationX = sceneShotData.RotationX,
+                                RotationY = sceneShotData.RotationY,
+                                RotationZ = sceneShotData.RotationZ,
+
+                                RotationTargetWorldInteractableId = rotationTargetSceneActorData.FirstOrDefault() != null ? rotationTargetSceneActorData.FirstOrDefault().sceneActorData.WorldInteractableId : 0,
+
+                                CameraFilterPath = cameraFilterData.Path
+
+                            }).ToList(),
+
+                            SceneActorDataList = (
+                            from sceneActorData in sceneActorDataList
+
+                            join leftJoin in (from sceneActorData in sceneActorDataList
+                                              select new { sceneActorData }) on sceneActorData.TargetSceneActorId equals leftJoin.sceneActorData.Id into targetSceneActorData
+
+                            where sceneData.Id == sceneActorData.SceneId
+                            select new GameSceneActorElementData()
+                            {
+                                Id = sceneActorData.Id,
+
+                                WorldInteractableId = sceneActorData.WorldInteractableId,
+                                TerrainTileId = sceneActorData.TerrainTileId,
+        
+                                SpeechMethod = sceneActorData.SpeechMethod,
+                                SpeechText = sceneActorData.SpeechText,
+                                ShowTextBox = sceneActorData.ShowTextBox,
+
+                                TargetWorldInteractableId = targetSceneActorData.FirstOrDefault() != null ? targetSceneActorData.FirstOrDefault().sceneActorData.WorldInteractableId : 0,
+
+                                ChangePosition = sceneActorData.ChangePosition,
+                                FreezePosition = sceneActorData.FreezePosition,
+
+                                PositionX = sceneActorData.PositionX,
+                                PositionY = sceneActorData.PositionY,
+                                PositionZ = sceneActorData.PositionZ,
+
+                                ChangeRotation = sceneActorData.ChangeRotation,
+                                FaceTarget = sceneActorData.FaceTarget,
+
+                                RotationX = sceneActorData.RotationX,
+                                RotationY = sceneActorData.RotationY,
+                                RotationZ = sceneActorData.RotationZ
+
+                            }).ToList(),
+
+                            ScenePropDataList = (
+                            from scenePropData  in scenePropDataList
+                            join modelData      in modelDataList on scenePropData.ModelId equals modelData.Id
+                            where sceneData.Id == scenePropData.SceneId
+                            select new GameScenePropElementData()
+                            {
+                                Id = scenePropData.Id,
+
+                                TerrainTileId = scenePropData.TerrainTileId,
+
+                                ModelPath = modelData.Path,
+
+                                PositionX = scenePropData.PositionX,
+                                PositionY = scenePropData.PositionY,
+                                PositionZ = scenePropData.PositionZ,
+
+                                RotationX = scenePropData.RotationX,
+                                RotationY = scenePropData.RotationY,
+                                RotationZ = scenePropData.RotationZ,
+
+                                Scale = scenePropData.Scale
+
+                            }).ToList()
+
+                        }).ToList()
+
+                    }).ToList()
+
                 }).ToList()
 
             }).ToList(),
@@ -398,7 +547,7 @@ public static class GameWorldDataManager
     {
         var searchParameters = new Search.WorldInteractable();
         searchParameters.chapterId = new List<int>() { chapterData.Id };
-
+        
         chapterWorldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
@@ -466,6 +615,54 @@ public static class GameWorldDataManager
         interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
+    private static void GetOutcomeData()
+    {
+        var searchParameters = new Search.Outcome();
+        searchParameters.interactionId = interactionDataList.Select(x => x.Id).Distinct().ToList();
+
+        outcomeDataList = DataManager.GetOutcomeData(searchParameters);
+    }
+
+    private static void GetSceneData()
+    {
+        var searchParameters = new Search.Scene();
+        searchParameters.outcomeId = outcomeDataList.Select(x => x.Id).Distinct().ToList();
+
+        sceneDataList = DataManager.GetSceneData(searchParameters);
+    }
+    
+    private static void GetSceneActorData()
+    {
+        var searchParameters = new Search.SceneActor();
+        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        sceneActorDataList = DataManager.GetSceneActorData(searchParameters);
+    }
+
+    private static void GetScenePropData()
+    {
+        var searchParameters = new Search.SceneProp();
+        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        scenePropDataList = DataManager.GetScenePropData(searchParameters);
+    }
+
+    private static void GetSceneShotData()
+    {
+        var searchParameters = new Search.SceneShot();
+        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        sceneShotDataList = DataManager.GetSceneShotData(searchParameters);
+    }
+
+    private static void GetCameraFilterData()
+    {
+        var searchParameters = new Search.CameraFilter();
+        searchParameters.id = sceneShotDataList.Select(x => x.CameraFilterId).Distinct().ToList();
+
+        cameraFilterDataList = DataManager.GetCameraFilterData(searchParameters);
+    }
+
     private static void GetTaskData()
     {
         var searchParameters = new Search.Task();
@@ -493,7 +690,8 @@ public static class GameWorldDataManager
     private static void GetModelData()
     {
         var searchParameters = new Search.Model();
-        searchParameters.id = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId)).Distinct().ToList();
+        searchParameters.id = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId))
+                                                                         .Union(scenePropDataList.Select(x => x.ModelId)).Distinct().ToList();
 
         modelDataList = DataManager.GetModelData(searchParameters);
     }

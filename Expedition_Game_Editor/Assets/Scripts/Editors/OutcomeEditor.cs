@@ -60,6 +60,50 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         }
     }
 
+    public int CancelScenarioType
+    {
+        get { return outcomeData.CancelScenarioType; }
+        set
+        {
+            outcomeData.CancelScenarioType = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CancelScenarioType = value);
+        }
+    }
+
+    public bool CancelScenarioOnInput
+    {
+        get { return outcomeData.CancelScenarioOnInput; }
+        set
+        {
+            outcomeData.CancelScenarioOnInput = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CancelScenarioOnInput = value);
+        }
+    }
+
+    public bool CancelScenarioOnRange
+    {
+        get { return outcomeData.CancelScenarioOnRange; }
+        set
+        {
+            outcomeData.CancelScenarioOnRange = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CancelScenarioOnRange = value);
+        }
+    }
+
+    public bool CancelScenarioOnHit
+    {
+        get { return outcomeData.CancelScenarioOnHit; }
+        set
+        {
+            outcomeData.CancelScenarioOnHit = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CancelScenarioOnHit = value);
+        }
+    }
+
     public string PublicNotes
     {
         get { return outcomeData.PublicNotes; }

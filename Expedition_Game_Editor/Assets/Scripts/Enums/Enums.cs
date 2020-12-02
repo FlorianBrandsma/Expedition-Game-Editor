@@ -43,6 +43,11 @@ public class Enums
         GameAtmosphere,
         GameInteraction,
         GameInteractionDestination,
+        GameOutcome,
+        GameScene,
+        GameSceneShot,
+        GameSceneActor,
+        GameSceneProp,
         GameWorldInteractable,
         GameWorldObject,
         Save,
@@ -101,6 +106,12 @@ public class Enums
     {
         Positive,
         Negative
+    }
+
+    public enum CancelScenarioType
+    {
+        Cancel,
+        Skip
     }
 
     public enum RegionType

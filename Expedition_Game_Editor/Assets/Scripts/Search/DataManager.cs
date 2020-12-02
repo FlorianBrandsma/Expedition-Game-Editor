@@ -233,15 +233,16 @@ static public class DataManager
 
         foreach (SceneBaseData scene in Fixtures.sceneList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(scene.Id))             continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(scene.RegionId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(scene.Id))                 continue;
+            if (searchParameters.outcomeId.Count    > 0 && !searchParameters.outcomeId.Contains(scene.OutcomeId))   continue;
+            if (searchParameters.regionId.Count     > 0 && !searchParameters.regionId.Contains(scene.RegionId))     continue;
 
             dataList.Add(scene);
         }
 
         return dataList;
     }
-
+    
     static public List<SceneActorBaseData> GetSceneActorData(Search.SceneActor searchParameters)
     {
         var dataList = new List<SceneActorBaseData>();
@@ -267,6 +268,36 @@ static public class DataManager
             if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneProp.SceneId))   continue;
 
             dataList.Add(sceneProp);
+        }
+
+        return dataList;
+    }
+
+    static public List<SceneShotBaseData> GetSceneShotData(Search.SceneShot searchParameters)
+    {
+        var dataList = new List<SceneShotBaseData>();
+
+        foreach (SceneShotBaseData sceneShot in Fixtures.sceneShotList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneShot.Id)) continue;
+            if (searchParameters.sceneId.Count > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId)) continue;
+
+            dataList.Add(sceneShot);
+        }
+
+        return dataList;
+    }
+
+    static public List<CameraFilterBaseData> GetCameraFilterData(Search.CameraFilter searchParameters)
+    {
+        var dataList = new List<CameraFilterBaseData>();
+
+        foreach (CameraFilterBaseData cameraFilter in Fixtures.cameraFilterList)
+        {
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(cameraFilter.Id))          continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(cameraFilter.Id))    continue;
+
+            dataList.Add(cameraFilter);
         }
 
         return dataList;

@@ -39,7 +39,8 @@ public class GameInteractionData
     
     public int DestinationIndex             { get; set; } = -1;
 
-    public List<GameInteractionDestinationElementData> InteractionDestinationDataList { get; set; } = new List<GameInteractionDestinationElementData>();
+    public List<GameInteractionDestinationElementData> InteractionDestinationDataList   { get; set; } = new List<GameInteractionDestinationElementData>();
+    public List<GameOutcomeElementData> OutcomeDataList                                 { get; set; } = new List<GameOutcomeElementData>();
 
     public virtual void GetOriginalValues(GameInteractionData originalData)
     {
@@ -117,6 +118,7 @@ public class GameInteractionData
         data.DestinationIndex           = DestinationIndex;
 
         InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
+        OutcomeDataList.ForEach(x => x.SetOriginalValues());
 
         return data;
     }
