@@ -597,7 +597,7 @@ static public class Fixtures
                     RotationY = 255,
                     RotationZ = 0,
 
-                    PositionVariance = 5,
+                    PositionVariance = 0,
                     Patience = 3
                 }
             };
@@ -623,7 +623,7 @@ static public class Fixtures
                     RotationZ = 0,
 
                     PositionVariance = 0,
-                    Patience = 5
+                    Patience = 0
                 },
 
                 //new InteractionDestinationBaseData()
@@ -720,7 +720,7 @@ static public class Fixtures
 
         interaction.InteractionRange = 5;
 
-        interaction.DelayMethod = (int)Enums.DelayMethod.Waiting;
+        interaction.DelayMethod = (int)Enums.DelayMethod.Instant;
         interaction.DelayDuration = 3f;
         interaction.HideDelayIndicator = false;
 
@@ -789,8 +789,9 @@ static public class Fixtures
         outcome.ResetObjective = false;
 
         outcome.CancelScenarioType = (int)Enums.CancelScenarioType.Cancel;
+        outcome.CancelScenarioOnInteraction = true;
         outcome.CancelScenarioOnInput = true;
-        outcome.CancelScenarioOnRange = true;
+        outcome.CancelScenarioOnRange = false;
         outcome.CancelScenarioOnHit = false;
 
         outcome.PublicNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
@@ -818,11 +819,11 @@ static public class Fixtures
 
         scene.Name = "Scene " + (index + 1);
 
-        scene.FreezeTime = false;
+        scene.FreezeTime = true;
         scene.AutoContinue = false;
 
-        scene.SceneDuration = 0;
-        scene.ShotDuration = 0;
+        scene.SceneDuration = 1;
+        scene.ShotDuration = 10;
 
         scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;
         scene.PrivateNotes = "";
@@ -830,7 +831,7 @@ static public class Fixtures
         var shotStartCameraPosition = new Vector3(230f, 7.5f, 247.5f);
         var shotStartCameraRotation = new Vector3(30, 60, 0);
 
-        CreateSceneShot(scene, Enums.SceneShotType.Start, shotStartCameraPosition, shotStartCameraRotation);
+        CreateSceneShot(scene, Enums.SceneShotType.Start, shotStartCameraPosition, shotStartCameraRotation, 1);
 
         var shotEndCameraPosition = new Vector3(242.5f, 7.5f, 250f);
         var shotEndCameraRotation = new Vector3(30, 330, 0);
@@ -856,7 +857,7 @@ static public class Fixtures
         
         CreateSceneProp(scene);
 
-        CreateSceneShot(scene, Enums.SceneShotType.End, shotEndCameraPosition, shotEndCameraRotation);
+        CreateSceneShot(scene, Enums.SceneShotType.End, shotEndCameraPosition, shotEndCameraRotation, 0);
 
         sceneList.Add(scene);
     }
@@ -889,7 +890,7 @@ static public class Fixtures
         sceneActor.TerrainId = GetTerrain(scene.RegionId, sceneActor.PositionX, sceneActor.PositionZ);
         sceneActor.TerrainTileId = GetTerrainTile(sceneActor.TerrainId, sceneActor.PositionX, sceneActor.PositionZ);
 
-        sceneActor.ChangeRotation = false;
+        sceneActor.ChangeRotation = true;
         sceneActor.FaceTarget = true;
 
         sceneActor.RotationX = 0;
@@ -926,7 +927,7 @@ static public class Fixtures
         scenePropList.Add(sceneProp);
     }
 
-    static private void CreateSceneShot(SceneBaseData scene, Enums.SceneShotType shotType, Vector3 cameraPosition, Vector3 cameraRotation)
+    static private void CreateSceneShot(SceneBaseData scene, Enums.SceneShotType shotType, Vector3 cameraPosition, Vector3 cameraRotation, int cameraFilterId)
     {
         var sceneShot = new SceneShotBaseData();
 
@@ -949,6 +950,8 @@ static public class Fixtures
         sceneShot.RotationX = (int)cameraRotation.x;
         sceneShot.RotationY = (int)cameraRotation.y;
         sceneShot.RotationZ = (int)cameraRotation.z;
+
+        sceneShot.CameraFilterId = cameraFilterId;
         
         sceneShotList.Add(sceneShot);
     }
@@ -1300,6 +1303,7 @@ static public class Fixtures
                                     outcome.ResetObjective = outcomeSource.ResetObjective;
 
                                     outcome.CancelScenarioType = outcomeSource.CancelScenarioType;
+                                    outcome.CancelScenarioOnInteraction = outcomeSource.CancelScenarioOnInteraction;
                                     outcome.CancelScenarioOnInput = outcomeSource.CancelScenarioOnInput;
                                     outcome.CancelScenarioOnRange = outcomeSource.CancelScenarioOnRange;
                                     outcome.CancelScenarioOnHit = outcomeSource.CancelScenarioOnHit;
@@ -1367,6 +1371,8 @@ static public class Fixtures
 
                                             sceneShot.RotationTargetSceneActorId = sceneShotSource.RotationTargetSceneActorId;
 
+                                            sceneShot.CameraFilterId = sceneShotSource.CameraFilterId;
+
                                             sceneShotList.Add(sceneShot);
                                         }
 
@@ -1381,7 +1387,9 @@ static public class Fixtures
                                             sceneActor.Id = sceneActorId;
 
                                             sceneActor.SceneId = scene.Id;
-                                            sceneActor.WorldInteractableId = sceneActorSource.WorldInteractableId;
+
+                                            //This assumes that the scene actor is always and only the interaction's world interactable
+                                            sceneActor.WorldInteractableId = worldInteractable.Id; 
 
                                             sceneActor.ChangePosition = sceneActorSource.ChangePosition;
                                             sceneActor.FreezePosition = sceneActorSource.FreezePosition;

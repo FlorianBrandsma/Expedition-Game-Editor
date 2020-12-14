@@ -5,7 +5,9 @@ public class TouchOverlay : MonoBehaviour, IOverlay
     private ExJoystick joystick;
     private ExTouchButton primaryButton;
     private ExTouchButton secondaryButton;
-    
+
+    private int overlayUILayerIndex = 2;
+
     public Texture InteractIcon { get; set; }
     public Texture CancelIcon   { get; set; }
     public Texture AttackIcon   { get; set; }
@@ -21,50 +23,75 @@ public class TouchOverlay : MonoBehaviour, IOverlay
         DefendIcon      = Resources.Load<Texture2D>("Textures/Icons/UI/Security");
     }
 
-    public void InitializeOverlay(IDisplayManager displayManager)
-    {
-        primaryButton   = SpawnTouchButton(Enums.GameButtonType.Primary);
-        secondaryButton = SpawnTouchButton(Enums.GameButtonType.Secondary);
-    }
+    public void InitializeOverlay(IDisplayManager displayManager) { }
 
     public void ActivateOverlay(IOrganizer organizer) { }
 
-    private ExTouchButton SpawnTouchButton(Enums.GameButtonType buttonType)
+    private ExTouchButton TouchButton(Enums.GameButtonType buttonType)
+    {
+        ExTouchButton touchButton = null;
+
+        switch(buttonType)
+        {
+            case Enums.GameButtonType.Primary:      touchButton = PrimaryTouchButton();     break;
+            case Enums.GameButtonType.Secondary:    touchButton = SecondaryTouchButton();   break;
+
+            default: Debug.Log("CASE MISSING: " + buttonType); break;
+        }
+
+        return touchButton;
+    }
+
+    private ExTouchButton PrimaryTouchButton()
+    {
+        if(primaryButton == null)
+        {
+            primaryButton = SpawnTouchButton();
+            InitializePrimaryButton();
+        }
+
+        return primaryButton;
+    }
+
+    private ExTouchButton SecondaryTouchButton()
+    {
+        if (secondaryButton == null)
+        {
+            secondaryButton = SpawnTouchButton();
+            InitializeSecondaryButton();
+        }
+
+        return secondaryButton;
+    }
+
+    private ExTouchButton SpawnTouchButton()
     {
         var prefab = Resources.Load<ExTouchButton>("Elements/UI/TouchButton");
         var touchButton = (ExTouchButton)PoolManager.SpawnObject(prefab);
 
-        touchButton.TouchOverlay = this;
-
         touchButton.gameObject.SetActive(true);
 
-        touchButton.transform.SetParent(OverlayManager.content, false);
+        touchButton.transform.SetParent(OverlayManager.layer[overlayUILayerIndex], false);
 
-        switch(buttonType)
-        {
-            case Enums.GameButtonType.Primary:      InitializePrimaryButton(touchButton);     break;
-            case Enums.GameButtonType.Secondary:    InitializeSecondaryButton(touchButton);   break;
-
-            default: Debug.Log("CASE MISSING: " + buttonType); break;
-        }
+        touchButton.TouchOverlay = this;
         
         return touchButton;
     }
     
-    private void InitializePrimaryButton(ExTouchButton touchButton)
+    private void InitializePrimaryButton()
     {
         var buttonPosition = new Vector2(-90, 140);
-        touchButton.RectTransform.anchoredPosition = buttonPosition;
+        primaryButton.RectTransform.anchoredPosition = buttonPosition;
 
-        touchButton.EventType = Enums.ButtonEventType.Attack;
+        primaryButton.EventType = Enums.ButtonEventType.Attack;
     }
 
-    private void InitializeSecondaryButton(ExTouchButton touchButton)
+    private void InitializeSecondaryButton()
     {
         var buttonPosition = new Vector2(-190, 100);
-        touchButton.RectTransform.anchoredPosition = buttonPosition;
+        secondaryButton.RectTransform.anchoredPosition = buttonPosition;
 
-        touchButton.EventType = Enums.ButtonEventType.Defend;
+        secondaryButton.EventType = Enums.ButtonEventType.Defend;
     }
 
     public void InitializeJoystick(Vector2 joystickPosition, float joystickSize)
@@ -74,7 +101,7 @@ public class TouchOverlay : MonoBehaviour, IOverlay
         
         joystick.gameObject.SetActive(true);
 
-        joystick.transform.SetParent(OverlayManager.content, false);
+        joystick.transform.SetParent(OverlayManager.layer[overlayUILayerIndex], false);
 
         joystick.transform.localScale = new Vector3(joystickSize, joystickSize, 1);
         joystick.transform.position = joystickPosition;
@@ -95,30 +122,50 @@ public class TouchOverlay : MonoBehaviour, IOverlay
 
     public void UpdateTouchButton(Enums.GameButtonType buttonType, Enums.ButtonEventType actionType)
     {
-        ExTouchButton touchButton = null;
-
-        switch(buttonType)
+        if(actionType == Enums.ButtonEventType.None)
         {
-            case Enums.GameButtonType.Primary:      touchButton = primaryButton;    break;
-            case Enums.GameButtonType.Secondary:    touchButton = secondaryButton;  break;
-
-            default: Debug.Log("CASE MISSING: " + buttonType); break;
+            CloseTouchButton(buttonType);
+            return;
         }
 
+        var touchButton = TouchButton(buttonType);
+        
         touchButton.EventType = actionType;
     }
 
     public void SetOverlay() { }
 
-    private void CloseTouchButtons()
+    private void CloseTouchButton(Enums.GameButtonType buttonType)
     {
+        switch(buttonType)
+        {
+            case Enums.GameButtonType.Primary:      ClosePrimaryButton();   break;
+            case Enums.GameButtonType.Secondary:    CloseSecondaryButton(); break;
+
+            default: Debug.Log("CASE MISSING: " + buttonType); break;
+        }
+    }
+
+    private void ClosePrimaryButton()
+    {
+        if (primaryButton == null) return;
+
         PoolManager.ClosePoolObject(primaryButton);
+        primaryButton = null;
+    }
+
+    private void CloseSecondaryButton()
+    {
+        if (secondaryButton == null) return;
+
         PoolManager.ClosePoolObject(secondaryButton);
+        secondaryButton = null;
     }
 
     public void CloseOverlay()
     {
-        CloseTouchButtons();
+        CloseTouchButton(Enums.GameButtonType.Primary);
+        CloseTouchButton(Enums.GameButtonType.Secondary);
 
         DestroyImmediate(this);
     }

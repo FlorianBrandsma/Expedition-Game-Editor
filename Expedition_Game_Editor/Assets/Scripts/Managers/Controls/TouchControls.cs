@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class TouchControls : MonoBehaviour, IPlayerController
 {
-    public TouchOverlay TouchOverlay { get { return PlayerControlManager.instance.cameraManager.overlayManager.TouchOverlay; } }
+    public TouchOverlay TouchOverlay { get { return GameManager.instance.Organizer.OverlayManger.TouchOverlay; } }
     
     private float minSensitivity = 0.1f;
 
@@ -16,11 +16,11 @@ public class TouchControls : MonoBehaviour, IPlayerController
     private float joystickOffset = 1.5f;
     private float joystickSize = 1.5f;
 
-    private bool inputAllowed;
+    private bool isPointerOverGameObject;
 
     void Update()
     {
-        if (!PlayerControlManager.Enabled || TimeManager.instance.Paused)
+        if (!PlayerControlManager.AllowInput || TimeManager.instance.Paused)
         {
             //CancelInput();
             return;
@@ -28,14 +28,14 @@ public class TouchControls : MonoBehaviour, IPlayerController
         
         if (Input.GetMouseButtonDown(0))
         {
-            if (inputAllowed = AllowInput()) return;
+            if (isPointerOverGameObject = IsPointerOverGameObject()) return;
 
             InitializeInput();
         }
 
         if (Input.GetMouseButton(0))
         {
-            if (inputAllowed) return;
+            if (isPointerOverGameObject) return;
 
             MoveInput();     
         }
@@ -46,7 +46,7 @@ public class TouchControls : MonoBehaviour, IPlayerController
         }
     }
 
-    private bool AllowInput()
+    private bool IsPointerOverGameObject()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return true;
@@ -73,6 +73,8 @@ public class TouchControls : MonoBehaviour, IPlayerController
     
     private void MoveInput()
     {
+        if (PlayerControlManager.DisablePlayerMovement) return;
+
         sensitivity.x = Mathf.Clamp(((Input.mousePosition.x - mouseClickPos.x) / (joystickSize * 100)) * joystickOffset, -1, 1);
         sensitivity.y = Mathf.Clamp(((Input.mousePosition.y - mouseClickPos.y) / (joystickSize * 100)) * joystickOffset, -1, 1);
 

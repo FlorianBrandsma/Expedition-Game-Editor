@@ -6,7 +6,12 @@ public class PlayerControlManager : MonoBehaviour
 {
     static public PlayerControlManager instance;
 
-    static public bool Enabled { get; set; }
+    static public bool AllowInput               { get; set; }
+    static public bool DisablePlayerMovement    { get; set; }
+    static public bool DisableCameraMovement    { get; set; }
+
+    private Vector3 defaultCameraPosition = new Vector3(0, 10, -10);
+    private Vector3 defaultCameraRotation = new Vector3(40, 0, 0);
 
     private IPlayerController playerController;
 
@@ -14,20 +19,19 @@ public class PlayerControlManager : MonoBehaviour
 
     private Enums.ControlType controlType;
     private ExStatusIcon selectionIcon;
-    
-    public CameraManager cameraManager;
 
     public List<GameWorldInteractableElementData> potentialTargetList = new List<GameWorldInteractableElementData>();
     public List<GameWorldInteractableElementData> eligibleSelectionTargets = new List<GameWorldInteractableElementData>();
 
     private GameWorldInteractableElementData SelectionTarget    { get; set; }
     
-    private StatusIconOverlay StatusIconOverlay             { get { return cameraManager.overlayManager.StatusIconOverlay; } }
+    private CameraManager CameraManager                         { get { return GameManager.instance.Organizer.CameraManager; } }
+    private StatusIconOverlay StatusIconOverlay                 { get { return GameManager.instance.Organizer.OverlayManger.StatusIconOverlay; } }
 
-    private PlayerSaveElementData PlayerData                { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
-    private GameWorldInteractableElementData ActiveCharacterData  { get { return GameManager.instance.worldInteractableControllableData; } }
-    private GameElement ActiveCharacter                     { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
-    private Animator ActiveAnimator                         { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.SelectionElement.Element).Animator; } }
+    private PlayerSaveElementData PlayerData                    { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
+    private GameWorldInteractableElementData ActiveCharacterData{ get { return GameManager.instance.worldInteractableControllableData; } }
+    private GameElement ActiveCharacter                         { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
+    private Animator ActiveAnimator                             { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.SelectionElement.Element).Animator; } }
     
     public Enums.ControlType ControlType
     {
@@ -47,7 +51,7 @@ public class PlayerControlManager : MonoBehaviour
     private void Update()
     {
         if (potentialTargetList.Count == 0 || TimeManager.instance.Paused) return;
-
+        
         //Of the potential targets, check which one will be eligible for selection
         CheckTargetTriggers();
 
@@ -59,12 +63,22 @@ public class PlayerControlManager : MonoBehaviour
 
     private void CheckTargetTriggers()
     {
+        //Don't look for interaction targets if there is an active outcome that can't be cancelled by interacting
+        if (InteractionManager.activeOutcome != null && !InteractionManager.activeOutcome.CancelScenarioOnInteraction) return;
+
         eligibleSelectionTargets = new List<GameWorldInteractableElementData>(potentialTargetList);
 
         //Check if target is faced by the player character
         foreach (var target in potentialTargetList)
         {
             var targetData = (GameWorldInteractableElementData)target.DataElement.ElementData;
+
+            //Don't target the already active interaction target
+            if (InteractionManager.activeOutcome != null && targetData == InteractionManager.interactionTarget)
+            {
+                eligibleSelectionTargets.Remove(target);
+                continue;
+            }
 
             //If the player character must face the interactable
             if (targetData.Interaction.FaceInteractable)
@@ -155,7 +169,7 @@ public class PlayerControlManager : MonoBehaviour
         }
     }
 
-    private void SetSelectionTarget(GameWorldInteractableElementData target)
+    public void SetSelectionTarget(GameWorldInteractableElementData target)
     {
         if (SelectionTarget == target) return;
         
@@ -180,7 +194,7 @@ public class PlayerControlManager : MonoBehaviour
     {
         if (SelectionTarget.Interaction.HideInteractionIndicator) return;
 
-        selectionIcon = StatusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection);
+        selectionIcon = StatusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection, CameraManager.overlayManager.layer[0]);
         selectionIcon.SetIconTarget(SelectionTarget.DataElement);
 
         SelectionTarget.DataElement.GetComponent<GameElement>().selectionIcon = selectionIcon.gameObject;
@@ -188,7 +202,7 @@ public class PlayerControlManager : MonoBehaviour
     
     public void RemoveSelectionTarget(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        InteractionManager.CancelInteraction(gameWorldInteractableElementData);
+        InteractionManager.CancelInteractionDelay(gameWorldInteractableElementData);
 
         if (gameWorldInteractableElementData == SelectionTarget)
         {
@@ -223,21 +237,61 @@ public class PlayerControlManager : MonoBehaviour
     private void UpdateTouchControls()
     {
         var controls = (TouchControls)playerController;
- 
-        if(SelectionTarget != null)
+
+        UpdatePrimaryButton();
+        UpdateSecondaryButton();
+    }
+
+    private void UpdatePrimaryButton()
+    {
+        var controls = (TouchControls)playerController;
+
+        if (SelectionTarget != null || ScenarioManager.allowContinue)
         {
             controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Primary, Enums.ButtonEventType.Interact);
-        } else {
-            controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Primary, Enums.ButtonEventType.Attack);
+            return;
         }
-        
-        if(InteractionManager.interactionTarget != null && InteractionManager.interactionTarget.Interaction.CancelDelayOnInput)
+
+        controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Primary, Enums.ButtonEventType.Attack);
+    }
+
+    private void UpdateSecondaryButton()
+    {
+        var controls = (TouchControls)playerController;
+
+        if (InteractionManager.interactionDelayTarget != null && InteractionManager.interactionDelayTarget.Interaction.CancelDelayOnInput)
         {
             controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Secondary, Enums.ButtonEventType.Cancel);
-        } else
-        {
-            controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Secondary, Enums.ButtonEventType.Defend);
+            return;
         }
+
+        if (InteractionManager.activeOutcome != null)
+        {
+            switch((Enums.CancelScenarioType)InteractionManager.activeOutcome.CancelScenarioType)
+            {
+                case Enums.CancelScenarioType.Cancel:
+
+                    if (InteractionManager.activeOutcome.CancelScenarioOnInput)
+                    {
+                        controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Secondary, Enums.ButtonEventType.Cancel);
+                        return;
+                    }
+
+                    break;
+
+                case Enums.CancelScenarioType.Skip:
+
+                    if (InteractionManager.activeOutcome.CancelScenarioType == (int)Enums.CancelScenarioType.Skip)
+                    {
+                        controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Secondary, Enums.ButtonEventType.Cancel);
+                        return;
+                    }
+
+                    break;
+            } 
+        }
+        
+        controls.TouchOverlay.UpdateTouchButton(Enums.GameButtonType.Secondary, Enums.ButtonEventType.Defend);
     }
 
     public void AutoTriggerInteractionEvent()
@@ -249,12 +303,26 @@ public class PlayerControlManager : MonoBehaviour
 
     public void InteractionEvent()
     {
-        InteractionManager.SetInteraction(SelectionTarget);
+        if (SelectionTarget != null)
+        {
+            //Cancel any active interaction before selecting the next
+            if (InteractionManager.interactionTarget != null)
+                InteractionManager.CancelInteraction();
+
+            InteractionManager.SetInteractionDelay(SelectionTarget);
+        }
+        
+        if (ScenarioManager.allowContinue)
+            ScenarioManager.instance.StartNextScene();
     }
 
     public void CancelEvent()
     {
-        InteractionManager.CancelInteraction();
+        if(InteractionManager.interactionDelayTarget != null)
+            InteractionManager.CancelInteractionDelay();
+
+        if (InteractionManager.interactionTarget != null)
+            InteractionManager.CancelInteraction();
     }
 
     public void AttackEvent()
@@ -280,7 +348,15 @@ public class PlayerControlManager : MonoBehaviour
             PlayerData.PositionZ = ActiveCharacterData.DataElement.transform.localPosition.z;
         }
         
-        MoveCamera();
+        ResetCamera();
+    }
+
+    public void SetWorldInteractableControllableTerrainTileId(GameWorldInteractableElementData gameWorldInteractableElementData)
+    {
+        var playerData = GameManager.instance.gameSaveData.PlayerSaveData;
+        var regionData = GameManager.instance.gameWorldData.RegionDataList.Where(x => x.Id == playerData.RegionId).First();
+        
+        gameWorldInteractableElementData.TerrainTileId = RegionManager.GetGameTerrainTileId(regionData, playerData.PositionX, playerData.PositionZ);
     }
 
     public void MovePlayerCharacter(float sensitivity)
@@ -296,12 +372,16 @@ public class PlayerControlManager : MonoBehaviour
         PlayerData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
         PlayerData.PositionZ = -ActiveCharacterData.DataElement.transform.localPosition.z;
         
-        if(InteractionManager.interactionTarget != null && InteractionManager.interactionTarget.Interaction.CancelDelayOnMovement)
+        if(InteractionManager.interactionDelayTarget != null && InteractionManager.interactionDelayTarget.Interaction.CancelDelayOnMovement)
         {
-            InteractionManager.CancelInteraction();
+            InteractionManager.CancelInteractionDelay();
         }
 
-        MoveCamera();
+        var cameraPosition = new Vector3(PlayerData.PositionX, defaultCameraPosition.y, -PlayerData.PositionZ + defaultCameraPosition.z);
+
+        if (DisableCameraMovement) return;
+
+        MoveCamera(cameraPosition);
     }
 
     public void RotatePlayerCharacter(float angle)
@@ -309,13 +389,20 @@ public class PlayerControlManager : MonoBehaviour
         ActiveCharacterData.DataElement.transform.eulerAngles = new Vector3(0, -angle, 0);
     }
 
-    private void MoveCamera()
+    public void ResetCamera()
     {
-        var cameraDistance = 10;     
-        cameraManager.cam.transform.localPosition = new Vector3(PlayerData.PositionX, cameraManager.cam.transform.localPosition.y, -PlayerData.PositionZ - cameraDistance);
+        var cameraPosition = new Vector3(PlayerData.PositionX, defaultCameraPosition.y, -PlayerData.PositionZ + defaultCameraPosition.z);
+        CameraManager.cam.transform.eulerAngles = defaultCameraRotation;
 
-        cameraManager.UpdateData();
-        cameraManager.overlayManager.GameOverlay.UpdateOverlay();
+        MoveCamera(cameraPosition);
+    }
+
+    public void MoveCamera(Vector3 position)
+    {
+        CameraManager.cam.transform.localPosition = position;
+
+        CameraManager.UpdateData();
+        CameraManager.overlayManager.GameOverlay.UpdateOverlay();
     }
 
     public void StopMovingPlayerCharacter()

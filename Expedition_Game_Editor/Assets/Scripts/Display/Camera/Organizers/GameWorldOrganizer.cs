@@ -6,8 +6,8 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
 {
     private List<GameTerrainTileElementData> tileList = new List<GameTerrainTileElementData>();
 
-    private GameWorldElementData GameWorldData  { get { return GameManager.instance.gameWorldData; } }
-    private GameRegionElementData RegionData    { get { return GameManager.instance.regionData; } }
+    private GameWorldElementData GameWorldData      { get { return GameManager.instance.gameWorldData; } }
+    private GameRegionElementData RegionData        { get { return GameManager.instance.regionData; } }
     
     private ExGameWorldElement gameWorldObjectPrefab;
     private ExGameWorldElement gameWorldInteractableObjectPrefab;
@@ -17,18 +17,20 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private Rect activeRect;
     private Vector2 positionTracker = new Vector2();
 
-    private IDisplayManager DisplayManager      { get { return GetComponent<IDisplayManager>(); } }
-    private CameraManager CameraManager         { get { return (CameraManager)DisplayManager; } }
+    private IDisplayManager DisplayManager          { get { return GetComponent<IDisplayManager>(); } }
+    public CameraManager CameraManager              { get { return (CameraManager)DisplayManager; } }
+    public OverlayManager OverlayManger             { get { return CameraManager.overlayManager; } }
 
-    private CameraProperties CameraProperties   { get { return (CameraProperties)DisplayManager.Display; } }
-    private GameWorldProperties GameWorldProperties   { get { return (GameWorldProperties)DisplayManager.Display.Properties; } }
+    private CameraProperties CameraProperties       { get { return (CameraProperties)DisplayManager.Display; } }
+    private GameWorldProperties GameWorldProperties { get { return (GameWorldProperties)DisplayManager.Display.Properties; } }
 
-    private IDataController DataController      { get { return DisplayManager.Display.DataController; } }
+    private IDataController DataController          { get { return DisplayManager.Display.DataController; } }
 
     private DataController WorldObjectDataController                    { get { return GameManager.instance.WorldObjectDataController; } }
     private DataController WorldInteractableAgentDataController         { get { return GameManager.instance.WorldInteractableAgentDataController; } }
     private DataController WorldInteractableObjectDataController        { get { return GameManager.instance.WorldInteractableObjectDataController; } }
     private DataController WorldInteractableControllableDataController  { get { return GameManager.instance.WorldInteractableControllableDataController; } }
+    private DataController ScenePropDataController                      { get { return GameManager.instance.ScenePropDataController; } }
 
     public void InitializeOrganizer()
     {
@@ -54,13 +56,12 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         //Close all inactive tiles and elements on the tiles
         CloseInactiveElements();
 
-        foreach (GameTerrainElementData gameTerrainData in RegionData.GameTerrainDataList)
-            SetTerrain(gameTerrainData);
+        RegionData.GameTerrainDataList.ForEach(terrain => SetTerrain(terrain));
         
         //Set elements that are not bound to a tile
         SetWorldObjects();
         
-        SetControllables();
+        SetWorldInteractableControllables();
     }
     
     private void SetTerrain(GameTerrainElementData gameTerrainData)
@@ -77,6 +78,9 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
                     
                     //Set objects that are bound to this terrain tile
                     SetWorldObjects(terrainTileData.Id);
+
+                    //Set scene props that are bound to this terrain tile
+                    SetSceneProps(terrainTileData.Id);
                 }
 
                 //Set world interactable agents that are bound to this tile by their first interaction
@@ -110,46 +114,73 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetWorldObjects(int terrainTileId = 0)
     {
         var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => ((GameWorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
-
         worldObjectDataList.ForEach(elementData => SetElement(WorldObjectDataController, elementData, gameWorldObjectPrefab));
     }
     
     private void SetWorldInteractableAgents(int terrainTileId)
     {
-        var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Where(x => x.DataElement == null && 
-                                                                                                           ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldInteractableAgentDataList = WorldInteractableAgentDataController.Data.dataList.Cast<GameWorldInteractableElementData>().ToList().Where(x => x.DataElement == null && 
+                                                                                                                                                             x.TerrainTileId == terrainTileId).ToList();
 
-        worldInteractableAgentDataList.ForEach(elementData => SetElement(WorldInteractableAgentDataController, elementData, gameWorldAgentPrefab));
+        worldInteractableAgentDataList.ForEach(elementData => 
+        {
+            SetElement(WorldInteractableAgentDataController, elementData, gameWorldAgentPrefab, (int)elementData.Type);
+        });
     }
 
     private void SetWorldInteractableObjects(int terrainTileId)
     {
-        var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Where(x => x.DataElement == null && 
-                                                                                                             ((GameWorldInteractableElementData)x).TerrainTileId == terrainTileId).ToList();
+        var worldInteractableObjectDataList = WorldInteractableObjectDataController.Data.dataList.Cast<GameWorldInteractableElementData>().ToList().Where(x => x.DataElement == null && 
+                                                                                                                                                               x.TerrainTileId == terrainTileId).ToList();
 
-        worldInteractableObjectDataList.ForEach(elementData => SetElement(WorldInteractableObjectDataController, elementData, gameWorldInteractableObjectPrefab));
+        worldInteractableObjectDataList.ForEach(elementData => 
+        {
+            SetElement(WorldInteractableObjectDataController, elementData, gameWorldInteractableObjectPrefab, (int)elementData.Type);
+        });
     }
     
-    private void SetControllables()
+    private void SetWorldInteractableControllables()
     {
-        var worldInteractableControllableDataList = WorldInteractableControllableDataController.Data.dataList.Where(x => x.DataElement == null).ToList();
+        var worldInteractableControllableDataList = WorldInteractableControllableDataController.Data.dataList.Cast<GameWorldInteractableElementData>().ToList().ToList();
 
-        worldInteractableControllableDataList.ForEach(elementData => SetElement(WorldInteractableControllableDataController, elementData, gameWorldControllablePrefab));
+        worldInteractableControllableDataList.ForEach(elementData => 
+        {
+            if (elementData.DataElement == null)
+            {
+                SetElement(WorldInteractableControllableDataController, elementData, gameWorldControllablePrefab, (int)elementData.Type);
+
+            } else {
+
+                PlayerControlManager.instance.SetWorldInteractableControllableTerrainTileId(elementData);
+            }
+        });
     }
     
+    private void SetSceneProps(int terrainTileId)
+    {
+        var scenePropDataList = ScenePropDataController.Data.dataList.Where(x => ((GameScenePropElementData)x).TerrainTileId == terrainTileId).ToList();
+        scenePropDataList.ForEach(elementData => SetElement(ScenePropDataController, elementData, gameWorldObjectPrefab));
+    }
+
     private void SetWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
         switch (gameWorldInteractableElementData.Type)
         {
-            case Enums.InteractableType.Agent:  SetElement(WorldInteractableAgentDataController, gameWorldInteractableElementData, gameWorldAgentPrefab);    break;
-            case Enums.InteractableType.Object: SetElement(WorldInteractableObjectDataController, gameWorldInteractableElementData, gameWorldInteractableObjectPrefab);  break;
+            case Enums.InteractableType.Agent:  SetElement(WorldInteractableAgentDataController, gameWorldInteractableElementData, gameWorldAgentPrefab, (int)gameWorldInteractableElementData.Type);                   break;
+            case Enums.InteractableType.Object: SetElement(WorldInteractableObjectDataController, gameWorldInteractableElementData, gameWorldInteractableObjectPrefab, (int)gameWorldInteractableElementData.Type);     break;
+
+            default: Debug.Log("CASE MISSING: " + gameWorldInteractableElementData.Type); break;
         }
     }
 
-    private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab)
+    private void SetSceneProp(GameScenePropElementData gameScenePropElementData)
     {
-        //Spawns a unique agent prefab to actually get a fresh agent (circumvents reset issues when agents are not on a navigation mesh)
-        var element = (IGameElement)PoolManager.SpawnObject(prefab, (int)elementData.DataType);
+        SetElement(ScenePropDataController, gameScenePropElementData, gameWorldObjectPrefab);
+    }
+
+    private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab, int prefabId = 0)
+    {        
+        var element = (IGameElement)PoolManager.SpawnObject(prefab, prefabId);
         element.GameElement.transform.SetParent(CameraManager.content, false);
 
         elementData.DataElement = element.GameElement.DataElement;
@@ -174,20 +205,22 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     }
 
     public void UpdateWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
-    {
-        //If the active world interactable contains no active time, deactivate it
-        if (gameWorldInteractableElementData.ActiveInteraction == null)
+    {        
+        //Set interactable's destination position based on its interaction's destination
+        if(gameWorldInteractableElementData.Type != Enums.InteractableType.Controllable && 
+           gameWorldInteractableElementData.DestinationType == DestinationType.Interaction)
         {
-            gameWorldInteractableElementData.TerrainTileId = 0;
+            //If the active world interactable contains no active time, deactivate it
+            if (gameWorldInteractableElementData.ActiveInteraction == null)
+            {
+                gameWorldInteractableElementData.TerrainTileId = 0;
 
-        } else {
+            } else {
 
-            //Apply variance here and then pull the terrain tile id from the position
-            MovementManager.SetDestinationPosition(gameWorldInteractableElementData.ActiveInteraction.ActiveDestination);
-            
-            gameWorldInteractableElementData.TerrainTileId = gameWorldInteractableElementData.ActiveInteraction.ActiveDestination.TerrainTileId;
+                MovementManager.UpdateInteractionDestination(gameWorldInteractableElementData);
+            }
         }
-
+        
         var onActiveTile = tileList.Select(x => x.Id).Contains(gameWorldInteractableElementData.TerrainTileId);
 
         if (gameWorldInteractableElementData.DataElement == null)
@@ -228,6 +261,14 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
                 CloseWorldInteractable(gameWorldInteractableElementData);
             }
         }
+    }
+
+    public void UpdateSceneProp(GameScenePropElementData gameScenePropElementData)
+    {
+        var onActiveTile = tileList.Select(x => x.Id).Contains(gameScenePropElementData.TerrainTileId);
+
+        if(onActiveTile)
+            SetSceneProp(gameScenePropElementData);   
     }
 
     private void SetActiveRect()
@@ -295,6 +336,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     {
         ClearWorldObjects(gameTerrainTileData);
         ClearWorldInteractables(gameTerrainTileData);
+        ClearSceneProps(gameTerrainTileData);
     }
 
     private void ClearWorldObjects(GameTerrainTileElementData gameTerrainTileData)
@@ -311,13 +353,13 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
     private void ClearWorldInteractables(GameTerrainTileElementData gameTerrainTileData)
     {
         var inactiveWorldInteractableList = GameWorldData.WorldInteractableDataList.Where(x => x.TerrainTileId == gameTerrainTileData.Id).ToList();
-
+        
         inactiveWorldInteractableList.ForEach(x =>
         {
             CloseWorldInteractable(x);
         });
     }
-
+    
     private void CloseWorldInteractable(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
         PoolManager.ClosePoolObject(gameWorldInteractableElementData.DataElement.Poolable);
@@ -327,23 +369,31 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
             MovementManager.StartTravel(gameWorldInteractableElementData);
     }
 
-    private void ClearWorldInteractableControllables()
+    private void ClearSceneProps(GameTerrainTileElementData gameTerrainTileData)
     {
-        GameWorldData.WorldInteractableControllableDataList.ForEach(x =>
+        var inactiveSceneProps = ScenePropDataController.Data.dataList.Cast<GameScenePropElementData>().ToList().Where(x => x.TerrainTileId == gameTerrainTileData.Id).ToList();
+
+        inactiveSceneProps.ForEach(x =>
         {
-            PoolManager.ClosePoolObject(x.DataElement.Poolable);
-            x.DataElement.SelectionElement.Element.CloseElement();
+            CloseSceneProp(x);
         });
+    }
+
+    public void CloseSceneProp(GameScenePropElementData gameScenePropElementData)
+    {
+        if (gameScenePropElementData.DataElement == null) return;
+
+        PoolManager.ClosePoolObject(gameScenePropElementData.DataElement.Poolable);
+        gameScenePropElementData.DataElement.SelectionElement.Element.CloseElement();
     }
 
     public void CloseOrganizer()
     {
+        GameManager.instance.CloseGame();
+
         ClearOrganizer();
-        ClearWorldInteractableControllables();
 
         positionTracker = new Vector2();
-
-        GameManager.instance.CloseGame();
         
         Debug.Log("Close for real");
         DestroyImmediate(this);

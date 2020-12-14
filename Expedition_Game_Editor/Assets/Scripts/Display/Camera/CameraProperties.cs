@@ -18,6 +18,7 @@ public class CameraProperties : MonoBehaviour, IDisplay
     public bool enableStatusIcons;
     public bool enableTerrainInfo;
     public bool enableGameUI;
+    public bool enableSpeech;
 
     private IDataController dataController;
     public IDataController DataController

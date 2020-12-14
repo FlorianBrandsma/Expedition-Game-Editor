@@ -14,6 +14,28 @@ public class GameOutcomeElementData : GameOutcomeData, IElementData
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
+    public float CurrentSceneDuration { get; set; }
+
+    private int sceneIndex = -1;
+
+    public int SceneIndex
+    {
+        get { return sceneIndex; }
+        set
+        {
+            sceneIndex = value;
+
+            if (sceneIndex < 0) return;
+
+            CurrentSceneDuration = ActiveScene.SceneDuration;
+        }
+    }
+
+    public GameSceneElementData ActiveScene
+    {
+        get { return SceneDataList[SceneIndex]; }
+    }
+
     #region Changed
     public bool Changed { get { return false; } }
     #endregion

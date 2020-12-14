@@ -14,6 +14,8 @@ public class OverlayManager : MonoBehaviour
                             vertical_max,
                             content;
 
+    public RectTransform[] layer;
+
     public NumberOverlay NumberOverlay { get; set; }
     public SliderOverlay SliderOverlay { get; set; }
     public PagingOverlay PagingOverlay { get; set; }
@@ -22,9 +24,10 @@ public class OverlayManager : MonoBehaviour
     public StatusIconOverlay StatusIconOverlay          { get; set; }
     public TerrainHeaderOverlay TerrainHeaderOverlay    { get; set; }
     public GameOverlay GameOverlay                      { get; set; }
+    public SpeechOverlay SpeechOverlay                  { get; set; }
     public TouchOverlay TouchOverlay                    { get; set; }
     
-    public IDisplayManager  DisplayManager { get; set; }
+    public IDisplayManager DisplayManager { get; set; }
 
     public void InitializeOverlay(IDisplayManager displayManager)
     {
@@ -91,6 +94,9 @@ public class OverlayManager : MonoBehaviour
             if (PlayerControlManager.instance.ControlType == Enums.ControlType.Touch)
                 TouchOverlay = gameObject.AddComponent<TouchOverlay>();
         }
+
+        if (cameraProperties.enableSpeech)
+            SpeechOverlay = gameObject.AddComponent<SpeechOverlay>();
     }
 
     public void ActivateOverlay(IOrganizer organizer)

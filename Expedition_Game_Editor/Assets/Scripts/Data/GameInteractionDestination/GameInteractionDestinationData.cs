@@ -43,7 +43,7 @@ public class GameInteractionDestinationData
 
         Animation           = originalData.Animation;
         Patience            = originalData.Patience;
-}
+    }
 
     public GameInteractionDestinationData Clone()
     {

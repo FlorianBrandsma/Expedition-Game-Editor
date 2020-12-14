@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     public DataController WorldObjectDataController                     { get; set; } = new DataController(Enums.DataType.WorldObject);
     public DataController WorldInteractableAgentDataController          { get; set; } = new DataController(Enums.DataType.WorldInteractable);
     public DataController WorldInteractableObjectDataController         { get; set; } = new DataController(Enums.DataType.WorldInteractable);
-    public DataController WorldInteractableControllableDataController   { get; set; } = new DataController(Enums.DataType.Phase);
+    public DataController WorldInteractableControllableDataController   { get; set; } = new DataController(Enums.DataType.WorldInteractable);
+    public DataController ScenePropDataController                       { get; set; } = new DataController(Enums.DataType.SceneProp);
 
     public GameWorldOrganizer Organizer { get { return (GameWorldOrganizer)gameWorldController.Display.DisplayManager.Organizer; } }
 
@@ -174,10 +175,10 @@ public class GameManager : MonoBehaviour
 
         var activeChapterSave = gameSaveData.ChapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
         var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).OrderBy(x => x.Index).First();
-
+        
         ActivePhaseId = activePhaseSave.PhaseId;
 
-        PlayerControlManager.Enabled = true;
+        PlayerControlManager.AllowInput = true;
     }
     
     private void ChangePhase()
@@ -227,10 +228,13 @@ public class GameManager : MonoBehaviour
         WorldInteractableObjectDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Object).Cast<IElementData>().ToList();
 
         //Interactable controllables
-        WorldInteractableControllableDataController.Data.dataList = gameWorldData.WorldInteractableControllableDataList.Cast<IElementData>().ToList();
+        WorldInteractableControllableDataController.Data.dataList = gameWorldData.WorldInteractableDataList.Where(x => x.Type == Enums.InteractableType.Controllable).Cast<IElementData>().ToList();
+
+        //Scene props
+        ScenePropDataController.Data.dataList = new List<IElementData>();
     }
 
-    private void SetChapterTimeSpeed()
+    public void SetChapterTimeSpeed()
     {
         TimeManager.gameTimeSpeed = gameWorldData.ChapterData.TimeSpeed;
     }
@@ -266,7 +270,7 @@ public class GameManager : MonoBehaviour
         //This line doesn't make any sense. Disabled logic for now
         //if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
 
-        ActiveWorldInteractableControllableId = gameWorldData.WorldInteractableControllableDataList.First().Id;
+        ActiveWorldInteractableControllableId = WorldInteractableControllableDataController.Data.dataList.First().Id;
         
         //else
             //ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
@@ -274,12 +278,12 @@ public class GameManager : MonoBehaviour
 
     public void ChangeControllable()
     {
-        worldInteractableControllableData = gameWorldData.WorldInteractableControllableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
+        worldInteractableControllableData = gameWorldData.WorldInteractableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
 
         PlayerControlManager.instance.SetPlayerCharacter();
     }
 
-    private void CheckProgress()
+    public void CheckProgress()
     {
         //Happens when phase is changed and after every interaction (can hopefully be limited)
         Debug.Log("Check what game data has been completed");
@@ -322,7 +326,7 @@ public class GameManager : MonoBehaviour
 
         //Only interactacbles which have multiple destinations or those which are bound to the active region are being moved
         MovementManager.movableWorldInteractableList = activeWorldInteractableList.Where(x => x.ActiveInteraction.InteractionDestinationDataList.Count > 1 || 
-                                                                                              (x.ActiveInteraction.ActiveDestination.RegionId == ActiveRegionId && x.ActiveInteraction.ActiveDestination.PositionVariance > 0)).ToList();
+                                                                                             (x.ActiveInteraction.ActiveDestination.RegionId == ActiveRegionId && x.ActiveInteraction.ActiveDestination.PositionVariance > 0)).ToList();
     }
 
     private void ChangeRegion()
@@ -345,6 +349,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetInteractable(GameWorldInteractableElementData worldInteractableElementData)
     {
+        worldInteractableElementData.DestinationType = DestinationType.Interaction;
+        
         //Deactivate all interactions of the world interactable
         DeactivateInteraction(worldInteractableElementData);
 
@@ -354,9 +360,11 @@ public class GameManager : MonoBehaviour
         //Update the world interactables based on the new active time
         UpdateWorldInteractable(worldInteractableElementData);
     }
-
+    
     private void DeactivateInteraction(GameWorldInteractableElementData worldInteractableElementData)
     {
+        if (worldInteractableElementData.InteractionDataList.Count == 0) return;
+
         worldInteractableElementData.InteractionDataList.ForEach(x =>
         {
             x.ContainsActiveTime = false;
@@ -365,6 +373,8 @@ public class GameManager : MonoBehaviour
 
     private void ValidateInteractionTime(GameWorldInteractableElementData worldInteractableElementData)
     {
+        if (worldInteractableElementData.InteractionDataList.Count == 0) return;
+
         //Validate times of interactions which belong to the active task saves
         worldInteractableElementData.InteractionDataList.GroupBy(y => y.TaskId)
                                                         .Select(y => y.Where(z => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, z.StartTime, z.EndTime) || z.Default)
@@ -375,6 +385,16 @@ public class GameManager : MonoBehaviour
                                                         });
 
         worldInteractableElementData.ActiveInteraction = worldInteractableElementData.InteractionDataList.Where(y => y.ContainsActiveTime).First();
+    }
+
+    public void UpdateSceneProp(GameScenePropElementData gameScenePropElementData)
+    {
+        Organizer.UpdateSceneProp(gameScenePropElementData);
+    }
+
+    public void CloseSceneProp(GameScenePropElementData gameScenePropElementData)
+    {
+        Organizer.CloseSceneProp(gameScenePropElementData);
     }
 
     public void UpdateWorldInteractable(GameWorldInteractableElementData worldInteractableElementData)
@@ -403,13 +423,19 @@ public class GameManager : MonoBehaviour
         gameWorldData = null;
         regionData = null;
         worldInteractableControllableData = null;
-
+        
         gameWorldController.Data = null;
         gameSaveController.Data = null;
 
         TimeManager.active = false;
         TimeManager.instance.TimeScale = 1;
 
-        PlayerControlManager.Enabled = false;
+        InteractionManager.interactionTarget = null;
+        InteractionManager.activeOutcome = null;
+
+        ScenarioManager.allowContinue = false;
+        ScenarioManager.instance.StopAllCoroutines();
+        
+        PlayerControlManager.AllowInput = false;
     }
 }

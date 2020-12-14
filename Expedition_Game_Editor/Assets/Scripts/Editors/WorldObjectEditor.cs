@@ -9,7 +9,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
 
-    //Editor data  whichopened from asset forms must be obtained directly from its route, since the data controller might be
+    //Editor data which was opened from asset forms must be obtained directly from its route, since the data controller might be
     //re-populated elsewhere and the asset forms load the relevant data only after the editor on the main form is initialized
     public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
 

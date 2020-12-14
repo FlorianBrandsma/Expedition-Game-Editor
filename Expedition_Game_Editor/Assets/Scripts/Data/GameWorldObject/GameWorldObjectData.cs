@@ -9,9 +9,6 @@ public class GameWorldObjectData
 
     public string ModelPath     { get; set; }
 
-    public string ModelName     { get; set; }
-    public string ModelIconPath { get; set; }
-
     public int Animation        { get; set; }
 
     public float PositionX      { get; set; }
@@ -32,9 +29,6 @@ public class GameWorldObjectData
         ModelId         = originalData.ModelId;
 
         ModelPath       = originalData.ModelPath;
-
-        ModelName       = originalData.ModelName;
-        ModelIconPath   = originalData.ModelIconPath;
 
         Animation       = originalData.Animation;
 
@@ -60,9 +54,6 @@ public class GameWorldObjectData
 
         data.ModelPath      = ModelPath;
 
-        data.ModelName      = ModelName;
-        data.ModelIconPath  = ModelIconPath;
-
         data.Animation      = Animation;
 
         data.PositionX      = PositionX;
@@ -86,9 +77,6 @@ public class GameWorldObjectData
         elementData.ModelId         = ModelId;
 
         elementData.ModelPath       = ModelPath;
-
-        elementData.ModelName       = ModelName;
-        elementData.ModelIconPath   = ModelIconPath;
 
         elementData.Animation       = Animation;
 

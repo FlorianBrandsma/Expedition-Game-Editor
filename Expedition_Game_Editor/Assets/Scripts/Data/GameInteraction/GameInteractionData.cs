@@ -37,8 +37,6 @@ public class GameInteractionData
     public int ObjectiveId                  { get; set; }
     public int WorldInteractableId          { get; set; }
     
-    public int DestinationIndex             { get; set; } = -1;
-
     public List<GameInteractionDestinationElementData> InteractionDestinationDataList   { get; set; } = new List<GameInteractionDestinationElementData>();
     public List<GameOutcomeElementData> OutcomeDataList                                 { get; set; } = new List<GameOutcomeElementData>();
 
@@ -75,8 +73,6 @@ public class GameInteractionData
 
         ObjectiveId                 = originalData.ObjectiveId;
         WorldInteractableId         = originalData.WorldInteractableId;
-
-        DestinationIndex            = originalData.DestinationIndex;
     }
 
     public GameInteractionData Clone()
@@ -114,8 +110,6 @@ public class GameInteractionData
 
         data.ObjectiveId                = ObjectiveId;
         data.WorldInteractableId        = WorldInteractableId;
-
-        data.DestinationIndex           = DestinationIndex;
 
         InteractionDestinationDataList.ForEach(x => x.SetOriginalValues());
         OutcomeDataList.ForEach(x => x.SetOriginalValues());
@@ -156,7 +150,5 @@ public class GameInteractionData
 
         elementData.ObjectiveId                 = ObjectiveId;
         elementData.WorldInteractableId         = WorldInteractableId;
-
-        elementData.DestinationIndex            = DestinationIndex;
     }
 }

@@ -11,12 +11,12 @@ static public class MovementManager
         var interactionData = worldInteractableElementData.ActiveInteraction;
         
         //When the world interactable is at its final destination...
-        if(interactionData.ActiveDestinationIndex == interactionData.InteractionDestinationDataList.Count - 1)
+        if(interactionData.DestinationIndex == interactionData.InteractionDestinationDataList.Count - 1)
         {
             //Stay at the destination, but possibly apply position variance by re-assigning the active destination index
             if (interactionData.ArrivalType == Enums.ArrivalType.Stay)
             {
-                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex = interactionData.ActiveDestinationIndex;
+                SetDestination(worldInteractableElementData, interactionData.DestinationIndex);
                 return;
             }
             
@@ -27,31 +27,49 @@ static public class MovementManager
             
             if (interactionData.ArrivalType == Enums.ArrivalType.Repeat)
             {
-                worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex = 0;
+                SetDestination(worldInteractableElementData, 0);
                 return;
             }
         }
 
-        if(interactionData.ActiveDestinationIndex == 0 && worldInteractableElementData.Backtracing)
+        if(interactionData.DestinationIndex == 0 && worldInteractableElementData.Backtracing)
         {
             worldInteractableElementData.Backtracing = false;
         }
 
         if (!worldInteractableElementData.Backtracing)
         {
-            worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex++;
+            SetDestination(worldInteractableElementData, worldInteractableElementData.ActiveInteraction.DestinationIndex + 1);
         } else {
-            worldInteractableElementData.ActiveInteraction.ActiveDestinationIndex--;
+            SetDestination(worldInteractableElementData, worldInteractableElementData.ActiveInteraction.DestinationIndex - 1);
         }
     }
 
-    static public void SetDestinationPosition(GameInteractionDestinationElementData destinationElementData)
+    static public void SetDestination(GameWorldInteractableElementData worldInteractableElementData, int value)
     {
+        worldInteractableElementData.ActiveInteraction.DestinationIndex = value;
+        
+        var activeDestination = worldInteractableElementData.ActiveInteraction.ActiveDestination;
+
+        worldInteractableElementData.DestinationPosition = new Vector3(activeDestination.PositionX, activeDestination.PositionY, activeDestination.PositionZ);
+
+        //Only rotate if free rotation is false
+        worldInteractableElementData.AllowRotation = !activeDestination.FreeRotation;
+
+        worldInteractableElementData.ArrivalRotation = new Vector3(activeDestination.RotationX, activeDestination.RotationY, activeDestination.RotationZ);
+    }
+
+    static public void UpdateInteractionDestination(GameWorldInteractableElementData gameWorldInteractableElementData)
+    {
+        var destinationElementData = gameWorldInteractableElementData.ActiveInteraction.ActiveDestination;
+        
         //NOTE! Variance can be limited to only small ranges, removing the need to find the terrain tile if it proves to be too much to process
 
         var position = new Vector3( destinationElementData.PositionX + Random.Range(-destinationElementData.PositionVariance, destinationElementData.PositionVariance),
                                     destinationElementData.PositionY,
                                     destinationElementData.PositionZ + Random.Range(-destinationElementData.PositionVariance, destinationElementData.PositionVariance));
+
+        var rotation = new Vector3(destinationElementData.RotationX, destinationElementData.RotationY, destinationElementData.RotationZ);
 
         if(destinationElementData.PositionVariance > 0)
         {
@@ -68,12 +86,15 @@ static public class MovementManager
             destinationElementData.TerrainTileId = terrainTileId;
         }
 
-        destinationElementData.Position = position;
+        gameWorldInteractableElementData.DestinationPosition = position;
+        gameWorldInteractableElementData.ArrivalRotation = rotation;
+
+        gameWorldInteractableElementData.TerrainTileId = destinationElementData.TerrainTileId;
     }
 
     static public void StartTravel(GameWorldInteractableElementData worldInteractableElementData)
     {
-        var distance = Vector3.Distance(worldInteractableElementData.Position, worldInteractableElementData.ActiveInteraction.ActiveDestination.Position);
+        var distance = Vector3.Distance(worldInteractableElementData.CurrentPosition, worldInteractableElementData.DestinationPosition);
 
         //At the moment, 0.5f is approximately 1m
         var tempDistanceInMeters = (distance / 2f);
@@ -86,9 +107,7 @@ static public class MovementManager
 
     static public void Arrive(GameWorldInteractableElementData worldInteractableElementData)
     {
-        var destinationData = worldInteractableElementData.ActiveInteraction.ActiveDestination;
-
-        worldInteractableElementData.Position = new Vector3(destinationData.Position.x, destinationData.Position.y, destinationData.Position.z);
+        worldInteractableElementData.CurrentPosition = worldInteractableElementData.DestinationPosition;
 
         worldInteractableElementData.AgentState = AgentState.Idle;
     }

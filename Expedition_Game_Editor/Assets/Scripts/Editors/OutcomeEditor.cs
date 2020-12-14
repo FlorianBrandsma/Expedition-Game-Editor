@@ -71,6 +71,17 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         }
     }
 
+    public bool CancelScenarioOnInteraction
+    {
+        get { return outcomeData.CancelScenarioOnInteraction; }
+        set
+        {
+            outcomeData.CancelScenarioOnInteraction = value;
+
+            DataList.ForEach(x => ((OutcomeElementData)x).CancelScenarioOnInteraction = value);
+        }
+    }
+
     public bool CancelScenarioOnInput
     {
         get { return outcomeData.CancelScenarioOnInput; }

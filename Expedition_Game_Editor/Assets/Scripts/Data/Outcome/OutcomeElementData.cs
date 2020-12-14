@@ -30,6 +30,11 @@ public class OutcomeElementData : OutcomeData, IElementData
         get { return CancelScenarioType != OriginalData.CancelScenarioType; }
     }
 
+    public bool ChangedCancelScenarioOnInteraction
+    {
+        get { return CancelScenarioOnInteraction != OriginalData.CancelScenarioOnInteraction; }
+    }
+
     public bool ChangedCancelScenarioOnInput
     {
         get { return CancelScenarioOnInput != OriginalData.CancelScenarioOnInput; }
@@ -59,9 +64,9 @@ public class OutcomeElementData : OutcomeData, IElementData
     {
         get
         {
-            return  ChangedCompleteTask             ||  ChangedResetObjective       || ChangedCancelScenarioType    || 
-                    ChangedCancelScenarioOnInput    || ChangedCancelScenarioOnRange || ChangedCancelScenarioOnHit   ||
-                    ChangedPublicNotes              ||  ChangedPrivateNotes;
+            return  ChangedCompleteTask                 || ChangedResetObjective        || ChangedCancelScenarioType    ||
+                    ChangedCancelScenarioOnInteraction  || ChangedCancelScenarioOnInput || ChangedCancelScenarioOnRange || ChangedCancelScenarioOnHit ||
+                    ChangedPublicNotes                  || ChangedPrivateNotes;
         }
     }
     #endregion

@@ -46,14 +46,14 @@ public class StatusIconOverlay : MonoBehaviour, IOverlay
         statusIconList.ForEach(x => x.UpdatePosition());
     }
 
-    public ExStatusIcon StatusIcon(StatusIconType statusIconType)
+    public ExStatusIcon StatusIcon(StatusIconType statusIconType, RectTransform layer)
     {
         var prefab = Resources.Load<ExStatusIcon>("Elements/UI/StatusIcon");
 
         var statusIcon = (ExStatusIcon)PoolManager.SpawnObject(prefab);
         statusIconList.Add(statusIcon);
 
-        statusIcon.transform.SetParent(cameraManager.overlayParent);
+        statusIcon.transform.SetParent(layer);
         statusIcon.transform.localEulerAngles = Vector3.zero;
         
         statusIcon.cam = cameraManager.cam;

@@ -143,28 +143,28 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 
 	private void UpdateSelectionPosition()
 	{
-        var maxHeight = 12;
+		var maxHeight = 12;
 
-        var fixedHeight = (height > maxHeight ? maxHeight : height);
-        
-        screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
+		var fixedHeight = (height > maxHeight ? maxHeight : height);
+		
+		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + fixedHeight,
-                                                       target.position.z)) * statusIconManager.Multiplier;
+													   target.position.z)) * statusIconManager.Multiplier;
 
-        if (screenPos.z < 0)
-        {
-            //When the target is behind the camera, the WorldToScreenPoint values get messed up.
-            //The target is always in the bottom of the screen, so only its horizontal position relative to the
-            //camera matters
-            screenPos = (target.transform.position - cam.transform.position) * parentRect.rect.width;
-        }
+		if (screenPos.z < 0)
+		{
+			//When the target is behind the camera, the WorldToScreenPoint values get messed up.
+			//The target is always in the bottom of the screen, so only its horizontal position relative to the
+			//camera matters
+			screenPos = (target.transform.position - cam.transform.position) * parentRect.rect.width;
+		}
 
-        var widthCap = statusIconManager.WidthCap;
+		var widthCap = statusIconManager.WidthCap;
 		var heightCap = statusIconManager.HeightCap;
 		
 		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), 
-                                               screenPos.y - (parentRect.rect.height / 2), 
-                                               0);
+											   screenPos.y - (parentRect.rect.height / 2), 
+											   0);
 
 		if (transform.localPosition.x > widthCap)
 			transform.localPosition = new Vector3(widthCap, transform.localPosition.y, 0);
@@ -179,7 +179,7 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			transform.localPosition = new Vector3(transform.localPosition.x, -heightCap, 0);
 	}
 
-    private void UpdateLockPosition()
+	private void UpdateLockPosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + (height / 2),

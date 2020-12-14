@@ -14,24 +14,36 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
-    public AgentState AgentState    { get; set; }
+    public AgentState AgentState            { get; set; }
+    public DestinationType DestinationType  { get; set; }
+    public Vector3 CurrentPosition          { get; set; }
 
-    public Vector3 Position         { get; set; }
-    public float TravelTime         { get; set; }
+    public Vector3 DestinationPosition      { get; set; }
+    public Vector3 ArrivalRotation          { get; set; }
+    public bool AllowRotation               { get; set; }
+
+    public float TravelTime                 { get; set; }
     
-    public bool Backtracing         { get; set; }
+    public bool Backtracing                 { get; set; }
 
     public GameInteractionElementData ActiveInteraction
     {
         get { return Interaction; }
         set
         {
+            if (Interaction == value) return;
+
             Interaction = value;
-
+            
             Backtracing = false;
-            Interaction.ActiveDestinationIndex = 0;
+            MovementManager.SetDestination(this, 0);
+         
+            InteractionManager.CancelInteractionDelay(this);
 
-            InteractionManager.CancelInteraction(this);
+            if (InteractionManager.interactionTarget == this)
+            {
+                InteractionManager.CancelInteraction();
+            }
         }
     }
     

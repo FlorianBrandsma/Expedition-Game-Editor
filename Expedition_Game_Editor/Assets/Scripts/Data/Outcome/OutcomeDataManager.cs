@@ -47,6 +47,7 @@ public static class OutcomeDataManager
                         ResetObjective = outcomeData.ResetObjective,
 
                         CancelScenarioType = outcomeData.CancelScenarioType,
+                        CancelScenarioOnInteraction = outcomeData.CancelScenarioOnInteraction,
                         CancelScenarioOnInput = outcomeData.CancelScenarioOnInput,
                         CancelScenarioOnRange = outcomeData.CancelScenarioOnRange,
                         CancelScenarioOnHit = outcomeData.CancelScenarioOnHit,
@@ -143,6 +144,9 @@ public static class OutcomeDataManager
 
         if (elementData.ChangedCancelScenarioType)
             data.CancelScenarioType = elementData.CancelScenarioType;
+
+        if (elementData.ChangedCancelScenarioOnInteraction)
+            data.CancelScenarioOnInteraction = elementData.CancelScenarioOnInteraction;
 
         if (elementData.ChangedCancelScenarioOnInput)
             data.CancelScenarioOnInput = elementData.CancelScenarioOnInput;

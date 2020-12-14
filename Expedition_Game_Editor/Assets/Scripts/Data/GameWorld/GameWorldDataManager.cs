@@ -111,36 +111,6 @@ public static class GameWorldDataManager
                 DefaultTime = phaseData.DefaultTime
             },
 
-            WorldInteractableControllableDataList = (
-            from worldInteractableData  in chapterWorldInteractableDataList
-            join interactableData       in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
-            join modelData              in modelDataList        on interactableData.ModelId             equals modelData.Id
-            join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
-            select new GameWorldInteractableElementData()
-            {
-                Id = worldInteractableData.Id,
-
-                ModelId = modelData.Id,
-
-                Type = (Enums.InteractableType)worldInteractableData.Type,
-
-                ModelPath = modelData.Path,
-                ModelIconPath = iconData.Path,
-                
-                InteractableName = interactableData.Name,
-                
-                Scale = interactableData.Scale,
-
-                Health = interactableData.Health,
-                Hunger = interactableData.Hunger,
-                Thirst = interactableData.Thirst,
-
-                Weight = interactableData.Weight,
-                Speed = interactableData.Speed,
-                Stamina = interactableData.Stamina
-
-            }).ToList(),
-
             WorldInteractableDataList = (
             from worldInteractableData  in worldInteractableDataList
             join interactableData       in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
@@ -251,6 +221,7 @@ public static class GameWorldDataManager
                         ResetObjective = outcomeData.ResetObjective,
 
                         CancelScenarioType = outcomeData.CancelScenarioType,
+                        CancelScenarioOnInteraction = outcomeData.CancelScenarioOnInteraction,
                         CancelScenarioOnInput = outcomeData.CancelScenarioOnInput,
                         CancelScenarioOnRange = outcomeData.CancelScenarioOnRange,
                         CancelScenarioOnHit = outcomeData.CancelScenarioOnHit,
@@ -271,8 +242,10 @@ public static class GameWorldDataManager
                             ShotDuration = sceneData.ShotDuration,
 
                             SceneShotDataList = (
-                            from sceneShotData      in sceneShotDataList
-                            join cameraFilterData   in cameraFilterDataList on sceneShotData.CameraFilterId equals cameraFilterData.Id
+                            from sceneShotData in sceneShotDataList
+
+                            join leftJoin in (from cameraFilterData in cameraFilterDataList
+                                              select new { cameraFilterData }) on sceneShotData.CameraFilterId equals leftJoin.cameraFilterData.Id into cameraFilterData
 
                             join leftJoin in (from sceneActorData in sceneActorDataList
                                               select new { sceneActorData }) on sceneShotData.PositionTargetSceneActorId equals leftJoin.sceneActorData.Id into positionTargetSceneActorData
@@ -303,7 +276,7 @@ public static class GameWorldDataManager
 
                                 RotationTargetWorldInteractableId = rotationTargetSceneActorData.FirstOrDefault() != null ? rotationTargetSceneActorData.FirstOrDefault().sceneActorData.WorldInteractableId : 0,
 
-                                CameraFilterPath = cameraFilterData.Path
+                                CameraFilterPath = cameraFilterData.FirstOrDefault() != null ? cameraFilterData.FirstOrDefault().cameraFilterData.Path : ""
 
                             }).ToList(),
 
@@ -352,6 +325,7 @@ public static class GameWorldDataManager
                                 Id = scenePropData.Id,
 
                                 TerrainTileId = scenePropData.TerrainTileId,
+                                ModelId = modelData.Id,
 
                                 ModelPath = modelData.Path,
 
@@ -439,7 +413,6 @@ public static class GameWorldDataManager
                     GameWorldObjectDataList = (
                     from worldObjectData    in worldObjectDataList
                     join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
-                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
                     where worldObjectData.TerrainId == terrainData.Id
                     select new GameWorldObjectElementData()
                     {
@@ -461,10 +434,7 @@ public static class GameWorldDataManager
 
                         Animation = worldObjectData.Animation,
                         
-                        ModelPath = modelData.Path,
-
-                        ModelName = modelData.Name,
-                        ModelIconPath = iconData.Path
+                        ModelPath = modelData.Path
 
                     }).ToList()
 
@@ -674,7 +644,7 @@ public static class GameWorldDataManager
     private static void GetWorldInteractableData()
     {
         var searchParameters = new Search.WorldInteractable();
-        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Distinct().ToList();
+        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Union(chapterWorldInteractableDataList.Select(x => x.Id)).Distinct().ToList();
 
         worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
@@ -682,7 +652,7 @@ public static class GameWorldDataManager
     private static void GetInteractableData()
     {
         var searchParameters = new Search.Interactable();
-        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Union(chapterWorldInteractableDataList.Select(x => x.InteractableId)).Distinct().ToList();
+        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
 
         interactableDataList = DataManager.GetInteractableData(searchParameters);
     }

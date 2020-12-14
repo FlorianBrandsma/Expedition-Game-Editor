@@ -5,6 +5,7 @@ using System;
 public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
 {
     public ExDropdown cancelScenarioTypeDropdown;
+    public ExToggle cancelScenarioOnInteractionToggle;
     public ExToggle cancelScenarioOnInputToggle;
     public ExToggle cancelScenarioOnRangeToggle;
     public ExToggle cancelScenarioOnHitToggle;
@@ -19,6 +20,12 @@ public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
     {
         get { return OutcomeEditor.CancelScenarioType; }
         set { OutcomeEditor.CancelScenarioType = value; }
+    }
+
+    public bool CancelScenarioOnInteraction
+    {
+        get { return OutcomeEditor.CancelScenarioOnInteraction; }
+        set { OutcomeEditor.CancelScenarioOnInteraction = value; }
     }
 
     public bool CancelScenarioOnInput
@@ -63,6 +70,7 @@ public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         cancelScenarioTypeDropdown.Dropdown.value = CancelScenarioType;
+        cancelScenarioOnInteractionToggle.Toggle.isOn = CancelScenarioOnInteraction;
         cancelScenarioOnInputToggle.Toggle.isOn = CancelScenarioOnInput;
         cancelScenarioOnRangeToggle.Toggle.isOn = CancelScenarioOnRange;
         cancelScenarioOnHitToggle.Toggle.isOn = CancelScenarioOnHit;
@@ -75,6 +83,13 @@ public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
         CancelScenarioType = cancelScenarioTypeDropdown.Dropdown.value;
 
         UpdateSegment();
+
+        DataEditor.UpdateEditor();
+    }
+
+    public void UpdateCancelScenarioOnInteraction()
+    {
+        CancelScenarioOnInteraction = cancelScenarioOnInteractionToggle.Toggle.isOn;
 
         DataEditor.UpdateEditor();
     }
@@ -107,6 +122,7 @@ public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
 
     private void EnableToggles(bool enable)
     {
+        cancelScenarioOnInteractionToggle.EnableElement(enable);
         cancelScenarioOnInputToggle.EnableElement(enable);
         cancelScenarioOnRangeToggle.EnableElement(enable);
         cancelScenarioOnHitToggle.EnableElement(enable);

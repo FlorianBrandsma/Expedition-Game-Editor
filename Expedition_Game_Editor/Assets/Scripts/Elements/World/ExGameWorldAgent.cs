@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using System.Linq;
 
 public enum AgentState
 {
     Spawn,
     Idle,
     Move
+}
+
+public enum DestinationType
+{
+    Interaction,
+    Scene
 }
 
 public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
@@ -40,6 +47,12 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         set { GameWorldInteractableElementData.AgentState = value; }
     }
 
+    public DestinationType DestinationType
+    {
+        get { return GameWorldInteractableElementData.DestinationType; }
+        set { GameWorldInteractableElementData.DestinationType = value; }
+    }
+    
     public IPoolable Instantiate()
     {
         var newElement = Instantiate(this);
@@ -94,9 +107,10 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 
         var interactionData = GameWorldInteractableElementData.ActiveInteraction;
         var interactionDestinationData = interactionData.ActiveDestination;
-        
-        position = interactionDestinationData.Position;
-        rotation = new Vector3(interactionDestinationData.RotationX, interactionDestinationData.RotationY, interactionDestinationData.RotationZ);
+
+        position = GameWorldInteractableElementData.DestinationPosition;
+        rotation = GameWorldInteractableElementData.ArrivalRotation;
+
         scale = GameWorldInteractableElementData.Scale;
 
         speed = GameWorldInteractableElementData.Speed;
@@ -112,7 +126,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         if (GameWorldInteractableElementData.Id == GameManager.instance.ActiveWorldInteractableControllableId)
         {
             var playerData = GameManager.instance.gameSaveData.PlayerSaveData;
-
+            
             position = new Vector3(playerData.PositionX, playerData.PositionY, playerData.PositionZ);
             rotation = Vector3.zero;
 
@@ -120,6 +134,8 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 
             Agent.avoidancePriority = 0;
         }
+
+        PlayerControlManager.instance.SetWorldInteractableControllableTerrainTileId(GameWorldInteractableElementData);
 
         speed = GameWorldInteractableElementData.Speed;
     }
@@ -159,6 +175,9 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 
         if (!Agent.isOnNavMesh) return;
 
+        //Stop coroutines e.g. rotation
+        StopAllCoroutines();
+
         Agent.destination = new Vector3(position.x, position.y, -position.z);
 
         //Immediately arrive at destination if the new destination distance is too short
@@ -171,10 +190,9 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
     private void SetAgentDestination()
     {
         var elementData = (GameWorldInteractableElementData)GameElement.DataElement.ElementData;
-        
-        var interactionDestinationData = elementData.ActiveInteraction.ActiveDestination;
-        
-        position = interactionDestinationData.Position;
+
+        position = elementData.DestinationPosition;
+        rotation = elementData.ArrivalRotation;
     }
 
     private void SetControllableDestination()
@@ -211,7 +229,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
             AgentState = AgentState.Move;
         }
 
-        GameWorldInteractableElementData.Position = new Vector3(transform.position.x, transform.position.y, -transform.position.z);
+        GameWorldInteractableElementData.CurrentPosition = new Vector3(transform.position.x, transform.position.y, -transform.position.z);
 
         //Settle the agent in place when it is close to the destination but stopped moving (due to potential agent clashing)
         if (AgentState == AgentState.Move && !Moving && Vector3.Distance(gameObject.transform.position, Agent.destination) < Agent.stoppingDistance)
@@ -235,9 +253,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
     {
         MovementManager.Arrive(GameWorldInteractableElementData);
 
-        var destinationData = GameWorldInteractableElementData.ActiveInteraction.ActiveDestination;
-
-        if (!destinationData.FreeRotation && destinationData.Patience > 0)
+        if (GameWorldInteractableElementData.AllowRotation)
         {
             StopAllCoroutines();
             StartCoroutine(Rotate(rotation.y));
@@ -251,7 +267,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         while (Mathf.Abs(transform.rotation.eulerAngles.y - angle) > 1f)
         {
             //Take destination's patience into account: rotation must always be stopped when patience runs out
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * TimeManager.gameTimeSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.eulerAngles.x, angle, transform.rotation.eulerAngles.z), rotateSpeed * TimeManager.instance.TimeScale * Time.deltaTime);
             yield return null;
         }
     }
@@ -270,6 +286,8 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         if (GameWorldInteractableElementData.Type != Enums.InteractableType.Controllable) return;
 
         var colliderWorldInteractableElementData = (GameWorldInteractableElementData)other.GetComponent<GameElement>().DataElement.ElementData;
+
+        InteractionManager.CancelInteractionOnRange(colliderWorldInteractableElementData);
 
         PlayerControlManager.instance.RemoveSelectionTarget(colliderWorldInteractableElementData);
     }

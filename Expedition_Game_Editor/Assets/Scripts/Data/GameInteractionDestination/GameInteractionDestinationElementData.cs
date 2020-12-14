@@ -13,8 +13,6 @@ public class GameInteractionDestinationElementData : GameInteractionDestinationD
     public bool UniqueSelection                         { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
-    
-    public Vector3 Position { get; set; }
 
     #region Changed
     public bool Changed { get { return false; } }

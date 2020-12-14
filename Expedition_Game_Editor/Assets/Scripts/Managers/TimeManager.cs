@@ -53,7 +53,7 @@ public class TimeManager : MonoBehaviour
         public int Time { get; set; }
         public List<GameWorldInteractableElementData> WorldInteractableDataList { get; set; } = new List<GameWorldInteractableElementData>();
     }
-
+    
     static public TimeManager instance;
 
     static public bool active;
@@ -85,7 +85,7 @@ public class TimeManager : MonoBehaviour
 
     static public List<TimeEvent> timeEventList;
     static public List<GameInteractionElementData> activeInteractionList;
-    
+
     public float TimeScale
     {
         get { return Time.timeScale; }
@@ -165,6 +165,7 @@ public class TimeManager : MonoBehaviour
             });
             
             CountInteractionDelay(counter);
+            CountSceneDuration(counter);
         }
     }
     
@@ -185,8 +186,13 @@ public class TimeManager : MonoBehaviour
 
     private void CountPatience(GameWorldInteractableElementData worldInteractableElementData, float counter)
     {
-        if (worldInteractableElementData.AgentState != AgentState.Idle || worldInteractableElementData.ActiveInteraction.CurrentPatience < 0) return;
-        
+        if (worldInteractableElementData.DestinationType == DestinationType.Scene   || 
+            worldInteractableElementData.AgentState != AgentState.Idle              || 
+            worldInteractableElementData.ActiveInteraction.CurrentPatience < 0)
+        {
+            return;
+        }
+
         if (worldInteractableElementData.ActiveInteraction.InteractionDestinationDataList.Count > 1 || 
             worldInteractableElementData.ActiveInteraction.CurrentPatience > 0)
         {
@@ -202,22 +208,37 @@ public class TimeManager : MonoBehaviour
 
     private void CountInteractionDelay(float counter)
     {
-        if (InteractionManager.interactionTarget == null) return;
-        
-        if (!PlayerControlManager.instance.eligibleSelectionTargets.Contains(InteractionManager.interactionTarget))
+        if (InteractionManager.interactionDelayTarget == null) return;
+
+        if (InteractionManager.interactionDelay > 0)
         {
-            InteractionManager.CancelInteraction();
-            return;
-        }
-        
-        if(InteractionManager.interactionDelay > 0)
-        {
+            if (!PlayerControlManager.instance.eligibleSelectionTargets.Contains(InteractionManager.interactionDelayTarget))
+            {
+                InteractionManager.CancelInteractionDelay();
+                return;
+            }
+
             InteractionManager.interactionDelay -= counter;
             InteractionManager.UpdateLoadingBar();
 
             if (InteractionManager.interactionDelay < 0)
             {
                 InteractionManager.Interact();
+            }
+        }
+    }
+
+    private void CountSceneDuration(float counter)
+    {
+        if (InteractionManager.activeOutcome == null) return;
+
+        if(InteractionManager.activeOutcome.CurrentSceneDuration >= 0)
+        {
+            InteractionManager.activeOutcome.CurrentSceneDuration -= counter;
+
+            if(InteractionManager.activeOutcome.CurrentSceneDuration < 0)
+            {
+                ScenarioManager.instance.AllowContinue(true);
             }
         }
     }
@@ -261,7 +282,12 @@ public class TimeManager : MonoBehaviour
         //Sometimes calls this double when end time matches exactly with the active time (will match with start as well)
         timeEventList.Where(timeEvent => TimeInFrame(timeEvent.Time, activeTime.StartTime, activeTime.EndTime)).ToList().ForEach(timeEvent =>
         {
-            timeEvent.WorldInteractableDataList.ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
+            timeEvent.WorldInteractableDataList.ForEach(worldInteractable =>
+            {
+                
+                InteractionManager.CheckActorSchedule(worldInteractable);
+                GameManager.instance.ResetInteractable(worldInteractable);
+            });
         });
     }
     

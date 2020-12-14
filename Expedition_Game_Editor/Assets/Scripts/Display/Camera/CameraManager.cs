@@ -11,8 +11,7 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
     public Camera cam;
     public RectTransform content;
-    public RectTransform overlayParent;
-
+    
     public OverlayManager overlayManager;
 
     public IDisplay Display { get; set; }

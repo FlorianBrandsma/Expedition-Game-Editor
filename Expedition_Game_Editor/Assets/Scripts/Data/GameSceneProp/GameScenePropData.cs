@@ -5,6 +5,7 @@ public class GameScenePropData
     public int Id               { get; set; }
 
     public int TerrainTileId    { get; set; }
+    public int ModelId          { get; set; }
 
     public string ModelPath     { get; set; }
 
@@ -23,6 +24,7 @@ public class GameScenePropData
         Id              = originalData.Id;
 
         TerrainTileId   = originalData.TerrainTileId;
+        ModelId         = originalData.ModelId;
 
         ModelPath       = originalData.ModelPath;
 
@@ -44,6 +46,7 @@ public class GameScenePropData
         data.Id             = Id;
 
         data.TerrainTileId  = TerrainTileId;
+        data.ModelId        = ModelId;
 
         data.ModelPath      = ModelPath;
 
@@ -65,6 +68,7 @@ public class GameScenePropData
         elementData.Id              = Id;
         
         elementData.TerrainTileId   = TerrainTileId;
+        elementData.ModelId         = ModelId;
 
         elementData.ModelPath       = ModelPath;
 

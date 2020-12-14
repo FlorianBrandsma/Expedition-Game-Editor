@@ -969,13 +969,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         if (element.elementStatus == Enums.ElementStatus.Locked)
         {
-            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Lock);
+            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Lock, CameraManager.overlayManager.layer[0]);
             element.lockIcon = statusIcon.gameObject;
         }
 
         if (element.DataElement.ElementData.SelectionStatus != Enums.SelectionStatus.None)
         {
-            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection);
+            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection, CameraManager.overlayManager.layer[0]);
             element.glow = statusIcon.gameObject;
         }
 

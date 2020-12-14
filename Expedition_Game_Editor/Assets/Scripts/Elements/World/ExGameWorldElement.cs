@@ -85,7 +85,7 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
         {
             case Enums.DataType.GameWorldObject:        SetGameWorldObjectElement();        break;
             case Enums.DataType.GameWorldInteractable:  SetGameWorldInteractableElement();  break;
-
+            case Enums.DataType.GameSceneProp:          SetGameScenePropElement();          break;
             default: Debug.Log("CASE MISSING: " + GameElement.DataElement.ElementData.DataType); break;
         }
         
@@ -127,6 +127,21 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
         scale = elementData.Scale;
 
         InteractionCollider.radius = elementData.Interaction.InteractionRange;
+
+        SetModel();
+    }
+
+    private void SetGameScenePropElement()
+    {
+        var elementData = (GameScenePropElementData)GameElement.DataElement.ElementData;
+
+        var prefab = Resources.Load<Model>(elementData.ModelPath);
+        GameElement.Model = (Model)PoolManager.SpawnObject(prefab, elementData.ModelId);
+
+        position = new Vector3(elementData.PositionX, elementData.PositionY, elementData.PositionZ);
+        rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
+
+        scale = elementData.Scale;
 
         SetModel();
     }

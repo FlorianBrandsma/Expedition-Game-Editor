@@ -16,24 +16,25 @@ public class GameInteractionElementData : GameInteractionData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     public float CurrentPatience                    { get; set; }
-    
-    public int ActiveDestinationIndex
+
+    private int destinationIndex = -1;
+
+    public int DestinationIndex
     {
-        get { return DestinationIndex; }
+        get { return destinationIndex; }
         set
         {
-            CurrentPatience = InteractionDestinationDataList[value].Patience;
-
-            DestinationIndex = value;
+            destinationIndex = value;
+            
+            //Add a small bit of patience to every destination so the agent will move to its
+            //intended destination after being halted for a scene
+            CurrentPatience = ActiveDestination.Patience + 0.1f;
         }
     }
 
     public GameInteractionDestinationElementData ActiveDestination
     {
-        get
-        {
-            return InteractionDestinationDataList[ActiveDestinationIndex];
-        }
+        get { return InteractionDestinationDataList[DestinationIndex]; }
     }
     
     #region Changed

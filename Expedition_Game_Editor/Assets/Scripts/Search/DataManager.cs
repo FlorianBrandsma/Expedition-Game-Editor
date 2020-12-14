@@ -279,8 +279,8 @@ static public class DataManager
 
         foreach (SceneShotBaseData sceneShot in Fixtures.sceneShotList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(sceneShot.Id)) continue;
-            if (searchParameters.sceneId.Count > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneShot.Id)) continue;
+            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId)) continue;
 
             dataList.Add(sceneShot);
         }

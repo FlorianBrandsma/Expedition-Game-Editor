@@ -1,30 +1,36 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 static public class InteractionManager
 {
+    static public GameWorldInteractableElementData interactionDelayTarget;
     static public GameWorldInteractableElementData interactionTarget;
+
+    static public GameOutcomeElementData activeOutcome;
 
     static public float interactionDelay;
     static public ExLoadingBar loadingBar;
 
-    static public void SetInteraction(GameWorldInteractableElementData selectionTarget)
+    static public void SetInteractionDelay(GameWorldInteractableElementData selectionTarget)
     {
         //Only set the interaction when there is currently no interaction target set
-        if (interactionTarget != null) return;
+        if (interactionDelayTarget == selectionTarget) return;
 
-        SetInteractionTarget(selectionTarget);
+        CancelInteractionDelay();
+
+        SetInteractionDelayTarget(selectionTarget);
     }
 
-    static private void SetInteractionTarget(GameWorldInteractableElementData selectionTarget)
+    static private void SetInteractionDelayTarget(GameWorldInteractableElementData selectionTarget)
     {
         //Set the selection target as the interaction target if it hasn't already been set
-        if (interactionTarget == selectionTarget) return;
+        if (interactionDelayTarget == selectionTarget) return;
         
-        interactionTarget = selectionTarget;
+        interactionDelayTarget = selectionTarget;
 
         PlayerControlManager.instance.UpdateControls();
 
-        if (interactionTarget != null)
+        if (interactionDelayTarget != null)
         {
             InitializeInteraction();
         }
@@ -32,13 +38,13 @@ static public class InteractionManager
 
     static private void InitializeInteraction()
     {
-        interactionDelay = interactionTarget.Interaction.DelayDuration;
+        interactionDelay = interactionDelayTarget.Interaction.DelayDuration;
 
         //Delay duration is at least 0.1s if active
-        if (interactionTarget.Interaction.DelayMethod != Enums.DelayMethod.Instant)
+        if (interactionDelayTarget.Interaction.DelayMethod != Enums.DelayMethod.Instant)
         {
-            if(!interactionTarget.Interaction.HideDelayIndicator)
-                loadingBar = PlayerControlManager.instance.cameraManager.overlayManager.GameOverlay.SpawnLoadingBar(interactionTarget.Interaction.DelayMethod);
+            if(!interactionDelayTarget.Interaction.HideDelayIndicator)
+                loadingBar = GameManager.instance.Organizer.OverlayManger.GameOverlay.SpawnLoadingBar(interactionDelayTarget.Interaction.DelayMethod);
 
             //Play an animation based on the delay method
 
@@ -53,7 +59,7 @@ static public class InteractionManager
     {
         if (loadingBar == null) return;
 
-        var delayDuration = interactionTarget.Interaction.DelayDuration;
+        var delayDuration = interactionDelayTarget.Interaction.DelayDuration;
         var value = Mathf.Clamp01((delayDuration - interactionDelay) / delayDuration);
 
         loadingBar.UpdateFiller(value);
@@ -61,24 +67,88 @@ static public class InteractionManager
 
     static public void Interact()
     {
-        Debug.Log("INTERACT!");
+        interactionTarget = interactionDelayTarget;
 
-        CancelInteraction();
+        CancelInteractionDelay();
+
+        //Selection is removed when interacting with the target
+        PlayerControlManager.instance.SetSelectionTarget(null);
+
+        SetOutcome();
+    }
+    
+    static private void SetOutcome()
+    {
+        var outcomeType = CheckRequirements();
+
+        activeOutcome = interactionTarget.Interaction.OutcomeDataList.Where(x => x.Type == (int)outcomeType).First();
+        activeOutcome.SceneIndex = -1;
+
+        PlayerControlManager.instance.UpdateControls();
+        
+        ScenarioManager.instance.SetScenario();
     }
 
-    static public void CancelInteraction(GameWorldInteractableElementData gameWorldInteractableElementData)
+    static private Enums.OutcomeType CheckRequirements()
     {
-        if (interactionTarget == gameWorldInteractableElementData)
-            CancelInteraction();
+        var outcomeType = Enums.OutcomeType.Positive;
+
+        return outcomeType;
     }
 
-    static public void CancelInteraction()
+    static public void FinalizeInteraction()
     {
-        if(loadingBar != null)
-        {
+        Debug.Log("Finish interaction");
+
+        CancelInteraction(true);
+
+        GameManager.instance.CheckProgress();
+    }
+
+    static public void CancelInteractionDelay(GameWorldInteractableElementData gameWorldInteractableElementData)
+    {
+        if (interactionDelayTarget == gameWorldInteractableElementData)
+            CancelInteractionDelay();
+    }
+    
+    static public void CancelInteractionDelay()
+    {
+        if (loadingBar != null)
             PoolManager.ClosePoolObject(loadingBar);
-        }
+        
+        SetInteractionDelayTarget(null);
+    }
 
-        SetInteractionTarget(null);
+    static public void CancelInteractionOnRange(GameWorldInteractableElementData gameWorldInteractableElementData)
+    {
+        if (interactionTarget != gameWorldInteractableElementData) return;
+        
+        if(activeOutcome.CancelScenarioOnRange)
+        {
+            CancelInteraction();
+            return;
+        }
+    }
+
+    static public void CheckActorSchedule(GameWorldInteractableElementData worldInteractableElementData)
+    {
+        //Deactivate scenario if the world interactable is an actor in any of the active scenario's scenes
+        if (activeOutcome == null) return;
+        
+        if (activeOutcome.SceneDataList.Any(scene => scene.SceneActorDataList.Select(actor => actor.WorldInteractable).Contains(worldInteractableElementData)))
+        {
+            Debug.Log("Cancel scenario over actor commitments");
+            CancelInteraction();
+        }
+    }
+
+    static public void CancelInteraction(bool finished = false)
+    {
+        ScenarioManager.instance.CancelScenario(finished);
+
+        interactionTarget = null;
+        activeOutcome = null;
+
+        PlayerControlManager.instance.UpdateControls();
     }
 }

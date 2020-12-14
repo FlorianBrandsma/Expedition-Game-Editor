@@ -211,6 +211,7 @@ public class Enums
 
     public enum ButtonEventType
     {
+        None,
         Interact,
         Cancel,
         Attack,

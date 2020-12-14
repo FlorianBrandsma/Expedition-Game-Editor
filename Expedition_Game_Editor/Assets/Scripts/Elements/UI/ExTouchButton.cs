@@ -43,6 +43,8 @@ public class ExTouchButton : MonoBehaviour, IPoolable
     
     public void PointUpEvent()
     {
+        if (TimeManager.instance.Paused) return;
+
         var playerControlManager = PlayerControlManager.instance;
 
         switch (EventType)
@@ -58,6 +60,8 @@ public class ExTouchButton : MonoBehaviour, IPoolable
 
     public void PointDownEvent()
     {
+        if (TimeManager.instance.Paused) return;
+
         var playerControlManager = PlayerControlManager.instance;
 
         switch (EventType)
