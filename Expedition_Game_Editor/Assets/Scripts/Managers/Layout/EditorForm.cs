@@ -76,8 +76,6 @@ public class EditorForm : MonoBehaviour
         InitializeSections();
 
         path.type = Path.Type.Loaded;
-
-        
     }
 
     public void OpenView()

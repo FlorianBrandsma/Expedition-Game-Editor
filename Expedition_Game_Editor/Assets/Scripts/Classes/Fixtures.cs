@@ -789,7 +789,7 @@ static public class Fixtures
         outcome.ResetObjective = false;
 
         outcome.CancelScenarioType = (int)Enums.CancelScenarioType.Cancel;
-        outcome.CancelScenarioOnInteraction = true;
+        outcome.CancelScenarioOnInteraction = false;
         outcome.CancelScenarioOnInput = true;
         outcome.CancelScenarioOnRange = false;
         outcome.CancelScenarioOnHit = false;
@@ -822,7 +822,7 @@ static public class Fixtures
         scene.FreezeTime = true;
         scene.AutoContinue = false;
 
-        scene.SceneDuration = 1;
+        scene.SceneDuration = 2f;
         scene.ShotDuration = 10;
 
         scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;

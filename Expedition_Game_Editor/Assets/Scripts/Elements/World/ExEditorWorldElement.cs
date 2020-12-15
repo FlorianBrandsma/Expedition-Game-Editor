@@ -182,10 +182,10 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
         PoolManager.ClosePoolObject(model);
         model = null;
 
-        CloseStatusIcons();
+        CloseTrackingElements();
     }
 
-    public void CloseStatusIcons()
+    public void CloseTrackingElements()
     {
         if (EditorElement.glow != null)
         {

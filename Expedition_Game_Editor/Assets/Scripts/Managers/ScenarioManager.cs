@@ -10,12 +10,18 @@ public class ScenarioManager : MonoBehaviour
 
     static public bool allowContinue;
 
-    public RawImage shotStartCameraFilter;
-    public RawImage shotEndCameraFilter;
+    private ExCameraFilter shotStartCameraFilter;
+    private ExCameraFilter shotEndCameraFilter;
+
+    private ExSpeechTextBox speechTextBox;
+
+    private ExSpeechBubble speechBubblePrefab;
 
     private void Awake()
     {
         instance = this;
+
+        speechBubblePrefab = Resources.Load<ExSpeechBubble>("Elements/UI/SpeechBubble");
     }
 
     public void SetScenario()
@@ -27,7 +33,7 @@ public class ScenarioManager : MonoBehaviour
     {
         allowContinue = allowed;
 
-        if (allowContinue && InteractionManager.activeOutcome.ActiveScene.AutoContinue)
+        if (allowContinue && (InteractionManager.activeOutcome.ActiveScene.AutoContinue || speechTextBox == null))
             StartNextScene();
 
         PlayerControlManager.instance.UpdateControls();
@@ -60,18 +66,16 @@ public class ScenarioManager : MonoBehaviour
         //Scene editor, "set actors instantly"
 
         SetRegion(scene);
+
         SetGameTime(scene);
 
-        //Set actors
         SetActors(scene);
 
-        //Set props
         SetProps(scene);
 
-        //Set shot
         SetShot(scene);
 
-        //Set text
+        SetText(scene);
     }
 
     private void SetRegion(GameSceneElementData scene)
@@ -153,12 +157,14 @@ public class ScenarioManager : MonoBehaviour
         var shotStart = scene.SceneShotDataList.Where(x => x.Type == (int)Enums.SceneShotType.Start).First();
         var shotEnd = scene.SceneShotDataList.Where(x => x.Type == (int)Enums.SceneShotType.End).First();
 
-        StartCoroutine(MoveShot(shotStart, shotEnd, scene.ShotDuration));
+        StartCoroutine(PlayShot(shotStart, shotEnd, scene.ShotDuration));
     }
 
-    private IEnumerator MoveShot(GameSceneShotElementData shotStart, GameSceneShotElementData shotEnd, float duration)
+    private IEnumerator PlayShot(GameSceneShotElementData shotStart, GameSceneShotElementData shotEnd, float duration)
     {
         var camera = GameManager.instance.Organizer.CameraManager.cam;
+
+        var cameraFilterOverlay = GameManager.instance.Organizer.CameraManager.overlayManager.CameraFilterOverlay;
 
         var startAlpha = 0f;
         var startTargetAlpha = 0f;
@@ -171,21 +177,22 @@ public class ScenarioManager : MonoBehaviour
 
         var startRotation = camera.transform.rotation;
         var endRotation = startRotation;
-        
-        if (shotStart.CameraFilterPath != "")
-        {
-            shotStartCameraFilter.texture = Resources.Load<Texture2D>(shotStart.CameraFilterPath);
-            startAlpha = 1f;
-            startTargetAlpha = 0f;
-        }
 
+        //End must be spawned before start to appear in the correct order
         if (shotEnd.CameraFilterPath != "")
         {
-            shotEndCameraFilter.texture = Resources.Load<Texture2D>(shotEnd.CameraFilterPath);
+            shotEndCameraFilter = cameraFilterOverlay.SpawnCameraFilter(Resources.Load<Texture2D>(shotEnd.CameraFilterPath));
             endAlpha = 0f;
             endTargetAlpha = 1f;
         }
 
+        if (shotStart.CameraFilterPath != "")
+        {
+            shotStartCameraFilter = cameraFilterOverlay.SpawnCameraFilter(Resources.Load<Texture2D>(shotStart.CameraFilterPath));
+            startAlpha = 1f;
+            startTargetAlpha = 0f;
+        }
+        
         if (shotStart.ChangePosition)
             startPosition = new Vector3(shotStart.PositionX, shotStart.PositionY, -shotStart.PositionZ);
 
@@ -203,8 +210,11 @@ public class ScenarioManager : MonoBehaviour
             var startTime = Time.time;
             var endTime = startTime + duration;
 
-            shotStartCameraFilter.color = new Color(1, 1, 1, startAlpha);
-            shotEndCameraFilter.color = new Color(1, 1, 1, endAlpha);
+            if(shotStartCameraFilter != null)
+                shotStartCameraFilter.SetAlpha(startAlpha);
+
+            if(shotEndCameraFilter != null)
+                shotEndCameraFilter.SetAlpha(endAlpha);
 
             camera.transform.rotation = startRotation;
             camera.transform.localPosition = startPosition;
@@ -217,16 +227,16 @@ public class ScenarioManager : MonoBehaviour
 
                 if (shotStart.CameraFilterPath != "")
                 {
-                    shotStartCameraFilter.color = new Color(1, 1, 1, Mathf.Lerp(startAlpha, startTargetAlpha, progress));
+                    shotStartCameraFilter.SetAlpha(Mathf.Lerp(startAlpha, startTargetAlpha, progress));
 
                     if (shotEnd.CameraFilterPath != "")
-                        shotEndCameraFilter.color = new Color(1, 1, 1, 1);
+                        shotEndCameraFilter.SetAlpha(endTargetAlpha);
                 }
 
                 if (shotEnd.CameraFilterPath != "")
                 {
                     if (shotStart.CameraFilterPath == "")
-                        shotEndCameraFilter.color = new Color(1, 1, 1, Mathf.Lerp(endAlpha, endTargetAlpha, progress));
+                        shotEndCameraFilter.SetAlpha(Mathf.Lerp(endAlpha, endTargetAlpha, progress));
                 }
 
                 if (shotStart.ChangePosition || shotEnd.ChangePosition)
@@ -239,11 +249,55 @@ public class ScenarioManager : MonoBehaviour
             }
         }
 
-        shotStartCameraFilter.color = new Color(1, 1, 1, startTargetAlpha);
-        shotEndCameraFilter.color = new Color(1, 1, 1, endTargetAlpha);
+        if (shotStartCameraFilter != null)
+            shotStartCameraFilter.SetAlpha(startTargetAlpha);
+
+        if (shotEndCameraFilter != null)
+            shotEndCameraFilter.SetAlpha(endTargetAlpha);
 
         camera.transform.rotation = endRotation;
         camera.transform.localPosition = endPosition;
+    }
+
+    private void SetText(GameSceneElementData scene)
+    {
+        scene.SceneActorDataList.Where(actor => ((Enums.SpeechMethod)actor.SpeechMethod) != Enums.SpeechMethod.None).ToList().ForEach(actor =>
+        {
+            if(actor.ShowTextBox)
+            {
+                SetSpeechTextBox(actor);           
+            } else {
+                SetSpeechBubble(actor);
+            }
+        });
+    }
+
+    private void SetSpeechTextBox(GameSceneActorElementData gameSceneActorElementData)
+    {
+        var gameOverlay = GameManager.instance.Organizer.CameraManager.overlayManager.GameOverlay;
+
+        speechTextBox = gameOverlay.SpawnSpeechTextBox();
+
+        speechTextBox.nameText.text = gameSceneActorElementData.WorldInteractable.InteractableName;
+        speechTextBox.speechText.text = gameSceneActorElementData.SpeechText;
+
+        speechTextBox.SetSpeechTextBox((Enums.SpeechMethod)gameSceneActorElementData.SpeechMethod);
+
+        var lastScene = InteractionManager.activeOutcome.SceneIndex == InteractionManager.activeOutcome.SceneDataList.Count - 1;
+
+        speechTextBox.moreIcon.SetActive(!lastScene);
+    }
+
+    private void SetSpeechBubble(GameSceneActorElementData gameSceneActorElementData)
+    {
+        var trackingElementOverlay = GameManager.instance.Organizer.CameraManager.overlayManager.TrackingElementOverlay;
+
+        var speechBubble = trackingElementOverlay.SpawnSpeechBubble(speechBubblePrefab);
+        speechBubble.TrackingElement.SetTrackingTarget(gameSceneActorElementData.WorldInteractable.DataElement);
+
+        speechBubble.speechText.text = gameSceneActorElementData.SpeechText;
+
+        gameSceneActorElementData.WorldInteractable.DataElement.GetComponent<GameElement>().SpeechBubble = speechBubble;
     }
 
     public void CancelScene()
@@ -253,15 +307,20 @@ public class ScenarioManager : MonoBehaviour
         CancelShot();
 
         CloseSceneProps();
+
+        CloseActors();
     }
 
     private void CancelShot()
     {
         PlayerControlManager.DisableCameraMovement = false;
 
-        shotStartCameraFilter.color = new Color(1, 1, 1, 0);
-        shotEndCameraFilter.color = new Color(1, 1, 1, 0);
+        if(shotStartCameraFilter != null)
+            PoolManager.ClosePoolObject(shotStartCameraFilter);
 
+        if(shotEndCameraFilter != null)
+            PoolManager.ClosePoolObject(shotEndCameraFilter);
+        
         StopAllCoroutines();
         PlayerControlManager.instance.ResetCamera();
     }
@@ -274,6 +333,18 @@ public class ScenarioManager : MonoBehaviour
         });
 
         GameManager.instance.ScenePropDataController.Data.dataList = new List<IElementData>();
+    }
+
+    private void CloseActors()
+    {
+        //Close speech bubbles of all speaking actors whose text appears in a speech bubble
+        InteractionManager.activeOutcome.ActiveScene.SceneActorDataList.Where(actor => ((Enums.SpeechMethod)actor.SpeechMethod) != Enums.SpeechMethod.None && !actor.ShowTextBox).ToList().ForEach(actor =>
+        {
+            actor.WorldInteractable.DataElement.GetComponent<GameElement>().CloseSpeechBubble();
+        });
+
+        if (speechTextBox != null)
+            PoolManager.ClosePoolObject(speechTextBox);
     }
 
     public void FinalizeScenario()

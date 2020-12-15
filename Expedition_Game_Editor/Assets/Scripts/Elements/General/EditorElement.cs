@@ -64,15 +64,15 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         GetComponent<IElement>().SetElement();
 
-        UpdateStatusIcon();
+        UpdateTrackingElement();
     }
 
-    private void UpdateStatusIcon()
+    private void UpdateTrackingElement()
     {
         if (glow == null) return;
 
-        if (glow.GetComponent<ExStatusIcon>() != null)
-            glow.GetComponent<ExStatusIcon>().UpdateIcon();
+        if (glow.GetComponent<TrackingElement>() != null)
+            glow.GetComponent<TrackingElement>().UpdateTrackingElement();
     }
 
     public void SetOverlay()

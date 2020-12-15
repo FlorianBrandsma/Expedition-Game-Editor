@@ -36456,8 +36456,11 @@ MonoBehaviour:
   timeBasedLighting: 1
   enableScroll: 1
   enableStatusIcons: 1
+  enableTrackingElements: 1
   enableTerrainInfo: 1
   enableGameUI: 0
+  enableSpeech: 0
+  enableCameraFilters: 0
 --- !u!114 &899072710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50485,8 +50488,11 @@ MonoBehaviour:
   timeBasedLighting: 0
   enableScroll: 0
   enableStatusIcons: 0
+  enableTrackingElements: 0
   enableTerrainInfo: 0
   enableGameUI: 0
+  enableSpeech: 0
+  enableCameraFilters: 0
 --- !u!114 &1215727548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73420,8 +73426,11 @@ MonoBehaviour:
   timeBasedLighting: 0
   enableScroll: 0
   enableStatusIcons: 0
+  enableTrackingElements: 0
   enableTerrainInfo: 0
   enableGameUI: 0
+  enableSpeech: 0
+  enableCameraFilters: 0
 --- !u!1 &1792569154
 GameObject:
   m_ObjectHideFlags: 0

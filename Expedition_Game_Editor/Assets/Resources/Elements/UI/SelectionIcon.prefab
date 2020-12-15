@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 222000011793801788}
   - component: {fileID: 114000013847368354}
   - component: {fileID: 114000013857254380}
+  - component: {fileID: 114357977588431240}
   m_Layer: 5
-  m_Name: StatusIcon
+  m_Name: SelectionIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
+  m_AnchoredPosition: {x: 17.5, y: -17.5}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222000011793801788
@@ -83,9 +84,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8843364b93cfc4abb91f5c2ab42449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusIconManager: {fileID: 0}
-  statusIconType: 0
   cam: {fileID: 0}
   target: {fileID: 0}
   screenPos: {x: 0, y: 0, z: 0}
   parentRect: {fileID: 0}
+--- !u!114 &114357977588431240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010693922530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dde83a104593534bb579a01e0018b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectIcon: {fileID: 2800000, guid: 36dd5b7add89e9845be6d8e02d6c8276, type: 3}
+  lockIcon: {fileID: 2800000, guid: 8a3e44accb2aa2f4091ab19f63f1b457, type: 3}
+  selectionIconType: 0

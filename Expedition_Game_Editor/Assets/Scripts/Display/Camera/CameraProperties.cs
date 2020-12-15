@@ -15,10 +15,10 @@ public class CameraProperties : MonoBehaviour, IDisplay
 
     public bool timeBasedLighting;
     public bool enableScroll;
-    public bool enableStatusIcons;
+    public bool enableTrackingElements;
     public bool enableTerrainInfo;
     public bool enableGameUI;
-    public bool enableSpeech;
+    public bool enableCameraFilters;
 
     private IDataController dataController;
     public IDataController DataController

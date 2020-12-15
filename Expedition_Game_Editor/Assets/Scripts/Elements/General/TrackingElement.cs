@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
-public class ExStatusIcon : MonoBehaviour, IPoolable
+public class TrackingElement : MonoBehaviour
 {
-	public StatusIconOverlay statusIconManager;
-
-	public StatusIconOverlay.StatusIconType statusIconType;
+	public TrackingElementOverlay TrackingElementOverlay    { get; set; }
+	public Enums.TrackingElementType TrackingElementType    { get; set; }
 
 	public Camera cam;
 	public IElementData targetElementData;
@@ -19,30 +17,48 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	private float scale;
 	#endregion
 
-	public float HorizontalOffset           { get; set; }
+	private float widthCap;
+	private float heightCap;
 
-	public RectTransform RectTransform      { get { return GetComponent<RectTransform>(); } }
-	public RawImage RawImage                { get { return GetComponent<RawImage>(); } }
+	public float HorizontalOffset       { get; set; }
+	public float VerticalOffset         { get; set; }
 
-	public Transform Transform              { get { return GetComponent<Transform>(); } }
-	public Enums.ElementType ElementType    { get { return Enums.ElementType.StatusIcon; } }
-	public int Id                           { get; set; }
-	public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
-
-	public IPoolable Instantiate()
+	public RectTransform RectTransform  { get { return GetComponent<RectTransform>(); } }
+	
+    public ExSpeechBubble SpeechBubble  { get { return GetComponent<ExSpeechBubble>(); } }
+    
+	public void InitializeElement()
 	{
-		return Instantiate(this);
+		var cameraManager = TrackingElementOverlay.CameraManager;
+		
+		widthCap    = ((cameraManager.displayRect.rect.width / 2) - (RectTransform.rect.width / 2));
+		heightCap   = ((cameraManager.displayRect.rect.height / 2) - (RectTransform.rect.height / 2));
+
+		transform.SetParent(cameraManager.overlayManager.layer[0]);
+		transform.localEulerAngles = Vector3.zero;
+
+		cam = cameraManager.cam;
+
+		parentRect = cameraManager.displayRect;
+
+		if (cameraManager.overlayManager.vertical_min != null)
+		{
+			HorizontalOffset    = cameraManager.overlayManager.vertical_min.rect.width / 2;
+			VerticalOffset      = cameraManager.overlayManager.horizontal_min.rect.height / 2;
+		}
 	}
 
-	public void SetIconTarget(DataElement dataElement)
+	public void SetTrackingTarget(DataElement dataElement)
 	{
+		if (dataElement == null) return;
+
 		targetElementData = dataElement.ElementData;
 		target = dataElement.transform;
 
 		InitializeData();
 	}
 
-	public void UpdateIcon()
+	public void UpdateTrackingElement()
 	{
 		if (target == null) return;
 
@@ -54,10 +70,10 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 	{
 		if (target == null) return;
 		
-		switch (statusIconType)
+		switch (TrackingElementType)
 		{
-			case StatusIconOverlay.StatusIconType.Selection:    UpdateSelectionPosition();  break;
-			case StatusIconOverlay.StatusIconType.Lock:         UpdateLockPosition();       break;
+			case Enums.TrackingElementType.Limited:    UpdateLimitedPosition();    break;
+			case Enums.TrackingElementType.Free:       UpdateFreePosition();       break;
 		}
 	}
 
@@ -141,15 +157,18 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 		depth  = gameWorldInteractableData.Depth    * gameWorldInteractableData.Scale;
 	}
 
-	private void UpdateSelectionPosition()
+	private void UpdateLimitedPosition()
 	{
 		var maxHeight = 12;
+		var heightOffset = 1;
 
-		var fixedHeight = (height > maxHeight ? maxHeight : height);
+		var totalHeight = height + heightOffset;
+
+		var fixedHeight = (totalHeight > maxHeight ? maxHeight : totalHeight);
 		
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + fixedHeight,
-													   target.position.z)) * statusIconManager.Multiplier;
+													   target.position.z)) * TrackingElementOverlay.Multiplier;
 
 		if (screenPos.z < 0)
 		{
@@ -158,37 +177,57 @@ public class ExStatusIcon : MonoBehaviour, IPoolable
 			//camera matters
 			screenPos = (target.transform.position - cam.transform.position) * parentRect.rect.width;
 		}
-
-		var widthCap = statusIconManager.WidthCap;
-		var heightCap = statusIconManager.HeightCap;
 		
 		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), 
-											   screenPos.y - (parentRect.rect.height / 2), 
-											   0);
+											  -VerticalOffset   + screenPos.y - (parentRect.rect.height / 2), 
+											  0);
 
-		if (transform.localPosition.x > widthCap)
-			transform.localPosition = new Vector3(widthCap, transform.localPosition.y, 0);
+        if (SpeechBubble != null)
+            SpeechBubble.SetSpeechBubble(true);
 
-		if (transform.localPosition.x < -widthCap)
-			transform.localPosition = new Vector3(-widthCap, transform.localPosition.y, 0);
+        if (transform.localPosition.x > widthCap - HorizontalOffset)
+        {
+            transform.localPosition = new Vector3(widthCap - HorizontalOffset, transform.localPosition.y, 0);
 
-		if (transform.localPosition.y > heightCap)
-			transform.localPosition = new Vector3(transform.localPosition.x, heightCap, 0);
+            if (SpeechBubble != null)
+                SpeechBubble.SetSpeechBubble(false);
+        }
 
-		if (transform.localPosition.y < -heightCap)
-			transform.localPosition = new Vector3(transform.localPosition.x, -heightCap, 0);
+		if (transform.localPosition.x < -widthCap + HorizontalOffset)
+        {
+            transform.localPosition = new Vector3(-widthCap + HorizontalOffset, transform.localPosition.y, 0);
+
+            if (SpeechBubble != null)
+                SpeechBubble.SetSpeechBubble(false);
+        }
+
+		if (transform.localPosition.y > heightCap - VerticalOffset)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, heightCap - VerticalOffset, 0);
+
+            if (SpeechBubble != null)
+                SpeechBubble.SetSpeechBubble(false);
+        }
+		
+		if (transform.localPosition.y < -heightCap - VerticalOffset)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, -heightCap + VerticalOffset, 0);
+
+            if (SpeechBubble != null)
+                SpeechBubble.SetSpeechBubble(true);
+        }
 	}
 
-	private void UpdateLockPosition()
+	private void UpdateFreePosition()
 	{
 		screenPos = cam.WorldToScreenPoint(new Vector3(target.position.x,
 													   target.position.y + (height / 2),
-													   target.position.z)) * statusIconManager.Multiplier;
+													   target.position.z)) * TrackingElementOverlay.Multiplier;
 
 		transform.localPosition = new Vector3(-HorizontalOffset + screenPos.x - (parentRect.rect.width / 2), screenPos.y - (parentRect.rect.height / 2), 0);
 	}
 
-	public void ClosePoolable()
+	public void CloseTrackingElement()
 	{
 		HorizontalOffset = 0;
 

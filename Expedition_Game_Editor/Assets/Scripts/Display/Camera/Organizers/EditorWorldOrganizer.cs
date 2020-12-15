@@ -47,7 +47,16 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private bool allowSelection = true;
     private bool dataSet;
-    
+
+    private ExEditorWorldElement editorWorldElementPrefab;
+    private ExSelectionIcon selectionIconPrefab;
+
+    private void Awake()
+    {
+        editorWorldElementPrefab    = Resources.Load<ExEditorWorldElement>("Elements/World/EditorWorldElement");
+        selectionIconPrefab         = Resources.Load<ExSelectionIcon>("Elements/UI/SelectionIcon");
+    }
+
     void Update()
     {
         var ray = CameraManager.cam.ScreenPointToRay(Input.mousePosition);
@@ -620,9 +629,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     
     private void SetTerrainTile(TerrainTileElementData terrainTileData)
     {
-        Tile prefab = Resources.Load<Tile>("Objects/Tile/" + worldData.TileSetName + "/" + terrainTileData.TileId);
+        var prefab = Resources.Load<Tile>("Objects/Tile/" + worldData.TileSetName + "/" + terrainTileData.TileId);
 
-        Tile tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.TileId);
+        var tile = (Tile)PoolManager.SpawnObject(prefab, terrainTileData.TileId);
         tileList.Add(tile);
 
         tile.gameObject.SetActive(true);
@@ -697,12 +706,10 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetWorldElements(IDataController dataController, List<IElementData> dataList)
     {
         if (dataList.Count == 0) return;
-        
-        var prefab = Resources.Load<ExEditorWorldElement>("Elements/World/EditorWorldElement");
-        
+
         foreach (IElementData elementData in dataList)
         {
-            var worldElement = (ExEditorWorldElement)PoolManager.SpawnObject(prefab);
+            var worldElement = (ExEditorWorldElement)PoolManager.SpawnObject(editorWorldElementPrefab);
 
             SelectionElementManager.InitializeElement(  worldElement.EditorElement.DataElement, CameraManager.content,
                                                         DisplayManager,
@@ -952,35 +959,35 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         
         element.DataElement.SetElement();
 
-        InitializeStatusIconOverlay(element);
+        InitializeTrackingElementOverlay(element);
 
         element.SetOverlay();
 
         return true;
     }
 
-    private void InitializeStatusIconOverlay(EditorElement element)
+    private void InitializeTrackingElementOverlay(EditorElement element)
     {
         if (element.glow != null && element.glow.activeInHierarchy) return;
 
-        ExStatusIcon statusIcon = null;
+        ExSelectionIcon selectionIcon = null;
 
-        var statusIconOverlay = CameraManager.overlayManager.StatusIconOverlay;
+        var trackingElementOverlay = CameraManager.overlayManager.TrackingElementOverlay;
         
         if (element.elementStatus == Enums.ElementStatus.Locked)
         {
-            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Lock, CameraManager.overlayManager.layer[0]);
-            element.lockIcon = statusIcon.gameObject;
+            selectionIcon = trackingElementOverlay.SpawnSelectionIcon(selectionIconPrefab, Enums.SelectionIconType.Lock, Enums.TrackingElementType.Free);
+            element.lockIcon = selectionIcon.gameObject;
         }
 
         if (element.DataElement.ElementData.SelectionStatus != Enums.SelectionStatus.None)
         {
-            statusIcon = statusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection, CameraManager.overlayManager.layer[0]);
-            element.glow = statusIcon.gameObject;
+            selectionIcon = trackingElementOverlay.SpawnSelectionIcon(selectionIconPrefab, Enums.SelectionIconType.Select, Enums.TrackingElementType.Limited);
+            element.glow = selectionIcon.gameObject;
         }
 
-        if(statusIcon != null)
-            statusIcon.SetIconTarget(element.DataElement);
+        if(selectionIcon != null)
+            selectionIcon.TrackingElement.SetTrackingTarget(element.DataElement);
     }
 
     public void ResetData(List<IElementData> filter)

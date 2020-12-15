@@ -6,7 +6,7 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     static public GameManager instance;
-    
+
     public GameSaveElementData gameSaveData;
     public GameWorldElementData gameWorldData;
     public GameRegionElementData regionData;
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         InitializeLocalNavMesh();
 
         localNavMeshBuilder.UpdateNavMesh();
-
+        
         TimeManager.active = true;
 
         TimeManager.instance.SetLighting();
@@ -179,6 +179,8 @@ public class GameManager : MonoBehaviour
         ActivePhaseId = activePhaseSave.PhaseId;
 
         PlayerControlManager.AllowInput = true;
+        PlayerControlManager.DisablePlayerMovement = false;
+        PlayerControlManager.DisableCameraMovement = false;
     }
     
     private void ChangePhase()

@@ -147,7 +147,7 @@ public class Enums
         Child,
         Both
     }
-
+    
     public enum ElementType
     {
         Panel,
@@ -163,7 +163,7 @@ public class Enums
         Model,
         Text,
         Dropdown,
-        StatusIcon,
+        SelectionIcon,
         SliderHorizontal,
         SliderVertical,
         TabHorizontal,
@@ -176,7 +176,22 @@ public class Enums
         Joystick,
         InputNumber,
         LoadingBar,
-        TouchButton
+        TouchButton,
+        SpeechBubble,
+        SpeechTextBox,
+        CameraFilter
+    }
+
+    public enum SelectionIconType
+    {
+        Select,
+        Lock
+    }
+
+    public enum TrackingElementType
+    {
+        Limited,
+        Free
     }
 
     public enum ElementStatus
@@ -234,6 +249,7 @@ public class Enums
 
     public enum SpeechMethod
     {
+        None,
         Think,
         Whisper,
         Speak,

@@ -13,10 +13,10 @@ public class DataElement : MonoBehaviour
     public SegmentController segmentController;
     public GameObject displayParent;
     
-    public IDisplayManager DisplayManager { get; set; }
+    public IDisplayManager DisplayManager       { get; set; }
 
-    public ISelectionElement SelectionElement { get { return GetComponent<ISelectionElement>(); } }
-    public IPoolable Poolable   { get { return GetComponent<IPoolable>(); } }
+    public ISelectionElement SelectionElement   { get { return GetComponent<ISelectionElement>(); } }
+    public IPoolable Poolable                   { get { return GetComponent<IPoolable>(); } }
 
     public void InitializeElement()
     {

@@ -18,7 +18,7 @@ public class PlayerControlManager : MonoBehaviour
     private bool defending;
 
     private Enums.ControlType controlType;
-    private ExStatusIcon selectionIcon;
+    private ExSelectionIcon selectionIcon;
 
     public List<GameWorldInteractableElementData> potentialTargetList = new List<GameWorldInteractableElementData>();
     public List<GameWorldInteractableElementData> eligibleSelectionTargets = new List<GameWorldInteractableElementData>();
@@ -26,13 +26,15 @@ public class PlayerControlManager : MonoBehaviour
     private GameWorldInteractableElementData SelectionTarget    { get; set; }
     
     private CameraManager CameraManager                         { get { return GameManager.instance.Organizer.CameraManager; } }
-    private StatusIconOverlay StatusIconOverlay                 { get { return GameManager.instance.Organizer.OverlayManger.StatusIconOverlay; } }
+    private TrackingElementOverlay TrackingElementOverlay       { get { return GameManager.instance.Organizer.OverlayManger.TrackingElementOverlay; } }
 
     private PlayerSaveElementData PlayerData                    { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
     private GameWorldInteractableElementData ActiveCharacterData{ get { return GameManager.instance.worldInteractableControllableData; } }
     private GameElement ActiveCharacter                         { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
     private Animator ActiveAnimator                             { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.SelectionElement.Element).Animator; } }
-    
+
+    private ExSelectionIcon selectionIconPrefab;
+
     public Enums.ControlType ControlType
     {
         get { return controlType; }
@@ -46,19 +48,20 @@ public class PlayerControlManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        selectionIconPrefab = Resources.Load<ExSelectionIcon>("Elements/UI/SelectionIcon");
     }
 
     private void Update()
     {
-        if (potentialTargetList.Count == 0 || TimeManager.instance.Paused) return;
+        if (!TimeManager.active || TimeManager.instance.Paused) return;
+
+        TrackingElementOverlay.UpdateOverlay();
+
+        if (potentialTargetList.Count == 0) return;
         
         //Of the potential targets, check which one will be eligible for selection
         CheckTargetTriggers();
-
-        if(selectionIcon != null)
-        {
-            selectionIcon.UpdatePosition();
-        }
     }
 
     private void CheckTargetTriggers()
@@ -193,11 +196,11 @@ public class PlayerControlManager : MonoBehaviour
     private void SetSelectionTargetIcon()
     {
         if (SelectionTarget.Interaction.HideInteractionIndicator) return;
+        
+        selectionIcon = TrackingElementOverlay.SpawnSelectionIcon(selectionIconPrefab, Enums.SelectionIconType.Select, Enums.TrackingElementType.Limited);
+        selectionIcon.TrackingElement.SetTrackingTarget(SelectionTarget.DataElement);
 
-        selectionIcon = StatusIconOverlay.StatusIcon(StatusIconOverlay.StatusIconType.Selection, CameraManager.overlayManager.layer[0]);
-        selectionIcon.SetIconTarget(SelectionTarget.DataElement);
-
-        SelectionTarget.DataElement.GetComponent<GameElement>().selectionIcon = selectionIcon.gameObject;
+        SelectionTarget.DataElement.GetComponent<GameElement>().SelectionIcon = selectionIcon.gameObject;
     }
     
     public void RemoveSelectionTarget(GameWorldInteractableElementData gameWorldInteractableElementData)

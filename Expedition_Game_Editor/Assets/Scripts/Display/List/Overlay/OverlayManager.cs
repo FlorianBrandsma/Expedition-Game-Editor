@@ -21,11 +21,11 @@ public class OverlayManager : MonoBehaviour
     public PagingOverlay PagingOverlay { get; set; }
     public HeaderOverlay HeaderOverlay { get; set; }
 
-    public StatusIconOverlay StatusIconOverlay          { get; set; }
-    public TerrainHeaderOverlay TerrainHeaderOverlay    { get; set; }
-    public GameOverlay GameOverlay                      { get; set; }
-    public SpeechOverlay SpeechOverlay                  { get; set; }
-    public TouchOverlay TouchOverlay                    { get; set; }
+    public TrackingElementOverlay TrackingElementOverlay    { get; set; }
+    public TerrainHeaderOverlay TerrainHeaderOverlay        { get; set; }
+    public GameOverlay GameOverlay                          { get; set; }
+    public TouchOverlay TouchOverlay                        { get; set; }
+    public CameraFilterOverlay CameraFilterOverlay          { get; set; }
     
     public IDisplayManager DisplayManager { get; set; }
 
@@ -81,8 +81,8 @@ public class OverlayManager : MonoBehaviour
     {
         var cameraProperties = (CameraProperties)displayProperties;
 
-        if (cameraProperties.enableStatusIcons)
-            StatusIconOverlay = gameObject.AddComponent<StatusIconOverlay>();
+        if (cameraProperties.enableTrackingElements)
+            TrackingElementOverlay = gameObject.AddComponent<TrackingElementOverlay>();
 
         if (cameraProperties.enableTerrainInfo)
             TerrainHeaderOverlay = gameObject.AddComponent<TerrainHeaderOverlay>();
@@ -95,8 +95,8 @@ public class OverlayManager : MonoBehaviour
                 TouchOverlay = gameObject.AddComponent<TouchOverlay>();
         }
 
-        if (cameraProperties.enableSpeech)
-            SpeechOverlay = gameObject.AddComponent<SpeechOverlay>();
+        if (cameraProperties.enableCameraFilters)
+            CameraFilterOverlay = gameObject.AddComponent<CameraFilterOverlay>();
     }
 
     public void ActivateOverlay(IOrganizer organizer)

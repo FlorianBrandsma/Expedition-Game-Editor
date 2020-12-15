@@ -10,7 +10,8 @@ public class GameElement : MonoBehaviour, ISelectionElement
 
     public readonly float fieldOfView = 90f;
 
-    public GameObject selectionIcon;
+    public GameObject SelectionIcon { get; set; }
+    public ExSpeechBubble SpeechBubble  { get; set; }
 
     public UnityEvent OnSelection = new UnityEvent();
 
@@ -48,15 +49,24 @@ public class GameElement : MonoBehaviour, ISelectionElement
     {
         DataElement.ElementData.SelectionStatus = Enums.SelectionStatus.None;
 
-        if (selectionIcon != null)
+        if (SelectionIcon != null)
         {
-            selectionIcon.SetActive(false);
-        }
+            SelectionIcon.SetActive(false);
+        }    
+    }
+
+    public void CloseSpeechBubble()
+    {
+        if (SpeechBubble == null) return;
+
+        PoolManager.ClosePoolObject(SpeechBubble);
+        SpeechBubble = null;
     }
 
     public void CloseElement()
     {
         CancelSelection();
+        CloseSpeechBubble();
 
         DataElement.ElementData.DataElement = null;
 
