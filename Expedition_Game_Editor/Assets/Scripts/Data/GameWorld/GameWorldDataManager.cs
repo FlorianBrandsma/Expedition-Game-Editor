@@ -237,10 +237,11 @@ public static class GameWorldDataManager
 
                             FreezeTime = sceneData.FreezeTime,
                             AutoContinue = sceneData.AutoContinue,
+                            SetActorsInstantly = sceneData.SetActorsInstantly,
 
                             SceneDuration = sceneData.SceneDuration,
                             ShotDuration = sceneData.ShotDuration,
-
+                            
                             SceneShotDataList = (
                             from sceneShotData in sceneShotDataList
 

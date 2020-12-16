@@ -14,14 +14,21 @@ public class ScenarioManager : MonoBehaviour
     private ExCameraFilter shotEndCameraFilter;
 
     private ExSpeechTextBox speechTextBox;
-
     private ExSpeechBubble speechBubblePrefab;
+
+    static private int speechBubbleCharacterLimit = 50;
+    static private int speechTextBoxCharacterLimit = 100;
 
     private void Awake()
     {
         instance = this;
 
         speechBubblePrefab = Resources.Load<ExSpeechBubble>("Elements/UI/SpeechBubble");
+    }
+
+    static public int SpeechCharacterLimit(bool showTextBox)
+    {
+        return showTextBox ? speechTextBoxCharacterLimit : speechBubbleCharacterLimit;
     }
 
     public void SetScenario()
@@ -61,9 +68,6 @@ public class ScenarioManager : MonoBehaviour
     public void SetScene()
     {
         var scene = InteractionManager.activeOutcome.ActiveScene;
-        
-        //-Actors must be able to move to their position instantly
-        //Scene editor, "set actors instantly"
 
         SetRegion(scene);
 
@@ -93,14 +97,15 @@ public class ScenarioManager : MonoBehaviour
 
     private void SetActors(GameSceneElementData scene)
     {
-        scene.SceneActorDataList.ForEach(actor => SetActorTransform(actor, false));
+        scene.SceneActorDataList.ForEach(actor => SetActorTransform(actor, scene.SetActorsInstantly));
     }
 
-    private void SetActorTransform(GameSceneActorElementData actor, bool instant)
+    private void SetActorTransform(GameSceneActorElementData actor, bool arriveInstantly)
     {
         var changeTransform = false;
 
         actor.WorldInteractable.DestinationType = DestinationType.Scene;
+        actor.WorldInteractable.ArriveInstantly = arriveInstantly;
 
         if (actor.FreezePosition)
         {
@@ -294,7 +299,7 @@ public class ScenarioManager : MonoBehaviour
 
         var speechBubble = trackingElementOverlay.SpawnSpeechBubble(speechBubblePrefab);
         speechBubble.TrackingElement.SetTrackingTarget(gameSceneActorElementData.WorldInteractable.DataElement);
-
+        
         speechBubble.speechText.text = gameSceneActorElementData.SpeechText;
 
         gameSceneActorElementData.WorldInteractable.DataElement.GetComponent<GameElement>().SpeechBubble = speechBubble;
@@ -337,14 +342,23 @@ public class ScenarioManager : MonoBehaviour
 
     private void CloseActors()
     {
-        //Close speech bubbles of all speaking actors whose text appears in a speech bubble
-        InteractionManager.activeOutcome.ActiveScene.SceneActorDataList.Where(actor => ((Enums.SpeechMethod)actor.SpeechMethod) != Enums.SpeechMethod.None && !actor.ShowTextBox).ToList().ForEach(actor =>
+        InteractionManager.activeOutcome.ActiveScene.SceneActorDataList.ToList().ForEach(actor =>
         {
-            actor.WorldInteractable.DataElement.GetComponent<GameElement>().CloseSpeechBubble();
+            actor.WorldInteractable.DestinationType = DestinationType.Interaction;
+            actor.WorldInteractable.ArriveInstantly = false;
+            
+            //Close speech bubbles of all speaking actors whose text appears in a speech bubble
+            if ((Enums.SpeechMethod)actor.SpeechMethod != Enums.SpeechMethod.None && !actor.ShowTextBox)
+            {
+                actor.WorldInteractable.DataElement.GetComponent<GameElement>().CloseSpeechBubble();
+            }
         });
 
         if (speechTextBox != null)
+        {
             PoolManager.ClosePoolObject(speechTextBox);
+            speechTextBox = null;
+        }
     }
 
     public void FinalizeScenario()
@@ -358,15 +372,15 @@ public class ScenarioManager : MonoBehaviour
     public void CancelScenario(bool finished = false)
     {
         if (InteractionManager.activeOutcome == null) return;
-        
+
+        CancelScene();
+
         //Reset actors of the active scene if the scenario is cancelled outside of finishing
         if (!finished)
         {
             InteractionManager.activeOutcome.ActiveScene.SceneActorDataList.Select(actor => actor.WorldInteractable).ToList()
                                                                            .ForEach(worldInteractable => GameManager.instance.ResetInteractable(worldInteractable));
         }
-        
-        CancelScene();
         
         //Resets game time
         GameManager.instance.SetChapterTimeSpeed();

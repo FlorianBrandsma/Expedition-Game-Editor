@@ -5,8 +5,8 @@ using System.Linq;
 static public class Fixtures
 {
     static public int timeFrames = 2;
- 
-    static public int supplies = 4;
+
+    static public int supplies = 10000;
     static public int gear = 6;
     static public int spoils = 10;
     static public int interactables = 6;
@@ -28,7 +28,7 @@ static public class Fixtures
     static public int baseTasks = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
-    static public int objectsInWorld = 3;
+    static public int objectsInWorld = 300;
 
     static public int saves = 1;
 
@@ -821,10 +821,11 @@ static public class Fixtures
 
         scene.FreezeTime = true;
         scene.AutoContinue = false;
+        scene.SetActorsInstantly = false;
 
         scene.SceneDuration = 2f;
         scene.ShotDuration = 10;
-
+        
         scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;
         scene.PrivateNotes = "";
 
@@ -913,7 +914,7 @@ static public class Fixtures
 
         sceneProp.PositionX = 238.5f;
         sceneProp.PositionY = 0;
-        sceneProp.PositionZ = 238.5f;
+        sceneProp.PositionZ = 240.5f;
 
         sceneProp.TerrainId = GetTerrain(scene.RegionId, sceneProp.PositionX, sceneProp.PositionZ);
         sceneProp.TerrainTileId = GetTerrainTile(sceneProp.TerrainId, sceneProp.PositionX, sceneProp.PositionZ);
@@ -1332,10 +1333,11 @@ static public class Fixtures
 
                                         scene.FreezeTime = sceneSource.FreezeTime;
                                         scene.AutoContinue = sceneSource.AutoContinue;
+                                        scene.SetActorsInstantly = sceneSource.SetActorsInstantly;
 
                                         scene.SceneDuration = sceneSource.SceneDuration;
                                         scene.ShotDuration = sceneSource.ShotDuration;
-
+                                        
                                         scene.PublicNotes = sceneSource.PublicNotes;
                                         scene.PrivateNotes = sceneSource.PrivateNotes;
 

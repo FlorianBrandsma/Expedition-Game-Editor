@@ -232,6 +232,17 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     {
         get { return ((SceneActorData)EditData).ModelIconPath; }
     }
+
+    public int SpeechTextLimit
+    {
+        get { return sceneActorData.SpeechTextLimit; }
+        set
+        {
+            sceneActorData.SpeechTextLimit = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).SpeechTextLimit = value);
+        }
+    }
     #endregion
 
     public void InitializeEditor()
@@ -263,7 +274,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed);
+        return ElementDataList.Any(x => x.Changed) && (SpeechText.Length <= SpeechTextLimit);
     }
 
     public void ApplyChanges()

@@ -121,6 +121,8 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
 
     private void SetRegionButton()
     {
+        if (regionButton.DataElement.Data == null) return;
+
         var sceneElementData = (SceneElementData)SceneEditor.EditData;
 
         regionButton.elementStatus = sceneElementData.ChangedRegionId ? Enums.ElementStatus.Locked : Enums.ElementStatus.Enabled;

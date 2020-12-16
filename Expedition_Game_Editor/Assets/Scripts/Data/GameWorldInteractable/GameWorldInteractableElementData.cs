@@ -21,6 +21,7 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
     public Vector3 DestinationPosition      { get; set; }
     public Vector3 ArrivalRotation          { get; set; }
     public bool AllowRotation               { get; set; }
+    public bool ArriveInstantly             { get; set; }
 
     public float TravelTime                 { get; set; }
     

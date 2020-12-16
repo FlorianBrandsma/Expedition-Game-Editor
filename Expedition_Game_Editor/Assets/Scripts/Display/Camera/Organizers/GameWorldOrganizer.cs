@@ -178,9 +178,9 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
         SetElement(ScenePropDataController, gameScenePropElementData, gameWorldObjectPrefab);
     }
 
-    private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab, int prefabId = 0)
+    private void SetElement(IDataController dataController, IElementData elementData, IPoolable prefab, int poolableId = 0)
     {        
-        var element = (IGameElement)PoolManager.SpawnObject(prefab, prefabId);
+        var element = (IGameElement)PoolManager.SpawnObject(prefab, poolableId);
         element.GameElement.transform.SetParent(CameraManager.content, false);
 
         elementData.DataElement = element.GameElement.DataElement;
@@ -246,6 +246,7 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
                 //Update the destination of active agents
                 if (gameWorldInteractableElementData.Type == Enums.InteractableType.Agent)
                 {
+                    //
                     gameWorldInteractableElementData.DataElement.SelectionElement.Element.UpdateElement();
                 }
 

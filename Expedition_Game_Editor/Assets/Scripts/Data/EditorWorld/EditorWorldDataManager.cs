@@ -350,6 +350,8 @@ public static class EditorWorldDataManager
 
                         StartTime = interactionData.StartTime,
                         EndTime = interactionData.EndTime,
+                        
+                        SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
 
                     }).ToList() : new List<SceneActorElementData>(),
 

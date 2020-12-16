@@ -184,7 +184,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     private void CheckTime()
     {
-        TimeConflict = Default ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.ElementData);
+        TimeConflict = Default ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.EditData);
 
         startTimeInput.InputInvalid = TimeConflict;
         endTimeInput.InputInvalid = TimeConflict;

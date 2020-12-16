@@ -47,6 +47,14 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IElementData elementData in list)
         {
+            var elementPosition = ListManager.List.GetElementPosition(list.IndexOf(elementData));
+
+            if (ListManager.ElementBelowMin(elementPosition, true))
+                continue;
+
+            if (ListManager.ElementAboveMax(elementPosition, true))
+                break;
+            
             var panelTile = (ExPanelTile)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  panelTile.EditorElement.DataElement, ListManager.listParent,

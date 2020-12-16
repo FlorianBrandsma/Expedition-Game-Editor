@@ -92,6 +92,17 @@ public class SceneEditor : MonoBehaviour, IEditor
         }
     }
 
+    public bool SetActorsInstantly
+    {
+        get { return sceneData.SetActorsInstantly; }
+        set
+        {
+            sceneData.SetActorsInstantly = value;
+
+            DataList.ForEach(x => ((SceneElementData)x).SetActorsInstantly = value);
+        }
+    }
+
     public float SceneDuration
     {
         get { return sceneData.SceneDuration; }

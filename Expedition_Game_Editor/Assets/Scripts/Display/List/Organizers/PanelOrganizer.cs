@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -59,11 +60,19 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IElementData elementData in list)
         {
+            var elementPosition = ListManager.List.GetElementPosition(list.IndexOf(elementData));
+
+            if (ListManager.ElementAboveMax(elementPosition, true))
+                continue;
+
+            if (ListManager.ElementBelowMin(elementPosition, true))
+                break;
+
             var panel = (ExPanel)PoolManager.SpawnObject(prefab);
 
             SelectionElementManager.InitializeElement(  panel.EditorElement.DataElement, ListManager.listParent,
-                                                        DisplayManager, 
-                                                        DisplayManager.Display.SelectionType, 
+                                                        DisplayManager,
+                                                        DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty,
                                                         DisplayManager.Display.UniqueSelection);
 
@@ -84,7 +93,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             panel.name = elementData.DebugName + elementData.Id;
 
             SetElement(panel.EditorElement);
-        }
+        };
     }
     
     private void SetElement(EditorElement element)
@@ -135,12 +144,16 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         SelectionManager.CancelSelection(DataController.Data.dataList);
     }
 
-    public void CloseOrganizer()
+    public void CloseElements()
     {
         CancelSelection();
-
         ClearOrganizer();
-        
+    }
+
+    public void CloseOrganizer()
+    {
+        CloseElements();
+
         DestroyImmediate(this);
     }
 }

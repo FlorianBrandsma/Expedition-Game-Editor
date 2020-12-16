@@ -40,6 +40,11 @@ public class SceneElementData : SceneData, IElementData
         get { return AutoContinue != OriginalData.AutoContinue; }
     }
 
+    public bool ChangedSetActorsInstantly
+    {
+        get { return SetActorsInstantly != OriginalData.SetActorsInstantly; }
+    }
+
     public bool ChangedSceneDuration
     {
         get { return !Mathf.Approximately(SceneDuration, OriginalData.SceneDuration); }
@@ -64,7 +69,7 @@ public class SceneElementData : SceneData, IElementData
     {
         get
         {
-            return  ChangedRegionId         || ChangedName          || ChangedFreezeTime    || ChangedAutoContinue ||
+            return  ChangedRegionId         || ChangedName          || ChangedFreezeTime    || ChangedAutoContinue || ChangedSetActorsInstantly ||
                     ChangedSceneDuration    || ChangedShotDuration  || ChangedPublicNotes   || ChangedPrivateNotes;
         }
     }

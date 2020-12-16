@@ -24,6 +24,8 @@ public class SceneActorData : SceneActorBaseData
 
     public bool ContainsActiveTime  { get; set; }
 
+    public int SpeechTextLimit      { get; set; }
+
     public override void GetOriginalValues(SceneActorData originalData)
     {
         InteractionId       = originalData.InteractionId;
@@ -47,6 +49,8 @@ public class SceneActorData : SceneActorBaseData
         EndTime             = originalData.StartTime;
 
         ContainsActiveTime  = originalData.ContainsActiveTime;
+
+        SpeechTextLimit     = originalData.SpeechTextLimit;
 
         base.GetOriginalValues(originalData);
     }
@@ -77,6 +81,8 @@ public class SceneActorData : SceneActorBaseData
 
         data.ContainsActiveTime = ContainsActiveTime;
 
+        data.SpeechTextLimit    = SpeechTextLimit;
+
         base.Clone(data);
 
         return data;
@@ -105,6 +111,8 @@ public class SceneActorData : SceneActorBaseData
         elementData.EndTime             = EndTime;
 
         elementData.ContainsActiveTime  = ContainsActiveTime;
+
+        elementData.SpeechTextLimit     = SpeechTextLimit;
 
         base.Clone(elementData);
     }

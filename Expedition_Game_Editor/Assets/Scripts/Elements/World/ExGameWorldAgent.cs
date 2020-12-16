@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using System.Linq;
 
 public enum AgentState
 {
@@ -178,10 +177,18 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
         //Stop coroutines e.g. rotation
         StopAllCoroutines();
 
-        Agent.destination = new Vector3(position.x, position.y, -position.z);
+        var destination = new Vector3(position.x, position.y, -position.z);
+
+        if (worldInteractableElementData.ArriveInstantly)
+        {
+            transform.position = destination;
+            transform.eulerAngles = rotation;
+        }
+        
+        Agent.destination = destination;
 
         //Immediately arrive at destination if the new destination distance is too short
-        if (AgentState == AgentState.Idle && Vector3.Distance(gameObject.transform.position, Agent.destination) <= Agent.stoppingDistance)
+        if (AgentState == AgentState.Idle && Vector3.Distance(transform.position, Agent.destination) <= Agent.stoppingDistance)
         {
             ArriveDestination();
         }

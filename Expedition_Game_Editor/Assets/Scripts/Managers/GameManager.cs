@@ -351,8 +351,6 @@ public class GameManager : MonoBehaviour
 
     public void ResetInteractable(GameWorldInteractableElementData worldInteractableElementData)
     {
-        worldInteractableElementData.DestinationType = DestinationType.Interaction;
-        
         //Deactivate all interactions of the world interactable
         DeactivateInteraction(worldInteractableElementData);
 

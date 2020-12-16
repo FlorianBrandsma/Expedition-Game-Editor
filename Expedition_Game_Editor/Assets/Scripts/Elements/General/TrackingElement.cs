@@ -56,6 +56,8 @@ public class TrackingElement : MonoBehaviour
 		target = dataElement.transform;
 
 		InitializeData();
+
+        gameObject.SetActive(true);
 	}
 
 	public void UpdateTrackingElement()

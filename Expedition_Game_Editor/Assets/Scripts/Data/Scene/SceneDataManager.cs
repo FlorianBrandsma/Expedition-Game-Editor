@@ -50,6 +50,7 @@ public class SceneDataManager : MonoBehaviour
 
                         FreezeTime = sceneData.FreezeTime,
                         AutoContinue = sceneData.AutoContinue,
+                        SetActorsInstantly = sceneData.SetActorsInstantly,
 
                         SceneDuration = sceneData.SceneDuration,
                         ShotDuration = sceneData.ShotDuration,
@@ -139,6 +140,9 @@ public class SceneDataManager : MonoBehaviour
 
         if (elementData.ChangedAutoContinue)
             data.AutoContinue = elementData.AutoContinue;
+
+        if (elementData.ChangedSetActorsInstantly)
+            data.SetActorsInstantly = elementData.SetActorsInstantly;
 
         if (elementData.ChangedSceneDuration)
             data.SceneDuration = elementData.SceneDuration;

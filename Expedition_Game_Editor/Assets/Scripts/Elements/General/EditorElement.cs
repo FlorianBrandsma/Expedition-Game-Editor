@@ -238,7 +238,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     public void CancelSelection()
     {
         if (DataElement.ElementData == null) return;
-
+        
         DataElement.ElementData.SelectionStatus = Enums.SelectionStatus.None;
 
         if (glow != null)

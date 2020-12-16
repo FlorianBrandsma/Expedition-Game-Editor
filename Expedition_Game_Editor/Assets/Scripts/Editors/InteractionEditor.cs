@@ -294,7 +294,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed) && !interactionData.TimeConflict;
+        return ElementDataList.Any(x => x.Changed) && !TimeConflict;
     }
 
     public void ApplyChanges()

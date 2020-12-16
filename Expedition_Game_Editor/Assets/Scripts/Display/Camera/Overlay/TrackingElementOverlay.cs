@@ -8,11 +8,9 @@ public class TrackingElementOverlay : MonoBehaviour, IOverlay
     private Texture selectTexture;
     private Texture lockTexture;
 
-    private Vector2 iconSize = new Vector2(35, 35);
-
-    public CameraManager CameraManager { get; set; }
+    public CameraManager CameraManager  { get; set; }
     
-    public float Multiplier { get; set; }
+    public float Multiplier             { get; set; }
     
     public void InitializeOverlay(IDisplayManager displayManager)
     {
@@ -44,9 +42,7 @@ public class TrackingElementOverlay : MonoBehaviour, IOverlay
         InitializeTrackingElement(selectionIcon.TrackingElement, trackingElementType);
 
         selectionIcon.SetElement();
-
-        selectionIcon.gameObject.SetActive(true);
-
+        
         return selectionIcon;
     }
 
@@ -55,8 +51,6 @@ public class TrackingElementOverlay : MonoBehaviour, IOverlay
         var speechBubble = (ExSpeechBubble)PoolManager.SpawnObject(prefab);
 
         InitializeTrackingElement(speechBubble.TrackingElement, Enums.TrackingElementType.Limited);
-
-        speechBubble.gameObject.SetActive(true);
 
         speechBubble.InitializeElement();
 

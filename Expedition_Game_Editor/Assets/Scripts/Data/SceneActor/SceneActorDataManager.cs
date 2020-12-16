@@ -56,7 +56,9 @@ public static class SceneActorDataManager
                         RotationZ = sceneActorData.RotationZ,
 
                         ModelIconPath = iconData.Path,
-                        InteractableName = interactableData.Name
+                        InteractableName = interactableData.Name,
+
+                        SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
 
                     }).OrderBy(x => x.Id).ToList();
 

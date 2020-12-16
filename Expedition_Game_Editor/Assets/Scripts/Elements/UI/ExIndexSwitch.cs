@@ -53,10 +53,10 @@ public class ExIndexSwitch : MonoBehaviour
 
     private void UpdateIndex()
     {
-        dataList = segment.DataEditor.Data.dataList;
-        
+        dataList = segment.DataEditor.Data.dataController.Data.dataList;
+
         var elementData = segment.DataEditor.ElementData;
-        var elementIndex = dataList.IndexOf(elementData);
+        var elementIndex = dataList.IndexOf(dataList.Where(x => x.Id == elementData.Id).First());
 
         dataList.RemoveAt(elementIndex);
         dataList.Insert(index, elementData);
@@ -80,16 +80,11 @@ public class ExIndexSwitch : MonoBehaviour
                 default: Debug.Log("CASE MISSING " + elementData.DataType); break;
             }
         }
-
-        if (dataList[elementIndex].DataElement != null)
-            dataList[elementIndex].DataElement.CancelDataSelection();
-
-        //if (elementData.SelectionStatus == Enums.SelectionStatus.None)
-        //    elementData.SelectionStatus = segment.SegmentController.EditorController.PathController.route.selectionStatus;
-
-        SelectionElementManager.UpdateElements(elementData);
         
-        SetIndex();
+        SelectionElementManager.UpdateElements(elementData);
+        SelectionManager.ResetSelection(dataList);
+
+        SetIndex(); 
     }
 
     private void UpdateItemIndex(int index)

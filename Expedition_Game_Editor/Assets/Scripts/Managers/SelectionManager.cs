@@ -49,10 +49,16 @@ static public class SelectionManager
         }
     }
 
+    static public void ResetSelection(List<IElementData> dataList)
+    {
+        CancelSelection(dataList);
+        SelectData(dataList);
+    }
+
     static public void SelectData(List<IElementData> dataList, IDisplayManager displayManager = null)
     {
         if (dataList.Count == 0) return;
-        
+
         foreach (IElementData elementData in dataList)
         {
             foreach (Route route in routeList)

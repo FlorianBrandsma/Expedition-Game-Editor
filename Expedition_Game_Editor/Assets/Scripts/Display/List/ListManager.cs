@@ -5,6 +5,8 @@ using System.Linq;
 
 public class ListManager : MonoBehaviour, IDisplayManager
 {
+    private Vector2 trackedPosition = new Vector2();
+
     public IOrganizer       Organizer       { get; set; }
     public IDisplay         Display         { get; set; }
 
@@ -19,7 +21,7 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public Vector2          listSize        { get; set; }
     public RectTransform    ParentRect      { get { return transform.parent.GetComponent<RectTransform>(); } }
 
-    private IList List { get { return GetComponent<IList>(); } }
+    public IList List { get { return GetComponent<IList>(); } }
 
     public void InitializeList(ListProperties listProperties)
     {
@@ -74,7 +76,10 @@ public class ListManager : MonoBehaviour, IDisplayManager
         listParent.sizeDelta = List.GetListSize(dataList.Count, true);
 
         listSize = List.GetListSize(dataList.Count, false);
-        
+
+        if (!Display.DataController.SegmentController.Loaded)
+            ResetListPosition();
+
         //Select data after the list has been resized, so that the position may be properly corrected
         //"Set" elements never receive this kind of visual feedback
         if (listProperties.SelectionProperty != SelectionManager.Property.Set)
@@ -84,9 +89,6 @@ public class ListManager : MonoBehaviour, IDisplayManager
             SetData();
 
         overlayManager.SetOverlay();
-
-        if (!Display.DataController.SegmentController.Loaded)
-            ResetListPosition();
     }
 
     private void ResetListPosition()
@@ -110,40 +112,64 @@ public class ListManager : MonoBehaviour, IDisplayManager
         if (Organizer == null) return;
 
         overlayManager.UpdateOverlay();
+
+        ResetData();
     }
 
-    public void CorrectPosition(IElementData elementData, List<IElementData> dataList)
+    private void ResetData()
     {
-        if (!listProperties.enablePositionCorrection) return;
+        if (Mathf.Abs(trackedPosition.x - listParent.localPosition.x) > List.ElementSize.x ||
+            Mathf.Abs(trackedPosition.y - listParent.localPosition.y) > List.ElementSize.y)
+        {
+            trackedPosition = listParent.localPosition;
+            
+            Organizer.ClearOrganizer();
+            Organizer.SetData();
+        }
+    }
 
+    public bool ElementBelowMin(Vector2 elementPosition, bool extraRow = false)
+    {
         //To offset jittering when selecting edge elements
         float positionOffset = 0.999f;
 
-        var elementPosition = List.GetElementPosition(dataList.IndexOf(elementData));
-
+        var extraRowOffset = extraRow ? List.ElementSize * 2 : new Vector2();
+        
         var localElementPosition = new Vector2(elementPosition.x + listParent.localPosition.x,
                                                elementPosition.y + listParent.localPosition.y) * positionOffset;
 
         var elementMin = new Vector2(localElementPosition.x - List.ElementSize.x / 2,
                                      localElementPosition.y - List.ElementSize.y / 2);
 
+        return (elementMin.x < RectTransform.rect.min.x - extraRowOffset.x ||
+                elementMin.y < RectTransform.rect.min.y - extraRowOffset.y);
+    }
+
+    public bool ElementAboveMax(Vector2 elementPosition, bool extraRow = false)
+    {
+        //To offset jittering when selecting edge elements
+        float positionOffset = 0.999f;
+
+        var extraRowOffset = extraRow ? List.ElementSize * 2 : new Vector2();
+
+        var localElementPosition = new Vector2(elementPosition.x + listParent.localPosition.x,
+                                               elementPosition.y + listParent.localPosition.y) * positionOffset;
+
         var elementMax = new Vector2(localElementPosition.x + List.ElementSize.x / 2,
                                      localElementPosition.y + List.ElementSize.y / 2);
 
-        if (elementMax.x > RectTransform.rect.max.x ||
-            elementMin.x < RectTransform.rect.min.x ||
-            elementMax.y > RectTransform.rect.max.y ||
-            elementMin.y < RectTransform.rect.min.y)
-        {
-            //if(elementMax.x > RectTransform.rect.max.x)
-            //    Debug.Log("1:CORRECT POSITION");
-            //if (elementMin.x < RectTransform.rect.min.x)
-            //    Debug.Log("2:CORRECT POSITION");
-            //if (elementMax.y > RectTransform.rect.max.y)
-            //    Debug.Log("3:CORRECT POSITION");
-            //if (elementMin.y < RectTransform.rect.min.y)
-            //    Debug.Log("4:CORRECT POSITION");
+        return (elementMax.x > RectTransform.rect.max.x + extraRowOffset.x ||
+                elementMax.y > RectTransform.rect.max.y + extraRowOffset.y);
+    }
 
+    public void CorrectPosition(IElementData elementData, List<IElementData> dataList)
+    {
+        if (!listProperties.enablePositionCorrection) return;
+
+        var elementPosition = List.GetElementPosition(dataList.IndexOf(elementData));
+
+        if (ElementBelowMin(elementPosition) || ElementAboveMax(elementPosition))
+        {
             ScrollRect.horizontalNormalizedPosition = ((elementPosition.x - List.ElementSize.x / 2) + listParent.rect.width / 2) / ((listParent.rect.width - List.ElementSize.x) / 2) / 2;
             ScrollRect.verticalNormalizedPosition   = (elementPosition.y + ((listParent.sizeDelta.y - List.ElementSize.y) / 2)) / (listParent.sizeDelta.y - List.ElementSize.y);
         }

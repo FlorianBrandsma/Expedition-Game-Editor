@@ -284,7 +284,6 @@ public class TimeManager : MonoBehaviour
         {
             timeEvent.WorldInteractableDataList.ForEach(worldInteractable =>
             {
-                
                 InteractionManager.CheckActorSchedule(worldInteractable);
                 GameManager.instance.ResetInteractable(worldInteractable);
             });

@@ -2,63 +2,66 @@
 
 public class SceneBaseData
 {
-    public int Id               { get; set; }
+    public int Id                   { get; set; }
 
-    public int OutcomeId        { get; set; }
-    public int RegionId         { get; set; }
+    public int OutcomeId            { get; set; }
+    public int RegionId             { get; set; }
     
-    public int Index            { get; set; }
+    public int Index                { get; set; }
 
-    public string Name          { get; set; }
+    public string Name              { get; set; }
 
-    public bool FreezeTime      { get; set; }
-    public bool AutoContinue    { get; set; }
+    public bool FreezeTime          { get; set; }
+    public bool AutoContinue        { get; set; }
+    public bool SetActorsInstantly  { get; set; }
 
-    public float SceneDuration  { get; set; }
-    public float ShotDuration   { get; set; }
+    public float SceneDuration      { get; set; }
+    public float ShotDuration       { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string PublicNotes       { get; set; }
+    public string PrivateNotes      { get; set; }
 
     public virtual void GetOriginalValues(SceneData originalData)
     {
-        Id              = originalData.Id;
+        Id                  = originalData.Id;
 
-        OutcomeId       = originalData.OutcomeId;
-        RegionId        = originalData.RegionId;
+        OutcomeId           = originalData.OutcomeId;
+        RegionId            = originalData.RegionId;
 
-        Index           = originalData.Index;
+        Index               = originalData.Index;
 
-        Name            = originalData.Name;
+        Name                = originalData.Name;
 
-        FreezeTime      = originalData.FreezeTime;
-        AutoContinue    = originalData.AutoContinue;
+        FreezeTime          = originalData.FreezeTime;
+        AutoContinue        = originalData.AutoContinue;
+        SetActorsInstantly  = originalData.SetActorsInstantly;
 
-        SceneDuration   = originalData.SceneDuration;
-        ShotDuration    = originalData.ShotDuration;
-
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        SceneDuration       = originalData.SceneDuration;
+        ShotDuration        = originalData.ShotDuration;
+        
+        PublicNotes         = originalData.PublicNotes;
+        PrivateNotes        = originalData.PrivateNotes;
     }
 
     public virtual void Clone(SceneData data)
     {
-        data.Id             = Id;
+        data.Id                 = Id;
 
-        data.OutcomeId      = OutcomeId;
-        data.RegionId       = RegionId;
+        data.OutcomeId          = OutcomeId;
+        data.RegionId           = RegionId;
 
-        data.Index          = Index;
+        data.Index              = Index;
 
-        data.Name           = Name;
+        data.Name               = Name;
 
-        data.FreezeTime     = FreezeTime;
-        data.AutoContinue   = AutoContinue;
+        data.FreezeTime         = FreezeTime;
+        data.AutoContinue       = AutoContinue;
+        data.SetActorsInstantly = SetActorsInstantly;
 
-        data.SceneDuration  = SceneDuration;
-        data.ShotDuration   = ShotDuration;
-
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.SceneDuration      = SceneDuration;
+        data.ShotDuration       = ShotDuration;
+        
+        data.PublicNotes        = PublicNotes;
+        data.PrivateNotes       = PrivateNotes;
     }
 }

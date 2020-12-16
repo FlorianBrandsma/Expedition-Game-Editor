@@ -22,6 +22,12 @@ public class SceneActorActSpeechTextSegment : MonoBehaviour, ISegment
         get { return SceneActorEditor.SpeechText; }
         set { SceneActorEditor.SpeechText = value; }
     }
+
+    private int SpeechTextLimit
+    {
+        get { return SceneActorEditor.SpeechTextLimit; }
+        set { SceneActorEditor.SpeechTextLimit = value; }
+    }
     #endregion
 
     public void InitializeDependencies()
@@ -49,14 +55,38 @@ public class SceneActorActSpeechTextSegment : MonoBehaviour, ISegment
     public void UpdateShowTextBox()
     {
         ShowTextBox = showTextBoxToggle.Toggle.isOn;
-        
+
+        SetCharacterLimit();
+
         DataEditor.UpdateEditor();
     }
 
     public void UpdateSpeechText()
     {
         SpeechText = speechTextInputText.InputField.text;
+
+        CheckCharacterLimit();
+
         DataEditor.UpdateEditor();
+    }
+
+    private void SetCharacterLimit()
+    {
+        SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(ShowTextBox);
+
+        speechTextInputText.InputField.characterLimit = SpeechTextLimit;
+
+        CheckCharacterLimit();
+    }
+
+    private void CheckCharacterLimit()
+    {
+        if(SpeechText.Length > SpeechTextLimit)
+        {
+            speechTextInputText.InputField.textComponent.color = Color.red;
+        } else {
+            speechTextInputText.InputField.textComponent.color = Color.white;
+        }
     }
 
     public void UpdateSegment() { }

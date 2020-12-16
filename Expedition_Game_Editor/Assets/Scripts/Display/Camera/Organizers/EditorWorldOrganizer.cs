@@ -987,7 +987,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         }
 
         if(selectionIcon != null)
-            selectionIcon.TrackingElement.SetTrackingTarget(element.DataElement);
+            selectionIcon.TrackingElement.SetTrackingTarget(element.DataElement);   
     }
 
     public void ResetData(List<IElementData> filter)
