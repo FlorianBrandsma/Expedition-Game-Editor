@@ -17,10 +17,10 @@ public class GameElement : MonoBehaviour, ISelectionElement
 
     public void InitializeElement()
     {
-        InitializeElement(SelectionManager.Type.Select, SelectionManager.Property.None, false);
+        InitializeElement(SelectionManager.Type.Select, SelectionManager.Property.None, SelectionManager.Property.None, false);
     }
 
-    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
+    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
     {
         GetComponent<IElement>().InitializeElement();
 

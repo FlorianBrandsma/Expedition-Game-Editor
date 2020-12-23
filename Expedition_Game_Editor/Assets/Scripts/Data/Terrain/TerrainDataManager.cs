@@ -102,14 +102,22 @@ public static class TerrainDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(TerrainElementData elementData)
+    public static void UpdateData(TerrainElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.terrainList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedIconId)
-            data.IconId = elementData.IconId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.IconId = elementData.IconId;
+            else { }
+        }
 
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
     }
 }

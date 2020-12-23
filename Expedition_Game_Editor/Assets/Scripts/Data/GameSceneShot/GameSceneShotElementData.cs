@@ -10,6 +10,8 @@ public class GameSceneShotElementData : GameSceneShotData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.GameSceneShot; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -29,9 +31,13 @@ public class GameSceneShotElementData : GameSceneShotData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
-    public void Update() { }
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest) { }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

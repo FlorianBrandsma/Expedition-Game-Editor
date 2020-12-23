@@ -44,7 +44,7 @@ public class SceneActorActSpeechMethodSegment : MonoBehaviour, ISegment
         speechMethodDropdown.Dropdown.value = SpeechMethod;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSpeechMethod()
     {

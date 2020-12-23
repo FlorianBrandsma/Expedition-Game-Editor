@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class StageNavigationAction : MonoBehaviour, IAction
@@ -12,6 +13,8 @@ public class StageNavigationAction : MonoBehaviour, IAction
     private PathController PathController   { get { return GetComponent<PathController>(); } }
     private Data Data                       { get { return PathController.route.data; } }
 
+    private List<IElementData> dataList;
+
     public void InitializeAction(Path path) { }
 
     public void SetAction(Path path)
@@ -19,6 +22,7 @@ public class StageNavigationAction : MonoBehaviour, IAction
         if (Data == null) return;
         
         dropdown = ActionManager.instance.AddDropdown(actionProperties);
+        dataList = Data.dataList.Where(x => x.Id > 0).ToList();
 
         switch (Data.dataController.DataType)
         {
@@ -42,95 +46,95 @@ public class StageNavigationAction : MonoBehaviour, IAction
             default: Debug.Log("CASE MISSING: " + Data.dataController.DataType); break;
         }
 
-        int selectedIndex = Data.dataList.FindIndex(x => x.Id == PathController.route.ElementData.Id);
+        int selectedIndex = dataList.FindIndex(x => x.Id == PathController.route.ElementData.Id);
 
         dropdown.Dropdown.value = selectedIndex;
         dropdown.Dropdown.captionText.text = dropdown.Dropdown.options[selectedIndex].text;
 
-        dropdown.Dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, Data.dataList[dropdown.Dropdown.value]); });
+        dropdown.Dropdown.onValueChanged.AddListener(delegate { InitializePath(PathController.route.path, dataList[dropdown.Dropdown.value]); });
     }
 
     private void SetChapterOptions()
     {
-        var elementDataList = Data.dataList.Cast<ChapterElementData>().ToList();
+        var elementDataList = dataList.Cast<ChapterElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseOptions()
     {
-        var elementDataList = Data.dataList.Cast<PhaseElementData>().ToList();
+        var elementDataList = dataList.Cast<PhaseElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestOptions()
     {
-        var elementDataList = Data.dataList.Cast<QuestElementData>().ToList();
+        var elementDataList = dataList.Cast<QuestElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveOptions()
     {
-        var elementDataList = Data.dataList.Cast<ObjectiveElementData>().ToList();
+        var elementDataList = dataList.Cast<ObjectiveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetWorldInteractableOptions()
     {
-        var elementDataList = Data.dataList.Cast<WorldInteractableElementData>().ToList();      
+        var elementDataList = dataList.Cast<WorldInteractableElementData>().ToList();      
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.InteractableName)));
     }
 
     private void SetTaskOptions()
     {
-        var elementDataList = Data.dataList.Cast<TaskElementData>().ToList();
+        var elementDataList = dataList.Cast<TaskElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetInteractionOptions()
     {
-        var elementDataList = Data.dataList.Cast<InteractionElementData>().ToList();
+        var elementDataList = dataList.Cast<InteractionElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Default ? "Default" : TimeManager.FormatTime(x.StartTime) + " - " + TimeManager.FormatTime(x.EndTime))));
     }
 
     private void SetOutcomeOptions()
     {
-        var elementDataList = Data.dataList.Cast<OutcomeElementData>().ToList();
+        var elementDataList = dataList.Cast<OutcomeElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(Enum.GetName(typeof(Enums.OutcomeType), x.Type))));
     }
 
     private void SetTerrainOptions()
     {
-        var elementDataList = Data.dataList.Cast<TerrainElementData>().ToList();
+        var elementDataList = dataList.Cast<TerrainElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetChapterSaveOptions()
     {
-        var elementDataList = Data.dataList.Cast<ChapterSaveElementData>().ToList();
+        var elementDataList = dataList.Cast<ChapterSaveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetPhaseSaveOptions()
     {
-        var elementDataList = Data.dataList.Cast<PhaseSaveElementData>().ToList();
+        var elementDataList = dataList.Cast<PhaseSaveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetQuestSaveOptions()
     {
-        var elementDataList = Data.dataList.Cast<QuestSaveElementData>().ToList();
+        var elementDataList = dataList.Cast<QuestSaveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetObjectiveSaveOptions()
     {
-        var elementDataList = Data.dataList.Cast<ObjectiveSaveElementData>().ToList();
+        var elementDataList = dataList.Cast<ObjectiveSaveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 
     private void SetTaskSaveOptions()
     {
-        var elementDataList = Data.dataList.Cast<TaskSaveElementData>().ToList();
+        var elementDataList = dataList.Cast<TaskSaveElementData>().ToList();
         elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.Name)));
     }
 

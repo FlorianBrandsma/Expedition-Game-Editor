@@ -42,7 +42,7 @@ public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
         searchParameters.excludeId = SegmentController.DataController.Data.dataList.Cast<ScenePropElementData>().Select(x => x.ModelId).ToList();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
         SetSearchParameters();
     }

@@ -52,24 +52,44 @@ public static class TaskDataManager
         }
     }
 
-    public static void UpdateData(TaskElementData elementData)
+    public static void UpdateData(TaskElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.taskList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedCompleteObjective)
-            data.CompleteObjective = elementData.CompleteObjective;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CompleteObjective = elementData.CompleteObjective;
+            else { }
+        }
 
         if (elementData.ChangedRepeatable)
-            data.Repeatable = elementData.Repeatable;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Repeatable = elementData.Repeatable;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 
     static public void UpdateIndex(TaskElementData elementData)

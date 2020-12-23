@@ -85,30 +85,58 @@ public static class ScenePropDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(ScenePropElementData elementData)
+    public static void UpdateData(ScenePropElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.scenePropList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedPositionX)
-            data.PositionX = elementData.PositionX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionX = elementData.PositionX;
+            else { }
+        }
 
         if (elementData.ChangedPositionY)
-            data.PositionY = elementData.PositionY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionY = elementData.PositionY;
+            else { }
+        }
 
         if (elementData.ChangedPositionZ)
-            data.PositionZ = elementData.PositionZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionZ = elementData.PositionZ;
+            else { }
+        }
 
         if (elementData.ChangedRotationX)
-            data.RotationX = elementData.RotationX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationX = elementData.RotationX;
+            else { }
+        }
 
         if (elementData.ChangedRotationY)
-            data.RotationY = elementData.RotationY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationY = elementData.RotationY;
+            else { }
+        }
 
         if (elementData.ChangedRotationZ)
-            data.RotationZ = elementData.RotationZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationZ = elementData.RotationZ;
+            else { }
+        }
 
         if (elementData.ChangedScale)
-            data.Scale = elementData.Scale;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Scale = elementData.Scale;
+            else { }
+        }
     }
 
     public static void UpdateSearch(ScenePropElementData elementData)

@@ -15,6 +15,23 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
 
     public bool Loaded { get; set; }
 
+    public List<IElementData> DataList
+    {
+        get { return new List<IElementData>() { EditData }; }
+    }
+
+    public List<IElementData> ElementDataList
+    {
+        get
+        {
+            var list = new List<IElementData>();
+
+            DataList.ForEach(x => { if (x != null) list.Add(x); });
+
+            return list;
+        }
+    }
+
     #region Data properties
     public int Id
     {
@@ -53,23 +70,6 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
     }
     #endregion
 
-    public List<IElementData> DataList
-    {
-        get { return new List<IElementData>() { EditData }; }
-    }
-
-    public List<IElementData> ElementDataList
-    {
-        get
-        {
-            var list = new List<IElementData>();
-
-            DataList.ForEach(x => { if (x != null) list.Add(x); });
-
-            return list;
-        }
-    }
-
     public void InitializeEditor()
     {
         phaseSaveData = (PhaseSaveData)ElementData.Clone();
@@ -92,9 +92,9 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
+        EditData.Update(dataRequest);
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();

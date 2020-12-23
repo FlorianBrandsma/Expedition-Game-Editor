@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class NumberOverlay : MonoBehaviour, IOverlay
 {
     private List<ExText> numberListLocal = new List<ExText>();
 
-    private ListManager     listManager;
+    private IDisplayManager DisplayManager  { get; set; }
+    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
 
     private RectTransform   listParent;
 
@@ -17,18 +18,16 @@ public class NumberOverlay : MonoBehaviour, IOverlay
 
     public void InitializeOverlay(IDisplayManager displayManager)
     {
-        listManager = (ListManager)displayManager;
+        DisplayManager = displayManager;
 
-        listParent = listManager.listParent;
+        listParent = ListManager.listParent;
     }
 
     public void ActivateOverlay(IOrganizer organizer)
     {
         int listCount = overlayManager.DisplayManager.Display.DataController.Data.dataList.Count;
 
-        var list = (IList)organizer;
-
-        Vector2 listSize = list.GetListSize(listCount, false);
+        var listSize = ((IList)organizer).GetListSize(false);
 
         if (listSize.x > 0)
             overlayManager.horizontal_min.gameObject.SetActive(true);
@@ -39,16 +38,21 @@ public class NumberOverlay : MonoBehaviour, IOverlay
 
     public void SetOverlay()
     {
-        Vector2 listSize = listManager.listSize;
+        var listSize = ListManager.listSize;
 
-        Vector2 baseSize = new Vector2(listParent.rect.width / listSize.x, listParent.rect.height / listSize.y);
+        var baseSize = new Vector2(listParent.rect.width / listSize.x, listParent.rect.height / listSize.y);
 
         if(overlayManager.horizontal_min.gameObject.activeInHierarchy)
         {
             horizontalParent = overlayManager.horizontal_min.GetComponent<OverlayBorder>().scrollParent;
 
             for (int x = 0; x < listSize.x; x++)
-                SetNumbers(overlayManager.horizontal_min, x, -((baseSize.x * 0.5f) * (listSize.x - 1)) + (x * baseSize.x));
+            {
+                var number = GetNumber(x);
+                var position = -((baseSize.x * 0.5f) * (listSize.x - 1)) + (x * baseSize.x);
+
+                SetNumbers(overlayManager.horizontal_min, number, position);
+            }
         }
 
         if(overlayManager.vertical_min.gameObject.activeInHierarchy)
@@ -56,7 +60,13 @@ public class NumberOverlay : MonoBehaviour, IOverlay
             verticalParent = overlayManager.vertical_min.GetComponent<OverlayBorder>().scrollParent;
 
             for (int y = 0; y < listSize.y; y++)
-                SetNumbers(overlayManager.vertical_min, y, -(baseSize.y * 0.5f) + (listParent.sizeDelta.y / 2f) - (y * baseSize.y));
+            {
+                var number = GetNumber(y);
+
+                var position = -(baseSize.y * 0.5f) + (listParent.sizeDelta.y / 2f) - (y * baseSize.y);
+
+                SetNumbers(overlayManager.vertical_min, number, position);
+            }
         }
 
         UpdateOverlay();
@@ -71,16 +81,33 @@ public class NumberOverlay : MonoBehaviour, IOverlay
             horizontalParent.transform.localPosition = new Vector2(listParent.transform.localPosition.x, 0);
     }
 
-    public void SetNumbers(RectTransform numberParent, int index, float new_position)
+    private string GetNumber(int index)
     {
-        OverlayBorder overlayBorder = numberParent.GetComponent<OverlayBorder>();
+        var number = "";
+
+        if (ListProperties.AddProperty == SelectionManager.Property.None)
+        {
+            number = (index + 1).ToString();
+
+        } else {
+
+            if (index > 0)
+                number = (index).ToString();
+        }
+
+        return number;
+    }
+
+    public void SetNumbers(RectTransform numberParent, string number, float position)
+    {
+        var overlayBorder = numberParent.GetComponent<OverlayBorder>();
 
         var prefab = Resources.Load<ExText>("Elements/UI/Text");
         
         var newText = (ExText)PoolManager.SpawnObject(prefab);
         numberListLocal.Add(newText);
 
-        newText.Text.text = (index + 1).ToString();
+        newText.Text.text = number;
         newText.transform.SetParent(overlayBorder.scrollParent, false);
         
         if (overlayBorder.vertical)
@@ -91,7 +118,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
             var width = overlayBorder.scrollParent.rect.width;
             newText.RectTransform.sizeDelta = new Vector2(0, width);
 
-            newText.transform.localPosition = new Vector2(0, new_position);
+            newText.transform.localPosition = new Vector2(0, position);
         }
         
         if (overlayBorder.horizontal)
@@ -102,7 +129,7 @@ public class NumberOverlay : MonoBehaviour, IOverlay
             var height = overlayBorder.scrollParent.rect.height;
             newText.RectTransform.sizeDelta = new Vector2(height, 0);
 
-            newText.transform.localPosition = new Vector2(new_position, 0);
+            newText.transform.localPosition = new Vector2(position, 0);
         }
         
         newText.gameObject.SetActive(true);

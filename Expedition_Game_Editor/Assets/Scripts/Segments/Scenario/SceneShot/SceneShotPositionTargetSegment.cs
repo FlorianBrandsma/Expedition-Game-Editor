@@ -61,10 +61,7 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
 
         if (sceneActorElementData == null)
         {
-            sceneActorElementData = new SceneActorElementData()
-            {
-                InteractableName = "None"
-            };
+            sceneActorElementData = new SceneActorElementData();
 
             sceneActorElementData.SetOriginalValues();
 
@@ -88,14 +85,13 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
 
         SetSceneActorData();
 
-        sceneActorButton.DataElement.InitializeElement();
         sceneActorButton.GetComponent<ExPanel>().InitializeChildElement();
     }
     
     private void SetSceneActorData()
     {
         SceneActorElementData.Id = PositionTargetSceneActorId;
-        sceneActorButton.child.DataElement.Id = PositionTargetSceneActorId;
+        sceneActorButton.child.DataElement.Id = SceneActorElementData.Id;
 
         InitializeSearchParameters();
     }
@@ -107,7 +103,7 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
         searchParameters.excludeId = new List<int>() { PositionTargetSceneActorId };
         searchParameters.sceneId = new List<int>() { SceneId };
 
-        searchParameters.includeEmptyElement = PositionTargetSceneActorId != 0;
+        searchParameters.includeRemoveElement = PositionTargetSceneActorId != 0;
     }
 
     public void OpenSegment()
@@ -123,25 +119,25 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
         sceneActorButton.DataElement.SetElement();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.SceneActor:
 
-                var sceneActorElementData = (SceneActorElementData)elementData;
+                var sceneActorElementData = (SceneActorElementData)mergedElementData;
                 UpdateSceneActor(sceneActorElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 
     public void UpdateSceneActor(SceneActorElementData sceneActorElementData)
     {
         PositionTargetSceneActorId = sceneActorElementData.Id;
-
+        
         SetSceneActorData();
 
         DataEditor.UpdateEditor();

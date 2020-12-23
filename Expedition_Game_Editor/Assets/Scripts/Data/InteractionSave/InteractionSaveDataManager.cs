@@ -65,11 +65,15 @@ public static class InteractionSaveDataManager
         interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
-    public static void UpdateData(InteractionSaveElementData elementData)
+    public static void UpdateData(InteractionSaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.interactionSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedComplete)
-            data.Complete = elementData.Complete;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Complete = elementData.Complete;
+            else { }
+        }
     }
 }

@@ -6,7 +6,7 @@ public interface ISelectionElement
 {
     IElement Element { get; }
     void InitializeElement();
-    void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection);
+    void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection);
     void UpdateElement();
     void CancelSelection();
 }

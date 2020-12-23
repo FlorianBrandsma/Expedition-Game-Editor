@@ -88,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36eb9cf03fca9b4a98244e4ff2aabc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minus_button: {fileID: 114000011767765156}
-  plus_button: {fileID: 114000011733996468}
-  index_number: {fileID: 114000011193072984}
+  minusbutton: {fileID: 114000011767765156}
+  plusButton: {fileID: 114000011733996468}
+  numberText: {fileID: 114000011193072984}
 --- !u!1 &1000010645158432
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 114000012135052390}
   - component: {fileID: 114000011767765156}
   m_Layer: 5
-  m_Name: Minus_Button
+  m_Name: MinusButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -194,14 +194,14 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: e6295e927968f7e48aacda3444a07fe6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114000012135052390}
+  m_TargetGraphic: {fileID: 114000012864077288}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 222000013517438830}
   - component: {fileID: 114000011193072984}
   m_Layer: 5
-  m_Name: Index_Number
+  m_Name: IndexNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 114000013295075522}
   - component: {fileID: 114000011733996468}
   m_Layer: 5
-  m_Name: Plus_Button
+  m_Name: PlusButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -542,14 +542,14 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: e6295e927968f7e48aacda3444a07fe6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114000013295075522}
+  m_TargetGraphic: {fileID: 114000012864077288}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:

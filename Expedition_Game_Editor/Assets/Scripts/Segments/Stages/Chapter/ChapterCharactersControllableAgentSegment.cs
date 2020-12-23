@@ -4,6 +4,8 @@ using System.Linq;
 
 public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -23,13 +25,21 @@ public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.WorldInteractable);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
-        searchParameters.chapterId = new List<int>() { ChapterEditor.Id };
-
+        InitializeSearchParameters(searchProperties);
+        
         SegmentController.DataController.GetData(searchProperties);
 
         var worldInteractableList = SegmentController.DataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
-        worldInteractableList.ForEach(x => ChapterEditor.worldInteractableElementDataList.Add(x));
+        ChapterEditor.worldInteractableElementDataList = worldInteractableList;
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Controllable };
+        searchParameters.chapterId = new List<int>() { ChapterEditor.Id };
     }
 
     public void InitializeSegment() { }
@@ -48,24 +58,48 @@ public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
 
         searchParameters.excludeId = ChapterEditor.worldInteractableElementDataList.Select(x => x.InteractableId).Union(
                                      ChapterEditor.chapterInteractableElementDataList.Select(x => x.InteractableId)).Distinct().ToList();
+
+        searchParameters.includeRemoveElement = true;
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        SetSearchWorldInteractable((WorldInteractableElementData)elementData);
+        SetSearchWorldInteractable((WorldInteractableElementData)mergedElementData, resultElementData);
 
         DataEditor.UpdateEditor();
 
         SetSearchParameters();
     }
 
-    private void SetSearchWorldInteractable(WorldInteractableElementData resultElementData)
+    private void SetSearchWorldInteractable(WorldInteractableElementData mergedElementData, IElementData resultElementData)
     {
-        var elementData = ChapterEditor.worldInteractableElementDataList.Where(x => x.Id == resultElementData.Id).First();
+        var searchElementData = (WorldInteractableElementData)SegmentController.DataController.Data.dataList.Where(x => x.Id == mergedElementData.Id).First();
 
-        elementData.InteractableId      = resultElementData.InteractableId;
-        elementData.InteractableName    = resultElementData.InteractableName;
-        elementData.ModelIconPath       = resultElementData.ModelIconPath;
+        if (searchElementData.Id == 0) 
+        {
+            searchElementData = (WorldInteractableElementData)searchElementData.Clone();
+
+            searchElementData.ExecuteType = Enums.ExecuteType.Add;
+
+            searchElementData.Id = -ChapterEditor.worldInteractableElementDataList.Count;
+
+            searchElementData.ChapterId         = ChapterEditor.EditData.Id;
+            searchElementData.InteractableId    = mergedElementData.InteractableId;
+            searchElementData.Type              = (int)Enums.InteractableType.Controllable;
+
+            searchElementData.InteractableName  = mergedElementData.InteractableName;
+            searchElementData.ModelIconPath     = mergedElementData.ModelIconPath;
+
+            SegmentController.DataController.Data.dataList.Add(searchElementData);
+            ChapterEditor.worldInteractableElementDataList.Add(searchElementData);
+        }
+
+        if (resultElementData.Id == 0)
+        {
+            searchElementData.ExecuteType = Enums.ExecuteType.Remove;
+
+            SegmentController.DataController.Data.dataList.Remove(searchElementData);
+        }
     }
 
     public void UpdateSegment() { }

@@ -61,10 +61,7 @@ public class SceneActorActBehaviourTargetSegment : MonoBehaviour, ISegment
 
         if (sceneActorElementData == null)
         {
-            sceneActorElementData = new SceneActorElementData()
-            {
-                InteractableName = "None"
-            };
+            sceneActorElementData = new SceneActorElementData();
 
             sceneActorElementData.SetOriginalValues();
 
@@ -107,7 +104,7 @@ public class SceneActorActBehaviourTargetSegment : MonoBehaviour, ISegment
         searchParameters.excludeId = new List<int>() { Id, TargetSceneActorId };
         searchParameters.sceneId = new List<int>() { SceneId };
 
-        searchParameters.includeEmptyElement = TargetSceneActorId != 0;
+        searchParameters.includeRemoveElement = TargetSceneActorId != 0;
     }
 
     public void OpenSegment()
@@ -123,18 +120,18 @@ public class SceneActorActBehaviourTargetSegment : MonoBehaviour, ISegment
         sceneActorButton.DataElement.SetElement();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.SceneActor:
 
-                var sceneActorElementData = (SceneActorElementData)elementData;
+                var sceneActorElementData = (SceneActorElementData)mergedElementData;
                 UpdateSceneActor(sceneActorElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

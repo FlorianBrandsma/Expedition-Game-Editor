@@ -71,7 +71,7 @@ public class EditorWorldSceneActorSegment : MonoBehaviour, ISegment
         searchParameters.excludeId = SegmentController.DataController.Data.dataList.Cast<SceneActorElementData>().Select(x => x.WorldInteractableId).ToList();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
         SetSearchParameters();
     }

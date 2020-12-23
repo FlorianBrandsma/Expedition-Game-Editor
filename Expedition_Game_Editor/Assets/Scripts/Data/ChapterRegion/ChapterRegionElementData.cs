@@ -9,6 +9,8 @@ public class ChapterRegionElementData : ChapterRegionData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.ChapterRegion; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -29,16 +31,20 @@ public class ChapterRegionElementData : ChapterRegionData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        ChapterRegionDataManager.UpdateData(this);
+        
+        ChapterRegionDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
-    
+
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

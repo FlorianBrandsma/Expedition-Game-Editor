@@ -33,9 +33,9 @@ public class GameSaveSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void CloseSegment() { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void CloseSegment() { }
 }

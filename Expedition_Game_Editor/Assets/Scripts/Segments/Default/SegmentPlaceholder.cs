@@ -16,12 +16,10 @@ public class SegmentPlaceholder : MonoBehaviour, ISegment
     public void InitializeData() { }
 
     public void OpenSegment() { }
-
-    public void ApplySegment() { }
-
-    public void CloseSegment() { }
+    
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void CloseSegment() { }
 }

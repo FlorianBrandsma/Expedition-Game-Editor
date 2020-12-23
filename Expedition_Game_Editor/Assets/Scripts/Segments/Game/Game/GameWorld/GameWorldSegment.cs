@@ -26,7 +26,7 @@ public class GameWorldSegment : MonoBehaviour, ISegment
         GameManager.instance.OpenGame();
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

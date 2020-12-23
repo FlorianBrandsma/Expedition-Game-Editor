@@ -52,7 +52,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

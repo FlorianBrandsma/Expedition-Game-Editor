@@ -9,6 +9,8 @@ public class WorldObjectElementData : WorldObjectData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.WorldObject; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -87,11 +89,13 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        WorldObjectDataManager.UpdateData(this);
+        
+        WorldObjectDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -99,7 +103,7 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     public void UpdateSearch()
     {
         if (!Changed) return;
-
+        
         WorldObjectDataManager.UpdateSearch(this);
 
         OriginalData.ModelId = ModelId;
@@ -109,6 +113,8 @@ public class WorldObjectElementData : WorldObjectData, IElementData
         OriginalData.ModelPath = ModelPath;
         OriginalData.ModelIconPath = ModelIconPath;
     }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

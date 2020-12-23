@@ -18,7 +18,7 @@ public class Model : MonoBehaviour, IPoolable
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return Enums.ElementType.Model; } }
-    public int Id                           { get; set; }
+    public int PoolId                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
     public Animator Animator { get { return GetComponent<Animator>(); } }

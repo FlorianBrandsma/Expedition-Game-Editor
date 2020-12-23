@@ -9,6 +9,8 @@ public class SceneElementData : SceneData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Scene; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -75,11 +77,13 @@ public class SceneElementData : SceneData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        SceneDataManager.UpdateData(this);
+        
+        SceneDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -87,13 +91,15 @@ public class SceneElementData : SceneData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         SceneDataManager.UpdateIndex(this);
 
         OriginalData.Index = Index;
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

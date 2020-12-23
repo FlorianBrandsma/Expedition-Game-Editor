@@ -70,7 +70,7 @@ public class InteractionDestinationArrivalRotationDegreeSegment : MonoBehaviour,
         DataEditor.UpdateEditor();
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateRotationX()
     {

@@ -12,17 +12,19 @@ public static class ChapterInteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
+        var list = new List<ChapterInteractableElementData>();
+
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();
         
         GetChapterInteractableData(searchParameters);
         
-        if (chapterInteractableDataList.Count == 0) return new List<IElementData>();
+        if (chapterInteractableDataList.Count > 0)
+        {
+            GetInteractableData();
+            GetModelData();
+            GetIconData();
 
-        GetInteractableData();
-        GetModelData();
-        GetIconData();
-
-        var list = (from chapterInteractableData    in chapterInteractableDataList
+            list = (from chapterInteractableData    in chapterInteractableDataList
                     join interactableData           in interactableDataList     on chapterInteractableData.InteractableId   equals interactableData.Id
                     join modelData                  in modelDataList            on interactableData.ModelId                 equals modelData.Id
                     join iconData                   in iconDataList             on modelData.IconId                         equals iconData.Id
@@ -37,10 +39,22 @@ public static class ChapterInteractableDataManager
                         ModelIconPath = iconData.Path
 
                     }).ToList();
+        }
+
+        if (searchParameters.includeAddElement)
+            AddDefaultElementData(searchParameters, list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    private static void AddDefaultElementData(Search.ChapterInteractable searchParameters, List<ChapterInteractableElementData> list)
+    {
+        list.Insert(0, new ChapterInteractableElementData()
+        {
+            ExecuteType = Enums.ExecuteType.Add
+        });
     }
 
     private static void GetChapterInteractableData(Search.ChapterInteractable searchParameters)
@@ -81,11 +95,31 @@ public static class ChapterInteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(ChapterInteractableElementData elementData)
+    public static void AddData(ChapterInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1;
+            Fixtures.chapterInteractableList.Add(((ChapterInteractableData)elementData).Clone());
+        } else { }
+    }
+
+    public static void UpdateData(ChapterInteractableElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.chapterInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedInteractableId)
-            data.InteractableId = elementData.InteractableId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.InteractableId = elementData.InteractableId;
+        } else { }
+    }
+
+    public static void RemoveData(ChapterInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.chapterInteractableList.RemoveAll(x => x.Id == elementData.Id);
+        } else { }
     }
 }

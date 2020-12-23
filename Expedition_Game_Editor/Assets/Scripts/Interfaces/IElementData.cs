@@ -6,16 +6,21 @@ public interface IElementData
     Enums.SelectionStatus SelectionStatus   { get; set; }
     bool UniqueSelection                    { get; set; }
 
+    Enums.ExecuteType ExecuteType           { get; set; }
+
     Enums.DataType DataType { get; }
 
     string DebugName { get; }
 
     int Id { get; set; }
 
-    void Update();
+    void Add(DataRequest dataRequest);
+    void Update(DataRequest dataRequest);
     void UpdateSearch();
-    void SetOriginalValues();
+    void Remove(DataRequest dataRequest);
 
+    void SetOriginalValues();
+    
     bool Changed { get; }
     void ClearChanges();
     IElementData Clone();

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -12,10 +12,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
     private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
     
-    public List<EditorElement> ElementList { get; set; }
+    public List<EditorElement> ElementList  { get; set; }
 
-    public Vector2 ElementSize { get { return ListProperties.elementSize; } }
-
+    public Vector2 ElementSize              { get { return ListProperties.elementSize; } }
+    
     public void InitializeOrganizer()
     {
         ElementList = new List<EditorElement>();
@@ -56,6 +56,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.AddProperty,
                                                         DisplayManager.Display.UniqueSelection);
             ElementList.Add(tile.EditorElement);
 
@@ -94,8 +95,10 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         return position;
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public Vector2 GetListSize(bool exact)
     {
+        var elementCount = DataController.Data.dataList.Count;
+
         Vector2 gridSize;
 
         if (ListProperties.horizontal && ListProperties.vertical)
@@ -104,8 +107,8 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
                                     ListProperties.vertical     ? TileProperties.GridSize.y * ElementSize.y : ElementSize.y);
         } else {
 
-            int listWidth = GetListWidth(elementCount);
-            int listHeight = GetListHeight(elementCount);
+            var listWidth   = GetListWidth(elementCount);
+            var listHeight  = GetListHeight(elementCount);
 
             //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
             gridSize = new Vector2( ListProperties.horizontal   ? 0                                                             : listWidth * ElementSize.x,

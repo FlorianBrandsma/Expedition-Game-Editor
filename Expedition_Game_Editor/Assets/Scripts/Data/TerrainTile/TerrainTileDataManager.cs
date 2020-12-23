@@ -63,11 +63,15 @@ public static class TerrainTileDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void UpdateData(TerrainTileElementData elementData)
+    public static void UpdateData(TerrainTileElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.terrainTileList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedTileId)
-            data.TileId = elementData.TileId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.TileId = elementData.TileId;
+            else { }
+        }
     }
 }

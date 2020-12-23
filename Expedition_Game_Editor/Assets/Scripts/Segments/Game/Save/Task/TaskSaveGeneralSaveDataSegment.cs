@@ -23,7 +23,7 @@ public class TaskSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
         completeToggle.Toggle.isOn = TaskSaveEditor.Complete;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateComplete()
     {

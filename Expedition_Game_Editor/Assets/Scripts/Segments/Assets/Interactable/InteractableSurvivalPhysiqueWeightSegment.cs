@@ -35,7 +35,7 @@ public class InteractableSurvivalPhysiqueWeightSegment : MonoBehaviour, ISegment
         weightInputNumber.Value = Weight;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateWeight()
     {

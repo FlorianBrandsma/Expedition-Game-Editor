@@ -170,7 +170,7 @@ public static class SaveDataManager
         chapterDataList = DataManager.GetChapterData(searchParameters);
     }
 
-    public static void UpdateData(SaveElementData elementData)
+    public static void UpdateData(SaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.saveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
     }

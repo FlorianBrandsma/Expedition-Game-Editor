@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 {
+    //private int addElementLength;
+
     private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
     private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
     
@@ -24,10 +25,12 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
                                                                  ListProperties.elementSize.y / PanelProperties.referenceArea.anchorMax.x);
         }
     }
-
+    
     public void InitializeOrganizer()
     {
         ElementList = new List<EditorElement>();
+
+        //addElementLength = ListProperties.AddMethod != SelectionManager.AddMethod.None ? 1 : 0;
     }
 
     public void SelectData()
@@ -60,7 +63,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IElementData elementData in list)
         {
-            var elementPosition = ListManager.List.GetElementPosition(list.IndexOf(elementData));
+            var elementPosition = GetElementPosition(list.IndexOf(elementData) /*+ addElementLength*/);
 
             if (ListManager.ElementAboveMax(elementPosition, true))
                 continue;
@@ -70,21 +73,21 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
             var panel = (ExPanel)PoolManager.SpawnObject(prefab);
 
+            elementData.DataElement = panel.EditorElement.DataElement;
+
+            panel.EditorElement.DataElement.Data    = DataController.Data;
+            panel.EditorElement.DataElement.Id      = elementData.Id;
+            panel.EditorElement.DataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+
             SelectionElementManager.InitializeElement(  panel.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.AddProperty,
                                                         DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(panel.EditorElement);
-
-            elementData.DataElement = panel.EditorElement.DataElement;
-
-            panel.EditorElement.DataElement.Data = DataController.Data;
-            panel.EditorElement.DataElement.Id = elementData.Id;
-
-            panel.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
-
+            
             SetProperties(panel);
 
             panel.GetComponent<ExPanel>().InitializeChildElement();
@@ -92,11 +95,11 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
             //Debugging
             panel.name = elementData.DebugName + elementData.Id;
 
-            SetElement(panel.EditorElement);
-        };
+            SetElement(panel.EditorElement, elementPosition);
+        }
     }
     
-    private void SetElement(EditorElement element)
+    private void SetElement(EditorElement element, Vector2 elementPosition)
     {
         element.RectTransform.sizeDelta = new Vector2(element.RectTransform.sizeDelta.x, ElementSize.y);
 
@@ -104,7 +107,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         element.RectTransform.offsetMax = new Vector2(0, element.RectTransform.offsetMax.y);
         
         int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
-        element.transform.localPosition = GetElementPosition(index);
+        element.transform.localPosition = elementPosition;
 
         element.gameObject.SetActive(true);
         
@@ -125,10 +128,12 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
         return position;
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public Vector2 GetListSize(bool exact)
     {
+        var elementCount = DataController.Data.dataList.Count /*+ addElementLength*/;
+
         if (exact)
-            return new Vector2(0, DataController.Data.dataList.Count * ElementSize.y);
+            return new Vector2(0, elementCount * ElementSize.y);
         else
             return new Vector2(0, elementCount);
     }

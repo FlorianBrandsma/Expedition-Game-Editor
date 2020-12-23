@@ -9,6 +9,8 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
 
     public Enums.DataType DataType                  { get { return Enums.DataType.InteractionDestination; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -92,16 +94,20 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        InteractionDestinationDataManager.UpdateData(this);
+        
+        InteractionDestinationDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

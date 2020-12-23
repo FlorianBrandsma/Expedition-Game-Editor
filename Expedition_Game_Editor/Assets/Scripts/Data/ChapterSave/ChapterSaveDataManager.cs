@@ -64,11 +64,15 @@ public static class ChapterSaveDataManager
         chapterDataList = DataManager.GetChapterData(searchParameters);
     }
 
-    public static void UpdateData(ChapterSaveElementData elementData)
+    public static void UpdateData(ChapterSaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.chapterSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedComplete)
-            data.Complete = elementData.Complete;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Complete = elementData.Complete;
+            else { }
+        }
     }
 }

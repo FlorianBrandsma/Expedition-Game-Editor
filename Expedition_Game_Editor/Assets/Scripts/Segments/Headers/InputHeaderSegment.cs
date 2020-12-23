@@ -179,7 +179,12 @@ public class InputHeaderSegment : MonoBehaviour, ISegment
         if (DataEditor.Loaded) return;
         
         if (indexSwitch != null)
-            indexSwitch.InitializeSwitch(this, Index);
+        {
+            var enabled = Id > 0;
+
+            indexSwitch.EnableElement(enabled);
+            indexSwitch.InitializeSwitch(this, enabled ? Index : DataEditor.Data.dataList.Count - 1);
+        }
     }
 
     public void InitializeSegment()
@@ -192,14 +197,17 @@ public class InputHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Activate();
 
-        idText.text = Id.ToString();
+        if (Id > 0)
+            idText.text = Id.ToString();
+        else
+            idText.text = "New";
 
         inputText.InputField.text = Name;
 
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateName()
     {

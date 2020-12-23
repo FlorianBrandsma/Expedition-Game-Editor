@@ -56,9 +56,11 @@ public class TerrainTileSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = TerrainController;
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        elementData.Update();
+        var dataRequest = new DataRequest();
+
+        mergedElementData.Update(dataRequest);
     }
 
     public void UpdateSegment() { }

@@ -17,7 +17,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded                              { get; set; }
+    public bool Loaded { get; set; }
 
     public List<IElementData> DataList
     {
@@ -277,10 +277,10 @@ public class SceneActorEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed) && (SpeechText.Length <= SpeechTextLimit);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
-        
+        EditData.Update(dataRequest);
+
         ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))

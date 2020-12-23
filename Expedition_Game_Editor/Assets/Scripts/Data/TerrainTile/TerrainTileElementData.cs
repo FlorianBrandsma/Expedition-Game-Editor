@@ -9,6 +9,8 @@ public class TerrainTileElementData : TerrainTileData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.TerrainTile; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -29,16 +31,20 @@ public class TerrainTileElementData : TerrainTileData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        TerrainTileDataManager.UpdateData(this);
+        
+        TerrainTileDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

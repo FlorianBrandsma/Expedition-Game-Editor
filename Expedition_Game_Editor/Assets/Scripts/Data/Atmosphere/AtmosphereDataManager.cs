@@ -121,20 +121,36 @@ public static class AtmosphereDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(AtmosphereElementData elementData)
+    public static void UpdateData(AtmosphereElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.atmosphereList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedStartTime)
-            data.StartTime = elementData.StartTime;
-
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.StartTime = elementData.StartTime;
+            else { }
+        }
+        
         if (elementData.ChangedEndTime)
-            data.EndTime = elementData.EndTime;
-
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.EndTime = elementData.EndTime;
+            else { }
+        }
+        
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
-
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
+        
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 }

@@ -125,36 +125,72 @@ public class SceneDataManager : MonoBehaviour
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void UpdateData(SceneElementData elementData)
+    public static void UpdateData(SceneElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.sceneList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         if (elementData.ChangedRegionId)
-            data.RegionId = elementData.RegionId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RegionId = elementData.RegionId;
+            else { }
+        }
 
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedFreezeTime)
-            data.FreezeTime = elementData.FreezeTime;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.FreezeTime = elementData.FreezeTime;
+            else { }
+        }
 
         if (elementData.ChangedAutoContinue)
-            data.AutoContinue = elementData.AutoContinue;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.AutoContinue = elementData.AutoContinue;
+            else { }
+        }
 
         if (elementData.ChangedSetActorsInstantly)
-            data.SetActorsInstantly = elementData.SetActorsInstantly;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.SetActorsInstantly = elementData.SetActorsInstantly;
+            else { }
+        }
 
         if (elementData.ChangedSceneDuration)
-            data.SceneDuration = elementData.SceneDuration;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.SceneDuration = elementData.SceneDuration;
+            else { }
+        }
 
         if (elementData.ChangedShotDuration)
-            data.ShotDuration = elementData.ShotDuration;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ShotDuration = elementData.ShotDuration;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 
     static public void UpdateIndex(SceneElementData elementData)

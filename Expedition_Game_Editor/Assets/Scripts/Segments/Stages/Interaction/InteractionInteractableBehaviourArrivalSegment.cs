@@ -44,7 +44,7 @@ public class InteractionInteractableBehaviourArrivalSegment : MonoBehaviour, ISe
         arrivalTypeDropdown.Dropdown.value = ArrivalType;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateArrivalType()
     {

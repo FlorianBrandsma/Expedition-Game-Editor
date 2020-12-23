@@ -74,7 +74,7 @@ public class InteractionDestinationDestinationCoordinateSegment : MonoBehaviour,
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdatePositionX()
     {

@@ -8,6 +8,6 @@
     void InitializeSegment();
     void OpenSegment();
     void UpdateSegment();
-    void SetSearchResult(IElementData elementData);
+    void SetSearchResult(IElementData searchData, IElementData resultData);
     void CloseSegment();
 }

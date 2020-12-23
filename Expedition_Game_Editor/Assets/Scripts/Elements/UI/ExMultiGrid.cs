@@ -34,7 +34,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return elementType; } }
-    public int Id                           { get; set; }
+    public int PoolId                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
     public IPoolable Instantiate()
@@ -136,6 +136,7 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
                                                         EditorElement.DataElement.DisplayManager,
                                                         multiGridProperties.innerSelectionType,
                                                         multiGridProperties.innerSelectionProperty,
+                                                        SelectionManager.Property.None,
                                                         multiGridProperties.innerUniqueSelection);
 
             innerElement.EditorElement.parent = EditorElement;

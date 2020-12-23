@@ -10,6 +10,20 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     public Enums.SelectionStatus selectionStatus;
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
+    public SelectionManager.Property addProperty;
+
+    public SelectionManager.Property ActiveSelectionProperty
+    {
+        get {
+
+            var activeProperty = selectionProperty;
+
+            if (addProperty != SelectionManager.Property.None && DataElement.Id == 0)
+                activeProperty = addProperty;
+
+            return activeProperty;
+        }
+    }
 
     public bool uniqueSelection;
 
@@ -36,10 +50,11 @@ public class EditorElement : MonoBehaviour, ISelectionElement
         GetComponent<IElement>().InitializeElement();
     }
 
-    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
+    public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
     {
         this.selectionType = selectionType;
         this.selectionProperty = selectionProperty;
+        this.addProperty = addProperty;
         this.uniqueSelection = uniqueSelection;
 
         if(DataElement != null && DataElement.Data != null && DataElement.ElementData != null)
@@ -49,7 +64,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
         OnSelection.RemoveAllListeners();
 
-        if (selectionType != SelectionManager.Type.None)
+        if (ActiveSelectionProperty != SelectionManager.Property.None)
         {
             OnSelection.AddListener(delegate { SelectElement(); });
         }
@@ -154,18 +169,17 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     {
         if (elementStatus == Enums.ElementStatus.Locked) return;
 
-        if (selectionType == SelectionManager.Type.None) return;
+        if (ActiveSelectionProperty == SelectionManager.Property.None) return;
 
-        EditorPath editorPath = new EditorPath(this, new Route(this));
+        var editorPath = new EditorPath(this, new Route(this));
 
-        switch (selectionProperty)
+        switch (ActiveSelectionProperty)
         {
             case SelectionManager.Property.None: break;
 
             case SelectionManager.Property.Get:
                 RenderManager.Render(editorPath.path);
                 SelectionManager.SelectSearch(DataElement.ElementData);
-
                 break;
 
             case SelectionManager.Property.Set:
@@ -240,6 +254,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
         if (DataElement.ElementData == null) return;
         
         DataElement.ElementData.SelectionStatus = Enums.SelectionStatus.None;
+        
 
         if (glow != null)
         {

@@ -112,18 +112,18 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.Icon:
 
-                var iconElementData = (IconElementData)elementData;
+                var iconElementData = (IconElementData)mergedElementData;
                 UpdateIcon(iconElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

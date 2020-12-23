@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public interface IEditor
 {
     bool Loaded                             { get; set; }
+
     Data Data                               { get; }
     IElementData ElementData                { get; }
     IElementData EditData                   { get; }
@@ -15,7 +16,7 @@ public interface IEditor
     void InitializeEditor();
     void OpenEditor();
     void UpdateEditor();
-    void ApplyChanges();
+    void ApplyChanges(DataRequest dataRequest);
     void CancelEdit();
     void CloseEditor();
 }

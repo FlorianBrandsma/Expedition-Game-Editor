@@ -35,7 +35,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 
     public Transform Transform                  { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType        { get { return Enums.ElementType.GameWorldAgent; } }
-    public int Id                               { get; set; }
+    public int PoolId                               { get; set; }
     public bool IsActive                        { get { return gameObject.activeInHierarchy; } }
 
     public GameWorldInteractableElementData GameWorldInteractableElementData { get { return (GameWorldInteractableElementData)GameElement.DataElement.ElementData; } }

@@ -23,7 +23,7 @@ public class QuestSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
         completeToggle.Toggle.isOn = QuestSaveEditor.Complete;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateComplete()
     {

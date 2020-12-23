@@ -35,7 +35,7 @@ public class InteractableSurvivalPhysiqueSpeedSegment : MonoBehaviour, ISegment
         speedInputNumber.Value = Speed;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSpeed()
     {

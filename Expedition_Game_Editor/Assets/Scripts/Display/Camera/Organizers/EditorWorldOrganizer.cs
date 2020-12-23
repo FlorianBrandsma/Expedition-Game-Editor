@@ -715,6 +715,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.AddProperty,
                                                         DisplayManager.Display.UniqueSelection);
 
             worldElement.EditorElement.DataElement.Data = dataController.Data;

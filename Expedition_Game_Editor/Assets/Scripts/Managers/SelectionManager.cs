@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 static public class SelectionManager
 {
@@ -74,12 +73,16 @@ static public class SelectionManager
 
                     if (elementData.UniqueSelection != route.uniqueSelection)
                         continue;
-                    
-                    if (elementData.SelectionStatus == Enums.SelectionStatus.None)
-                        elementData.SelectionStatus = route.selectionStatus;
-                    else if (route.selectionStatus == Enums.SelectionStatus.Child)
-                        elementData.SelectionStatus = Enums.SelectionStatus.Both;
 
+                    if (elementData.SelectionStatus == Enums.SelectionStatus.None)
+                    {
+                        elementData.SelectionStatus = route.selectionStatus;
+
+                    } else if (route.selectionStatus == Enums.SelectionStatus.Child) {
+
+                        elementData.SelectionStatus = Enums.SelectionStatus.Both;
+                    }
+                    
                     if (elementData.DataElement != null)
                         ((EditorElement)elementData.DataElement.SelectionElement).SetOverlay();
 

@@ -61,11 +61,7 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
 
         if (sceneActorElementData == null)
         {
-            sceneActorElementData = new SceneActorElementData()
-            {
-                InteractableName = "None"
-            };
-
+            sceneActorElementData = new SceneActorElementData();
             sceneActorElementData.SetOriginalValues();
 
             SceneActorDataController.Data.dataList = new List<IElementData>() { sceneActorElementData };
@@ -107,7 +103,7 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
         searchParameters.excludeId = new List<int>() { RotationTargetSceneActorId };
         searchParameters.sceneId = new List<int>() { SceneId };
 
-        searchParameters.includeEmptyElement = RotationTargetSceneActorId != 0;
+        searchParameters.includeRemoveElement = RotationTargetSceneActorId != 0;
     }
 
     public void OpenSegment()
@@ -123,18 +119,18 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
         sceneActorButton.DataElement.SetElement();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.SceneActor:
 
-                var sceneActorElementData = (SceneActorElementData)elementData;
+                var sceneActorElementData = (SceneActorElementData)mergedElementData;
                 UpdateSceneActor(sceneActorElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

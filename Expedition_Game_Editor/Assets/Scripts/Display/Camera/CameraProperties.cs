@@ -36,7 +36,9 @@ public class CameraProperties : MonoBehaviour, IDisplay
     public IProperties Properties                       { get { return GetComponent<IProperties>(); } }
 
     public SelectionManager.Property SelectionProperty  { get { return selectionProperty; } }
+    public SelectionManager.Property AddProperty        { get { return SelectionManager.Property.None; } }
     public SelectionManager.Type SelectionType          { get { return selectionType; } }
+    
     public bool UniqueSelection                         { get { return uniqueSelection; } }
 
     public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }

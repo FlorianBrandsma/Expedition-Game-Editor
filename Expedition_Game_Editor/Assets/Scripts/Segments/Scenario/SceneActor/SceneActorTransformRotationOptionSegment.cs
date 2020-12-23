@@ -52,7 +52,7 @@ public class SceneActorTransformRotationOptionSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateChangeRotation()
     {

@@ -18,22 +18,22 @@ public class PoolManager : MonoBehaviour
 
         public void Add(IPoolable poolObject)
         {
-            if (!objectPoolList.Any(x => x.id == poolObject.Id))
-                objectPoolList.Add(new ObjectPool(poolObject.Id));
+            if (!objectPoolList.Any(x => x.poolId == poolObject.PoolId))
+                objectPoolList.Add(new ObjectPool(poolObject.PoolId));
 
-            objectPoolList.Where(x => x.id == poolObject.Id).FirstOrDefault().pool.Add(poolObject);
+            objectPoolList.Where(x => x.poolId == poolObject.PoolId).FirstOrDefault().pool.Add(poolObject);
         }
     }
 
     //e.g. all models with id 1
     public class ObjectPool
     {
-        public int id;
+        public int poolId;
         public List<IPoolable> pool = new List<IPoolable>();
 
-        public ObjectPool(int id)
+        public ObjectPool(int poolId)
         {
-            this.id = id;
+            this.poolId = poolId;
         }
     }
 
@@ -47,13 +47,13 @@ public class PoolManager : MonoBehaviour
     }
 
     //e.g. a model with id 1
-    static public IPoolable SpawnObject(IPoolable prefab, int id = 0) //e.g. a model with id 1
+    static public IPoolable SpawnObject(IPoolable prefab, int poolId = 0) //e.g. a model with id 1
     {
         var filteredPoolList = poolList.Where(x => x.elementType == prefab.ElementType).FirstOrDefault();
         
         if(filteredPoolList != null)
         {
-            var objectPool = filteredPoolList.objectPoolList.Where(x => x.id == id).FirstOrDefault();
+            var objectPool = filteredPoolList.objectPoolList.Where(x => x.poolId == poolId).FirstOrDefault();
 
             if (objectPool != null)
             {
@@ -69,7 +69,7 @@ public class PoolManager : MonoBehaviour
         var poolObject = prefab.Instantiate();
         poolObject.Transform.gameObject.AddComponent<GlobalComponent>();
 
-        poolObject.Id = id;
+        poolObject.PoolId = poolId;
 
         Add(poolObject);
 

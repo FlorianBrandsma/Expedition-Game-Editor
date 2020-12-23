@@ -12,18 +12,20 @@ public static class SceneActorDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
+        var list = new List<SceneActorElementData>();
+
         var searchParameters = searchProperties.searchParameters.Cast<Search.SceneActor>().First();
 
         GetSceneActorData(searchParameters);
 
-        if (sceneActorDataList.Count == 0 && !searchParameters.includeEmptyElement) return new List<IElementData>();
+        if (sceneActorDataList.Count > 0)// && !searchParameters.includeEmptyElement) return new List<IElementData>();
+        {
+            GetWorldInteractableData();
+            GetInteractableData();
+            GetModelData();
+            GetIconData();
 
-        GetWorldInteractableData();
-        GetInteractableData();
-        GetModelData();
-        GetIconData();
-
-        var list = (from sceneActorData         in sceneActorDataList
+            list = (from sceneActorData         in sceneActorDataList
                     join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId   equals worldInteractableData.Id
                     join interactableData       in interactableDataList         on worldInteractableData.InteractableId equals interactableData.Id
                     join modelData              in modelDataList                on interactableData.ModelId             equals modelData.Id
@@ -61,20 +63,16 @@ public static class SceneActorDataManager
                         SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
 
                     }).OrderBy(x => x.Id).ToList();
-
-        if (searchParameters.includeEmptyElement)
-        {
-            list.Insert(0, new SceneActorElementData()
-            {
-                InteractableName = "None"
-            });
         }
-        
+
+        if (searchParameters.includeRemoveElement)
+            AddRemoveElementData(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
-
+    
     private static void GetSceneActorData(Search.SceneActor searchParameters)
     {
         sceneActorDataList = new List<SceneActorBaseData>();
@@ -121,51 +119,112 @@ public static class SceneActorDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(SceneActorElementData elementData)
+    private static void AddRemoveElementData(List<SceneActorElementData> list)
+    {
+        list.Insert(0, new SceneActorElementData());
+    }
+
+    public static void UpdateData(SceneActorElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.sceneActorList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedSpeechMethod)
-            data.SpeechMethod = elementData.SpeechMethod;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.SpeechMethod = elementData.SpeechMethod;
+            else { }
+        }
 
         if (elementData.ChangedSpeechText)
-            data.SpeechText = elementData.SpeechText;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.SpeechText = elementData.SpeechText;
+            else { }
+        }
 
         if (elementData.ChangedShowTextBox)
-            data.ShowTextBox = elementData.ShowTextBox;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ShowTextBox = elementData.ShowTextBox;
+            else { }
+        }
 
         if (elementData.ChangedTargetSceneActorId)
-            data.TargetSceneActorId = elementData.TargetSceneActorId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.TargetSceneActorId = elementData.TargetSceneActorId;
+            else { }
+        }
 
         if (elementData.ChangedChangePosition)
-            data.ChangePosition = elementData.ChangePosition;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ChangePosition = elementData.ChangePosition;
+            else { }
+        }
 
         if (elementData.ChangedFreezePosition)
-            data.FreezePosition = elementData.FreezePosition;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.FreezePosition = elementData.FreezePosition;
+            else { }
+        }
 
         if (elementData.ChangedPositionX)
-            data.PositionX = elementData.PositionX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionX = elementData.PositionX;
+            else { }
+        }
 
         if (elementData.ChangedPositionY)
-            data.PositionY = elementData.PositionY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionY = elementData.PositionY;
+            else { }
+        }
 
         if (elementData.ChangedPositionZ)
-            data.PositionZ = elementData.PositionZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PositionZ = elementData.PositionZ;
+            else { }
+        }
 
         if (elementData.ChangedChangeRotation)
-            data.ChangeRotation = elementData.ChangeRotation;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ChangeRotation = elementData.ChangeRotation;
+            else { }
+        }
 
         if (elementData.ChangedFaceTarget)
-            data.FaceTarget = elementData.FaceTarget;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.FaceTarget = elementData.FaceTarget;
+            else { }
+        }
 
         if (elementData.ChangedRotationX)
-            data.RotationX = elementData.RotationX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationX = elementData.RotationX;
+            else { }
+        }
 
         if (elementData.ChangedRotationY)
-            data.RotationY = elementData.RotationY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationY = elementData.RotationY;
+            else { }
+        }
 
         if (elementData.ChangedRotationZ)
-            data.RotationZ = elementData.RotationZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RotationZ = elementData.RotationZ;
+            else { }
+        }
     }
 
     public static void UpdateSearch(SceneActorElementData elementData)

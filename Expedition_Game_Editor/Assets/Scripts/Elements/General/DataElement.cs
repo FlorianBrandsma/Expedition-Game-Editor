@@ -23,17 +23,14 @@ public class DataElement : MonoBehaviour
         SelectionElement.InitializeElement();
     }
 
-    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, bool uniqueSelection)
+    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
     {
         DisplayManager = displayManager;
         
         if(DisplayManager != null)
             segmentController = DisplayManager.Display.DataController.SegmentController;
 
-        //Can be overwritten
-        //data.dataController = DisplayManager.Display.DataController;
-
-        SelectionElement.InitializeElement(selectionType, selectionProperty, uniqueSelection);
+        SelectionElement.InitializeElement(selectionType, selectionProperty, addProperty, uniqueSelection);
     }
 
     public void UpdateElement()
@@ -53,20 +50,45 @@ public class DataElement : MonoBehaviour
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
-        
-        //Replace search data with result data
-        Data.dataController.SetData(ElementData, resultData);
 
+        var searchElementData = ElementData;
+
+        if (searchElementData.Id == 0 && resultData.Id == 0) return;
+
+        //When adding a new element by searching, should it overwrite the original
+        //and insert a new default element, or return a new element? 
+        //In case of a new element, the segment can decide what to do with it
+
+        //Element belongs to a list if display manager is not null.
+        //If the id is also zero, a new element should be added to the list.
+        //Clearer solution would be to include an "add/replace" option.
+        if (DisplayManager != null && searchElementData.Id == 0)
+        {
+            searchElementData = ElementData.Clone();
+        }
+        
+        //What happens when auto update is true? Or when selecting a result which
+        //remove the selected row?
+        
+        Data.dataController.SetData(searchElementData, resultData);
+        
         if(Data.dataController.SearchProperties != null)
         {
             if (Data.dataController.SearchProperties.autoUpdate)
             {
-                ElementData.UpdateSearch();
+                if(resultData.Id > 0)
+                {
+                    searchElementData.UpdateSearch();
+
+                } else {
+
+                    Debug.Log("Automatically delete " + searchElementData.DataType + "" + searchElementData.Id);
+                }
             }  
         }
 
         //Apply combined search and result data
-        segmentController.GetComponent<ISegment>().SetSearchResult(ElementData);
+        segmentController.GetComponent<ISegment>().SetSearchResult(searchElementData, resultData);
     }
 
     public void CancelDataSelection()

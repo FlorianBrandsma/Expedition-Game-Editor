@@ -50,21 +50,37 @@ public static class ObjectiveDataManager
         }
     }
 
-    public static void UpdateData(ObjectiveElementData elementData)
+    public static void UpdateData(ObjectiveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.objectiveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedJournal)
-            data.Journal = elementData.Journal;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Journal = elementData.Journal;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 
     static public void UpdateIndex(ObjectiveElementData elementData)

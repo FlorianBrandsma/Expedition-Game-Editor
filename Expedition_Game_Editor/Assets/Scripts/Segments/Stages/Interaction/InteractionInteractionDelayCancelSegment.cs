@@ -51,7 +51,7 @@ public class InteractionInteractionDelayCancelSegment : MonoBehaviour, ISegment
         cancelDelayOnHitToggle.Toggle.isOn = CancelDelayOnHit;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateCancelDelayOnInput()
     {

@@ -34,7 +34,7 @@ public class InteractableSurvivalCapacityHealthSegment : MonoBehaviour, ISegment
         healthInputNumber.Value = Health;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateHealth()
     {

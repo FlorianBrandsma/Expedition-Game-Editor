@@ -50,9 +50,9 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         searchParameters.phaseId = new List<int>() { 0 };
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        SetSearchChapterRegion((ChapterRegionElementData)elementData);
+        SetSearchChapterRegion((ChapterRegionElementData)mergedElementData);
 
         DataEditor.UpdateEditor();
 

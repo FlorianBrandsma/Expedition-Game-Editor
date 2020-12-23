@@ -9,6 +9,8 @@ public class ScenePropElementData : ScenePropData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.SceneProp; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -67,26 +69,32 @@ public class ScenePropElementData : ScenePropData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
+        if (Changed)
+        {
+            ScenePropDataManager.UpdateData(this, dataRequest);
 
-        ScenePropDataManager.UpdateData(this);
-
-        SetOriginalValues();
+            SetOriginalValues();
+        }
     }
 
     public void UpdateSearch()
     {
-        if (!Changed) return;
+        if (Changed)
+        {
+            ScenePropDataManager.UpdateSearch(this);
 
-        ScenePropDataManager.UpdateSearch(this);
+            OriginalData.ModelId = ModelId;
 
-        OriginalData.ModelId = ModelId;
-
-        OriginalData.ModelName = ModelName;
-        OriginalData.ModelIconPath = ModelIconPath;
+            OriginalData.ModelName = ModelName;
+            OriginalData.ModelIconPath = ModelIconPath;
+        }
     }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

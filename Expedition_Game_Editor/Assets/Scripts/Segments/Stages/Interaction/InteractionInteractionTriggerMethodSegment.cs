@@ -66,7 +66,7 @@ public class InteractionInteractionTriggerMethodSegment : MonoBehaviour, ISegmen
         hideInteractionIndicatorToggle.Toggle.isOn = HideInteractionIndicator;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateTriggerAutomatically()
     {

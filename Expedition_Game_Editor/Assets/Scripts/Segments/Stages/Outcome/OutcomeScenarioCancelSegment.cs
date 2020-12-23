@@ -76,7 +76,7 @@ public class OutcomeScenarioCancelSegment : MonoBehaviour, ISegment
         cancelScenarioOnHitToggle.Toggle.isOn = CancelScenarioOnHit;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateCancelScenarioType()
     {

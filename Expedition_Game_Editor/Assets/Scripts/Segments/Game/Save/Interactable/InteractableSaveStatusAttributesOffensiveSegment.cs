@@ -32,7 +32,7 @@ public class InteractableSaveStatusAttributesOffensiveSegment : MonoBehaviour, I
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateDescription()
     {

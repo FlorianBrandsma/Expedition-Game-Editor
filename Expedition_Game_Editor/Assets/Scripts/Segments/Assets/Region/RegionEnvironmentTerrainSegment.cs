@@ -93,7 +93,7 @@ public class RegionEnvironmentTerrainSegment : MonoBehaviour, ISegment
         TileIconPath = SegmentController.DataController.Data.dataList.Cast<TileElementData>().First().Icon;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

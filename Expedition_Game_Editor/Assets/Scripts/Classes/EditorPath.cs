@@ -7,11 +7,11 @@ public class EditorPath
 
     public EditorPath(EditorElement editorElement, Route route)
     {
-        if (editorElement.selectionProperty == SelectionManager.Property.Set) return;
+        if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Set) return;
 
-        if (editorElement.selectionProperty == SelectionManager.Property.Toggle) return;
+        if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Toggle) return;
 
-        if (editorElement.selectionProperty == SelectionManager.Property.Get)
+        if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Get)
         {
             PathManager.Search search = new PathManager.Search(editorElement, route);
 
@@ -20,7 +20,7 @@ public class EditorPath
             return;
         }
 
-        Debug.Log(editorElement.selectionProperty + " " + editorElement.DataElement.ElementData.DataType);
+        Debug.Log(editorElement.ActiveSelectionProperty + " " + editorElement.DataElement.ElementData.DataType);
 
         switch (editorElement.DataElement.ElementData.DataType)
         {
@@ -28,10 +28,10 @@ public class EditorPath
 
                 PathManager.Structure chapter = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = chapter.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = chapter.Edit();
 
                 break;
@@ -40,10 +40,10 @@ public class EditorPath
 
                 PathManager.Structure phase = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = phase.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = phase.Edit();
 
                 break;
@@ -52,10 +52,10 @@ public class EditorPath
 
                 PathManager.Structure quest = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = quest.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = quest.Edit();
 
                 break;
@@ -64,10 +64,10 @@ public class EditorPath
 
                 PathManager.Structure objective = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = objective.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = objective.Edit();
 
                 break;
@@ -82,13 +82,13 @@ public class EditorPath
 
                 PathManager.WorldInteractable worldInteractable = new PathManager.WorldInteractable(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = worldInteractable.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = worldInteractable.Open();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.OpenPhaseSaveRegionWorldInteractable)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.OpenPhaseSaveRegionWorldInteractable)
                     path = worldInteractable.OpenPhaseSaveRegionWorldInteractable();
 
                 break;
@@ -97,13 +97,13 @@ public class EditorPath
 
                 PathManager.Structure task = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = task.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = task.Edit();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = task.Open();
 
                 break;
@@ -112,13 +112,13 @@ public class EditorPath
 
                 PathManager.Structure interaction = new PathManager.Structure(editorElement, route);
                 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = interaction.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = interaction.Edit();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = interaction.Open();
 
                 break;
@@ -127,10 +127,10 @@ public class EditorPath
 
                 PathManager.InteractionDestination interactionDestination = new PathManager.InteractionDestination(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = interactionDestination.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = interactionDestination.Open();
 
                 break;
@@ -139,10 +139,10 @@ public class EditorPath
 
                 PathManager.Outcome outcome = new PathManager.Outcome(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = outcome.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.OpenOutcomeScenes)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.OpenOutcomeScenes)
                     path = outcome.OpenOutcomeScenes();
 
                 break;
@@ -151,7 +151,7 @@ public class EditorPath
 
                 PathManager.Scene scene = new PathManager.Scene(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = scene.Enter();
 
                 break;
@@ -160,7 +160,7 @@ public class EditorPath
 
                 PathManager.SceneShot sceneShot = new PathManager.SceneShot(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = sceneShot.Enter();
 
                 break;
@@ -169,7 +169,7 @@ public class EditorPath
 
                 PathManager.SceneActor sceneActor = new PathManager.SceneActor(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = sceneActor.Open();
 
                 break;
@@ -178,7 +178,7 @@ public class EditorPath
 
                 PathManager.SceneProp sceneProp = new PathManager.SceneProp(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = sceneProp.Open();
 
                 break;
@@ -187,19 +187,19 @@ public class EditorPath
 
                 PathManager.Region region = new PathManager.Region(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = region.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = region.Edit();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = region.Open();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.OpenSceneRegion)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.OpenSceneRegion)
                     path = region.OpenSceneRegion();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.OpenPhaseSaveRegion)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.OpenPhaseSaveRegion)
                     path = region.OpenPhaseSaveRegion();
                 
                 break;
@@ -208,7 +208,7 @@ public class EditorPath
 
                 PathManager.Atmosphere atmosphere = new PathManager.Atmosphere(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = atmosphere.Enter();
 
                 break;
@@ -217,10 +217,10 @@ public class EditorPath
 
                 PathManager.Terrain terrain = new PathManager.Terrain(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = terrain.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = terrain.Edit();
 
                 break;
@@ -229,7 +229,7 @@ public class EditorPath
 
                 PathManager.WorldObject worldObject = new PathManager.WorldObject(editorElement, route);
                 
-                if (editorElement.selectionProperty == SelectionManager.Property.Open)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
                     path = worldObject.Open();
 
                 break;
@@ -238,10 +238,10 @@ public class EditorPath
 
                 PathManager.Item item = new PathManager.Item(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = item.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = item.Edit();
 
                 break;
@@ -250,10 +250,10 @@ public class EditorPath
 
                 PathManager.Interactable interactable = new PathManager.Interactable(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = interactable.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = interactable.Edit();
 
                 break;
@@ -262,7 +262,7 @@ public class EditorPath
 
                 PathManager.Option option = new PathManager.Option(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = option.Enter();
 
             break;
@@ -271,7 +271,7 @@ public class EditorPath
 
                 PathManager.Save save = new PathManager.Save(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = save.EnterGame();
 
                 break;
@@ -280,7 +280,7 @@ public class EditorPath
 
                 PathManager.InteractableSave interactableSave = new PathManager.InteractableSave(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = interactableSave.Edit();
 
                 break;
@@ -289,10 +289,10 @@ public class EditorPath
 
                 PathManager.Structure chapterSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = chapterSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = chapterSave.Edit();
 
                 break;
@@ -301,10 +301,10 @@ public class EditorPath
 
                 PathManager.Structure phaseSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = phaseSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = phaseSave.Edit();
 
                 break;
@@ -313,10 +313,10 @@ public class EditorPath
 
                 PathManager.Structure questSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = questSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = questSave.Edit();
 
                 break;
@@ -325,10 +325,10 @@ public class EditorPath
 
                 PathManager.Structure objectiveSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = objectiveSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = objectiveSave.Edit();
 
                 break;
@@ -337,10 +337,10 @@ public class EditorPath
 
                 PathManager.Structure taskSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = taskSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = taskSave.Edit();
 
                 break;
@@ -349,10 +349,10 @@ public class EditorPath
 
                 PathManager.Structure interactionSave = new PathManager.Structure(editorElement, route);
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Enter)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
                     path = interactionSave.Enter();
 
-                if (editorElement.selectionProperty == SelectionManager.Property.Edit)
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Edit)
                     path = interactionSave.Edit();
 
                 break;

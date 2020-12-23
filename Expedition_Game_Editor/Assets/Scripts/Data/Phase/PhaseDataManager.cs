@@ -182,42 +182,86 @@ public static class PhaseDataManager
         terrainTileDataList = DataManager.GetTerrainTileData(searchParameters);
     }
 
-    public static void UpdateData(PhaseElementData elementData)
+    public static void UpdateData(PhaseElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedDefaultRegionId)
-            data.DefaultRegionId = elementData.DefaultRegionId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultRegionId = elementData.DefaultRegionId;
+            else { }
+        }
 
         if (elementData.ChangedDefaultPositionX)
-            data.DefaultPositionX = elementData.DefaultPositionX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultPositionX = elementData.DefaultPositionX;
+            else { }
+        }
 
         if (elementData.ChangedDefaultPositionY)
-            data.DefaultPositionY = elementData.DefaultPositionY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultPositionY = elementData.DefaultPositionY;
+            else { }
+        }
 
         if (elementData.ChangedDefaultPositionZ)
-            data.DefaultPositionZ = elementData.DefaultPositionZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultPositionZ = elementData.DefaultPositionZ;
+            else { }
+        }
 
         if (elementData.ChangedDefaultRotationX)
-            data.DefaultRotationX = elementData.DefaultRotationX;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultRotationX = elementData.DefaultRotationX;
+            else { }
+        }
 
         if (elementData.ChangedDefaultRotationY)
-            data.DefaultRotationY = elementData.DefaultRotationY;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultRotationY = elementData.DefaultRotationY;
+            else { }
+        }
 
         if (elementData.ChangedDefaultRotationZ)
-            data.DefaultRotationZ = elementData.DefaultRotationZ;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultRotationZ = elementData.DefaultRotationZ;
+            else { }
+        }
 
         if (elementData.ChangedDefaultTime)
-            data.DefaultTime = elementData.DefaultTime;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DefaultTime = elementData.DefaultTime;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 
     static public void UpdateIndex(PhaseElementData elementData)

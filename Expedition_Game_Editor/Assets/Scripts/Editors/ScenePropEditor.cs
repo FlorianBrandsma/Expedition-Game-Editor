@@ -187,10 +187,10 @@ public class ScenePropEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
-        
+        EditData.Update(dataRequest);
+
         ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))

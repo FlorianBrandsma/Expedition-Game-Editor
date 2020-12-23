@@ -197,9 +197,9 @@ public class SceneEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
+        EditData.Update(dataRequest);
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();

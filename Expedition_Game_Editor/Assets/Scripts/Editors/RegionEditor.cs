@@ -14,7 +14,7 @@ public class RegionEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -122,15 +122,15 @@ public class RegionEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
         //if (regionData.ChangedName)
         //    ChangedName();
 
         //if (regionData.ChangedTileSetId)
         //    ChangedTileSet();
-        
-        EditData.Update();
+
+        EditData.Update(dataRequest);
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();

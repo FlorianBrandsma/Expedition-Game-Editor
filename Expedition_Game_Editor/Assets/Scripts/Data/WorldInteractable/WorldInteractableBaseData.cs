@@ -16,8 +16,6 @@ public class WorldInteractableBaseData
 
     public virtual void GetOriginalValues(WorldInteractableData originalData)
     {
-        Id                      = originalData.Id;
-
         ChapterId               = originalData.ChapterId;
         PhaseId                 = originalData.PhaseId;
         QuestId                 = originalData.QuestId;

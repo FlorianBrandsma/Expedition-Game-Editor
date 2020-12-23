@@ -34,7 +34,7 @@ public class GameDataMenuSegment : MonoBehaviour, ISegment
         GlobalManager.OpenScene(GlobalManager.Scenes.Game);
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

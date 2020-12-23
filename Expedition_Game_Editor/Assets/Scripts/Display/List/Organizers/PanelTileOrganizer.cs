@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
 {
-    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
-    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
+    private IDisplayManager DisplayManager          { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager                 { get { return (ListManager)DisplayManager; } }
     
-    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private ListProperties ListProperties           { get { return (ListProperties)DisplayManager.Display; } }
     private PanelTileProperties PanelTileProperties { get { return (PanelTileProperties)DisplayManager.Display.Properties; } }
 
-    private IDataController DataController  { get { return DisplayManager.Display.DataController; } }
+    private IDataController DataController          { get { return DisplayManager.Display.DataController; } }
 
-    public List<EditorElement> ElementList  { get; set; }
+    public List<EditorElement> ElementList          { get; set; }
 
-    public Vector2 ElementSize { get { return ListProperties.elementSize; } }
+    public Vector2 ElementSize                      { get { return ListProperties.elementSize; } }
 
     public void InitializeOrganizer()
     {
@@ -61,6 +61,7 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
                                                         DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.AddProperty,
                                                         DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(panelTile.EditorElement);
@@ -77,16 +78,16 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
             //Debugging
             panelTile.name = elementData.DebugName + elementData.Id;
 
-            SetElement(panelTile.EditorElement);
+            SetElement(panelTile.EditorElement, elementPosition);
         }
     }
     
-    private void SetElement(EditorElement element)
+    private void SetElement(EditorElement element, Vector2 elementPosition)
     {
         element.RectTransform.sizeDelta = new Vector2(ElementSize.x, ElementSize.y);
 
         int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
-        element.transform.localPosition = GetElementPosition(index);
+        element.transform.localPosition = elementPosition;
         
         element.gameObject.SetActive(true);
 
@@ -102,8 +103,10 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
         return position;
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public Vector2 GetListSize(bool exact)
     {
+        var elementCount = DataController.Data.dataList.Count;
+
         var listWidth  = GetListWidth();
         var listHeight = GetListHeight();
 

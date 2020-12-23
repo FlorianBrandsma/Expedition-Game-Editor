@@ -9,6 +9,8 @@ public class TaskElementData : TaskData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Task; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -54,11 +56,13 @@ public class TaskElementData : TaskData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        TaskDataManager.UpdateData(this);
+        
+        TaskDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -66,13 +70,15 @@ public class TaskElementData : TaskData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         TaskDataManager.UpdateIndex(this);
 
-        OriginalData.Index = Index;
+        OriginalData.Index = Index;   
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

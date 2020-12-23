@@ -29,9 +29,10 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
         {
             var modelData = (ModelElementData)elementData;
 
-            if (modelData.Id == 1) continue;
+            if (modelData.Id <= 1) continue;
 
             var prefab = Resources.Load<Model>(modelData.Path);
+
             var model = (Model)PoolManager.SpawnObject(prefab, modelData.Id);
 
             poolObjects.Add(model);
@@ -42,6 +43,7 @@ public class ObjectOrganizer : MonoBehaviour, IOrganizer
             model.name = elementData.DebugName + elementData.Id;
 
             SetModel(model);
+            
         }
     }
 

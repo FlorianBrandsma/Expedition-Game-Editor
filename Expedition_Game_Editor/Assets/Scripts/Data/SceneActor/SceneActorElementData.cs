@@ -9,6 +9,8 @@ public class SceneActorElementData : SceneActorData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.SceneActor; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -101,11 +103,13 @@ public class SceneActorElementData : SceneActorData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        SceneActorDataManager.UpdateData(this);
+        
+        SceneActorDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -113,7 +117,7 @@ public class SceneActorElementData : SceneActorData, IElementData
     public void UpdateSearch()
     {
         if (!Changed) return;
-
+        
         SceneActorDataManager.UpdateSearch(this);
 
         OriginalData.WorldInteractableId = WorldInteractableId;
@@ -121,6 +125,8 @@ public class SceneActorElementData : SceneActorData, IElementData
         OriginalData.InteractableName = InteractableName;
         OriginalData.ModelIconPath = ModelIconPath;
     }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

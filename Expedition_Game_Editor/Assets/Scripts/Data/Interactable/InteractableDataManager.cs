@@ -11,16 +11,18 @@ public static class InteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
+        var list = new List<InteractableElementData>();
+
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
         
         GetInteractableData(searchParameters);
 
-        if (interactableDataList.Count == 0) return new List<IElementData>();
-
-        GetModelData();
-        GetIconData();
-
-        var list = (from interactableData   in interactableDataList
+        if (interactableDataList.Count > 0)
+        {
+            GetModelData();
+            GetIconData();
+            
+            list = (from interactableData   in interactableDataList
                     join modelData          in modelDataList    on interactableData.ModelId equals modelData.Id
                     join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
                     select new InteractableElementData()
@@ -52,6 +54,10 @@ public static class InteractableDataManager
                         Depth = modelData.Depth
 
                     }).OrderBy(x => x.Index).ToList();
+        }
+
+        if (searchParameters.includeRemoveElement)
+            AddRemoveElementData(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -88,36 +94,77 @@ public static class InteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(InteractableElementData elementData)
+    private static void AddRemoveElementData(List<InteractableElementData> list)
+    {
+        list.Insert(0, new InteractableElementData());
+    }
+
+    public static void UpdateData(InteractableElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedModelId)
-            data.ModelId = elementData.ModelId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ModelId = elementData.ModelId;
+            else { }
+        }
 
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedScale)
-            data.Scale = elementData.Scale;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Scale = elementData.Scale;
+            else { }
+        }
 
         if (elementData.ChangedHealth)
-            data.Health = elementData.Health;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Health = elementData.Health;
+            else { }
+        }
 
         if (elementData.ChangedHunger)
-            data.Hunger = elementData.Hunger;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Hunger = elementData.Hunger;
+            else { }
+        }
 
         if (elementData.ChangedThirst)
-            data.Thirst = elementData.Thirst;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Thirst = elementData.Thirst;
+            else { }
+        }
 
         if (elementData.ChangedWeight)
-            data.Weight = elementData.Weight;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Weight = elementData.Weight;
+            else { }
+        }
 
         if (elementData.ChangedSpeed)
-            data.Speed = elementData.Speed;
-
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Speed = elementData.Speed;
+            else { }
+        }
+        
         if (elementData.ChangedStamina)
-            data.Stamina = elementData.Stamina;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Stamina = elementData.Stamina;
+            else { }
+        }
     }
 
     static public void UpdateIndex(InteractableElementData elementData)

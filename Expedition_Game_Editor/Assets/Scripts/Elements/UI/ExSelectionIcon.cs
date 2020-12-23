@@ -14,7 +14,7 @@ public class ExSelectionIcon : MonoBehaviour, IPoolable
 
 	public Transform Transform              { get { return GetComponent<Transform>(); } }
 	public Enums.ElementType ElementType    { get { return Enums.ElementType.SelectionIcon; } }
-	public int Id                           { get; set; }
+	public int PoolId                           { get; set; }
 	public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
 	public IPoolable Instantiate()

@@ -9,6 +9,8 @@ public class InteractableElementData : InteractableData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Interactable; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -76,11 +78,13 @@ public class InteractableElementData : InteractableData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        InteractableDataManager.UpdateData(this);
+        
+        InteractableDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -88,13 +92,15 @@ public class InteractableElementData : InteractableData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         InteractableDataManager.UpdateIndex(this);
 
         OriginalData.Index = Index;
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

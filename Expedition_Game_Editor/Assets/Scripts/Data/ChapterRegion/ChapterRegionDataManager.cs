@@ -91,11 +91,15 @@ public static class ChapterRegionDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void UpdateData(ChapterRegionElementData elementData)
+    public static void UpdateData(ChapterRegionElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.chapterRegionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedRegionId)
-            data.RegionId = elementData.RegionId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RegionId = elementData.RegionId;
+            else { }
+        }
     }
 }

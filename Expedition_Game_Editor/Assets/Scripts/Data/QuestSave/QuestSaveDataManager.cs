@@ -64,11 +64,15 @@ public static class QuestSaveDataManager
         questDataList = DataManager.GetQuestData(searchParameters);
     }
 
-    public static void UpdateData(QuestSaveElementData elementData)
+    public static void UpdateData(QuestSaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.questSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedComplete)
-            data.Complete = elementData.Complete;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Complete = elementData.Complete;
+            else { }
+        }
     }
 }

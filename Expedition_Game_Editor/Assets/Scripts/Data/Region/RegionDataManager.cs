@@ -127,27 +127,51 @@ public static class RegionDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void UpdateData(RegionElementData elementData)
+    public static void UpdateData(RegionElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.regionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedChapterRegionId)
-            data.ChapterRegionId = elementData.ChapterRegionId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ChapterRegionId = elementData.ChapterRegionId;
+            else { }
+        }
 
         if (elementData.ChangedPhaseId)
-            data.PhaseId = elementData.PhaseId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PhaseId = elementData.PhaseId;
+            else { }
+        }
 
         if (elementData.ChangedTileSetId)
-            data.TileSetId = elementData.TileSetId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.TileSetId = elementData.TileSetId;
+            else { }
+        }
 
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedRegionSize)
-            data.RegionSize = elementData.RegionSize;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.RegionSize = elementData.RegionSize;
+            else { }
+        }
 
         if (elementData.ChangedTerrainSize)
-            data.TerrainSize = elementData.TerrainSize;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.TerrainSize = elementData.TerrainSize;
+            else { }
+        }
     }
 
     static public void UpdateIndex(RegionElementData elementData)

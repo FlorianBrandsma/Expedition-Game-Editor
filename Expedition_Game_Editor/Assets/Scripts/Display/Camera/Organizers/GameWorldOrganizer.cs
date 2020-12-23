@@ -246,7 +246,6 @@ public class GameWorldOrganizer : MonoBehaviour, IOrganizer
                 //Update the destination of active agents
                 if (gameWorldInteractableElementData.Type == Enums.InteractableType.Agent)
                 {
-                    //
                     gameWorldInteractableElementData.DataElement.SelectionElement.Element.UpdateElement();
                 }
 

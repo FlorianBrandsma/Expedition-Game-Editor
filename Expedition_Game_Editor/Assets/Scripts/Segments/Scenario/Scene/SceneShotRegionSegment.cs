@@ -107,8 +107,8 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     {
         var searchParameters = RegionDataController.SearchProperties.searchParameters.Cast<Search.Region>().First();
 
-        searchParameters.excludeId = new List<int>() { RegionId };
-        searchParameters.phaseId = new List<int>() { PhaseId };
+        searchParameters.excludeId  = new List<int>() { RegionId };
+        searchParameters.phaseId    = new List<int>() { PhaseId };
     }
 
     public void OpenSegment()
@@ -131,18 +131,18 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         regionButton.SetOverlay();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.Region:
 
-                var regionElementData = (RegionElementData)elementData;
+                var regionElementData = (RegionElementData)mergedElementData;
                 UpdateRegion(regionElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

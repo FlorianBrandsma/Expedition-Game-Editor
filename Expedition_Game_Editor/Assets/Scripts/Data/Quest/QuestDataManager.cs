@@ -47,18 +47,30 @@ public static class QuestDataManager
         }
     }
 
-    public static void UpdateData(QuestElementData elementData)
+    public static void UpdateData(QuestElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.questList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Name = elementData.Name;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 
     static public void UpdateIndex(QuestElementData elementData)

@@ -8,13 +8,15 @@ public static class ChapterDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
+        var list = new List<ChapterElementData>();
+
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
         GetChapterData(searchParameters);
 
-        if (chapterDataList.Count == 0) return new List<IElementData>();
-
-        var list = (from chapterData in chapterDataList
+        if (chapterDataList.Count > 0)
+        {
+            list = (from chapterData in chapterDataList
                     select new ChapterElementData()
                     {
                         Id = chapterData.Id,
@@ -28,10 +30,24 @@ public static class ChapterDataManager
                         PrivateNotes = chapterData.PrivateNotes
 
                     }).OrderBy(x => x.Index).ToList();
+        }
+
+        if (searchParameters.includeAddElement)
+            AddDefaultElementData(searchParameters, list);
 
         list.ForEach(x => x.SetOriginalValues());
         
         return list.Cast<IElementData>().ToList();
+    }
+
+    private static void AddDefaultElementData(Search.Chapter searchParameters, List<ChapterElementData> list)
+    {
+        list.Insert(0, new ChapterElementData()
+        {
+            ExecuteType = Enums.ExecuteType.Add,
+
+            Index = list.Count
+        });
     }
 
     private static void GetChapterData(Search.Chapter searchParameters)
@@ -46,21 +62,79 @@ public static class ChapterDataManager
         }
     }
 
-    public static void UpdateData(ChapterElementData elementData)
+    public static void AddData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        if(dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.chapterList.Count > 0 ? (Fixtures.chapterList[Fixtures.chapterList.Count - 1].Id + 1) : 1;
+            Fixtures.chapterList.Add(((ChapterData)elementData).Clone());
+
+        } else {
+
+            CheckDuplicateName(elementData, dataRequest);
+        }
+    }
+
+    public static void UpdateData(ChapterElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
+
         if (elementData.ChangedName)
-            data.Name = elementData.Name;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+            {
+                data.Name = elementData.Name;
+
+            } else {
+
+                //Let's imagine the chapter name is unique...
+                CheckDuplicateName(elementData, dataRequest);
+            }
+        }
 
         if (elementData.ChangedTimeSpeed)
-            data.TimeSpeed = elementData.TimeSpeed;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+            {
+                data.TimeSpeed = elementData.TimeSpeed;
+
+            } else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+            {
+                data.PublicNotes = elementData.PublicNotes;
+
+            } else { }  
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+            {
+                data.PrivateNotes = elementData.PrivateNotes;
+
+            } else { }  
+        }
+    }
+
+    public static void RemoveData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.chapterList.RemoveAll(x => x.Id == elementData.Id);
+        }
+        else { }
+    }
+
+    private static void CheckDuplicateName(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var chapterList = Fixtures.chapterList.Where(x => x.Id != elementData.Id).ToList();
+
+        if (chapterList.Any(x => x.Name == elementData.Name))
+            dataRequest.errorList.Add("This name totally exists already");
     }
 
     static public void UpdateIndex(ChapterElementData elementData)

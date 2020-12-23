@@ -9,6 +9,8 @@ public class InteractionSaveElementData : InteractionSaveData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.InteractionSave; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -29,9 +31,13 @@ public class InteractionSaveElementData : InteractionSaveData, IElementData
     }
     #endregion
 
-    public void Update() { }
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest) { }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

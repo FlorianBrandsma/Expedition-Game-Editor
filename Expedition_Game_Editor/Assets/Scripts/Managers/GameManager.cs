@@ -404,7 +404,9 @@ public class GameManager : MonoBehaviour
     
     public void SaveData()
     {
-        gameSaveData.Update();
+        var dataRequest = new DataRequest();
+
+        gameSaveData.Update(dataRequest);
     }
 
     public void PreviousPath()

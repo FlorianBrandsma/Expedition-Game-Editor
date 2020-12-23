@@ -66,7 +66,7 @@ public class InteractableGeneralTransformScaleSegment : MonoBehaviour, ISegment
         inputField.Value = Scale;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateScale()
     {

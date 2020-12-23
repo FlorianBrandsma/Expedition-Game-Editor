@@ -198,59 +198,127 @@ public static class InteractionDataManager
         return defaultTimes;
     }
 
-    public static void UpdateData(InteractionElementData elementData)
+    public static void UpdateData(InteractionElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.interactionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedStartTime)
-            data.StartTime = elementData.StartTime;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.StartTime = elementData.StartTime;
+            else { }
+        }
 
         if (elementData.ChangedEndTime)
-            data.EndTime = elementData.EndTime;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.EndTime = elementData.EndTime;
+            else { }
+        }
 
         if (elementData.ChangedArrivalType)
-            data.ArrivalType = elementData.ArrivalType;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ArrivalType = elementData.ArrivalType;
+            else { }
+        }
 
         if (elementData.ChangedTriggerAutomatically)
-            data.TriggerAutomatically = elementData.TriggerAutomatically;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.TriggerAutomatically = elementData.TriggerAutomatically;
+            else { }
+        }
 
         if (elementData.ChangedBeNearDestination)
-            data.BeNearDestination = elementData.BeNearDestination;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.BeNearDestination = elementData.BeNearDestination;
+            else { }
+        }
 
         if (elementData.FaceInteractable)
-            data.FaceInteractable = elementData.FaceInteractable;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.FaceInteractable = elementData.FaceInteractable;
+            else { }
+        }
 
         if (elementData.ChangedFaceControllable)
-            data.FaceControllable = elementData.FaceControllable;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.FaceControllable = elementData.FaceControllable;
+            else { }
+        }
 
         if (elementData.ChangedHideInteractionIndicator)
-            data.HideInteractionIndicator = elementData.HideInteractionIndicator;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.HideInteractionIndicator = elementData.HideInteractionIndicator;
+            else { }
+        }
 
         if (elementData.ChangedInteractionRange)
-            data.InteractionRange = elementData.InteractionRange;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.InteractionRange = elementData.InteractionRange;
+            else { }
+        }
 
         if (elementData.ChangedDelayMethod)
-            data.DelayMethod = elementData.DelayMethod;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DelayMethod = elementData.DelayMethod;
+            else { }
+        }
 
         if (elementData.ChangedDelayDuration)
-            data.DelayDuration = elementData.DelayDuration;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.DelayDuration = elementData.DelayDuration;
+            else { }
+        }
 
         if (elementData.ChangedHideDelayIndicator)
-            data.HideDelayIndicator = elementData.HideDelayIndicator;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.HideDelayIndicator = elementData.HideDelayIndicator;
+            else { }
+        }
 
         if (elementData.ChangedCancelDelayOnInput)
-            data.CancelDelayOnInput = elementData.CancelDelayOnInput;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelDelayOnInput = elementData.CancelDelayOnInput;
+            else { }
+        }
 
         if (elementData.ChangedCancelDelayOnMovement)
-            data.CancelDelayOnMovement = elementData.CancelDelayOnMovement;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelDelayOnMovement = elementData.CancelDelayOnMovement;
+            else { }
+        }
 
         if (elementData.ChangedCancelDelayOnHit)
-            data.CancelDelayOnHit = elementData.CancelDelayOnHit;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelDelayOnHit = elementData.CancelDelayOnHit;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 }

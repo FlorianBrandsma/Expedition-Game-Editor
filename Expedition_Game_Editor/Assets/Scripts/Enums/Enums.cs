@@ -294,4 +294,17 @@ public class Enums
         Scene,
         SceneSelection
     }
+
+    public enum RequestType
+    {
+        Validate,
+        Execute
+    }
+
+    public enum ExecuteType
+    {
+        Update,
+        Add,
+        Remove
+    }
 }

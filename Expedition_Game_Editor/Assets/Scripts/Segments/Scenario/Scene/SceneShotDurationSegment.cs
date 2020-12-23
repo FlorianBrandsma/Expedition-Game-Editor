@@ -34,7 +34,7 @@ public class SceneShotDurationSegment : MonoBehaviour, ISegment
         shotDurationInputNumber.Value = ShotDuration;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateShotDuration()
     {

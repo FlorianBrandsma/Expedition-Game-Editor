@@ -8,10 +8,12 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     public WorldInteractableData OriginalData       { get; set; }
 
     public Enums.DataType DataType                  { get { return Enums.DataType.WorldInteractable; } }
+    
+    public Enums.ExecuteType ExecuteType            { get; set; }
 
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
-
+    
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
@@ -34,19 +36,28 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest)
+    {
+        WorldInteractableDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
+        
+        WorldInteractableDataManager.UpdateData(this, dataRequest);
 
-        WorldInteractableDataManager.UpdateData(this);
-
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateSearch()
     {
         if (!Changed) return;
-
+        
         WorldInteractableDataManager.UpdateSearch(this);
 
         OriginalData.InteractableId = InteractableId;
@@ -55,6 +66,11 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
 
         OriginalData.ModelPath = ModelPath;
         OriginalData.ModelIconPath = ModelIconPath;
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        WorldInteractableDataManager.RemoveData(this, dataRequest);
     }
 
     public void SetOriginalValues()

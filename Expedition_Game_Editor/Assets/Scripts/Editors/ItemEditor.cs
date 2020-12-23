@@ -14,7 +14,7 @@ public class ItemEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -150,14 +150,30 @@ public class ItemEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
+        if (EditData.ExecuteType == Enums.ExecuteType.Add)
+        {
+            var tempData = EditData;
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
+            EditData.Add(dataRequest);
 
-        UpdateEditor();
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                itemData.Id = tempData.Id;
+        }
+
+        if (EditData.ExecuteType == Enums.ExecuteType.Update)
+        {
+            EditData.Update(dataRequest);
+
+            if (SelectionElementManager.SelectionActive(EditData.DataElement))
+                EditData.DataElement.UpdateElement();
+        }
+    }
+
+    private void RemoveData()
+    {
+        Debug.Log("Remove data");
     }
 
     public void CancelEdit()

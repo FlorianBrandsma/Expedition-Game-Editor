@@ -9,6 +9,8 @@ public class ItemElementData : ItemData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Item; } }
     
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -36,11 +38,16 @@ public class ItemElementData : ItemData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest)
+    {
+        ItemDataManager.AddData(this, dataRequest);
+    }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
         
-        ItemDataManager.UpdateData(this);
+        ItemDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -48,13 +55,15 @@ public class ItemElementData : ItemData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         ItemDataManager.UpdateIndex(this);
 
         OriginalData.Index = Index;
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {
@@ -82,8 +91,6 @@ public class ItemElementData : ItemData, IElementData
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
-
-        //itemElementData.SelectionStatus = SelectionStatus;
 
         base.Clone(data);
 

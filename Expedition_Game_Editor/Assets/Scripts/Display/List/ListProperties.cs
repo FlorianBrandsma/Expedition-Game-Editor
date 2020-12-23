@@ -1,17 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class ListProperties : MonoBehaviour, IDisplay
 {
-    public Enums.DisplayType DisplayType { get { return Enums.DisplayType.List; } }
-
-    [HideInInspector]
-    public DisplayManager.OrganizerType elementType;
-
     public ListManager listManager;
 
     public SelectionManager.Type selectionType;
     public SelectionManager.Property selectionProperty;
+    public SelectionManager.Property addProperty;
     public bool uniqueSelection;
 
     public Vector2 elementSize;
@@ -44,11 +39,15 @@ public class ListProperties : MonoBehaviour, IDisplay
     }
 
     public IDisplayManager DisplayManager               { get { return listManager; } }
+    public Enums.DisplayType DisplayType                { get { return Enums.DisplayType.List; } }
+    public DisplayManager.OrganizerType OrganizerType   { get; set; }
 
     public IProperties Properties                       { get { return GetComponent<IProperties>(); } }
 
+    public SelectionManager.Type SelectionType          { get { return selectionType; } }
     public SelectionManager.Property SelectionProperty  { get { return selectionProperty; } }
-    public SelectionManager.Type SelectionType          { get { return selectionType; }  }
+    public SelectionManager.Property AddProperty        { get { return addProperty; } }
+    
     public bool UniqueSelection                         { get { return uniqueSelection; } }
 
     public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }
@@ -61,8 +60,8 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     private void InitializeProperties()
     {
-        if (GetComponent<IProperties>() != null)
-            elementType = GetComponent<IProperties>().OrganizerType();
+        if (Properties != null)
+            OrganizerType = Properties.OrganizerType();
 
         listManager.InitializeList(this);
     }

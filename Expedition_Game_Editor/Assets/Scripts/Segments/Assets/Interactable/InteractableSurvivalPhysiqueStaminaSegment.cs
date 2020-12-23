@@ -34,7 +34,7 @@ public class InteractableSurvivalPhysiqueStaminaSegment : MonoBehaviour, ISegmen
         staminaInputNumber.Value = Stamina;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateStamina()
     {

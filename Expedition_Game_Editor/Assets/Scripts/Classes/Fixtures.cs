@@ -6,7 +6,7 @@ static public class Fixtures
 {
     static public int timeFrames = 2;
 
-    static public int supplies = 10000;
+    static public int supplies = 4;
     static public int gear = 6;
     static public int spoils = 10;
     static public int interactables = 6;
@@ -28,7 +28,7 @@ static public class Fixtures
     static public int baseTasks = 2;
     static public int tileSets = 2;
     static public int tilesInTileSet = 10;
-    static public int objectsInWorld = 300;
+    static public int objectsInWorld = 3;
 
     static public int saves = 1;
 

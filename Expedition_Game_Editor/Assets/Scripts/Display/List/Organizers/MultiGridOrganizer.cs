@@ -1,28 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Collections.Generic;
 
 public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
 {
     private int primaryDimension;
-
     private Vector2 secondaryElementSize;
-    
-    private IDisplayManager DisplayManager  { get { return GetComponent<IDisplayManager>(); } }
-    private ListManager ListManager         { get { return (ListManager)DisplayManager; } }
 
-    private ListProperties ListProperties   { get { return (ListProperties)DisplayManager.Display; } }
+    private IDisplayManager DisplayManager          { get { return GetComponent<IDisplayManager>(); } }
+    private ListManager ListManager                 { get { return (ListManager)DisplayManager; } }
+
+    private ListProperties ListProperties           { get { return (ListProperties)DisplayManager.Display; } }
     private MultiGridProperties MultiGridProperties { get { return (MultiGridProperties)DisplayManager.Display.Properties; } }
 
     private IDataController PrimaryDataController   { get { return MultiGridProperties.PrimaryDataController; } }
     private IDataController SecondaryDataController { get { return MultiGridProperties.SecondaryDataController; } }
 
-    public List<EditorElement> ElementList  { get; set; }
+    public List<EditorElement> ElementList          { get; set; }
 
-    public Vector2 ElementSize { get; set; }
-
+    public Vector2 ElementSize                      { get; set; }
+    
     public void InitializeOrganizer()
     {
         ElementList = new List<EditorElement>();
@@ -68,7 +65,8 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
             SelectionElementManager.InitializeElement(  multiGrid.EditorElement.DataElement, ListManager.listParent,
                                                         DisplayManager,
                                                         DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty, 
+                                                        DisplayManager.Display.SelectionProperty,
+                                                        DisplayManager.Display.AddProperty,
                                                         DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(multiGrid.EditorElement);
@@ -128,8 +126,10 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         }
     }
 
-    public Vector2 GetListSize(int elementCount, bool exact)
+    public Vector2 GetListSize(bool exact)
     {
+        var elementCount = PrimaryDataController.Data.dataList.Count;
+
         Vector2 primaryListSize = new Vector2(  (Mathf.Sqrt(elementCount) * ElementSize.x),
                                                 (Mathf.Sqrt(elementCount) * ElementSize.y));
 
@@ -137,9 +137,8 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         {
             return new Vector2( primaryListSize.x - ListManager.RectTransform.rect.width,
                                 primaryListSize.y);
-        }
-        else
-        {
+        } else {
+
             return new Vector2( primaryListSize.x / ElementSize.x,
                                 primaryListSize.y / ElementSize.y);
         }

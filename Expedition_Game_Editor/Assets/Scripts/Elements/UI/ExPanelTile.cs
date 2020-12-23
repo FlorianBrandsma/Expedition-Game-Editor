@@ -28,7 +28,7 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return elementType; } }
-    public int Id                           { get; set; }
+    public int PoolId                           { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
     private Texture IconTexture
@@ -85,7 +85,7 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     private void InitializeEdit()
     {
-        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, properties.childProperty, ElementChild.uniqueSelection);
+        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, properties.childProperty, SelectionManager.Property.None, ElementChild.uniqueSelection);
 
         ElementChild.gameObject.SetActive(true);
 

@@ -14,7 +14,7 @@ public class OutcomeEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -185,9 +185,9 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed);
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        EditData.Update();
+        EditData.Update(dataRequest);
 
         if (SelectionElementManager.SelectionActive(EditData.DataElement))
             EditData.DataElement.UpdateElement();

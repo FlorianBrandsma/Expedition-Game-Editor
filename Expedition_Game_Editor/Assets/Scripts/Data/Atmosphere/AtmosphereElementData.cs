@@ -9,6 +9,8 @@ public class AtmosphereElementData : AtmosphereData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Atmosphere; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -44,16 +46,20 @@ public class AtmosphereElementData : AtmosphereData, IElementData
     }
     #endregion
 
-    public void Update()
-    {
-        if (!Changed) return;
+    public void Add(DataRequest dataRequest) { }
 
-        AtmosphereDataManager.UpdateData(this);
+    public void Update(DataRequest dataRequest)
+    {
+        if (!Changed)
+        
+        AtmosphereDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

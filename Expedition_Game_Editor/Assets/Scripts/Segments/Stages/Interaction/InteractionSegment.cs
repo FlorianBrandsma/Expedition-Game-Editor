@@ -43,8 +43,8 @@ public class InteractionSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
-    
-    public void SetSearchResult(IElementData elementData) { }
+
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

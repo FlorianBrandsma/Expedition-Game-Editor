@@ -9,6 +9,8 @@ public class PhaseElementData : PhaseData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Phase; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -87,11 +89,13 @@ public class PhaseElementData : PhaseData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        PhaseDataManager.UpdateData(this);
+        
+        PhaseDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -99,13 +103,15 @@ public class PhaseElementData : PhaseData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         PhaseDataManager.UpdateIndex(this);
 
         OriginalData.Index = Index;
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

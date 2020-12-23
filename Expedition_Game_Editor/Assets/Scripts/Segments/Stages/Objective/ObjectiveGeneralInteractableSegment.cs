@@ -42,9 +42,9 @@ public class ObjectiveGeneralInteractableSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        SetSearchWorldInteractable((WorldInteractableElementData)elementData);
+        SetSearchWorldInteractable((WorldInteractableElementData)mergedElementData);
 
         DataEditor.UpdateEditor();
     }

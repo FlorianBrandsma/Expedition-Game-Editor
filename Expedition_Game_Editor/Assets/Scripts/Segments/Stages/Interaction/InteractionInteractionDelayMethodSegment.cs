@@ -60,7 +60,7 @@ public class InteractionInteractionDelayMethodSegment : MonoBehaviour, ISegment
         hideDelayIndicatorToggle.Toggle.isOn = HideDelayIndicator;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateDelayMethod()
     {

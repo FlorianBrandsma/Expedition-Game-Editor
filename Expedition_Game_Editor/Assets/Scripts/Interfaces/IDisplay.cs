@@ -5,13 +5,15 @@ public interface IDisplay
     void ClearDisplay();
     void CloseDisplay();
     
-    Enums.DisplayType DisplayType { get; }
+    Enums.DisplayType DisplayType               { get; }
 
-    IDisplayManager DisplayManager { get; }
-    IProperties Properties { get; }
-    IDataController DataController { get; set; }
+    IDisplayManager DisplayManager              { get; }
+    IProperties Properties                      { get; }
+    IDataController DataController              { get; set; }
 
+    SelectionManager.Type SelectionType         { get; }
     SelectionManager.Property SelectionProperty { get; }
-    SelectionManager.Type SelectionType { get; }
-    bool UniqueSelection { get; }
+    SelectionManager.Property AddProperty       { get; }
+    
+    bool UniqueSelection                        { get; }
 }

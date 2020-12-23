@@ -341,7 +341,12 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         }
 
         if (indexSwitch != null)
+        {
+            var enabled = Id > 0;
+
+            indexSwitch.EnableElement(enabled);
             indexSwitch.InitializeSwitch(this, Index);
+        }  
     }
 
     private void InitializeItemProperties()
@@ -392,7 +397,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         if (indexSwitch != null)
             indexSwitch.Activate();
 
-        idText.text = Id.ToString();
+        if (Id > 0)
+            idText.text = Id.ToString();
+        else
+            idText.text = "New";
+
         inputField.text = Name;
 
         SelectionElementManager.Add(iconEditorElement);
@@ -404,18 +413,18 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(true);
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.Model:
 
-                var modelElementData = (ModelElementData)elementData;
+                var modelElementData = (ModelElementData)mergedElementData;
                 UpdateModel(modelElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

@@ -12,6 +12,8 @@ public static class WorldInteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
+        var list = new List<WorldInteractableElementData>();
+
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
         switch (searchParameters.requestType)
@@ -37,13 +39,13 @@ public static class WorldInteractableDataManager
                 break;
         }
         
-        if (worldInteractableDataList.Count == 0) return new List<IElementData>();
+        if (worldInteractableDataList.Count > 0)
+        {
+            GetInteractableData();
+            GetModelData();
+            GetIconData();
 
-        GetInteractableData();
-        GetModelData();
-        GetIconData();
-
-        var list = (from worldInteractableData  in worldInteractableDataList
+            list = (from worldInteractableData  in worldInteractableDataList
                     join interactableData       in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
                     join modelData              in modelDataList        on interactableData.ModelId             equals modelData.Id
                     join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
@@ -54,6 +56,7 @@ public static class WorldInteractableDataManager
 
                         Type = worldInteractableData.Type,
 
+                        ChapterId = worldInteractableData.ChapterId,
                         PhaseId = worldInteractableData.PhaseId,
                         QuestId = worldInteractableData.QuestId,
                         ObjectiveId = worldInteractableData.ObjectiveId,
@@ -75,10 +78,24 @@ public static class WorldInteractableDataManager
                         Scale = interactableData.Scale
 
                     }).ToList();
+        }
+
+        if (searchParameters.includeAddElement)
+            AddDefaultElementData(searchParameters, list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    private static void AddDefaultElementData(Search.WorldInteractable searchParameters, List<WorldInteractableElementData> list)
+    {
+        list.Insert(0, new WorldInteractableElementData()
+        {
+            ExecuteType = Enums.ExecuteType.Add,
+
+            Type = searchParameters.type.First()
+        });
     }
 
     private static void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)
@@ -188,15 +205,32 @@ public static class WorldInteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(WorldInteractableElementData elementData)
+    public static void AddData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1;
+            Fixtures.worldInteractableList.Add(((WorldInteractableData)elementData).Clone());
+        } else { }
+    }
+
+    public static void UpdateData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         if (elementData.ChangedInteractableId)
-            data.InteractableId = elementData.InteractableId;
-
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.InteractableId = elementData.InteractableId;
+            else { }
+        }
+        
         if (elementData.ChangedQuestId)
-            data.QuestId = elementData.QuestId;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.QuestId = elementData.QuestId;
+            else { }
+        }
     }
 
     public static void UpdateSearch(WorldInteractableElementData elementData)
@@ -205,5 +239,13 @@ public static class WorldInteractableDataManager
 
         if (elementData.ChangedInteractableId)
             data.InteractableId = elementData.InteractableId;
+    }
+
+    public static void RemoveData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if(dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.worldInteractableList.RemoveAll(x => x.Id == elementData.Id);
+        } else { }
     }
 }

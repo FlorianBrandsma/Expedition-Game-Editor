@@ -9,6 +9,8 @@ public class ChapterInteractableElementData : ChapterInteractableData, IElementD
 
     public Enums.DataType DataType                  { get { return Enums.DataType.ChapterInteractable; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -29,16 +31,30 @@ public class ChapterInteractableElementData : ChapterInteractableData, IElementD
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest)
+    {
+        ChapterInteractableDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
+        
+        ChapterInteractableDataManager.UpdateData(this, dataRequest);
 
-        ChapterInteractableDataManager.UpdateData(this);
-
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        ChapterInteractableDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

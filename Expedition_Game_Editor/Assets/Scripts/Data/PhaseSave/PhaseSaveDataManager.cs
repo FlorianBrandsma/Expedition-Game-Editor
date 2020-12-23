@@ -88,11 +88,15 @@ public static class PhaseSaveDataManager
         phaseDataList = DataManager.GetPhaseData(searchParameters);
     }
 
-    public static void UpdateData(PhaseSaveElementData elementData)
+    public static void UpdateData(PhaseSaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.phaseSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedComplete)
-            data.Complete = elementData.Complete;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Complete = elementData.Complete;
+            else { }
+        }
     }
 }

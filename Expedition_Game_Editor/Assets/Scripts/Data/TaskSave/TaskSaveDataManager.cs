@@ -67,11 +67,15 @@ public static class TaskSaveDataManager
         taskDataList = DataManager.GetTaskData(searchParameters);
     }
 
-    public static void UpdateData(TaskSaveElementData elementData)
+    public static void UpdateData(TaskSaveElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.taskSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedComplete)
-            data.Complete = elementData.Complete;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.Complete = elementData.Complete;
+            else { }
+        }
     }
 }

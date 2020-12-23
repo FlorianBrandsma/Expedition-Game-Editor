@@ -28,6 +28,8 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
         //search parameters on a component basis. At the moment, no controller
         //uses multiple data types 1/5/2020
 
+        //Update 20/12/2020: scene actors can look for other scene actors as well as world interactables!
+
         SearchProperties.searchParameters = new[] { searchInteractable };
     }
 
@@ -51,7 +53,7 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
     public void SetData(IElementData searchElementData, IElementData resultElementData)
     {
         var searchWorldInteractableElementData = (WorldInteractableElementData)searchElementData;
-
+        
         switch (resultElementData.DataType)
         {
             case Enums.DataType.Interactable:

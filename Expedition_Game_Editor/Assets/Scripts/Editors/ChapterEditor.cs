@@ -112,21 +112,125 @@ public class ChapterEditor : MonoBehaviour, IEditor
     {
         return ElementDataList.Any(x => x.Changed);
     }
-
-    public void ApplyChanges()
+    
+    public void ApplyChanges(DataRequest dataRequest)
     {
-        chapterRegionElementDataList.ForEach(x => { if (x.Changed) ChangedRegion(x); });
-        
-        ElementDataList.ForEach(x => x.Update());
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+        ApplyChapterChanges(dataRequest);
+        ApplyWorldInteractableChanges(dataRequest);
+        ApplyChapterInteractableChanges(dataRequest);
+        ApplyRegionChanges(dataRequest);
     }
 
-    private void ChangedRegion(ChapterRegionElementData chapterRegion)
+    private void ApplyChapterChanges(DataRequest dataRequest)
     {
+        switch(EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddChapter(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateChapter(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveChapter(dataRequest);
+                break;
+        }
+    }
+
+    private void AddChapter(DataRequest dataRequest)
+    {
+        //Create temporary data while the other data's id is being changed
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            chapterData.Id = tempData.Id;
+
+            //Apply new chapter id to other elements
+            worldInteractableElementDataList.ForEach(x => x.ChapterId = chapterData.Id);
+            chapterInteractableElementDataList.ForEach(x => x.ChapterId = chapterData.Id);
+            chapterRegionElementDataList.ForEach(x => x.ChapterId = chapterData.Id);
+        }
+    }
+
+    private void UpdateChapter(DataRequest dataRequest)
+    {
+        if (!EditData.Changed) return;
+
+        EditData.Update(dataRequest);
+    }
+
+    private void RemoveChapter(DataRequest dataRequest)
+    {
+        Debug.Log("test");
+        EditData.Remove(dataRequest);
+    }
+
+    private void ApplyWorldInteractableChanges(DataRequest dataRequest)
+    {
+        foreach (WorldInteractableElementData worldInteractableElementData in worldInteractableElementDataList)
+        {
+            switch(worldInteractableElementData.ExecuteType)
+            {
+                case Enums.ExecuteType.Add:
+                    worldInteractableElementData.Add(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Update:
+                    worldInteractableElementData.Update(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Remove:
+                    worldInteractableElementData.Remove(dataRequest);
+                    break;
+            }
+        }
+
+        if(dataRequest.requestType == Enums.RequestType.Execute)
+            worldInteractableElementDataList.RemoveAll(x => x.ExecuteType == Enums.ExecuteType.Remove); 
+    }
+
+    private void ApplyChapterInteractableChanges(DataRequest dataRequest)
+    {
+        foreach (ChapterInteractableElementData chapterInteractableElementData in chapterInteractableElementDataList)
+        {
+            switch (chapterInteractableElementData.ExecuteType)
+            {
+                case Enums.ExecuteType.Add:
+                    chapterInteractableElementData.Add(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Update:
+                    chapterInteractableElementData.Update(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Remove:
+                    chapterInteractableElementData.Remove(dataRequest);
+                    break;
+            }
+        }
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            chapterInteractableElementDataList.RemoveAll(x => x.ExecuteType == Enums.ExecuteType.Remove);
+    }
+
+    private void ApplyRegionChanges(DataRequest dataRequest)
+    {
+        foreach (ChapterRegionElementData chapterRegionElementData in chapterRegionElementDataList)
+        {
+            if (!chapterRegionElementData.Changed) continue;
+        }
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            chapterRegionElementDataList.RemoveAll(x => x.Id == -1);
+
+        //When adding a new region, check if there are any phases which belong
+        //If so, add a copy of the added region to every phase in the same way as when you would add a phase to that chapter
+
         /*
         //0. Find all (PHASE)REGIONS linked with the changed CHAPTERREGIONS
         var phaseRegions = Fixtures.regionList.Where(x => x.chapterRegionId == chapterRegion.Id).Distinct().ToList();

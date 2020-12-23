@@ -56,11 +56,7 @@ public class SceneShotEffectFilterSegment : MonoBehaviour, ISegment
 
         if (cameraFilterElementData == null)
         {
-            cameraFilterElementData = new CameraFilterElementData()
-            {
-                Name = "None",
-                IconPath = "Textures/Icons/CameraFilters/None"
-            };
+            cameraFilterElementData = new CameraFilterElementData();
 
             cameraFilterElementData.SetOriginalValues();
 
@@ -102,7 +98,7 @@ public class SceneShotEffectFilterSegment : MonoBehaviour, ISegment
 
         searchParameters.excludeId = new List<int>() { CameraFilterId };
 
-        searchParameters.includeEmptyElement = CameraFilterId != 0;
+        searchParameters.includeRemoveElement = CameraFilterId != 0;
     }
 
     public void OpenSegment()
@@ -118,18 +114,18 @@ public class SceneShotEffectFilterSegment : MonoBehaviour, ISegment
         cameraFilterButton.DataElement.SetElement();
     }
 
-    public void SetSearchResult(IElementData elementData)
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        switch (elementData.DataType)
+        switch (mergedElementData.DataType)
         {
             case Enums.DataType.CameraFilter:
 
-                var cameraFilterElementData = (CameraFilterElementData)elementData;
+                var cameraFilterElementData = (CameraFilterElementData)mergedElementData;
                 UpdateCameraFilter(cameraFilterElementData);
 
                 break;
 
-            default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
+            default: Debug.Log("CASE MISSING: " + mergedElementData.DataType); break;
         }
     }
 

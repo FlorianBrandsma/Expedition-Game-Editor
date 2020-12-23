@@ -14,7 +14,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded { get; set; }
-    
+
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -297,12 +297,12 @@ public class InteractionEditor : MonoBehaviour, IEditor
         return ElementDataList.Any(x => x.Changed) && !TimeConflict;
     }
 
-    public void ApplyChanges()
+    public void ApplyChanges(DataRequest dataRequest)
     {
         var changedTime =   ((InteractionElementData)EditData).ChangedStartTime ||
                             ((InteractionElementData)EditData).ChangedEndTime;
 
-        EditData.Update();
+        EditData.Update(dataRequest);
 
         if (changedTime)
         {

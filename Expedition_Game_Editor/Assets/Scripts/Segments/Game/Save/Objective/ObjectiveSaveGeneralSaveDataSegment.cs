@@ -23,7 +23,7 @@ public class ObjectiveSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
         completeToggle.Toggle.isOn = ObjectiveSaveEditor.Complete;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateComplete()
     {

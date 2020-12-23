@@ -34,7 +34,7 @@ public class SceneGeneralDurationSegment : MonoBehaviour, ISegment
         sceneDurationInputNumber.Value = SceneDuration;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSceneDuration()
     {

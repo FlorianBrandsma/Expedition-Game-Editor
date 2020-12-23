@@ -39,7 +39,7 @@ public class EditorMenuSegment : MonoBehaviour, ISegment
         GlobalManager.CloseApplication();
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

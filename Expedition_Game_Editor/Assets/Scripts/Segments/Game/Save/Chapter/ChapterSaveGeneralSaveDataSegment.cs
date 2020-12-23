@@ -23,7 +23,7 @@ public class ChapterSaveGeneralSaveDataSegment : MonoBehaviour, ISegment
         completeToggle.Toggle.isOn = ChapterSaveEditor.Complete;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateComplete()
     {

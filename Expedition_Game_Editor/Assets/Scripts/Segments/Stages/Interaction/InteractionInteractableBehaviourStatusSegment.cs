@@ -32,7 +32,7 @@ public class InteractionInteractableBehaviourStatusSegment : MonoBehaviour, ISeg
     
     public void OpenSegment() { }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

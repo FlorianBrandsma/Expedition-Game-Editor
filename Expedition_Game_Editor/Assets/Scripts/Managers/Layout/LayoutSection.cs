@@ -20,6 +20,8 @@ public class LayoutSection : MonoBehaviour
     
     public LayoutDependency TargetView                  { get; set; }
 
+    private Enums.ExecuteType originalExecuteType;
+
     public bool Loaded
     {
         get
@@ -49,7 +51,7 @@ public class LayoutSection : MonoBehaviour
     //Previous data editor
     public IEditor previousEditor;
     public IElementData previousDataSource;
-    public List<IElementData> previousElementDataList;
+    //public List<IElementData> previousElementDataList;
     //
     
     public ButtonActionManager buttonActionManager;
@@ -98,7 +100,9 @@ public class LayoutSection : MonoBehaviour
         if (dataEditor == null) return;
 
         if (buttonActionManager != null && dataEditor != null)
-            buttonActionManager.SetButtons(dataEditor.Changed());
+        {
+            buttonActionManager.SetButtons(dataEditor.EditData.ExecuteType, dataEditor.Changed());
+        }
     }
 
     public void ClosePath()
@@ -137,8 +141,55 @@ public class LayoutSection : MonoBehaviour
 
     public void ApplyChanges()
     {
-        if(dataEditor != null)
-            dataEditor.ApplyChanges();
+        if (dataEditor == null) return;
+
+        var dataRequest = new DataRequest();
+
+        dataEditor.ApplyChanges(dataRequest);
+
+        if (dataRequest.errorList.Count > 0)
+        {
+            dataRequest.errorList.ForEach(x => Debug.Log(x));
+            return;
+        }
+
+        dataRequest.requestType = Enums.RequestType.Execute;
+
+        //Apply changes when there are no combined errors 
+        dataEditor.ApplyChanges(dataRequest);
+
+        dataEditor.ElementDataList.ForEach(x =>
+        {
+            if (SelectionElementManager.SelectionActive(x.DataElement))
+            {
+                var editorElement = (EditorElement)x.DataElement.SelectionElement;
+
+                x.DataElement.Id = x.Id;
+
+                if (editorElement.child != null)
+                    editorElement.child.DataElement.Id = x.Id;
+
+                x.DataElement.UpdateElement();
+            }
+        });
+
+        if (dataEditor.EditData.ExecuteType == Enums.ExecuteType.Update)
+        {
+            ResetExecutionType();
+
+            SetActionButtons();
+
+        } else {
+            
+            ResetExecutionType();
+
+            RenderManager.PreviousPath();
+        }
+    }
+
+    private void ResetExecutionType()
+    {
+        dataEditor.ElementDataList.ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()
@@ -146,15 +197,28 @@ public class LayoutSection : MonoBehaviour
         if (dataEditor.Loaded)
             dataEditor.CancelEdit();
 
-        if (previousElementDataList != null)
-        {
-            previousElementDataList.ForEach(x => x.ClearChanges());
+        //if (previousElementDataList != null)
+        //{
+        //    previousElementDataList.ForEach(x => x.ClearChanges());
 
-            previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
-                                   .ForEach(x => x.DataElement.UpdateElement());
-        }
+        //    previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
+        //                           .ForEach(x => x.DataElement.UpdateElement());
+        //}
 
         if (!Active) dataEditor = null;
+    }
+
+    public void ToggleRemoval(bool toggled)
+    {
+        if (toggled)
+        {
+            originalExecuteType = dataEditor.EditData.ExecuteType;
+            dataEditor.EditData.ExecuteType = Enums.ExecuteType.Remove;
+        } else {
+            dataEditor.EditData.ExecuteType = originalExecuteType;
+        }
+
+        SetActionButtons();
     }
 
     public void CloseEditor()

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class ExButton : MonoBehaviour, IElement, IPoolable
 {
@@ -16,7 +15,7 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return elementType; } }
-    public int Id                           { get; set; }
+    public int PoolId                       { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
 
     public IPoolable Instantiate()

@@ -188,7 +188,7 @@ public static class GameSaveDataManager
         interactionSaveDataList = DataManager.GetInteractionSaveData(searchParameters);
     }
 
-    public static void UpdateData(GameSaveElementData elementData)
+    public static void UpdateData(GameSaveElementData elementData, DataRequest dataRequest)
     {
 
     }

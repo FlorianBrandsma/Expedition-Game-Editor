@@ -132,35 +132,71 @@ public static class OutcomeDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(OutcomeElementData elementData)
+    public static void UpdateData(OutcomeElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.outcomeList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         if (elementData.ChangedCompleteTask)
-            data.CompleteTask = elementData.CompleteTask;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CompleteTask = elementData.CompleteTask;
+            else { }
+        }
 
         if (elementData.ChangedResetObjective)
-            data.ResetObjective = elementData.ResetObjective;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.ResetObjective = elementData.ResetObjective;
+            else { }
+        }
 
         if (elementData.ChangedCancelScenarioType)
-            data.CancelScenarioType = elementData.CancelScenarioType;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelScenarioType = elementData.CancelScenarioType;
+            else { }
+        }
 
         if (elementData.ChangedCancelScenarioOnInteraction)
-            data.CancelScenarioOnInteraction = elementData.CancelScenarioOnInteraction;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelScenarioOnInteraction = elementData.CancelScenarioOnInteraction;
+            else { }
+        }
 
         if (elementData.ChangedCancelScenarioOnInput)
-            data.CancelScenarioOnInput = elementData.CancelScenarioOnInput;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelScenarioOnInput = elementData.CancelScenarioOnInput;
+            else { }
+        }
 
         if (elementData.ChangedCancelScenarioOnRange)
-            data.CancelScenarioOnRange = elementData.CancelScenarioOnRange;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelScenarioOnRange = elementData.CancelScenarioOnRange;
+            else { }
+        }
 
         if (elementData.ChangedCancelScenarioOnHit)
-            data.CancelScenarioOnHit = elementData.CancelScenarioOnHit;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.CancelScenarioOnHit = elementData.CancelScenarioOnHit;
+            else { }
+        }
 
         if (elementData.ChangedPublicNotes)
-            data.PublicNotes = elementData.PublicNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PublicNotes = elementData.PublicNotes;
+            else { }
+        }
 
         if (elementData.ChangedPrivateNotes)
-            data.PrivateNotes = elementData.PrivateNotes;
+        {
+            if (dataRequest.requestType == Enums.RequestType.Execute)
+                data.PrivateNotes = elementData.PrivateNotes;
+            else { }
+        }
     }
 }

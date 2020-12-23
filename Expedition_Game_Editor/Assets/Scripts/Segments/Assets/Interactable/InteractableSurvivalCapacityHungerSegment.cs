@@ -34,7 +34,7 @@ public class InteractableSurvivalCapacityHungerSegment : MonoBehaviour, ISegment
         hungerInputNumber.Value = Hunger;
     }
 
-    public void SetSearchResult(IElementData elementData) { }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateHunger()
     {

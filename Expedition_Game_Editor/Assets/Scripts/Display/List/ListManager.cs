@@ -30,16 +30,15 @@ public class ListManager : MonoBehaviour, IDisplayManager
         Display = listProperties;
         this.listProperties = listProperties;
         
-        switch(listProperties.elementType)
+        switch(listProperties.OrganizerType)
         {
             case DisplayManager.OrganizerType.None:      Organizer = null;                                           break;
-            case DisplayManager.OrganizerType.Button:    Organizer = gameObject.AddComponent<ButtonOrganizer>();     break;
             case DisplayManager.OrganizerType.Tile:      Organizer = gameObject.AddComponent<TileOrganizer>();       break;
             case DisplayManager.OrganizerType.Panel:     Organizer = gameObject.AddComponent<PanelOrganizer>();      break;
             case DisplayManager.OrganizerType.PanelTile: Organizer = gameObject.AddComponent<PanelTileOrganizer>();  break;
             case DisplayManager.OrganizerType.MultiGrid: Organizer = gameObject.AddComponent<MultiGridOrganizer>();  break;
 
-            default: Debug.Log("CASE MISSING: " + listProperties.elementType);                              break;
+            default: Debug.Log("CASE MISSING: " + listProperties.OrganizerType); break;
         }
 
         if (Organizer == null) return;
@@ -67,26 +66,25 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         var dataList = Display.DataController.Data.dataList;
 
-        if (dataList.Count == 0) return;
-        
         overlayManager.ActivateOverlay(Organizer);
-
         overlayManager.SetOverlaySize();
 
-        listParent.sizeDelta = List.GetListSize(dataList.Count, true);
+        listParent.sizeDelta = List.GetListSize(true);
+        listSize = List.GetListSize(false);
 
-        listSize = List.GetListSize(dataList.Count, false);
+        if (dataList.Count > 0)
+        {
+            if (!Display.DataController.SegmentController.Loaded)
+                ResetListPosition();
 
-        if (!Display.DataController.SegmentController.Loaded)
-            ResetListPosition();
+            //Select data after the list has been resized, so that the position may be properly corrected
+            //"Set" elements never receive this kind of visual feedback
+            if (listProperties.SelectionProperty != SelectionManager.Property.Set)
+                Organizer.SelectData();
 
-        //Select data after the list has been resized, so that the position may be properly corrected
-        //"Set" elements never receive this kind of visual feedback
-        if (listProperties.SelectionProperty != SelectionManager.Property.Set)
-            Organizer.SelectData();
-
-        if (!listProperties.enablePaging)
-            SetData();
+            if (!listProperties.enablePaging)
+                SetData();
+        }
 
         overlayManager.SetOverlay();
     }
@@ -180,16 +178,13 @@ public class ListManager : MonoBehaviour, IDisplayManager
         if (Organizer == null) return;
         
         if (Display.DataController.Data.dataList.Count == 0) return;
-        
-        if (Display.SelectionType == SelectionManager.Type.Automatic)
-        {
-            EditorElement element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
 
-            if(element == null)
-                element = List.ElementList.FirstOrDefault();
+        EditorElement element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
 
-            element.InvokeSelection();
-        }
+        if(element == null)
+            element = List.ElementList.FirstOrDefault();
+
+        element.InvokeSelection();
     }
 
     public void CloseList()

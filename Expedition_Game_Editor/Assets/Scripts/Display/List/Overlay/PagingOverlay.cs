@@ -33,7 +33,7 @@ public class PagingOverlay : MonoBehaviour, IOverlay
 
         int listCount = overlayManager.DisplayManager.Display.DataController.Data.dataList.Count;
 
-        Vector2 listSize = this.list.GetListSize(listCount, false);
+        Vector2 listSize = list.GetListSize(false);
 
         pageLimit =  (int)(listSize.x * listSize.y);
         elementTotal = listCount;

@@ -9,6 +9,8 @@ public class QuestElementData : QuestData, IElementData
 
     public Enums.DataType DataType                  { get { return Enums.DataType.Quest; } }
 
+    public Enums.ExecuteType ExecuteType            { get; set; }
+
     public Enums.SelectionStatus SelectionStatus    { get; set; }
     public bool UniqueSelection                     { get; set; }
 
@@ -44,11 +46,13 @@ public class QuestElementData : QuestData, IElementData
     }
     #endregion
 
-    public void Update()
+    public void Add(DataRequest dataRequest) { }
+
+    public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-
-        QuestDataManager.UpdateData(this);
+        
+        QuestDataManager.UpdateData(this, dataRequest);
 
         SetOriginalValues();
     }
@@ -56,13 +60,15 @@ public class QuestElementData : QuestData, IElementData
     public void UpdateIndex()
     {
         if (!ChangedIndex) return;
-
+        
         QuestDataManager.UpdateIndex(this);
 
         OriginalData.Index = Index;
     }
 
     public void UpdateSearch() { }
+
+    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

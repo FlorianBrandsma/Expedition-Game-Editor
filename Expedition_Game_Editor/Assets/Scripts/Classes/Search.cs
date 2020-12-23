@@ -59,6 +59,9 @@ public class Search
     [System.Serializable]
     public class Interactable
     {
+        public bool includeAddElement;
+        public bool includeRemoveElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
@@ -74,6 +77,8 @@ public class Search
 
     public class Item
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> type = new List<int>();
@@ -88,8 +93,10 @@ public class Search
 
     public class Chapter
     {
-        public List<int> id = new List<int>();
+        public bool includeAddElement;
 
+        public List<int> id = new List<int>();
+        
         public enum RequestType
         {
             Custom
@@ -100,6 +107,8 @@ public class Search
 
     public class ChapterInteractable
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> chapterId = new List<int>();
@@ -115,6 +124,8 @@ public class Search
 
     public class ChapterRegion
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> chapterId = new List<int>();
@@ -130,6 +141,8 @@ public class Search
 
     public class Phase
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> chapterId = new List<int>();
@@ -146,6 +159,8 @@ public class Search
 
     public class Quest
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> phaseId = new List<int>();
@@ -160,6 +175,8 @@ public class Search
 
     public class Objective
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> questId = new List<int>();
@@ -174,6 +191,9 @@ public class Search
 
     public class WorldInteractable
     {
+        public bool includeAddElement;
+        public bool includeRemoveElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
@@ -205,6 +225,8 @@ public class Search
 
     public class Task
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> objectiveId = new List<int>();
@@ -218,6 +240,8 @@ public class Search
 
     public class Interaction
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> taskId = new List<int>();
@@ -232,6 +256,8 @@ public class Search
 
     public class InteractionDestination
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> interactionId = new List<int>();
@@ -261,6 +287,8 @@ public class Search
 
     public class Scene
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> outcomeId = new List<int>();
@@ -290,11 +318,11 @@ public class Search
 
     public class CameraFilter
     {
+        public bool includeRemoveElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
-
-        public bool includeEmptyElement;
-
+        
         public enum RequestType
         {
             Custom
@@ -305,12 +333,13 @@ public class Search
 
     public class SceneActor
     {
+        public bool includeAddElement;
+        public bool includeRemoveElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
         public List<int> sceneId = new List<int>();
-
-        public bool includeEmptyElement;
 
         public enum RequestType
         {
@@ -322,6 +351,8 @@ public class Search
 
     public class SceneProp
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
@@ -355,6 +386,8 @@ public class Search
 
     public class Region
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
@@ -372,6 +405,8 @@ public class Search
 
     public class Atmosphere
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> terrainId = new List<int>();
@@ -415,6 +450,8 @@ public class Search
 
     public class WorldObject
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> regionId = new List<int>();
@@ -432,11 +469,6 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> phaseId = new List<int>();
-
-        //public List<int> regionId = new List<int>();
-        //public List<int> objectiveId = new List<int>();
-
-        //public Enums.RegionType regionType;
 
         public enum RequestType
         {
