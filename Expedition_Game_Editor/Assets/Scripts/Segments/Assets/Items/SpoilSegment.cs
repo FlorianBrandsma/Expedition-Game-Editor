@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class SpoilSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
     
@@ -15,17 +17,24 @@ public class SpoilSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Item);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
-        searchParameters.type = new List<int>() { (int)Enums.ItemType.Spoils };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.type = new List<int>() { (int)Enums.ItemType.Spoils };
     }
 
     public void InitializeSegment()
     {
         InitializeData();
     }
-    
+
     public void OpenSegment()
     {
         if (GetComponent<IDisplay>() != null)

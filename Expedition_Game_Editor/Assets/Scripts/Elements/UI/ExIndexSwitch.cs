@@ -65,7 +65,7 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
     {
         dataList = segment.DataEditor.Data.dataController.Data.dataList;
         
-        var elementData = segment.DataEditor.ElementData;
+        var elementData = segment.DataEditor.EditData;
         var elementIndex = dataList.IndexOf(dataList.Where(x => x.Id == elementData.Id).First());
 
         dataList.RemoveAt(elementIndex);

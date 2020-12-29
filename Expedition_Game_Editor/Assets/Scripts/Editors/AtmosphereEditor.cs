@@ -133,6 +133,8 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         PrivateNotes    = atmosphereData.PrivateNotes;
 
         TimeConflict    = atmosphereData.TimeConflict;
+        Debug.Log("test");
+        UpdateEditor();
     }
 
     public void UpdateEditor()
@@ -147,28 +149,98 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyAtmosphereChanges(dataRequest);
+    }
+
+    private void ApplyAtmosphereChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddAtmosphere(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateAtmosphere(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveAtmosphere(dataRequest);
+                break;
+        }
+    }
+
+    private void AddAtmosphere(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            atmosphereData.Id = tempData.Id;
+    }
+
+    private void UpdateAtmosphere(DataRequest dataRequest)
+    {
         var changedTime =   ((AtmosphereElementData)EditData).ChangedStartTime || 
                             ((AtmosphereElementData)EditData).ChangedEndTime;
 
         EditData.Update(dataRequest);
-
-        if (changedTime)
+        
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            Data.dataList = Data.dataList.OrderByDescending(x => ((AtmosphereElementData)x).Default).ThenBy(x => ((AtmosphereElementData)x).StartTime).ToList();
-            SelectionElementManager.UpdateElements(ElementData);
+            if (changedTime)
+            {
+                Data.dataController.Data.dataList = Data.dataController.Data.dataList.OrderByDescending(x => x.ExecuteType == Enums.ExecuteType.Add)
+                                                                                     .ThenBy(x => !((AtmosphereElementData)x).Default)
+                                                                                     .ThenBy(x => ((AtmosphereElementData)x).StartTime).ToList();
 
-        } else {
+                SelectionElementManager.UpdateElements(ElementData);
 
-            if (SelectionElementManager.SelectionActive(EditData.DataElement))
-                EditData.DataElement.UpdateElement();
+            } else {
+
+                if (SelectionElementManager.SelectionActive(EditData.DataElement))
+                    EditData.DataElement.UpdateElement();
+            }
+        }    
+    }
+
+    private void RemoveAtmosphere(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
+    }
+
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                OpenDefault();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
         }
+    }
 
-        UpdateEditor();
+    private void OpenDefault()
+    {
+        RenderManager.loadType = Enums.LoadType.Reload;
+
+        var defaultElement = Data.dataController.Data.dataList.Where(x => ((AtmosphereElementData)x).Default).First();
+        ((ListManager)EditData.DataElement.DisplayManager).AutoSelectElement(defaultElement.Id);
     }
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
+        //Also changes "add new" execute type to update. oops!
+
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

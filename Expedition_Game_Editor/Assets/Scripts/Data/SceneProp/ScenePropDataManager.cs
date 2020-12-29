@@ -15,7 +15,7 @@ public static class ScenePropDataManager
         GetScenePropData(searchParameters);
 
         if (scenePropDataList.Count == 0) return new List<IElementData>();
-
+        
         GetModelData();
         GetIconData();
 

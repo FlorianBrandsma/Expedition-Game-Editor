@@ -27,7 +27,7 @@ public static class QuestDataManager
                         PublicNotes = questData.PublicNotes,
                         PrivateNotes = questData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

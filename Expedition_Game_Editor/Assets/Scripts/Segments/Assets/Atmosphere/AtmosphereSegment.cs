@@ -17,25 +17,23 @@ public class AtmosphereSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Atmosphere);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
-        searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).ElementData.Id };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
+
+        searchParameters.includeAddElement = /*TimeManager.TimeFramesAvailable(SegmentController.DataController) && */
+                                             ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.terrainId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Terrain).ElementData.Id };
     }
 
     public void InitializeSegment()
     {
         InitializeData();
-
-        CheckTimeSlots();
-    }
-
-    private void CheckTimeSlots()
-    {
-        if (SegmentController.Loaded) return;
-
-        //Only allow adding new rows if there are time slots available
-        ListProperties.enableAdding = TimeManager.TimeFramesAvailable(SegmentController.DataController);
     }
 
     public void OpenSegment()

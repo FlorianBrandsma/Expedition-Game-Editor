@@ -20,8 +20,11 @@ public static class AtmosphereDataManager
 
         GetAtmosphereData(searchParameters);
 
-        if (atmosphereDataList.Count == 0) return new List<IElementData>();
+        if (searchParameters.includeAddElement)
+            atmosphereDataList.Add(DefaultData(searchParameters));
 
+        if (atmosphereDataList.Count == 0) return new List<IElementData>();
+        
         GetTerrainData();
 
         GetRegionData();
@@ -44,7 +47,7 @@ public static class AtmosphereDataManager
                     select new AtmosphereElementData()
                     {
                         Id = atmosphereData.Id,
-
+                        
                         TerrainId = atmosphereData.TerrainId,
 
                         Default = atmosphereData.Default,
@@ -61,11 +64,30 @@ public static class AtmosphereDataManager
                         IconPath = iconData.Path,
                         BaseTilePath = tileData.First().tileData.IconPath
 
-                    }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
+                    }).OrderByDescending(x => x.Id == 0).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
-
+        
         return list.Cast<IElementData>().ToList();
+    }
+
+    private static AtmosphereBaseData DefaultData(Search.Atmosphere searchParameters)
+    {
+        return new AtmosphereBaseData()
+        {
+            TerrainId = searchParameters.terrainId.First(),
+            EndTime = (TimeManager.secondsInHour - 1)
+        };
+    }
+    
+    private static void SetDefaultAddValues(List<AtmosphereElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetAtmosphereData(Search.Atmosphere searchParameters)
@@ -121,6 +143,15 @@ public static class AtmosphereDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
+    public static void AddData(AtmosphereElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.atmosphereList.Count > 0 ? (Fixtures.atmosphereList[Fixtures.atmosphereList.Count - 1].Id + 1) : 1;
+            Fixtures.atmosphereList.Add(((AtmosphereData)elementData).Clone());
+        } else { }
+    }
+
     public static void UpdateData(AtmosphereElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.atmosphereList.Where(x => x.Id == elementData.Id).FirstOrDefault();
@@ -152,5 +183,14 @@ public static class AtmosphereDataManager
                 data.PrivateNotes = elementData.PrivateNotes;
             else { }
         }
+    }
+
+    public static void RemoveData(AtmosphereElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.atmosphereList.RemoveAll(x => x.Id == elementData.Id);
+        }
+        else { }
     }
 }

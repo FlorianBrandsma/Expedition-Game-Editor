@@ -11,18 +11,19 @@ public static class ItemDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<ItemElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
 
         GetItemData(searchParameters);
-        
-        if (itemDataList.Count > 0)
-        {
-            GetModelData();
-            GetIconData();
 
-            list = (from itemData   in itemDataList
+        if (searchParameters.includeAddElement)
+            itemDataList.Add(DefaultData(searchParameters));
+
+        if (itemDataList.Count == 0) return new List<IElementData>();
+        
+        GetModelData();
+        GetIconData();
+
+        var list = (from itemData   in itemDataList
                     join modelData  in modelDataList    on itemData.ModelId equals modelData.Id
                     join iconData   in iconDataList     on modelData.IconId equals iconData.Id
                     select new ItemElementData()
@@ -39,27 +40,32 @@ public static class ItemDataManager
                         ModelPath = modelData.Path,
                         ModelIconPath = iconData.Path,
                         
-                    }).OrderBy(x => x.Index).ToList();
-        }
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
         
-        if(searchParameters.includeAddElement)
-            AddDefaultElementData(searchParameters, list);
-        
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void AddDefaultElementData(Search.Item searchParameters, List<ItemElementData> list)
+    private static ItemBaseData DefaultData(Search.Item searchParameters)
     {
-        list.Insert(0, new ItemElementData()
+        return new ItemBaseData()
         {
-            ExecuteType = Enums.ExecuteType.Add,
-
-            Index = list.Count,
             Type = searchParameters.type.First(),
             ModelId = 1
-        });
+        };
+    }
+
+    private static void SetDefaultAddValues(List<ItemElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetItemData(Search.Item searchParameters)
@@ -95,7 +101,7 @@ public static class ItemDataManager
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            elementData.Id = Fixtures.itemList.LastOrDefault().Id + 1;
+            elementData.Id = Fixtures.itemList.Count > 0 ? (Fixtures.itemList[Fixtures.itemList.Count - 1].Id + 1) : 1;
             Fixtures.itemList.Add(((ItemData)elementData).Clone());
         } else { }
     }
@@ -124,5 +130,14 @@ public static class ItemDataManager
         var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+    }
+
+    public static void RemoveData(ItemElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.itemList.RemoveAll(x => x.Id == elementData.Id);
+        }
+        else { }
     }
 }

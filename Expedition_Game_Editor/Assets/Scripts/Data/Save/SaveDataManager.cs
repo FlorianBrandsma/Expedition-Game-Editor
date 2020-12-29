@@ -70,7 +70,7 @@ public static class SaveDataManager
 
                         Time = TimeManager.TimeFromSeconds(playerSaveData.PlayedTime)
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

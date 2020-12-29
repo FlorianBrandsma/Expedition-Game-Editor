@@ -16,19 +16,25 @@ public static class ChapterRegionDataManager
 
         GetChapterRegionData(searchParameters);
 
-        if (chapterRegionDataList.Count == 0) return new List<IElementData>();
+        if (searchParameters.includeAddElement)
+            chapterRegionDataList.Add(DefaultData(searchParameters));
 
+        if (chapterRegionDataList.Count == 0) return new List<IElementData>();
+        
         GetRegionData();
         GetTileSetData();
         GetTileData();
 
         var list = (from chapterRegionData  in chapterRegionDataList
-                    join regionData         in regionDataList       on chapterRegionData.RegionId   equals regionData.Id
-                    join tileSetData        in tileSetDataList      on regionData.TileSetId         equals tileSetData.Id
 
-                    join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
+                    join leftJoin in (from regionData   in regionDataList
+                                      join tileSetData  in tileSetDataList on regionData.TileSetId equals tileSetData.Id
 
+                                      join leftJoin in (from tileData in tileDataList
+                                                        select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
+
+                                      select new { regionData, tileData }) on chapterRegionData.RegionId equals leftJoin.regionData.Id into regionData
+                                      
                     select new ChapterRegionElementData()
                     {
                         Id = chapterRegionData.Id,
@@ -36,16 +42,39 @@ public static class ChapterRegionDataManager
                         ChapterId = chapterRegionData.ChapterId,
                         RegionId = chapterRegionData.RegionId,
 
-                        Name = regionData.Name,
+                        Name = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.Name : "",
 
-                        TileIconPath = tileData.First().tileData.IconPath
+                        TileIconPath = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().tileData.First().tileData.IconPath : ""
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id).ToList();
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
-
+        
         return list.Cast<IElementData>().ToList();
     }
+
+    private static ChapterRegionBaseData DefaultData(Search.ChapterRegion searchParameters)
+    {
+        return new ChapterRegionBaseData();
+    }
+
+    private static void SetDefaultAddValues(List<ChapterRegionElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+    }
+
+    //private static void AddDefaultElementData(Search.ChapterRegion searchParameters, List<ChapterRegionElementData> list)
+    //{
+    //    list.Insert(0, new ChapterRegionElementData()
+    //    {
+    //        ExecuteType = Enums.ExecuteType.Add
+    //    });
+    //}
 
     private static void GetChapterRegionData(Search.ChapterRegion searchParameters)
     {
@@ -91,6 +120,18 @@ public static class ChapterRegionDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
+    public static void AddData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.chapterRegionList.Count > 0 ? (Fixtures.chapterRegionList[Fixtures.chapterRegionList.Count - 1].Id + 1) : 1;
+            Fixtures.chapterRegionList.Add(((ChapterRegionData)elementData).Clone());
+
+            Debug.Log("Add chapter region");
+        }
+        else { }
+    }
+
     public static void UpdateData(ChapterRegionElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.chapterRegionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
@@ -98,8 +139,22 @@ public static class ChapterRegionDataManager
         if (elementData.ChangedRegionId)
         {
             if (dataRequest.requestType == Enums.RequestType.Execute)
+            {
                 data.RegionId = elementData.RegionId;
+                Debug.Log("Update chapter region");
+            }
             else { }
         }
+    }
+
+    public static void RemoveData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
+
+            Debug.Log("Remove chapter region");
+        }
+        else { }
     }
 }

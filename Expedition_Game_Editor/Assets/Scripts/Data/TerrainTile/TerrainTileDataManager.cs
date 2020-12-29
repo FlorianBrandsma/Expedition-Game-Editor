@@ -15,7 +15,7 @@ public static class TerrainTileDataManager
         GetTerrainTileData(searchParameters);
 
         if (terrainTileDataList.Count == 0) return new List<IElementData>();
-
+        
         GetTileData();
 
         var list = (from terrainTileData    in terrainTileDataList
@@ -30,7 +30,7 @@ public static class TerrainTileDataManager
 
                         IconPath = tileData.IconPath
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -63,15 +63,21 @@ public static class TerrainTileDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void UpdateData(TerrainTileElementData elementData, DataRequest dataRequest)
+    public static void AddData(TerrainTileElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.terrainTileList.Count > 0 ? (Fixtures.terrainTileList[Fixtures.terrainTileList.Count - 1].Id + 1) : 1;
+            Fixtures.terrainTileList.Add(((TerrainTileData)elementData).Clone());
+        }
+        else { }
+    }
+
+    public static void UpdateSearch(TerrainTileElementData elementData)
     {
         var data = Fixtures.terrainTileList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
         if (elementData.ChangedTileId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.TileId = elementData.TileId;
-            else { }
-        }
+            data.TileId = elementData.TileId;
     }
 }

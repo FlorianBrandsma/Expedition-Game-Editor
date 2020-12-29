@@ -199,9 +199,27 @@ public class ScenePropEditor : MonoBehaviour, IEditor
         UpdateEditor();
     }
 
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
+        }
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

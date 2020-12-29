@@ -12,8 +12,6 @@ public static class WorldInteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<WorldInteractableElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
 
         switch (searchParameters.requestType)
@@ -38,17 +36,22 @@ public static class WorldInteractableDataManager
                 GetSceneActorWorldInteractableData(searchParameters);
                 break;
         }
-        
-        if (worldInteractableDataList.Count > 0)
-        {
-            GetInteractableData();
-            GetModelData();
-            GetIconData();
 
-            list = (from worldInteractableData  in worldInteractableDataList
-                    join interactableData       in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
-                    join modelData              in modelDataList        on interactableData.ModelId             equals modelData.Id
-                    join iconData               in iconDataList         on modelData.IconId                     equals iconData.Id
+        if (searchParameters.includeAddElement)
+            worldInteractableDataList.Add(DefaultData(searchParameters));
+
+        if (worldInteractableDataList.Count == 0) return new List<IElementData>();
+        
+        GetInteractableData();
+        GetModelData();
+        GetIconData();
+
+        var list = (from worldInteractableData  in worldInteractableDataList
+
+                    join leftJoin in (from interactableData in interactableDataList
+                                      join modelData        in modelDataList    on interactableData.ModelId equals modelData.Id
+                                      join iconData         in iconDataList     on modelData.IconId         equals iconData.Id
+                                      select new { interactableData, modelData, iconData }) on worldInteractableData.InteractableId equals leftJoin.interactableData.Id into interactableData
 
                     select new WorldInteractableElementData()
                     {
@@ -64,38 +67,42 @@ public static class WorldInteractableDataManager
                         ChapterInteractableId = worldInteractableData.ChapterInteractableId,
                         InteractableId = worldInteractableData.InteractableId,
                         
-                        ModelId = modelData.Id,
+                        ModelId = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().modelData.Id : 0,
 
-                        ModelPath = modelData.Path,
+                        ModelPath = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().modelData.Path : "",
 
-                        InteractableName =  interactableData.Name,
-                        ModelIconPath = iconData.Path,
+                        InteractableName = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.Name : "",
+                        ModelIconPath = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().iconData.Path : "",
 
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth,
+                        Height = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().modelData.Height : 0,
+                        Width = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().modelData.Width : 0,
+                        Depth = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().modelData.Depth : 0,
 
-                        Scale = interactableData.Scale
+                        Scale = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.Scale : 0
 
-                    }).ToList();
-        }
+                    }).OrderBy(x => x.Id).ToList();
 
         if (searchParameters.includeAddElement)
-            AddDefaultElementData(searchParameters, list);
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void AddDefaultElementData(Search.WorldInteractable searchParameters, List<WorldInteractableElementData> list)
+    private static WorldInteractableBaseData DefaultData(Search.WorldInteractable searchParameters)
     {
-        list.Insert(0, new WorldInteractableElementData()
+        return new WorldInteractableBaseData()
         {
-            ExecuteType = Enums.ExecuteType.Add,
-
             Type = searchParameters.type.First()
-        });
+        };
+    }
+
+    private static void SetDefaultAddValues(List<WorldInteractableElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetCustomWorldInteractableData(Search.WorldInteractable searchParameters)
@@ -209,9 +216,24 @@ public static class WorldInteractableDataManager
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            elementData.Id = Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1;
+            elementData.Id = Fixtures.worldInteractableList.Count > 0 ? (Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1) : 1;
             Fixtures.worldInteractableList.Add(((WorldInteractableData)elementData).Clone());
+
+            AddDefaultTask(elementData, dataRequest);
+
         } else { }
+    }
+
+    private static void AddDefaultTask(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if ((Enums.InteractableType)elementData.Type == Enums.InteractableType.Controllable) return;
+
+        var taskElementData = new TaskElementData()
+        {
+            WorldInteractableId = elementData.Id
+        };
+
+        taskElementData.Add(dataRequest);
     }
 
     public static void UpdateData(WorldInteractableElementData elementData, DataRequest dataRequest)
@@ -233,13 +255,13 @@ public static class WorldInteractableDataManager
         }
     }
 
-    public static void UpdateSearch(WorldInteractableElementData elementData)
-    {
-        var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+    //public static void UpdateSearch(WorldInteractableElementData elementData)
+    //{
+    //    var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedInteractableId)
-            data.InteractableId = elementData.InteractableId;
-    }
+    //    if (elementData.ChangedInteractableId)
+    //        data.InteractableId = elementData.InteractableId;
+    //}
 
     public static void RemoveData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {

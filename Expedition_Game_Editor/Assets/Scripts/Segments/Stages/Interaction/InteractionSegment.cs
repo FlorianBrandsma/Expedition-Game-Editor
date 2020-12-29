@@ -35,7 +35,7 @@ public class InteractionSegment : MonoBehaviour, ISegment
         if (SegmentController.Loaded) return;
 
         //Only allow adding new rows if there are time slots available
-        ListProperties.enableAdding = TimeManager.TimeFramesAvailable(SegmentController.DataController);
+        //ListProperties.enableAdding = TimeManager.TimeFramesAvailable(SegmentController.DataController);
     }
     
     public void OpenSegment()

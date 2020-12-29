@@ -152,33 +152,68 @@ public class ItemEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        if (EditData.ExecuteType == Enums.ExecuteType.Add)
+        ApplyItemChanges(dataRequest);
+    }
+
+    private void ApplyItemChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
         {
-            var tempData = EditData;
+            case Enums.ExecuteType.Add:
+                AddItem(dataRequest);
+                break;
 
-            EditData.Add(dataRequest);
+            case Enums.ExecuteType.Update:
+                UpdateItem(dataRequest);
+                break;
 
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                itemData.Id = tempData.Id;
-        }
-
-        if (EditData.ExecuteType == Enums.ExecuteType.Update)
-        {
-            EditData.Update(dataRequest);
-
-            if (SelectionElementManager.SelectionActive(EditData.DataElement))
-                EditData.DataElement.UpdateElement();
+            case Enums.ExecuteType.Remove:
+                RemoveItem(dataRequest);
+                break;
         }
     }
 
-    private void RemoveData()
+    private void AddItem(DataRequest dataRequest)
     {
-        Debug.Log("Remove data");
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            itemData.Id = tempData.Id;
+    }
+
+    private void UpdateItem(DataRequest dataRequest)
+    {
+        EditData.Update(dataRequest);
+    }
+
+    private void RemoveItem(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
+    }
+
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
+        }
     }
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
         
         Loaded = false;
     }

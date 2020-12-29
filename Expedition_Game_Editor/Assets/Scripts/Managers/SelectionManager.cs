@@ -29,7 +29,7 @@ static public class SelectionManager
 
     static public List<Route> routeList = new List<Route>();
 
-    static public IElementData getElementData;
+    static public IElementData searchElementData;
 
     static public void GetRouteList()
     {
@@ -95,27 +95,58 @@ static public class SelectionManager
 
     static public void SelectSearch(IElementData selectedElementData)
     {
-        getElementData = selectedElementData;
+        searchElementData = selectedElementData;
     }
 
-    static public void SelectSet(IElementData setElementData)
+    static public void SelectSet(IElementData resultElementData)
     {
-        var elementDataList = SelectionElementManager.FindElementData(getElementData);
+        var elementDataList = SelectionElementManager.FindElementData(searchElementData);
 
-        //First set the result to all relevant elements
-        elementDataList.ForEach(x => x.DataElement.SetResult(setElementData));
+        var dataRequest = new DataRequest();
 
+        var validationElement = searchElementData.Clone();
+        validationElement.DataElement.Data.dataController.SetData(validationElement, resultElementData);
+
+        //Validate changes once
+        ApplyChanges(dataRequest, validationElement, resultElementData);
+
+        if (dataRequest.errorList.Count > 0)
+        {
+            dataRequest.errorList.ForEach(x => Debug.Log(x));
+
+        } else {
+
+            //Execute changes to all relevant elements
+            elementDataList.ForEach(x => x.DataElement.SetSearchResult(dataRequest, resultElementData));
+        }
+        
         //Cancelling selection will re-render the editor and visualize the selection
         CancelGetSelection();
     }
-    
+
+    private static void ApplyChanges(DataRequest dataRequest, IElementData searchElementData, IElementData resultElementData)
+    {
+        if (resultElementData.Id > 0)
+        {
+            if (searchElementData.ExecuteType == Enums.ExecuteType.Add)
+                searchElementData.Add(dataRequest);
+
+            if (searchElementData.ExecuteType == Enums.ExecuteType.Update)
+                searchElementData.Update(dataRequest);
+
+        } else {
+
+            searchElementData.Remove(dataRequest);
+        }
+    }
+
     static public void CancelGetSelection()
     {
-        if (getElementData == null) return;
+        if (searchElementData == null) return;
 
-        CancelSelection(new List<IElementData>() { getElementData });
+        CancelSelection(new List<IElementData>() { searchElementData });
 
-        getElementData = null;
+        searchElementData = null;
 
         //Return to previous path in form
         RenderManager.Render(RenderManager.layoutManager.forms[2].previousPath);  

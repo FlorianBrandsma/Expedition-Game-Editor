@@ -179,7 +179,10 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         if (Display.DataController.Data.dataList.Count == 0) return;
 
-        EditorElement element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
+        if (autoSelectId == 0)
+            autoSelectId = Display.DataController.Data.dataList.Where(x => x.Id > 0).ToList().First().Id;
+
+        var element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
 
         if(element == null)
             element = List.ElementList.FirstOrDefault();

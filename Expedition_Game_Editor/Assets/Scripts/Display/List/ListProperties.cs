@@ -13,7 +13,6 @@ public class ListProperties : MonoBehaviour, IDisplay
 
     public bool horizontal, vertical;
 
-    public bool enableAdding;
     public bool enableAutoSave;
     public bool enableSliders;
     public bool enableNumbers;

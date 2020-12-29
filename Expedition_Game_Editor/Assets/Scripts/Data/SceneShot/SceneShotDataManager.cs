@@ -13,7 +13,7 @@ public static class SceneShotDataManager
         GetSceneShotData(searchParameters);
 
         if (sceneShotDataList.Count == 0) return new List<IElementData>();
-
+        
         sceneShotDataList.Select(x => x.SceneId).Distinct().ToList().ForEach(x => AddDefaultShot(x));
 
         var list = (from sceneShotData in sceneShotDataList

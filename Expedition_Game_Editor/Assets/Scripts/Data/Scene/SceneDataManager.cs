@@ -20,7 +20,7 @@ public class SceneDataManager : MonoBehaviour
         GetSceneData(searchParameters);
 
         if (sceneDataList.Count == 0) return new List<IElementData>();
-
+        
         GetOutcomeData();
 
         GetRegionData();
@@ -65,7 +65,7 @@ public class SceneDataManager : MonoBehaviour
 
                         TileIconPath = tileData.First().tileData.IconPath
                         
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

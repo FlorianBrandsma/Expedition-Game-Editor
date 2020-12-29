@@ -430,6 +430,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void UpdateModel(ModelElementData modelElementData)
     {
+        modelElementData.DataElement.Id = modelElementData.Id;
+
         ModelId = modelElementData.Id;
         ModelPath = modelElementData.Path;
         ModelIconPath = modelElementData.IconPath;

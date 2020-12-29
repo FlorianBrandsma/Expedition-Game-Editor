@@ -73,7 +73,13 @@ public class OutcomeElementData : OutcomeData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        OutcomeDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {

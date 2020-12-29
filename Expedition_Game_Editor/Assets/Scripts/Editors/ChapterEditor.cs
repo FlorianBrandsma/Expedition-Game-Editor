@@ -159,14 +159,11 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private void UpdateChapter(DataRequest dataRequest)
     {
-        if (!EditData.Changed) return;
-
         EditData.Update(dataRequest);
     }
 
     private void RemoveChapter(DataRequest dataRequest)
     {
-        Debug.Log("test");
         EditData.Remove(dataRequest);
     }
 
@@ -222,11 +219,24 @@ public class ChapterEditor : MonoBehaviour, IEditor
     {
         foreach (ChapterRegionElementData chapterRegionElementData in chapterRegionElementDataList)
         {
-            if (!chapterRegionElementData.Changed) continue;
+            switch (chapterRegionElementData.ExecuteType)
+            {
+                case Enums.ExecuteType.Add:
+                    chapterRegionElementData.Add(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Update:
+                    chapterRegionElementData.Update(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Remove:
+                    chapterRegionElementData.Remove(dataRequest);
+                    break;
+            }
         }
 
         if (dataRequest.requestType == Enums.RequestType.Execute)
-            chapterRegionElementDataList.RemoveAll(x => x.Id == -1);
+            chapterRegionElementDataList.RemoveAll(x => x.ExecuteType == Enums.ExecuteType.Remove);
 
         //When adding a new region, check if there are any phases which belong
         //If so, add a copy of the added region to every phase in the same way as when you would add a phase to that chapter
@@ -393,13 +403,38 @@ public class ChapterEditor : MonoBehaviour, IEditor
         */
     }
 
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                ResetExecuteType();
+                UpdateEditor();
+                break;
+        }
+    }
+
+    private void ResetExecuteType()
+    {
+        ElementDataList.ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
         worldInteractableElementDataList.Clear();
         chapterInteractableElementDataList.Clear();
         chapterRegionElementDataList.Clear();
 
-        ElementDataList.ForEach(x => x.ClearChanges());
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x =>
+        {
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

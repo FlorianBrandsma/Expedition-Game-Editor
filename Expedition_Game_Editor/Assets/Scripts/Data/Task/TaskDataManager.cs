@@ -18,10 +18,13 @@ public static class TaskDataManager
                     select new TaskElementData()
                     {
                         Id = taskData.Id,
-                        Index = taskData.Index,
-
+                        
                         WorldInteractableId = taskData.WorldInteractableId,
                         ObjectiveId = taskData.ObjectiveId,
+
+                        Default = taskData.Default,
+
+                        Index = taskData.Index,
 
                         Name = taskData.Name,
 
@@ -31,7 +34,7 @@ public static class TaskDataManager
                         PublicNotes = taskData.PublicNotes,
                         PrivateNotes = taskData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -50,6 +53,30 @@ public static class TaskDataManager
 
             taskDataList.Add(task);
         }
+    }
+
+    public static void AddData(TaskElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.taskList.Count > 0 ? (Fixtures.taskList[Fixtures.taskList.Count - 1].Id + 1) : 1;
+            Fixtures.taskList.Add(((TaskData)elementData).Clone());
+
+            AddDefaultInteraction(elementData, dataRequest);
+
+        } else { }
+    }
+
+    private static void AddDefaultInteraction(TaskElementData elementData, DataRequest dataRequest)
+    {
+        var interactionElementData = new InteractionElementData()
+        {
+            TaskId = elementData.Id,
+
+            Default = true
+        };
+
+        interactionElementData.Add(dataRequest);
     }
 
     public static void UpdateData(TaskElementData elementData, DataRequest dataRequest)

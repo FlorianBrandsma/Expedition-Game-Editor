@@ -13,7 +13,7 @@ public static class IconDataManager
         GetIconData(searchParameters);
 
         if (iconDataList.Count == 0) return new List<IElementData>();
-
+        
         var list = (from iconData in iconDataList
                     select new IconElementData()
                     {
@@ -23,7 +23,7 @@ public static class IconDataManager
                         BaseIconPath = ""
 
                     }).OrderBy(x => x.Id).ToList();
-
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();

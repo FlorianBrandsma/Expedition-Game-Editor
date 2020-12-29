@@ -41,6 +41,9 @@ public class ItemElementData : ItemData, IElementData
     public void Add(DataRequest dataRequest)
     {
         ItemDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
@@ -49,7 +52,8 @@ public class ItemElementData : ItemData, IElementData
         
         ItemDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute) 
+            SetOriginalValues();
     }
 
     public void UpdateIndex()
@@ -63,7 +67,10 @@ public class ItemElementData : ItemData, IElementData
 
     public void UpdateSearch() { }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        ItemDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

@@ -17,6 +17,7 @@ public interface IEditor
     void OpenEditor();
     void UpdateEditor();
     void ApplyChanges(DataRequest dataRequest);
+    void FinalizeChanges();
     void CancelEdit();
     void CloseEditor();
 }

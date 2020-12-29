@@ -473,10 +473,11 @@ static public class Fixtures
                 int id = terrainTileList.Count > 0 ? (terrainTileList[terrainTileList.Count - 1].Id + 1) : 1;
 
                 terrainTile.Id = id;
-                terrainTile.Index = i;
-
+                
                 terrainTile.TerrainId = terrain.Id;
                 terrainTile.TileId = tileData.FirstOrDefault().Id;
+
+                terrainTile.Index = i;
 
                 terrainTileList.Add(terrainTile);
             }
@@ -679,10 +680,13 @@ static public class Fixtures
         int id = taskList.Count > 0 ? (taskList[taskList.Count - 1].Id + 1) : 1;
 
         task.Id = id;
-        task.Index = taskIndex;
 
         task.WorldInteractableId = worldInteractable.Id;
         task.ObjectiveId = objectiveId;
+
+        task.Default = (taskIndex == 0);
+
+        task.Index = taskIndex;
         
         task.Name = "Just a task" + (objectiveId == 0 ? "" : " with an objective " + task.ObjectiveId);
 
@@ -732,15 +736,16 @@ static public class Fixtures
 
         interactionList.Add(interaction);
 
-        interactionDestinationList.ForEach(interactionDestination =>
+        for(int i = 0; i < interactionDestinationList.Count; i++)
         {
-            CreateInteractionDestination(interaction, regionId, interactionDestination);
-        });
+            var interactionDestination = interactionDestinationList[i];
+            CreateInteractionDestination(interaction, regionId, (i == 0), interactionDestination);
+        }
 
         CreateOutcome(interaction, regionId, Enums.OutcomeType.Positive);
     }
 
-    static public void CreateInteractionDestination(InteractionBaseData interaction, int regionId, InteractionDestinationBaseData interactionDestinationSource)
+    static public void CreateInteractionDestination(InteractionBaseData interaction, int regionId, bool isDefault, InteractionDestinationBaseData interactionDestinationSource)
     {
         var interactionDestination = new InteractionDestinationBaseData();
 
@@ -749,7 +754,9 @@ static public class Fixtures
         interactionDestination.Id = id;
 
         interactionDestination.InteractionId = interaction.Id;
-        
+
+        interactionDestination.Default = true;
+
         interactionDestination.PositionX = interactionDestinationSource.PositionX;
         interactionDestination.PositionY = interactionDestinationSource.PositionY;
         interactionDestination.PositionZ = interactionDestinationSource.PositionZ;
@@ -1076,7 +1083,6 @@ static public class Fixtures
                 int id = chapterRegionList.Count > 0 ? (chapterRegionList[chapterRegionList.Count - 1].Id + 1) : 1;
 
                 chapterRegion.Id = id;
-                chapterRegion.Index = i;
 
                 chapterRegion.ChapterId = chapter.Id;
 
@@ -1120,7 +1126,6 @@ static public class Fixtures
                     region.PhaseId = phase.Id;
                     region.ChapterRegionId = chapterRegion.Id;
 
-                    region.Index = chapterRegion.Index;
                     region.TileSetId = regionSource.TileSetId;
 
                     region.Name = regionSource.Name;

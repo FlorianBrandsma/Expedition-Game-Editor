@@ -17,7 +17,7 @@ public static class InteractableSaveDataManager
         GetInteractableSaveData(searchParameters);
 
         if (interactableSaveDataList.Count == 0) return new List<IElementData>();
-
+        
         GetInteractableData();
         GetModelData();
         GetIconData();
@@ -48,7 +48,7 @@ public static class InteractableSaveDataManager
                         ModelIconPath = iconData.Path
 
                     }).OrderBy(x => x.Index).ToList();
-
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();

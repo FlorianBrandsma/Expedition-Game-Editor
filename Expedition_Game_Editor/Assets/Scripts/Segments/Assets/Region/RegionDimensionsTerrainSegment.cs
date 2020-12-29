@@ -31,7 +31,7 @@ public class RegionDimensionsTerrainSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        SegmentController.EnableSegment(false);
+        SegmentController.EnableSegment(DataEditor.EditData.ExecuteType == Enums.ExecuteType.Add);
 
         sizeInputNumber.Value = TerrainSize;
 

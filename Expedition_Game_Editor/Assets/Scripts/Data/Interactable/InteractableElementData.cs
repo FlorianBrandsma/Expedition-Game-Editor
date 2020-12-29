@@ -78,15 +78,22 @@ public class InteractableElementData : InteractableData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        InteractableDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-        
+
         InteractableDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateIndex()
@@ -100,7 +107,10 @@ public class InteractableElementData : InteractableData, IElementData
 
     public void UpdateSearch() { }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        InteractableDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

@@ -187,7 +187,7 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
         TimeConflict = Default ? false : TimeManager.TimeConflict(DataEditor.Data.dataController, DataEditor.EditData);
 
         startTimeInput.InputInvalid = TimeConflict;
-        endTimeInput.InputInvalid = TimeConflict;
+        endTimeInput.InputInvalid   = TimeConflict;
     }
 
     public void OpenSegment()

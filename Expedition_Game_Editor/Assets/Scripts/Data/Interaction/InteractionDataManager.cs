@@ -24,7 +24,7 @@ public static class InteractionDataManager
         GetInteractionData(searchParameters);
 
         if (interactionDataList.Count == 0) return new List<IElementData>();
-
+        
         GetTaskData();
         GetWorldInteractableData();
         GetInteractableData();
@@ -91,7 +91,7 @@ public static class InteractionDataManager
 
                         DefaultTimes = interactionData.Default ? DefaultTimes() : new List<int>(),
 
-                    }).OrderByDescending(x => x.Default).ThenBy(x => x.StartTime).ToList();
+                    }).OrderByDescending(x => x.Id == 0).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -196,6 +196,70 @@ public static class InteractionDataManager
         var defaultTimes = TimeManager.AvailableTimes(timeFrameList);
 
         return defaultTimes;
+    }
+
+    public static void AddData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].Id + 1) : 1;
+            Fixtures.interactionList.Add(((InteractionData)elementData).Clone());
+
+            AddDefaultInteractionDestination(elementData, dataRequest);
+            AddDefaultOutcome(elementData, dataRequest);
+
+        } else { }
+    }
+
+    private static void AddDefaultInteractionDestination(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var regionElementData = new RegionElementData();
+
+        var regionRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Region);
+
+        if (regionRoute != null)
+        {
+            regionElementData = (RegionElementData)regionRoute.ElementData;
+
+        } else {
+
+            //First region of the selected phase
+        }
+
+        var defaultPosition = new Vector3(0, 0, 0);
+
+        var terrainSearchParameters = new Search.Terrain()
+        {
+            regionId = new List<int>() { regionElementData.Id }
+        };
+
+        var terrainData = DataManager.GetTerrainData(terrainSearchParameters);
+        
+        var terrainId = RegionManager.GetTerrainId(regionElementData, terrainData, regionElementData.TileSize, defaultPosition.x, defaultPosition.z);
+        var terrainTileId = RegionManager.GetTerrainTileId(regionElementData, defaultPosition.x, defaultPosition.z);
+
+        var interactionDestinationElementData = new InteractionDestinationElementData()
+        {
+            InteractionId = elementData.Id,
+
+            RegionId = regionElementData.Id,
+            TerrainId = terrainId,
+            TerrainTileId = terrainTileId,
+        };
+
+        interactionDestinationElementData.Add(dataRequest);
+    }
+
+    private static void AddDefaultOutcome(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var outcomeElementData = new OutcomeElementData()
+        {
+            InteractionId = elementData.Id,
+
+            Type = (int)Enums.OutcomeType.Positive
+        };
+
+        outcomeElementData.Add(dataRequest);
     }
 
     public static void UpdateData(InteractionElementData elementData, DataRequest dataRequest)

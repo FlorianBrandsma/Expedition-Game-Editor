@@ -10,6 +10,8 @@ public class InteractionDestinationBaseData
     public int TerrainId            { get; set; }
     public int TerrainTileId        { get; set; }
 
+    public bool Default             { get; set; }
+
     public float PositionX          { get; set; }
     public float PositionY          { get; set; }
     public float PositionZ          { get; set; }
@@ -34,6 +36,8 @@ public class InteractionDestinationBaseData
         RegionId            = originalData.RegionId;
         TerrainId           = originalData.TerrainId;
         TerrainTileId       = originalData.TerrainTileId;
+
+        Default             = originalData.DefaultInteraction;
 
         PositionX           = originalData.PositionX;
         PositionY           = originalData.PositionY;
@@ -60,6 +64,8 @@ public class InteractionDestinationBaseData
         data.RegionId           = RegionId;
         data.TerrainId          = TerrainId;
         data.TerrainTileId      = TerrainTileId;
+
+        data.DefaultInteraction            = Default;
 
         data.PositionX          = PositionX;
         data.PositionY          = PositionY;

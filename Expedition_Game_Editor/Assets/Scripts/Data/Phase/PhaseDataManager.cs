@@ -24,7 +24,7 @@ public static class PhaseDataManager
         GetPhaseData(searchParameters);
 
         if (phaseDataList.Count == 0) return new List<IElementData>();
-
+        
         GetChapterData();
         GetWorldInteractableData();
         GetInteractableData();
@@ -90,7 +90,7 @@ public static class PhaseDataManager
                         InteractableName = worldInteractableData.First().interactableData.Name,
                         LocationName = RegionManager.LocationName(phaseData.DefaultPositionX, phaseData.DefaultPositionZ, tileSetData.TileSize, regionData, terrainDataList)
                         
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 
@@ -182,6 +182,11 @@ public static class PhaseDataManager
         terrainTileDataList = DataManager.GetTerrainTileData(searchParameters);
     }
 
+    public static void AddData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+
+    }
+    
     public static void UpdateData(PhaseElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
@@ -262,6 +267,11 @@ public static class PhaseDataManager
                 data.PrivateNotes = elementData.PrivateNotes;
             else { }
         }
+    }
+
+    static public void RemoveData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+
     }
 
     static public void UpdateIndex(PhaseElementData elementData)

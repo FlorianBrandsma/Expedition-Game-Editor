@@ -8,15 +8,16 @@ public static class CameraFilterDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<CameraFilterElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.CameraFilter>().First();
 
         GetCameraFilterData(searchParameters);
 
-        if (cameraFilterDataList.Count > 0)
-        {
-            list = (from cameraFilterData in cameraFilterDataList
+        if (searchParameters.includeRemoveElement)
+            cameraFilterDataList.Add(new CameraFilterBaseData());
+
+        if (cameraFilterDataList.Count == 0) return new List<IElementData>();
+        
+        var list = (from cameraFilterData in cameraFilterDataList
                     select new CameraFilterElementData()
                     {
                         Id = cameraFilterData.Id,
@@ -27,19 +28,10 @@ public static class CameraFilterDataManager
                         Name = cameraFilterData.Name
 
                     }).OrderBy(x => x.Id).ToList();
-        }
-
-        if (searchParameters.includeRemoveElement)
-            AddRemoveElementData(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
-    }
-
-    private static void AddRemoveElementData(List<CameraFilterElementData> list)
-    {
-        list.Insert(0, new CameraFilterElementData());
     }
 
     private static void GetCameraFilterData(Search.CameraFilter searchParameters)

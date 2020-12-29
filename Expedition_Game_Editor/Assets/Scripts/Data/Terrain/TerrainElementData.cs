@@ -46,15 +46,22 @@ public class TerrainElementData : TerrainData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        TerrainDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-        
+
         TerrainDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateSearch() { }

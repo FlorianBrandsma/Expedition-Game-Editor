@@ -129,6 +129,8 @@ public class TerrainHeaderSegment : MonoBehaviour, ISegment
 
     public void UpdateIcon(IconElementData iconElementData)
     {
+        iconElementData.DataElement.Id = iconElementData.Id;
+
         IconId = iconElementData.Id;
         IconPath = iconElementData.Path;
 

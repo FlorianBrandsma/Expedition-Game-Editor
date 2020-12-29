@@ -30,7 +30,7 @@ static public class SelectionElementManager
             Remove(element.child);
     }
 
-    //Reload the display of active elements that match the argument. Exclusively used by index switching
+    //Reload the display of active elements that match the argument
     static public void UpdateElements(IElementData elementData)
     {
         var activeElements = elementPool.Where(x => x.gameObject.activeInHierarchy).ToList();

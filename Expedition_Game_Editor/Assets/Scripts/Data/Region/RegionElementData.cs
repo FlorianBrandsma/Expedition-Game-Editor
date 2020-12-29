@@ -65,15 +65,22 @@ public class RegionElementData : RegionData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        RegionDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-        
+
         RegionDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateIndex()
@@ -87,7 +94,10 @@ public class RegionElementData : RegionData, IElementData
 
     public void UpdateSearch() { }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        RegionDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

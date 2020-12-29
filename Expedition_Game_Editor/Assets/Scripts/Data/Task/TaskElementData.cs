@@ -56,7 +56,13 @@ public class TaskElementData : TaskData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        TaskDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {

@@ -132,6 +132,16 @@ public static class OutcomeDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
+    public static void AddData(OutcomeElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.outcomeList.Count > 0 ? (Fixtures.outcomeList[Fixtures.outcomeList.Count - 1].Id + 1) : 1;
+            Fixtures.outcomeList.Add(((OutcomeData)elementData).Clone());
+        }
+        else { }
+    }
+
     public static void UpdateData(OutcomeElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.outcomeList.Where(x => x.Id == elementData.Id).FirstOrDefault();

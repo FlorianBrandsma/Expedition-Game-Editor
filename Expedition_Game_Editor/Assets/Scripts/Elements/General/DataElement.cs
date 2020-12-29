@@ -46,51 +46,49 @@ public class DataElement : MonoBehaviour
             displayParent.GetComponent<IDisplay>().DataController = Data.dataController;
     }
 
-    public void SetResult(IElementData resultData)
+    public void SetSearchResult(DataRequest dataRequest, IElementData resultElementData)
     {
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().ClearDisplay();
 
         var searchElementData = ElementData;
 
-        if (searchElementData.Id == 0 && resultData.Id == 0) return;
-
-        //When adding a new element by searching, should it overwrite the original
-        //and insert a new default element, or return a new element? 
-        //In case of a new element, the segment can decide what to do with it
+        if (searchElementData.Id == 0 && resultElementData.Id == 0) return;
 
         //Element belongs to a list if display manager is not null.
         //If the id is also zero, a new element should be added to the list.
         //Clearer solution would be to include an "add/replace" option.
         if (DisplayManager != null && searchElementData.Id == 0)
-        {
             searchElementData = ElementData.Clone();
-        }
+
+        Data.dataController.SetData(searchElementData, resultElementData);
         
-        //What happens when auto update is true? Or when selecting a result which
-        //remove the selected row?
-        
-        Data.dataController.SetData(searchElementData, resultData);
-        
-        if(Data.dataController.SearchProperties != null)
+        if (Data.dataController.SearchProperties != null && Data.dataController.SearchProperties.autoUpdate)
         {
-            if (Data.dataController.SearchProperties.autoUpdate)
-            {
-                if(resultData.Id > 0)
-                {
-                    searchElementData.UpdateSearch();
-
-                } else {
-
-                    Debug.Log("Automatically delete " + searchElementData.DataType + "" + searchElementData.Id);
-                }
-            }  
+            dataRequest.requestType = Enums.RequestType.Execute;
+            ApplyChanges(dataRequest, searchElementData, resultElementData);
         }
 
         //Apply combined search and result data
-        segmentController.GetComponent<ISegment>().SetSearchResult(searchElementData, resultData);
+        segmentController.GetComponent<ISegment>().SetSearchResult(searchElementData, resultElementData);
     }
 
+    private static void ApplyChanges(DataRequest dataRequest, IElementData searchElementData, IElementData resultElementData)
+    {
+        if (resultElementData.Id > 0)
+        {
+            if (searchElementData.ExecuteType == Enums.ExecuteType.Add)
+                searchElementData.Add(dataRequest);
+
+            if (searchElementData.ExecuteType == Enums.ExecuteType.Update)
+                searchElementData.Update(dataRequest);
+
+        } else {
+
+            searchElementData.Remove(dataRequest);
+        }
+    }
+    
     public void CancelDataSelection()
     {
         if (ElementData == null) return;

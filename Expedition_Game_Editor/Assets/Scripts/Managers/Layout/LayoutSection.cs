@@ -1,10 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 public class LayoutSection : MonoBehaviour
 {
@@ -58,7 +52,7 @@ public class LayoutSection : MonoBehaviour
 
     public void InitializeSection(EditorForm editorForm)
     {
-        this.EditorForm = editorForm;
+        EditorForm = editorForm;
 
         if (buttonActionManager != null)
             buttonActionManager.InitializeButtons(this);
@@ -172,19 +166,8 @@ public class LayoutSection : MonoBehaviour
                 x.DataElement.UpdateElement();
             }
         });
-
-        if (dataEditor.EditData.ExecuteType == Enums.ExecuteType.Update)
-        {
-            ResetExecutionType();
-
-            SetActionButtons();
-
-        } else {
-            
-            ResetExecutionType();
-
-            RenderManager.PreviousPath();
-        }
+        
+        dataEditor.FinalizeChanges();
     }
 
     private void ResetExecutionType()

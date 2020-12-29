@@ -15,7 +15,7 @@ public static class ChapterSaveDataManager
         GetChapterSaveData(searchParameters);
 
         if (chapterSaveDataList.Count == 0) return new List<IElementData>();
-
+        
         GetChapterData();
 
         var list = (from chapterSaveData    in chapterSaveDataList
@@ -36,8 +36,8 @@ public static class ChapterSaveDataManager
                         PublicNotes = chapterData.PublicNotes,
                         PrivateNotes = chapterData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
-
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();

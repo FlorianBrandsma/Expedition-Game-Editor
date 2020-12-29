@@ -5934,12 +5934,11 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 3
-  addProperty: 0
+  addProperty: 3
   uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -13300,7 +13299,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -21208,7 +21206,6 @@ GameObject:
   - component: {fileID: 527584522}
   - component: {fileID: 527584520}
   - component: {fileID: 527584521}
-  - component: {fileID: 527584523}
   m_Layer: 5
   m_Name: TerrainHeader (headerField-segment)
   m_TagString: Untagged
@@ -21271,23 +21268,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &527584523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527584519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a028ddc78f8e00b4b8a74b85a4c7c493, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchProperties:
-    dataType: 3
-    elementType: 2
-    iconType: 2
-    autoUpdate: 0
 --- !u!1 &527989000
 GameObject:
   m_ObjectHideFlags: 0
@@ -22003,12 +21983,11 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 3
-  addProperty: 0
+  addProperty: 3
   uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -22424,7 +22403,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -26367,7 +26345,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -27416,7 +27393,6 @@ MonoBehaviour:
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -30366,7 +30342,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 1
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -30791,12 +30766,11 @@ MonoBehaviour:
   listManager: {fileID: 1456563036}
   selectionType: 1
   selectionProperty: 5
-  addProperty: 0
+  addProperty: 1
   uniqueSelection: 0
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -31193,7 +31167,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -31332,7 +31305,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -31884,7 +31856,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 1
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -31908,7 +31879,7 @@ MonoBehaviour:
     dataType: 10
     elementType: 0
     iconType: 2
-    autoUpdate: 0
+    autoUpdate: 1
 --- !u!114 &795438775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32040,7 +32011,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -33865,7 +33835,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -38912,7 +38881,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 0}
   horizontal: 0
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 0
   enableNumbers: 0
@@ -40174,7 +40142,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -41053,7 +41020,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -41748,7 +41714,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -46049,7 +46014,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -48164,7 +48128,6 @@ MonoBehaviour:
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -54003,7 +53966,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -55394,12 +55356,11 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 4
-  addProperty: 0
+  addProperty: 3
   uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -56525,7 +56486,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -58764,7 +58724,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 0
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 0
   enableNumbers: 0
@@ -58872,12 +58831,11 @@ MonoBehaviour:
   listManager: {fileID: 2092735544}
   selectionType: 1
   selectionProperty: 5
-  addProperty: 0
+  addProperty: 1
   uniqueSelection: 0
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -62431,12 +62389,11 @@ MonoBehaviour:
   listManager: {fileID: 741163967}
   selectionType: 1
   selectionProperty: 5
-  addProperty: 0
+  addProperty: 1
   uniqueSelection: 0
   elementSize: {x: 175, y: 50}
   horizontal: 1
   vertical: 0
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -62609,7 +62566,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -62900,7 +62856,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -64755,7 +64710,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -75554,12 +75508,11 @@ MonoBehaviour:
   listManager: {fileID: 1717512640}
   selectionType: 2
   selectionProperty: 4
-  addProperty: 0
+  addProperty: 4
   uniqueSelection: 0
   elementSize: {x: 0, y: 40}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -76466,12 +76419,11 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 3
-  addProperty: 0
+  addProperty: 3
   uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -78260,7 +78212,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -79774,12 +79725,11 @@ MonoBehaviour:
   listManager: {fileID: 172592721}
   selectionType: 1
   selectionProperty: 3
-  addProperty: 0
+  addProperty: 3
   uniqueSelection: 0
   elementSize: {x: 0, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -84622,7 +84572,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0
@@ -85747,7 +85696,6 @@ MonoBehaviour:
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 1
@@ -86986,7 +86934,6 @@ MonoBehaviour:
   elementSize: {x: 50, y: 50}
   horizontal: 0
   vertical: 1
-  enableAdding: 0
   enableAutoSave: 0
   enableSliders: 1
   enableNumbers: 0

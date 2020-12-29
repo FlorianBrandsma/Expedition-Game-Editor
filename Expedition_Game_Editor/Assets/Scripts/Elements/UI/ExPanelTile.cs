@@ -13,10 +13,15 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     public RectTransform content;
     public Image background;
 
+    private int id;
     private string header;
     private string iconPath;
+    private Texture iconTexture;
 
     private PanelTileProperties properties;
+
+    private RectTransform IdRectTransform       { get { return idText.GetComponent<RectTransform>(); } }
+    private RectTransform HeaderRectTransform   { get { return headerText.GetComponent<RectTransform>(); } }
 
     public EditorElement EditorElement  { get { return GetComponent<EditorElement>(); } }
     private EditorElement ElementChild  { get { return EditorElement.child; } }
@@ -28,28 +33,8 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     public Transform Transform              { get { return GetComponent<Transform>(); } }
     public Enums.ElementType ElementType    { get { return elementType; } }
-    public int PoolId                           { get; set; }
+    public int PoolId                       { get; set; }
     public bool IsActive                    { get { return gameObject.activeInHierarchy; } }
-
-    private Texture IconTexture
-    {
-        get { return icon.texture; }
-        set
-        {
-            InitializeIcon();
-            icon.texture = value;
-        }
-    }
-
-    private Data ChildButtonData
-    {
-        get { return ElementChild.DataElement.Data; }
-        set
-        {
-            InitializeEdit();
-            ElementChild.DataElement.Data = value;
-        }
-    }
 
     public IPoolable Instantiate()
     {
@@ -92,6 +77,72 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
         content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width, content.offsetMax.y);
     }
 
+    private void SetId(bool enable)
+    {
+        if (idText == null) return;
+
+        idText.text = id.ToString();
+        
+        idText.gameObject.SetActive(enable);
+    }
+
+    private void SetHeader(bool enable)
+    {
+        if (headerText == null) return;
+
+        if(enable)
+        {
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, IdRectTransform.rect.height);
+
+            headerText.alignment = TextAnchor.UpperLeft;
+
+        } else {
+
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, 0);
+
+            headerText.alignment = TextAnchor.MiddleCenter;
+
+            header = "Add new";
+        }
+
+        headerText.text = header;
+    }
+
+    private void SetIcon(bool enable)
+    {
+        if (iconParent == null) return;
+
+        if(enable)
+        {
+            icon.texture = Resources.Load<Texture2D>(iconPath);
+
+            content.offsetMin = new Vector2(iconParent.rect.width + 5, content.offsetMin.y);
+
+        } else {
+
+            content.offsetMin = new Vector2(10, content.offsetMin.y);
+        }
+
+        iconParent.gameObject.SetActive(enable);
+    }
+
+
+    private void SetChild(bool enable)
+    {
+        if (ElementChild == null) return;
+
+        if(enable)
+        {
+            content.offsetMax = new Vector2(-ElementChild.GetComponent<RectTransform>().rect.width - 5, content.offsetMax.y);
+
+        } else {
+
+            content.offsetMax = new Vector2(-10, content.offsetMax.y);
+        }
+
+        ElementChild.gameObject.SetActive(enable);
+    }
+
     public void UpdateElement()
     {
         SetElement();
@@ -99,6 +150,11 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
+        id = EditorElement.DataElement.Id;
+
+        if (ElementChild != null)
+            ElementChild.DataElement.Id = EditorElement.DataElement.Id;
+
         switch (EditorElement.DataElement.Data.dataController.DataType)
         {
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
@@ -108,69 +164,52 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
+
+        SetId(id != 0);
+        SetHeader(id != 0);
+        SetIcon(id != 0 && iconPath != null);
+
+        SetChild(properties.childProperty != SelectionManager.Property.None && EditorElement.DataElement.Id != 0);
     }
 
     private void SetWorldInteractableElement()
     {
         var elementData = (WorldInteractableElementData)EditorElement.DataElement.ElementData;
 
-        idText.text = elementData.Id.ToString();
-        headerText.text = elementData.InteractableName;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+        header = elementData.InteractableName;
+        iconPath = elementData.ModelIconPath;
     }
 
     private void SetWorldObjectElement()
     {
         var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
 
-        idText.text = elementData.Id.ToString();
-        headerText.text = elementData.ModelName;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+        header = elementData.ModelName;
+        iconPath = elementData.ModelIconPath;
     }
 
     private void SetSceneActorElement()
     {
         var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
 
-        idText.text = elementData.Id.ToString();
-        headerText.text = elementData.InteractableName;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+        header = elementData.InteractableName;
+        iconPath = elementData.ModelIconPath;
     }
 
     private void SetScenePropElement()
     {
         var elementData = (ScenePropElementData)EditorElement.DataElement.ElementData;
 
-        idText.text = elementData.Id.ToString();
-        headerText.text = elementData.ModelName;
-
-        if (properties.icon)
-            IconTexture = Resources.Load<Texture2D>(elementData.ModelIconPath);
+        header = elementData.ModelName;
+        iconPath = elementData.ModelIconPath;
     }
 
     public void CloseElement()
     {
-        content.offsetMin = new Vector2(5, content.offsetMin.y);
-        content.offsetMax = new Vector2(-5, content.offsetMax.y);
-
-        headerText.text = string.Empty;
+        id = 0;
+        header = null;
         idText.text = string.Empty;
-
-        if (properties.icon)
-            iconParent.gameObject.SetActive(false);
-
-        if (properties.childProperty != SelectionManager.Property.None)
-            ElementChild.gameObject.SetActive(false);
     }
 
-    public void ClosePoolable()
-    {
-        //gameObject.SetActive(false);
-    }
+    public void ClosePoolable() { }
 }

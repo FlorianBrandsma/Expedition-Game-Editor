@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class RegionSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
     
@@ -15,10 +17,17 @@ public class RegionSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Region);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
-        searchParameters.phaseId = new List<int>() { 0 };
-
+        InitializeSearchParameters(searchProperties);
+        
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.phaseId = new List<int>() { 0 };
     }
 
     public void InitializeSegment()

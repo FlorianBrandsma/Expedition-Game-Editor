@@ -30,16 +30,17 @@ public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
         SegmentController.DataController.GetData(searchProperties);
 
         var worldInteractableList = SegmentController.DataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
-        ChapterEditor.worldInteractableElementDataList = worldInteractableList;
+        ChapterEditor.worldInteractableElementDataList = worldInteractableList.Where(x => x.Id != 0).ToList();
     }
 
     private void InitializeSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
+        
+        searchParameters.type       = new List<int>() { (int)Enums.InteractableType.Controllable };
+        searchParameters.chapterId  = new List<int>() { ChapterEditor.Id };
 
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Controllable };
-        searchParameters.chapterId = new List<int>() { ChapterEditor.Id };
     }
 
     public void InitializeSegment() { }

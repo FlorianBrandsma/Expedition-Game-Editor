@@ -45,8 +45,6 @@ public class ModelDataController : MonoBehaviour, IDataController
     {
         var searchModelElementData = (ModelElementData)searchElementData;
 
-        searchModelElementData.DataElement.Id = resultElementData.Id;
-
         switch (resultElementData.DataType)
         {
             case Enums.DataType.Model:

@@ -12,22 +12,26 @@ public static class ChapterInteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<ChapterInteractableElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterInteractable>().First();
         
         GetChapterInteractableData(searchParameters);
-        
-        if (chapterInteractableDataList.Count > 0)
-        {
-            GetInteractableData();
-            GetModelData();
-            GetIconData();
 
-            list = (from chapterInteractableData    in chapterInteractableDataList
-                    join interactableData           in interactableDataList     on chapterInteractableData.InteractableId   equals interactableData.Id
-                    join modelData                  in modelDataList            on interactableData.ModelId                 equals modelData.Id
-                    join iconData                   in iconDataList             on modelData.IconId                         equals iconData.Id
+        if (searchParameters.includeAddElement)
+            chapterInteractableDataList.Add(DefaultData(searchParameters));
+
+        if (chapterInteractableDataList.Count == 0) return new List<IElementData>();
+        
+        GetInteractableData();
+        GetModelData();
+        GetIconData();
+
+        var list = (from chapterInteractableData in chapterInteractableDataList
+
+                    join leftJoin in (from interactableData in interactableDataList
+                                      join modelData        in modelDataList    on interactableData.ModelId equals modelData.Id
+                                      join iconData         in iconDataList     on modelData.IconId         equals iconData.Id
+                                      select new { interactableData, iconData }) on chapterInteractableData.InteractableId equals leftJoin.interactableData.Id into interactableData
+
                     select new ChapterInteractableElementData()
                     {
                         Id = chapterInteractableData.Id,
@@ -35,26 +39,29 @@ public static class ChapterInteractableDataManager
                         ChapterId = chapterInteractableData.ChapterId,
                         InteractableId = chapterInteractableData.InteractableId,
 
-                        InteractableName = interactableData.Name,
-                        ModelIconPath = iconData.Path
+                        InteractableName = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().interactableData.Name : "",
+                        ModelIconPath = interactableData.FirstOrDefault() != null ? interactableData.FirstOrDefault().iconData.Path : ""
 
-                    }).ToList();
-        }
-
+                    }).OrderBy(x => x.Id).ToList();
+        
         if (searchParameters.includeAddElement)
-            AddDefaultElementData(searchParameters, list);
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void AddDefaultElementData(Search.ChapterInteractable searchParameters, List<ChapterInteractableElementData> list)
+    private static ChapterInteractableBaseData DefaultData(Search.ChapterInteractable searchParameters)
     {
-        list.Insert(0, new ChapterInteractableElementData()
-        {
-            ExecuteType = Enums.ExecuteType.Add
-        });
+        return new ChapterInteractableBaseData();
+    }
+
+    private static void SetDefaultAddValues(List<ChapterInteractableElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetChapterInteractableData(Search.ChapterInteractable searchParameters)
@@ -99,7 +106,7 @@ public static class ChapterInteractableDataManager
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            elementData.Id = Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1;
+            elementData.Id = Fixtures.chapterInteractableList.Count > 0 ? (Fixtures.chapterInteractableList[Fixtures.chapterInteractableList.Count - 1].Id + 1) : 1;
             Fixtures.chapterInteractableList.Add(((ChapterInteractableData)elementData).Clone());
         } else { }
     }

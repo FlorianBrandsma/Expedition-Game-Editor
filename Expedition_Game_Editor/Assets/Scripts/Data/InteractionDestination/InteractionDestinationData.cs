@@ -28,7 +28,7 @@ public class InteractionDestinationData : InteractionDestinationBaseData
     public string LocationName          { get; set; }
     public string InteractableStatus    { get; set; }
 
-    public bool Default                 { get; set; }
+    public bool DefaultInteraction      { get; set; }
 
     public int StartTime                { get; set; }
     public int EndTime                  { get; set; }
@@ -63,7 +63,7 @@ public class InteractionDestinationData : InteractionDestinationBaseData
         LocationName        = originalData.LocationName;
         InteractableStatus  = originalData.InteractableStatus;
 
-        Default             = originalData.Default;
+        DefaultInteraction             = originalData.DefaultInteraction;
 
         StartTime           = originalData.StartTime;
         EndTime             = originalData.EndTime;
@@ -103,7 +103,7 @@ public class InteractionDestinationData : InteractionDestinationBaseData
         data.LocationName           = LocationName;
         data.InteractableStatus     = InteractableStatus;
 
-        data.Default                = Default;
+        data.DefaultInteraction                = DefaultInteraction;
 
         data.StartTime              = StartTime;
         data.EndTime                = EndTime;
@@ -143,7 +143,7 @@ public class InteractionDestinationData : InteractionDestinationBaseData
         elementData.LocationName        = LocationName;
         elementData.InteractableStatus  = InteractableStatus;
 
-        elementData.Default             = Default;
+        elementData.DefaultInteraction             = DefaultInteraction;
 
         elementData.StartTime           = StartTime;
         elementData.EndTime             = EndTime;

@@ -31,15 +31,21 @@ public class TerrainTileElementData : TerrainTileData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        TerrainTileDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {
         if (!Changed) return;
-        
-        TerrainTileDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        TerrainTileDataManager.UpdateSearch(this);
+
+        OriginalData.TileId = TileId;
     }
 
     public void UpdateSearch() { }

@@ -14,9 +14,9 @@ public static class WorldObjectDataManager
         var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
 
         GetWorldObjectData(searchParameters);
-        
-        if (worldObjectDataList.Count == 0) return new List<IElementData>();
 
+        if (worldObjectDataList.Count == 0) return new List<IElementData>();
+        
         GetModelData();
         GetIconData();
 

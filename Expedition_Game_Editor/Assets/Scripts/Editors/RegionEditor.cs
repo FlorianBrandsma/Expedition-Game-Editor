@@ -124,54 +124,99 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        //if (regionData.ChangedName)
-        //    ChangedName();
+        ApplyRegionChanges(dataRequest);
+    }
 
-        //if (regionData.ChangedTileSetId)
-        //    ChangedTileSet();
+    private void ApplyRegionChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddRegion(dataRequest);
+                break;
 
+            case Enums.ExecuteType.Update:
+                UpdateRegion(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveRegion(dataRequest);
+                break;
+        }
+    }
+
+    private void AddRegion(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            regionData.Id = tempData.Id;
+    }
+
+    private void UpdateRegion(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
     }
 
-    private void ChangedName()
+    private void RemoveRegion(DataRequest dataRequest)
     {
-        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
-
-        regions.ForEach(x => x.Name = regionData.Name);
+        EditData.Remove(dataRequest);
     }
 
-    private void ChangedTileSet()
+    public void FinalizeChanges()
     {
-        var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
-        var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
-
-        regions.ForEach(x => x.TileSetId = regionData.TileSetId);
-
-        regions.Add(Fixtures.regionList.Where(x => x.Id == regionData.Id).FirstOrDefault());
-
-        var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.Id).Distinct().ToList().Contains(x.RegionId)).Distinct().ToList();
-        var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.Id).Distinct().ToList().Contains(x.TerrainId)).Distinct().ToList();
-        var firstTile = Fixtures.tileList.Where(x => x.TileSetId == regionData.TileSetId).FirstOrDefault();
-        
-        terrainTiles.ForEach(x => x.TileId = firstTile.Id);
-        
-        //var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
-
-        //Fixtures.worldInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.worldInteractableId).Contains(x.Id));
-        //Fixtures.worldObjectList.RemoveAll(x => regions.Select(y => y.Id).Contains(x.regionId));
-
-        //Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.Id).Contains(x.Id));
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
+        }
     }
+
+    //private void ChangedName()
+    //{
+    //    var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
+    //    var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
+
+    //    regions.ForEach(x => x.Name = regionData.Name);
+    //}
+
+    //private void ChangedTileSet()
+    //{
+    //    var chapterRegions = Fixtures.chapterRegionList.Where(x => x.RegionId == regionData.Id).Distinct().ToList();
+    //    var regions = Fixtures.regionList.Where(x => chapterRegions.Select(y => y.Id).Contains(x.ChapterRegionId)).Distinct().ToList();
+
+    //    regions.ForEach(x => x.TileSetId = regionData.TileSetId);
+
+    //    regions.Add(Fixtures.regionList.Where(x => x.Id == regionData.Id).FirstOrDefault());
+
+    //    var terrains = Fixtures.terrainList.Where(x => regions.Select(y => y.Id).Distinct().ToList().Contains(x.RegionId)).Distinct().ToList();
+    //    var terrainTiles = Fixtures.terrainTileList.Where(x => terrains.Select(y => y.Id).Distinct().ToList().Contains(x.TerrainId)).Distinct().ToList();
+    //    var firstTile = Fixtures.tileList.Where(x => x.TileSetId == regionData.TileSetId).FirstOrDefault();
+
+    //    terrainTiles.ForEach(x => x.TileId = firstTile.Id);
+
+    //    //var interactions = Fixtures.interactionList.Where(x => regions.Select(y => y.Id).Contains(x.regionId)).Distinct().ToList();
+
+    //    //Fixtures.worldInteractableList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.worldInteractableId).Contains(x.Id));
+    //    //Fixtures.worldObjectList.RemoveAll(x => regions.Select(y => y.Id).Contains(x.regionId));
+
+    //    //Fixtures.interactionList.RemoveAll(x => interactions.Where(y => y.objectiveId == 0).Select(y => y.Id).Contains(x.Id));
+    //}
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

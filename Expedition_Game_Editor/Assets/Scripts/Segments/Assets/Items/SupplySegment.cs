@@ -11,11 +11,6 @@ public class SupplySegment : MonoBehaviour, ISegment
     
     public void InitializeDependencies() { }
 
-    public void InitializeSegment()
-    {
-        InitializeData();
-    }
-
     public void InitializeData()
     {
         if (SegmentController.Loaded) return;
@@ -33,6 +28,11 @@ public class SupplySegment : MonoBehaviour, ISegment
 
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
         searchParameters.type = new List<int>() { (int)Enums.ItemType.Supplies };  
+    }
+
+    public void InitializeSegment()
+    {
+        InitializeData();
     }
 
     public void OpenSegment()

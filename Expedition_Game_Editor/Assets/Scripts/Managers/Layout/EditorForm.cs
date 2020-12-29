@@ -1,10 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 public class EditorForm : MonoBehaviour
 {
@@ -29,8 +23,6 @@ public class EditorForm : MonoBehaviour
     public Path previousPath;
 
     public Path activeViewPath = new Path();
-
-    //public ActionManager ActionManager { get { return GetComponent<ActionManager>(); } }
 
     public void InitializeForm()
     {

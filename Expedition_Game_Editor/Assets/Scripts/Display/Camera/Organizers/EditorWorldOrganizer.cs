@@ -329,12 +329,12 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
                                                                                                               grp.First().TaskId,
                                                                                                               grp.First().StartTime,
                                                                                                               grp.First().EndTime,
-                                                                                                              grp.First().Default,
+                                                                                                              grp.First().DefaultInteraction,
                                                                                                               InteractionDestinationList = grp.ToList()
                                                                                                           }).ToList();
 
-        interactionGroup.GroupBy(x => x.TaskId).Select(x => x.Where(y => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, y.StartTime, y.EndTime) || y.Default)
-                                                                         .OrderBy(y => y.Default).First()).ToList()
+        interactionGroup.GroupBy(x => x.TaskId).Select(x => x.Where(y => TimeManager.TimeInFrame(TimeManager.instance.ActiveTime, y.StartTime, y.EndTime) || y.DefaultInteraction)
+                                                                         .OrderBy(y => y.DefaultInteraction).First()).ToList()
                                                                          .ForEach(y => y.InteractionDestinationList.ForEach(z => z.ContainsActiveTime = true));
     }
 

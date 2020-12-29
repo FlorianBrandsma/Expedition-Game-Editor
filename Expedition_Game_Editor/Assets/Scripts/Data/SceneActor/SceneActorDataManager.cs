@@ -12,24 +12,28 @@ public static class SceneActorDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<SceneActorElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.SceneActor>().First();
 
         GetSceneActorData(searchParameters);
 
-        if (sceneActorDataList.Count > 0)// && !searchParameters.includeEmptyElement) return new List<IElementData>();
-        {
-            GetWorldInteractableData();
-            GetInteractableData();
-            GetModelData();
-            GetIconData();
+        if (searchParameters.includeRemoveElement)
+            sceneActorDataList.Add(new SceneActorBaseData());
 
-            list = (from sceneActorData         in sceneActorDataList
-                    join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId   equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.InteractableId equals interactableData.Id
-                    join modelData              in modelDataList                on interactableData.ModelId             equals modelData.Id
-                    join iconData               in iconDataList                 on modelData.IconId                     equals iconData.Id
+        if (sceneActorDataList.Count == 0) return new List<IElementData>();
+        
+        GetWorldInteractableData();
+        GetInteractableData();
+        GetModelData();
+        GetIconData();
+
+        var list = (from sceneActorData in sceneActorDataList
+
+                    join leftJoin in (from worldInteractableData    in worldInteractableDataList
+                                      join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                                      join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
+                                      join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
+                                      select new { worldInteractableData, interactableData, iconData }) on sceneActorData.WorldInteractableId equals leftJoin.worldInteractableData.Id into worldInteractableData
+
                     select new SceneActorElementData()
                     {
                         Id = sceneActorData.Id,
@@ -57,22 +61,18 @@ public static class SceneActorDataManager
                         RotationY = sceneActorData.RotationY,
                         RotationZ = sceneActorData.RotationZ,
 
-                        ModelIconPath = iconData.Path,
-                        InteractableName = interactableData.Name,
+                        ModelIconPath = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().iconData.Path : "",
+                        InteractableName = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().interactableData.Name : "",
 
                         SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
 
                     }).OrderBy(x => x.Id).ToList();
-        }
-
-        if (searchParameters.includeRemoveElement)
-            AddRemoveElementData(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
-    
+
     private static void GetSceneActorData(Search.SceneActor searchParameters)
     {
         sceneActorDataList = new List<SceneActorBaseData>();
@@ -118,12 +118,7 @@ public static class SceneActorDataManager
 
         iconDataList = DataManager.GetIconData(searchParameters);
     }
-
-    private static void AddRemoveElementData(List<SceneActorElementData> list)
-    {
-        list.Insert(0, new SceneActorElementData());
-    }
-
+    
     public static void UpdateData(SceneActorElementData elementData, DataRequest dataRequest)
     {
         var data = Fixtures.sceneActorList.Where(x => x.Id == elementData.Id).FirstOrDefault();

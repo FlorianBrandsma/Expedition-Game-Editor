@@ -7,6 +7,8 @@ public class TaskBaseData
     public int WorldInteractableId  { get; set; }
     public int ObjectiveId          { get; set; }
 
+    public bool Default             { get; set; }
+
     public int Index                { get; set; }
 
     public string Name              { get; set; }
@@ -20,6 +22,8 @@ public class TaskBaseData
     public virtual void GetOriginalValues(TaskData originalData)
     {
         Id                  = originalData.Id;
+
+        Default             = originalData.Default;
 
         WorldInteractableId = originalData.WorldInteractableId;
         ObjectiveId         = originalData.ObjectiveId;
@@ -38,6 +42,8 @@ public class TaskBaseData
     public virtual void Clone(TaskData data)
     {
         data.Id                     = Id;
+
+        data.Default                = Default;
 
         data.WorldInteractableId    = WorldInteractableId;
         data.ObjectiveId            = ObjectiveId;

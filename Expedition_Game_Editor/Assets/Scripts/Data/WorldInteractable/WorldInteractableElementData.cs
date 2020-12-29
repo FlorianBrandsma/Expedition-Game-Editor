@@ -56,16 +56,14 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
 
     public void UpdateSearch()
     {
-        if (!Changed) return;
-        
-        WorldInteractableDataManager.UpdateSearch(this);
+        //WorldInteractableDataManager.UpdateSearch(this);
 
-        OriginalData.InteractableId = InteractableId;
+        //OriginalData.InteractableId = InteractableId;
 
-        OriginalData.InteractableName = InteractableName;
+        //OriginalData.InteractableName = InteractableName;
 
-        OriginalData.ModelPath = ModelPath;
-        OriginalData.ModelIconPath = ModelIconPath;
+        //OriginalData.ModelPath = ModelPath;
+        //OriginalData.ModelIconPath = ModelIconPath;
     }
 
     public void Remove(DataRequest dataRequest)
@@ -95,6 +93,8 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     public new IElementData Clone()
     {
         var data = new WorldInteractableElementData();
+
+        data.ExecuteType = ExecuteType;
 
         data.DataElement = DataElement;
 

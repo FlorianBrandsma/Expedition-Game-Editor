@@ -62,10 +62,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         if (childProperty == SelectionManager.Property.None) return;
         
-        ElementChild.DataElement.Data = EditorElement.DataElement.Data;
-        ElementChild.DataElement.Id = EditorElement.DataElement.Id;
+        ElementChild.DataElement.Data   = EditorElement.DataElement.Data;
+        ElementChild.DataElement.Id     = EditorElement.DataElement.Id;
 
-        ElementChild.DataElement.Path = EditorElement.DataElement.Path;
+        ElementChild.DataElement.Path   = EditorElement.DataElement.Path;
 
         ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, childProperty, SelectionManager.Property.None, ElementChild.uniqueSelection);     
     }
@@ -245,7 +245,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         SetId(id != 0);
         SetHeader(id != 0);
         SetDescription(description != null);
-        SetIcon(iconPath != null);
+        SetIcon(id != 0 && iconPath != null);
         SetInfoIcon(infoIconPath != null);
 
         SetChild(childProperty != SelectionManager.Property.None && EditorElement.DataElement.Id != 0);

@@ -236,17 +236,68 @@ public class InteractableEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyInteractableChanges(dataRequest);
+    }
+
+    private void ApplyInteractableChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddInteractable(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateInteractable(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveInteractable(dataRequest);
+                break;
+        }
+    }
+
+    private void AddInteractable(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            interactableData.Id = tempData.Id;
+    }
+
+    private void UpdateInteractable(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
+    private void RemoveInteractable(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
+    }
 
-        UpdateEditor();
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
+        }
     }
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
 
         Loaded = false;
     }

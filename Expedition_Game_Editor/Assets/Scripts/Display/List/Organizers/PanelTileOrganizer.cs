@@ -107,6 +107,9 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         var elementCount = DataController.Data.dataList.Count;
 
+        if (elementCount == 0)
+            return Vector2.zero;
+
         var listWidth  = GetListWidth();
         var listHeight = GetListHeight();
 

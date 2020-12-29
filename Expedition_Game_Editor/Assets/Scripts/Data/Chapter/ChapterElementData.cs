@@ -65,7 +65,7 @@ public class ChapterElementData : ChapterData, IElementData
         
         ChapterDataManager.UpdateData(this, dataRequest);
 
-        if(dataRequest.requestType == Enums.RequestType.Execute)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
             SetOriginalValues();
     }
 

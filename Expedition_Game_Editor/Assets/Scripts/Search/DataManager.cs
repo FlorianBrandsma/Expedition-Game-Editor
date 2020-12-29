@@ -328,8 +328,9 @@ static public class DataManager
 
         foreach (TileBaseData tile in Fixtures.tileList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(tile.Id)) continue;
-
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(tile.Id))                  continue;
+            if (searchParameters.tileSetId.Count    > 0 && !searchParameters.tileSetId.Contains(tile.TileSetId))    continue;
+            
             dataList.Add(tile);
         }
 

@@ -30,7 +30,7 @@ public static class ObjectiveDataManager
                         PublicNotes = objectiveData.PublicNotes,
                         PrivateNotes = objectiveData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
 

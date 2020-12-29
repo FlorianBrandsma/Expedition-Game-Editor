@@ -11,20 +11,27 @@ public static class InteractableDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<InteractableElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
         
         GetInteractableData(searchParameters);
 
-        if (interactableDataList.Count > 0)
-        {
-            GetModelData();
-            GetIconData();
-            
-            list = (from interactableData   in interactableDataList
-                    join modelData          in modelDataList    on interactableData.ModelId equals modelData.Id
-                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
+        if (searchParameters.includeAddElement)
+            interactableDataList.Add(DefaultData(searchParameters));
+
+        if (searchParameters.includeRemoveElement)
+            interactableDataList.Add(new InteractableBaseData());
+
+        if (interactableDataList.Count == 0) return new List<IElementData>();
+        
+        GetModelData();
+        GetIconData();
+
+        var list = (from interactableData   in interactableDataList
+
+                    join leftJoin in (from modelData    in modelDataList
+                                      join iconData     in iconDataList on modelData.IconId equals iconData.Id
+                                      select new { modelData, iconData }) on interactableData.ModelId equals leftJoin.modelData.Id into modelData
+                                      
                     select new InteractableElementData()
                     {
                         Id = interactableData.Id,
@@ -46,22 +53,39 @@ public static class InteractableDataManager
                         Speed = interactableData.Speed,
                         Stamina = interactableData.Stamina,
                         
-                        ModelPath = modelData.Path,
-                        ModelIconPath = iconData.Path,
+                        ModelPath = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Path : "",
+                        ModelIconPath = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().iconData.Path : "",
 
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth
+                        Height = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Height : 0,
+                        Width = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Width : 0,
+                        Depth = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Depth : 0
 
-                    }).OrderBy(x => x.Index).ToList();
-        }
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
-        if (searchParameters.includeRemoveElement)
-            AddRemoveElementData(list);
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    private static InteractableBaseData DefaultData(Search.Interactable searchParameters)
+    {
+        return new InteractableBaseData()
+        {
+            Type = searchParameters.type.First(),
+            ModelId = 1
+        };
+    }
+
+    private static void SetDefaultAddValues(List<InteractableElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetInteractableData(Search.Interactable searchParameters)
@@ -94,9 +118,14 @@ public static class InteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    private static void AddRemoveElementData(List<InteractableElementData> list)
+    public static void AddData(InteractableElementData elementData, DataRequest dataRequest)
     {
-        list.Insert(0, new InteractableElementData());
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.interactableList.Count > 0 ? (Fixtures.interactableList[Fixtures.interactableList.Count - 1].Id + 1) : 1;
+            Fixtures.interactableList.Add(((InteractableData)elementData).Clone());
+        }
+        else { }
     }
 
     public static void UpdateData(InteractableElementData elementData, DataRequest dataRequest)
@@ -172,5 +201,14 @@ public static class InteractableDataManager
         var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+    }
+
+    public static void RemoveData(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.interactableList.RemoveAll(x => x.Id == elementData.Id);
+        }
+        else { }
     }
 }

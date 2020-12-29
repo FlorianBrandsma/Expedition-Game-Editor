@@ -387,6 +387,7 @@ public class Search
     public class Region
     {
         public bool includeAddElement;
+        public bool includeRemoveElement;
 
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();

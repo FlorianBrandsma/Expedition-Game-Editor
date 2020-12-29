@@ -8,15 +8,16 @@ public static class ChapterDataManager
 
     public static List<IElementData> GetData(SearchProperties searchProperties)
     {
-        var list = new List<ChapterElementData>();
-
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
         GetChapterData(searchParameters);
 
-        if (chapterDataList.Count > 0)
-        {
-            list = (from chapterData in chapterDataList
+        if (searchParameters.includeAddElement)
+            chapterDataList.Add(DefaultData(searchParameters));
+
+        if (chapterDataList.Count == 0) return new List<IElementData>();
+        
+        var list = (from chapterData in chapterDataList
                     select new ChapterElementData()
                     {
                         Id = chapterData.Id,
@@ -29,25 +30,28 @@ public static class ChapterDataManager
                         PublicNotes = chapterData.PublicNotes,
                         PrivateNotes = chapterData.PrivateNotes
 
-                    }).OrderBy(x => x.Index).ToList();
-        }
+                    }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
         if (searchParameters.includeAddElement)
-            AddDefaultElementData(searchParameters, list);
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
         
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void AddDefaultElementData(Search.Chapter searchParameters, List<ChapterElementData> list)
+    private static ChapterBaseData DefaultData(Search.Chapter searchParameters)
     {
-        list.Insert(0, new ChapterElementData()
-        {
-            ExecuteType = Enums.ExecuteType.Add,
+        return new ChapterBaseData();
+    }
 
-            Index = list.Count
-        });
+    private static void SetDefaultAddValues(List<ChapterElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetChapterData(Search.Chapter searchParameters)

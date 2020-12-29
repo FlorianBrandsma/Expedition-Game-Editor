@@ -75,7 +75,7 @@ public class SegmentController : MonoBehaviour
     public void InitializeSegment(EditorController editorController)
     {
         //Necessary for shared segments
-        this.EditorController = editorController;
+        EditorController = editorController;
         
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();

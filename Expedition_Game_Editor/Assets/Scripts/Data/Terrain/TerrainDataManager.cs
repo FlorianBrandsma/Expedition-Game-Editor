@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +19,7 @@ public static class TerrainDataManager
         GetTerrainData(searchParameters);
 
         if (terrainDataList.Count == 0) return new List<IElementData>();
-
+        
         GetRegionData();
         GetTileSetData();
         GetTileData();
@@ -100,6 +99,16 @@ public static class TerrainDataManager
         searchParameters.id = terrainDataList.Select(x => x.IconId).Distinct().ToList();
 
         iconDataList = DataManager.GetIconData(searchParameters);
+    }
+
+    public static void AddData(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.terrainList.Count > 0 ? (Fixtures.terrainList[Fixtures.terrainList.Count - 1].Id + 1) : 1;
+            Fixtures.terrainList.Add(((TerrainData)elementData).Clone());
+        }
+        else { }
     }
 
     public static void UpdateData(TerrainElementData elementData, DataRequest dataRequest)

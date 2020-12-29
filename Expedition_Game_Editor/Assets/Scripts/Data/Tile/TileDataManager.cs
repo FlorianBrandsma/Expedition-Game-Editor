@@ -13,16 +13,16 @@ public static class TileDataManager
         GetTileData(searchParameters);
 
         if (tileDataList.Count == 0) return new List<IElementData>();
-
+        
         var list = (from tileData in tileDataList
-
                     select new TileElementData()
                     {
                         Id = tileData.Id,
 
                         Icon = tileData.IconPath
-                        
+
                     }).OrderBy(x => x.Id).ToList();
+        
 
         list.ForEach(x => x.SetOriginalValues());
 

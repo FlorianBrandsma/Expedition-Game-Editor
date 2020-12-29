@@ -46,20 +46,30 @@ public class AtmosphereElementData : AtmosphereData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        AtmosphereDataManager.AddData(this, dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed)
-        
+        if (!Changed) return;
+
         AtmosphereDataManager.UpdateData(this, dataRequest);
 
-        SetOriginalValues();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            SetOriginalValues();
     }
 
     public void UpdateSearch() { }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        AtmosphereDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

@@ -25,6 +25,7 @@ public class ButtonActionManager : MonoBehaviour
     {
         if (applyButton != null)
         {
+            Debug.Log(executionType);
             switch(executionType)
             {
                 case Enums.ExecuteType.Add:

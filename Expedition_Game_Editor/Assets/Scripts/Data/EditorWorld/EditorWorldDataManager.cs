@@ -45,7 +45,7 @@ public static class EditorWorldDataManager
         GetRegionData(searchParameters);
 
         if (regionDataList.Count == 0) return new List<IElementData>();
-
+        
         GetTileSetData();
         GetTerrainData();
         GetAtmosphereData();
@@ -76,377 +76,377 @@ public static class EditorWorldDataManager
         GetQuestData();
 
         var list = (
-            from regionData     in regionDataList
-            join tileSetData    in tileSetDataList on regionData.TileSetId equals tileSetData.Id
-            select new EditorWorldElementData
+        from regionData     in regionDataList
+        join tileSetData    in tileSetDataList on regionData.TileSetId equals tileSetData.Id
+        select new EditorWorldElementData
+        {
+            Id = regionData.Id,
+
+            RegionType = regionType,
+            RegionSize = regionData.RegionSize,
+            TerrainSize = regionData.TerrainSize,
+
+            TileSetName = tileSetData.Name,
+            TileSize = tileSetData.TileSize,
+
+            TerrainDataList = (
+            from terrainData in terrainDataList
+            select new TerrainElementData()
             {
-                Id = regionData.Id,
+                Id = terrainData.Id,
+                Index = terrainData.Index,
 
-                RegionType = regionType,
-                RegionSize = regionData.RegionSize,
-                TerrainSize = regionData.TerrainSize,
+                Name = terrainData.Name,
 
-                TileSetName = tileSetData.Name,
-                TileSize = tileSetData.TileSize,
+                GridElement = TerrainGridElement(terrainData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize),
 
-                TerrainDataList = (
-                from terrainData in terrainDataList
-                select new TerrainElementData()
+                AtmosphereDataList = (
+                from atmosphereData in atmosphereDataList
+                where atmosphereData.TerrainId == terrainData.Id
+                select new AtmosphereElementData()
                 {
-                    Id = terrainData.Id,
-                    Index = terrainData.Index,
+                    Id = atmosphereData.Id,
 
-                    Name = terrainData.Name,
+                    TerrainId = atmosphereData.TerrainId,
 
-                    GridElement = TerrainGridElement(terrainData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize),
+                    Default = atmosphereData.Default,
 
-                    AtmosphereDataList = (
-                    from atmosphereData in atmosphereDataList
-                    where atmosphereData.TerrainId == terrainData.Id
-                    select new AtmosphereElementData()
-                    {
-                        Id = atmosphereData.Id,
+                    StartTime = atmosphereData.StartTime,
+                    EndTime = atmosphereData.EndTime
 
-                        TerrainId = atmosphereData.TerrainId,
+                }).ToList(),
 
-                        Default = atmosphereData.Default,
+                TerrainTileDataList = (
+                from terrainTileData in terrainTileDataList
+                where terrainTileData.TerrainId == terrainData.Id
+                select new TerrainTileElementData()
+                {
+                    Id = terrainTileData.Id,
+                    Index = terrainTileData.Index,
 
-                        StartTime = atmosphereData.StartTime,
-                        EndTime = atmosphereData.EndTime
+                    TileId = terrainTileData.TileId,
 
-                    }).ToList(),
+                    Active = false,
 
-                    TerrainTileDataList = (
-                    from terrainTileData in terrainTileDataList
-                    where terrainTileData.TerrainId == terrainData.Id
-                    select new TerrainTileElementData()
-                    {
-                        Id = terrainTileData.Id,
-                        Index = terrainTileData.Index,
-
-                        TileId = terrainTileData.TileId,
-
-                        Active = false,
-
-                        GridElement = TileGridElement(terrainData.Index, terrainTileData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize)
-
-                    }).OrderBy(x => x.Index).ToList(),
-
-                    WorldInteractableDataList = regionType != Enums.RegionType.InteractionDestination ? (
-                    from worldInteractableData      in worldInteractableDataList
-                    join interactableData           in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
-                    join modelData                  in modelDataList        on interactableData.ModelId             equals modelData.Id
-                    join iconData                   in iconDataList         on modelData.IconId                     equals iconData.Id
-                    join taskData                   in taskDataList         on worldInteractableData.Id             equals taskData.WorldInteractableId
-                    join interactionData            in interactionDataList  on taskData.Id                          equals interactionData.TaskId
-
-                    from interactionDestinationData in interactionDestinationDataList.Where(x => interactionData.Id == x.InteractionId).Take(1)
-                    where interactionDestinationData.TerrainId == terrainData.Id
-                    select new WorldInteractableElementData()
-                    {
-                        Id = worldInteractableData.Id,
-
-                        Type = worldInteractableData.Type,
-
-                        PhaseId = worldInteractableData.PhaseId,
-                        QuestId = worldInteractableData.QuestId,
-                        ObjectiveId = worldInteractableData.ObjectiveId,
-
-                        ChapterInteractableId = worldInteractableData.ChapterInteractableId,
-                        InteractableId = interactableData.Id,
-
-                        TerrainTileId = interactionDestinationData.TerrainTileId,
-
-                        Default = interactionData.Default,
-                        TaskGroup = taskData.Id,
-
-                        InteractableName = interactableData.Name,
-
-                        PositionX = interactionDestinationData.PositionX,
-                        PositionY = interactionDestinationData.PositionY,
-                        PositionZ = interactionDestinationData.PositionZ,
-
-                        RotationX = interactionDestinationData.RotationX,
-                        RotationY = interactionDestinationData.RotationY,
-                        RotationZ = interactionDestinationData.RotationZ,
-
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth,
-
-                        Scale = interactableData.Scale,
-
-                        Animation = interactionDestinationData.Animation,
-
-                        ModelId = modelData.Id,
-                        ModelPath = modelData.Path,
-
-                        ModelIconPath = iconData.Path,
-
-                        StartTime = interactionData.StartTime,
-                        EndTime = interactionData.EndTime,
-
-                    }).ToList() : new List<WorldInteractableElementData>(),
-
-                    InteractionDestinationDataList = regionType == Enums.RegionType.InteractionDestination ? (
-                    from interactionDestinationData in interactionDestinationDataList
-                    join interactionData            in interactionDataList          on interactionDestinationData.InteractionId equals interactionData.Id
-                    join taskData                   in taskDataList                 on interactionData.TaskId                   equals taskData.Id
-                    join worldInteractableData      in worldInteractableDataList    on taskData.WorldInteractableId             equals worldInteractableData.Id
-                    join interactableData           in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
-                    join modelData                  in modelDataList                on interactableData.ModelId                 equals modelData.Id
-                    join iconData                   in iconDataList                 on modelData.IconId                         equals iconData.Id
-
-                    join leftJoin in (from objectiveData in objectiveDataList
-                                      select new { objectiveData }) on worldInteractableData.ObjectiveId equals leftJoin.objectiveData.Id into objectiveData
-
-                    join leftJoin in (from questData in questDataList
-                                      select new { questData }) on worldInteractableData.QuestId equals leftJoin.questData.Id into questData
-
-                    where interactionDestinationData.TerrainId == terrainData.Id
-                    select new InteractionDestinationElementData()
-                    {
-                        Id = interactionDestinationData.Id,
-
-                        InteractionId = interactionDestinationData.InteractionId,
-
-                        RegionId = interactionDestinationData.RegionId,
-                        TerrainId = interactionDestinationData.TerrainId,
-                        TerrainTileId = interactionDestinationData.TerrainTileId,
-                        
-                        PositionX = interactionDestinationData.PositionX,
-                        PositionY = interactionDestinationData.PositionY,
-                        PositionZ = interactionDestinationData.PositionZ,
-
-                        PositionVariance = interactionDestinationData.PositionVariance,
-
-                        RotationX = interactionDestinationData.RotationX,
-                        RotationY = interactionDestinationData.RotationY,
-                        RotationZ = interactionDestinationData.RotationZ,
-
-                        ChangeRotation = interactionDestinationData.ChangeRotation,
-
-                        Animation = interactionDestinationData.Animation,
-                        Patience = interactionDestinationData.Patience,
-
-                        QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
-                                  questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
-                        ObjectiveId = taskData.ObjectiveId,
-                        WorldInteractableId = taskData.WorldInteractableId,
-                        TaskId = interactionData.TaskId,
-
-                        ModelId = modelData.Id,
-                        ModelPath = modelData.Path,
-
-                        ModelIconPath = iconData.Path,
-
-                        InteractableName = interactableData.Name,
-
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth,
-
-                        Scale = interactableData.Scale,
-
-                        Default = interactionData.Default,
-
-                        StartTime = interactionData.StartTime,
-                        EndTime = interactionData.EndTime
-
-                    }).ToList() : new List<InteractionDestinationElementData>(),
-
-                    WorldObjectDataList = (
-                    from worldObjectData    in worldObjectDataList
-                    join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
-                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
-                    where worldObjectData.TerrainId == terrainData.Id
-                    select new WorldObjectElementData()
-                    {
-                        Id = worldObjectData.Id,
-                        TerrainId = worldObjectData.TerrainId,
-                        TerrainTileId = worldObjectData.TerrainTileId,
-
-                        PositionX = worldObjectData.PositionX,
-                        PositionY = worldObjectData.PositionY,
-                        PositionZ = worldObjectData.PositionZ,
-
-                        RotationX = worldObjectData.RotationX,
-                        RotationY = worldObjectData.RotationY,
-                        RotationZ = worldObjectData.RotationZ,
-
-                        Scale = worldObjectData.Scale,
-
-                        Animation = worldObjectData.Animation,
-
-                        ModelId = modelData.Id,
-                        ModelPath = modelData.Path,
-
-                        ModelName = modelData.Name,
-                        ModelIconPath = iconData.Path,
-
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth
-
-                    }).ToList(),
-
-                    SceneActorDataList = regionType == Enums.RegionType.Scene ? (
-                    from sceneActorData         in sceneActorDataList
-
-                    join sceneData              in sceneDataList                on sceneActorData.SceneId                   equals sceneData.Id
-                    join outcomeData            in outcomeDataList              on sceneData.OutcomeId                      equals outcomeData.Id
-                    join interactionData        in interactionDataList          on outcomeData.InteractionId                equals interactionData.Id
-                    join taskData               in taskDataList                 on interactionData.TaskId                   equals taskData.Id
-
-                    join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId       equals worldInteractableData.Id
-                    join interactableData       in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
-                    join modelData              in modelDataList                on interactableData.ModelId                 equals modelData.Id
-                    join iconData               in iconDataList                 on modelData.IconId                         equals iconData.Id
-
-                    where sceneActorData.TerrainId == terrainData.Id
-                    select new SceneActorElementData()
-                    {
-                        Id = sceneActorData.Id,
-
-                        SceneId = sceneActorData.SceneId,
-                        WorldInteractableId = sceneActorData.WorldInteractableId,
-                        TerrainId = sceneActorData.TerrainId,
-                        TerrainTileId = sceneActorData.TerrainTileId,
-
-                        SpeechMethod = sceneActorData.SpeechMethod,
-                        SpeechText = sceneActorData.SpeechText,
-                        ShowTextBox = sceneActorData.ShowTextBox,
-
-                        ChangePosition = sceneActorData.ChangePosition,
-                        FreezePosition = sceneActorData.FreezePosition,
-
-                        PositionX = sceneActorData.PositionX,
-                        PositionY = sceneActorData.PositionY,
-                        PositionZ = sceneActorData.PositionZ,
-
-                        ChangeRotation = sceneActorData.ChangeRotation,
-                        FaceTarget = sceneActorData.FaceTarget,
-
-                        RotationX = sceneActorData.RotationX,
-                        RotationY = sceneActorData.RotationY,
-                        RotationZ = sceneActorData.RotationZ,
-                        
-                        InteractionId = interactionData.Id,
-                        TaskId = taskData.Id,
-                        ModelId = modelData.Id,
-
-                        ModelPath = modelData.Path,
-                        ModelIconPath = iconData.Path,
-
-                        InteractableName = interactableData.Name,
-
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth,
-
-                        Scale = interactableData.Scale,
-
-                        Default = interactionData.Default,
-
-                        StartTime = interactionData.StartTime,
-                        EndTime = interactionData.EndTime,
-                        
-                        SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
-
-                    }).ToList() : new List<SceneActorElementData>(),
-
-                    ScenePropDataList = regionType == Enums.RegionType.Scene ? (
-                    from scenePropData      in scenePropDataList
-
-                    join sceneData          in sceneDataList        on scenePropData.SceneId        equals sceneData.Id
-                    join outcomeData        in outcomeDataList      on sceneData.OutcomeId          equals outcomeData.Id
-                    join interactionData    in interactionDataList  on outcomeData.InteractionId    equals interactionData.Id
-                    join taskData           in taskDataList         on interactionData.TaskId       equals taskData.Id
-
-                    join modelData          in modelDataList        on scenePropData.ModelId        equals modelData.Id
-                    join iconData           in iconDataList         on modelData.IconId             equals iconData.Id
-
-                    where scenePropData.TerrainId == terrainData.Id
-                    select new ScenePropElementData()
-                    {
-                        Id = scenePropData.Id,
-
-                        SceneId = scenePropData.SceneId,
-                        ModelId = scenePropData.ModelId,
-                        TerrainId = scenePropData.TerrainId,
-                        TerrainTileId = scenePropData.TerrainTileId,
-
-                        PositionX = scenePropData.PositionX,
-                        PositionY = scenePropData.PositionY,
-                        PositionZ = scenePropData.PositionZ,
-
-                        RotationX = scenePropData.RotationX,
-                        RotationY = scenePropData.RotationY,
-                        RotationZ = scenePropData.RotationZ,
-
-                        Scale = scenePropData.Scale,
-
-                        InteractionId = interactionData.Id,
-                        TaskId = taskData.Id,
-
-                        ModelPath = modelData.Path,
-                        ModelIconPath = iconData.Path,
-
-                        ModelName = modelData.Name,
-
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth,
-                        
-                        Default = interactionData.Default,
-
-                        StartTime = interactionData.StartTime,
-                        EndTime = interactionData.EndTime,
-
-                    }).ToList() : new List<ScenePropElementData>()
+                    GridElement = TileGridElement(terrainData.Index, terrainTileData.Index, regionData.RegionSize, regionData.TerrainSize, tileSetData.TileSize)
 
                 }).OrderBy(x => x.Index).ToList(),
 
-                PhaseDataList = (
-                from phaseData      in phaseDataList
-                join chapterData    in chapterDataList on phaseData.ChapterId equals chapterData.Id
+                WorldInteractableDataList = regionType != Enums.RegionType.InteractionDestination ? (
+                from worldInteractableData      in worldInteractableDataList
+                join interactableData           in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                join modelData                  in modelDataList        on interactableData.ModelId             equals modelData.Id
+                join iconData                   in iconDataList         on modelData.IconId                     equals iconData.Id
+                join taskData                   in taskDataList         on worldInteractableData.Id             equals taskData.WorldInteractableId
+                join interactionData            in interactionDataList  on taskData.Id                          equals interactionData.TaskId
 
-                join leftJoin in (from worldInteractableData    in chapterWorldInteractableDataList
-                                  join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
-                                  join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
-                                  join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
-                                  select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
-
-                select new PhaseElementData()
+                from interactionDestinationData in interactionDestinationDataList.Where(x => interactionData.Id == x.InteractionId).Take(1)
+                where interactionDestinationData.TerrainId == terrainData.Id
+                select new WorldInteractableElementData()
                 {
-                    Id = phaseData.Id,
+                    Id = worldInteractableData.Id,
 
-                    DefaultRegionId = phaseData.DefaultRegionId,
+                    Type = worldInteractableData.Type,
 
-                    DefaultPositionX = phaseData.DefaultPositionX,
-                    DefaultPositionY = phaseData.DefaultPositionY,
-                    DefaultPositionZ = phaseData.DefaultPositionZ,
+                    PhaseId = worldInteractableData.PhaseId,
+                    QuestId = worldInteractableData.QuestId,
+                    ObjectiveId = worldInteractableData.ObjectiveId,
 
-                    DefaultRotationX = phaseData.DefaultRotationX,
-                    DefaultRotationY = phaseData.DefaultRotationY,
-                    DefaultRotationZ = phaseData.DefaultRotationZ,
+                    ChapterInteractableId = worldInteractableData.ChapterInteractableId,
+                    InteractableId = interactableData.Id,
 
-                    TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
+                    TerrainTileId = interactionDestinationData.TerrainTileId,
 
-                    ModelId = worldInteractableData.First().modelData.Id,
-                    ModelPath = worldInteractableData.First().modelData.Path,
+                    Default = interactionData.Default,
+                    TaskGroup = taskData.Id,
+
+                    InteractableName = interactableData.Name,
+
+                    PositionX = interactionDestinationData.PositionX,
+                    PositionY = interactionDestinationData.PositionY,
+                    PositionZ = interactionDestinationData.PositionZ,
+
+                    RotationX = interactionDestinationData.RotationX,
+                    RotationY = interactionDestinationData.RotationY,
+                    RotationZ = interactionDestinationData.RotationZ,
+
+                    Height = modelData.Height,
+                    Width = modelData.Width,
+                    Depth = modelData.Depth,
+
+                    Scale = interactableData.Scale,
+
+                    Animation = interactionDestinationData.Animation,
+
+                    ModelId = modelData.Id,
+                    ModelPath = modelData.Path,
+
+                    ModelIconPath = iconData.Path,
+
+                    StartTime = interactionData.StartTime,
+                    EndTime = interactionData.EndTime,
+
+                }).ToList() : new List<WorldInteractableElementData>(),
+
+                InteractionDestinationDataList = regionType == Enums.RegionType.InteractionDestination ? (
+                from interactionDestinationData in interactionDestinationDataList
+                join interactionData            in interactionDataList          on interactionDestinationData.InteractionId equals interactionData.Id
+                join taskData                   in taskDataList                 on interactionData.TaskId                   equals taskData.Id
+                join worldInteractableData      in worldInteractableDataList    on taskData.WorldInteractableId             equals worldInteractableData.Id
+                join interactableData           in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
+                join modelData                  in modelDataList                on interactableData.ModelId                 equals modelData.Id
+                join iconData                   in iconDataList                 on modelData.IconId                         equals iconData.Id
+
+                join leftJoin in (from objectiveData in objectiveDataList
+                                    select new { objectiveData }) on worldInteractableData.ObjectiveId equals leftJoin.objectiveData.Id into objectiveData
+
+                join leftJoin in (from questData in questDataList
+                                    select new { questData }) on worldInteractableData.QuestId equals leftJoin.questData.Id into questData
+
+                where interactionDestinationData.TerrainId == terrainData.Id
+                select new InteractionDestinationElementData()
+                {
+                    Id = interactionDestinationData.Id,
+
+                    InteractionId = interactionDestinationData.InteractionId,
+
+                    RegionId = interactionDestinationData.RegionId,
+                    TerrainId = interactionDestinationData.TerrainId,
+                    TerrainTileId = interactionDestinationData.TerrainTileId,
+                        
+                    PositionX = interactionDestinationData.PositionX,
+                    PositionY = interactionDestinationData.PositionY,
+                    PositionZ = interactionDestinationData.PositionZ,
+
+                    PositionVariance = interactionDestinationData.PositionVariance,
+
+                    RotationX = interactionDestinationData.RotationX,
+                    RotationY = interactionDestinationData.RotationY,
+                    RotationZ = interactionDestinationData.RotationZ,
+
+                    ChangeRotation = interactionDestinationData.ChangeRotation,
+
+                    Animation = interactionDestinationData.Animation,
+                    Patience = interactionDestinationData.Patience,
+
+                    QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
+                                questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+                    ObjectiveId = taskData.ObjectiveId,
+                    WorldInteractableId = taskData.WorldInteractableId,
+                    TaskId = interactionData.TaskId,
+
+                    ModelId = modelData.Id,
+                    ModelPath = modelData.Path,
+
+                    ModelIconPath = iconData.Path,
+
+                    InteractableName = interactableData.Name,
+
+                    Height = modelData.Height,
+                    Width = modelData.Width,
+                    Depth = modelData.Depth,
+
+                    Scale = interactableData.Scale,
+
+                    DefaultInteraction = interactionData.Default,
+
+                    StartTime = interactionData.StartTime,
+                    EndTime = interactionData.EndTime
+
+                }).ToList() : new List<InteractionDestinationElementData>(),
+
+                WorldObjectDataList = (
+                from worldObjectData    in worldObjectDataList
+                join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
+                join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
+                where worldObjectData.TerrainId == terrainData.Id
+                select new WorldObjectElementData()
+                {
+                    Id = worldObjectData.Id,
+                    TerrainId = worldObjectData.TerrainId,
+                    TerrainTileId = worldObjectData.TerrainTileId,
+
+                    PositionX = worldObjectData.PositionX,
+                    PositionY = worldObjectData.PositionY,
+                    PositionZ = worldObjectData.PositionZ,
+
+                    RotationX = worldObjectData.RotationX,
+                    RotationY = worldObjectData.RotationY,
+                    RotationZ = worldObjectData.RotationZ,
+
+                    Scale = worldObjectData.Scale,
+
+                    Animation = worldObjectData.Animation,
+
+                    ModelId = modelData.Id,
+                    ModelPath = modelData.Path,
+
+                    ModelName = modelData.Name,
+                    ModelIconPath = iconData.Path,
+
+                    Height = modelData.Height,
+                    Width = modelData.Width,
+                    Depth = modelData.Depth
+
+                }).ToList(),
+
+                SceneActorDataList = regionType == Enums.RegionType.Scene ? (
+                from sceneActorData         in sceneActorDataList
+
+                join sceneData              in sceneDataList                on sceneActorData.SceneId                   equals sceneData.Id
+                join outcomeData            in outcomeDataList              on sceneData.OutcomeId                      equals outcomeData.Id
+                join interactionData        in interactionDataList          on outcomeData.InteractionId                equals interactionData.Id
+                join taskData               in taskDataList                 on interactionData.TaskId                   equals taskData.Id
+
+                join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId       equals worldInteractableData.Id
+                join interactableData       in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
+                join modelData              in modelDataList                on interactableData.ModelId                 equals modelData.Id
+                join iconData               in iconDataList                 on modelData.IconId                         equals iconData.Id
+
+                where sceneActorData.TerrainId == terrainData.Id
+                select new SceneActorElementData()
+                {
+                    Id = sceneActorData.Id,
+
+                    SceneId = sceneActorData.SceneId,
+                    WorldInteractableId = sceneActorData.WorldInteractableId,
+                    TerrainId = sceneActorData.TerrainId,
+                    TerrainTileId = sceneActorData.TerrainTileId,
+
+                    SpeechMethod = sceneActorData.SpeechMethod,
+                    SpeechText = sceneActorData.SpeechText,
+                    ShowTextBox = sceneActorData.ShowTextBox,
+
+                    ChangePosition = sceneActorData.ChangePosition,
+                    FreezePosition = sceneActorData.FreezePosition,
+
+                    PositionX = sceneActorData.PositionX,
+                    PositionY = sceneActorData.PositionY,
+                    PositionZ = sceneActorData.PositionZ,
+
+                    ChangeRotation = sceneActorData.ChangeRotation,
+                    FaceTarget = sceneActorData.FaceTarget,
+
+                    RotationX = sceneActorData.RotationX,
+                    RotationY = sceneActorData.RotationY,
+                    RotationZ = sceneActorData.RotationZ,
+                        
+                    InteractionId = interactionData.Id,
+                    TaskId = taskData.Id,
+                    ModelId = modelData.Id,
+
+                    ModelPath = modelData.Path,
+                    ModelIconPath = iconData.Path,
+
+                    InteractableName = interactableData.Name,
+
+                    Height = modelData.Height,
+                    Width = modelData.Width,
+                    Depth = modelData.Depth,
+
+                    Scale = interactableData.Scale,
+
+                    Default = interactionData.Default,
+
+                    StartTime = interactionData.StartTime,
+                    EndTime = interactionData.EndTime,
+                        
+                    SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
+
+                }).ToList() : new List<SceneActorElementData>(),
+
+                ScenePropDataList = regionType == Enums.RegionType.Scene ? (
+                from scenePropData      in scenePropDataList
+
+                join sceneData          in sceneDataList        on scenePropData.SceneId        equals sceneData.Id
+                join outcomeData        in outcomeDataList      on sceneData.OutcomeId          equals outcomeData.Id
+                join interactionData    in interactionDataList  on outcomeData.InteractionId    equals interactionData.Id
+                join taskData           in taskDataList         on interactionData.TaskId       equals taskData.Id
+
+                join modelData          in modelDataList        on scenePropData.ModelId        equals modelData.Id
+                join iconData           in iconDataList         on modelData.IconId             equals iconData.Id
+
+                where scenePropData.TerrainId == terrainData.Id
+                select new ScenePropElementData()
+                {
+                    Id = scenePropData.Id,
+
+                    SceneId = scenePropData.SceneId,
+                    ModelId = scenePropData.ModelId,
+                    TerrainId = scenePropData.TerrainId,
+                    TerrainTileId = scenePropData.TerrainTileId,
+
+                    PositionX = scenePropData.PositionX,
+                    PositionY = scenePropData.PositionY,
+                    PositionZ = scenePropData.PositionZ,
+
+                    RotationX = scenePropData.RotationX,
+                    RotationY = scenePropData.RotationY,
+                    RotationZ = scenePropData.RotationZ,
+
+                    Scale = scenePropData.Scale,
+
+                    InteractionId = interactionData.Id,
+                    TaskId = taskData.Id,
+
+                    ModelPath = modelData.Path,
+                    ModelIconPath = iconData.Path,
+
+                    ModelName = modelData.Name,
+
+                    Height = modelData.Height,
+                    Width = modelData.Width,
+                    Depth = modelData.Depth,
+                        
+                    Default = interactionData.Default,
+
+                    StartTime = interactionData.StartTime,
+                    EndTime = interactionData.EndTime,
+
+                }).ToList() : new List<ScenePropElementData>()
+
+            }).OrderBy(x => x.Index).ToList(),
+
+            PhaseDataList = (
+            from phaseData      in phaseDataList
+            join chapterData    in chapterDataList on phaseData.ChapterId equals chapterData.Id
+
+            join leftJoin in (from worldInteractableData    in chapterWorldInteractableDataList
+                                join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                                join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
+                                join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
+                                select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
+
+            select new PhaseElementData()
+            {
+                Id = phaseData.Id,
+
+                DefaultRegionId = phaseData.DefaultRegionId,
+
+                DefaultPositionX = phaseData.DefaultPositionX,
+                DefaultPositionY = phaseData.DefaultPositionY,
+                DefaultPositionZ = phaseData.DefaultPositionZ,
+
+                DefaultRotationX = phaseData.DefaultRotationX,
+                DefaultRotationY = phaseData.DefaultRotationY,
+                DefaultRotationZ = phaseData.DefaultRotationZ,
+
+                TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
+
+                ModelId = worldInteractableData.First().modelData.Id,
+                ModelPath = worldInteractableData.First().modelData.Path,
                     
-                    Height = worldInteractableData.First().modelData.Height,
-                    Width = worldInteractableData.First().modelData.Width,
-                    Depth = worldInteractableData.First().modelData.Depth,
+                Height = worldInteractableData.First().modelData.Height,
+                Width = worldInteractableData.First().modelData.Width,
+                Depth = worldInteractableData.First().modelData.Depth,
 
-                    Scale = worldInteractableData.First().interactableData.Scale,
+                Scale = worldInteractableData.First().interactableData.Scale,
 
-                    DefaultTime = phaseData.DefaultTime
+                DefaultTime = phaseData.DefaultTime
 
-                }).ToList()
+            }).ToList()
 
-            }).ToList();
+        }).ToList();
 
         list.ForEach(x => x.SetOriginalValues());
         

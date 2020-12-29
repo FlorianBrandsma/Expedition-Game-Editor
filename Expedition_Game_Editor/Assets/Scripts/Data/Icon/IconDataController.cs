@@ -42,8 +42,6 @@ public class IconDataController : MonoBehaviour, IDataController
     {
         var searchIconElementData = (IconElementData)searchElementData;
 
-        searchIconElementData.DataElement.Id = resultElementData.Id;
-
         switch (resultElementData.DataType)
         {
             case Enums.DataType.Icon:

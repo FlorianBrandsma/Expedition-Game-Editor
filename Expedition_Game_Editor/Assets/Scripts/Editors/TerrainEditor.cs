@@ -120,18 +120,46 @@ public class TerrainEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyTerrainChanges(dataRequest);
+    }
+
+    private void ApplyTerrainChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Update:
+                UpdateTerrain(dataRequest);
+                break;
+        }
+    }
+
+    private void UpdateTerrain(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+    public void FinalizeChanges()
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+            case Enums.ExecuteType.Remove:
+                RenderManager.PreviousPath();
+                break;
+            case Enums.ExecuteType.Update:
+                UpdateEditor();
+                break;
+        }
     }
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x => x.ClearChanges());
-        
+        ElementDataList.ForEach(x =>
+        {
+            x.ExecuteType = Enums.ExecuteType.Update;
+            x.ClearChanges();
+        });
+
         Loaded = false;
     }
 

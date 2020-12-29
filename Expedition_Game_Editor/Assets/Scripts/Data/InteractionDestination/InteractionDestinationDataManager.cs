@@ -29,7 +29,7 @@ public static class InteractionDestinationDataManager
         GetInteractionDestinationData(searchParameters);
 
         if (interactionDestinationDataList.Count == 0) return new List<IElementData>();
-
+        
         GetInteractionData();
         GetTaskData();
         GetWorldInteractableData();
@@ -76,6 +76,8 @@ public static class InteractionDestinationDataManager
                         TerrainId = interactionDestinationData.TerrainId,
                         TerrainTileId = interactionDestinationData.TerrainTileId,
 
+                        Default = interactionDestinationData.Default,
+
                         PositionX = interactionDestinationData.PositionX,
                         PositionY = interactionDestinationData.PositionY,
                         PositionZ = interactionDestinationData.PositionZ,
@@ -119,13 +121,13 @@ public static class InteractionDestinationDataManager
 
                         InteractableStatus = "Idle, " + interactableData.Name,
                         
-                        Default = interactionData.Default,
+                        DefaultInteraction = interactionData.Default,
 
                         StartTime = interactionData.StartTime,
                         EndTime = interactionData.EndTime
 
                     }).OrderBy(x => x.Id).ToList();
-
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
@@ -246,6 +248,16 @@ public static class InteractionDestinationDataManager
         searchParameters.id = regionDataList.Select(x => x.TileSetId).Distinct().ToList();
 
         tileSetDataList = DataManager.GetTileSetData(searchParameters);
+    }
+
+    public static void AddData(InteractionDestinationElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.interactionDestinationList.Count > 0 ? (Fixtures.interactionDestinationList[Fixtures.interactionDestinationList.Count - 1].Id + 1) : 1;
+            Fixtures.interactionDestinationList.Add(((InteractionDestinationData)elementData).Clone());
+        }
+        else { }
     }
 
     public static void UpdateData(InteractionDestinationElementData elementData, DataRequest dataRequest)
