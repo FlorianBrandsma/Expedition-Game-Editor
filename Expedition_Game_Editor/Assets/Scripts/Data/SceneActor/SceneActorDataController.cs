@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class SceneActorDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class SceneActorDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = SceneActorDataManager.GetData(searchProperties),
+            dataList = SceneActorDataManager.GetData(searchProperties.searchParameters.Cast<Search.SceneActor>().First()),
             searchProperties = this.searchProperties
         };
 
@@ -65,8 +66,6 @@ public class SceneActorDataController : MonoBehaviour, IDataController
                 break;
 
             case Enums.DataType.SceneActor:
-
-                searchSceneActorElementData.DataElement.Id = resultElementData.Id;
 
                 var resultSceneActorElementData = (SceneActorElementData)resultElementData;
 

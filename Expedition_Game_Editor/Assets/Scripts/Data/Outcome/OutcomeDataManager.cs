@@ -13,10 +13,8 @@ public static class OutcomeDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Outcome searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Outcome>().First();
-
         GetOutcomeData(searchParameters);
 
         if (outcomeDataList.Count == 0) return new List<IElementData>();
@@ -69,6 +67,16 @@ public static class OutcomeDataManager
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static OutcomeElementData DefaultData(int interactionId)
+    {
+        return new OutcomeElementData()
+        {
+            InteractionId = interactionId,
+
+            Type = (int)Enums.OutcomeType.Positive
+        };
     }
 
     private static void GetOutcomeData(Search.Outcome searchParameters)
@@ -138,75 +146,98 @@ public static class OutcomeDataManager
         {
             elementData.Id = Fixtures.outcomeList.Count > 0 ? (Fixtures.outcomeList[Fixtures.outcomeList.Count - 1].Id + 1) : 1;
             Fixtures.outcomeList.Add(((OutcomeData)elementData).Clone());
-        }
-        else { }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(OutcomeElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.outcomeList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedCompleteTask)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCompleteTask)
+            {
                 data.CompleteTask = elementData.CompleteTask;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedResetObjective)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedResetObjective)
+            {
                 data.ResetObjective = elementData.ResetObjective;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelScenarioType)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelScenarioType)
+            {
                 data.CancelScenarioType = elementData.CancelScenarioType;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelScenarioOnInteraction)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelScenarioOnInteraction)
+            {
                 data.CancelScenarioOnInteraction = elementData.CancelScenarioOnInteraction;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelScenarioOnInput)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelScenarioOnInput)
+            {
                 data.CancelScenarioOnInput = elementData.CancelScenarioOnInput;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelScenarioOnRange)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelScenarioOnRange)
+            {
                 data.CancelScenarioOnRange = elementData.CancelScenarioOnRange;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelScenarioOnHit)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelScenarioOnHit)
+            {
                 data.CancelScenarioOnHit = elementData.CancelScenarioOnHit;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }    
+    }
+
+    public static void RemoveData(OutcomeElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveSceneData(elementData, dataRequest);
+
+            Fixtures.outcomeList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else { }
+    }
+
+    private static void RemoveSceneData(OutcomeElementData elementData, DataRequest dataRequest)
+    {
+        var sceneSearchParameters = new Search.Scene()
+        {
+            outcomeId = new List<int>() { elementData.Id }
+        };
+
+        var sceneDataList = DataManager.GetSceneData(sceneSearchParameters);
+
+        sceneDataList.ForEach(sceneData =>
+        {
+            var sceneElementData = new SceneElementData()
+            {
+                Id = sceneData.Id
+            };
+
+            sceneElementData.Remove(dataRequest);
+        });
     }
 }

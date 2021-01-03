@@ -8,10 +8,8 @@ public static class ScenePropDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.SceneProp searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.SceneProp>().First();
-
         GetScenePropData(searchParameters);
 
         if (scenePropDataList.Count == 0) return new List<IElementData>();
@@ -85,65 +83,77 @@ public static class ScenePropDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(ScenePropElementData elementData, DataRequest dataRequest)
+    public static void AddData(ScenePropElementData elementData, DataRequest dataRequest)
     {
-        var data = Fixtures.scenePropList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedPositionX)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionX = elementData.PositionX;
-            else { }
-        }
+            elementData.Id = Fixtures.scenePropList.Count > 0 ? (Fixtures.scenePropList[Fixtures.scenePropList.Count - 1].Id + 1) : 1;
+            Fixtures.scenePropList.Add(((ScenePropData)elementData).Clone());
 
-        if (elementData.ChangedPositionY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionY = elementData.PositionY;
-            else { }
-        }
+            elementData.SetOriginalValues();
 
-        if (elementData.ChangedPositionZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionZ = elementData.PositionZ;
-            else { }
-        }
-
-        if (elementData.ChangedRotationX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationX = elementData.RotationX;
-            else { }
-        }
-
-        if (elementData.ChangedRotationY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationY = elementData.RotationY;
-            else { }
-        }
-
-        if (elementData.ChangedRotationZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationZ = elementData.RotationZ;
-            else { }
-        }
-
-        if (elementData.ChangedScale)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.Scale = elementData.Scale;
-            else { }
-        }
+        } else { }
     }
 
-    public static void UpdateSearch(ScenePropElementData elementData)
+    public static void UpdateData(ScenePropElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.scenePropList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedModelId)
-            data.ModelId = elementData.ModelId;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            if (elementData.ChangedModelId)
+            {
+                data.ModelId = elementData.ModelId;
+            }
+
+            if (elementData.ChangedPositionX)
+            {
+                data.PositionX = elementData.PositionX;
+            }
+
+            if (elementData.ChangedPositionY)
+            {
+                data.PositionY = elementData.PositionY;
+            }
+
+            if (elementData.ChangedPositionZ)
+            {
+                data.PositionZ = elementData.PositionZ;
+            }
+
+            if (elementData.ChangedRotationX)
+            {
+                data.RotationX = elementData.RotationX;
+            }
+
+            if (elementData.ChangedRotationY)
+            {
+                data.RotationY = elementData.RotationY;
+            }
+
+            if (elementData.ChangedRotationZ)
+            {
+                data.RotationZ = elementData.RotationZ;
+            }
+
+            if (elementData.ChangedScale)
+            {
+                data.Scale = elementData.Scale;
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }     
+    }
+
+    public static void RemoveData(ScenePropElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.scenePropList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
     }
 }

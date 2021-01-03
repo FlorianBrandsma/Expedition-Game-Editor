@@ -35,14 +35,8 @@ public class ChapterSaveElementData : ChapterSaveData, IElementData
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         ChapterSaveDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest) { }
 

@@ -32,6 +32,12 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
         set { WorldObjectEditor.PositionZ = value; }
     }
 
+    private int TerrainId
+    {
+        get { return WorldObjectEditor.TerrainId; }
+        set { WorldObjectEditor.TerrainId = value; }
+    }
+
     private int TerrainTileId
     {
         get { return WorldObjectEditor.TerrainTileId; }
@@ -56,8 +62,8 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
         var regionSize = new Vector2(regionData.RegionSize * regionData.TerrainSize * regionData.TileSize,
                                      regionData.RegionSize * regionData.TerrainSize * regionData.TileSize);
 
-        xInputField.max = regionSize.x;
-        zInputField.max = regionSize.y;
+        xInputField.max = regionSize.x - 0.01f;
+        zInputField.max = regionSize.y - 0.01f;
     }
 
     public void OpenSegment()
@@ -67,7 +73,9 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
         zInputField.Value = PositionZ;
         
         bindToTile.Toggle.isOn = TerrainTileId != 0;
-        
+
+        UpdateTile();
+
         gameObject.SetActive(true);
     }
 
@@ -100,8 +108,10 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdateTile()
     {
-        if (bindToTile == null) return;
+        //TerrainId = RegionManager.GetTerrainId(regionData, regionData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionData.TileSize, PositionX, PositionZ);
 
+        if (bindToTile == null) return;
+        
         if (bindToTile.Toggle.isOn)
         {
             TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);

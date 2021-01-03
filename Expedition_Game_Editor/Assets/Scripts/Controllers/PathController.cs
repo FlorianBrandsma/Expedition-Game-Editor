@@ -130,7 +130,6 @@ public class PathController : MonoBehaviour
 
         layoutSection.previousEditor = layoutSection.dataEditor;
         layoutSection.previousDataSource = layoutSection.dataEditor.ElementData;
-        //layoutSection.previousElementDataList = layoutSection.dataEditor.ElementDataList;
     }
 
     private void SetHistory(Path path)

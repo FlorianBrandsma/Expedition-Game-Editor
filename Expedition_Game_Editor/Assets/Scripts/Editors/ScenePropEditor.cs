@@ -37,7 +37,18 @@ public class ScenePropEditor : MonoBehaviour, IEditor
     {
         get { return scenePropData.Id; }
     }
-    
+
+    public int ModelId
+    {
+        get { return scenePropData.ModelId; }
+        set
+        {
+            scenePropData.ModelId = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).ModelId = value);
+        }
+    }
+
     public int TerrainId
     {
         get { return scenePropData.TerrainId; }
@@ -137,29 +148,70 @@ public class ScenePropEditor : MonoBehaviour, IEditor
         }
     }
 
+    public string ModelPath
+    {
+        get { return ((ScenePropData)EditData).ModelPath; }
+        set
+        {
+            scenePropData.ModelPath = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).ModelPath = value);
+        }
+    }
+
     public string ModelIconPath
     {
         get { return ((ScenePropData)EditData).ModelIconPath; }
+        set
+        {
+            scenePropData.ModelIconPath = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).ModelIconPath = value);
+        }
     }
 
     public string ModelName
     {
         get { return ((ScenePropData)EditData).ModelName; }
+        set
+        {
+            scenePropData.ModelName = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).ModelName = value);
+        }
     }
     
     public float Height
     {
         get { return ((ScenePropData)EditData).Height; }
+        set
+        {
+            scenePropData.Height = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).Height = value);
+        }
     }
 
     public float Width
     {
         get { return ((ScenePropData)EditData).Width; }
+        set
+        {
+            scenePropData.Width = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).Width = value);
+        }
     }
 
     public float Depth
     {
         get { return ((ScenePropData)EditData).Depth; }
+        set
+        {
+            scenePropData.Depth = value;
+
+            DataList.ForEach(x => ((ScenePropElementData)x).Depth = value);
+        }
     }
     #endregion
 
@@ -168,7 +220,31 @@ public class ScenePropEditor : MonoBehaviour, IEditor
         scenePropData = (ScenePropData)ElementData.Clone();
     }
     
-    public void OpenEditor() { }
+    public void ResetEditor()
+    {
+        ModelId         = scenePropData.ModelId;
+        TerrainId       = scenePropData.TerrainId;
+        TerrainTileId   = scenePropData.TerrainTileId;
+
+        PositionX       = scenePropData.PositionX;
+        PositionY       = scenePropData.PositionY;
+        PositionZ       = scenePropData.PositionZ;
+
+        RotationX       = scenePropData.RotationX;
+        RotationY       = scenePropData.RotationY;
+        RotationZ       = scenePropData.RotationZ;
+
+        Scale           = scenePropData.Scale;
+
+        ModelPath       = scenePropData.ModelPath;
+        ModelIconPath   = scenePropData.ModelIconPath;
+
+        ModelName       = scenePropData.ModelName;
+
+        Height          = scenePropData.Height;
+        Width           = scenePropData.Width;
+        Depth           = scenePropData.Depth;
+    }
 
     public void UpdateEditor()
     {
@@ -208,18 +284,22 @@ public class ScenePropEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

@@ -10,14 +10,12 @@ public static class ChapterRegionDataManager
     private static List<TileSetBaseData> tileSetDataList;
     private static List<TileBaseData> tileDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.ChapterRegion searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterRegion>().First();
-
         GetChapterRegionData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            chapterRegionDataList.Add(DefaultData(searchParameters));
+            chapterRegionDataList.Add(DefaultData());
 
         if (chapterRegionDataList.Count == 0) return new List<IElementData>();
         
@@ -56,25 +54,17 @@ public static class ChapterRegionDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static ChapterRegionBaseData DefaultData(Search.ChapterRegion searchParameters)
+    public static ChapterRegionElementData DefaultData()
     {
-        return new ChapterRegionBaseData();
+        return new ChapterRegionElementData();
     }
 
-    private static void SetDefaultAddValues(List<ChapterRegionElementData> list)
+    public static void SetDefaultAddValues(List<ChapterRegionElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
-
-    //private static void AddDefaultElementData(Search.ChapterRegion searchParameters, List<ChapterRegionElementData> list)
-    //{
-    //    list.Insert(0, new ChapterRegionElementData()
-    //    {
-    //        ExecuteType = Enums.ExecuteType.Add
-    //    });
-    //}
 
     private static void GetChapterRegionData(Search.ChapterRegion searchParameters)
     {
@@ -127,34 +117,143 @@ public static class ChapterRegionDataManager
             elementData.Id = Fixtures.chapterRegionList.Count > 0 ? (Fixtures.chapterRegionList[Fixtures.chapterRegionList.Count - 1].Id + 1) : 1;
             Fixtures.chapterRegionList.Add(((ChapterRegionData)elementData).Clone());
 
-            Debug.Log("Add chapter region");
-        }
-        else { }
+            elementData.SetOriginalValues();
+
+            AddPhaseRegionData(elementData, dataRequest);
+
+        } else { }
     }
 
     public static void UpdateData(ChapterRegionElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.chapterRegionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedRegionId)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRegionId)
             {
                 data.RegionId = elementData.RegionId;
-                Debug.Log("Update chapter region");
+                
+                ReplacePhaseRegion(elementData, dataRequest);
             }
-            else { }
+
+            elementData.SetOriginalValues();
+
+        } else {
+
+            if (elementData.ChangedRegionId)
+            {
+                ReplacePhaseRegion(elementData, dataRequest);
+            }
         }
     }
-
+    
     public static void RemoveData(ChapterRegionElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
+            RemovePhaseRegionData(elementData, dataRequest);
 
-            Debug.Log("Remove chapter region");
+            Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else {
+
+            RemovePhaseRegionData(elementData, dataRequest);
         }
-        else { }
+    }
+
+    private static void ReplacePhaseRegion(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        RemovePhaseRegionData(elementData, dataRequest);
+        AddPhaseRegionData(elementData, dataRequest);
+    }
+
+    private static void RemovePhaseRegionData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        //Region
+        var regionSearchParameters = new Search.Region()
+        {
+            chapterRegionId = new List<int>() { elementData.Id }
+        };
+
+        var regionDataList = DataManager.GetRegionData(regionSearchParameters);
+
+        if (regionDataList.Count == 0) return;
+
+        regionDataList.ForEach(regionData =>
+        {
+            var regionElementData = new RegionElementData()
+            {
+                Id = regionData.Id
+            };
+
+            regionElementData.Remove(dataRequest);
+        });
+
+        //Phase
+        var phaseSearchParameters = new Search.Phase()
+        {
+            id = regionDataList.Select(x => x.PhaseId).ToList()
+        };
+
+        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+
+        phaseDataList.ForEach(phaseData =>
+        {
+            var phaseElementData = new PhaseElementData()
+            {
+                Id = phaseData.Id,
+                DefaultRegionId = phaseData.DefaultRegionId,
+
+                DefaultPositionX = phaseData.DefaultPositionX,
+                DefaultPositionY = phaseData.DefaultPositionY,
+                DefaultPositionZ = phaseData.DefaultPositionZ,
+
+                DefaultRotationX = phaseData.DefaultRotationX,
+                DefaultRotationY = phaseData.DefaultRotationY,
+                DefaultRotationZ = phaseData.DefaultRotationZ
+            };
+
+            phaseElementData.SetOriginalValues();
+
+            PhaseDataManager.UpdateDefaultRegion(phaseElementData, dataRequest);
+        });
+    }
+
+    private static void AddPhaseRegionData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        //Chapter
+        var chapterSearchParameters = new Search.Chapter()
+        {
+            id = new List<int>() { elementData.ChapterId }
+        };
+
+        var chapterData = DataManager.GetChapterData(chapterSearchParameters).FirstOrDefault();
+
+        //Phase
+        var phaseSearchParameters = new Search.Phase()
+        {
+            chapterId = new List<int>() { chapterData.Id }
+        };
+
+        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+
+        if (phaseDataList.Count == 0) return;
+
+        phaseDataList.ForEach(phaseData =>
+        {
+            var phaseElementData = new PhaseElementData()
+            {
+                Id = phaseData.Id,
+                ChapterId = phaseData.ChapterId,
+                DefaultRegionId = phaseData.DefaultRegionId
+            };
+
+            phaseElementData.SetOriginalValues();
+
+            PhaseDataManager.CopyRegionData(phaseElementData, elementData, dataRequest);
+        });
     }
 }

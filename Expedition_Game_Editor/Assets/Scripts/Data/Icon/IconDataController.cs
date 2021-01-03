@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class IconDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class IconDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = IconDataManager.GetData(searchProperties),
+            dataList = IconDataManager.GetData(searchProperties.searchParameters.Cast<Search.Icon>().First()),
             searchProperties = this.searchProperties
         };
 

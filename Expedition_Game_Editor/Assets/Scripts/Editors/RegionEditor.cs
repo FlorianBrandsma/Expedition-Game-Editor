@@ -110,7 +110,19 @@ public class RegionEditor : MonoBehaviour, IEditor
         regionData = (RegionData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor()
+    {
+        TileSetId       = regionData.TileSetId;
+
+        Index           = regionData.Index;
+
+        Name            = regionData.Name;
+
+        RegionSize      = regionData.RegionSize;
+        TerrainSize     = regionData.TerrainSize;
+        
+        TileIconPath    = regionData.TileIconPath;
+    }
 
     public void UpdateEditor()
     {
@@ -174,9 +186,15 @@ public class RegionEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
+    }
+
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     //private void ChangedName()
@@ -212,11 +230,9 @@ public class RegionEditor : MonoBehaviour, IEditor
 
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

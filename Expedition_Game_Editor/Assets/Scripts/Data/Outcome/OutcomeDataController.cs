@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class OutcomeDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class OutcomeDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = OutcomeDataManager.GetData(searchProperties),
+            dataList = OutcomeDataManager.GetData(searchProperties.searchParameters.Cast<Search.Outcome>().First()),
             searchProperties = this.searchProperties
         };
 

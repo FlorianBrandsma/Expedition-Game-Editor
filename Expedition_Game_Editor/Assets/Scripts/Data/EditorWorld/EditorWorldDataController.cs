@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class EditorWorldDataController : MonoBehaviour, IDataController
 {
@@ -39,7 +40,7 @@ public class EditorWorldDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = EditorWorldDataManager.GetData(searchProperties),
+            dataList = EditorWorldDataManager.GetData(searchProperties.searchParameters.Cast<Search.EditorWorld>().First()),
             searchProperties = this.searchProperties
         };
 

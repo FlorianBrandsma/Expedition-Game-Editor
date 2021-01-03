@@ -8,10 +8,8 @@ public static class PhaseSaveDataManager
 
     private static List<PhaseBaseData> phaseDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.PhaseSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
-
         switch (searchParameters.requestType)
         {
             case Search.PhaseSave.RequestType.Custom:
@@ -90,13 +88,19 @@ public static class PhaseSaveDataManager
 
     public static void UpdateData(PhaseSaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.phaseSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedComplete)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedComplete)
+            {
                 data.Complete = elementData.Complete;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }  
     }
 }

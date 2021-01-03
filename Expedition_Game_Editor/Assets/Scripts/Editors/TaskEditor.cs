@@ -104,7 +104,7 @@ public class TaskEditor : MonoBehaviour, IEditor
         taskData = (TaskData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -123,12 +123,45 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyTaskChanges(dataRequest);
+    }
+
+    private void ApplyTaskChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddTask(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateTask(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveTask(dataRequest);
+                break;
+        }
+    }
+
+    private void AddTask(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            taskData.Id = tempData.Id;
+    }
+
+    private void UpdateTask(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+    private void RemoveTask(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     public void FinalizeChanges()
@@ -140,18 +173,22 @@ public class TaskEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class CameraFilterDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class CameraFilterDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = CameraFilterDataManager.GetData(searchProperties),
+            dataList = CameraFilterDataManager.GetData(searchProperties.searchParameters.Cast<Search.CameraFilter>().First()),
             searchProperties = this.searchProperties
         };
 

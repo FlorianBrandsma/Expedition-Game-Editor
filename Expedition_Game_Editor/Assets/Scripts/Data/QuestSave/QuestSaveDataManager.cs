@@ -8,10 +8,8 @@ public static class QuestSaveDataManager
 
     private static List<QuestBaseData> questDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.QuestSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.QuestSave>().First();
-
         GetQuestSaveData(searchParameters);
 
         if (questSaveDataList.Count == 0) return new List<IElementData>();
@@ -66,13 +64,19 @@ public static class QuestSaveDataManager
 
     public static void UpdateData(QuestSaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.questSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedComplete)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedComplete)
+            {
                 data.Complete = elementData.Complete;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }    
     }
 }

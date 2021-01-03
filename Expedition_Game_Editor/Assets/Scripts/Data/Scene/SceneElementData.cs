@@ -81,25 +81,18 @@ public class SceneElementData : SceneData, IElementData
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         SceneDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         SceneDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        SceneDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

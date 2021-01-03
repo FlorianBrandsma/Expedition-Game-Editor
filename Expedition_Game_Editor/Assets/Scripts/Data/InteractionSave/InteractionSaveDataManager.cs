@@ -8,10 +8,8 @@ public static class InteractionSaveDataManager
 
     private static List<InteractionBaseData> interactionDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.InteractionSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionSave>().First();
-
         GetInteractionSaveData(searchParameters);
 
         if (interactionSaveDataList.Count == 0) return new List<IElementData>();
@@ -67,13 +65,19 @@ public static class InteractionSaveDataManager
 
     public static void UpdateData(InteractionSaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.interactionSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedComplete)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedComplete)
+            {
                 data.Complete = elementData.Complete;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }       
     }
 }

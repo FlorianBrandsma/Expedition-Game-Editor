@@ -184,24 +184,42 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (WorldObjectElementData)EditorElement.DataElement.ElementData;
 
-        header = elementData.ModelName;
-        iconPath = elementData.ModelIconPath;
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = elementData.ModelName;
+            iconPath = elementData.ModelIconPath;
+        } else {
+            header = elementData.OriginalData.ModelName;
+            iconPath = elementData.OriginalData.ModelIconPath;
+        }
     }
 
     private void SetSceneActorElement()
     {
         var elementData = (SceneActorElementData)EditorElement.DataElement.ElementData;
 
-        header = elementData.InteractableName;
-        iconPath = elementData.ModelIconPath;
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = elementData.InteractableName;
+            iconPath = elementData.ModelIconPath;
+        } else {
+            header = elementData.OriginalData.InteractableName;
+            iconPath = elementData.OriginalData.ModelIconPath;
+        }
     }
 
     private void SetScenePropElement()
     {
         var elementData = (ScenePropElementData)EditorElement.DataElement.ElementData;
 
-        header = elementData.ModelName;
-        iconPath = elementData.ModelIconPath;
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = elementData.ModelName;
+            iconPath = elementData.ModelIconPath;
+        } else {
+            header = elementData.OriginalData.ModelName;
+            iconPath = elementData.OriginalData.ModelIconPath;
+        }
     }
 
     public void CloseElement()

@@ -75,7 +75,7 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
         phaseSaveData = (PhaseSaveData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -111,18 +111,22 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

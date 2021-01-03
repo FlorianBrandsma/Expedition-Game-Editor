@@ -34,7 +34,7 @@ public class PhaseSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = PhaseSaveDataManager.GetData(searchProperties),
+            dataList = PhaseSaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.PhaseSave>().First()),
             searchProperties = this.searchProperties
         };
 

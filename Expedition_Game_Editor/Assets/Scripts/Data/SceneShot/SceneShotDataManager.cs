@@ -6,10 +6,8 @@ public static class SceneShotDataManager
 {
     private static List<SceneShotBaseData> sceneShotDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.SceneShot searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.SceneShot>().First();
-
         GetSceneShotData(searchParameters);
 
         if (sceneShotDataList.Count == 0) return new List<IElementData>();
@@ -73,85 +71,91 @@ public static class SceneShotDataManager
         sceneShotDataList.Add(sceneShotData);
     }
 
+    public static void AddData(SceneShotElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.sceneShotList.Count > 0 ? (Fixtures.sceneShotList[Fixtures.sceneShotList.Count - 1].Id + 1) : 1;
+            Fixtures.sceneShotList.Add(((SceneShotData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
     public static void UpdateData(SceneShotElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.sceneShotList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedChangePosition)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedChangePosition)
+            {
                 data.ChangePosition = elementData.ChangePosition;
-            else { }
-        }
-        
-        if (elementData.ChangedPositionX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedPositionX)
+            {
                 data.PositionX = elementData.PositionX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionY)
+            {
                 data.PositionY = elementData.PositionY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionZ)
+            {
                 data.PositionZ = elementData.PositionZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionTargetSceneActorId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionTargetSceneActorId)
+            {
                 data.PositionTargetSceneActorId = elementData.PositionTargetSceneActorId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedChangeRotation)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedChangeRotation)
+            {
                 data.ChangeRotation = elementData.ChangeRotation;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationX)
+            {
                 data.RotationX = elementData.RotationX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationY)
+            {
                 data.RotationY = elementData.RotationY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationZ)
+            {
                 data.RotationZ = elementData.RotationZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationTargetSceneActorId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationTargetSceneActorId)
+            {
                 data.RotationTargetSceneActorId = elementData.RotationTargetSceneActorId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCameraFilterId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCameraFilterId)
+            {
                 data.CameraFilterId = elementData.CameraFilterId;
-            else { }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(SceneShotElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.sceneShotList.RemoveAll(x => x.Id == elementData.Id);
         }
     }
 }

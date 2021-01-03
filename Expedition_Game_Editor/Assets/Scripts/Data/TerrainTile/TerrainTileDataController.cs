@@ -34,7 +34,7 @@ public class TerrainTileDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TerrainTileDataManager.GetData(searchProperties),
+            dataList = TerrainTileDataManager.GetData(searchProperties.searchParameters.Cast<Search.TerrainTile>().First()),
             searchProperties = this.searchProperties
         };
 

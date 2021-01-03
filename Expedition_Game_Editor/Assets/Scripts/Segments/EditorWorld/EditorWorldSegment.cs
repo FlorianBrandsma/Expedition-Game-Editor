@@ -16,6 +16,13 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.EditorWorld);
 
+        InitializeSearchParameters(searchProperties);
+
+        SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
         var searchParameters = searchProperties.searchParameters.Cast<Search.EditorWorld>().First();
 
         var regionRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Region);
@@ -29,7 +36,22 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
         if (objectiveRoute == null)
             searchParameters.objectiveId = new List<int>() { 0 };
 
-        SegmentController.DataController.GetData(searchProperties);
+        switch(searchParameters.regionType)
+        {
+            case Enums.RegionType.Base:
+            case Enums.RegionType.Phase:
+                searchParameters.includeAddWorldObjectElement = true;
+                break;
+            case Enums.RegionType.Controllable:
+                searchParameters.includeAddPhaseElement = true;
+                break;
+            case Enums.RegionType.InteractionDestination:
+                searchParameters.includeAddInteractionDestinationElement = true;
+                break;
+            case Enums.RegionType.Scene:
+                searchParameters.includeAddScenePropElement = true;
+                break;
+        }
     }
 
     public void InitializeSegment()

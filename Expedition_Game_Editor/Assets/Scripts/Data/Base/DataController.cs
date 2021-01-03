@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DataController : IDataController
 {
@@ -48,11 +48,19 @@ public class DataController : IDataController
             dataController = this
         };
 
-        switch(DataType)
+        switch (DataType)
         {
-            case Enums.DataType.WorldInteractable:  Data.dataList = WorldInteractableDataManager.GetData(searchProperties); break;
-            case Enums.DataType.Interaction:        Data.dataList = InteractionDataManager.GetData(searchProperties);       break;
-            case Enums.DataType.WorldObject:        Data.dataList = WorldObjectDataManager.GetData(searchProperties);       break;
+            case Enums.DataType.WorldInteractable:
+                Data.dataList = WorldInteractableDataManager.GetData(searchProperties.searchParameters.Cast<Search.WorldInteractable>().First());
+                break;
+
+            case Enums.DataType.Interaction:
+                Data.dataList = InteractionDataManager.GetData(searchProperties.searchParameters.Cast<Search.Interaction>().First());
+                break;
+
+            case Enums.DataType.WorldObject:
+                Data.dataList = WorldObjectDataManager.GetData(searchProperties.searchParameters.Cast<Search.WorldObject>().First());
+                break;
 
             default: Debug.Log("CASE MISSING: " + DataType); break;
         }

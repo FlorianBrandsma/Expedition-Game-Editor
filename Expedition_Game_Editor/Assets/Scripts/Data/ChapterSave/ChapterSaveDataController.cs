@@ -34,7 +34,7 @@ public class ChapterSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ChapterSaveDataManager.GetData(searchProperties),
+            dataList = ChapterSaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.ChapterSave>().First()),
             searchProperties = this.searchProperties
         };
 

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 
 public class GameWorldDataController : MonoBehaviour, IDataController
 {
@@ -35,7 +34,7 @@ public class GameWorldDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = GameWorldDataManager.GetData(searchProperties),
+            dataList = GameWorldDataManager.GetData(searchProperties.searchParameters.Cast<Search.GameWorld>().First()),
             searchProperties = this.searchProperties
         };
 

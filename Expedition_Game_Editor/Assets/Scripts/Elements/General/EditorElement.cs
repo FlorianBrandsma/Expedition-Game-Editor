@@ -92,13 +92,14 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void SetOverlay()
     {
+        SetStatus();
+
         if (DataElement.ElementData == null) return;
 
         if (child != null && child.isActiveAndEnabled)
             child.SetOverlay();
 
         SetSelection();
-        SetStatus();
     }
 
     private void SetSelection()
@@ -141,7 +142,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
             case Enums.ElementStatus.Locked:
 
                 Element.ElementColor = disabledColor;
-
+                
                 if (lockIcon != null)
                     lockIcon.SetActive(true);
 
@@ -226,18 +227,17 @@ public class EditorElement : MonoBehaviour, ISelectionElement
     
     public void CloseElement()
     {
-        if (DataElement.ElementData == null) return;
-
         ResetStatus();
 
         Element.CloseElement();
 
-        gameObject.SetActive(false);
+        if (DataElement.ElementData != null)
+            DataElement.ElementData.DataElement = null;
 
         if (child != null && child.isActiveAndEnabled)
             child.CloseElement();
 
-        DataElement.ElementData.DataElement = null;
+        gameObject.SetActive(false);
     }
 
     public void ResetStatus()
@@ -255,7 +255,6 @@ public class EditorElement : MonoBehaviour, ISelectionElement
         
         DataElement.ElementData.SelectionStatus = Enums.SelectionStatus.None;
         
-
         if (glow != null)
         {
             glow.SetActive(false);

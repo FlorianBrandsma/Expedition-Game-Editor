@@ -82,7 +82,7 @@ public class ChapterCharactersControllableAgentSegment : MonoBehaviour, ISegment
 
             searchElementData.ExecuteType = Enums.ExecuteType.Add;
 
-            searchElementData.Id = -ChapterEditor.worldInteractableElementDataList.Count;
+            searchElementData.Id = -(ChapterEditor.worldInteractableElementDataList.Count + 1);
 
             searchElementData.ChapterId         = ChapterEditor.EditData.Id;
             searchElementData.InteractableId    = mergedElementData.InteractableId;

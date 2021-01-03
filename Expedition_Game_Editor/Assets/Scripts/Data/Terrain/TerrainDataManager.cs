@@ -12,10 +12,8 @@ public static class TerrainDataManager
 
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Terrain searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Terrain>().First();
-
         GetTerrainData(searchParameters);
 
         if (terrainDataList.Count == 0) return new List<IElementData>();
@@ -54,6 +52,17 @@ public static class TerrainDataManager
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static TerrainElementData DefaultData(int regionId, int regionIndex)
+    {
+        return new TerrainElementData()
+        {
+            RegionId = regionId,
+            IconId = 1,
+
+            Index = regionIndex,
+        };
     }
 
     private static void GetTerrainData(Search.Terrain searchParameters)
@@ -101,32 +110,103 @@ public static class TerrainDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void AddData(TerrainElementData elementData, DataRequest dataRequest)
+    public static void AddData(TerrainElementData elementData, DataRequest dataRequest, bool copy = false)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             elementData.Id = Fixtures.terrainList.Count > 0 ? (Fixtures.terrainList[Fixtures.terrainList.Count - 1].Id + 1) : 1;
             Fixtures.terrainList.Add(((TerrainData)elementData).Clone());
-        }
-        else { }
+
+            elementData.SetOriginalValues();
+
+            if (copy) return;
+
+            var atmosphereElementData = AtmosphereDataManager.DefaultData(elementData.Id, true);
+            atmosphereElementData.Add(dataRequest);
+
+        } else { }
     }
 
     public static void UpdateData(TerrainElementData elementData, DataRequest dataRequest)
     {
-        var data = Fixtures.terrainList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedIconId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.IconId = elementData.IconId;
-            else { }
-        }
+        if (!elementData.Changed) return;
 
-        if (elementData.ChangedName)
+        var data = Fixtures.terrainList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedIconId)
+            {
+                data.IconId = elementData.IconId;
+            }
+
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
+
+            Fixtures.terrainList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
         }
+    }
+
+    private static void RemoveDependencies(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        RemoveTerrainTileData(elementData, dataRequest);
+        RemoveAtmosphereData(elementData, dataRequest);
+    }
+
+    private static void RemoveTerrainTileData(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        var terrainTileSearchParameters = new Search.TerrainTile()
+        {
+            terrainId = new List<int>() { elementData.Id }
+        };
+
+        var terrainTileDataList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
+
+        terrainTileDataList.ForEach(terrainTileData =>
+        {
+            var terrainTileElementData = new TerrainTileElementData()
+            {
+                Id = terrainTileData.Id
+            };
+
+            terrainTileElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveAtmosphereData(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        var atmosphereSearchParameters = new Search.Atmosphere()
+        {
+            terrainId = new List<int>() { elementData.Id }
+        };
+
+        var atmosphereDataList = DataManager.GetAtmosphereData(atmosphereSearchParameters);
+
+        atmosphereDataList.ForEach(atmosphereData =>
+        {
+            var atmosphereElementData = new AtmosphereElementData()
+            {
+                Id = atmosphereData.Id
+            };
+
+            atmosphereElementData.Remove(dataRequest);
+        });
     }
 }

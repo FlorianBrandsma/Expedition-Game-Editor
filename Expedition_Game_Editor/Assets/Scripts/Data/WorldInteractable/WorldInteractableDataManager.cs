@@ -10,10 +10,8 @@ public static class WorldInteractableDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.WorldInteractable searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldInteractable>().First();
-
         switch (searchParameters.requestType)
         {
             case Search.WorldInteractable.RequestType.Custom:
@@ -38,7 +36,7 @@ public static class WorldInteractableDataManager
         }
 
         if (searchParameters.includeAddElement)
-            worldInteractableDataList.Add(DefaultData(searchParameters));
+            worldInteractableDataList.Add(DefaultData(searchParameters.type.First()));
 
         if (worldInteractableDataList.Count == 0) return new List<IElementData>();
         
@@ -90,15 +88,15 @@ public static class WorldInteractableDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static WorldInteractableBaseData DefaultData(Search.WorldInteractable searchParameters)
+    public static WorldInteractableElementData DefaultData(int type)
     {
-        return new WorldInteractableBaseData()
+        return new WorldInteractableElementData()
         {
-            Type = searchParameters.type.First()
+            Type = type
         };
     }
 
-    private static void SetDefaultAddValues(List<WorldInteractableElementData> list)
+    public static void SetDefaultAddValues(List<WorldInteractableElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -212,62 +210,106 @@ public static class WorldInteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void AddData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    public static void AddData(WorldInteractableElementData elementData, DataRequest dataRequest, bool copy = false)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             elementData.Id = Fixtures.worldInteractableList.Count > 0 ? (Fixtures.worldInteractableList[Fixtures.worldInteractableList.Count - 1].Id + 1) : 1;
             Fixtures.worldInteractableList.Add(((WorldInteractableData)elementData).Clone());
+            
+            elementData.SetOriginalValues();
 
-            AddDefaultTask(elementData, dataRequest);
+            if (copy) return;
 
+            var taskElementData = TaskDataManager.DefaultData(elementData.Id);
+            taskElementData.Add(dataRequest);
+            
         } else { }
-    }
-
-    private static void AddDefaultTask(WorldInteractableElementData elementData, DataRequest dataRequest)
-    {
-        if ((Enums.InteractableType)elementData.Type == Enums.InteractableType.Controllable) return;
-
-        var taskElementData = new TaskElementData()
-        {
-            WorldInteractableId = elementData.Id
-        };
-
-        taskElementData.Add(dataRequest);
     }
 
     public static void UpdateData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedInteractableId)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedInteractableId)
+            {
                 data.InteractableId = elementData.InteractableId;
-            else { }
-        }
-        
-        if (elementData.ChangedQuestId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedQuestId)
+            {
                 data.QuestId = elementData.QuestId;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
-
-    //public static void UpdateSearch(WorldInteractableElementData elementData)
-    //{
-    //    var data = Fixtures.worldInteractableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-
-    //    if (elementData.ChangedInteractableId)
-    //        data.InteractableId = elementData.InteractableId;
-    //}
 
     public static void RemoveData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {
-        if(dataRequest.requestType == Enums.RequestType.Execute)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
+            RemoveDependencies(elementData, dataRequest);
+
             Fixtures.worldInteractableList.RemoveAll(x => x.Id == elementData.Id);
-        } else { }
+
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
+        }
+    }
+
+    private static void RemoveDependencies(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        RemoveTaskData(elementData, dataRequest);
+        RemoveSceneActorData(elementData, dataRequest);
+    }
+
+    private static void RemoveTaskData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        var taskSearchParameters = new Search.Task()
+        {
+            worldInteractableId = new List<int>() { elementData.Id }
+        };
+
+        var taskDataList = DataManager.GetTaskData(taskSearchParameters);
+
+        //if (taskDataList.Count > 1)
+        //    dataRequest.errorList.Add("World interactable contains tasks");
+
+        taskDataList.ForEach(taskData =>
+        {
+            var taskElementData = new TaskElementData()
+            {
+                Id = taskData.Id
+            };
+
+            taskElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveSceneActorData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        var sceneActorSearchParameters = new Search.SceneActor()
+        {
+            worldInteractableId = new List<int>() { elementData.Id }
+        };
+
+        var sceneActorDataList = DataManager.GetSceneActorData(sceneActorSearchParameters);
+
+        sceneActorDataList.ForEach(sceneActorData =>
+        {
+            var sceneActorElementData = new SceneActorElementData()
+            {
+                Id = sceneActorData.Id
+            };
+
+            sceneActorElementData.Remove(dataRequest);
+        });
     }
 }

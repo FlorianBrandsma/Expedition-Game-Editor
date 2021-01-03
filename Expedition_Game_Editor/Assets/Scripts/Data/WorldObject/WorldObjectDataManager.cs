@@ -9,20 +9,24 @@ public static class WorldObjectDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.WorldObject searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.WorldObject>().First();
-
         GetWorldObjectData(searchParameters);
+
+        if (searchParameters.includeAddElement)
+            worldObjectDataList.Add(DefaultData(searchParameters.regionId.First()));
 
         if (worldObjectDataList.Count == 0) return new List<IElementData>();
         
         GetModelData();
         GetIconData();
 
-        var list = (from worldObjectData    in worldObjectDataList
-                    join modelData          in modelDataList    on worldObjectData.ModelId  equals modelData.Id
-                    join iconData           in iconDataList     on modelData.IconId         equals iconData.Id
+        var list = (from worldObjectData in worldObjectDataList
+
+                    join leftJoin in (from modelData    in modelDataList
+                                      join iconData     in iconDataList on modelData.IconId equals iconData.Id
+                                      select new { modelData, iconData }) on worldObjectData.ModelId equals leftJoin.modelData.Id into modelData
+
                     select new WorldObjectElementData()
                     {
                         Id = worldObjectData.Id,
@@ -44,20 +48,50 @@ public static class WorldObjectDataManager
 
                         Animation = worldObjectData.Animation,
 
-                        ModelPath = modelData.Path,
+                        ModelPath = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Path : "",
 
-                        ModelName = modelData.Name,
-                        ModelIconPath = iconData.Path,
+                        ModelName = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Name : "",
+                        ModelIconPath = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().iconData.Path : "",
 
-                        Height = modelData.Height,
-                        Width = modelData.Width,
-                        Depth = modelData.Depth
+                        Height = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Height : 0,
+                        Width = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Width : 0,
+                        Depth = modelData.FirstOrDefault() != null ? modelData.FirstOrDefault().modelData.Depth : 0
 
                     }).OrderBy(x => x.Id).ToList();
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static WorldObjectElementData DefaultData(int regionId)
+    {
+        var defaultPosition = Vector3.zero;
+
+        if (EditorWorldOrganizer.instance != null)
+        {
+            defaultPosition = EditorWorldOrganizer.instance.AddElementDefaultPosition();
+        }
+
+        return new WorldObjectElementData()
+        {
+            ModelId = 1,
+            RegionId = regionId,
+            Scale = 1,
+            PositionX = defaultPosition.x,
+            PositionY = defaultPosition.y,
+            PositionZ = defaultPosition.z
+        };
+    }
+
+    public static void SetDefaultAddValues(List<WorldObjectElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetWorldObjectData(Search.WorldObject searchParameters)
@@ -89,100 +123,96 @@ public static class WorldObjectDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void UpdateData(WorldObjectElementData elementData, DataRequest dataRequest)
+    public static void AddData(WorldObjectElementData elementData, DataRequest dataRequest)
     {
-        var data = Fixtures.worldObjectList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.worldObjectList.Count > 0 ? (Fixtures.worldObjectList[Fixtures.worldObjectList.Count - 1].Id + 1) : 1;
+            Fixtures.worldObjectList.Add(((WorldObjectData)elementData).Clone());
 
-        if (elementData.ChangedModelId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.ModelId = elementData.ModelId;
-            else { }
-        }
+            elementData.SetOriginalValues();
 
-        if (elementData.ChangedRegionId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RegionId = elementData.RegionId;
-            else { }
-        }
-        
-        if (elementData.ChangedTerrainId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.TerrainId = elementData.TerrainId;
-            else { }
-        }
-        
-        if (elementData.ChangedTerrainTileId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.TerrainTileId = elementData.TerrainTileId;
-            else { }
-        }
-
-        if (elementData.ChangedPositionX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionX = elementData.PositionX;
-            else { }
-        }
-
-        if (elementData.ChangedPositionY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionY = elementData.PositionY;
-            else { }
-        }
-
-        if (elementData.ChangedPositionZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.PositionZ = elementData.PositionZ;
-            else { }
-        }
-        
-        if (elementData.ChangedRotationX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationX = elementData.RotationX;
-            else { }
-        }
-
-        if (elementData.ChangedRotationY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationY = elementData.RotationY;
-            else { }
-        }
-
-        if (elementData.ChangedRotationZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.RotationZ = elementData.RotationZ;
-            else { }
-        }
-        
-        if (elementData.ChangedScale)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.Scale = elementData.Scale;
-            else { }
-        }
-        
-        if (elementData.ChangedAnimation)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.Animation = elementData.Animation;
-            else { }
-        }
+        } else { }
     }
 
-    public static void UpdateSearch(WorldObjectElementData elementData)
+    public static void UpdateData(WorldObjectElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.worldObjectList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedModelId)
-            data.ModelId = elementData.ModelId;
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            if (elementData.ChangedModelId)
+            {
+                data.ModelId = elementData.ModelId;
+            }
+
+            if (elementData.ChangedRegionId)
+            {
+                data.RegionId = elementData.RegionId;
+            }
+
+            if (elementData.ChangedTerrainId)
+            {
+                data.TerrainId = elementData.TerrainId;
+            }
+
+            if (elementData.ChangedTerrainTileId)
+            {
+                data.TerrainTileId = elementData.TerrainTileId;
+            }
+
+            if (elementData.ChangedPositionX)
+            {
+                data.PositionX = elementData.PositionX;
+            }
+
+            if (elementData.ChangedPositionY)
+            {
+                data.PositionY = elementData.PositionY;
+            }
+
+            if (elementData.ChangedPositionZ)
+            {
+                data.PositionZ = elementData.PositionZ;
+            }
+
+            if (elementData.ChangedRotationX)
+            {
+                data.RotationX = elementData.RotationX;
+            }
+
+            if (elementData.ChangedRotationY)
+            {
+                data.RotationY = elementData.RotationY;
+            }
+
+            if (elementData.ChangedRotationZ)
+            {
+                data.RotationZ = elementData.RotationZ;
+            }
+
+            if (elementData.ChangedScale)
+            {
+                data.Scale = elementData.Scale;
+            }
+
+            if (elementData.ChangedAnimation)
+            {
+                data.Animation = elementData.Animation;
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(WorldObjectElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.worldObjectList.RemoveAll(x => x.Id == elementData.Id);
+        } else { }
     }
 }

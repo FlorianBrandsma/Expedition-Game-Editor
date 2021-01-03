@@ -6,10 +6,8 @@ public static class CameraFilterDataManager
 {
     private static List<CameraFilterBaseData> cameraFilterDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.CameraFilter searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.CameraFilter>().First();
-
         GetCameraFilterData(searchParameters);
 
         if (searchParameters.includeRemoveElement)

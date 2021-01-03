@@ -51,27 +51,20 @@ public class ObjectiveElementData : ObjectiveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        ObjectiveDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         ObjectiveDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         ObjectiveDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest) { }
 

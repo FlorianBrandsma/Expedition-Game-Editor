@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class RegionDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class RegionDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = RegionDataManager.GetData(searchProperties),
+            dataList = RegionDataManager.GetData(searchProperties.searchParameters.Cast<Search.Region>().First()),
             searchProperties = this.searchProperties
         };
 

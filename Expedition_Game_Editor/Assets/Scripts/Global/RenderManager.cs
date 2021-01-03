@@ -84,10 +84,13 @@ static public class RenderManager
         layoutManager.layers.ForEach(x => x.SetLayout());
 
         //Close segments and actions
-        forms.ForEach(x => x.CloseEditor());
+        forms.ForEach(x => x.CloseSegments());
 
         //Open section editors and actions
-        forms.ForEach(x => x.OpenEditor());
+        forms.ForEach(x => x.OpenSegments());
+
+        //Reset active editors to apply edited values to data which might have been changed when the same data controller is re-opened
+        layoutManager.forms.ForEach(x => x.ResetEditor());
     }
 
     static public void CloseForms()

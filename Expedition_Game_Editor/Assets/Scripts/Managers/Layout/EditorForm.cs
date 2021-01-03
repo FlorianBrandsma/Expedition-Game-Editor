@@ -92,18 +92,26 @@ public class EditorForm : MonoBehaviour
         SetSectionLayout();
     }
 
-    public void OpenEditor()
+    public void OpenSegments()
     {
         if (!gameObject.activeInHierarchy) return;
 
         //Open the target editors
-        OpenSectionEditors();
+        OpenSectionSegments();
         
         //Activate and sort actions
         SetActions(activeViewPath);
     }
 
-    public void CloseEditor()
+    public void ResetEditor()
+    {
+        if (!gameObject.activeInHierarchy) return;
+
+        foreach (LayoutSection section in editorSections)
+            section.ResetEditor();
+    }
+
+    public void CloseSegments()
     {
         CloseSectionEditorSegments();
 
@@ -133,7 +141,7 @@ public class EditorForm : MonoBehaviour
     public void ResetPath()
     {
         if (activeInPath)
-            RenderManager.Render(activePath);        
+            RenderManager.Render(activePath);
     }
     #endregion
 
@@ -217,10 +225,10 @@ public class EditorForm : MonoBehaviour
         }
     }
 
-    public void OpenSectionEditors()
+    public void OpenSectionSegments()
     {
         foreach (LayoutSection section in editorSections)
-            section.OpenEditor();
+            section.OpenSegments();
     }
 
     private void CloseSectionEditorSegments()

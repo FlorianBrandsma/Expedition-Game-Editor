@@ -49,24 +49,17 @@ public class TerrainElementData : TerrainData, IElementData
     public void Add(DataRequest dataRequest)
     {
         TerrainDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-
         TerrainDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        TerrainDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

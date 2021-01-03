@@ -6,10 +6,8 @@ public static class TileDataManager
 {
     private static List<TileBaseData> tileDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Tile searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Tile>().First();
-
         GetTileData(searchParameters);
 
         if (tileDataList.Count == 0) return new List<IElementData>();

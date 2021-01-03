@@ -10,10 +10,8 @@ public static class InteractableSaveDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.InteractableSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractableSave>().First();
-
         GetInteractableSaveData(searchParameters);
 
         if (interactableSaveDataList.Count == 0) return new List<IElementData>();

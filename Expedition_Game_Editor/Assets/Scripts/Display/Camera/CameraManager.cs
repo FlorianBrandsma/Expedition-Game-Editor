@@ -219,8 +219,10 @@ public class CameraManager : MonoBehaviour, IDisplayManager
 
         if (overlayManager != null)
             overlayManager.CloseOverlay();
-
+        
         Organizer.CloseOrganizer();
+
+        Organizer = null;
 
         transform.parent.gameObject.SetActive(false);
     }

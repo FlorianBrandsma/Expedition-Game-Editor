@@ -46,27 +46,20 @@ public class QuestElementData : QuestData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        QuestDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         QuestDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         QuestDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest) { }
 

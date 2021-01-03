@@ -9,14 +9,12 @@ public static class ItemDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Item searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Item>().First();
-
         GetItemData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            itemDataList.Add(DefaultData(searchParameters));
+            itemDataList.Add(DefaultData(searchParameters.type.First()));
 
         if (itemDataList.Count == 0) return new List<IElementData>();
         
@@ -50,16 +48,16 @@ public static class ItemDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static ItemBaseData DefaultData(Search.Item searchParameters)
+    public static ItemElementData DefaultData(int type)
     {
-        return new ItemBaseData()
+        return new ItemElementData()
         {
-            Type = searchParameters.type.First(),
+            Type = type,
             ModelId = 1
         };
     }
 
-    private static void SetDefaultAddValues(List<ItemElementData> list)
+    public static void SetDefaultAddValues(List<ItemElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -103,33 +101,44 @@ public static class ItemDataManager
         {
             elementData.Id = Fixtures.itemList.Count > 0 ? (Fixtures.itemList[Fixtures.itemList.Count - 1].Id + 1) : 1;
             Fixtures.itemList.Add(((ItemData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
         } else { }
     }
 
     public static void UpdateData(ItemElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedModelId)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedModelId)
+            {
                 data.ModelId = elementData.ModelId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedName)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     static public void UpdateIndex(ItemElementData elementData)
     {
+        if (!elementData.ChangedIndex) return;
+
         var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
     }
 
     public static void RemoveData(ItemElementData elementData, DataRequest dataRequest)
@@ -137,7 +146,7 @@ public static class ItemDataManager
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             Fixtures.itemList.RemoveAll(x => x.Id == elementData.Id);
-        }
-        else { }
+
+        } else { }
     }
 }

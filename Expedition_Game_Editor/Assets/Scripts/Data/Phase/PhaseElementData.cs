@@ -89,27 +89,20 @@ public class PhaseElementData : PhaseData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        PhaseDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         PhaseDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         PhaseDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest) { }
 

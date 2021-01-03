@@ -34,7 +34,7 @@ public class ChapterRegionDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ChapterRegionDataManager.GetData(searchProperties),
+            dataList = ChapterRegionDataManager.GetData(searchProperties.searchParameters.Cast<Search.ChapterRegion>().First()),
             searchProperties = this.searchProperties
         };
 

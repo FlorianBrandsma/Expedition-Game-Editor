@@ -22,11 +22,12 @@ public static class InteractionDestinationDataManager
     private static List<TileBaseData> tileDataList;
     private static List<TileSetBaseData> tileSetDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.InteractionDestination searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
-
         GetInteractionDestinationData(searchParameters);
+
+        if (searchParameters.includeAddElement)
+            interactionDestinationDataList.Add(DefaultData(searchParameters.interactionId.First()));
 
         if (interactionDestinationDataList.Count == 0) return new List<IElementData>();
         
@@ -127,10 +128,57 @@ public static class InteractionDestinationDataManager
                         EndTime = interactionData.EndTime
 
                     }).OrderBy(x => x.Id).ToList();
-        
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static InteractionDestinationElementData DefaultData(int interactionId)
+    {
+        var regionElementData = new RegionElementData();
+
+        var regionRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Region);
+
+        if (regionRoute != null)
+        {
+            regionElementData = (RegionElementData)regionRoute.ElementData;
+
+        } else {
+
+            //First region of the selected phase
+        }
+
+        var defaultPosition = new Vector3(0, 0, 0);
+
+        var terrainSearchParameters = new Search.Terrain()
+        {
+            regionId = new List<int>() { regionElementData.Id }
+        };
+
+        var terrainData = DataManager.GetTerrainData(terrainSearchParameters);
+
+        var terrainId = RegionManager.GetTerrainId(regionElementData, terrainData, regionElementData.TileSize, defaultPosition.x, defaultPosition.z);
+        var terrainTileId = RegionManager.GetTerrainTileId(regionElementData, defaultPosition.x, defaultPosition.z);
+
+        return new InteractionDestinationElementData()
+        {
+            InteractionId = interactionId,
+
+            RegionId = regionElementData.Id,
+            TerrainId = terrainId,
+            TerrainTileId = terrainTileId,
+        };
+    }
+
+    public static void SetDefaultAddValues(List<InteractionDestinationElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetInteractionDestinationData(Search.InteractionDestination searchParameters)
@@ -256,104 +304,97 @@ public static class InteractionDestinationDataManager
         {
             elementData.Id = Fixtures.interactionDestinationList.Count > 0 ? (Fixtures.interactionDestinationList[Fixtures.interactionDestinationList.Count - 1].Id + 1) : 1;
             Fixtures.interactionDestinationList.Add(((InteractionDestinationData)elementData).Clone());
-        }
-        else { }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(InteractionDestinationElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.interactionDestinationList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedRegionId)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRegionId)
+            {
                 data.RegionId = elementData.RegionId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedTerrainId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedTerrainId)
+            {
                 data.TerrainId = elementData.TerrainId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedTerrainTileId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedTerrainTileId)
+            {
                 data.TerrainTileId = elementData.TerrainTileId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionX)
+            {
                 data.PositionX = elementData.PositionX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionY)
+            {
                 data.PositionY = elementData.PositionY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionZ)
+            {
                 data.PositionZ = elementData.PositionZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPositionVariance)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPositionVariance)
+            {
                 data.PositionVariance = elementData.PositionVariance;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationX)
+            {
                 data.RotationX = elementData.RotationX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationY)
+            {
                 data.RotationY = elementData.RotationY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRotationZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRotationZ)
+            {
                 data.RotationZ = elementData.RotationZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedChangeRotation)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedChangeRotation)
+            {
                 data.ChangeRotation = elementData.ChangeRotation;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedAnimation)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedAnimation)
+            {
                 data.Animation = elementData.Animation;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPatience)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPatience)
+            {
                 data.Patience = elementData.Patience;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(InteractionDestinationElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.interactionDestinationList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
     }
 }
 

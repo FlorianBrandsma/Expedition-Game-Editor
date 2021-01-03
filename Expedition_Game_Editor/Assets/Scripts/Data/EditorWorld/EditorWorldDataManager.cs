@@ -36,22 +36,27 @@ public static class EditorWorldDataManager
     private static List<ObjectiveBaseData> objectiveDataList;
     private static List<QuestBaseData> questDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.EditorWorld searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.EditorWorld>().First();
-        
         regionType = searchParameters.regionType;
 
         GetRegionData(searchParameters);
 
         if (regionDataList.Count == 0) return new List<IElementData>();
-        
+
         GetTileSetData();
         GetTerrainData();
         GetAtmosphereData();
         GetTerrainTileData();
+        
         GetWorldObjectData(searchParameters);
+
+        if (searchParameters.includeAddWorldObjectElement)
+            worldObjectDataList.Add(WorldObjectDataManager.DefaultData(searchParameters.regionId.First()));
+        
         GetInteractionDestinationData(searchParameters);
+
+        Debug.Log(searchParameters.includeAddInteractionDestinationElement);
 
         GetSceneData(searchParameters);
         GetOutcomeData();
@@ -59,12 +64,17 @@ public static class EditorWorldDataManager
         GetSceneActorData();
         GetScenePropData();
 
+        Debug.Log(searchParameters.includeAddScenePropElement);
+
         GetInteractionData();
         GetTaskData(searchParameters);
         
         GetWorldInteractableData();
 
         GetPhaseData();
+
+        Debug.Log(searchParameters.includeAddPhaseElement);
+
         GetChapterData();
         GetChapterWorldInteractableData();
         
@@ -263,6 +273,7 @@ public static class EditorWorldDataManager
                 select new WorldObjectElementData()
                 {
                     Id = worldObjectData.Id,
+                    RegionId = worldObjectData.RegionId,
                     TerrainId = worldObjectData.TerrainId,
                     TerrainTileId = worldObjectData.TerrainTileId,
 
@@ -448,11 +459,14 @@ public static class EditorWorldDataManager
 
         }).ToList();
 
+        if (searchParameters.includeAddWorldObjectElement)
+            WorldObjectDataManager.SetDefaultAddValues(list.SelectMany(x => x.TerrainDataList.SelectMany(y => y.WorldObjectDataList)).ToList());
+
         list.ForEach(x => x.SetOriginalValues());
         
         return list.Cast<IElementData>().ToList();
     }
-
+    
     private static void GetRegionData(Search.EditorWorld searchData)
     {
         var searchParameters = new Search.Region();
@@ -475,6 +489,12 @@ public static class EditorWorldDataManager
         searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
         terrainDataList = DataManager.GetTerrainData(searchParameters);
+
+        //Include empty terrain for unbound world objects
+        searchParameters.regionId.ForEach(regionId =>
+        {
+            terrainDataList.Add(new TerrainBaseData() { RegionId = regionId });
+        });
     }
 
     private static void GetAtmosphereData()

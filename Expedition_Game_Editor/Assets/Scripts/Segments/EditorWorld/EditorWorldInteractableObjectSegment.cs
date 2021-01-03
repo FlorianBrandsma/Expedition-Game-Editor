@@ -43,8 +43,18 @@ public class EditorWorldInteractableObjectSegment : MonoBehaviour, ISegment
     
     public void OpenSegment()
     {
+        SetSearchParameters();
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
+    }
+
+    private void SetSearchParameters()
+    {
+        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.Interactable>().First();
+
+        searchParameters.includeRemoveElement = true;
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Object };
     }
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)

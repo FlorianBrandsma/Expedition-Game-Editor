@@ -11,14 +11,12 @@ public static class RegionDataManager
     private static List<TileSetBaseData> tileSetDataList;
     private static List<TileBaseData> tileDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Region searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
-
         GetRegionData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            regionDataList.Add(DefaultData(searchParameters));
+            regionDataList.Add(DefaultData());
 
         if (searchParameters.includeRemoveElement)
             regionDataList.Add(new RegionBaseData());
@@ -94,9 +92,9 @@ public static class RegionDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static RegionBaseData DefaultData(Search.Region searchParameters)
+    public static RegionElementData DefaultData()
     {
-        return new RegionBaseData()
+        return new RegionElementData()
         {
             TileSetId = 1,
             RegionSize = 1,
@@ -104,7 +102,7 @@ public static class RegionDataManager
         };
     }
 
-    private static void SetDefaultAddValues(List<RegionElementData> list)
+    public static void SetDefaultAddValues(List<RegionElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -119,9 +117,10 @@ public static class RegionDataManager
 
         foreach(RegionBaseData region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(region.Id))            continue;
-            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(region.Id))      continue;
-            if (searchParameters.phaseId.Count      > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(region.Id))                    continue;
+            if (searchParameters.excludeId.Count        > 0 && searchParameters.excludeId.Contains(region.Id))              continue;
+            if (searchParameters.phaseId.Count          > 0 && !searchParameters.phaseId.Contains(region.PhaseId))          continue;
+            if (searchParameters.excludePhaseId.Count   > 0 && searchParameters.excludePhaseId.Contains(region.PhaseId))    continue;
 
             regionDataList.Add(region);
         }
@@ -159,12 +158,16 @@ public static class RegionDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void AddData(RegionElementData elementData, DataRequest dataRequest)
+    public static void AddData(RegionElementData elementData, DataRequest dataRequest, bool copy = false)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             elementData.Id = Fixtures.regionList.Count > 0 ? (Fixtures.regionList[Fixtures.regionList.Count - 1].Id + 1) : 1;
             Fixtures.regionList.Add(((RegionData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+            if (copy) return;
 
             var tileSearchParameters = new Search.Tile()
             {
@@ -173,104 +176,206 @@ public static class RegionDataManager
 
             var tileData = DataManager.GetTileData(tileSearchParameters);
 
-            for (int region = 0; region < elementData.RegionSize * elementData.RegionSize; region++)
+            for (int regionIndex = 0; regionIndex < elementData.RegionSize * elementData.RegionSize; regionIndex++)
             {
-                var terrainElementData = new TerrainElementData()
-                {
-                    RegionId = elementData.Id,
-                    IconId = 1,
-
-                    Index = region,
-                };
-
+                var terrainElementData = TerrainDataManager.DefaultData(elementData.Id, regionIndex);
                 terrainElementData.Add(dataRequest);
-
-                var atmosphereElementData = new AtmosphereElementData()
+                
+                for (int terrainIndex = 0; terrainIndex < elementData.TerrainSize * elementData.TerrainSize; terrainIndex++)
                 {
-                    TerrainId = terrainElementData.Id,
-
-                    Default = true
-                };
-
-                atmosphereElementData.Add(dataRequest);
-
-                for (int terrain = 0; terrain < elementData.TerrainSize * elementData.TerrainSize; terrain++)
-                {
-                    var terrainTileElementData = new TerrainTileElementData()
-                    {
-                        TerrainId = terrainElementData.Id,
-                        TileId = tileData.FirstOrDefault().Id,
-
-                        Index = terrain
-                    };
-
+                    var terrainTileElementData = TerrainTileDataManager.DefaultData(terrainElementData.Id, tileData.First().Id, terrainIndex);
                     terrainTileElementData.Add(dataRequest);
                 }
             }
-        }
-        else { }
+
+        } else { }
     }
 
     public static void UpdateData(RegionElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.regionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedChapterRegionId)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedChapterRegionId)
+            {
                 data.ChapterRegionId = elementData.ChapterRegionId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPhaseId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPhaseId)
+            {
                 data.PhaseId = elementData.PhaseId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedTileSetId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedTileSetId)
+            {
                 data.TileSetId = elementData.TileSetId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedName)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedRegionSize)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRegionSize)
+            {
                 data.RegionSize = elementData.RegionSize;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedTerrainSize)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedTerrainSize)
+            {
                 data.TerrainSize = elementData.TerrainSize;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    static public void UpdateIndex(RegionElementData elementData)
+    {
+        if (!elementData.ChangedIndex) return;
+
+        var data = Fixtures.regionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
     }
 
     public static void RemoveData(RegionElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
+            RemoveDependencies(elementData, dataRequest);
+
             Fixtures.regionList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
         }
-        else { }
     }
 
-    static public void UpdateIndex(RegionElementData elementData)
+    private static void RemoveDependencies(RegionElementData elementData, DataRequest dataRequest)
     {
-        var data = Fixtures.regionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+        RemoveTerrainData(elementData, dataRequest);
+        RemoveWorldObjectData(elementData, dataRequest);
+        RemoveWorldInteractableData(elementData, dataRequest);
+        RemoveInteractionDestinationData(elementData, dataRequest);
+    }
 
-        data.Index = elementData.Index;
+    private static void RemoveTerrainData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        var terrainSearchParameters = new Search.Terrain()
+        {
+            regionId = new List<int>() { elementData.Id }
+        };
+
+        var terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+
+        terrainDataList.ForEach(terrainData =>
+        {
+            var terrainElementData = new TerrainElementData()
+            {
+                Id = terrainData.Id
+            };
+
+            terrainElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveWorldObjectData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        var worldObjectSearchParameters = new Search.WorldObject()
+        {
+            regionId = new List<int>() { elementData.Id }
+        };
+
+        var worldObjectDataList = DataManager.GetWorldObjectData(worldObjectSearchParameters);
+
+        worldObjectDataList.ForEach(worldObjectData =>
+        {
+            var worldObjectElementData = new WorldObjectElementData()
+            {
+                Id = worldObjectData.Id
+            };
+
+            worldObjectElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveWorldInteractableData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        //Interaction destination
+        var interactionDestinationSearchParameters = new Search.InteractionDestination()
+        {
+            regionId = new List<int>() { elementData.Id }
+        };
+
+        var interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        if (interactionDestinationDataList.Count == 0) return;
+
+        //Interaction
+        var interactionSearchParameters = new Search.Interaction()
+        {
+            id = interactionDestinationDataList.Select(x => x.InteractionId).ToList()
+        };
+
+        var interactionDataList = DataManager.GetInteractionData(interactionSearchParameters);
+
+        //Task
+        var taskSearchParameters = new Search.Task()
+        {
+            id = interactionDataList.Select(x => x.TaskId).ToList()
+        };
+
+        var taskDataList = DataManager.GetTaskData(taskSearchParameters);
+
+        //World interactable
+
+        //Only remove the world interactables which belong directly to the region
+        var worldInteractableSearchParameters = new Search.WorldInteractable()
+        {
+            id = taskDataList.Select(x => x.WorldInteractableId).ToList(),
+            phaseId = new List<int>() { 0 },
+            objectiveId = new List<int>() { 0 }
+        };
+
+        var worldInteractableDataSourceList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+        
+        worldInteractableDataSourceList.ForEach(worldInteractableData =>
+        {
+            var worldInteractableElementData = new WorldInteractableElementData()
+            {
+                Id = worldInteractableData.Id
+            };
+
+            worldInteractableElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveInteractionDestinationData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        //Interaction destination
+        var interactionDestinationSearchParameters = new Search.InteractionDestination()
+        {
+            regionId = new List<int>() { elementData.Id }
+        };
+
+        var interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        interactionDestinationDataList.ForEach(interactionDestinationData =>
+        {
+            var interactionDestinationElementData = new InteractionDestinationElementData()
+            {
+                Id = interactionDestinationData.Id
+            };
+
+            interactionDestinationElementData.Remove(dataRequest);
+        });
     }
 }

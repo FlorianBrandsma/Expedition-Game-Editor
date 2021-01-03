@@ -39,31 +39,11 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     public void Add(DataRequest dataRequest)
     {
         WorldInteractableDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         WorldInteractableDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
-    }
-
-    public void UpdateSearch()
-    {
-        //WorldInteractableDataManager.UpdateSearch(this);
-
-        //OriginalData.InteractableId = InteractableId;
-
-        //OriginalData.InteractableName = InteractableName;
-
-        //OriginalData.ModelPath = ModelPath;
-        //OriginalData.ModelIconPath = ModelIconPath;
     }
 
     public void Remove(DataRequest dataRequest)

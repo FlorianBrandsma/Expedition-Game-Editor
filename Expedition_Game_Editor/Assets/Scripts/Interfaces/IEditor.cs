@@ -14,7 +14,7 @@ public interface IEditor
     bool Changed();
 
     void InitializeEditor();
-    void OpenEditor();
+    void ResetEditor();
     void UpdateEditor();
     void ApplyChanges(DataRequest dataRequest);
     void FinalizeChanges();

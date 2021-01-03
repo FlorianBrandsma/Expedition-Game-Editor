@@ -73,28 +73,13 @@ public class ScenePropElementData : ScenePropData, IElementData
 
     public void Update(DataRequest dataRequest)
     {
-        if (Changed)
-        {
-            ScenePropDataManager.UpdateData(this, dataRequest);
-
-            SetOriginalValues();
-        }
+        ScenePropDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateSearch()
+    public void Remove(DataRequest dataRequest)
     {
-        if (Changed)
-        {
-            ScenePropDataManager.UpdateSearch(this);
-
-            OriginalData.ModelId = ModelId;
-
-            OriginalData.ModelName = ModelName;
-            OriginalData.ModelIconPath = ModelIconPath;
-        }
+        ScenePropDataManager.RemoveData(this, dataRequest);
     }
-
-    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

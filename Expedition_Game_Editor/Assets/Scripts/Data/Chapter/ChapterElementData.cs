@@ -54,31 +54,17 @@ public class ChapterElementData : ChapterData, IElementData
     public void Add(DataRequest dataRequest)
     {
         ChapterDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         ChapterDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         ChapterDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest)
     {

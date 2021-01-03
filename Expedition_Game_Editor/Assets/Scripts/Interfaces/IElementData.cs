@@ -16,7 +16,6 @@ public interface IElementData
 
     void Add(DataRequest dataRequest);
     void Update(DataRequest dataRequest);
-    void UpdateSearch();
     void Remove(DataRequest dataRequest);
 
     void SetOriginalValues();

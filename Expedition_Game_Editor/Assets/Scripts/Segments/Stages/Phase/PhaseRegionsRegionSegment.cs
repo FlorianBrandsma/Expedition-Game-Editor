@@ -23,12 +23,19 @@ public class PhaseRegionsRegionSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Region);
 
+        InitializeSearchParameters(searchProperties);
+        
+        SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
-        searchParameters.phaseId = new List<int>() { PhaseEditor.Id };
-        searchParameters.type = Enums.RegionType.Phase;
+        searchParameters.phaseId        = new List<int>() { PhaseEditor.Id };
+        searchParameters.excludePhaseId = new List<int>() { 0 };
 
-        SegmentController.DataController.GetData(searchProperties);
+        searchParameters.type = Enums.RegionType.Phase;
     }
 
     public void InitializeSegment() { }

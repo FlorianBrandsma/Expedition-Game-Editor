@@ -17,11 +17,12 @@ public static class InteractionDataManager
     private static List<TerrainBaseData> terrainDataList;
     private static List<TileSetBaseData> tileSetDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Interaction searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
-
         GetInteractionData(searchParameters);
+
+        if (searchParameters.includeAddElement)
+            interactionDataList.Add(DefaultData(searchParameters.taskId.First(), false));
 
         if (interactionDataList.Count == 0) return new List<IElementData>();
         
@@ -93,9 +94,29 @@ public static class InteractionDataManager
 
                     }).OrderByDescending(x => x.Id == 0).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
 
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static InteractionElementData DefaultData(int taskId, bool isDefault)
+    {
+        return new InteractionElementData()
+        {
+            TaskId = taskId,
+
+            Default = isDefault
+        };
+    }
+
+    public static void SetDefaultAddValues(List<InteractionElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetInteractionData(Search.Interaction searchParameters)
@@ -198,191 +219,182 @@ public static class InteractionDataManager
         return defaultTimes;
     }
 
-    public static void AddData(InteractionElementData elementData, DataRequest dataRequest)
+    public static void AddData(InteractionElementData elementData, DataRequest dataRequest, bool copy = false)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             elementData.Id = Fixtures.interactionList.Count > 0 ? (Fixtures.interactionList[Fixtures.interactionList.Count - 1].Id + 1) : 1;
             Fixtures.interactionList.Add(((InteractionData)elementData).Clone());
 
-            AddDefaultInteractionDestination(elementData, dataRequest);
-            AddDefaultOutcome(elementData, dataRequest);
+            elementData.SetOriginalValues();
+
+            if (copy) return;
+
+            var interactionDestinationElementData = InteractionDestinationDataManager.DefaultData(elementData.Id);
+            interactionDestinationElementData.Add(dataRequest);
+
+            var outcomeElementData = OutcomeDataManager.DefaultData(elementData.Id);
+            outcomeElementData.Add(dataRequest);
 
         } else { }
     }
 
-    private static void AddDefaultInteractionDestination(InteractionElementData elementData, DataRequest dataRequest)
-    {
-        var regionElementData = new RegionElementData();
-
-        var regionRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Region);
-
-        if (regionRoute != null)
-        {
-            regionElementData = (RegionElementData)regionRoute.ElementData;
-
-        } else {
-
-            //First region of the selected phase
-        }
-
-        var defaultPosition = new Vector3(0, 0, 0);
-
-        var terrainSearchParameters = new Search.Terrain()
-        {
-            regionId = new List<int>() { regionElementData.Id }
-        };
-
-        var terrainData = DataManager.GetTerrainData(terrainSearchParameters);
-        
-        var terrainId = RegionManager.GetTerrainId(regionElementData, terrainData, regionElementData.TileSize, defaultPosition.x, defaultPosition.z);
-        var terrainTileId = RegionManager.GetTerrainTileId(regionElementData, defaultPosition.x, defaultPosition.z);
-
-        var interactionDestinationElementData = new InteractionDestinationElementData()
-        {
-            InteractionId = elementData.Id,
-
-            RegionId = regionElementData.Id,
-            TerrainId = terrainId,
-            TerrainTileId = terrainTileId,
-        };
-
-        interactionDestinationElementData.Add(dataRequest);
-    }
-
-    private static void AddDefaultOutcome(InteractionElementData elementData, DataRequest dataRequest)
-    {
-        var outcomeElementData = new OutcomeElementData()
-        {
-            InteractionId = elementData.Id,
-
-            Type = (int)Enums.OutcomeType.Positive
-        };
-
-        outcomeElementData.Add(dataRequest);
-    }
-
     public static void UpdateData(InteractionElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.interactionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedStartTime)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedStartTime)
+            {
                 data.StartTime = elementData.StartTime;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedEndTime)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedEndTime)
+            {
                 data.EndTime = elementData.EndTime;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedArrivalType)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedArrivalType)
+            {
                 data.ArrivalType = elementData.ArrivalType;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedTriggerAutomatically)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedTriggerAutomatically)
+            {
                 data.TriggerAutomatically = elementData.TriggerAutomatically;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedBeNearDestination)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedBeNearDestination)
+            {
                 data.BeNearDestination = elementData.BeNearDestination;
-            else { }
-        }
+            }
 
-        if (elementData.FaceInteractable)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.FaceInteractable)
+            {
                 data.FaceInteractable = elementData.FaceInteractable;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedFaceControllable)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedFaceControllable)
+            {
                 data.FaceControllable = elementData.FaceControllable;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedHideInteractionIndicator)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedHideInteractionIndicator)
+            {
                 data.HideInteractionIndicator = elementData.HideInteractionIndicator;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedInteractionRange)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedInteractionRange)
+            {
                 data.InteractionRange = elementData.InteractionRange;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDelayMethod)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDelayMethod)
+            {
                 data.DelayMethod = elementData.DelayMethod;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDelayDuration)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDelayDuration)
+            {
                 data.DelayDuration = elementData.DelayDuration;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedHideDelayIndicator)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedHideDelayIndicator)
+            {
                 data.HideDelayIndicator = elementData.HideDelayIndicator;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelDelayOnInput)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelDelayOnInput)
+            {
                 data.CancelDelayOnInput = elementData.CancelDelayOnInput;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelDelayOnMovement)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelDelayOnMovement)
+            {
                 data.CancelDelayOnMovement = elementData.CancelDelayOnMovement;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedCancelDelayOnHit)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedCancelDelayOnHit)
+            {
                 data.CancelDelayOnHit = elementData.CancelDelayOnHit;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
+
+            Fixtures.interactionList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else {
+
+            //Anything beyond this can be removed without validation
+            //RemoveDependencies(elementData, dataRequest);
         }
+    }
+
+    private static void RemoveDependencies(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        RemoveInteractionDestinationData(elementData, dataRequest);
+        RemoveOutcomeData(elementData, dataRequest);
+    }
+
+    private static void RemoveInteractionDestinationData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var interactionDestinationSearchParameters = new Search.InteractionDestination()
+        {
+            interactionId = new List<int>() { elementData.Id }
+        };
+
+        var interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        interactionDestinationDataList.ForEach(interactionDestinationData =>
+        {
+            var interactionDestinationElementData = new InteractionDestinationElementData()
+            {
+                Id = interactionDestinationData.Id
+            };
+
+            interactionDestinationElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveOutcomeData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var outcomeSearchParameters = new Search.Outcome()
+        {
+            interactionId = new List<int>() { elementData.Id }
+        };
+
+        var outcomeDataList = DataManager.GetOutcomeData(outcomeSearchParameters);
+
+        outcomeDataList.ForEach(outcomeData =>
+        {
+            var outcomeElementData = new OutcomeElementData()
+            {
+                Id = outcomeData.Id
+            };
+
+            outcomeElementData.Remove(dataRequest);
+        });
     }
 }

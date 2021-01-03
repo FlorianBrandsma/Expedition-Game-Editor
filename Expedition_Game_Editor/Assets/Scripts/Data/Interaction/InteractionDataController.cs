@@ -34,7 +34,7 @@ public class InteractionDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = InteractionDataManager.GetData(searchProperties),
+            dataList = InteractionDataManager.GetData(searchProperties.searchParameters.Cast<Search.Interaction>().First()),
             searchProperties = this.searchProperties
         };
 

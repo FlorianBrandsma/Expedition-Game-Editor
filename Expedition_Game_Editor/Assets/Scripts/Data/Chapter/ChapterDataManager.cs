@@ -6,14 +6,12 @@ public static class ChapterDataManager
 {
     private static List<ChapterBaseData> chapterDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Chapter searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
-
         GetChapterData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            chapterDataList.Add(DefaultData(searchParameters));
+            chapterDataList.Add(DefaultData());
 
         if (chapterDataList.Count == 0) return new List<IElementData>();
         
@@ -40,12 +38,12 @@ public static class ChapterDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static ChapterBaseData DefaultData(Search.Chapter searchParameters)
+    public static ChapterElementData DefaultData()
     {
-        return new ChapterBaseData();
+        return new ChapterElementData();
     }
 
-    private static void SetDefaultAddValues(List<ChapterElementData> list)
+    public static void SetDefaultAddValues(List<ChapterElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -73,6 +71,8 @@ public static class ChapterDataManager
             elementData.Id = Fixtures.chapterList.Count > 0 ? (Fixtures.chapterList[Fixtures.chapterList.Count - 1].Id + 1) : 1;
             Fixtures.chapterList.Add(((ChapterData)elementData).Clone());
 
+            elementData.SetOriginalValues();
+
         } else {
 
             CheckDuplicateName(elementData, dataRequest);
@@ -81,56 +81,42 @@ public static class ChapterDataManager
 
     public static void UpdateData(ChapterElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedName)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
             {
                 data.Name = elementData.Name;
+            }
 
-            } else {
+            if (elementData.ChangedTimeSpeed)
+            {
+                data.TimeSpeed = elementData.TimeSpeed;
+            }
 
+            if (elementData.ChangedPublicNotes)
+            {
+                data.PublicNotes = elementData.PublicNotes;
+            }
+
+            if (elementData.ChangedPrivateNotes)
+            {
+                data.PrivateNotes = elementData.PrivateNotes;
+            }
+
+            elementData.SetOriginalValues();
+
+        } else {
+
+            if (elementData.ChangedName)
+            {
                 //Let's imagine the chapter name is unique...
                 CheckDuplicateName(elementData, dataRequest);
             }
-        }
-
-        if (elementData.ChangedTimeSpeed)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-            {
-                data.TimeSpeed = elementData.TimeSpeed;
-
-            } else { }
-        }
-
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-            {
-                data.PublicNotes = elementData.PublicNotes;
-
-            } else { }  
-        }
-
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-            {
-                data.PrivateNotes = elementData.PrivateNotes;
-
-            } else { }  
-        }
-    }
-
-    public static void RemoveData(ChapterElementData elementData, DataRequest dataRequest)
-    {
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-        {
-            Fixtures.chapterList.RemoveAll(x => x.Id == elementData.Id);
-        }
-        else { }
+        }   
     }
 
     private static void CheckDuplicateName(ChapterElementData elementData, DataRequest dataRequest)
@@ -143,8 +129,96 @@ public static class ChapterDataManager
 
     static public void UpdateIndex(ChapterElementData elementData)
     {
+        if (!elementData.ChangedIndex) return;
+
         var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
+    }
+
+    public static void RemoveData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
+
+            Fixtures.chapterList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
+        }
+    }
+
+    private static void RemoveDependencies(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        RemoveWorldInteractableData(elementData, dataRequest);
+        RemoveChapterInteractableData(elementData, dataRequest);
+        RemoveChapterRegionData(elementData, dataRequest);
+    }
+
+    private static void RemoveWorldInteractableData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var worldInteractableSearchParameters = new Search.WorldInteractable()
+        {
+            chapterId = new List<int>() { elementData.Id }
+        };
+
+        var worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+
+        worldInteractableDataList.ForEach(worldInteractableData =>
+        {
+            var worldInteractableElementData = new WorldInteractableElementData()
+            {
+                Id = worldInteractableData.Id,
+                ChapterId = elementData.Id
+            };
+
+            worldInteractableElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveChapterInteractableData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var chapterInteractableSearchParameters = new Search.ChapterInteractable()
+        {
+            chapterId = new List<int>() { elementData.Id }
+        };
+
+        var chapterInteractableDataList = DataManager.GetChapterInteractableData(chapterInteractableSearchParameters);
+
+        chapterInteractableDataList.ForEach(chapterInteractableData =>
+        {
+            var chapterInteractableElementData = new ChapterInteractableElementData()
+            {
+                Id = chapterInteractableData.Id,
+                ChapterId = elementData.Id
+            };
+
+            chapterInteractableElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveChapterRegionData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var chapterRegionSearchParameters = new Search.ChapterRegion()
+        {
+            chapterId = new List<int>() { elementData.Id }
+        };
+
+        var chapterRegionDataList = DataManager.GetChapterRegionData(chapterRegionSearchParameters);
+
+        chapterRegionDataList.ForEach(chapterRegionData =>
+        {
+            var chapterRegionElementData = new ChapterRegionElementData()
+            {
+                Id = chapterRegionData.Id,
+                ChapterId = elementData.Id
+            };
+
+            chapterRegionElementData.Remove(dataRequest);
+        });
     }
 }

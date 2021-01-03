@@ -199,9 +199,8 @@ public class InteractableEditor : MonoBehaviour, IEditor
         interactableData = (InteractableData)ElementData.Clone();
     }
 
-    public void OpenEditor()
+    public void ResetEditor()
     {
-        //Changed data gets wiped when the same data controller is re-opened
         ModelId = interactableData.ModelId;
 
         Name = interactableData.Name;
@@ -286,18 +285,22 @@ public class InteractableEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

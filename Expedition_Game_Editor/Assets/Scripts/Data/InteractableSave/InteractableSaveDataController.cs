@@ -34,7 +34,7 @@ public class InteractableSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = InteractableSaveDataManager.GetData(searchProperties),
+            dataList = InteractableSaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.InteractableSave>().First()),
             searchProperties = this.searchProperties
         };
 

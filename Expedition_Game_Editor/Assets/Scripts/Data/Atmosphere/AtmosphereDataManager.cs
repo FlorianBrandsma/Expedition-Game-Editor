@@ -14,14 +14,12 @@ public static class AtmosphereDataManager
 
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Atmosphere searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Atmosphere>().First();
-
         GetAtmosphereData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            atmosphereDataList.Add(DefaultData(searchParameters));
+            atmosphereDataList.Add(DefaultData(searchParameters.terrainId.First(), false));
 
         if (atmosphereDataList.Count == 0) return new List<IElementData>();
         
@@ -74,16 +72,19 @@ public static class AtmosphereDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static AtmosphereBaseData DefaultData(Search.Atmosphere searchParameters)
+    public static AtmosphereElementData DefaultData(int terrainId, bool isDefault)
     {
-        return new AtmosphereBaseData()
+        return new AtmosphereElementData()
         {
-            TerrainId = searchParameters.terrainId.First(),
+            TerrainId = terrainId,
+
+            Default = isDefault,
+
             EndTime = (TimeManager.secondsInHour - 1)
         };
     }
     
-    private static void SetDefaultAddValues(List<AtmosphereElementData> list)
+    public static void SetDefaultAddValues(List<AtmosphereElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -149,40 +150,63 @@ public static class AtmosphereDataManager
         {
             elementData.Id = Fixtures.atmosphereList.Count > 0 ? (Fixtures.atmosphereList[Fixtures.atmosphereList.Count - 1].Id + 1) : 1;
             Fixtures.atmosphereList.Add(((AtmosphereData)elementData).Clone());
-        } else { }
+
+            elementData.SetOriginalValues();
+
+        } else {
+
+            CheckTimeConflict(elementData, dataRequest);
+        }
     }
 
     public static void UpdateData(AtmosphereElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.atmosphereList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedStartTime)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedStartTime)
+            {
                 data.StartTime = elementData.StartTime;
-            else { }
-        }
-        
-        if (elementData.ChangedEndTime)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedEndTime)
+            {
                 data.EndTime = elementData.EndTime;
-            else { }
-        }
-        
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
-        
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else {
+
+            if (elementData.ChangedStartTime)
+            {
+                CheckTimeConflict(elementData, dataRequest);
+            }
+
+            if (elementData.ChangedEndTime)
+            {
+                CheckTimeConflict(elementData, dataRequest);
+            }
+        }  
+    }
+
+    private static void CheckTimeConflict(AtmosphereElementData elementData, DataRequest dataRequest)
+    {
+        if (elementData.TimeConflict)
+            dataRequest.errorList.Add("Time conflict");
     }
 
     public static void RemoveData(AtmosphereElementData elementData, DataRequest dataRequest)
@@ -190,7 +214,7 @@ public static class AtmosphereDataManager
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             Fixtures.atmosphereList.RemoveAll(x => x.Id == elementData.Id);
-        }
-        else { }
+
+        } else { }
     }
 }

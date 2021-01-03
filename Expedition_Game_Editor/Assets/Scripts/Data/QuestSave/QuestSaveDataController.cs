@@ -34,7 +34,7 @@ public class QuestSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = QuestSaveDataManager.GetData(searchProperties),
+            dataList = QuestSaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.QuestSave>().First()),
             searchProperties = this.searchProperties
         };
 

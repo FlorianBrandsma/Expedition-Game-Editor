@@ -47,8 +47,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void SetElement()
     {
-        if (model != null)
-            model.gameObject.SetActive(false);
+        CloseModel();
 
         switch (EditorElement.DataElement.ElementData.DataType)
         {
@@ -62,9 +61,11 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
         }
 
-        if (EditorElement.elementStatus != Enums.ElementStatus.Hidden)
+        //Removed elements do not have a path and should not be set
+        if (EditorElement.elementStatus != Enums.ElementStatus.Hidden && modelPath != "")
         {
             var prefab = Resources.Load<Model>(modelPath);
+
             model = (Model)PoolManager.SpawnObject(prefab, modelId);
 
             SetModel();
@@ -177,12 +178,17 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
     public void CloseElement()
     {
+        CloseModel();
+
+        CloseTrackingElements();
+    }
+
+    private void CloseModel()
+    {
         if (model == null) return;
 
         PoolManager.ClosePoolObject(model);
         model = null;
-
-        CloseTrackingElements();
     }
 
     public void CloseTrackingElements()

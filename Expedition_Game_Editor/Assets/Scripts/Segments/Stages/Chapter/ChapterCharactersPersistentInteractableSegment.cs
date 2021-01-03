@@ -80,7 +80,7 @@ public class ChapterCharactersPersistentInteractableSegment : MonoBehaviour, ISe
 
             searchElementData.ExecuteType = Enums.ExecuteType.Add;
 
-            searchElementData.Id = -ChapterEditor.chapterInteractableElementDataList.Count;
+            searchElementData.Id = -(ChapterEditor.chapterInteractableElementDataList.Count + 1);
 
             searchElementData.ChapterId         = ChapterEditor.EditData.Id;
             searchElementData.InteractableId    = mergedElementData.InteractableId;

@@ -34,7 +34,7 @@ public class InteractionDestinationDataController : MonoBehaviour, IDataControll
         Data = new Data()
         {
             dataController = this,
-            dataList = InteractionDestinationDataManager.GetData(searchProperties),
+            dataList = InteractionDestinationDataManager.GetData(searchProperties.searchParameters.Cast<Search.InteractionDestination>().First()),
             searchProperties = this.searchProperties
         };
 

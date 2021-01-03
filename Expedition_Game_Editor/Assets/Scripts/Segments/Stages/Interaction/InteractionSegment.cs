@@ -17,10 +17,18 @@ public class InteractionSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Interaction);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
-        searchParameters.taskId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Task).ElementData.Id };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Interaction>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.taskId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Task).ElementData.Id };
     }
 
     public void InitializeSegment()

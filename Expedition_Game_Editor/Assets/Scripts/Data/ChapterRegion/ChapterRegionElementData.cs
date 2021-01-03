@@ -34,22 +34,12 @@ public class ChapterRegionElementData : ChapterRegionData, IElementData
     public void Add(DataRequest dataRequest)
     {
         ChapterRegionDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         ChapterRegionDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute) 
-            SetOriginalValues();
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest)
     {

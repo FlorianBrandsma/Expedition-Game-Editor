@@ -8,10 +8,8 @@ public static class TerrainTileDataManager
 
     private static List<TileBaseData> tileDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.TerrainTile searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.TerrainTile>().First();
-
         GetTerrainTileData(searchParameters);
 
         if (terrainTileDataList.Count == 0) return new List<IElementData>();
@@ -35,6 +33,17 @@ public static class TerrainTileDataManager
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static TerrainTileElementData DefaultData(int terrainId, int tileId, int terrainIndex)
+    {
+        return new TerrainTileElementData()
+        {
+            TerrainId = terrainId,
+            TileId = tileId,
+
+            Index = terrainIndex
+        };
     }
 
     private static void GetTerrainTileData(Search.TerrainTile searchParameters)
@@ -69,15 +78,36 @@ public static class TerrainTileDataManager
         {
             elementData.Id = Fixtures.terrainTileList.Count > 0 ? (Fixtures.terrainTileList[Fixtures.terrainTileList.Count - 1].Id + 1) : 1;
             Fixtures.terrainTileList.Add(((TerrainTileData)elementData).Clone());
-        }
-        else { }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
-    public static void UpdateSearch(TerrainTileElementData elementData)
+    public static void UpdateData(TerrainTileElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.terrainTileList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedTileId)
-            data.TileId = elementData.TileId;
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            if (elementData.ChangedTileId)
+            {
+                data.TileId = elementData.TileId;
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(TerrainTileElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.terrainTileList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
     }
 }

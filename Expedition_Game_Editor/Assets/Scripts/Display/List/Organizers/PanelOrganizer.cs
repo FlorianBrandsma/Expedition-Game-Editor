@@ -29,8 +29,6 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
     public void InitializeOrganizer()
     {
         ElementList = new List<EditorElement>();
-
-        //addElementLength = ListProperties.AddMethod != SelectionManager.AddMethod.None ? 1 : 0;
     }
 
     public void SelectData()
@@ -63,7 +61,7 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
 
         foreach (IElementData elementData in list)
         {
-            var elementPosition = GetElementPosition(list.IndexOf(elementData) /*+ addElementLength*/);
+            var elementPosition = GetElementPosition(list.IndexOf(elementData));
 
             if (ListManager.ElementAboveMax(elementPosition, true))
                 continue;

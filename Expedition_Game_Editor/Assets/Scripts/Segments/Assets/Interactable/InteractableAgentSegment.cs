@@ -40,7 +40,7 @@ public class InteractableAgentSegment : MonoBehaviour, ISegment
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
-
+    
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }

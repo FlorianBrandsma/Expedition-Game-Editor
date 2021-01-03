@@ -34,7 +34,7 @@ public class TaskSaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TaskSaveDataManager.GetData(searchProperties),
+            dataList = TaskSaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.TaskSave>().First()),
             searchProperties = this.searchProperties
         };
 

@@ -168,7 +168,7 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         outcomeData = (OutcomeData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -187,12 +187,18 @@ public class OutcomeEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyOutcomeChanges(dataRequest);
+    }
+
+    private void ApplyOutcomeChanges(DataRequest dataRequest)
+    {
+        if (EditData.ExecuteType == Enums.ExecuteType.Update)
+            UpdateOutcome(dataRequest);
+    }
+
+    private void UpdateOutcome(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
     }
 
     public void FinalizeChanges()
@@ -204,18 +210,22 @@ public class OutcomeEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

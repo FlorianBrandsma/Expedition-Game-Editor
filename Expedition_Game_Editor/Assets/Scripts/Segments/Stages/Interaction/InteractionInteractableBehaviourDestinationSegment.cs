@@ -4,6 +4,8 @@ using System.Linq;
 
 public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -23,10 +25,18 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
 
         var searchProperties = new SearchProperties(Enums.DataType.InteractionDestination);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
-        searchParameters.interactionId = new List<int>() { InteractionEditor.Id };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.interactionId = new List<int>() { InteractionEditor.Id };
     }
 
     public void InitializeSegment() { }

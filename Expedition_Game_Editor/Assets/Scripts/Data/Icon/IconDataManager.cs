@@ -6,10 +6,8 @@ public static class IconDataManager
 {
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Icon searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Icon>().First();
-
         GetIconData(searchParameters);
 
         if (iconDataList.Count == 0) return new List<IElementData>();

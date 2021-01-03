@@ -83,20 +83,20 @@ public class SceneShotElementData : SceneShotData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        SceneShotDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         SceneShotDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        SceneShotDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

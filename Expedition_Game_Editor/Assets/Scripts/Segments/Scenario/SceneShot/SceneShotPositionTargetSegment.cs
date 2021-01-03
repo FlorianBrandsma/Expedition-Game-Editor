@@ -90,6 +90,8 @@ public class SceneShotPositionTargetSegment : MonoBehaviour, ISegment
     
     private void SetSceneActorData()
     {
+        sceneActorButton.DataElement.Id = PositionTargetSceneActorId;
+
         SceneActorElementData.Id = PositionTargetSceneActorId;
         sceneActorButton.child.DataElement.Id = SceneActorElementData.Id;
 

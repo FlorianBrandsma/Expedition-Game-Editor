@@ -35,8 +35,6 @@ public class ScenePropData : ScenePropBaseData
         Width               = originalData.Width;
         Depth               = originalData.Depth;
 
-        Scale               = originalData.Scale;
-
         Default             = originalData.Default;
 
         StartTime           = originalData.StartTime;

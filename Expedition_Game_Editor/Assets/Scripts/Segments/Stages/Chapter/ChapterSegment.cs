@@ -3,11 +3,11 @@ using System.Linq;
 
 public class ChapterSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
     
-    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
-
     public void InitializeDependencies() { }
 
     public void InitializeData()
@@ -16,10 +16,16 @@ public class ChapterSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Chapter);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
-        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
     }
 
     public void InitializeSegment()

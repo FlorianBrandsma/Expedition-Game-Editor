@@ -89,32 +89,20 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        WorldObjectDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         WorldObjectDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
-    public void UpdateSearch()
+    public void Remove(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
-        WorldObjectDataManager.UpdateSearch(this);
-
-        OriginalData.ModelId = ModelId;
-
-        OriginalData.ModelName = ModelName;
-
-        OriginalData.ModelPath = ModelPath;
-        OriginalData.ModelIconPath = ModelIconPath;
+        WorldObjectDataManager.RemoveData(this, dataRequest);
     }
-
-    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

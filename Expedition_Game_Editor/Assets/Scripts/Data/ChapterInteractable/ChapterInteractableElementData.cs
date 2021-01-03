@@ -34,22 +34,12 @@ public class ChapterInteractableElementData : ChapterInteractableData, IElementD
     public void Add(DataRequest dataRequest)
     {
         ChapterInteractableDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         ChapterInteractableDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest)
     {

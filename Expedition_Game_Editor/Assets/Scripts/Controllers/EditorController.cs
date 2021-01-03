@@ -59,9 +59,12 @@ public class EditorController : MonoBehaviour
     {
         foreach (SegmentController segment in segments)
             segment.OpenSegment();
+    }
 
+    public void ResetEditor()
+    {
         if (PathController.DataEditor != null)
-            PathController.DataEditor.OpenEditor();
+            PathController.DataEditor.ResetEditor();
     }
 
     public void CloseSegments()

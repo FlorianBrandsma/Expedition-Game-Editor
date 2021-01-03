@@ -79,7 +79,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
 
             searchElementData.ExecuteType = Enums.ExecuteType.Add;
 
-            searchElementData.Id = -ChapterEditor.chapterRegionElementDataList.Count;
+            searchElementData.Id = -(ChapterEditor.chapterRegionElementDataList.Count + 1);
 
             searchElementData.ChapterId     = ChapterEditor.EditData.Id;
 

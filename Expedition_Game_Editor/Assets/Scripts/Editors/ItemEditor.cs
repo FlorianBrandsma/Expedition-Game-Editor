@@ -126,18 +126,25 @@ public class ItemEditor : MonoBehaviour, IEditor
         itemData = (ItemData)ElementData.Clone();
     }
 
-    public void OpenEditor()
+    public void ResetEditor()
     {
-        ModelId = itemData.ModelId;
+        ModelId         = itemData.ModelId;
 
-        Name = itemData.Name;
-        
-        ModelPath = itemData.ModelPath;
-        ModelIconPath = itemData.ModelIconPath;
+        Name            = itemData.Name;
 
-        Height = itemData.Height;
-        Width = itemData.Width;
-        Depth = itemData.Depth;
+        ModelPath       = itemData.ModelPath;
+        ModelIconPath   = itemData.ModelIconPath;
+
+        Height          = itemData.Height;
+        Width           = itemData.Width;
+        Depth           = itemData.Depth;
+
+        ModelPath       = itemData.ModelPath;
+        ModelIconPath   = itemData.ModelIconPath;
+
+        Height          = itemData.Height;
+        Width           = itemData.Width;
+        Depth           = itemData.Depth;
     }
     
     public void UpdateEditor()
@@ -202,19 +209,23 @@ public class ItemEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
-        
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
+
         Loaded = false;
     }
 

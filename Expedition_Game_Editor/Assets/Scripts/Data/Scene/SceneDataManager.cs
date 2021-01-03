@@ -13,10 +13,8 @@ public class SceneDataManager : MonoBehaviour
     private static List<TileSetBaseData> tileSetDataList;
     private static List<TileBaseData> tileDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Scene searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Scene>().First();
-
         GetSceneData(searchParameters);
 
         if (sceneDataList.Count == 0) return new List<IElementData>();
@@ -125,78 +123,167 @@ public class SceneDataManager : MonoBehaviour
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
+    public static void AddData(SceneElementData elementData, DataRequest dataRequest, bool copy = false)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.sceneList.Count > 0 ? (Fixtures.sceneList[Fixtures.sceneList.Count - 1].Id + 1) : 1;
+            Fixtures.sceneList.Add(((SceneData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+            if (copy) return;
+
+            //Add scene shots
+
+        } else { }
+    }
+
     public static void UpdateData(SceneElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.sceneList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        if (elementData.ChangedRegionId)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedRegionId)
+            {
                 data.RegionId = elementData.RegionId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedName)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedFreezeTime)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedFreezeTime)
+            {
                 data.FreezeTime = elementData.FreezeTime;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedAutoContinue)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedAutoContinue)
+            {
                 data.AutoContinue = elementData.AutoContinue;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedSetActorsInstantly)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedSetActorsInstantly)
+            {
                 data.SetActorsInstantly = elementData.SetActorsInstantly;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedSceneDuration)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedSceneDuration)
+            {
                 data.SceneDuration = elementData.SceneDuration;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedShotDuration)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedShotDuration)
+            {
                 data.ShotDuration = elementData.ShotDuration;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     static public void UpdateIndex(SceneElementData elementData)
     {
+        if (!elementData.ChangedIndex) return;
+
         var data = Fixtures.sceneList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
+    }
+
+    public static void RemoveData(SceneElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
+
+            Fixtures.sceneList.RemoveAll(x => x.Id == elementData.Id);
+            
+        } else { }
+    }
+
+    private static void RemoveDependencies(SceneElementData elementData, DataRequest dataRequest)
+    {
+        RemoveSceneShotData(elementData, dataRequest);
+        RemoveSceneActorData(elementData, dataRequest);
+        RemoveScenePropData(elementData, dataRequest);
+    }
+
+    private static void RemoveSceneShotData(SceneElementData elementData, DataRequest dataRequest)
+    {
+        //Scene shot
+        var sceneShotSearchParameters = new Search.SceneShot()
+        {
+            sceneId = new List<int>() { elementData.Id }
+        };
+
+        var sceneShotDataList = DataManager.GetSceneShotData(sceneShotSearchParameters);
+
+        sceneShotDataList.ForEach(sceneShotData =>
+        {
+            var sceneShotElementData = new SceneShotElementData()
+            {
+                Id = sceneShotData.Id
+            };
+
+            sceneShotElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveSceneActorData(SceneElementData elementData, DataRequest dataRequest)
+    {
+        var sceneActorSearchParameters = new Search.SceneActor()
+        {
+            sceneId = new List<int>() { elementData.Id }
+        };
+
+        var sceneActorDataList = DataManager.GetSceneActorData(sceneActorSearchParameters);
+        
+        sceneActorDataList.ForEach(sceneActorData =>
+        {
+            var sceneActorElementData = new SceneActorElementData()
+            {
+                Id = sceneActorData.Id
+            };
+
+            sceneActorElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveScenePropData(SceneElementData elementData, DataRequest dataRequest)
+    {
+        var scenePropSearchParameters = new Search.SceneProp()
+        {
+            sceneId = new List<int>() { elementData.Id }
+        };
+
+        var scenePropDataList = DataManager.GetScenePropData(scenePropSearchParameters);
+
+        scenePropDataList.ForEach(scenePropData =>
+        {
+            var scenePropElementData = new ScenePropElementData()
+            {
+                Id = scenePropData.Id
+            };
+
+            scenePropElementData.Remove(dataRequest);
+        });
     }
 }

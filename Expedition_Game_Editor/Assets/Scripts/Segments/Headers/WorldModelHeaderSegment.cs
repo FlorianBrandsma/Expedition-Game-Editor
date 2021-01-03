@@ -2,13 +2,12 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class AssetHeaderSegment : MonoBehaviour, ISegment
+public class WorldModelHeaderSegment : MonoBehaviour, ISegment
 {
     public ModelDataController modelDataController;
-    
-    public ExIndexSwitch indexSwitch;
+
     public EditorElement iconEditorElement;
-    public InputField inputField;
+    public Text headerText;
     public Text idText;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -23,45 +22,28 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Id;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).Id;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Id;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).Id;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
     }
 
-    private int Index
+    private string Title
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Index;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelName;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Index;
-
-                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
-            }
-        }
-    }
-
-    private string Name
-    {
-        get
-        {
-            switch(DataEditor.Data.dataController.DataType)
-            {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Name;
-
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Name;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).ModelName;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -70,17 +52,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.Name = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelName = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.Name = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.ModelName = value;
 
                     break;
 
@@ -95,11 +77,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelId;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelId;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).ModelId;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).ModelId;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
@@ -108,17 +90,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.ModelId = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelId = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.ModelId = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.ModelId = value;
 
                     break;
 
@@ -131,32 +113,32 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         get
         {
-            switch(DataEditor.Data.dataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelPath;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelPath;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).ModelPath;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).ModelPath;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
         set
         {
-            switch(DataEditor.Data.dataController.DataType)
+            switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.ModelPath = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelPath = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.ModelPath = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.ModelPath = value;
 
                     break;
 
@@ -171,11 +153,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).ModelIconPath;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).ModelIconPath;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).ModelIconPath;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).ModelIconPath;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -184,17 +166,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.ModelIconPath = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.ModelIconPath = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.ModelIconPath = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.ModelIconPath = value;
 
                     break;
 
@@ -209,11 +191,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Height;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).Height;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Height;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).Height;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
@@ -222,17 +204,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.Height = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.Height = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.Height = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.Height = value;
 
                     break;
 
@@ -247,11 +229,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Width;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).Width;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Width;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).Width;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
@@ -260,17 +242,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.Width = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.Width = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.Width = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.Width = value;
 
                     break;
 
@@ -285,11 +267,11 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
-                    return ((ItemEditor)DataEditor).Depth;
+                case Enums.DataType.WorldObject:
+                    return ((WorldObjectEditor)DataEditor).Depth;
 
-                case Enums.DataType.Interactable:
-                    return ((InteractableEditor)DataEditor).Depth;
+                case Enums.DataType.SceneProp:
+                    return ((ScenePropEditor)DataEditor).Depth;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
@@ -298,17 +280,17 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.Item:
+                case Enums.DataType.WorldObject:
 
-                    var itemEditor = (ItemEditor)DataEditor;
-                    itemEditor.Depth = value;
+                    var worldObjectEditor = (WorldObjectEditor)DataEditor;
+                    worldObjectEditor.Depth = value;
 
                     break;
 
-                case Enums.DataType.Interactable:
+                case Enums.DataType.SceneProp:
 
-                    var interactableEditor = (InteractableEditor)DataEditor;
-                    interactableEditor.Depth = value;
+                    var scenePropEditor = (ScenePropEditor)DataEditor;
+                    scenePropEditor.Depth = value;
 
                     break;
 
@@ -316,8 +298,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
             }
         }
     }
+
     #endregion
-    
+
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -329,32 +312,6 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     public void InitializeData()
     {
         InitializeDependencies();
-
-        if (DataEditor.Loaded) return;
-
-        switch (DataEditor.Data.dataController.DataType)
-        {
-            case Enums.DataType.Item:           InitializeItemProperties();         break;
-            case Enums.DataType.Interactable:   InitializeInteractableProperties(); break;
-        }
-
-        if (indexSwitch != null)
-        {
-            var enabled = Id > 0;
-
-            indexSwitch.EnableElement(enabled);
-            indexSwitch.InitializeSwitch(this, Index);
-        }  
-    }
-
-    private void InitializeItemProperties()
-    {
-        GetComponent<ObjectProperties>().castShadow = false;
-    }
-
-    private void InitializeInteractableProperties()
-    {
-        GetComponent<ObjectProperties>().castShadow = true;
     }
 
     public void InitializeSegment()
@@ -392,16 +349,9 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        if (indexSwitch != null)
-            indexSwitch.Activate();
-
-        if (Id > 0)
-            idText.text = Id.ToString();
-        else
-            idText.text = "New";
-
-        inputField.text = Name;
-
+        headerText.text = Title;
+        idText.text = Id > 0 ? Id.ToString() : "New";
+        
         SelectionElementManager.Add(iconEditorElement);
         SelectionManager.SelectData(iconEditorElement.DataElement.Data.dataList);
 
@@ -430,6 +380,8 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
     {
         modelElementData.DataElement.Id = modelElementData.Id;
 
+        Title = modelElementData.Name;
+
         ModelId = modelElementData.Id;
         ModelPath = modelElementData.Path;
         ModelIconPath = modelElementData.IconPath;
@@ -443,20 +395,10 @@ public class AssetHeaderSegment : MonoBehaviour, ISegment
         DataEditor.UpdateEditor();
     }
 
-    public void UpdateName()
-    {
-        Name = inputField.text;
-
-        DataEditor.UpdateEditor();
-    }
-
     public void UpdateSegment() { }
 
     public void CloseSegment()
     {
-        if (indexSwitch != null)
-            indexSwitch.Deactivate();
-
         SelectionElementManager.Remove(iconEditorElement);
 
         gameObject.SetActive(false);

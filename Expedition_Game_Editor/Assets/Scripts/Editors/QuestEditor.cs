@@ -97,7 +97,7 @@ public class QuestEditor : MonoBehaviour, IEditor
         questData = (QuestData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -111,12 +111,45 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        ElementDataList.ForEach(x => x.Update(dataRequest));
+        ApplyQuestChanges(dataRequest);
+    }
 
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
+    private void ApplyQuestChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddQuest(dataRequest);
+                break;
 
-        UpdateEditor();
+            case Enums.ExecuteType.Update:
+                UpdateQuest(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveQuest(dataRequest);
+                break;
+        }
+    }
+
+    private void AddQuest(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            questData.Id = tempData.Id;
+    }
+
+    private void UpdateQuest(DataRequest dataRequest)
+    {
+        EditData.Update(dataRequest);
+    }
+
+    private void RemoveQuest(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     public void FinalizeChanges()
@@ -128,20 +161,24 @@ public class QuestEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
+    }
+
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()
     {
         worldInteractableDataList.Clear();
 
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

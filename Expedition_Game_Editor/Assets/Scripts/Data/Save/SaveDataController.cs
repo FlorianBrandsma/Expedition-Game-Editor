@@ -34,7 +34,7 @@ public class SaveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = SaveDataManager.GetData(searchProperties),
+            dataList = SaveDataManager.GetData(searchProperties.searchParameters.Cast<Search.Save>().First()),
             searchProperties = this.searchProperties
         };
 

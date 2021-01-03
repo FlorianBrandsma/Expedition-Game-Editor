@@ -12,10 +12,8 @@ public static class GameSaveDataManager
     private static List<TaskSaveBaseData> taskSaveDataList;
     private static List<InteractionSaveBaseData> interactionSaveDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.GameSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
-
         GetPlayerSaveData(searchParameters);
         
         if (playerSaveDataList.Count == 0) return new List<IElementData>();
@@ -190,6 +188,6 @@ public static class GameSaveDataManager
 
     public static void UpdateData(GameSaveElementData elementData, DataRequest dataRequest)
     {
-
+        if (!elementData.Changed) return;
     }
 }

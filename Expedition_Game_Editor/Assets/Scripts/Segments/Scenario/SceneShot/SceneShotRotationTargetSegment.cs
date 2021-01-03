@@ -90,6 +90,8 @@ public class SceneShotRotationTargetSegment : MonoBehaviour, ISegment
 
     private void SetSceneActorData()
     {
+        sceneActorButton.DataElement.Id = RotationTargetSceneActorId;
+
         SceneActorElementData.Id = RotationTargetSceneActorId;
         sceneActorButton.child.DataElement.Id = RotationTargetSceneActorId;
 

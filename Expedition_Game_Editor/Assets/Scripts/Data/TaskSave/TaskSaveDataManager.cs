@@ -8,10 +8,8 @@ public static class TaskSaveDataManager
 
     private static List<TaskBaseData> taskDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.TaskSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.TaskSave>().First();
-
         GetTaskSaveData(searchParameters);
 
         if (taskSaveDataList.Count == 0) return new List<IElementData>();
@@ -69,13 +67,19 @@ public static class TaskSaveDataManager
 
     public static void UpdateData(TaskSaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.taskSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedComplete)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedComplete)
+            {
                 data.Complete = elementData.Complete;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 }

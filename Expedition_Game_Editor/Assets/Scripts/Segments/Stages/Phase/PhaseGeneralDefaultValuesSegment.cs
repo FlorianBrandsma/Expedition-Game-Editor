@@ -84,18 +84,23 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         searchParameters.type = Enums.RegionType.Controllable;
 
         SegmentController.DataController.GetData(searchProperties);
-      
+
         var regionData = SegmentController.DataController.Data.dataList.Where(x => x.Id == DefaultRegionId).FirstOrDefault();
 
         //Assign data
-        editButton.DataElement.Id = regionData.Id;
-        editButton.DataElement.Data = SegmentController.DataController.Data;
+        if (regionData != null)
+            editButton.DataElement.Id = regionData.Id;
 
+        editButton.DataElement.Data = SegmentController.DataController.Data;
         editButton.DataElement.Path = SegmentController.EditorController.PathController.route.path;
+
+        buttonIcon.texture = Resources.Load<Texture2D>(ModelIconPath);
 
         editButton.InitializeElement();
 
-        buttonIcon.texture = Resources.Load<Texture2D>(ModelIconPath);
+        editButton.elementStatus = regionData != null ? Enums.ElementStatus.Enabled : Enums.ElementStatus.Locked;
+
+        editButton.SetOverlay();
     }
 
     public void OpenSegment() { }

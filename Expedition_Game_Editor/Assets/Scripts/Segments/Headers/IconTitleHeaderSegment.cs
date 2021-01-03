@@ -10,8 +10,6 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    public InteractableSaveEditor InteractableSaveEditor { get { return (InteractableSaveEditor)DataEditor; } }
-
     #region Data properties
     private int Id
     {
@@ -19,11 +17,11 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.SceneActor:
-                    return ((SceneActorEditor)DataEditor).Id;
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).Id;
 
-                case Enums.DataType.SceneProp:
-                    return ((ScenePropEditor)DataEditor).Id;
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).Id;
 
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).Id;
@@ -39,11 +37,11 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.SceneActor:
-                    return ((SceneActorEditor)DataEditor).InteractableName;
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).InteractableName;
 
-                case Enums.DataType.SceneProp:
-                    return ((ScenePropEditor)DataEditor).ModelName;
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).InteractableName;
 
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).InteractableName;
@@ -59,11 +57,11 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.SceneActor:
-                    return ((SceneActorEditor)DataEditor).ModelIconPath;
+                case Enums.DataType.Phase:
+                    return ((PhaseEditor)DataEditor).ModelIconPath;
 
-                case Enums.DataType.SceneProp:
-                    return ((ScenePropEditor)DataEditor).ModelIconPath;
+                case Enums.DataType.InteractionDestination:
+                    return ((InteractionDestinationEditor)DataEditor).ModelIconPath;
 
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).ModelIconPath;

@@ -103,30 +103,20 @@ public class SceneActorElementData : SceneActorData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        SceneActorDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         SceneActorDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
-    public void UpdateSearch()
+    public void Remove(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
-        SceneActorDataManager.UpdateSearch(this);
-
-        OriginalData.WorldInteractableId = WorldInteractableId;
-
-        OriginalData.InteractableName = InteractableName;
-        OriginalData.ModelIconPath = ModelIconPath;
+        SceneActorDataManager.RemoveData(this, dataRequest);
     }
-
-    public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {

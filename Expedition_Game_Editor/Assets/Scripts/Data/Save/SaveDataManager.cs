@@ -21,10 +21,8 @@ public static class SaveDataManager
     private static List<PhaseBaseData> phaseDataList;
     private static List<ChapterBaseData> chapterDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Save searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Save>().First();
-
         GetSaveData(searchParameters);
 
         if (saveDataList.Count == 0) return new List<IElementData>();
@@ -172,6 +170,8 @@ public static class SaveDataManager
 
     public static void UpdateData(SaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.saveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
     }
 }

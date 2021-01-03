@@ -104,11 +104,11 @@ static public class SelectionManager
 
         var dataRequest = new DataRequest();
 
-        var validationElement = searchElementData.Clone();
-        validationElement.DataElement.Data.dataController.SetData(validationElement, resultElementData);
+        //var validationElement = searchElementData.Clone();
+        //validationElement.DataElement.Data.dataController.SetData(validationElement, resultElementData);
 
         //Validate changes once
-        ApplyChanges(dataRequest, validationElement, resultElementData);
+        //ApplyChanges(dataRequest, validationElement, resultElementData);
 
         if (dataRequest.errorList.Count > 0)
         {

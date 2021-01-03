@@ -8,10 +8,8 @@ public static class ModelDataManager
 
     private static List<IconBaseData> iconDataList;
     
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Model searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Model>().First();
-
         GetModelData(searchParameters);
 
         if (modelDataList.Count == 0) return new List<IElementData>();

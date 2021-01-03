@@ -34,7 +34,7 @@ public class TaskDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TaskDataManager.GetData(searchProperties),
+            dataList = TaskDataManager.GetData(searchProperties.searchParameters.Cast<Search.Task>().First()),
             searchProperties = this.searchProperties
         };
 

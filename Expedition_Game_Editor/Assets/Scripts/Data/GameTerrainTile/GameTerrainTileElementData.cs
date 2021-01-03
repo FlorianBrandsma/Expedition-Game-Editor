@@ -24,8 +24,6 @@ public class GameTerrainTileElementData : GameTerrainTileData, IElementData
 
     public void Update(DataRequest dataRequest) { }
 
-    public void UpdateSearch() { }
-
     public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()

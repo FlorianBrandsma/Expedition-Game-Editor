@@ -199,7 +199,9 @@ public class ListManager : MonoBehaviour, IDisplayManager
         
         overlayManager.CloseOverlay();
         Organizer.CloseOrganizer();
-        
+
+        Organizer = null;
+
         transform.parent.gameObject.SetActive(false);
     }
 }

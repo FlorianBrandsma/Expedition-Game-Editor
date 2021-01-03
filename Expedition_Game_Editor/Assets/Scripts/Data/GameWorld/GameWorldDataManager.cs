@@ -36,11 +36,9 @@ public static class GameWorldDataManager
 
     private static List<int> defaultTimeList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.GameWorld searchParameters)
     {
         Debug.Log("Get game data");
-
-        var searchParameters = searchProperties.searchParameters.Cast<Search.GameWorld>().First();
 
         GetPhaseData(searchParameters);
 

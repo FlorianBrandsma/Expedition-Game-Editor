@@ -8,10 +8,8 @@ public static class ChapterSaveDataManager
 
     private static List<ChapterBaseData> chapterDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.ChapterSave searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterSave>().First();
-
         GetChapterSaveData(searchParameters);
 
         if (chapterSaveDataList.Count == 0) return new List<IElementData>();
@@ -66,13 +64,19 @@ public static class ChapterSaveDataManager
 
     public static void UpdateData(ChapterSaveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.chapterSaveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedComplete)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedComplete)
+            {
                 data.Complete = elementData.Complete;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 }

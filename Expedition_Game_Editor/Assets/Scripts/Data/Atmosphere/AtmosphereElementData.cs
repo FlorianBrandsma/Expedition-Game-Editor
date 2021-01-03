@@ -49,22 +49,12 @@ public class AtmosphereElementData : AtmosphereData, IElementData
     public void Add(DataRequest dataRequest)
     {
         AtmosphereDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-
         AtmosphereDataManager.UpdateData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
-
-    public void UpdateSearch() { }
 
     public void Remove(DataRequest dataRequest)
     {

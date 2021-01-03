@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class ScenePropDataController : MonoBehaviour, IDataController
 {
@@ -31,7 +32,7 @@ public class ScenePropDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ScenePropDataManager.GetData(searchProperties),
+            dataList = ScenePropDataManager.GetData(searchProperties.searchParameters.Cast<Search.SceneProp>().First()),
             searchProperties = this.searchProperties
         };
 

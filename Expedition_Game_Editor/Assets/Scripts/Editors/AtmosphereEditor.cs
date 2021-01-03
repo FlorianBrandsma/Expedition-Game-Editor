@@ -124,18 +124,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         atmosphereData = (AtmosphereData)ElementData.Clone();
     }
 
-    public void OpenEditor()
-    {
-        StartTime       = atmosphereData.StartTime;
-        EndTime         = atmosphereData.EndTime;
-
-        PublicNotes     = atmosphereData.PublicNotes;
-        PrivateNotes    = atmosphereData.PrivateNotes;
-
-        TimeConflict    = atmosphereData.TimeConflict;
-        Debug.Log("test");
-        UpdateEditor();
-    }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -144,7 +133,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed) && !TimeConflict;
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges(DataRequest dataRequest)
@@ -219,6 +208,7 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
                 OpenDefault();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
@@ -232,15 +222,16 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         ((ListManager)EditData.DataElement.DisplayManager).AutoSelectElement(defaultElement.Id);
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        //Also changes "add new" execute type to update. oops!
+        ResetExecuteType();
 
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

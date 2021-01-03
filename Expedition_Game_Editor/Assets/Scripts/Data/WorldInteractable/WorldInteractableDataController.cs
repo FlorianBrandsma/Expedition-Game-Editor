@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class WorldInteractableDataController : MonoBehaviour, IDataController
 {
     public SearchProperties searchProperties;
-    public Search.Interactable searchInteractable;
+    //public Search.Interactable searchInteractable;
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     
@@ -19,7 +20,7 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
     
     public void InitializeController()
     {
-        //SearchProperties.Initialize();
+        SearchProperties.Initialize();
 
         //Temporary until search parameters needs another rework
 
@@ -30,7 +31,7 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
 
         //Update 20/12/2020: scene actors can look for other scene actors as well as world interactables!
 
-        SearchProperties.searchParameters = new[] { searchInteractable };
+        //SearchProperties.searchParameters = new[] { searchInteractable };
     }
 
     public void GetData()
@@ -43,7 +44,7 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = WorldInteractableDataManager.GetData(searchProperties),
+            dataList = WorldInteractableDataManager.GetData(searchProperties.searchParameters.Cast<Search.WorldInteractable>().First()),
             searchProperties = this.searchProperties
         };
 

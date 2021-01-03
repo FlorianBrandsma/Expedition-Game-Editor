@@ -250,7 +250,44 @@ public class SceneActorEditor : MonoBehaviour, IEditor
         sceneActorData = (SceneActorData)ElementData.Clone();
     }
     
-    public void OpenEditor() { }
+    public void ResetEditor()
+    {
+        TerrainId           = sceneActorData.TerrainId;
+        TerrainTileId       = sceneActorData.TerrainTileId;
+        
+        SpeechMethod        = sceneActorData.SpeechMethod;
+        SpeechText          = sceneActorData.SpeechText;
+        ShowTextBox         = sceneActorData.ShowTextBox;
+
+        TargetSceneActorId  = sceneActorData.TargetSceneActorId;
+
+        ChangePosition      = sceneActorData.ChangePosition;
+        FreezePosition      = sceneActorData.FreezePosition;
+
+        PositionX           = sceneActorData.PositionX;
+        PositionY           = sceneActorData.PositionY;
+        PositionZ           = sceneActorData.PositionZ;
+
+        ChangeRotation      = sceneActorData.ChangeRotation;
+        FaceTarget          = sceneActorData.FaceTarget;
+
+        RotationX           = sceneActorData.RotationX;
+        RotationY           = sceneActorData.RotationY;
+        RotationZ           = sceneActorData.RotationZ;
+
+        //ModelPath           = originalData.ModelPath;
+        //ModelIconPath       = originalData.ModelIconPath;
+
+        //InteractableName    = originalData.InteractableName;
+
+        //Height              = originalData.Height;
+        //Width               = originalData.Width;
+        //Depth               = originalData.Depth;
+
+        //Scale               = originalData.Scale;
+
+        SpeechTextLimit     = sceneActorData.SpeechTextLimit;
+    }
 
     public void UpdateEditor()
     {
@@ -298,18 +335,22 @@ public class SceneActorEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

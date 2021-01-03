@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WorldElementHeaderSegment : MonoBehaviour, ISegment
+public class WorldInteractableHeaderSegment : MonoBehaviour, ISegment
 {
     public RawImage icon;
     public Text headerText;
@@ -17,34 +17,22 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.WorldObject:
-                    return ((WorldObjectEditor)DataEditor).Id;
-
-                case Enums.DataType.Phase:
-                    return ((PhaseEditor)DataEditor).Id;
-
-                case Enums.DataType.InteractionDestination:
-                    return ((InteractionDestinationEditor)DataEditor).Id;
+                case Enums.DataType.SceneActor:
+                    return ((SceneActorEditor)DataEditor).Id;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
     }
 
-    private string Name
+    private string Title
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.WorldObject:
-                    return ((WorldObjectEditor)DataEditor).ModelName;
-
-                case Enums.DataType.Phase:
-                    return ((PhaseEditor)DataEditor).InteractableName;
-
-                case Enums.DataType.InteractionDestination:
-                    return ((InteractionDestinationEditor)DataEditor).InteractableName;
+                case Enums.DataType.SceneActor:
+                    return ((SceneActorEditor)DataEditor).InteractableName;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -57,14 +45,8 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
         {
             switch (DataEditor.Data.dataController.DataType)
             {
-                case Enums.DataType.WorldObject:
-                    return ((WorldObjectEditor)DataEditor).ModelIconPath;
-
-                case Enums.DataType.Phase:
-                    return ((PhaseEditor)DataEditor).ModelIconPath;
-
-                case Enums.DataType.InteractionDestination:
-                    return ((InteractionDestinationEditor)DataEditor).ModelIconPath;
+                case Enums.DataType.SceneActor:
+                    return ((SceneActorEditor)DataEditor).ModelIconPath;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -92,11 +74,8 @@ public class WorldElementHeaderSegment : MonoBehaviour, ISegment
     public void OpenSegment()
     {
         icon.texture = Resources.Load<Texture2D>(ModelIconPath);
-        headerText.text = Name;
+        headerText.text = Title;
         idText.text = Id.ToString();
-
-        headerText.fontSize = StyleManager.headerFontSize;
-        headerText.resizeTextMaxSize = StyleManager.headerFontSize;
 
         gameObject.SetActive(true);
     }

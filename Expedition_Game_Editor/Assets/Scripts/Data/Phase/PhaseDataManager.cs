@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,11 +18,12 @@ public static class PhaseDataManager
     private static List<TerrainTileBaseData> terrainTileDataList;
     private static List<TileSetBaseData> tileSetDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Phase searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Phase>().First();
-
         GetPhaseData(searchParameters);
+
+        if (searchParameters.includeAddElement)
+            phaseDataList.Add(DefaultData(searchParameters.chapterId.First()));
 
         if (phaseDataList.Count == 0) return new List<IElementData>();
         
@@ -37,10 +39,11 @@ public static class PhaseDataManager
         GetTerrainTileData();
 
         var list = (from phaseData      in phaseDataList
-                    join chapterData    in chapterDataList  on phaseData.ChapterId          equals chapterData.Id
+                    join chapterData    in chapterDataList  on phaseData.ChapterId equals chapterData.Id
 
-                    join regionData     in regionDataList   on phaseData.DefaultRegionId    equals regionData.Id
-                    join tileSetData    in tileSetDataList  on regionData.TileSetId         equals tileSetData.Id
+                    join leftJoin in (from regionData   in regionDataList
+                                      join tileSetData  in tileSetDataList on regionData.TileSetId equals tileSetData.Id
+                                      select new { regionData, tileSetData }) on phaseData.DefaultRegionId equals leftJoin.regionData.Id into regionData
 
                     join leftJoin in (from worldInteractableData    in worldInteractableDataList
                                       join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
@@ -74,7 +77,7 @@ public static class PhaseDataManager
                         PublicNotes = phaseData.PublicNotes,
                         PrivateNotes = phaseData.PrivateNotes,
 
-                        TerrainTileId = RegionManager.GetTerrainTileId(regionData, terrainDataList, terrainTileDataList, tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ),
+                        TerrainTileId = regionData.FirstOrDefault() != null ? RegionManager.GetTerrainTileId(regionData.FirstOrDefault().regionData, terrainDataList, terrainTileDataList, regionData.FirstOrDefault().tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ) : 0,
 
                         WorldInteractableId = worldInteractableData.First().worldInteractableData.Id,
                         
@@ -88,13 +91,33 @@ public static class PhaseDataManager
                         Depth = worldInteractableData.First().modelData.Depth,
 
                         InteractableName = worldInteractableData.First().interactableData.Name,
-                        LocationName = RegionManager.LocationName(phaseData.DefaultPositionX, phaseData.DefaultPositionZ, tileSetData.TileSize, regionData, terrainDataList)
+                        LocationName = regionData.FirstOrDefault() != null ? RegionManager.LocationName(phaseData.DefaultPositionX, phaseData.DefaultPositionZ, regionData.FirstOrDefault().tileSetData.TileSize, regionData.FirstOrDefault().regionData, terrainDataList) : ""
                         
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static PhaseElementData DefaultData(int chapterId)
+    {
+        return new PhaseElementData()
+        {
+            ChapterId = chapterId
+        };
+    }
+
+    public static void SetDefaultAddValues(List<PhaseElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetPhaseData(Search.Phase searchParameters)
@@ -184,100 +207,687 @@ public static class PhaseDataManager
 
     public static void AddData(PhaseElementData elementData, DataRequest dataRequest)
     {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.phaseList.Count > 0 ? (Fixtures.phaseList[Fixtures.phaseList.Count - 1].Id + 1) : 1;
+            Fixtures.phaseList.Add(((PhaseData)elementData).Clone());
 
+            elementData.SetOriginalValues();
+
+            AddRegionData(elementData, dataRequest);
+            AddWorldInteractableData(elementData, dataRequest);
+
+        } else { }
     }
-    
+
+    private static void AddRegionData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        var chapterRegionSearchParameters = new Search.ChapterRegion()
+        {
+            chapterId = new List<int>() { elementData.ChapterId }
+        };
+
+        var chapterRegionBaseDataList = DataManager.GetChapterRegionData(chapterRegionSearchParameters);
+
+        chapterRegionBaseDataList.ForEach(chapterRegion =>
+        {
+            CopyRegionData(elementData, chapterRegion, dataRequest);
+        });
+    }
+
+    public static void AddWorldInteractableData(PhaseElementData phaseElementData, DataRequest dataRequest)
+    {
+        //Chapter
+        var chapterSearchParameters = new Search.Chapter()
+        {
+            id = new List<int>() { phaseElementData.ChapterId }
+        };
+
+        var chapterData = DataManager.GetChapterData(chapterSearchParameters).First();
+
+        //Chapter interactables
+        var chapterInteractableSearchParameters = new Search.ChapterInteractable()
+        {
+            chapterId = new List<int>() { chapterData.Id }
+        };
+
+        var chapterInteractableDataList = DataManager.GetChapterInteractableData(chapterInteractableSearchParameters);
+
+        chapterInteractableDataList.ForEach(chapterInteractableData =>
+        {
+            var worldInteractableElementData = new WorldInteractableElementData()
+            {
+                ChapterInteractableId = chapterInteractableData.Id,
+                PhaseId = phaseElementData.Id,
+
+                InteractableId = chapterInteractableData.InteractableId,
+
+                Type = (int)Enums.InteractableType.Agent
+            };
+
+            //Don't add a task by default when adding a world interactable, since phase world interactables
+            //will have a task for multiple objectives that do not yet exist
+            WorldInteractableDataManager.AddData(worldInteractableElementData, dataRequest, true);
+        });
+    }
+
+    public static void CopyRegionData(PhaseElementData phaseElementData, ChapterRegionBaseData chapterRegionData, DataRequest dataRequest)
+    {
+        //Region
+        var regionSearchParameters = new Search.Region()
+        {
+            id = new List<int>() { chapterRegionData.RegionId }
+        };
+
+        var regionDataSource = DataManager.GetRegionData(regionSearchParameters).First();
+
+        var tileSetSearchParameters = new Search.TileSet()
+        {
+            id = new List<int>() { regionDataSource.TileSetId }
+        };
+
+        var tileSetData = DataManager.GetTileSetData(tileSetSearchParameters).First();
+
+        var regionElementData = new RegionElementData()
+        {
+            PhaseId = phaseElementData.Id,
+            ChapterRegionId = chapterRegionData.Id,
+
+            TileSetId = regionDataSource.TileSetId,
+
+            Name = regionDataSource.Name,
+            RegionSize = regionDataSource.RegionSize,
+            TerrainSize = regionDataSource.TerrainSize,
+
+            TileSize = tileSetData.TileSize
+        };
+
+        RegionDataManager.AddData(regionElementData, dataRequest, true);
+
+        UpdateDefaultRegion(phaseElementData, dataRequest);
+
+        //Terrain
+        var terrainSearchParameters = new Search.Terrain()
+        {
+            regionId = new List<int>() { regionDataSource.Id }
+        };
+
+        var terrainDataSourceList = DataManager.GetTerrainData(terrainSearchParameters);
+
+        terrainDataSourceList.ForEach(terrainDataSource =>
+        {
+            var terrainElementData = new TerrainElementData()
+            {
+                RegionId = regionElementData.Id,
+
+                Index = terrainDataSource.Index,
+
+                IconId = terrainDataSource.IconId,
+                Name = terrainDataSource.Name
+            };
+
+            TerrainDataManager.AddData(terrainElementData, dataRequest, true);
+
+            regionElementData.TerrainDataList.Add(terrainElementData);
+
+            //TerrainTile
+            var terrainTileSearchParameters = new Search.TerrainTile()
+            {
+                terrainId = new List<int>() { terrainDataSource.Id }
+            };
+
+            var terrainTileDataSourceList = DataManager.GetTerrainTileData(terrainTileSearchParameters);
+
+            terrainTileDataSourceList.ForEach(terrainTileDataSource =>
+            {
+                var terrainTileElementData = new TerrainTileElementData()
+                {
+                    TerrainId = terrainElementData.Id,
+
+                    Index = terrainTileDataSource.Index,
+
+                    TileId = terrainTileDataSource.TileId
+                };
+
+                TerrainTileDataManager.AddData(terrainTileElementData, dataRequest);
+
+                regionElementData.TerrainDataList.Where(x => x.Id == terrainTileElementData.TerrainId).First().TerrainTileDataList.Add(terrainTileElementData);
+            });
+
+            //Atmosphere
+            var atmosphereSearchParameters = new Search.Atmosphere()
+            {
+                terrainId = new List<int>() { terrainDataSource.Id }
+            };
+
+            var atmosphereDataSourceList = DataManager.GetAtmosphereData(atmosphereSearchParameters);
+
+            atmosphereDataSourceList.ForEach(atmosphereDataSource =>
+            {
+                var atmosphereElementData = new AtmosphereElementData()
+                {
+                    TerrainId = terrainElementData.Id,
+
+                    Default = atmosphereDataSource.Default,
+
+                    StartTime = atmosphereDataSource.StartTime,
+                    EndTime = atmosphereDataSource.EndTime
+                };
+
+                AtmosphereDataManager.AddData(atmosphereElementData, dataRequest);
+            });
+        });
+
+        //World object
+        var worldObjectSearchParameters = new Search.WorldObject()
+        {
+            regionId = new List<int>() { regionDataSource.Id }
+        };
+
+        var worldObjectDataSourceList = DataManager.GetWorldObjectData(worldObjectSearchParameters);
+
+        worldObjectDataSourceList.ForEach(worldObjectDataSource =>
+        {
+            var worldObjectElementData = new WorldObjectElementData()
+            {
+                RegionId = regionElementData.Id,
+
+                PositionX = worldObjectDataSource.PositionX,
+                PositionY = worldObjectDataSource.PositionY,
+                PositionZ = worldObjectDataSource.PositionZ,
+
+                TerrainId = RegionManager.GetTerrainId(regionElementData, regionElementData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionElementData.TileSize, worldObjectDataSource.PositionX, worldObjectDataSource.PositionZ),
+                TerrainTileId = RegionManager.GetTerrainTileId(regionElementData, worldObjectDataSource.PositionX, worldObjectDataSource.PositionZ),
+
+                RotationX = worldObjectDataSource.RotationX,
+                RotationY = worldObjectDataSource.RotationY,
+                RotationZ = worldObjectDataSource.RotationZ,
+
+                Scale = worldObjectDataSource.Scale,
+
+                ModelId = worldObjectDataSource.ModelId
+            };
+
+            WorldObjectDataManager.AddData(worldObjectElementData, dataRequest);
+        });
+
+        //World interactable, task, interaction & interaction destination
+
+        //Id groups for elements which need to be re-assigned to other elements after everything has been created
+        var worldInteractableIdGroupList = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
+        var sceneActorIdGroupList = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
+
+        var sceneActorElementDataList = new List<SceneActorElementData>();
+        var sceneShotElementDataList = new List<SceneShotElementData>();
+
+        //Get all world interactables belonging to this region source based on the interaction destinations
+
+        //Interaction destination
+        var interactionDestinationSearchParameters = new Search.InteractionDestination()
+        {
+            regionId = new List<int>() { regionDataSource.Id }
+        };
+
+        var interactionDestinationDataSourceList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        if (interactionDestinationDataSourceList.Count == 0) return;
+
+        //Interaction
+        var interactionSearchParameters = new Search.Interaction()
+        {
+            id = interactionDestinationDataSourceList.Select(x => x.InteractionId).ToList()
+        };
+
+        var interactionDataSourceList = DataManager.GetInteractionData(interactionSearchParameters);
+
+        //Task
+        var taskSearchParameters = new Search.Task()
+        {
+            id = interactionDataSourceList.Select(x => x.TaskId).ToList()
+        };
+
+        var taskDataSourceList = DataManager.GetTaskData(taskSearchParameters);
+
+        //World interactable
+        var worldInteractableSearchParameters = new Search.WorldInteractable()
+        {
+            id = taskDataSourceList.Select(x => x.WorldInteractableId).ToList()
+        };
+
+        var worldInteractableDataSourceList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+
+        worldInteractableDataSourceList.ForEach(worldInteractableDataSource =>
+        {
+            var worldInteractableElementData = new WorldInteractableElementData()
+            {
+                InteractableId = worldInteractableDataSource.InteractableId,
+
+                Type = worldInteractableDataSource.Type
+            };
+
+            WorldInteractableDataManager.AddData(worldInteractableElementData, dataRequest, true);
+
+            worldInteractableIdGroupList.Add(new { originalId = worldInteractableDataSource.Id, newId = worldInteractableElementData.Id });
+
+            //Task
+            taskDataSourceList.Where(x => x.WorldInteractableId == worldInteractableDataSource.Id).ToList().ForEach(taskDataSource =>
+            {
+                var taskElementData = new TaskElementData()
+                {
+                    Index = taskDataSource.Index,
+
+                    WorldInteractableId = worldInteractableElementData.Id,
+
+                    Name = taskDataSource.Name
+                };
+
+                TaskDataManager.AddData(taskElementData, dataRequest, true);
+
+                //Interaction
+                interactionDataSourceList.Where(x => x.TaskId == taskDataSource.Id).ToList().ForEach(interactionDataSource =>
+                {
+                    var interactionElementData = new InteractionElementData()
+                    {
+                        TaskId = taskElementData.Id,
+
+                        Default = interactionDataSource.Default,
+
+                        StartTime = interactionDataSource.StartTime,
+                        EndTime = interactionDataSource.EndTime,
+
+                        ArrivalType = interactionDataSource.ArrivalType,
+
+                        TriggerAutomatically = interactionDataSource.TriggerAutomatically,
+                        BeNearDestination = interactionDataSource.BeNearDestination,
+                        FaceInteractable = interactionDataSource.FaceInteractable,
+                        FaceControllable = interactionDataSource.FaceControllable,
+                        HideInteractionIndicator = interactionDataSource.HideInteractionIndicator,
+
+                        InteractionRange = interactionDataSource.InteractionRange,
+
+                        DelayMethod = interactionDataSource.DelayMethod,
+                        DelayDuration = interactionDataSource.DelayDuration,
+                        HideDelayIndicator = interactionDataSource.HideDelayIndicator,
+
+                        CancelDelayOnInput = interactionDataSource.CancelDelayOnInput,
+                        CancelDelayOnMovement = interactionDataSource.CancelDelayOnMovement,
+                        CancelDelayOnHit = interactionDataSource.CancelDelayOnHit,
+
+                        PublicNotes = interactionDataSource.PublicNotes,
+                        PrivateNotes = interactionDataSource.PrivateNotes
+                    };
+
+                    InteractionDataManager.AddData(interactionElementData, dataRequest, true);
+
+                    //Interaction destination
+                    interactionDestinationDataSourceList.Where(x => x.InteractionId == interactionDataSource.Id).ToList().ForEach(interactionDestinationDataSource =>
+                    {
+                        var interactionDestinationElementData = new InteractionDestinationElementData()
+                        {
+                            InteractionId = interactionElementData.Id,
+
+                            PositionX = interactionDestinationDataSource.PositionX,
+                            PositionY = interactionDestinationDataSource.PositionY,
+                            PositionZ = interactionDestinationDataSource.PositionZ,
+
+                            PositionVariance = interactionDestinationDataSource.PositionVariance,
+
+                            RegionId = regionElementData.Id,
+
+                            TerrainId = RegionManager.GetTerrainId(regionElementData, regionElementData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionElementData.TileSize, interactionDestinationDataSource.PositionX, interactionDestinationDataSource.PositionZ),
+                            TerrainTileId = RegionManager.GetTerrainTileId(regionElementData, interactionDestinationDataSource.PositionX, interactionDestinationDataSource.PositionZ),
+
+                            ChangeRotation = interactionDestinationDataSource.ChangeRotation,
+
+                            RotationX = interactionDestinationDataSource.RotationX,
+                            RotationY = interactionDestinationDataSource.RotationY,
+                            RotationZ = interactionDestinationDataSource.RotationZ,
+
+                            Animation = interactionDestinationDataSource.Animation,
+                            Patience = interactionDestinationDataSource.Patience
+                        };
+
+                        InteractionDestinationDataManager.AddData(interactionDestinationElementData, dataRequest);
+                    });
+
+                    //Outcome
+                    var outcomeSearchParameters = new Search.Outcome()
+                    {
+                        interactionId = new List<int>() { interactionDataSource.Id }
+                    };
+
+                    var outcomeDataSourceList = DataManager.GetOutcomeData(outcomeSearchParameters);
+
+                    outcomeDataSourceList.ForEach(outcomeDataSource =>
+                    {
+                        var outcomeElementData = new OutcomeElementData()
+                        {
+                            InteractionId = interactionElementData.Id,
+
+                            Type = outcomeDataSource.Type,
+
+                            CompleteTask = outcomeDataSource.CompleteTask,
+                            ResetObjective = outcomeDataSource.ResetObjective,
+
+                            CancelScenarioType = outcomeDataSource.CancelScenarioType,
+                            CancelScenarioOnInteraction = outcomeDataSource.CancelScenarioOnInteraction,
+                            CancelScenarioOnInput = outcomeDataSource.CancelScenarioOnInput,
+                            CancelScenarioOnRange = outcomeDataSource.CancelScenarioOnRange,
+                            CancelScenarioOnHit = outcomeDataSource.CancelScenarioOnHit,
+
+                            PublicNotes = outcomeDataSource.PublicNotes,
+                            PrivateNotes = outcomeDataSource.PrivateNotes
+                        };
+
+                        OutcomeDataManager.AddData(outcomeElementData, dataRequest);
+
+                        //Scene
+                        var sceneSearchParameters = new Search.Scene()
+                        {
+                            outcomeId = new List<int>() { outcomeDataSource.Id }
+                        };
+
+                        var sceneDataSourceList = DataManager.GetSceneData(sceneSearchParameters);
+
+                        sceneDataSourceList.ForEach(sceneDataSource =>
+                        {
+                            var sceneElementData = new SceneElementData()
+                            {
+                                OutcomeId = outcomeElementData.Id,
+                                RegionId = regionElementData.Id,
+
+                                Index = sceneDataSource.Index,
+
+                                Name = sceneDataSource.Name,
+
+                                FreezeTime = sceneDataSource.FreezeTime,
+                                AutoContinue = sceneDataSource.AutoContinue,
+                                SetActorsInstantly = sceneDataSource.SetActorsInstantly,
+
+                                SceneDuration = sceneDataSource.SceneDuration,
+                                ShotDuration = sceneDataSource.ShotDuration,
+
+                                PublicNotes = sceneDataSource.PublicNotes,
+                                PrivateNotes = sceneDataSource.PrivateNotes
+                            };
+
+                            SceneDataManager.AddData(sceneElementData, dataRequest, true);
+
+                            //Scene shot
+                            var sceneShotSearchParameters = new Search.SceneShot()
+                            {
+                                sceneId = new List<int>() { sceneDataSource.Id }
+                            };
+
+                            var sceneShotDataSourceList = DataManager.GetSceneShotData(sceneShotSearchParameters);
+
+                            sceneShotDataSourceList.ForEach(sceneShotDataSource =>
+                            {
+                                var sceneShotElementData = new SceneShotElementData()
+                                {
+                                    SceneId = sceneElementData.Id,
+
+                                    Type = sceneShotDataSource.Type,
+
+                                    ChangePosition = sceneShotDataSource.ChangePosition,
+
+                                    PositionX = sceneShotDataSource.PositionX,
+                                    PositionY = sceneShotDataSource.PositionY,
+                                    PositionZ = sceneShotDataSource.PositionZ,
+
+                                    PositionTargetSceneActorId = sceneShotDataSource.PositionTargetSceneActorId,
+
+                                    ChangeRotation = sceneShotDataSource.ChangeRotation,
+
+                                    RotationX = sceneShotDataSource.RotationX,
+                                    RotationY = sceneShotDataSource.RotationY,
+                                    RotationZ = sceneShotDataSource.RotationZ,
+
+                                    RotationTargetSceneActorId = sceneShotDataSource.RotationTargetSceneActorId,
+
+                                    CameraFilterId = sceneShotDataSource.CameraFilterId
+                                };
+
+                                SceneShotDataManager.AddData(sceneShotElementData, dataRequest);
+
+                                sceneShotElementDataList.Add(sceneShotElementData);
+                            });
+
+                            //Scene actor
+                            var sceneActorSearchParameters = new Search.SceneActor()
+                            {
+                                sceneId = new List<int>() { sceneDataSource.Id }
+                            };
+
+                            var sceneActorDataSourceList = DataManager.GetSceneActorData(sceneActorSearchParameters);
+
+                            sceneActorDataSourceList.ForEach(sceneActorDataSource =>
+                            {
+                                var sceneActorElementData = new SceneActorElementData()
+                                {
+                                    SceneId = sceneElementData.Id,
+
+                                    //Ids which refer to other copied data is marked by the source id and replaced at the end
+                                    WorldInteractableId = worldInteractableDataSource.Id,
+
+                                    ChangePosition = sceneActorDataSource.ChangePosition,
+                                    FreezePosition = sceneActorDataSource.FreezePosition,
+
+                                    SpeechMethod = sceneActorDataSource.SpeechMethod,
+                                    SpeechText = sceneActorDataSource.SpeechText,
+                                    ShowTextBox = sceneActorDataSource.ShowTextBox,
+
+                                    TargetSceneActorId = sceneActorDataSource.TargetSceneActorId,
+
+                                    PositionX = sceneActorDataSource.PositionX,
+                                    PositionY = sceneActorDataSource.PositionY,
+                                    PositionZ = sceneActorDataSource.PositionZ,
+
+                                    TerrainId = RegionManager.GetTerrainId(regionElementData, regionElementData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionElementData.TileSize, sceneActorDataSource.PositionX, sceneActorDataSource.PositionZ),
+                                    TerrainTileId = RegionManager.GetTerrainTileId(regionElementData, sceneActorDataSource.PositionX, sceneActorDataSource.PositionZ),
+
+                                    ChangeRotation = sceneActorDataSource.ChangeRotation,
+                                    FaceTarget = sceneActorDataSource.FaceTarget,
+
+                                    RotationX = sceneActorDataSource.RotationX,
+                                    RotationY = sceneActorDataSource.RotationY,
+                                    RotationZ = sceneActorDataSource.RotationZ
+                                };
+
+                                SceneActorDataManager.AddData(sceneActorElementData, dataRequest);
+
+                                sceneActorIdGroupList.Add(new { originalId = sceneActorDataSource.Id, newId = sceneActorElementData.Id });
+                                sceneActorElementDataList.Add(sceneActorElementData);
+                            });
+
+                            //Scene prop
+                            var scenePropSearchParameters = new Search.SceneProp()
+                            {
+                                sceneId = new List<int>() { sceneDataSource.Id }
+                            };
+
+                            var scenePropDataSourceList = DataManager.GetScenePropData(scenePropSearchParameters);
+
+                            scenePropDataSourceList.ForEach(scenePropDataSource =>
+                            {
+                                var scenePropElementData = new ScenePropElementData()
+                                {
+                                    SceneId = sceneElementData.Id,
+                                    ModelId = scenePropDataSource.ModelId,
+
+                                    PositionX = scenePropDataSource.PositionX,
+                                    PositionY = scenePropDataSource.PositionY,
+                                    PositionZ = scenePropDataSource.PositionZ,
+
+                                    TerrainId = RegionManager.GetTerrainId(regionElementData, regionElementData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionElementData.TileSize, scenePropDataSource.PositionX, scenePropDataSource.PositionZ),
+                                    TerrainTileId = RegionManager.GetTerrainTileId(regionElementData, scenePropDataSource.PositionX, scenePropDataSource.PositionZ),
+
+                                    RotationX = scenePropDataSource.RotationX,
+                                    RotationY = scenePropDataSource.RotationY,
+                                    RotationZ = scenePropDataSource.RotationZ,
+
+                                    Scale = scenePropDataSource.Scale
+                                };
+
+                                ScenePropDataManager.AddData(scenePropElementData, dataRequest);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        //Only perform during execution since elements do not have their original values set during validation
+        //Original values can be set if necessary
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            //Replace old ids here at the end as new ids might not yet exist when elements are added
+            sceneActorElementDataList.ForEach(sceneElementDataActor =>
+            {
+                sceneElementDataActor.WorldInteractableId = worldInteractableIdGroupList.Where(idGroup => idGroup.originalId == sceneElementDataActor.WorldInteractableId)
+                                                                                        .Select(idGroup => idGroup.newId).First();
+
+                if (sceneElementDataActor.TargetSceneActorId > 0)
+                    sceneElementDataActor.TargetSceneActorId = sceneActorIdGroupList.Where(idGroup => idGroup.originalId == sceneElementDataActor.TargetSceneActorId)
+                                                                                    .Select(idGroup => idGroup.newId).First();
+
+                sceneElementDataActor.Update(dataRequest);
+            });
+
+            sceneShotElementDataList.ForEach(sceneShotElementData =>
+            {
+                if (sceneShotElementData.PositionTargetSceneActorId > 0)
+                    sceneShotElementData.PositionTargetSceneActorId = sceneActorIdGroupList.Where(idGroup => idGroup.originalId == sceneShotElementData.PositionTargetSceneActorId)
+                                                                                           .Select(idGroup => idGroup.newId).First();
+
+                if (sceneShotElementData.RotationTargetSceneActorId > 0)
+                    sceneShotElementData.RotationTargetSceneActorId = sceneActorIdGroupList.Where(idGroup => idGroup.originalId == sceneShotElementData.RotationTargetSceneActorId)
+                                                                                           .Select(idGroup => idGroup.newId).First();
+
+                sceneShotElementData.Update(dataRequest);
+            });
+        }
+    }
+
+    public static void UpdateDefaultRegion(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        //After the region is added, get a list of all the phase regions. If the phase's default region is not listed, set the first region of the list as default at zero position
+        var updateDefaultRegion = false;
+
+        //Region
+        var regionSearchParameters = new Search.Region()
+        {
+            phaseId = new List<int>() { elementData.Id }
+        };
+
+        var regionDataList = DataManager.GetRegionData(regionSearchParameters);
+
+        if (regionDataList.Count == 0)
+        {
+            elementData.DefaultRegionId = 0;
+            updateDefaultRegion = true;
+            
+        } else if (!regionDataList.Select(x => x.Id).Contains(elementData.DefaultRegionId)) {
+
+            elementData.DefaultRegionId = regionDataList.First().Id;
+            updateDefaultRegion = true;
+        }
+
+        if (updateDefaultRegion)
+        {
+            elementData.DefaultPositionX = 0;
+            elementData.DefaultPositionY = 0;
+            elementData.DefaultPositionZ = 0;
+
+            elementData.DefaultRotationX = 0;
+            elementData.DefaultRotationY = 0;
+            elementData.DefaultRotationZ = 0;
+
+            elementData.Update(dataRequest);
+        }
+    }
+
     public static void UpdateData(PhaseElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
         
-        if (elementData.ChangedName)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultRegionId)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultRegionId)
+            {
                 data.DefaultRegionId = elementData.DefaultRegionId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultPositionX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultPositionX)
+            {
                 data.DefaultPositionX = elementData.DefaultPositionX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultPositionY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultPositionY)
+            {
                 data.DefaultPositionY = elementData.DefaultPositionY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultPositionZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultPositionZ)
+            {
                 data.DefaultPositionZ = elementData.DefaultPositionZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultRotationX)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultRotationX)
+            {
                 data.DefaultRotationX = elementData.DefaultRotationX;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultRotationY)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultRotationY)
+            {
                 data.DefaultRotationY = elementData.DefaultRotationY;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultRotationZ)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultRotationZ)
+            {
                 data.DefaultRotationZ = elementData.DefaultRotationZ;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedDefaultTime)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedDefaultTime)
+            {
                 data.DefaultTime = elementData.DefaultTime;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }    
+    }
+
+    static public void UpdateIndex(PhaseElementData elementData)
+    {
+        if (!elementData.ChangedIndex) return;
+
+        var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
+
+        data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
     }
 
     static public void RemoveData(PhaseElementData elementData, DataRequest dataRequest)
     {
 
-    }
-
-    static public void UpdateIndex(PhaseElementData elementData)
-    {
-        var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-
-        data.Index = elementData.Index;
     }
 }

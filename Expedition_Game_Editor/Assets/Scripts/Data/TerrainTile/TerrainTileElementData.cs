@@ -34,23 +34,17 @@ public class TerrainTileElementData : TerrainTileData, IElementData
     public void Add(DataRequest dataRequest)
     {
         TerrainTileDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-
-        TerrainTileDataManager.UpdateSearch(this);
-
-        OriginalData.TileId = TileId;
+        TerrainTileDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        TerrainTileDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

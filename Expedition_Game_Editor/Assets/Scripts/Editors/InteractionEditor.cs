@@ -280,7 +280,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
         interactionData = (InteractionData)ElementData.Clone();
     }
 
-    public void OpenEditor() { }
+    public void ResetEditor() { }
 
     public void UpdateEditor()
     {
@@ -299,27 +299,68 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        var changedTime =   ((InteractionElementData)EditData).ChangedStartTime ||
-                            ((InteractionElementData)EditData).ChangedEndTime;
+        ApplyInteractionChanges(dataRequest);
+    }
+
+    private void ApplyInteractionChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddInteraction(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateInteraction(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveInteraction(dataRequest);
+                break;
+        }
+    }
+
+    private void AddInteraction(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            interactionData.Id = tempData.Id;
+    }
+
+    private void UpdateInteraction(DataRequest dataRequest)
+    {
+        var changedTime = ((InteractionElementData)EditData).ChangedStartTime ||
+                          ((InteractionElementData)EditData).ChangedEndTime;
 
         EditData.Update(dataRequest);
 
-        if (changedTime)
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            Data.dataList = Data.dataList.OrderByDescending(x => ((InteractionElementData)x).Default).ThenBy(x => ((InteractionElementData)x).StartTime).ToList();
+            if (changedTime)
+            {
+                Data.dataController.Data.dataList = Data.dataController.Data.dataList.OrderByDescending(x => x.ExecuteType == Enums.ExecuteType.Add)
+                                                                                     .ThenBy(x => !((InteractionElementData)x).Default)
+                                                                                     .ThenBy(x => ((InteractionElementData)x).StartTime).ToList();
 
-            var defaultInteraction = (InteractionElementData)Data.dataList.Where(x => ((InteractionElementData)x).Default).First();
-            defaultInteraction.DefaultTimes = DefaultTimes();
+                var defaultInteraction = (InteractionElementData)Data.dataController.Data.dataList.Where(x => ((InteractionElementData)x).Default).First();
+                defaultInteraction.DefaultTimes = DefaultTimes();
 
-            SelectionElementManager.UpdateElements(ElementData);
+                SelectionElementManager.UpdateElements(ElementData);
 
-        } else {
+            } else {
 
-            if (SelectionElementManager.SelectionActive(EditData.DataElement))
-                EditData.DataElement.UpdateElement();
+                if (SelectionElementManager.SelectionActive(EditData.DataElement))
+                    EditData.DataElement.UpdateElement();
+            }
         }
+    }
 
-        UpdateEditor();
+    private void RemoveInteraction(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     private List<int> DefaultTimes()
@@ -346,18 +387,22 @@ public class InteractionEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

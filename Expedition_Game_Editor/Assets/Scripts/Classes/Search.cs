@@ -308,6 +308,9 @@ public class Search
 
         public List<int> sceneId = new List<int>();
 
+        public List<int> positionTargetSceneActorId = new List<int>();
+        public List<int> rotationTargetSceneActorId = new List<int>();
+
         public enum RequestType
         {
             Custom
@@ -340,6 +343,9 @@ public class Search
         public List<int> excludeId = new List<int>();
 
         public List<int> sceneId = new List<int>();
+        public List<int> worldInteractableId = new List<int>();
+
+        public List<int> targetSceneActorId = new List<int>();
 
         public enum RequestType
         {
@@ -368,6 +374,11 @@ public class Search
 
     public class EditorWorld
     {
+        public bool includeAddWorldObjectElement;
+        public bool includeAddPhaseElement;
+        public bool includeAddInteractionDestinationElement;
+        public bool includeAddScenePropElement;
+
         public List<int> id = new List<int>();
 
         public List<int> regionId = new List<int>();
@@ -392,8 +403,11 @@ public class Search
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
-        public List<int> phaseId = new List<int>();
+        public List<int> chapterRegionId = new List<int>();
 
+        public List<int> phaseId = new List<int>();
+        public List<int> excludePhaseId = new List<int>();
+        
         public Enums.RegionType type;
 
         public enum RequestType

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class TaskSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -14,8 +16,17 @@ public class TaskSegment : MonoBehaviour, ISegment
         if (SegmentController.Loaded) return;
 
         var searchProperties = new SearchProperties(Enums.DataType.Task);
+
+        InitializeSearchParameters(searchProperties);
         
+        SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
         var searchParameters = searchProperties.searchParameters.Cast<Search.Task>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
 
         //If a worldInteractable is selected without being directly related to an objective, don't try to get this data
         if (SegmentController.Path.FindLastRoute(Enums.DataType.Objective) != null)
@@ -26,8 +37,6 @@ public class TaskSegment : MonoBehaviour, ISegment
 
         var worldInteractableData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).ElementData;
         searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
-
-        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void InitializeSegment()

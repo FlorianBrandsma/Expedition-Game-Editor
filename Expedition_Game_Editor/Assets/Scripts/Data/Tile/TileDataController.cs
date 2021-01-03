@@ -34,7 +34,7 @@ public class TileDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = TileDataManager.GetData(searchProperties),
+            dataList = TileDataManager.GetData(searchProperties.searchParameters.Cast<Search.Tile>().First()),
             searchProperties = this.searchProperties
         };
 

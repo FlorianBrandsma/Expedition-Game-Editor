@@ -45,7 +45,6 @@ public class LayoutSection : MonoBehaviour
     //Previous data editor
     public IEditor previousEditor;
     public IElementData previousDataSource;
-    //public List<IElementData> previousElementDataList;
     //
     
     public ButtonActionManager buttonActionManager;
@@ -78,15 +77,13 @@ public class LayoutSection : MonoBehaviour
         Active = true;
     }
 
-    public void OpenEditor()
+    public void OpenSegments()
     {
         if (TargetController == null) return;
 
         DisplayTargetController = TargetController;
 
         DisplayTargetController.OpenSegments();
-
-        SetActionButtons();
     }
 
     public void SetActionButtons()
@@ -97,6 +94,15 @@ public class LayoutSection : MonoBehaviour
         {
             buttonActionManager.SetButtons(dataEditor.EditData.ExecuteType, dataEditor.Changed());
         }
+    }
+
+    public void ResetEditor()
+    {
+        if (DisplayTargetController == null) return;
+
+        DisplayTargetController.ResetEditor();
+
+        SetActionButtons();
     }
 
     public void ClosePath()
@@ -168,6 +174,8 @@ public class LayoutSection : MonoBehaviour
         });
         
         dataEditor.FinalizeChanges();
+
+        Debug.Log(Fixtures.sceneShotList.Count);
     }
 
     private void ResetExecutionType()
@@ -180,14 +188,6 @@ public class LayoutSection : MonoBehaviour
         if (dataEditor.Loaded)
             dataEditor.CancelEdit();
 
-        //if (previousElementDataList != null)
-        //{
-        //    previousElementDataList.ForEach(x => x.ClearChanges());
-
-        //    previousElementDataList.Where(x => x.DataElement != null && x.DataElement.gameObject.activeInHierarchy).ToList()
-        //                           .ForEach(x => x.DataElement.UpdateElement());
-        //}
-
         if (!Active) dataEditor = null;
     }
 
@@ -196,9 +196,16 @@ public class LayoutSection : MonoBehaviour
         if (toggled)
         {
             originalExecuteType = dataEditor.EditData.ExecuteType;
+
             dataEditor.EditData.ExecuteType = Enums.ExecuteType.Remove;
+
+            //dataEditor.ElementDataList.ForEach(x => x.ExecuteType = Enums.ExecuteType.Remove);
+
         } else {
+
             dataEditor.EditData.ExecuteType = originalExecuteType;
+
+            //dataEditor.ElementDataList.ForEach(x => x.ExecuteType = originalExecuteType);
         }
 
         SetActionButtons();

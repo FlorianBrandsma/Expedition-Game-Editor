@@ -6,11 +6,12 @@ public static class ObjectiveDataManager
 {
     private static List<ObjectiveBaseData> objectiveDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Objective searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
-        
         GetObjectiveData(searchParameters);
+
+        if (searchParameters.includeAddElement)
+            objectiveDataList.Add(DefaultData(searchParameters.questId.First()));
 
         if (objectiveDataList.Count == 0) return new List<IElementData>();
 
@@ -32,9 +33,29 @@ public static class ObjectiveDataManager
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static ObjectiveElementData DefaultData(int questId)
+    {
+        return new ObjectiveElementData()
+        {
+            QuestId = questId
+        };
+    }
+
+    public static void SetDefaultAddValues(List<ObjectiveElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == 0).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetObjectiveData(Search.Objective searchParameters)
@@ -50,43 +71,59 @@ public static class ObjectiveDataManager
         }
     }
 
+    public static void AddData(ObjectiveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.objectiveList.Count > 0 ? (Fixtures.objectiveList[Fixtures.objectiveList.Count - 1].Id + 1) : 1;
+            Fixtures.objectiveList.Add(((ObjectiveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
     public static void UpdateData(ObjectiveElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.objectiveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedName)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedJournal)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedJournal)
+            {
                 data.Journal = elementData.Journal;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPublicNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPublicNotes)
+            {
                 data.PublicNotes = elementData.PublicNotes;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedPrivateNotes)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedPrivateNotes)
+            {
                 data.PrivateNotes = elementData.PrivateNotes;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }   
     }
 
     static public void UpdateIndex(ObjectiveElementData elementData)
     {
+        if (!elementData.ChangedIndex) return;
+
         var data = Fixtures.objectiveList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
     }
 }

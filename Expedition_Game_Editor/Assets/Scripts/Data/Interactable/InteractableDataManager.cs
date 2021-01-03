@@ -9,14 +9,12 @@ public static class InteractableDataManager
     private static List<ModelBaseData> modelDataList;
     private static List<IconBaseData> iconDataList;
 
-    public static List<IElementData> GetData(SearchProperties searchProperties)
+    public static List<IElementData> GetData(Search.Interactable searchParameters)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Interactable>().First();
-        
         GetInteractableData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            interactableDataList.Add(DefaultData(searchParameters));
+            interactableDataList.Add(DefaultData(searchParameters.type.First()));
 
         if (searchParameters.includeRemoveElement)
             interactableDataList.Add(new InteractableBaseData());
@@ -70,16 +68,16 @@ public static class InteractableDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static InteractableBaseData DefaultData(Search.Interactable searchParameters)
+    public static InteractableElementData DefaultData(int type)
     {
-        return new InteractableBaseData()
+        return new InteractableElementData()
         {
-            Type = searchParameters.type.First(),
+            Type = type,
             ModelId = 1
         };
     }
 
-    private static void SetDefaultAddValues(List<InteractableElementData> list)
+    public static void SetDefaultAddValues(List<InteractableElementData> list)
     {
         var addElementData = list.Where(x => x.Id == 0).First();
 
@@ -124,83 +122,79 @@ public static class InteractableDataManager
         {
             elementData.Id = Fixtures.interactableList.Count > 0 ? (Fixtures.interactableList[Fixtures.interactableList.Count - 1].Id + 1) : 1;
             Fixtures.interactableList.Add(((InteractableData)elementData).Clone());
-        }
-        else { }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(InteractableElementData elementData, DataRequest dataRequest)
     {
+        if (!elementData.Changed) return;
+
         var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
-        
-        if (elementData.ChangedModelId)
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedModelId)
+            {
                 data.ModelId = elementData.ModelId;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedName)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedName)
+            {
                 data.Name = elementData.Name;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedScale)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedScale)
+            {
                 data.Scale = elementData.Scale;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedHealth)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedHealth)
+            {
                 data.Health = elementData.Health;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedHunger)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
-                data.Hunger = elementData.Hunger;
-            else { }
-        }
+            if (elementData.ChangedHunger)
+            {
+                 data.Hunger = elementData.Hunger;
+            }
 
-        if (elementData.ChangedThirst)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedThirst)
+            {
                 data.Thirst = elementData.Thirst;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedWeight)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedWeight)
+            {
                 data.Weight = elementData.Weight;
-            else { }
-        }
+            }
 
-        if (elementData.ChangedSpeed)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            if (elementData.ChangedSpeed)
+            {
                 data.Speed = elementData.Speed;
-            else { }
-        }
-        
-        if (elementData.ChangedStamina)
-        {
-            if (dataRequest.requestType == Enums.RequestType.Execute)
+            }
+
+            if (elementData.ChangedStamina)
+            {
                 data.Stamina = elementData.Stamina;
-            else { }
-        }
+            }
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     static public void UpdateIndex(InteractableElementData elementData)
     {
+        if (!elementData.ChangedIndex) return;
+
         var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
         data.Index = elementData.Index;
+
+        elementData.OriginalData.Index = elementData.Index;
     }
 
     public static void RemoveData(InteractableElementData elementData, DataRequest dataRequest)
@@ -208,7 +202,7 @@ public static class InteractableDataManager
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
             Fixtures.interactableList.RemoveAll(x => x.Id == elementData.Id);
-        }
-        else { }
+
+        } else { }
     }
 }

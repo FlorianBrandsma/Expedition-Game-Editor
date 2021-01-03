@@ -34,7 +34,7 @@ public class ObjectiveDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = ObjectiveDataManager.GetData(searchProperties),
+            dataList = ObjectiveDataManager.GetData(searchProperties.searchParameters.Cast<Search.Objective>().First()),
             searchProperties = this.searchProperties
         };
 

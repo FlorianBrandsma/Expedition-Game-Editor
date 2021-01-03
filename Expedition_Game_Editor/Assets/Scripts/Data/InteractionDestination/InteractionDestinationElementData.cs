@@ -97,23 +97,17 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
     public void Add(DataRequest dataRequest)
     {
         InteractionDestinationDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         InteractionDestinationDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        InteractionDestinationDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

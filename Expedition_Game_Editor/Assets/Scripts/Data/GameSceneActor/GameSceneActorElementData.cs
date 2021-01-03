@@ -35,8 +35,6 @@ public class GameSceneActorElementData : GameSceneActorData, IElementData
 
     public void Update(DataRequest dataRequest) { }
 
-    public void UpdateSearch() { }
-
     public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()

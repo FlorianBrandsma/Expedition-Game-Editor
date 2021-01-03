@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class ObjectiveSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
     
@@ -15,10 +17,18 @@ public class ObjectiveSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Objective);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
-        searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).ElementData.Id };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Objective>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.questId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Quest).ElementData.Id };
     }
 
     public void InitializeSegment()

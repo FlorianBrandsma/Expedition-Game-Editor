@@ -8,10 +8,7 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-
-    //Editor data which was opened from asset forms must be obtained directly from its route, since the data controller might be
-    //re-populated elsewhere and the asset forms load the relevant data only after the editor on the main form is initialized
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == worldObjectData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
@@ -40,7 +37,18 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
     {
         get { return worldObjectData.Id; }
     }
-    
+
+    public int ModelId
+    {
+        get { return worldObjectData.ModelId; }
+        set
+        {
+            worldObjectData.ModelId = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelId = value);
+        }
+    }
+
     public int TerrainId
     {
         get { return worldObjectData.TerrainId; }
@@ -143,26 +151,67 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
     public string ModelName
     {
         get { return ((WorldObjectData)EditData).ModelName; }
+        set
+        {
+            worldObjectData.ModelName = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelName = value);
+        }
+    }
+
+    public string ModelPath
+    {
+        get { return ((WorldObjectData)EditData).ModelPath; }
+        set
+        {
+            worldObjectData.ModelPath = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelPath = value);
+        }
     }
 
     public string ModelIconPath
     {
         get { return ((WorldObjectData)EditData).ModelIconPath; }
+        set
+        {
+            worldObjectData.ModelIconPath = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).ModelIconPath = value);
+        }
     }
 
     public float Height
     {
         get { return ((WorldObjectData)EditData).Height; }
+        set
+        {
+            worldObjectData.Height = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Height = value);
+        }
     }
 
     public float Width
     {
         get { return ((WorldObjectData)EditData).Width; }
+        set
+        {
+            worldObjectData.Width = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Width = value);
+        }
     }
 
     public float Depth
     {
         get { return ((WorldObjectData)EditData).Depth; }
+        set
+        {
+            worldObjectData.Depth = value;
+
+            DataList.ForEach(x => ((WorldObjectElementData)x).Depth = value);
+        }
     }
     #endregion
 
@@ -171,7 +220,31 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
         worldObjectData = (WorldObjectData)ElementData.Clone();
     }
     
-    public void OpenEditor() { }
+    public void ResetEditor()
+    {
+        ModelId         = worldObjectData.ModelId;
+        TerrainId       = worldObjectData.TerrainId;
+        TerrainTileId   = worldObjectData.TerrainTileId;
+
+        PositionX       = worldObjectData.PositionX;
+        PositionY       = worldObjectData.PositionY;
+        PositionZ       = worldObjectData.PositionZ;
+
+        RotationX       = worldObjectData.RotationX;
+        RotationY       = worldObjectData.RotationY;
+        RotationZ       = worldObjectData.RotationZ;
+
+        Scale           = worldObjectData.Scale;
+
+        ModelName       = worldObjectData.ModelName;
+
+        ModelPath       = worldObjectData.ModelPath;
+        ModelIconPath   = worldObjectData.ModelIconPath;
+
+        Height          = worldObjectData.Height;
+        Width           = worldObjectData.Width;
+        Depth           = worldObjectData.Depth;
+    }
 
     public void UpdateEditor()
     {
@@ -192,14 +265,45 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyWorldObjectChanges(dataRequest);
+    }
+
+    private void ApplyWorldObjectChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddWorldObject(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateWorldObject(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveWorldObject(dataRequest);
+                break;
+        }
+    }
+
+    private void AddWorldObject(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            worldObjectData.Id = tempData.Id;
+    }
+
+    private void UpdateWorldObject(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+    private void RemoveWorldObject(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     public void FinalizeChanges()
@@ -211,18 +315,23 @@ public class WorldObjectEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
+                ResetExecuteType();
                 UpdateEditor();
                 break;
         }
     }
 
+    private void ResetExecuteType()
+    {
+        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+    }
+
     public void CancelEdit()
     {
-        ElementDataList.ForEach(x =>
-        {
-            x.ExecuteType = Enums.ExecuteType.Update;
-            x.ClearChanges();
-        });
+        ResetExecuteType();
+
+        ElementDataList.ForEach(x => x.ClearChanges());
 
         Loaded = false;
     }

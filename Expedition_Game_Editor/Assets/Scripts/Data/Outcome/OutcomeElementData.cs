@@ -76,23 +76,17 @@ public class OutcomeElementData : OutcomeData, IElementData
     public void Add(DataRequest dataRequest)
     {
         OutcomeDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         OutcomeDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        OutcomeDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

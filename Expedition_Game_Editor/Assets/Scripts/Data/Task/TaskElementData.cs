@@ -59,32 +59,22 @@ public class TaskElementData : TaskData, IElementData
     public void Add(DataRequest dataRequest)
     {
         TaskDataManager.AddData(this, dataRequest);
-
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-            SetOriginalValues();
     }
 
     public void Update(DataRequest dataRequest)
     {
-        if (!Changed) return;
-        
         TaskDataManager.UpdateData(this, dataRequest);
-
-        SetOriginalValues();
     }
 
     public void UpdateIndex()
     {
-        if (!ChangedIndex) return;
-        
         TaskDataManager.UpdateIndex(this);
-
-        OriginalData.Index = Index;   
     }
 
-    public void UpdateSearch() { }
-
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        TaskDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

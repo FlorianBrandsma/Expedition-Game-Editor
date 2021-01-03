@@ -91,6 +91,8 @@ public class SceneActorActBehaviourTargetSegment : MonoBehaviour, ISegment
     
     private void SetSceneActorData()
     {
+        sceneActorButton.DataElement.Id = TargetSceneActorId;
+
         SceneActorElementData.Id = TargetSceneActorId;
         sceneActorButton.child.DataElement.Id = TargetSceneActorId;
 

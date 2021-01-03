@@ -70,9 +70,9 @@ static public class RegionManager
     static public int GetTerrainTileId(RegionBaseData regionData, List<TerrainBaseData> terrainDataList, List<TerrainTileBaseData> terrainTileDataList, float tileSize, float posX, float posZ)
     {
         var terrainId = GetTerrainId(regionData, terrainDataList, tileSize, posX, posZ);
-
+        
         var terrainTiles = terrainTileDataList.Where(x => x.TerrainId == terrainId).Distinct().ToList();
-
+        
         var terrainSize = regionData.TerrainSize * tileSize;
 
         var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
@@ -83,14 +83,14 @@ static public class RegionManager
 
         var localPosition = new Vector2(posX - terrainPosition.x,
                                         posZ - terrainPosition.y);
-
+        
         var tileCoordinates = new Vector2(Mathf.Floor(localPosition.x / tileSize),
                                           Mathf.Floor(localPosition.y / tileSize));
-
+        
         var tileIndex = (regionData.TerrainSize * tileCoordinates.y) + tileCoordinates.x;
-
+        
         var terrainTileId = terrainTiles.Where(x => x.Index == tileIndex).Select(x => x.Id).FirstOrDefault();
-
+        
         return terrainTileId;
     }
 
@@ -102,9 +102,7 @@ static public class RegionManager
 
         var terrainCoordinates = new Vector2(Mathf.Floor(posX / terrainSize),
                                              Mathf.Floor(posZ / terrainSize));
-
         
-
         var terrainIndex = (regionData.RegionSize * terrainCoordinates.y) + terrainCoordinates.x;
 
         var terrainId = terrains.Where(x => x.Index == terrainIndex).Select(x => x.Id).FirstOrDefault();

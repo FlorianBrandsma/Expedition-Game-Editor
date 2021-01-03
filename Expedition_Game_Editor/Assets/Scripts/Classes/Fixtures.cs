@@ -1133,11 +1133,6 @@ static public class Fixtures
                     region.TerrainSize = regionSource.TerrainSize;
 
                     regionList.Add(region);
-
-                    //Get all world interactables belonging to this region                
-                    var tempInteractionDestinationSourceList = interactionDestinationList.Where(x => x.RegionId == regionSource.Id).ToList();
-                    var tempInteractionSourceList = interactionList.Where(x => tempInteractionDestinationSourceList.Select(y => y.InteractionId).Contains(x.Id)).ToList();
-                    var tempTaskSourceList = taskList.Where(x => tempInteractionSourceList.Select(y => y.TaskId).Contains(x.Id)).ToList();
                     
                     var terrainSourceList = terrainList.Where(x => x.RegionId == regionSource.Id).OrderBy(x => x.Index).Distinct().ToList();
 
@@ -1183,7 +1178,12 @@ static public class Fixtures
                         terrainList.Add(terrain);
                     }
 
-                    var worldInteractableSourceList = worldInteractableList.Where(x => tempTaskSourceList.Select(y => y.WorldInteractableId).Contains(x.Id)).Distinct().ToList();
+                    //Get all world interactables belonging to this region                
+                    var interactionDestinationSourceList = interactionDestinationList.Where(x => x.RegionId == regionSource.Id).Distinct().ToList();
+                    var interactionSourceList = interactionList.Where(x => interactionDestinationSourceList.Select(y => y.InteractionId).Contains(x.Id)).Distinct().ToList();
+                    var taskSourceList = taskList.Where(x => interactionSourceList.Select(y => y.TaskId).Contains(x.Id)).Distinct().ToList();
+
+                    var worldInteractableSourceList = worldInteractableList.Where(x => taskSourceList.Select(y => y.WorldInteractableId).Contains(x.Id)).Distinct().ToList();
 
                     foreach (WorldInteractableBaseData worldInteractableSource in worldInteractableSourceList)
                     {
@@ -1199,9 +1199,7 @@ static public class Fixtures
 
                         worldInteractableList.Add(worldInteractable);
 
-                        var taskSourceList = taskList.Where(x => x.WorldInteractableId == worldInteractableSource.Id).OrderBy(x => x.Index).Distinct().ToList();
-
-                        foreach (TaskBaseData taskSource in taskSourceList)
+                        foreach (TaskBaseData taskSource in taskSourceList.Where(x => x.WorldInteractableId == worldInteractableSource.Id).ToList())
                         {
                             var task = new TaskBaseData();
 
@@ -1217,9 +1215,7 @@ static public class Fixtures
 
                             taskList.Add(task);
 
-                            var interactionSourceList = interactionList.Where(x => x.TaskId == taskSource.Id).OrderBy(x => x.Default).ThenBy(x => x.StartTime).Distinct().ToList();
-
-                            foreach (InteractionBaseData interactionSource in interactionSourceList)
+                            foreach (InteractionBaseData interactionSource in interactionSourceList.Where(x => x.TaskId == taskSource.Id).ToList())
                             {
                                 var interaction = new InteractionBaseData();
 
@@ -1256,9 +1252,7 @@ static public class Fixtures
 
                                 interactionList.Add(interaction);
 
-                                var interactionDestinationSourceList = interactionDestinationList.Where(x => x.InteractionId == interactionSource.Id).Distinct().ToList();
-
-                                foreach (InteractionDestinationBaseData interactionDestinationSource in interactionDestinationSourceList)
+                                foreach (InteractionDestinationBaseData interactionDestinationSource in interactionDestinationSourceList.Where(x => x.InteractionId == interactionSource.Id).ToList())
                                 {
                                     var interactionDestination = new InteractionDestinationBaseData();
 

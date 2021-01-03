@@ -34,7 +34,7 @@ public class AtmosphereDataController : MonoBehaviour, IDataController
         Data = new Data()
         {
             dataController = this,
-            dataList = AtmosphereDataManager.GetData(searchProperties),
+            dataList = AtmosphereDataManager.GetData(searchProperties.searchParameters.Cast<Search.Atmosphere>().First()),
             searchProperties = this.searchProperties
         };
 

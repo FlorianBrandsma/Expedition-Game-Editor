@@ -104,6 +104,21 @@ static public class DataManager
         return dataList;
     }
 
+    static public List<ChapterRegionBaseData> GetChapterRegionData(Search.ChapterRegion searchParameters)
+    {
+        var dataList = new List<ChapterRegionBaseData>();
+
+        foreach (ChapterRegionBaseData chapterRegion in Fixtures.chapterRegionList)
+        {
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterRegion.ChapterId))   continue;
+            if (searchParameters.regionId.Count     > 0 && !searchParameters.regionId.Contains(chapterRegion.RegionId))     continue;
+
+            dataList.Add(chapterRegion);
+        }
+
+        return dataList;
+    }
+
     static public List<PhaseBaseData> GetPhaseData(Search.Phase searchParameters)
     {
         var dataList = new List<PhaseBaseData>();
@@ -154,10 +169,12 @@ static public class DataManager
 
         foreach (WorldInteractableBaseData worldInteractable in Fixtures.worldInteractableList)
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(worldInteractable.Id))                     continue;
-            if (searchParameters.type.Count             > 0 && !searchParameters.type.Contains(worldInteractable.Type))                 continue;
-            if (searchParameters.chapterId.Count        > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))       continue;
-            if (searchParameters.objectiveId.Count      > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))   continue;
+            if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
+            if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
+            if (searchParameters.chapterId.Count                > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))                           continue;
+            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
+            if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
 
             dataList.Add(worldInteractable);
         }
@@ -249,8 +266,10 @@ static public class DataManager
 
         foreach (SceneActorBaseData sceneActor in Fixtures.sceneActorList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneActor.Id))            continue;
-            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId))  continue;
+            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(sceneActor.Id))                                    continue;
+            if (searchParameters.sceneId.Count              > 0 && !searchParameters.sceneId.Contains(sceneActor.SceneId))                          continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(sceneActor.WorldInteractableId))  continue;
+            if (searchParameters.targetSceneActorId.Count   > 0 && !searchParameters.targetSceneActorId.Contains(sceneActor.TargetSceneActorId))    continue;
 
             dataList.Add(sceneActor);
         }
@@ -279,8 +298,10 @@ static public class DataManager
 
         foreach (SceneShotBaseData sceneShot in Fixtures.sceneShotList)
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(sceneShot.Id)) continue;
-            if (searchParameters.sceneId.Count  > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId)) continue;
+            if (searchParameters.id.Count                           > 0 && !searchParameters.id.Contains(sceneShot.Id))                                                 continue;
+            if (searchParameters.sceneId.Count                      > 0 && !searchParameters.sceneId.Contains(sceneShot.SceneId))                                       continue;
+            if (searchParameters.positionTargetSceneActorId.Count   > 0 && !searchParameters.positionTargetSceneActorId.Contains(sceneShot.PositionTargetSceneActorId)) continue;
+            if (searchParameters.rotationTargetSceneActorId.Count   > 0 && !searchParameters.rotationTargetSceneActorId.Contains(sceneShot.RotationTargetSceneActorId)) continue;
 
             dataList.Add(sceneShot);
         }
@@ -358,8 +379,8 @@ static public class DataManager
 
         foreach(AtmosphereBaseData atmosphere in Fixtures.atmosphereList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(atmosphere.Id)) continue;
-            if (searchParameters.terrainId.Count > 0 && !searchParameters.terrainId.Contains(atmosphere.TerrainId)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(atmosphere.Id))                continue;
+            if (searchParameters.terrainId.Count    > 0 && !searchParameters.terrainId.Contains(atmosphere.TerrainId))  continue;
 
             dataList.Add(atmosphere);
         }
@@ -373,8 +394,8 @@ static public class DataManager
 
         foreach (TerrainBaseData terrain in Fixtures.terrainList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(terrain.Id)) continue;
-            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.RegionId)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(terrain.Id))               continue;
+            if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(terrain.RegionId))   continue;
 
             dataList.Add(terrain);
         }
@@ -393,9 +414,11 @@ static public class DataManager
 
         foreach (RegionBaseData region in Fixtures.regionList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(region.Id))            continue;
-            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(region.Id))      continue;
-            if (searchParameters.phaseId.Count      > 0 && !searchParameters.phaseId.Contains(region.PhaseId))  continue;
+            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(region.Id))                            continue;
+            if (searchParameters.excludeId.Count        > 0 && searchParameters.excludeId.Contains(region.Id))                      continue;
+            if (searchParameters.chapterRegionId.Count  > 0 && !searchParameters.chapterRegionId.Contains(region.ChapterRegionId))  continue;
+            if (searchParameters.phaseId.Count          > 0 && !searchParameters.phaseId.Contains(region.PhaseId))                  continue;
+            if (searchParameters.excludePhaseId.Count   > 0 && searchParameters.excludePhaseId.Contains(region.PhaseId))            continue;
 
             dataList.Add(region);
         }
