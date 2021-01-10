@@ -56,6 +56,8 @@ public class TaskElementData : TaskData, IElementData
     }
     #endregion
 
+    public TaskElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         TaskDataManager.AddData(this, dataRequest);
@@ -66,14 +68,19 @@ public class TaskElementData : TaskData, IElementData
         TaskDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        TaskDataManager.UpdateIndex(this);
+        TaskDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         TaskDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        TaskDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

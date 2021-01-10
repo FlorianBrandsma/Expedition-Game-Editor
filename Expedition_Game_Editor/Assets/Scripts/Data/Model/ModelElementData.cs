@@ -20,6 +20,8 @@ public class ModelElementData : ModelData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public ModelElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

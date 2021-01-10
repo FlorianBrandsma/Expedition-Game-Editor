@@ -20,11 +20,16 @@ public class InteractableSaveElementData : InteractableSaveData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public InteractableSaveElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        InteractableSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

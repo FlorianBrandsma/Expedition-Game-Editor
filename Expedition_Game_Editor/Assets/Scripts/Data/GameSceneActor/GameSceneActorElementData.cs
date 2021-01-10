@@ -31,6 +31,8 @@ public class GameSceneActorElementData : GameSceneActorData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameSceneActorElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

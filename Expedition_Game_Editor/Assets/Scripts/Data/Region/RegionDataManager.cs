@@ -158,7 +158,7 @@ public static class RegionDataManager
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void AddData(RegionElementData elementData, DataRequest dataRequest, bool copy = false)
+    public static void AddData(RegionElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
@@ -167,28 +167,38 @@ public static class RegionDataManager
 
             elementData.SetOriginalValues();
 
-            if (copy) return;
-
-            var tileSearchParameters = new Search.Tile()
-            {
-                tileSetId = new List<int>() { elementData.TileSetId }
-            };
-
-            var tileData = DataManager.GetTileData(tileSearchParameters);
-
-            for (int regionIndex = 0; regionIndex < elementData.RegionSize * elementData.RegionSize; regionIndex++)
-            {
-                var terrainElementData = TerrainDataManager.DefaultData(elementData.Id, regionIndex);
-                terrainElementData.Add(dataRequest);
-                
-                for (int terrainIndex = 0; terrainIndex < elementData.TerrainSize * elementData.TerrainSize; terrainIndex++)
-                {
-                    var terrainTileElementData = TerrainTileDataManager.DefaultData(terrainElementData.Id, tileData.First().Id, terrainIndex);
-                    terrainTileElementData.Add(dataRequest);
-                }
-            }
-
+            AddDependencies(elementData, dataRequest);
+            
         } else { }
+    }
+
+    private static void AddDependencies(RegionElementData elementData, DataRequest dataRequest)
+    {
+        if (!dataRequest.includeDependencies) return;
+
+        AddTerrainData(elementData, dataRequest);
+    }
+
+    private static void AddTerrainData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        var tileSearchParameters = new Search.Tile()
+        {
+            tileSetId = new List<int>() { elementData.TileSetId }
+        };
+
+        var tileData = DataManager.GetTileData(tileSearchParameters);
+
+        for (int regionIndex = 0; regionIndex < elementData.RegionSize * elementData.RegionSize; regionIndex++)
+        {
+            var terrainElementData = TerrainDataManager.DefaultData(elementData.Id, regionIndex);
+            terrainElementData.Add(dataRequest);
+
+            for (int terrainIndex = 0; terrainIndex < elementData.TerrainSize * elementData.TerrainSize; terrainIndex++)
+            {
+                var terrainTileElementData = TerrainTileDataManager.DefaultData(terrainElementData.Id, tileData.First().Id, terrainIndex);
+                terrainTileElementData.Add(dataRequest);
+            }
+        }
     }
 
     public static void UpdateData(RegionElementData elementData, DataRequest dataRequest)
@@ -234,15 +244,19 @@ public static class RegionDataManager
         } else { }
     }
 
-    static public void UpdateIndex(RegionElementData elementData)
+    static public void UpdateIndex(RegionElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.regionList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+        } else { }
     }
 
     public static void RemoveData(RegionElementData elementData, DataRequest dataRequest)
@@ -252,7 +266,9 @@ public static class RegionDataManager
             RemoveDependencies(elementData, dataRequest);
 
             Fixtures.regionList.RemoveAll(x => x.Id == elementData.Id);
-            
+
+            elementData.RemoveIndex(dataRequest);
+
         } else {
 
             RemoveDependencies(elementData, dataRequest);
@@ -261,10 +277,32 @@ public static class RegionDataManager
 
     private static void RemoveDependencies(RegionElementData elementData, DataRequest dataRequest)
     {
+        RemoveChapterRegionData(elementData, dataRequest);
+
         RemoveTerrainData(elementData, dataRequest);
         RemoveWorldObjectData(elementData, dataRequest);
         RemoveWorldInteractableData(elementData, dataRequest);
         RemoveInteractionDestinationData(elementData, dataRequest);
+    }
+
+    private static void RemoveChapterRegionData(RegionElementData elementData, DataRequest dataRequest)
+    {
+        var chapterRegionSearchParameters = new Search.ChapterRegion()
+        {
+            regionId = new List<int>() { elementData.Id }
+        };
+
+        var chapterRegionDataList = DataManager.GetChapterRegionData(chapterRegionSearchParameters);
+
+        chapterRegionDataList.ForEach(chapterRegionData =>
+        {
+            var chapterRegionElementData = new ChapterRegionElementData()
+            {
+                Id = chapterRegionData.Id
+            };
+
+            chapterRegionElementData.Remove(dataRequest);
+        });
     }
 
     private static void RemoveTerrainData(RegionElementData elementData, DataRequest dataRequest)
@@ -376,6 +414,31 @@ public static class RegionDataManager
             };
 
             interactionDestinationElementData.Remove(dataRequest);
+        });
+    }
+
+    public static void RemoveIndex(RegionElementData elementData, DataRequest dataRequest)
+    {
+        var regionSearchParameters = new Search.Region()
+        {
+            phaseId = new List<int>() { 0 }
+        };
+
+        var regionDataList = DataManager.GetRegionData(regionSearchParameters);
+
+        regionDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(regionData =>
+        {
+            var regionElementData = new RegionElementData()
+            {
+                Id = regionData.Id,
+                Index = regionData.Index
+            };
+
+            regionElementData.SetOriginalValues();
+
+            regionElementData.Index--;
+
+            regionElementData.UpdateIndex(dataRequest);
         });
     }
 }

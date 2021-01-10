@@ -89,6 +89,8 @@ public class WorldObjectElementData : WorldObjectData, IElementData
     }
     #endregion
 
+    public WorldObjectElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         WorldObjectDataManager.AddData(this, dataRequest);

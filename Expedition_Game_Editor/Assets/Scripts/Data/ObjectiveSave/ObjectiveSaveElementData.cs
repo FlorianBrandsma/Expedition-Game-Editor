@@ -31,11 +31,22 @@ public class ObjectiveSaveElementData : ObjectiveSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public ObjectiveSaveElementData() { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        ObjectiveSaveDataManager.AddData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        ObjectiveSaveDataManager.UpdateData(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        ObjectiveSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

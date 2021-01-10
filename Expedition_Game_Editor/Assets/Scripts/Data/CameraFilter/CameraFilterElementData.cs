@@ -20,6 +20,8 @@ public class CameraFilterElementData : CameraFilterData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public CameraFilterElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

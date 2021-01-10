@@ -285,6 +285,7 @@ public class PhaseEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
                 ResetExecuteType();
                 UpdateEditor();
                 break;

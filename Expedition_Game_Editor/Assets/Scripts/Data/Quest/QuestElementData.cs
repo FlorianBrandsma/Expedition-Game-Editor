@@ -46,6 +46,8 @@ public class QuestElementData : QuestData, IElementData
     }
     #endregion
 
+    public QuestElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         QuestDataManager.AddData(this, dataRequest);
@@ -56,12 +58,20 @@ public class QuestElementData : QuestData, IElementData
         QuestDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        QuestDataManager.UpdateIndex(this);
+        QuestDataManager.UpdateIndex(this, dataRequest);
     }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        QuestDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        QuestDataManager.RemoveIndex(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

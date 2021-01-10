@@ -51,6 +51,8 @@ public class ObjectiveElementData : ObjectiveData, IElementData
     }
     #endregion
 
+    public ObjectiveElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         ObjectiveDataManager.AddData(this, dataRequest);
@@ -61,12 +63,20 @@ public class ObjectiveElementData : ObjectiveData, IElementData
         ObjectiveDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        ObjectiveDataManager.UpdateIndex(this);
+        ObjectiveDataManager.UpdateIndex(this, dataRequest);
     }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        ObjectiveDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        ObjectiveDataManager.RemoveIndex(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

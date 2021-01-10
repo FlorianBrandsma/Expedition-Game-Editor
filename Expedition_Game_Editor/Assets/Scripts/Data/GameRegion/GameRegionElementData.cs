@@ -25,6 +25,8 @@ public class GameRegionElementData : GameRegionData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameRegionElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

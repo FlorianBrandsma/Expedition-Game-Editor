@@ -119,9 +119,53 @@ public static class ChapterRegionDataManager
 
             elementData.SetOriginalValues();
 
-            AddPhaseRegionData(elementData, dataRequest);
+            AddDependencies(elementData, dataRequest);
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
 
         } else { }
+    }
+
+    private static void AddDependencies(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        if (!dataRequest.includeDependencies) return;
+
+        AddPhaseRegionData(elementData, dataRequest);
+    }
+
+    private static void AddPhaseRegionData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        //Chapter
+        var chapterSearchParameters = new Search.Chapter()
+        {
+            id = new List<int>() { elementData.ChapterId }
+        };
+
+        var chapterData = DataManager.GetChapterData(chapterSearchParameters).FirstOrDefault();
+
+        //Phase
+        var phaseSearchParameters = new Search.Phase()
+        {
+            chapterId = new List<int>() { chapterData.Id }
+        };
+
+        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+
+        if (phaseDataList.Count == 0) return;
+
+        phaseDataList.ForEach(phaseData =>
+        {
+            var phaseElementData = new PhaseElementData()
+            {
+                Id = phaseData.Id,
+                ChapterId = phaseData.ChapterId,
+                DefaultRegionId = phaseData.DefaultRegionId
+            };
+
+            phaseElementData.SetOriginalValues();
+
+            PhaseDataManager.CopyRegionData(phaseElementData, elementData, dataRequest);
+        });
     }
 
     public static void UpdateData(ChapterRegionElementData elementData, DataRequest dataRequest)
@@ -149,25 +193,32 @@ public static class ChapterRegionDataManager
             }
         }
     }
-    
-    public static void RemoveData(ChapterRegionElementData elementData, DataRequest dataRequest)
-    {
-        if (dataRequest.requestType == Enums.RequestType.Execute)
-        {
-            RemovePhaseRegionData(elementData, dataRequest);
-
-            Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
-            
-        } else {
-
-            RemovePhaseRegionData(elementData, dataRequest);
-        }
-    }
 
     private static void ReplacePhaseRegion(ChapterRegionElementData elementData, DataRequest dataRequest)
     {
         RemovePhaseRegionData(elementData, dataRequest);
         AddPhaseRegionData(elementData, dataRequest);
+    }
+
+    public static void RemoveData(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
+
+            Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
+        }
+    }
+
+    private static void RemoveDependencies(ChapterRegionElementData elementData, DataRequest dataRequest)
+    {
+        RemovePhaseRegionData(elementData, dataRequest);
     }
 
     private static void RemovePhaseRegionData(ChapterRegionElementData elementData, DataRequest dataRequest)
@@ -219,41 +270,6 @@ public static class ChapterRegionDataManager
             phaseElementData.SetOriginalValues();
 
             PhaseDataManager.UpdateDefaultRegion(phaseElementData, dataRequest);
-        });
-    }
-
-    private static void AddPhaseRegionData(ChapterRegionElementData elementData, DataRequest dataRequest)
-    {
-        //Chapter
-        var chapterSearchParameters = new Search.Chapter()
-        {
-            id = new List<int>() { elementData.ChapterId }
-        };
-
-        var chapterData = DataManager.GetChapterData(chapterSearchParameters).FirstOrDefault();
-
-        //Phase
-        var phaseSearchParameters = new Search.Phase()
-        {
-            chapterId = new List<int>() { chapterData.Id }
-        };
-
-        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
-
-        if (phaseDataList.Count == 0) return;
-
-        phaseDataList.ForEach(phaseData =>
-        {
-            var phaseElementData = new PhaseElementData()
-            {
-                Id = phaseData.Id,
-                ChapterId = phaseData.ChapterId,
-                DefaultRegionId = phaseData.DefaultRegionId
-            };
-
-            phaseElementData.SetOriginalValues();
-
-            PhaseDataManager.CopyRegionData(phaseElementData, elementData, dataRequest);
         });
     }
 }

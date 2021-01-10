@@ -119,6 +119,8 @@ public static class ChapterInteractableDataManager
 
     private static void AddDependencies(ChapterInteractableElementData elementData, DataRequest dataRequest)
     {
+        if (!dataRequest.includeDependencies) return;
+
         AddWorldInteractable(elementData, dataRequest);
     }
 
@@ -139,12 +141,14 @@ public static class ChapterInteractableDataManager
             var worldInteractableElementData = new WorldInteractableElementData()
             {
                 PhaseId = phaseData.Id,
+
                 ChapterInteractableId = elementData.Id,
                 InteractableId = elementData.InteractableId,
+
                 Type = (int)Enums.InteractableType.Agent
             };
 
-            WorldInteractableDataManager.AddData(worldInteractableElementData, dataRequest, true);
+            worldInteractableElementData.Add(dataRequest);
         });
     }
 
@@ -206,7 +210,7 @@ public static class ChapterInteractableDataManager
             RemoveDependencies(elementData, dataRequest);
 
             Fixtures.chapterInteractableList.RemoveAll(x => x.Id == elementData.Id);
-            
+
         } else {
 
             RemoveDependencies(elementData, dataRequest);
@@ -217,7 +221,7 @@ public static class ChapterInteractableDataManager
     {
         RemoveWorldInteractableData(elementData, dataRequest);
     }
-
+    
     private static void RemoveWorldInteractableData(ChapterInteractableElementData elementData, DataRequest dataRequest)
     {
         var worldInteractableSearchParameters = new Search.WorldInteractable()

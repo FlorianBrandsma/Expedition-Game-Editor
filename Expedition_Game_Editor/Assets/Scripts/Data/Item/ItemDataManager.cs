@@ -130,15 +130,19 @@ public static class ItemDataManager
         } else { }
     }
 
-    static public void UpdateIndex(ItemElementData elementData)
+    static public void UpdateIndex(ItemElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.itemList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+        } else { }
     }
 
     public static void RemoveData(ItemElementData elementData, DataRequest dataRequest)
@@ -147,6 +151,33 @@ public static class ItemDataManager
         {
             Fixtures.itemList.RemoveAll(x => x.Id == elementData.Id);
 
+            elementData.RemoveIndex(dataRequest);
+
         } else { }
+    }
+
+    public static void RemoveIndex(ItemElementData elementData, DataRequest dataRequest)
+    {
+        var itemSearchParameters = new Search.Item()
+        {
+            type = new List<int>() { elementData.Type }
+        };
+
+        var itemDataList = DataManager.GetItemData(itemSearchParameters);
+
+        itemDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(itemData =>
+        {
+            var itemElementData = new ItemElementData()
+            {
+                Id = itemData.Id,
+                Index = itemData.Index
+            };
+
+            itemElementData.SetOriginalValues();
+
+            itemElementData.Index--;
+
+            itemElementData.UpdateIndex(dataRequest);
+        });
     }
 }

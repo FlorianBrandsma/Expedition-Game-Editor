@@ -42,9 +42,6 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
             case Enums.RegionType.Phase:
                 searchParameters.includeAddWorldObjectElement = true;
                 break;
-            case Enums.RegionType.Controllable:
-                searchParameters.includeAddPhaseElement = true;
-                break;
             case Enums.RegionType.InteractionDestination:
                 searchParameters.includeAddInteractionDestinationElement = true;
                 break;

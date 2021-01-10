@@ -55,9 +55,19 @@ static public class DataManager
         return dataList;
     }
 
-    static public List<InteractableBaseData> GetInteractableData()
+    public static List<ItemBaseData> GetItemData(Search.Item searchParameters)
     {
-        return GetInteractableData(new Search.Interactable());
+        var dataList = new List<ItemBaseData>();
+
+        foreach (ItemBaseData item in Fixtures.itemList)
+        {
+            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.Id))      continue;
+            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.Type))  continue;
+
+            dataList.Add(item);
+        }
+
+        return dataList;
     }
 
     static public List<InteractableBaseData> GetInteractableData(Search.Interactable searchParameters)
@@ -141,7 +151,8 @@ static public class DataManager
 
         foreach (QuestBaseData quest in Fixtures.questList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(quest.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(quest.Id))             continue;
+            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(quest.PhaseId))   continue;
 
             dataList.Add(quest);
         }
@@ -155,7 +166,8 @@ static public class DataManager
 
         foreach (ObjectiveBaseData objective in Fixtures.objectiveList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(objective.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(objective.Id))             continue;
+            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(objective.QuestId))   continue;
 
             dataList.Add(objective);
         }
@@ -172,9 +184,12 @@ static public class DataManager
             if (searchParameters.id.Count                       > 0 && !searchParameters.id.Contains(worldInteractable.Id))                                         continue;
             if (searchParameters.type.Count                     > 0 && !searchParameters.type.Contains(worldInteractable.Type))                                     continue;
             if (searchParameters.chapterId.Count                > 0 && !searchParameters.chapterId.Contains(worldInteractable.ChapterId))                           continue;
-            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
             if (searchParameters.phaseId.Count                  > 0 && !searchParameters.phaseId.Contains(worldInteractable.PhaseId))                               continue;
+            if (searchParameters.questId.Count                  > 0 && !searchParameters.questId.Contains(worldInteractable.QuestId))                               continue;
             if (searchParameters.objectiveId.Count              > 0 && !searchParameters.objectiveId.Contains(worldInteractable.ObjectiveId))                       continue;
+
+            if (searchParameters.chapterInteractableId.Count    > 0 && !searchParameters.chapterInteractableId.Contains(worldInteractable.ChapterInteractableId))   continue;
+            if (searchParameters.interactableId.Count           > 0 && !searchParameters.interactableId.Contains(worldInteractable.InteractableId))                 continue;
 
             dataList.Add(worldInteractable);
         }
@@ -440,15 +455,46 @@ static public class DataManager
         return dataList;
     }
 
+    static public List<SaveBaseData> GetSaveData(Search.Save searchParameters)
+    {
+        var dataList = new List<SaveBaseData>();
+
+        foreach (SaveBaseData save in Fixtures.saveList)
+        {
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.Id))          continue;
+            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.GameId))  continue;
+
+            dataList.Add(save);
+        }
+
+        return dataList;
+    }
+
     static public List<PlayerSaveBaseData> GetPlayerSaveData(Search.PlayerSave searchParameters)
     {
         var dataList = new List<PlayerSaveBaseData>();
 
         foreach(PlayerSaveBaseData playerSave in Fixtures.playerSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(playerSave.SaveId)) continue;
+            if (searchParameters.saveId.Count               > 0 && !searchParameters.saveId.Contains(playerSave.SaveId))                            continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(playerSave.WorldInteractableId))  continue;
 
             dataList.Add(playerSave);
+        }
+
+        return dataList;
+    }
+
+    static public List<InteractableSaveBaseData> GetInteractableSaveData(Search.InteractableSave searchParameters)
+    {
+        var dataList = new List<InteractableSaveBaseData>();
+
+        foreach (InteractableSaveBaseData interactableSave in Fixtures.interactableSaveList)
+        {
+            if (searchParameters.saveId.Count           > 0 && !searchParameters.saveId.Contains(interactableSave.SaveId))                  continue;
+            if (searchParameters.interactableId.Count   > 0 && !searchParameters.interactableId.Contains(interactableSave.InteractableId))  continue;
+
+            dataList.Add(interactableSave);
         }
 
         return dataList;
@@ -460,7 +506,9 @@ static public class DataManager
 
         foreach(ChapterSaveBaseData chapterSave in Fixtures.chapterSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(chapterSave.SaveId)) continue;
+            if (searchParameters.saveId.Count       > 0 && !searchParameters.saveId.Contains(chapterSave.SaveId))       continue;
+            if (searchParameters.chapterId.Count    > 0 && !searchParameters.chapterId.Contains(chapterSave.ChapterId)) continue;
+            if (searchParameters.complete != null       && searchParameters.complete != chapterSave.Complete)           continue;
 
             dataList.Add(chapterSave);
         }
@@ -474,7 +522,9 @@ static public class DataManager
 
         foreach (PhaseSaveBaseData phaseSave in Fixtures.phaseSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(phaseSave.SaveId)) continue;
+            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(phaseSave.SaveId))     continue;
+            if (searchParameters.phaseId.Count  > 0 && !searchParameters.phaseId.Contains(phaseSave.PhaseId))   continue;
+            if (searchParameters.complete != null   && searchParameters.complete != phaseSave.Complete)         continue;
 
             dataList.Add(phaseSave);
         }
@@ -488,7 +538,9 @@ static public class DataManager
 
         foreach (QuestSaveBaseData questSave in Fixtures.questSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(questSave.SaveId)) continue;
+            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(questSave.SaveId))     continue;
+            if (searchParameters.questId.Count  > 0 && !searchParameters.questId.Contains(questSave.QuestId))   continue;
+            if (searchParameters.complete != null   && searchParameters.complete != questSave.Complete)         continue;
 
             dataList.Add(questSave);
         }
@@ -502,7 +554,9 @@ static public class DataManager
 
         foreach (ObjectiveSaveBaseData objectiveSave in Fixtures.objectiveSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(objectiveSave.SaveId)) continue;
+            if (searchParameters.saveId.Count       > 0 && !searchParameters.saveId.Contains(objectiveSave.SaveId))             continue;
+            if (searchParameters.objectiveId.Count  > 0 && !searchParameters.objectiveId.Contains(objectiveSave.ObjectiveId))   continue;
+            if (searchParameters.complete != null       && searchParameters.complete != objectiveSave.Complete)                 continue;
 
             dataList.Add(objectiveSave);
         }
@@ -516,7 +570,10 @@ static public class DataManager
 
         foreach (TaskSaveBaseData taskSave in Fixtures.taskSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(taskSave.SaveId)) continue;
+            if (searchParameters.saveId.Count               > 0 && !searchParameters.saveId.Contains(taskSave.SaveId))                              continue;
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.WorldInteractableId))    continue;
+            if (searchParameters.taskId.Count               > 0 && !searchParameters.taskId.Contains(taskSave.TaskId))                              continue;
+            if (searchParameters.complete != null               && searchParameters.complete != taskSave.Complete)                                  continue;
 
             dataList.Add(taskSave);
         }
@@ -530,7 +587,9 @@ static public class DataManager
 
         foreach (InteractionSaveBaseData interactionSave in Fixtures.interactionSaveList)
         {
-            if (searchParameters.saveId.Count > 0 && !searchParameters.saveId.Contains(interactionSave.SaveId)) continue;
+            if (searchParameters.saveId.Count           > 0 && !searchParameters.saveId.Contains(interactionSave.SaveId))               continue;
+            if (searchParameters.interactionId.Count    > 0 && !searchParameters.interactionId.Contains(interactionSave.InteractionId)) continue;
+            if (searchParameters.complete != null           && searchParameters.complete != interactionSave.Complete)                   continue;
 
             dataList.Add(interactionSave);
         }

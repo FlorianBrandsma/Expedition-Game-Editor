@@ -31,6 +31,8 @@ public class ChapterRegionElementData : ChapterRegionData, IElementData
     }
     #endregion
 
+    public ChapterRegionElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         ChapterRegionDataManager.AddData(this, dataRequest);

@@ -43,6 +43,8 @@ public class GameInteractionElementData : GameInteractionData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameInteractionElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

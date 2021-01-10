@@ -94,6 +94,8 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
     }
     #endregion
 
+    public InteractionDestinationElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         InteractionDestinationDataManager.AddData(this, dataRequest);

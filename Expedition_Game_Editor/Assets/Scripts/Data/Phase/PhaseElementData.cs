@@ -89,6 +89,8 @@ public class PhaseElementData : PhaseData, IElementData
     }
     #endregion
 
+    public PhaseElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         PhaseDataManager.AddData(this, dataRequest);
@@ -99,12 +101,20 @@ public class PhaseElementData : PhaseData, IElementData
         PhaseDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        PhaseDataManager.UpdateIndex(this);
+        PhaseDataManager.UpdateIndex(this, dataRequest);
     }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        PhaseDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        PhaseDataManager.RemoveIndex(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

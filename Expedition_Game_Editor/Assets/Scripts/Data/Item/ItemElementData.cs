@@ -38,6 +38,8 @@ public class ItemElementData : ItemData, IElementData
     }
     #endregion
 
+    public ItemElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         ItemDataManager.AddData(this, dataRequest);
@@ -48,14 +50,19 @@ public class ItemElementData : ItemData, IElementData
         ItemDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        ItemDataManager.UpdateIndex(this);
+        ItemDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         ItemDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        ItemDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

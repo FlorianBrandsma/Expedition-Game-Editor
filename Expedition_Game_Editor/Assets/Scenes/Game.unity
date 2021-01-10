@@ -10414,7 +10414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchProperties:
-    dataType: 0
+    dataType: 6
     elementType: 0
     iconType: 0
     autoUpdate: 0
@@ -22310,7 +22310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchProperties:
-    dataType: 0
+    dataType: 6
     elementType: 0
     iconType: 0
     autoUpdate: 0
@@ -29836,7 +29836,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1832129052}
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 133624375}

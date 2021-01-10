@@ -108,17 +108,17 @@ public class WorldObjectPositionCoordinateSegment : MonoBehaviour, ISegment
 
     public void UpdateTile()
     {
-        //TerrainId = RegionManager.GetTerrainId(regionData, regionData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionData.TileSize, PositionX, PositionZ);
-
         if (bindToTile == null) return;
         
         if (bindToTile.Toggle.isOn)
         {
-            TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
+            TerrainId       = RegionManager.GetTerrainId(regionData, regionData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionData.TileSize, PositionX, PositionZ);
+            TerrainTileId   = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
 
         } else {
-            
-            TerrainTileId = 0;
+
+            TerrainId       = 0;
+            TerrainTileId   = 0;
         }
 
         DataEditor.UpdateEditor();

@@ -91,4 +91,13 @@ public static class InteractableSaveDataManager
 
         iconDataList = DataManager.GetIconData(searchParameters);
     }
+
+    public static void RemoveData(InteractableSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.interactableSaveList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
+    }
 }

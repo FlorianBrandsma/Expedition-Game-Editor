@@ -103,6 +103,8 @@ public class SceneActorElementData : SceneActorData, IElementData
     }
     #endregion
 
+    public SceneActorElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         SceneActorDataManager.AddData(this, dataRequest);

@@ -5,7 +5,6 @@ public class QuestSaveBaseData
     public int Id           { get; set; }
     
     public int SaveId       { get; set; }
-    public int PhaseSaveId  { get; set; }
     public int QuestId      { get; set; }
 
     public bool Complete    { get; set; }
@@ -15,7 +14,6 @@ public class QuestSaveBaseData
         Id          = originalData.Id;
 
         SaveId      = originalData.SaveId;
-        PhaseSaveId = originalData.PhaseSaveId;
         QuestId     = originalData.QuestId;
 
         Complete    = originalData.Complete;
@@ -26,7 +24,6 @@ public class QuestSaveBaseData
         data.Id             = Id;
 
         data.SaveId         = SaveId;
-        data.PhaseSaveId    = PhaseSaveId;
         data.QuestId        = QuestId;
 
         data.Complete       = Complete;

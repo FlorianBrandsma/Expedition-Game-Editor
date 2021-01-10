@@ -20,6 +20,8 @@ public class GameScenePropElementData : GameScenePropData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameScenePropElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

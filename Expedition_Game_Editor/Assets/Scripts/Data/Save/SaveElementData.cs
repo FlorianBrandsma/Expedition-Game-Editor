@@ -20,6 +20,8 @@ public class SaveElementData : SaveData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public SaveElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

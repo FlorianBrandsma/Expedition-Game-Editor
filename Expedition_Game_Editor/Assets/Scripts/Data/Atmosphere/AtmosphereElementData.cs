@@ -46,6 +46,8 @@ public class AtmosphereElementData : AtmosphereData, IElementData
     }
     #endregion
 
+    public AtmosphereElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         AtmosphereDataManager.AddData(this, dataRequest);

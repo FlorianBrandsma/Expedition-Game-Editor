@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
         //2. Find the first phase of that chapter that has not been completed
 
         var activeChapterSave = gameSaveData.ChapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
-        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.ChapterSaveId == activeChapterSave.Id && !x.Complete).OrderBy(x => x.Index).First();
+        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.ChapterId == activeChapterSave.ChapterId && !x.Complete).OrderBy(x => x.Index).First();
         
         ActivePhaseId = activePhaseSave.PhaseId;
 
@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
             gameSaveData.PlayerSaveData.GameTime = gameWorldData.PhaseData.DefaultTime;
 
             ActiveRegionId = gameWorldData.PhaseData.DefaultRegionId;
-            
+
         } else {
 
             ActiveRegionId = gameSaveData.PlayerSaveData.RegionId;
@@ -272,10 +272,11 @@ public class GameManager : MonoBehaviour
         //This line doesn't make any sense. Disabled logic for now
         //if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
 
-        ActiveWorldInteractableControllableId = WorldInteractableControllableDataController.Data.dataList.First().Id;
-        
+        //ActiveWorldInteractableControllableId = WorldInteractableControllableDataController.Data.dataList.First().Id;
+        ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
+
         //else
-            //ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
+        //ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
     }
 
     public void ChangeControllable()
@@ -294,13 +295,13 @@ public class GameManager : MonoBehaviour
         var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
 
         //Finds the quest saves of the quests belonging to the active phase
-        var activeQuestSaves = gameSaveData.QuestSaveDataList.Where(x => x.PhaseSaveId == activePhaseSave.Id).ToList();
+        var activeQuestSaves = gameSaveData.QuestSaveDataList.Where(x => x.PhaseId == activePhaseSave.PhaseId).ToList();
 
         //Finds the objectives belonging to the quests of the quest saves
         //Groups the objectives per quest and check if there are any uncompleted objectives left
         //Select the first uncompleted objective if there are any, else pick the last objective
-        var activeObjectiveSaves = gameSaveData.ObjectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.Id).Contains(x.QuestSaveId)).OrderBy(x => x.Index)
-                                                                     .GroupBy(x => x.QuestSaveId)
+        var activeObjectiveSaves = gameSaveData.ObjectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.QuestId).Contains(x.QuestId)).OrderBy(x => x.Index)
+                                                                     .GroupBy(x => x.QuestId)
                                                                      .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : x.Last()).ToList();
 
         //Finds the region interactions: interactions that do not belong to an objective
@@ -312,9 +313,9 @@ public class GameManager : MonoBehaviour
         //Finds the task saves of the tasks belonging to the objective saves, combined with the region tasks
         //Groups the tasks by world interactable and by objective save, as some world interactables "belong" to multiple objectives and some to none
         //Selects the first uncompleted task if there are any, else pick the last task if it's repeatable
-        activeTaskSaveList = gameSaveData.TaskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.Id).Contains(x.ObjectiveSaveId))
+        activeTaskSaveList = gameSaveData.TaskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.ObjectiveId).Contains(x.ObjectiveId))
                                                           .Concat(regionTasks)
-                                                          .GroupBy(x => new { x.WorldInteractableId, x.ObjectiveSaveId })
+                                                          .GroupBy(x => new { x.WorldInteractableId, x.ObjectiveId })
                                                           .Select(x => x.ToList().OrderBy(y => y.Index))
                                                           .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : 
                                                                                                  x.Last().Repeatable ? x.Last() : 

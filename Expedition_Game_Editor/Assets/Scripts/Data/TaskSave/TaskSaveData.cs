@@ -2,6 +2,8 @@
 
 public class TaskSaveData : TaskSaveBaseData
 {
+    public int ObjectiveId      { get; set; }
+
     public int Index            { get; set; }
 
     public string Name          { get; set; }
@@ -13,6 +15,8 @@ public class TaskSaveData : TaskSaveBaseData
 
     public override void GetOriginalValues(TaskSaveData originalData)
     {
+        ObjectiveId     = originalData.ObjectiveId;
+
         Index           = originalData.Index;
 
         Name            = originalData.Name;
@@ -28,6 +32,8 @@ public class TaskSaveData : TaskSaveBaseData
     public TaskSaveData Clone()
     {
         var data = new TaskSaveData();
+
+        data.ObjectiveId    = ObjectiveId;
 
         data.Index          = Index;
 
@@ -45,6 +51,8 @@ public class TaskSaveData : TaskSaveBaseData
 
     public virtual void Clone(TaskSaveElementData elementData)
     {
+        elementData.ObjectiveId     = ObjectiveId;
+
         elementData.Index           = Index;
 
         elementData.Name            = Name;

@@ -54,6 +54,8 @@ public class GameWorldInteractableElementData : GameWorldInteractableData, IElem
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameWorldInteractableElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

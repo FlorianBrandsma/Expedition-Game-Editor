@@ -63,6 +63,11 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
 
     private void UpdateIndex()
     {
+        var dataRequest = new DataRequest()
+        {
+            requestType = Enums.RequestType.Execute
+        };
+
         dataList = segment.DataEditor.Data.dataController.Data.dataList;
         
         var elementData = segment.DataEditor.EditData;
@@ -75,17 +80,17 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
         {
             switch (elementData.DataType)
             {
-                case Enums.DataType.Item:           UpdateItemIndex(i);          break;
-                case Enums.DataType.Interactable:   UpdateInteractableIndex(i);  break;
-                case Enums.DataType.Region:         UpdateRegionIndex(i);        break;
+                case Enums.DataType.Item:           UpdateItemIndex(i, dataRequest);            break;
+                case Enums.DataType.Interactable:   UpdateInteractableIndex(i, dataRequest);    break;
+                case Enums.DataType.Region:         UpdateRegionIndex(i, dataRequest);          break;
 
-                case Enums.DataType.Chapter:        UpdateChapterIndex(i);       break;
-                case Enums.DataType.Phase:          UpdatePhaseIndex(i);         break;
-                case Enums.DataType.Quest:          UpdateQuestIndex(i);         break;
-                case Enums.DataType.Objective:      UpdateObjectiveIndex(i);     break;
-                case Enums.DataType.Task:           UpdateTaskIndex(i);          break;
+                case Enums.DataType.Chapter:        UpdateChapterIndex(i, dataRequest);         break;
+                case Enums.DataType.Phase:          UpdatePhaseIndex(i, dataRequest);           break;
+                case Enums.DataType.Quest:          UpdateQuestIndex(i, dataRequest);           break;
+                case Enums.DataType.Objective:      UpdateObjectiveIndex(i, dataRequest);       break;
+                case Enums.DataType.Task:           UpdateTaskIndex(i, dataRequest);            break;
 
-                case Enums.DataType.Scene:          UpdateSceneIndex(i);         break;
+                case Enums.DataType.Scene:          UpdateSceneIndex(i, dataRequest);           break;
 
                 default: Debug.Log("CASE MISSING " + elementData.DataType); break;
             }
@@ -97,85 +102,85 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
         SetIndex(); 
     }
 
-    private void UpdateItemIndex(int index)
+    private void UpdateItemIndex(int index, DataRequest dataRequest)
     {
         var elementData = (ItemElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateInteractableIndex(int index)
+    private void UpdateInteractableIndex(int index, DataRequest dataRequest)
     {
         var elementData = (InteractableElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateRegionIndex(int index)
+    private void UpdateRegionIndex(int index, DataRequest dataRequest)
     {
         var elementData = (RegionElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateChapterIndex(int index)
+    private void UpdateChapterIndex(int index, DataRequest dataRequest)
     {
         var elementData = (ChapterElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdatePhaseIndex(int index)
+    private void UpdatePhaseIndex(int index, DataRequest dataRequest)
     {
         var elementData = (PhaseElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateQuestIndex(int index)
+    private void UpdateQuestIndex(int index, DataRequest dataRequest)
     {
         var elementData = (QuestElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateObjectiveIndex(int index)
+    private void UpdateObjectiveIndex(int index, DataRequest dataRequest)
     {
         var elementData = (ObjectiveElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateTaskIndex(int index)
+    private void UpdateTaskIndex(int index, DataRequest dataRequest)
     {
         var elementData = (TaskElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
-    private void UpdateSceneIndex(int index)
+    private void UpdateSceneIndex(int index, DataRequest dataRequest)
     {
         var elementData = (SceneElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 
-        elementData.UpdateIndex();
+        elementData.UpdateIndex(dataRequest);
     }
 
     public void SetIndex()

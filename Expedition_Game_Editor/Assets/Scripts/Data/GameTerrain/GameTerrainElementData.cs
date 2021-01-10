@@ -20,6 +20,8 @@ public class GameTerrainElementData : GameTerrainData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameTerrainElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

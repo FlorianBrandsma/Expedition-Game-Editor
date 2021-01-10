@@ -102,7 +102,10 @@ static public class SelectionManager
     {
         var elementDataList = SelectionElementManager.FindElementData(searchElementData);
 
-        var dataRequest = new DataRequest();
+        var dataRequest = new DataRequest()
+        {
+            includeDependencies = true
+        };
 
         //var validationElement = searchElementData.Clone();
         //validationElement.DataElement.Data.dataController.SetData(validationElement, resultElementData);

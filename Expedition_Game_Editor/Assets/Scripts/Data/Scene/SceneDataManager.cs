@@ -123,7 +123,7 @@ public class SceneDataManager : MonoBehaviour
         tileDataList = DataManager.GetTileData(searchParameters);
     }
 
-    public static void AddData(SceneElementData elementData, DataRequest dataRequest, bool copy = false)
+    public static void AddData(SceneElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
@@ -132,11 +132,21 @@ public class SceneDataManager : MonoBehaviour
 
             elementData.SetOriginalValues();
 
-            if (copy) return;
-
-            //Add scene shots
-
+            AddDependencies(elementData, dataRequest);
+            
         } else { }
+    }
+
+    private static void AddDependencies(SceneElementData elementData, DataRequest dataRequest)
+    {
+        if (!dataRequest.includeDependencies) return;
+
+        AddSceneShotData(elementData, dataRequest);
+    }
+
+    private static void AddSceneShotData(SceneElementData elementData, DataRequest dataRequest)
+    {
+        //Add scene shots
     }
 
     public static void UpdateData(SceneElementData elementData, DataRequest dataRequest)
@@ -197,15 +207,19 @@ public class SceneDataManager : MonoBehaviour
         } else { }
     }
 
-    static public void UpdateIndex(SceneElementData elementData)
+    static public void UpdateIndex(SceneElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.sceneList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+        } else { }
     }
 
     public static void RemoveData(SceneElementData elementData, DataRequest dataRequest)
@@ -215,7 +229,9 @@ public class SceneDataManager : MonoBehaviour
             RemoveDependencies(elementData, dataRequest);
 
             Fixtures.sceneList.RemoveAll(x => x.Id == elementData.Id);
-            
+
+            elementData.RemoveIndex(dataRequest);
+
         } else { }
     }
 
@@ -284,6 +300,31 @@ public class SceneDataManager : MonoBehaviour
             };
 
             scenePropElementData.Remove(dataRequest);
+        });
+    }
+
+    public static void RemoveIndex(SceneElementData elementData, DataRequest dataRequest)
+    {
+        var sceneSearchParameters = new Search.Scene()
+        {
+            outcomeId = new List<int>() { elementData.OutcomeId }
+        };
+
+        var sceneDataList = DataManager.GetSceneData(sceneSearchParameters);
+
+        sceneDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(sceneData =>
+        {
+            var sceneElementData = new SceneElementData()
+            {
+                Id = sceneData.Id,
+                Index = sceneData.Index
+            };
+
+            sceneElementData.SetOriginalValues();
+
+            sceneElementData.Index--;
+
+            sceneElementData.UpdateIndex(dataRequest);
         });
     }
 }

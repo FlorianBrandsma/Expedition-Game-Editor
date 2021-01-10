@@ -110,7 +110,7 @@ public static class TerrainDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void AddData(TerrainElementData elementData, DataRequest dataRequest, bool copy = false)
+    public static void AddData(TerrainElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
@@ -118,13 +118,23 @@ public static class TerrainDataManager
             Fixtures.terrainList.Add(((TerrainData)elementData).Clone());
 
             elementData.SetOriginalValues();
-
-            if (copy) return;
-
-            var atmosphereElementData = AtmosphereDataManager.DefaultData(elementData.Id, true);
-            atmosphereElementData.Add(dataRequest);
+            
+            AddDependencies(elementData, dataRequest);
 
         } else { }
+    }
+
+    private static void AddDependencies(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        if (!dataRequest.includeDependencies) return;
+
+        AddAtmosphereData(elementData, dataRequest);
+    }
+
+    private static void AddAtmosphereData(TerrainElementData elementData, DataRequest dataRequest)
+    {
+        var atmosphereElementData = AtmosphereDataManager.DefaultData(elementData.Id, true);
+        atmosphereElementData.Add(dataRequest);
     }
 
     public static void UpdateData(TerrainElementData elementData, DataRequest dataRequest)

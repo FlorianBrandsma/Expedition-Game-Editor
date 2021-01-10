@@ -36,6 +36,8 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     }
     #endregion
 
+    public WorldInteractableElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         WorldInteractableDataManager.AddData(this, dataRequest);

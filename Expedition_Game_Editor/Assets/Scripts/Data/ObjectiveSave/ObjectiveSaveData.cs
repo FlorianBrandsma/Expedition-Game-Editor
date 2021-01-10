@@ -2,6 +2,8 @@
 
 public class ObjectiveSaveData : ObjectiveSaveBaseData
 {
+    public int QuestId          { get; set; }
+
     public int Index            { get; set; }
 
     public string Name          { get; set; }
@@ -11,6 +13,8 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
 
     public override void GetOriginalValues(ObjectiveSaveData originalData)
     {
+        QuestId         = originalData.QuestId;
+
         Index           = originalData.Index;
 
         Name            = originalData.Name;
@@ -24,6 +28,8 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
     public ObjectiveSaveData Clone()
     {
         var data = new ObjectiveSaveData();
+
+        data.QuestId        = QuestId;
 
         data.Index          = Index;
 
@@ -39,6 +45,8 @@ public class ObjectiveSaveData : ObjectiveSaveBaseData
 
     public virtual void Clone(ObjectiveSaveElementData elementData)
     {
+        elementData.QuestId         = QuestId;
+
         elementData.Index           = Index;
 
         elementData.Name            = Name;

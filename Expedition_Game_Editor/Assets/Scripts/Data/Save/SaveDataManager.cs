@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,11 +36,11 @@ public static class SaveDataManager
         GetRegionData();
         GetTerrainData();
         GetTileSetData();
-        
+
         GetPhaseData();
         GetChapterData();
 
-        var list = (from saveData in saveDataList
+        var list = (from saveData               in saveDataList
                     join playerSaveData         in playerSaveDataList           on saveData.Id                          equals playerSaveData.SaveId
 
                     join worldInteractableData  in worldInteractableDataList    on playerSaveData.WorldInteractableId   equals worldInteractableData.Id
@@ -77,15 +76,7 @@ public static class SaveDataManager
 
     private static void GetSaveData(Search.Save searchParameters)
     {
-        saveDataList = new List<SaveBaseData>();
-
-        foreach (SaveBaseData save in Fixtures.saveList)
-        {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(save.Id))          continue;
-            if (searchParameters.gameId.Count   > 0 && !searchParameters.gameId.Contains(save.GameId))  continue;
-
-            saveDataList.Add(save);
-        }
+        saveDataList = DataManager.GetSaveData(searchParameters);
     }
 
     private static void GetPlayerSaveData()

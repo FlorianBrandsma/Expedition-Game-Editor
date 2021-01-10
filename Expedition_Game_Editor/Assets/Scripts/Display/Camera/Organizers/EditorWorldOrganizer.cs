@@ -606,7 +606,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         if (selectedSceneProps.Count > 0)
             SetWorldElements(ScenePropDataController, selectedSceneProps.Cast<IElementData>().ToList());
-        
+
         //Set elements that are not bound to a tile
         SetWorldObjects();
         
@@ -687,9 +687,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
     private void SetWorldObjects(int terrainTileId = 0)
     {
-        var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => !selectedWorldObjects.Select(y => y.Id).Contains(x.Id) && 
-                                                                                     ((WorldObjectElementData)x).TerrainTileId == terrainTileId &&
-                                                                                     ((WorldObjectElementData)x).RegionId == worldData.Id).ToList();
+        var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => !selectedWorldObjects.Select(y => y.Id).Contains(x.Id) &&
+                                                                                     ((WorldObjectElementData)x).TerrainTileId == terrainTileId).ToList(); /*&&
+                                                                                     ((WorldObjectElementData)x).RegionId == worldData.Id).ToList();*/
 
         SetWorldElements(WorldObjectDataController, worldObjectDataList);
     }

@@ -65,6 +65,8 @@ public class RegionElementData : RegionData, IElementData
     }
     #endregion
 
+    public RegionElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         RegionDataManager.AddData(this, dataRequest);
@@ -75,14 +77,19 @@ public class RegionElementData : RegionData, IElementData
         RegionDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        RegionDataManager.UpdateIndex(this);
+        RegionDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         RegionDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        RegionDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

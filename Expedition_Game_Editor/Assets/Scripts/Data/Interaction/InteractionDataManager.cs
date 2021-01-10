@@ -219,7 +219,7 @@ public static class InteractionDataManager
         return defaultTimes;
     }
 
-    public static void AddData(InteractionElementData elementData, DataRequest dataRequest, bool copy = false)
+    public static void AddData(InteractionElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
@@ -228,15 +228,47 @@ public static class InteractionDataManager
 
             elementData.SetOriginalValues();
 
-            if (copy) return;
-
-            var interactionDestinationElementData = InteractionDestinationDataManager.DefaultData(elementData.Id);
-            interactionDestinationElementData.Add(dataRequest);
-
-            var outcomeElementData = OutcomeDataManager.DefaultData(elementData.Id);
-            outcomeElementData.Add(dataRequest);
+            AddDependencies(elementData, dataRequest);
 
         } else { }
+    }
+
+    private static void AddDependencies(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        AddInteractionSaveData(elementData, dataRequest);
+
+        if (!dataRequest.includeDependencies) return;
+
+        AddInteractionDestinationData(elementData, dataRequest);
+        AddOutcomeData(elementData, dataRequest);
+    }
+
+    private static void AddInteractionSaveData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        //Save
+        var saveSearchParameters = new Search.Save();
+
+        var saveDataList = DataManager.GetSaveData(saveSearchParameters);
+
+        if (saveDataList.Count == 0) return;
+
+        saveDataList.ForEach(saveData =>
+        {
+            var interactionSaveElementData = InteractionSaveDataManager.DefaultData(saveData.Id, elementData.Id);
+            interactionSaveElementData.Add(dataRequest);
+        });
+    }
+
+    private static void AddInteractionDestinationData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var interactionDestinationElementData = InteractionDestinationDataManager.DefaultData(elementData.Id);
+        interactionDestinationElementData.Add(dataRequest);
+    }
+
+    private static void AddOutcomeData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var outcomeElementData = OutcomeDataManager.DefaultData(elementData.Id);
+        outcomeElementData.Add(dataRequest);
     }
 
     public static void UpdateData(InteractionElementData elementData, DataRequest dataRequest)
@@ -355,7 +387,9 @@ public static class InteractionDataManager
     private static void RemoveDependencies(InteractionElementData elementData, DataRequest dataRequest)
     {
         RemoveInteractionDestinationData(elementData, dataRequest);
+
         RemoveOutcomeData(elementData, dataRequest);
+        RemoveInteractionSaveData(elementData, dataRequest);
     }
 
     private static void RemoveInteractionDestinationData(InteractionElementData elementData, DataRequest dataRequest)
@@ -395,6 +429,26 @@ public static class InteractionDataManager
             };
 
             outcomeElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveInteractionSaveData(InteractionElementData elementData, DataRequest dataRequest)
+    {
+        var interactionSaveSearchParameters = new Search.InteractionSave()
+        {
+            interactionId = new List<int>() { elementData.Id }
+        };
+
+        var interactionSaveDataList = DataManager.GetInteractionSaveData(interactionSaveSearchParameters);
+
+        interactionSaveDataList.ForEach(interactionSaveData =>
+        {
+            var interactionSaveElementData = new InteractionSaveElementData()
+            {
+                Id = interactionSaveData.Id
+            };
+
+            interactionSaveElementData.Remove(dataRequest);
         });
     }
 }

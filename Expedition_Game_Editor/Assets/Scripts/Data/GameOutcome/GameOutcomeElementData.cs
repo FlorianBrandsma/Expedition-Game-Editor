@@ -42,6 +42,8 @@ public class GameOutcomeElementData : GameOutcomeData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameOutcomeElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

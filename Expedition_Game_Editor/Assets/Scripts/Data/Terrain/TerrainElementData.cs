@@ -46,6 +46,8 @@ public class TerrainElementData : TerrainData, IElementData
     }
     #endregion
 
+    public TerrainElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         TerrainDataManager.AddData(this, dataRequest);

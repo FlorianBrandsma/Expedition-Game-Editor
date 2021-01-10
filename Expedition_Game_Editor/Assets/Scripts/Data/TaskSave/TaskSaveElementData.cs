@@ -31,11 +31,22 @@ public class TaskSaveElementData : TaskSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public TaskSaveElementData() { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        TaskSaveDataManager.AddData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        TaskSaveDataManager.UpdateData(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        TaskSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

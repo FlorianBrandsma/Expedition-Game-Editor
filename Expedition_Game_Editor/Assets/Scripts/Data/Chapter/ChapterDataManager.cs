@@ -73,10 +73,45 @@ public static class ChapterDataManager
 
             elementData.SetOriginalValues();
 
+            AddDependencies(elementData, dataRequest);
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
         } else {
 
             CheckDuplicateName(elementData, dataRequest);
         }
+    }
+
+    private static void AddDependencies(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        AddChapterSaveData(elementData, dataRequest);
+
+        if (!dataRequest.includeDependencies) return;
+
+        AddPhaseData(elementData, dataRequest);
+    }
+
+    private static void AddChapterSaveData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        //Save
+        var saveSearchParameters = new Search.Save();
+
+        var saveDataList = DataManager.GetSaveData(saveSearchParameters);
+
+        if (saveDataList.Count == 0) return;
+
+        saveDataList.ForEach(saveData =>
+        {
+            var chapterSaveElementData = ChapterSaveDataManager.DefaultData(saveData.Id, elementData.Id);
+            chapterSaveElementData.Add(dataRequest);
+        });
+    }
+
+    private static void AddPhaseData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var phaseElementData = PhaseDataManager.DefaultData(elementData.Id);
+        phaseElementData.Add(dataRequest);
     }
 
     public static void UpdateData(ChapterElementData elementData, DataRequest dataRequest)
@@ -127,17 +162,23 @@ public static class ChapterDataManager
             dataRequest.errorList.Add("This name totally exists already");
     }
 
-    static public void UpdateIndex(ChapterElementData elementData)
+    static public void UpdateIndex(ChapterElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.chapterList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
+        } else { }
     }
-
+    
     public static void RemoveData(ChapterElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
@@ -145,7 +186,11 @@ public static class ChapterDataManager
             RemoveDependencies(elementData, dataRequest);
 
             Fixtures.chapterList.RemoveAll(x => x.Id == elementData.Id);
-            
+
+            elementData.RemoveIndex(dataRequest);
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
         } else {
 
             RemoveDependencies(elementData, dataRequest);
@@ -157,8 +202,11 @@ public static class ChapterDataManager
         RemoveWorldInteractableData(elementData, dataRequest);
         RemoveChapterInteractableData(elementData, dataRequest);
         RemoveChapterRegionData(elementData, dataRequest);
-    }
 
+        RemovePhaseData(elementData, dataRequest);
+        RemoveChapterSaveData(elementData, dataRequest);
+    }
+    
     private static void RemoveWorldInteractableData(ChapterElementData elementData, DataRequest dataRequest)
     {
         var worldInteractableSearchParameters = new Search.WorldInteractable()
@@ -173,7 +221,10 @@ public static class ChapterDataManager
             var worldInteractableElementData = new WorldInteractableElementData()
             {
                 Id = worldInteractableData.Id,
-                ChapterId = elementData.Id
+
+                ChapterId = elementData.Id,
+
+                Type = worldInteractableData.Type
             };
 
             worldInteractableElementData.Remove(dataRequest);
@@ -219,6 +270,68 @@ public static class ChapterDataManager
             };
 
             chapterRegionElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemovePhaseData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var phaseSearchParameters = new Search.Phase()
+        {
+            chapterId = new List<int>() { elementData.Id }
+        };
+
+        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+
+        phaseDataList.ForEach(worldInteractableData =>
+        {
+            var phaseElementData = new PhaseElementData()
+            {
+                Id = worldInteractableData.Id
+            };
+
+            phaseElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveChapterSaveData(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var chapterSaveSearchParameters = new Search.ChapterSave()
+        {
+            chapterId = new List<int>() { elementData.Id }
+        };
+
+        var chapterSaveDataList = DataManager.GetChapterSaveData(chapterSaveSearchParameters);
+
+        chapterSaveDataList.ForEach(chapterSaveData =>
+        {
+            var chapterSaveElementData = new ChapterSaveElementData()
+            {
+                Id = chapterSaveData.Id
+            };
+
+            chapterSaveElementData.Remove(dataRequest);
+        });
+    }
+
+    public static void RemoveIndex(ChapterElementData elementData, DataRequest dataRequest)
+    {
+        var chapterSearchParameters = new Search.Chapter();
+
+        var chapterDataList = DataManager.GetChapterData(chapterSearchParameters);
+
+        chapterDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(chapterData =>
+        {
+            var chapterElementData = new ChapterElementData()
+            {
+                Id = chapterData.Id,
+                Index = chapterData.Index
+            };
+
+            chapterElementData.SetOriginalValues();
+
+            chapterElementData.Index--;
+
+            chapterElementData.UpdateIndex(dataRequest);
         });
     }
 }

@@ -5,10 +5,9 @@ public class TaskSaveBaseData
     public int Id                   { get; set; }
     
     public int SaveId               { get; set; }
-    public int WorldInteractableId  { get; set; }
-    public int ObjectiveSaveId      { get; set; }
     public int TaskId               { get; set; }
-    
+    public int WorldInteractableId  { get; set; }
+
     public bool Complete            { get; set; }
 
     public virtual void GetOriginalValues(TaskSaveData originalData)
@@ -16,11 +15,8 @@ public class TaskSaveBaseData
         Id                  = originalData.Id;
 
         SaveId              = originalData.SaveId;
-        WorldInteractableId = originalData.WorldInteractableId;
-        ObjectiveSaveId     = originalData.ObjectiveSaveId;
         TaskId              = originalData.TaskId;
-
-        
+        WorldInteractableId = originalData.WorldInteractableId;
 
         Complete            = originalData.Complete;
     }
@@ -30,10 +26,9 @@ public class TaskSaveBaseData
         data.Id                     = Id;
 
         data.SaveId                 = SaveId;
-        data.WorldInteractableId    = WorldInteractableId;
-        data.ObjectiveSaveId        = ObjectiveSaveId;
         data.TaskId                 = TaskId;
-        
+        data.WorldInteractableId    = WorldInteractableId;
+
         data.Complete               = Complete;
     }
 }

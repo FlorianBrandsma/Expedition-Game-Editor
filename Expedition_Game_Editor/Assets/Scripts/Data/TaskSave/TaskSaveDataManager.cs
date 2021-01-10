@@ -4,25 +4,24 @@ using System.Linq;
 
 public static class TaskSaveDataManager
 {
-    private static List<TaskSaveBaseData> taskSaveDataList;
-
     private static List<TaskBaseData> taskDataList;
 
+    private static List<TaskSaveBaseData> taskSaveDataList;
+    
     public static List<IElementData> GetData(Search.TaskSave searchParameters)
     {
+        GetTaskData(searchParameters);
+        
+        if (taskDataList.Count == 0) return new List<IElementData>();
+
         GetTaskSaveData(searchParameters);
 
-        if (taskSaveDataList.Count == 0) return new List<IElementData>();
-
-        GetTaskData();
-
-        var list = (from taskSaveData   in taskSaveDataList
-                    join taskData       in taskDataList on taskSaveData.TaskId equals taskData.Id
+        var list = (from taskData       in taskDataList
+                    join taskSaveData   in taskSaveDataList on taskData.Id equals taskSaveData.TaskId
                     select new TaskSaveElementData()
                     {
                         Id = taskSaveData.Id,
-                        
-                        ObjectiveSaveId = taskSaveData.ObjectiveSaveId,
+
                         TaskId = taskSaveData.TaskId,
 
                         Complete = taskSaveData.Complete,
@@ -34,7 +33,9 @@ public static class TaskSaveDataManager
                         Repeatable = taskData.Repeatable,
                         
                         PublicNotes = taskData.PublicNotes,
-                        PrivateNotes = taskData.PrivateNotes
+                        PrivateNotes = taskData.PrivateNotes,
+
+                        ObjectiveId = taskData.ObjectiveId
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -43,26 +44,46 @@ public static class TaskSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void GetTaskSaveData(Search.TaskSave searchParameters)
+    public static TaskSaveElementData DefaultData(int saveId, int taskId, int worldInteractableId)
     {
-        taskSaveDataList = new List<TaskSaveBaseData>();
-
-        foreach (TaskSaveBaseData taskSave in Fixtures.taskSaveList)
+        return new TaskSaveElementData()
         {
-            if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(taskSave.Id))                                      continue;
-            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(taskSave.WorldInteractableId))    continue;
-            if (searchParameters.objectiveSaveId.Count      > 0 && !searchParameters.objectiveSaveId.Contains(taskSave.ObjectiveSaveId))            continue;
+            SaveId = saveId,
+            TaskId = taskId,
+            WorldInteractableId = worldInteractableId
+        };
+    }
 
-            taskSaveDataList.Add(taskSave);
+    private static void GetTaskData(Search.TaskSave searchParameters)
+    {
+        taskDataList = new List<TaskBaseData>();
+
+        foreach(TaskBaseData task in Fixtures.taskList)
+        {
+            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.WorldInteractableId))    continue;
+            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.ObjectiveId))                    continue;
+
+            taskDataList.Add(task);
         }
     }
 
-    private static void GetTaskData()
+    private static void GetTaskSaveData(Search.TaskSave searchParameters)
     {
-        var searchParameters = new Search.Task();
-        searchParameters.id = taskSaveDataList.Select(x => x.TaskId).Distinct().ToList();
+        searchParameters.taskId = taskDataList.Select(x => x.Id).ToList();
+        
+        taskSaveDataList = DataManager.GetTaskSaveData(searchParameters);
+    }
+    
+    public static void AddData(TaskSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.taskSaveList.Count > 0 ? (Fixtures.taskSaveList[Fixtures.taskSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.taskSaveList.Add(((TaskSaveData)elementData).Clone());
 
-        taskDataList = DataManager.GetTaskData(searchParameters);
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(TaskSaveElementData elementData, DataRequest dataRequest)
@@ -79,6 +100,15 @@ public static class TaskSaveDataManager
             }
 
             elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(TaskSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.taskSaveList.RemoveAll(x => x.Id == elementData.Id);
 
         } else { }
     }

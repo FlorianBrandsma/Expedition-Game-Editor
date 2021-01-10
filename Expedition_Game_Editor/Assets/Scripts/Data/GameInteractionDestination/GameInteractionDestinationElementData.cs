@@ -20,6 +20,8 @@ public class GameInteractionDestinationElementData : GameInteractionDestinationD
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameInteractionDestinationElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

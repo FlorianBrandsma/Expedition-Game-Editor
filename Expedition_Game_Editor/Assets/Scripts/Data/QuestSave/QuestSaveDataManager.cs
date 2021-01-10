@@ -4,25 +4,24 @@ using System.Linq;
 
 public static class QuestSaveDataManager
 {
-    private static List<QuestSaveBaseData> questSaveDataList;
-
     private static List<QuestBaseData> questDataList;
 
+    private static List<QuestSaveBaseData> questSaveDataList;
+    
     public static List<IElementData> GetData(Search.QuestSave searchParameters)
     {
+        GetQuestData(searchParameters);
+        
+        if (questDataList.Count == 0) return new List<IElementData>();
+
         GetQuestSaveData(searchParameters);
 
-        if (questSaveDataList.Count == 0) return new List<IElementData>();
-
-        GetQuestData();
-
-        var list = (from questSaveData  in questSaveDataList
-                    join questData      in questDataList on questSaveData.QuestId equals questData.Id
+        var list = (from questData      in questDataList
+                    join questSaveData  in questSaveDataList on questData.Id equals questSaveData.QuestId
                     select new QuestSaveElementData()
                     {
                         Id = questSaveData.Id,
                         
-                        PhaseSaveId = questSaveData.PhaseSaveId,
                         QuestId = questSaveData.QuestId,
 
                         Complete = questSaveData.Complete,
@@ -32,7 +31,9 @@ public static class QuestSaveDataManager
                         Index = questData.Index,
 
                         PublicNotes = questData.PublicNotes,
-                        PrivateNotes = questData.PrivateNotes
+                        PrivateNotes = questData.PrivateNotes,
+
+                        PhaseId = questData.PhaseId
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -41,25 +42,44 @@ public static class QuestSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void GetQuestSaveData(Search.QuestSave searchParameters)
+    public static QuestSaveElementData DefaultData(int saveId, int questId)
     {
-        questSaveDataList = new List<QuestSaveBaseData>();
-
-        foreach (QuestSaveBaseData questSave in Fixtures.questSaveList)
+        return new QuestSaveElementData()
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(questSave.Id))                     continue;
-            if (searchParameters.phaseSaveId.Count  > 0 && !searchParameters.phaseSaveId.Contains(questSave.PhaseSaveId))   continue;
+            SaveId = saveId,
+            QuestId = questId
+        };
+    }
 
-            questSaveDataList.Add(questSave);
+    private static void GetQuestData(Search.QuestSave searchParameters)
+    {
+        questDataList = new List<QuestBaseData>();
+
+        foreach (QuestBaseData quest in Fixtures.questList)
+        {
+            if (searchParameters.phaseId.Count > 0 && !searchParameters.phaseId.Contains(quest.PhaseId)) continue;
+
+            questDataList.Add(quest);
         }
     }
 
-    private static void GetQuestData()
+    private static void GetQuestSaveData(Search.QuestSave searchParameters)
     {
-        var searchParameters = new Search.Quest();
-        searchParameters.id = questSaveDataList.Select(x => x.QuestId).Distinct().ToList();
+        searchParameters.questId = questDataList.Select(x => x.Id).Distinct().ToList();
 
-        questDataList = DataManager.GetQuestData(searchParameters);
+        questSaveDataList = DataManager.GetQuestSaveData(searchParameters);
+    }
+
+    public static void AddData(QuestSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.questSaveList.Count > 0 ? (Fixtures.questSaveList[Fixtures.questSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.questSaveList.Add(((QuestSaveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(QuestSaveElementData elementData, DataRequest dataRequest)
@@ -78,5 +98,14 @@ public static class QuestSaveDataManager
             elementData.SetOriginalValues();
 
         } else { }    
+    }
+
+    public static void RemoveData(QuestSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.questSaveList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
     }
 }

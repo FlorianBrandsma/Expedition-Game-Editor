@@ -117,6 +117,8 @@ public class InteractionElementData : InteractionData, IElementData
     }
     #endregion
 
+    public InteractionElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         InteractionDataManager.AddData(this, dataRequest);

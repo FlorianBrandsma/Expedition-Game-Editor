@@ -375,7 +375,6 @@ public class Search
     public class EditorWorld
     {
         public bool includeAddWorldObjectElement;
-        public bool includeAddPhaseElement;
         public bool includeAddInteractionDestinationElement;
         public bool includeAddScenePropElement;
 
@@ -522,6 +521,7 @@ public class Search
     public class PlayerSave
     {
         public List<int> saveId = new List<int>();
+        public List<int> worldInteractableId = new List<int>();
 
         public enum RequestType
         {
@@ -534,6 +534,7 @@ public class Search
     public class InteractableSave
     {
         public List<int> saveId = new List<int>();
+        public List<int> interactableId = new List<int>();
 
         public List<int> type = new List<int>();
 
@@ -552,6 +553,8 @@ public class Search
         public List<int> saveId = new List<int>();
         public List<int> chapterId = new List<int>();
 
+        public bool? complete;
+
         public enum RequestType
         {
             Custom
@@ -565,15 +568,14 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> saveId = new List<int>();
-        public List<int> chapterSaveId = new List<int>();
+        public List<int> chapterId = new List<int>();
         public List<int> phaseId = new List<int>();
 
-        public List<int> chapterId = new List<int>();
-        
+        public bool? complete;
+
         public enum RequestType
         {
-            Custom,
-            GetPhaseSaveByChapter
+            Custom
         }
 
         public RequestType requestType;
@@ -584,8 +586,10 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> saveId = new List<int>();
-        public List<int> phaseSaveId = new List<int>();
+        public List<int> phaseId = new List<int>();
         public List<int> questId = new List<int>();
+
+        public bool? complete;
 
         public enum RequestType
         {
@@ -600,8 +604,10 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> saveId = new List<int>();
-        public List<int> questSaveId = new List<int>();
+        public List<int> questId = new List<int>();
         public List<int> objectiveId = new List<int>();
+
+        public bool? complete;
 
         public enum RequestType
         {
@@ -616,9 +622,11 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> saveId = new List<int>();
-        public List<int> objectiveSaveId = new List<int>();
+        public List<int> objectiveId = new List<int>();
         public List<int> worldInteractableId = new List<int>();
         public List<int> taskId = new List<int>();
+
+        public bool? complete;
 
         public enum RequestType
         {
@@ -633,8 +641,10 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> saveId = new List<int>();
-        public List<int> taskSaveId = new List<int>();
+        public List<int> taskId = new List<int>();
         public List<int> interactionId = new List<int>();
+
+        public bool? complete;
 
         public enum RequestType
         {

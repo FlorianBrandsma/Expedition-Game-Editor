@@ -28,6 +28,8 @@ public class GameWorldElementData : GameWorldData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameWorldElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

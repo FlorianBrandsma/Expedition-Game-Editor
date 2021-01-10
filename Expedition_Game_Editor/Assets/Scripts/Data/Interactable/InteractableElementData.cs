@@ -78,6 +78,8 @@ public class InteractableElementData : InteractableData, IElementData
     }
     #endregion
 
+    public InteractableElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         InteractableDataManager.AddData(this, dataRequest);
@@ -88,14 +90,19 @@ public class InteractableElementData : InteractableData, IElementData
         InteractableDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        InteractableDataManager.UpdateIndex(this);
+        InteractableDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         InteractableDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        InteractableDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

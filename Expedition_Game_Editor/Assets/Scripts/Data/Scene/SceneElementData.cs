@@ -77,21 +77,31 @@ public class SceneElementData : SceneData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public SceneElementData() { }
+
+    public void Add(DataRequest dataRequest)
+    {
+        SceneDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
         SceneDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        SceneDataManager.UpdateIndex(this);
+        SceneDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         SceneDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        SceneDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

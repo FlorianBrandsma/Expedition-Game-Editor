@@ -2,6 +2,8 @@
 
 public class InteractionSaveData : InteractionSaveBaseData
 {
+    public int TaskId           { get; set; }
+
     public bool Default         { get; set; }
 
     public int StartTime        { get; set; }
@@ -12,6 +14,8 @@ public class InteractionSaveData : InteractionSaveBaseData
 
     public override void GetOriginalValues(InteractionSaveData originalData)
     {
+        TaskId          = originalData.TaskId;
+
         Default         = originalData.Default;
 
         StartTime       = originalData.StartTime;
@@ -27,6 +31,8 @@ public class InteractionSaveData : InteractionSaveBaseData
     {
         var data = new InteractionSaveData();
         
+        data.TaskId         = TaskId;
+
         data.Default        = Default;
 
         data.StartTime      = StartTime;
@@ -42,6 +48,8 @@ public class InteractionSaveData : InteractionSaveBaseData
 
     public virtual void Clone(InteractionSaveElementData elementData)
     {
+        elementData.TaskId          = TaskId;
+
         elementData.Default         = Default;
 
         elementData.StartTime       = StartTime;

@@ -4,25 +4,24 @@ using System.Linq;
 
 public static class ObjectiveSaveDataManager
 {
-    private static List<ObjectiveSaveBaseData> objectiveSaveDataList;
-
     private static List<ObjectiveBaseData> objectiveDataList;
 
+    private static List<ObjectiveSaveBaseData> objectiveSaveDataList;
+    
     public static List<IElementData> GetData(Search.ObjectiveSave searchParameters)
     {
+        GetObjectiveData(searchParameters);
+
+        if (objectiveDataList.Count == 0) return new List<IElementData>();
+
         GetObjectiveSaveData(searchParameters);
 
-        if (objectiveSaveDataList.Count == 0) return new List<IElementData>();
-
-        GetObjectiveData();
-
-        var list = (from objectiveSaveData  in objectiveSaveDataList
-                    join objectiveData      in objectiveDataList on objectiveSaveData.ObjectiveId equals objectiveData.Id
+        var list = (from objectiveData      in objectiveDataList
+                    join objectiveSaveData  in objectiveSaveDataList on objectiveData.Id equals objectiveSaveData.ObjectiveId
                     select new ObjectiveSaveElementData()
                     {
                         Id = objectiveSaveData.Id,
-                        
-                        QuestSaveId = objectiveSaveData.QuestSaveId,
+
                         ObjectiveId = objectiveSaveData.ObjectiveId,
 
                         Complete = objectiveSaveData.Complete,
@@ -32,7 +31,9 @@ public static class ObjectiveSaveDataManager
                         Name = objectiveData.Name,
 
                         PublicNotes = objectiveData.PublicNotes,
-                        PrivateNotes = objectiveData.PrivateNotes
+                        PrivateNotes = objectiveData.PrivateNotes,
+
+                        QuestId = objectiveData.QuestId
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -41,25 +42,44 @@ public static class ObjectiveSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void GetObjectiveSaveData(Search.ObjectiveSave searchParameters)
+    public static ObjectiveSaveElementData DefaultData(int saveId, int objectiveId)
     {
-        objectiveSaveDataList = new List<ObjectiveSaveBaseData>();
-
-        foreach (ObjectiveSaveBaseData objectiveSave in Fixtures.objectiveSaveList)
+        return new ObjectiveSaveElementData()
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(objectiveSave.Id))                     continue;
-            if (searchParameters.questSaveId.Count  > 0 && !searchParameters.questSaveId.Contains(objectiveSave.QuestSaveId))   continue;
+            SaveId = saveId,
+            ObjectiveId = objectiveId
+        };
+    }
 
-            objectiveSaveDataList.Add(objectiveSave);
+    private static void GetObjectiveData(Search.ObjectiveSave searchParameters)
+    {
+        objectiveDataList = new List<ObjectiveBaseData>();
+
+        foreach (ObjectiveBaseData objective in Fixtures.objectiveList)
+        {
+            if (searchParameters.questId.Count > 0 && !searchParameters.questId.Contains(objective.QuestId)) continue;
+
+            objectiveDataList.Add(objective);
         }
     }
 
-    private static void GetObjectiveData()
+    private static void GetObjectiveSaveData(Search.ObjectiveSave searchParameters)
     {
-        var searchParameters = new Search.Objective();
-        searchParameters.id = objectiveSaveDataList.Select(x => x.ObjectiveId).Distinct().ToList();
+        searchParameters.objectiveId = objectiveDataList.Select(x => x.Id).Distinct().ToList();
 
-        objectiveDataList = DataManager.GetObjectiveData(searchParameters);
+        objectiveSaveDataList = DataManager.GetObjectiveSaveData(searchParameters);
+    }
+
+    public static void AddData(ObjectiveSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.objectiveSaveList.Count > 0 ? (Fixtures.objectiveSaveList[Fixtures.objectiveSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.objectiveSaveList.Add(((ObjectiveSaveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(ObjectiveSaveElementData elementData, DataRequest dataRequest)
@@ -76,6 +96,15 @@ public static class ObjectiveSaveDataManager
             }
 
             elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(ObjectiveSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.objectiveSaveList.RemoveAll(x => x.Id == elementData.Id);
 
         } else { }
     }

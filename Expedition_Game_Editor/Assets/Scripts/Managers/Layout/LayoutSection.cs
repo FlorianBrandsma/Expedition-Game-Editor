@@ -143,7 +143,10 @@ public class LayoutSection : MonoBehaviour
     {
         if (dataEditor == null) return;
 
-        var dataRequest = new DataRequest();
+        var dataRequest = new DataRequest()
+        {
+            includeDependencies = true
+        };
 
         dataEditor.ApplyChanges(dataRequest);
 
@@ -174,8 +177,6 @@ public class LayoutSection : MonoBehaviour
         });
         
         dataEditor.FinalizeChanges();
-
-        Debug.Log(Fixtures.sceneShotList.Count);
     }
 
     private void ResetExecutionType()

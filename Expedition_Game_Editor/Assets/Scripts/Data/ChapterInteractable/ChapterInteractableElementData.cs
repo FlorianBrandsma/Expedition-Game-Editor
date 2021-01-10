@@ -31,6 +31,8 @@ public class ChapterInteractableElementData : ChapterInteractableData, IElementD
     }
     #endregion
 
+    public ChapterInteractableElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         ChapterInteractableDataManager.AddData(this, dataRequest);

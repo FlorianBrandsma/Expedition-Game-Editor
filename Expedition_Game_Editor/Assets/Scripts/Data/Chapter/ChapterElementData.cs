@@ -51,6 +51,8 @@ public class ChapterElementData : ChapterData, IElementData
     }
     #endregion
 
+    public ChapterElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         ChapterDataManager.AddData(this, dataRequest);
@@ -61,14 +63,19 @@ public class ChapterElementData : ChapterData, IElementData
         ChapterDataManager.UpdateData(this, dataRequest);
     }
 
-    public void UpdateIndex()
+    public void UpdateIndex(DataRequest dataRequest)
     {
-        ChapterDataManager.UpdateIndex(this);
+        ChapterDataManager.UpdateIndex(this, dataRequest);
     }
 
     public void Remove(DataRequest dataRequest)
     {
         ChapterDataManager.RemoveData(this, dataRequest);  
+    }
+    
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        ChapterDataManager.RemoveIndex(this, dataRequest);
     }
 
     public void SetOriginalValues()

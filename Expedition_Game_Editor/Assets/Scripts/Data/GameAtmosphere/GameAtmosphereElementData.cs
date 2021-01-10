@@ -20,6 +20,8 @@ public class GameAtmosphereElementData : GameAtmosphereData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameAtmosphereElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

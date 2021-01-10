@@ -73,8 +73,6 @@ public static class EditorWorldDataManager
 
         GetPhaseData();
 
-        Debug.Log(searchParameters.includeAddPhaseElement);
-
         GetChapterData();
         GetChapterWorldInteractableData();
         
@@ -423,10 +421,10 @@ public static class EditorWorldDataManager
             join chapterData    in chapterDataList on phaseData.ChapterId equals chapterData.Id
 
             join leftJoin in (from worldInteractableData    in chapterWorldInteractableDataList
-                                join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
-                                join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
-                                join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
-                                select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
+                              join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                              join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
+                              join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
+                              select new { worldInteractableData, interactableData, modelData, iconData }) on chapterData.Id equals leftJoin.worldInteractableData.ChapterId into worldInteractableData
 
             select new PhaseElementData()
             {
@@ -516,7 +514,7 @@ public static class EditorWorldDataManager
     private static void GetWorldObjectData(Search.EditorWorld searchData)
     {
         var searchParameters = new Search.WorldObject();
-        searchParameters.regionId = searchData.id;
+        searchParameters.regionId = searchData.regionId;
 
         worldObjectDataList = DataManager.GetWorldObjectData(searchParameters);
     }

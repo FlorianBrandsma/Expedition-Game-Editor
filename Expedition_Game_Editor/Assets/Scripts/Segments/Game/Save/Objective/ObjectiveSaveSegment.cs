@@ -16,7 +16,9 @@ public class ObjectiveSaveSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.ObjectiveSave);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.ObjectiveSave>().First();
-        searchParameters.questSaveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.QuestSave).ElementData.Id };
+
+        var questSaveElementData = (QuestSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.QuestSave).ElementData;
+        searchParameters.questId = new List<int>() { questSaveElementData.QuestId };
 
         SegmentController.DataController.GetData(searchProperties);
     }

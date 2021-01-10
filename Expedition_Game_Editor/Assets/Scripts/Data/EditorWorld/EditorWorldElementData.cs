@@ -24,6 +24,8 @@ public class EditorWorldElementData : EditorWorldData, IElementData
     public bool Changed { get; set; }
     #endregion
 
+    public EditorWorldElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

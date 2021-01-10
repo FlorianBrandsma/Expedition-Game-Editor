@@ -4,20 +4,20 @@ using System.Linq;
 
 public static class ChapterSaveDataManager
 {
-    private static List<ChapterSaveBaseData> chapterSaveDataList;
-
     private static List<ChapterBaseData> chapterDataList;
 
+    private static List<ChapterSaveBaseData> chapterSaveDataList;
+    
     public static List<IElementData> GetData(Search.ChapterSave searchParameters)
     {
+        GetChapterData();
+        
+        if (chapterDataList.Count == 0) return new List<IElementData>();
+
         GetChapterSaveData(searchParameters);
 
-        if (chapterSaveDataList.Count == 0) return new List<IElementData>();
-        
-        GetChapterData();
-
-        var list = (from chapterSaveData    in chapterSaveDataList
-                    join chapterData        in chapterDataList on chapterSaveData.ChapterId equals chapterData.Id
+        var list = (from chapterData        in chapterDataList
+                    join chapterSaveData    in chapterSaveDataList on chapterData.Id equals chapterSaveData.ChapterId
                     select new ChapterSaveElementData()
                     {
                         Id = chapterSaveData.Id,
@@ -41,25 +41,42 @@ public static class ChapterSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void GetChapterSaveData(Search.ChapterSave searchParameters)
+    public static ChapterSaveElementData DefaultData(int saveId, int chapterId)
     {
-        chapterSaveDataList = new List<ChapterSaveBaseData>();
-
-        foreach (ChapterSaveBaseData chapterSave in Fixtures.chapterSaveList)
+        return new ChapterSaveElementData()
         {
-            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(chapterSave.Id))           continue;
-            if (searchParameters.saveId.Count   > 0 && !searchParameters.saveId.Contains(chapterSave.SaveId))   continue;
-
-            chapterSaveDataList.Add(chapterSave);
-        }
+            SaveId = saveId,
+            ChapterId = chapterId
+        };
     }
 
     private static void GetChapterData()
     {
-        var searchParameters = new Search.Chapter();
-        searchParameters.id = chapterSaveDataList.Select(x => x.ChapterId).Distinct().ToList();
+        chapterDataList = new List<ChapterBaseData>();
 
-        chapterDataList = DataManager.GetChapterData(searchParameters);
+        foreach (ChapterBaseData chapter in Fixtures.chapterList)
+        {
+            chapterDataList.Add(chapter);
+        }
+    }
+
+    private static void GetChapterSaveData(Search.ChapterSave searchParameters)
+    {
+        searchParameters.chapterId = chapterDataList.Select(x => x.Id).Distinct().ToList();
+
+        chapterSaveDataList = DataManager.GetChapterSaveData(searchParameters);
+    }
+    
+    public static void AddData(ChapterSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.chapterSaveList.Count > 0 ? (Fixtures.chapterSaveList[Fixtures.chapterSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.chapterSaveList.Add(((ChapterSaveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(ChapterSaveElementData elementData, DataRequest dataRequest)
@@ -73,9 +90,20 @@ public static class ChapterSaveDataManager
             if (elementData.ChangedComplete)
             {
                 data.Complete = elementData.Complete;
+
+                PlayerSaveDataManager.UpdateReferences(dataRequest);
             }
 
             elementData.SetOriginalValues();
+
+        } else { }
+    }
+
+    public static void RemoveData(ChapterSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.chapterSaveList.RemoveAll(x => x.Id == elementData.Id);
 
         } else { }
     }

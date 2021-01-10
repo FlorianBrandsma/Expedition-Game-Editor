@@ -31,6 +31,8 @@ public class GameSceneShotElementData : GameSceneShotData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public GameSceneShotElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

@@ -2,6 +2,8 @@
 
 public class QuestSaveData : QuestSaveBaseData
 {
+    public int PhaseId          { get; set; }
+
     public int Index            { get; set; }
 
     public string Name          { get; set; }
@@ -11,6 +13,8 @@ public class QuestSaveData : QuestSaveBaseData
 
     public override void GetOriginalValues(QuestSaveData originalData)
     {
+        PhaseId         = originalData.PhaseId;
+
         Index           = originalData.Index;
 
         Name            = originalData.Name;
@@ -24,6 +28,8 @@ public class QuestSaveData : QuestSaveBaseData
     public QuestSaveData Clone()
     {
         var data = new QuestSaveData();
+
+        data.PhaseId        = PhaseId;
 
         data.Index          = Index;
 
@@ -39,6 +45,8 @@ public class QuestSaveData : QuestSaveBaseData
 
     public virtual void Clone(QuestSaveElementData elementData)
     {
+        elementData.PhaseId         = PhaseId;
+
         elementData.Index           = Index;
 
         elementData.Name            = Name;

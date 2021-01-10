@@ -31,6 +31,8 @@ public class TerrainTileElementData : TerrainTileData, IElementData
     }
     #endregion
 
+    public TerrainTileElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         TerrainTileDataManager.AddData(this, dataRequest);

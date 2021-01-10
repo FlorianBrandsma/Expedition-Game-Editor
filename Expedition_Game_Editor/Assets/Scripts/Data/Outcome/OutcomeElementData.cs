@@ -73,6 +73,8 @@ public class OutcomeElementData : OutcomeData, IElementData
     }
     #endregion
 
+    public OutcomeElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         OutcomeDataManager.AddData(this, dataRequest);

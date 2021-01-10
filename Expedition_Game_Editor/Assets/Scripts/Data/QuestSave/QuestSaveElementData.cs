@@ -31,11 +31,22 @@ public class QuestSaveElementData : QuestSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public QuestSaveElementData() { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        QuestSaveDataManager.AddData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        QuestSaveDataManager.UpdateData(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        QuestSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

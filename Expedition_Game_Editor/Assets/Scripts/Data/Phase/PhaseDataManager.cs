@@ -107,7 +107,9 @@ public static class PhaseDataManager
     {
         return new PhaseElementData()
         {
-            ChapterId = chapterId
+            ChapterId = chapterId,
+
+            Name = "Default phase"
         };
     }
 
@@ -214,10 +216,35 @@ public static class PhaseDataManager
 
             elementData.SetOriginalValues();
 
-            AddRegionData(elementData, dataRequest);
-            AddWorldInteractableData(elementData, dataRequest);
-
+            AddDependencies(elementData, dataRequest);
+            
         } else { }
+    }
+
+    private static void AddDependencies(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        AddPhaseSaveData(elementData, dataRequest);
+
+        if (!dataRequest.includeDependencies) return;
+
+        AddRegionData(elementData, dataRequest);
+        AddWorldInteractableData(elementData, dataRequest);
+    }
+
+    private static void AddPhaseSaveData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        //Save
+        var saveSearchParameters = new Search.Save();
+
+        var saveDataList = DataManager.GetSaveData(saveSearchParameters);
+
+        if (saveDataList.Count == 0) return;
+
+        saveDataList.ForEach(saveData =>
+        {
+            var phaseSaveElementData = PhaseSaveDataManager.DefaultData(saveData.Id, elementData.Id);
+            phaseSaveElementData.Add(dataRequest);
+        });
     }
 
     private static void AddRegionData(PhaseElementData elementData, DataRequest dataRequest)
@@ -257,22 +284,22 @@ public static class PhaseDataManager
         {
             var worldInteractableElementData = new WorldInteractableElementData()
             {
-                ChapterInteractableId = chapterInteractableData.Id,
                 PhaseId = phaseElementData.Id,
 
+                ChapterInteractableId = chapterInteractableData.Id,
                 InteractableId = chapterInteractableData.InteractableId,
 
                 Type = (int)Enums.InteractableType.Agent
             };
 
-            //Don't add a task by default when adding a world interactable, since phase world interactables
-            //will have a task for multiple objectives that do not yet exist
-            WorldInteractableDataManager.AddData(worldInteractableElementData, dataRequest, true);
+            worldInteractableElementData.Add(dataRequest);
         });
     }
 
     public static void CopyRegionData(PhaseElementData phaseElementData, ChapterRegionBaseData chapterRegionData, DataRequest dataRequest)
     {
+        dataRequest.includeDependencies = false;
+
         //Region
         var regionSearchParameters = new Search.Region()
         {
@@ -302,8 +329,8 @@ public static class PhaseDataManager
             TileSize = tileSetData.TileSize
         };
 
-        RegionDataManager.AddData(regionElementData, dataRequest, true);
-
+        regionElementData.Add(dataRequest);
+        
         UpdateDefaultRegion(phaseElementData, dataRequest);
 
         //Terrain
@@ -326,7 +353,7 @@ public static class PhaseDataManager
                 Name = terrainDataSource.Name
             };
 
-            TerrainDataManager.AddData(terrainElementData, dataRequest, true);
+            terrainElementData.Add(dataRequest);
 
             regionElementData.TerrainDataList.Add(terrainElementData);
 
@@ -349,8 +376,8 @@ public static class PhaseDataManager
                     TileId = terrainTileDataSource.TileId
                 };
 
-                TerrainTileDataManager.AddData(terrainTileElementData, dataRequest);
-
+                terrainTileElementData.Add(dataRequest);
+                
                 regionElementData.TerrainDataList.Where(x => x.Id == terrainTileElementData.TerrainId).First().TerrainTileDataList.Add(terrainTileElementData);
             });
 
@@ -374,7 +401,7 @@ public static class PhaseDataManager
                     EndTime = atmosphereDataSource.EndTime
                 };
 
-                AtmosphereDataManager.AddData(atmosphereElementData, dataRequest);
+                atmosphereElementData.Add(dataRequest);
             });
         });
 
@@ -408,7 +435,7 @@ public static class PhaseDataManager
                 ModelId = worldObjectDataSource.ModelId
             };
 
-            WorldObjectDataManager.AddData(worldObjectElementData, dataRequest);
+            worldObjectElementData.Add(dataRequest);
         });
 
         //World interactable, task, interaction & interaction destination
@@ -465,7 +492,7 @@ public static class PhaseDataManager
                 Type = worldInteractableDataSource.Type
             };
 
-            WorldInteractableDataManager.AddData(worldInteractableElementData, dataRequest, true);
+            worldInteractableElementData.Add(dataRequest);
 
             worldInteractableIdGroupList.Add(new { originalId = worldInteractableDataSource.Id, newId = worldInteractableElementData.Id });
 
@@ -481,7 +508,7 @@ public static class PhaseDataManager
                     Name = taskDataSource.Name
                 };
 
-                TaskDataManager.AddData(taskElementData, dataRequest, true);
+                taskElementData.Add(dataRequest);
 
                 //Interaction
                 interactionDataSourceList.Where(x => x.TaskId == taskDataSource.Id).ToList().ForEach(interactionDataSource =>
@@ -517,7 +544,7 @@ public static class PhaseDataManager
                         PrivateNotes = interactionDataSource.PrivateNotes
                     };
 
-                    InteractionDataManager.AddData(interactionElementData, dataRequest, true);
+                    interactionElementData.Add(dataRequest);
 
                     //Interaction destination
                     interactionDestinationDataSourceList.Where(x => x.InteractionId == interactionDataSource.Id).ToList().ForEach(interactionDestinationDataSource =>
@@ -547,7 +574,7 @@ public static class PhaseDataManager
                             Patience = interactionDestinationDataSource.Patience
                         };
 
-                        InteractionDestinationDataManager.AddData(interactionDestinationElementData, dataRequest);
+                        interactionDestinationElementData.Add(dataRequest);
                     });
 
                     //Outcome
@@ -579,7 +606,7 @@ public static class PhaseDataManager
                             PrivateNotes = outcomeDataSource.PrivateNotes
                         };
 
-                        OutcomeDataManager.AddData(outcomeElementData, dataRequest);
+                        outcomeElementData.Add(dataRequest);
 
                         //Scene
                         var sceneSearchParameters = new Search.Scene()
@@ -611,7 +638,7 @@ public static class PhaseDataManager
                                 PrivateNotes = sceneDataSource.PrivateNotes
                             };
 
-                            SceneDataManager.AddData(sceneElementData, dataRequest, true);
+                            sceneElementData.Add(dataRequest);
 
                             //Scene shot
                             var sceneShotSearchParameters = new Search.SceneShot()
@@ -648,7 +675,7 @@ public static class PhaseDataManager
                                     CameraFilterId = sceneShotDataSource.CameraFilterId
                                 };
 
-                                SceneShotDataManager.AddData(sceneShotElementData, dataRequest);
+                                sceneShotElementData.Add(dataRequest);
 
                                 sceneShotElementDataList.Add(sceneShotElementData);
                             });
@@ -694,7 +721,7 @@ public static class PhaseDataManager
                                     RotationZ = sceneActorDataSource.RotationZ
                                 };
 
-                                SceneActorDataManager.AddData(sceneActorElementData, dataRequest);
+                                sceneActorElementData.Add(dataRequest);
 
                                 sceneActorIdGroupList.Add(new { originalId = sceneActorDataSource.Id, newId = sceneActorElementData.Id });
                                 sceneActorElementDataList.Add(sceneActorElementData);
@@ -729,7 +756,7 @@ public static class PhaseDataManager
                                     Scale = scenePropDataSource.Scale
                                 };
 
-                                ScenePropDataManager.AddData(scenePropElementData, dataRequest);
+                                scenePropElementData.Add(dataRequest);
                             });
                         });
                     });
@@ -875,19 +902,131 @@ public static class PhaseDataManager
         } else { }    
     }
 
-    static public void UpdateIndex(PhaseElementData elementData)
+    static public void UpdateIndex(PhaseElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.phaseList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
+        } else { }
     }
 
     static public void RemoveData(PhaseElementData elementData, DataRequest dataRequest)
     {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            RemoveDependencies(elementData, dataRequest);
 
+            Fixtures.phaseList.RemoveAll(x => x.Id == elementData.Id);
+
+            elementData.RemoveIndex(dataRequest);
+
+            PlayerSaveDataManager.UpdateReferences(dataRequest);
+
+        } else {
+
+            RemoveDependencies(elementData, dataRequest);
+        }
+    }
+
+    private static void RemoveDependencies(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        RemoveRegionData(elementData, dataRequest);
+
+        RemoveQuestData(elementData, dataRequest);
+        RemovePhaseSaveData(elementData, dataRequest);
+    }
+
+    private static void RemoveRegionData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        var regionSearchParameters = new Search.Region()
+        {
+            phaseId = new List<int>() { elementData.Id }
+        };
+
+        var regionDataList = DataManager.GetRegionData(regionSearchParameters);
+
+        regionDataList.ForEach(questData =>
+        {
+            var regionElementData = new RegionElementData()
+            {
+                Id = questData.Id
+            };
+
+            regionElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveQuestData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        var questSearchParameters = new Search.Quest()
+        {
+            phaseId = new List<int>() { elementData.Id }
+        };
+
+        var questDataList = DataManager.GetQuestData(questSearchParameters);
+
+        questDataList.ForEach(questData =>
+        {
+            var questElementData = new QuestElementData()
+            {
+                Id = questData.Id
+            };
+
+            questElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemovePhaseSaveData(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        var phaseSaveSearchParameters = new Search.PhaseSave()
+        {
+            phaseId = new List<int>() { elementData.Id }
+        };
+
+        var phaseSaveDataList = DataManager.GetPhaseSaveData(phaseSaveSearchParameters);
+
+        phaseSaveDataList.ForEach(phaseSaveData =>
+        {
+            var phaseSaveElementData = new PhaseSaveElementData()
+            {
+                Id = phaseSaveData.Id
+            };
+
+            phaseSaveElementData.Remove(dataRequest);
+        });
+    }
+
+    public static void RemoveIndex(PhaseElementData elementData, DataRequest dataRequest)
+    {
+        var phaseSearchParameters = new Search.Phase()
+        {
+            chapterId = new List<int>() { elementData.ChapterId }
+        };
+
+        var phaseDataList = DataManager.GetPhaseData(phaseSearchParameters);
+
+        phaseDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(phaseData =>
+        {
+            var phaseElementData = new PhaseElementData()
+            {
+                Id = phaseData.Id,
+                Index = phaseData.Index
+            };
+
+            phaseElementData.SetOriginalValues();
+
+            phaseElementData.Index--;
+
+            phaseElementData.UpdateIndex(dataRequest);
+        });
     }
 }

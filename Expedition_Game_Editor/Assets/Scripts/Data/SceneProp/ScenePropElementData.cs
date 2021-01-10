@@ -69,7 +69,12 @@ public class ScenePropElementData : ScenePropData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public ScenePropElementData() { }
+
+    public void Add(DataRequest dataRequest)
+    {
+        ScenePropDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {

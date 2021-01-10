@@ -31,11 +31,22 @@ public class InteractionSaveElementData : InteractionSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public InteractionSaveElementData() { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        InteractionSaveDataManager.AddData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        InteractionSaveDataManager.UpdateData(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        InteractionSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

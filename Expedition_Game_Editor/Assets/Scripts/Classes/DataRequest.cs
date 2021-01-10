@@ -4,5 +4,6 @@ using System.Collections.Generic;
 public class DataRequest
 {
     public Enums.RequestType requestType;
+    public bool includeDependencies;
     public List<string> errorList = new List<string>();
 }

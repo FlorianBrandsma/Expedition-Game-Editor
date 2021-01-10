@@ -31,14 +31,22 @@ public class ChapterSaveElementData : ChapterSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public ChapterSaveElementData() { }
+    
+    public void Add(DataRequest dataRequest)
+    {
+        ChapterSaveDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
         ChapterSaveDataManager.UpdateData(this, dataRequest);
     }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        ChapterSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

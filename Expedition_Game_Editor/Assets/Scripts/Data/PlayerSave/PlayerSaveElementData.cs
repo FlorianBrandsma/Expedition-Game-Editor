@@ -27,6 +27,26 @@ public class PlayerSaveElementData : PlayerSaveData, IElementData
         get { return WorldInteractableId != OriginalData.WorldInteractableId; }
     }
 
+    public bool ChangedPositionX
+    {
+        get { return !Mathf.Approximately(PositionX, OriginalData.PositionX); }
+    }
+
+    public bool ChangedPositionY
+    {
+        get { return !Mathf.Approximately(PositionY, OriginalData.PositionY); }
+    }
+
+    public bool ChangedPositionZ
+    {
+        get { return !Mathf.Approximately(PositionZ, OriginalData.PositionZ); }
+    }
+
+    public bool ChangedGameTime
+    {
+        get { return GameTime != OriginalData.GameTime; }
+    }
+
     //public bool ChangedPlayedSeconds
     //{
     //    get { return PlayedSeconds != OriginalData.PlayedSeconds; }
@@ -36,16 +56,24 @@ public class PlayerSaveElementData : PlayerSaveData, IElementData
     {
         get
         {
-            return ChangedRegionId || ChangedWorldInteractableId;
+            return ChangedRegionId || ChangedWorldInteractableId || ChangedPositionX || ChangedPositionY || ChangedPositionZ || ChangedGameTime;
         }
     }
     #endregion
 
+    public PlayerSaveElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        PlayerSaveDataManager.UpdateData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Remove(DataRequest dataRequest)
+    {
+        PlayerSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

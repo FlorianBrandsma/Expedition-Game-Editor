@@ -5,7 +5,7 @@ using System.Linq;
 public static class GameWorldDataManager
 {
     private static ChapterBaseData chapterData;
-    private static List<WorldInteractableBaseData> chapterWorldInteractableDataList;
+    private static List<WorldInteractableBaseData> controllableWorldInteractableDataList;
     private static PhaseBaseData phaseData;
 
     private static List<RegionBaseData> regionDataList;
@@ -45,7 +45,7 @@ public static class GameWorldDataManager
         if (phaseData == null) return new List<IElementData>();
 
         GetChapterData();
-        GetChapterWorldInteractableData();
+        GetControllableWorldInteractableData();
 
         GetRegionData();
 
@@ -501,7 +501,10 @@ public static class GameWorldDataManager
         var searchParameters = new Search.Phase();
         searchParameters.id = searchData.phaseId;
 
-        phaseData = DataManager.GetPhaseData(searchParameters).First();
+        var phaseDataList = DataManager.GetPhaseData(searchParameters);
+
+        //Shouldn't always be the first
+        phaseData = phaseDataList.First();
     }
 
     private static void GetChapterData()
@@ -512,12 +515,12 @@ public static class GameWorldDataManager
         chapterData = DataManager.GetChapterData(searchParameters).First();
     }
 
-    private static void GetChapterWorldInteractableData()
+    private static void GetControllableWorldInteractableData()
     {
         var searchParameters = new Search.WorldInteractable();
         searchParameters.chapterId = new List<int>() { chapterData.Id };
         
-        chapterWorldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
+        controllableWorldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetRegionData()
@@ -542,6 +545,12 @@ public static class GameWorldDataManager
         searchParameters.regionId = regionDataList.Select(x => x.Id).Distinct().ToList();
 
         terrainDataList = DataManager.GetTerrainData(searchParameters);
+
+        //Include empty terrain for unbound world objects
+        searchParameters.regionId.ForEach(regionId =>
+        {
+            terrainDataList.Add(new TerrainBaseData() { RegionId = regionId });
+        });
     }
 
     private static void GetAtmosphereData()
@@ -578,113 +587,227 @@ public static class GameWorldDataManager
 
     private static void GetInteractionData()
     {
+        var interactionIdList = interactionDestinationDataList.Select(x => x.InteractionId).Distinct().ToList();
+
+        if (interactionIdList.Count == 0)
+        {
+            interactionDataList = new List<InteractionBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Interaction();
-        searchParameters.id = interactionDestinationDataList.Select(x => x.InteractionId).Distinct().ToList();
+        searchParameters.id = interactionIdList;
 
         interactionDataList = DataManager.GetInteractionData(searchParameters);
     }
 
     private static void GetOutcomeData()
     {
+        var interactionIdList = interactionDataList.Select(x => x.Id).Distinct().ToList();
+
+        if (interactionIdList.Count == 0)
+        {
+            outcomeDataList = new List<OutcomeBaseData>();
+            return;
+        }
+        
         var searchParameters = new Search.Outcome();
-        searchParameters.interactionId = interactionDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.interactionId = interactionIdList;
 
         outcomeDataList = DataManager.GetOutcomeData(searchParameters);
     }
 
     private static void GetSceneData()
     {
+        var outcomeIdList = outcomeDataList.Select(x => x.Id).Distinct().ToList();
+
+        if (outcomeIdList.Count == 0)
+        {
+            sceneDataList = new List<SceneBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Scene();
-        searchParameters.outcomeId = outcomeDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.outcomeId = outcomeIdList;
 
         sceneDataList = DataManager.GetSceneData(searchParameters);
     }
     
     private static void GetSceneActorData()
     {
+        var sceneIdList = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        if (sceneIdList.Count == 0)
+        {
+            sceneActorDataList = new List<SceneActorBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.SceneActor();
-        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.sceneId = sceneIdList;
 
         sceneActorDataList = DataManager.GetSceneActorData(searchParameters);
     }
 
     private static void GetScenePropData()
     {
+        var sceneIdList = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        if (sceneIdList.Count == 0)
+        {
+            scenePropDataList = new List<ScenePropBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.SceneProp();
-        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.sceneId = sceneIdList;
 
         scenePropDataList = DataManager.GetScenePropData(searchParameters);
     }
 
     private static void GetSceneShotData()
     {
+        var sceneIdList = sceneDataList.Select(x => x.Id).Distinct().ToList();
+
+        if (sceneIdList.Count == 0)
+        {
+            sceneShotDataList = new List<SceneShotBaseData>();
+            return;
+        }
+
+        if (sceneDataList.Count == 0) return;
+
         var searchParameters = new Search.SceneShot();
-        searchParameters.sceneId = sceneDataList.Select(x => x.Id).Distinct().ToList();
+        searchParameters.sceneId = sceneIdList;
 
         sceneShotDataList = DataManager.GetSceneShotData(searchParameters);
     }
 
     private static void GetCameraFilterData()
     {
+        var cameraFilterIdList = sceneShotDataList.Select(x => x.CameraFilterId).Distinct().ToList();
+
+        if (cameraFilterIdList.Count == 0)
+        {
+            cameraFilterDataList = new List<CameraFilterBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.CameraFilter();
-        searchParameters.id = sceneShotDataList.Select(x => x.CameraFilterId).Distinct().ToList();
+        searchParameters.id = cameraFilterIdList;
 
         cameraFilterDataList = DataManager.GetCameraFilterData(searchParameters);
     }
 
     private static void GetTaskData()
     {
+        var taskIdList = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
+
+        if (taskIdList.Count == 0)
+        {
+            taskDataList = new List<TaskBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Task();
-        searchParameters.id = interactionDataList.Select(x => x.TaskId).Distinct().ToList();
+        searchParameters.id = taskIdList;
 
         taskDataList = DataManager.GetTaskData(searchParameters);
     }
     
     private static void GetWorldInteractableData()
     {
+        var worldInteractableIdList = taskDataList.Select(x => x.WorldInteractableId).Union(controllableWorldInteractableDataList.Select(x => x.Id)).Distinct().ToList();
+
+        if (worldInteractableIdList.Count == 0)
+        {
+            worldInteractableDataList = new List<WorldInteractableBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.WorldInteractable();
-        searchParameters.id = taskDataList.Select(x => x.WorldInteractableId).Union(chapterWorldInteractableDataList.Select(x => x.Id)).Distinct().ToList();
+        searchParameters.id = worldInteractableIdList;
 
         worldInteractableDataList = DataManager.GetWorldInteractableData(searchParameters);
     }
 
     private static void GetInteractableData()
     {
+        var interactableIdList = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
+
+        if (interactableIdList.Count == 0)
+        {
+            interactableDataList = new List<InteractableBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Interactable();
-        searchParameters.id = worldInteractableDataList.Select(x => x.InteractableId).Distinct().ToList();
+        searchParameters.id = interactableIdList;
 
         interactableDataList = DataManager.GetInteractableData(searchParameters);
     }
 
     private static void GetModelData()
     {
+        var modelIdList = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId))
+                                                                     .Union(scenePropDataList.Select(x => x.ModelId)).Distinct().ToList();
+
+        if (modelIdList.Count == 0)
+        {
+            modelDataList = new List<ModelBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Model();
-        searchParameters.id = interactableDataList.Select(x => x.ModelId).Union(worldObjectDataList.Select(x => x.ModelId))
-                                                                         .Union(scenePropDataList.Select(x => x.ModelId)).Distinct().ToList();
+        searchParameters.id = modelIdList;
 
         modelDataList = DataManager.GetModelData(searchParameters);
     }
 
     private static void GetIconData()
     {
+        var iconIdList = modelDataList.Select(x => x.IconId).Distinct().ToList();
+
+        if (iconIdList.Count == 0)
+        {
+            iconDataList = new List<IconBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Icon();
-        searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
+        searchParameters.id = iconIdList;
 
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
     private static void GetObjectiveData()
     {
+        var objectiveIdList = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
+
+        if (objectiveIdList.Count == 0)
+        {
+            objectiveDataList = new List<ObjectiveBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Objective();
-        searchParameters.id = worldInteractableDataList.Select(x => x.ObjectiveId).Union(taskDataList.Select(x => x.ObjectiveId)).Distinct().ToList();
+        searchParameters.id = objectiveIdList;
 
         objectiveDataList = DataManager.GetObjectiveData(searchParameters);
     }
 
     private static void GetQuestData()
     {
+        var questIdList = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
+
+        if (questIdList.Count == 0)
+        {
+            questDataList = new List<QuestBaseData>();
+            return;
+        }
+
         var searchParameters = new Search.Quest();
-        searchParameters.id = objectiveDataList.Select(x => x.QuestId).Distinct().ToList();
+        searchParameters.id = questIdList;
 
         questDataList = DataManager.GetQuestData(searchParameters);
     }

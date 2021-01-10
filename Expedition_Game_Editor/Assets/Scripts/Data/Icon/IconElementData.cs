@@ -20,6 +20,8 @@ public class IconElementData : IconData, IElementData
     public bool Changed { get { return false; } }
     #endregion
 
+    public IconElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

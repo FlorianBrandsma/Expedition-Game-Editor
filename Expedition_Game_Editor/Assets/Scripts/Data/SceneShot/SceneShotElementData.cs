@@ -83,6 +83,8 @@ public class SceneShotElementData : SceneShotData, IElementData
     }
     #endregion
 
+    public SceneShotElementData() { }
+
     public void Add(DataRequest dataRequest)
     {
         SceneShotDataManager.AddData(this, dataRequest);

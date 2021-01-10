@@ -31,11 +31,22 @@ public class PhaseSaveElementData : PhaseSaveData, IElementData
     }
     #endregion
 
-    public void Add(DataRequest dataRequest) { }
+    public PhaseSaveElementData() { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        PhaseSaveDataManager.AddData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        PhaseSaveDataManager.UpdateData(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        PhaseSaveDataManager.RemoveData(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

@@ -4,36 +4,24 @@ using System.Linq;
 
 public static class PhaseSaveDataManager
 {
-    private static List<PhaseSaveBaseData> phaseSaveDataList;
-
     private static List<PhaseBaseData> phaseDataList;
 
+    private static List<PhaseSaveBaseData> phaseSaveDataList;
+    
     public static List<IElementData> GetData(Search.PhaseSave searchParameters)
     {
-        switch (searchParameters.requestType)
-        {
-            case Search.PhaseSave.RequestType.Custom:
+        GetPhaseData(searchParameters);
 
-                GetCustomPhaseSaveData(searchParameters);
-                break;
+        if (phaseDataList.Count == 0) return new List<IElementData>();
 
-            case Search.PhaseSave.RequestType.GetPhaseSaveByChapter:
-
-                GetPhaseSaveDataByChapter(searchParameters);
-                break;
-        }
+        GetPhaseSaveData(searchParameters);
         
-        if (phaseSaveDataList.Count == 0) return new List<IElementData>();
-
-        GetPhaseData();
-
-        var list = (from phaseSaveData  in phaseSaveDataList
-                    join phaseData      in phaseDataList on phaseSaveData.PhaseId equals phaseData.Id
+        var list = (from phaseData      in phaseDataList
+                    join phaseSaveData  in phaseSaveDataList on phaseData.Id equals phaseSaveData.PhaseId
                     select new PhaseSaveElementData()
                     {
                         Id = phaseSaveData.Id,
                         
-                        ChapterSaveId = phaseSaveData.ChapterSaveId,
                         PhaseId = phaseSaveData.PhaseId,
 
                         Complete = phaseSaveData.Complete,
@@ -43,7 +31,9 @@ public static class PhaseSaveDataManager
                         Name = phaseData.Name,
 
                         PublicNotes = phaseData.PublicNotes,
-                        PrivateNotes = phaseData.PrivateNotes
+                        PrivateNotes = phaseData.PrivateNotes,
+
+                        ChapterId = phaseData.ChapterId
 
                     }).OrderBy(x => x.Index).ToList();
 
@@ -52,38 +42,44 @@ public static class PhaseSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
-    private static void GetCustomPhaseSaveData(Search.PhaseSave searchParameters)
+    public static PhaseSaveElementData DefaultData(int saveId, int phaseId)
     {
-        phaseSaveDataList = new List<PhaseSaveBaseData>();
-
-        foreach (PhaseSaveBaseData phaseSave in Fixtures.phaseSaveList)
+        return new PhaseSaveElementData()
         {
-            if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(phaseSave.Id))                         continue;
-            if (searchParameters.chapterSaveId.Count    > 0 && !searchParameters.chapterSaveId.Contains(phaseSave.ChapterSaveId))   continue;
+            SaveId = saveId,
+            PhaseId = phaseId
+        };
+    }
 
-            phaseSaveDataList.Add(phaseSave);
+    private static void GetPhaseData(Search.PhaseSave searchParameters)
+    {
+        phaseDataList = new List<PhaseBaseData>();
+
+        foreach (PhaseBaseData phase in Fixtures.phaseList)
+        {
+            if (searchParameters.chapterId.Count > 0 && !searchParameters.chapterId.Contains(phase.ChapterId)) continue;
+
+            phaseDataList.Add(phase);
         }
     }
 
-    private static void GetPhaseSaveDataByChapter(Search.PhaseSave searchParameters)
+    private static void GetPhaseSaveData(Search.PhaseSave searchParameters)
     {
-        phaseSaveDataList = new List<PhaseSaveBaseData>();
+        searchParameters.phaseId = phaseDataList.Select(x => x.Id).Distinct().ToList();
 
-        var phaseDataList = Fixtures.phaseList.Where(x => searchParameters.chapterId.Contains(x.ChapterId)).Distinct().ToList();
-        var phaseSaveList = Fixtures.phaseSaveList.Where(x => phaseDataList.Select(y => y.Id).Contains(x.PhaseId)).Distinct().ToList();
-
-        foreach(PhaseSaveBaseData phaseSave in phaseSaveList)
-        {
-            phaseSaveDataList.Add(phaseSave);
-        }
+        phaseSaveDataList = DataManager.GetPhaseSaveData(searchParameters);
     }
 
-    private static void GetPhaseData()
+    public static void AddData(PhaseSaveElementData elementData, DataRequest dataRequest)
     {
-        var searchParameters = new Search.Phase();
-        searchParameters.id = phaseSaveDataList.Select(x => x.PhaseId).Distinct().ToList();
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.phaseSaveList.Count > 0 ? (Fixtures.phaseSaveList[Fixtures.phaseSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.phaseSaveList.Add(((PhaseSaveData)elementData).Clone());
 
-        phaseDataList = DataManager.GetPhaseData(searchParameters);
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void UpdateData(PhaseSaveElementData elementData, DataRequest dataRequest)
@@ -102,5 +98,14 @@ public static class PhaseSaveDataManager
             elementData.SetOriginalValues();
 
         } else { }  
+    }
+
+    public static void RemoveData(PhaseSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            Fixtures.phaseSaveList.RemoveAll(x => x.Id == elementData.Id);
+
+        } else { }
     }
 }

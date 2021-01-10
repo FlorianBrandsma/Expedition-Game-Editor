@@ -20,6 +20,8 @@ public class GameSaveElementData : GameSaveData, IElementData
     public bool Changed { get; set; }
     #endregion
 
+    public GameSaveElementData() { }
+
     public void Add(DataRequest dataRequest) { }
 
     public void Update(DataRequest dataRequest) { }

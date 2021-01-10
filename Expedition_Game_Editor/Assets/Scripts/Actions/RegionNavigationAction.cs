@@ -641,10 +641,9 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetPhaseSaveSearchParameters(SearchProperties searchProperties)
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
-        searchParameters.requestType = Search.PhaseSave.RequestType.GetPhaseSaveByChapter;
 
-        var chapterSaveData = (ChapterSaveElementData)FindRouteByDataType(Enums.DataType.ChapterSave).ElementData;
-        searchParameters.chapterId = new List<int>() { chapterSaveData.ChapterId };
+        var chapterSaveElementData = (ChapterSaveElementData)FindRouteByDataType(Enums.DataType.ChapterSave).ElementData;
+        searchParameters.chapterId = new List<int>() { chapterSaveElementData.ChapterId };
     }
     #endregion
 

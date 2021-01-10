@@ -210,7 +210,7 @@ public static class WorldInteractableDataManager
         iconDataList = DataManager.GetIconData(searchParameters);
     }
 
-    public static void AddData(WorldInteractableElementData elementData, DataRequest dataRequest, bool copy = false)
+    public static void AddData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
@@ -219,12 +219,25 @@ public static class WorldInteractableDataManager
             
             elementData.SetOriginalValues();
 
-            if (copy) return;
+            if(elementData.Type == (int)Enums.InteractableType.Controllable)
+                PlayerSaveDataManager.UpdateReferences(dataRequest);
 
-            var taskElementData = TaskDataManager.DefaultData(elementData.Id);
-            taskElementData.Add(dataRequest);
+            AddDependencies(elementData, dataRequest);
             
         } else { }
+    }
+
+    private static void AddDependencies(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        if (!dataRequest.includeDependencies) return;
+
+        AddTaskData(elementData, dataRequest);
+    }
+
+    private static void AddTaskData(WorldInteractableElementData elementData, DataRequest dataRequest)
+    {
+        var taskElementData = TaskDataManager.DefaultData(elementData.Id);
+        taskElementData.Add(dataRequest);
     }
 
     public static void UpdateData(WorldInteractableElementData elementData, DataRequest dataRequest)
@@ -257,6 +270,9 @@ public static class WorldInteractableDataManager
             RemoveDependencies(elementData, dataRequest);
 
             Fixtures.worldInteractableList.RemoveAll(x => x.Id == elementData.Id);
+
+            if (elementData.Type == (int)Enums.InteractableType.Controllable)
+                PlayerSaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 

@@ -20,12 +20,13 @@ public class TaskSaveSegment : MonoBehaviour, ISegment
         //Don't try to get this data if a worldInteractable is selected without being directly related to an objective
         if (SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave) != null)
         {
-            var objectiveSaveData = (ObjectiveSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave).ElementData;
-            searchParameters.objectiveSaveId = new List<int>() { objectiveSaveData.Id };
+            var objectiveSaveElementData = (ObjectiveSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.ObjectiveSave).ElementData;
+
+            searchParameters.objectiveId = new List<int>() { objectiveSaveElementData.ObjectiveId };
         }
 
-        var worldInteractableData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).ElementData;
-        searchParameters.worldInteractableId = new List<int>() { worldInteractableData.Id };
+        var worldInteractableElementData = (WorldInteractableElementData)SegmentController.Path.FindLastRoute(Enums.DataType.WorldInteractable).ElementData;
+        searchParameters.worldInteractableId = new List<int>() { worldInteractableElementData.Id };
 
         SegmentController.DataController.GetData(searchProperties);
     }

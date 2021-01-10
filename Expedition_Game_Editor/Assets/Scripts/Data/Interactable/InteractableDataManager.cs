@@ -186,23 +186,124 @@ public static class InteractableDataManager
         } else { }
     }
 
-    static public void UpdateIndex(InteractableElementData elementData)
+    static public void UpdateIndex(InteractableElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.ChangedIndex) return;
 
         var data = Fixtures.interactableList.Where(x => x.Id == elementData.Id).FirstOrDefault();
 
-        data.Index = elementData.Index;
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            data.Index = elementData.Index;
 
-        elementData.OriginalData.Index = elementData.Index;
+            elementData.OriginalData.Index = elementData.Index;
+
+        } else { }
     }
 
     public static void RemoveData(InteractableElementData elementData, DataRequest dataRequest)
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
+            RemoveDependencies(elementData, dataRequest);
+
             Fixtures.interactableList.RemoveAll(x => x.Id == elementData.Id);
 
+            elementData.RemoveIndex(dataRequest);
+
         } else { }
+    }
+
+    private static void RemoveDependencies(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        RemoveChapterInteractableData(elementData, dataRequest);
+        RemoveWorldInteractableData(elementData, dataRequest);
+
+        RemoveInteractableSaveData(elementData, dataRequest);
+    }
+    
+    private static void RemoveChapterInteractableData(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        var chapterInteractableSearchParameters = new Search.ChapterInteractable()
+        {
+            interactableId = new List<int>() { elementData.Id }
+        };
+
+        var chapterInteractableDataList = DataManager.GetChapterInteractableData(chapterInteractableSearchParameters);
+
+        chapterInteractableDataList.ForEach(chapterInteractableData =>
+        {
+            var worldInteractableElementData = new ChapterInteractableElementData()
+            {
+                Id = chapterInteractableData.Id
+            };
+
+            worldInteractableElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveWorldInteractableData(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        var worldInteractableSearchParameters = new Search.WorldInteractable()
+        {
+            interactableId = new List<int>() { elementData.Id }
+        };
+
+        var worldInteractableDataList = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+
+        worldInteractableDataList.ForEach(worldInteractableData =>
+        {
+            var worldInteractableElementData = new WorldInteractableElementData()
+            {
+                Id = worldInteractableData.Id
+            };
+
+            worldInteractableElementData.Remove(dataRequest);
+        });
+    }
+
+    private static void RemoveInteractableSaveData(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        var interactableSaveSearchParameters = new Search.InteractableSave()
+        {
+            interactableId = new List<int>() { elementData.Id }
+        };
+
+        var interactableSaveDataList = DataManager.GetInteractableSaveData(interactableSaveSearchParameters);
+
+        interactableSaveDataList.ForEach(interactableSaveData =>
+        {
+            var interactableSaveElementData = new InteractableSaveElementData()
+            {
+                Id = interactableSaveData.Id
+            };
+
+            interactableSaveElementData.Remove(dataRequest);
+        });
+    }
+
+    public static void RemoveIndex(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        var interactableSearchParameters = new Search.Interactable()
+        {
+            type = new List<int>() { elementData.Type }
+        };
+
+        var interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
+
+        interactableDataList.Where(x => x.Index > elementData.Index).ToList().ForEach(interactableData =>
+        {
+            var interactableElementData = new InteractableElementData()
+            {
+                Id = interactableData.Id,
+                Index = interactableData.Index
+            };
+
+            interactableElementData.SetOriginalValues();
+
+            interactableElementData.Index--;
+
+            interactableElementData.UpdateIndex(dataRequest);
+        });
     }
 }
