@@ -13,7 +13,8 @@ public class InteractionEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return !interactionData.Default; } }
 
     public List<IElementData> DataList
     {
@@ -284,17 +285,12 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     public void UpdateEditor()
     {
-        SetEditor();
-    }
-
-    public void SetEditor()
-    {
         PathController.layoutSection.SetActionButtons();
     }
 
     public bool Changed()
     {
-        return ElementDataList.Any(x => x.Changed) && !TimeConflict;
+        return ElementDataList.Any(x => x.Changed);
     }
 
     public void ApplyChanges(DataRequest dataRequest)
@@ -358,11 +354,6 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    private void RemoveInteraction(DataRequest dataRequest)
-    {
-        EditData.Remove(dataRequest);
-    }
-
     private List<int> DefaultTimes()
     {
         var timeFrameList = (from interactionData in Data.dataList.Cast<InteractionElementData>().Where(x => !x.Default)
@@ -378,6 +369,11 @@ public class InteractionEditor : MonoBehaviour, IEditor
         return defaultTimes;
     }
 
+    private void RemoveInteraction(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
+    }
+    
     public void FinalizeChanges()
     {
         switch (EditData.ExecuteType)
@@ -395,7 +391,7 @@ public class InteractionEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

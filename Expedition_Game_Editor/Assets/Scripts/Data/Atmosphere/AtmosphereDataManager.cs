@@ -62,7 +62,7 @@ public static class AtmosphereDataManager
                         IconPath = iconData.Path,
                         BaseTilePath = tileData.First().tileData.IconPath
 
-                    }).OrderByDescending(x => x.Id == 0).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
+                    }).OrderByDescending(x => x.Id == -1).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
 
         if (searchParameters.includeAddElement)
             SetDefaultAddValues(list);
@@ -76,6 +76,8 @@ public static class AtmosphereDataManager
     {
         return new AtmosphereElementData()
         {
+            Id = -1,
+
             TerrainId = terrainId,
 
             Default = isDefault,
@@ -86,7 +88,7 @@ public static class AtmosphereDataManager
     
     public static void SetDefaultAddValues(List<AtmosphereElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

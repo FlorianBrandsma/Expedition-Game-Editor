@@ -29,7 +29,7 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
     {
         this.segment = segment;
 
-        extraRow = segment.DataEditor.Data.dataController.Data.dataList.Any(x => x.Id == 0) ? 1 : 0;
+        extraRow = segment.DataEditor.Data.dataController.Data.dataList.Any(x => x.Id == -1) ? 1 : 0;
 
         indexLimit = segment.DataEditor.Data.dataList.Count - 1;
 

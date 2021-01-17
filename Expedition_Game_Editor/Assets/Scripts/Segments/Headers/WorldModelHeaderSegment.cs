@@ -298,7 +298,6 @@ public class WorldModelHeaderSegment : MonoBehaviour, ISegment
             }
         }
     }
-
     #endregion
 
     public void InitializeDependencies()

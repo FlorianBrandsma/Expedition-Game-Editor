@@ -78,6 +78,29 @@ public class WorldInteractableDataController : MonoBehaviour, IDataController
 
                 break;
 
+            case Enums.DataType.WorldInteractable:
+
+                var resultWorldInteractableElementData = (WorldInteractableElementData)resultElementData;
+
+                searchWorldInteractableElementData.Id = resultWorldInteractableElementData.Id;
+
+                searchWorldInteractableElementData.InteractableId   = resultWorldInteractableElementData.InteractableId;
+
+                searchWorldInteractableElementData.ModelId          = resultWorldInteractableElementData.ModelId;
+
+                searchWorldInteractableElementData.ModelPath        = resultWorldInteractableElementData.ModelPath;
+
+                searchWorldInteractableElementData.InteractableName = resultWorldInteractableElementData.InteractableName;
+                searchWorldInteractableElementData.ModelIconPath    = resultWorldInteractableElementData.ModelIconPath;
+
+                searchWorldInteractableElementData.Height           = resultWorldInteractableElementData.Height;
+                searchWorldInteractableElementData.Width            = resultWorldInteractableElementData.Width;
+                searchWorldInteractableElementData.Depth            = resultWorldInteractableElementData.Depth;
+
+                searchWorldInteractableElementData.Scale            = resultWorldInteractableElementData.Scale;
+
+                break;
+
             default: Debug.Log("CASE MISSING: " + resultElementData.DataType); break;
         }
     }

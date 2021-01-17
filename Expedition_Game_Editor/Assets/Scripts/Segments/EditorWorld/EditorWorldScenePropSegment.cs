@@ -4,6 +4,8 @@ using System.Linq;
 
 public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -15,14 +17,18 @@ public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.SceneProp);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.SceneProp>().First();
-        searchParameters.sceneId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Scene).ElementData.Id };
-
-        //List and show (on the world) all props that belong to the scene. It is assumed the position is meant for the scene region
-
+        InitializeSearchParameters(searchProperties);
+        
         SegmentController.DataController.GetData(searchProperties);
+    }
 
-        SetSearchParameters();
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.SceneProp>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.sceneId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Scene).ElementData.Id };
     }
 
     public void InitializeSegment()
@@ -36,16 +42,7 @@ public class EditorWorldScenePropSegment : MonoBehaviour, ISegment
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
 
-    private void SetSearchParameters()
-    {
-        var searchParameters = SegmentController.DataController.SearchProperties.searchParameters.Cast<Search.Model>().First();
-        searchParameters.excludeId = SegmentController.DataController.Data.dataList.Cast<ScenePropElementData>().Select(x => x.ModelId).ToList();
-    }
-
-    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
-    {
-        SetSearchParameters();
-    }
+    public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
 
     public void UpdateSegment() { }
 

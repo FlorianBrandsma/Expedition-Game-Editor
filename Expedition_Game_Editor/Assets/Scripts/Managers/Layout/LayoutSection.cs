@@ -92,7 +92,7 @@ public class LayoutSection : MonoBehaviour
 
         if (buttonActionManager != null && dataEditor != null)
         {
-            buttonActionManager.SetButtons(dataEditor.EditData.ExecuteType, dataEditor.Changed());
+            buttonActionManager.SetButtons(dataEditor.EditData.ExecuteType, dataEditor.Removable, dataEditor.Changed());
         }
     }
 

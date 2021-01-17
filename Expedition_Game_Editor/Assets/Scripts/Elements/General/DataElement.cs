@@ -53,12 +53,12 @@ public class DataElement : MonoBehaviour
 
         var searchElementData = ElementData;
 
-        if (searchElementData.Id == 0 && resultElementData.Id == 0) return;
+        if (searchElementData.Id == -1 && resultElementData.Id == -1) return;
 
         //Element belongs to a list if display manager is not null.
         //If the id is also zero, a new element should be added to the list.
         //Clearer solution would be to include an "add/replace" option.
-        if (DisplayManager != null && searchElementData.Id == 0)
+        if (DisplayManager != null && searchElementData.Id == -1)
             searchElementData = ElementData.Clone();
 
         Data.dataController.SetData(searchElementData, resultElementData);

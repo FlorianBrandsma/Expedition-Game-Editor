@@ -3,7 +3,6 @@
 public class SceneData : SceneBaseData
 {
     public int InteractionId        { get; set; }
-    public int PhaseId              { get; set; }
 
     public string RegionName        { get; set; }
 
@@ -12,8 +11,7 @@ public class SceneData : SceneBaseData
     public override void GetOriginalValues(SceneData originalData)
     {
         InteractionId   = originalData.InteractionId;
-        PhaseId         = originalData.PhaseId;
-        
+
         RegionName      = originalData.RegionName;
 
         TileIconPath    = originalData.TileIconPath;
@@ -26,7 +24,6 @@ public class SceneData : SceneBaseData
         var data = new SceneData();
 
         data.InteractionId  = InteractionId;
-        data.PhaseId        = PhaseId;
 
         data.RegionName     = RegionName;
 
@@ -40,7 +37,6 @@ public class SceneData : SceneBaseData
     public virtual void Clone(SceneElementData elementData)
     {
         elementData.InteractionId   = InteractionId;
-        elementData.PhaseId         = PhaseId;
 
         elementData.RegionName      = RegionName;
 

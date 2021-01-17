@@ -18,7 +18,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
             var activeProperty = selectionProperty;
 
-            if (addProperty != SelectionManager.Property.None && DataElement.Id == 0)
+            if (addProperty != SelectionManager.Property.None && DataElement.Id == -1)
                 activeProperty = addProperty;
 
             return activeProperty;
@@ -52,10 +52,10 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
     public void InitializeElement(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
     {
-        this.selectionType = selectionType;
-        this.selectionProperty = selectionProperty;
-        this.addProperty = addProperty;
-        this.uniqueSelection = uniqueSelection;
+        this.selectionType      = selectionType;
+        this.selectionProperty  = selectionProperty;
+        this.addProperty        = addProperty;
+        this.uniqueSelection    = uniqueSelection;
 
         if(DataElement != null && DataElement.Data != null && DataElement.ElementData != null)
             DataElement.ElementData.UniqueSelection = uniqueSelection;

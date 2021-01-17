@@ -31,7 +31,7 @@ public class QuestGeneralInteractableSegment : MonoBehaviour, ISegment
         SetStatus(SegmentController.DataController.Data.dataList);
 
         var questInteractableList = SegmentController.DataController.Data.dataList.Cast<WorldInteractableElementData>().ToList();
-        questInteractableList.ForEach(x => QuestEditor.worldInteractableDataList.Add(x));
+        questInteractableList.ForEach(x => QuestEditor.worldInteractableElementDataList.Add(x));
     }
 
     private void SetStatus(List<IElementData> dataList)

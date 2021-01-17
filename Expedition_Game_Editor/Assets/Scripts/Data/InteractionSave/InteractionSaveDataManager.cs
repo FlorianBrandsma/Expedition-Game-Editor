@@ -47,6 +47,8 @@ public static class InteractionSaveDataManager
     {
         return new InteractionSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             InteractionId = interactionId
         };

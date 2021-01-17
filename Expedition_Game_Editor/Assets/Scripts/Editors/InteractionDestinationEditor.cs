@@ -13,7 +13,8 @@ public class InteractionDestinationEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -322,7 +323,7 @@ public class InteractionDestinationEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

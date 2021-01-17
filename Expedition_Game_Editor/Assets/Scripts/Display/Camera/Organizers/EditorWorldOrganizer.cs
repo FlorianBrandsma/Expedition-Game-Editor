@@ -298,21 +298,21 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         ScenePropDataController.Data.dataList = worldData.TerrainDataList.SelectMany(x => x.ScenePropDataList).Cast<IElementData>().ToList();
     }
 
-    private void FixLostInteractions()
-    {
-        var lostInteractions = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList.Where(y => y.TerrainId != x.Id)).ToList();
+    //private void FixLostInteractions()
+    //{
+    //    var lostInteractions = worldData.TerrainDataList.SelectMany(x => x.InteractionDestinationDataList.Where(y => y.TerrainId != x.Id)).ToList();
 
-        worldData.TerrainDataList.ForEach(x => x.InteractionDestinationDataList.RemoveAll(y => lostInteractions.Select(z => z.TerrainId).Contains(y.TerrainId)));
-        worldData.TerrainDataList.ForEach(x => x.InteractionDestinationDataList.AddRange(lostInteractions.Where(y => y.TerrainId == x.Id)));
-    }
+    //    worldData.TerrainDataList.ForEach(x => x.InteractionDestinationDataList.RemoveAll(y => lostInteractions.Select(z => z.TerrainId).Contains(y.TerrainId)));
+    //    worldData.TerrainDataList.ForEach(x => x.InteractionDestinationDataList.AddRange(lostInteractions.Where(y => y.TerrainId == x.Id)));
+    //}
 
-    private void FixLostWorldObjects()
-    {
-        var lostWorldObjects = worldData.TerrainDataList.SelectMany(x => x.WorldObjectDataList.Where(y => y.TerrainId != 0 && y.TerrainId != x.Id)).ToList();
+    //private void FixLostWorldObjects()
+    //{
+    //    var lostWorldObjects = worldData.TerrainDataList.SelectMany(x => x.WorldObjectDataList.Where(y => y.TerrainId != 0 && y.TerrainId != x.Id)).ToList();
 
-        worldData.TerrainDataList.ForEach(x => x.WorldObjectDataList.RemoveAll(y => lostWorldObjects.Select(z => z.TerrainId).Contains(y.TerrainId)));
-        worldData.TerrainDataList.ForEach(x => x.WorldObjectDataList.AddRange(lostWorldObjects.Where(y => y.TerrainId == x.Id)));
-    }
+    //    worldData.TerrainDataList.ForEach(x => x.WorldObjectDataList.RemoveAll(y => lostWorldObjects.Select(z => z.TerrainId).Contains(y.TerrainId)));
+    //    worldData.TerrainDataList.ForEach(x => x.WorldObjectDataList.AddRange(lostWorldObjects.Where(y => y.TerrainId == x.Id)));
+    //}
 
     private void ValidateAtmosphereTime()
     {
@@ -443,20 +443,9 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var defaultPosition = AddElementDefaultPosition();
 
         //Update the position of unselected world objects
-        var addWorldObjectElementData = WorldObjectDataController.Data.dataList.Where(x => x.Id == 0 && !selectedWorldObjects.Select(y => y.Id).Contains(x.Id)).FirstOrDefault();
-
-        if (addWorldObjectElementData != null)
-        {
-            //Find all related selection elements and apply the default position
-            var addWorldObjectElementDatalist = SelectionElementManager.FindElementData(addWorldObjectElementData).Concat(new[] { addWorldObjectElementData }).Distinct().Cast<WorldObjectElementData>().ToList();
-
-            addWorldObjectElementDatalist.ForEach(elementData =>
-            {
-                elementData.PositionX = defaultPosition.x;
-                elementData.PositionY = defaultPosition.y;
-                elementData.PositionZ = defaultPosition.z;
-            });
-        }
+        SetAddWorldObjectDefaultPosition(defaultPosition);
+        SetAddSceneActorDefaultPosition(defaultPosition);
+        SetAddScenePropDefaultPosition(defaultPosition);
     }
 
     public Vector3 AddElementDefaultPosition()
@@ -464,8 +453,56 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         var cameraPosition = CameraManager.cameraParent.transform.localPosition;
 
         var defaultPosition = new Vector3(cameraPosition.x, 0, -cameraPosition.z - cameraDistanceFromCenter);
-        
+
         return defaultPosition;
+    }
+
+    private void SetAddWorldObjectDefaultPosition(Vector3 defaultPosition)
+    {
+        var addWorldObjectElementData = WorldObjectDataController.Data.dataList.Where(x => x.Id == -1 && !selectedWorldObjects.Select(y => y.Id).Contains(x.Id)).FirstOrDefault();
+
+        if (addWorldObjectElementData == null) return;
+
+        var addWorldObjectElementDatalist = SelectionElementManager.FindElementData(addWorldObjectElementData).Concat(new[] { addWorldObjectElementData }).Distinct().Cast<WorldObjectElementData>().ToList();
+
+        addWorldObjectElementDatalist.ForEach(elementData =>
+        {
+            elementData.PositionX = defaultPosition.x;
+            elementData.PositionY = defaultPosition.y;
+            elementData.PositionZ = defaultPosition.z;
+        });
+    }
+
+    private void SetAddSceneActorDefaultPosition(Vector3 defaultPosition)
+    {
+        var addSceneActorElementData = SceneActorDataController.Data.dataList.Where(x => x.Id == -1 && !selectedSceneActors.Select(y => y.Id).Contains(x.Id)).FirstOrDefault();
+
+        if (addSceneActorElementData == null) return;
+
+        var addSceneActorElementDatalist = SelectionElementManager.FindElementData(addSceneActorElementData).Concat(new[] { addSceneActorElementData }).Distinct().Cast<SceneActorElementData>().ToList();
+
+        addSceneActorElementDatalist.ForEach(elementData =>
+        {
+            elementData.PositionX = defaultPosition.x;
+            elementData.PositionY = defaultPosition.y;
+            elementData.PositionZ = defaultPosition.z;
+        });
+    }
+
+    private void SetAddScenePropDefaultPosition(Vector3 defaultPosition)
+    {
+        var addScenePropElementData = ScenePropDataController.Data.dataList.Where(x => x.Id == -1 && !selectedSceneProps.Select(y => y.Id).Contains(x.Id)).FirstOrDefault();
+
+        if (addScenePropElementData == null) return;
+
+        var addScenePropElementDatalist = SelectionElementManager.FindElementData(addScenePropElementData).Concat(new[] { addScenePropElementData }).Distinct().Cast<ScenePropElementData>().ToList();
+
+        addScenePropElementDatalist.ForEach(elementData =>
+        {
+            elementData.PositionX = defaultPosition.x;
+            elementData.PositionY = defaultPosition.y;
+            elementData.PositionZ = defaultPosition.z;
+        });
     }
 
     private void UpdatePositionTracker(Vector2 cameraPosition)
@@ -688,8 +725,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     private void SetWorldObjects(int terrainTileId = 0)
     {
         var worldObjectDataList = WorldObjectDataController.Data.dataList.Where(x => !selectedWorldObjects.Select(y => y.Id).Contains(x.Id) &&
-                                                                                     ((WorldObjectElementData)x).TerrainTileId == terrainTileId).ToList(); /*&&
-                                                                                     ((WorldObjectElementData)x).RegionId == worldData.Id).ToList();*/
+                                                                                     ((WorldObjectElementData)x).TerrainTileId == terrainTileId).ToList();
 
         SetWorldElements(WorldObjectDataController, worldObjectDataList);
     }
@@ -791,18 +827,18 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         var worldObjectElementData = (WorldObjectElementData)element.DataElement.ElementData;
 
+        if (worldObjectElementData.ModelId == 1)
+        {
+            element.elementStatus = Enums.ElementStatus.Hidden;
+            return;
+        }
+
         if (worldData.RegionType == Enums.RegionType.InteractionDestination || 
             worldData.RegionType == Enums.RegionType.Controllable           || 
             worldData.RegionType == Enums.RegionType.Scene                  || 
             worldData.RegionType == Enums.RegionType.Game)
         {
             element.elementStatus = Enums.ElementStatus.Locked;
-            return;
-        }
-
-        if(worldObjectElementData.ModelId == 1)
-        {
-            element.elementStatus = Enums.ElementStatus.Hidden;
             return;
         }
     }
@@ -840,12 +876,6 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             element.elementStatus = Enums.ElementStatus.Locked;
             return;
         }
-
-        //Debug.Log(  interactionData.Id + "/" + interactionDataElement.Id + "   " +
-        //            interactionData.TaskId + "/" + interactionDataElement.TaskId + "   " +
-        //            interactionData.worldInteractableId + "/" + interactionDataElement.worldInteractableId + "   " +
-        //            interactionData.questId + "/" + interactionDataElement.questId + "   " +
-        //            interactionData.objectiveId + "/" + interactionDataElement.objectiveId);
 
         //Hidden: Interactions where the active time is not within its timeframe
         if (!interactionDestinationElementData.ContainsActiveTime)
@@ -965,6 +995,13 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
 
         var scenePropElementData = (ScenePropElementData)element.DataElement.ElementData;
         var sceneElementData = (SceneElementData)sceneRoute.ElementData;
+
+        //Hidden: Props with the default empty model
+        if (scenePropElementData.ModelId == 1)
+        {
+            element.elementStatus = Enums.ElementStatus.Hidden;
+            return;
+        }
 
         //Enabled: Props belonging to the same scene and to the same interaction
         if (scenePropElementData.SceneId == sceneElementData.Id &&

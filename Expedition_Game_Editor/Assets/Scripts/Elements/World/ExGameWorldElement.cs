@@ -22,7 +22,6 @@ public class ExGameWorldElement : MonoBehaviour, IGameElement, IElement, IPoolab
     public NavMeshObstacle Obstacle             { get { return GetComponent<NavMeshObstacle>(); } }
     private SphereCollider InteractionCollider  { get { return GetComponent<SphereCollider>(); } }
     
-
     public Color ElementColor                   { set { } }
 
     public Transform Transform                  { get { return GetComponent<Transform>(); } }

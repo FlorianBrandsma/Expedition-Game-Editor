@@ -91,10 +91,14 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
+        if (Id > 0)
+            idText.text = Id.ToString();
+        else
+            idText.text = "New";
+
         icon.texture = Resources.Load<Texture2D>(IconPath);
         headerText.text = Title;
-        idText.text = Id.ToString();
-
+        
         gameObject.SetActive(true);
     }
 

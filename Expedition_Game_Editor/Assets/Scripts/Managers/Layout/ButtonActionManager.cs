@@ -21,7 +21,7 @@ public class ButtonActionManager : MonoBehaviour
             closeButton.Button.onClick.AddListener(delegate { section.CloseEditor(); });    
     }
 
-    public void SetButtons(Enums.ExecuteType executionType, bool changed)
+    public void SetButtons(Enums.ExecuteType executionType, bool removable, bool changed)
     {
         if (applyButton != null)
         {
@@ -38,7 +38,7 @@ public class ButtonActionManager : MonoBehaviour
                     break;
 
                 case Enums.ExecuteType.Remove:
-                    applyButton.Button.interactable = true;
+                    applyButton.Button.interactable = removable;
                     applyButton.label.text = "Remove";
                     break;
             }

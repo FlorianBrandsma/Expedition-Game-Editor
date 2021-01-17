@@ -92,13 +92,17 @@ public static class WorldInteractableDataManager
     {
         return new WorldInteractableElementData()
         {
-            Type = type
+            Id = -1,
+
+            Type = type,
+
+            ModelId = 1
         };
     }
 
     public static void SetDefaultAddValues(List<WorldInteractableElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
@@ -221,8 +225,8 @@ public static class WorldInteractableDataManager
 
             if(elementData.Type == (int)Enums.InteractableType.Controllable)
                 PlayerSaveDataManager.UpdateReferences(dataRequest);
-
-            AddDependencies(elementData, dataRequest);
+            else
+                AddDependencies(elementData, dataRequest);
             
         } else { }
     }
@@ -236,7 +240,10 @@ public static class WorldInteractableDataManager
 
     private static void AddTaskData(WorldInteractableElementData elementData, DataRequest dataRequest)
     {
-        var taskElementData = TaskDataManager.DefaultData(elementData.Id);
+        var taskElementData = TaskDataManager.DefaultData(elementData.Id, elementData.ObjectiveId);
+
+        taskElementData.Name = "Default description";
+
         taskElementData.Add(dataRequest);
     }
 

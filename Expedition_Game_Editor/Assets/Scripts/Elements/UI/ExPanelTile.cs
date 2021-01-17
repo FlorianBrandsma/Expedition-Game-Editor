@@ -165,11 +165,13 @@ public class ExPanelTile : MonoBehaviour, IElement, IPoolable
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
 
-        SetId(id != 0);
-        SetHeader(id != 0);
-        SetIcon(id != 0 && iconPath != null);
+        var enableContent = (id != -1 && id != 0);
 
-        SetChild(properties.childProperty != SelectionManager.Property.None && EditorElement.DataElement.Id != 0);
+        SetId(enableContent);
+        SetHeader(enableContent);
+        SetIcon(enableContent && iconPath != null);
+
+        SetChild(properties.childProperty != SelectionManager.Property.None && enableContent);
     }
 
     private void SetWorldInteractableElement()

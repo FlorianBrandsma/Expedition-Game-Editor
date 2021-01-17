@@ -96,6 +96,8 @@ public static class RegionDataManager
     {
         return new RegionElementData()
         {
+            Id = -1,
+
             TileSetId = 1,
             RegionSize = 1,
             TerrainSize = 1
@@ -104,7 +106,7 @@ public static class RegionDataManager
 
     public static void SetDefaultAddValues(List<RegionElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 

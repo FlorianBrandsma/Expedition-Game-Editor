@@ -13,10 +13,12 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
     public EditorElement editButton;
     public RawImage buttonIcon;
 
-    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor                   { get; set; }
+    private RegionDataController RegionDataController   { get { return GetComponent<RegionDataController>(); } }
 
-    private PhaseEditor PhaseEditor             { get { return (PhaseEditor)DataEditor; } }
+    public SegmentController SegmentController          { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                           { get; set; }
+
+    private PhaseEditor PhaseEditor                     { get { return (PhaseEditor)DataEditor; } }
 
     #region Data properties
     private int Id
@@ -83,23 +85,29 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
         searchParameters.phaseId = new List<int>() { Id };
         searchParameters.type = Enums.RegionType.Controllable;
 
-        SegmentController.DataController.GetData(searchProperties);
+        RegionDataController.GetData(searchProperties);
 
-        var regionData = SegmentController.DataController.Data.dataList.Where(x => x.Id == DefaultRegionId).FirstOrDefault();
+        var regionElementData = RegionDataController.Data.dataList.Where(x => x.Id == DefaultRegionId).FirstOrDefault();
 
         //Assign data
-        if (regionData != null)
-            editButton.DataElement.Id = regionData.Id;
+        if (regionElementData != null)
+        {
+            editButton.DataElement.Id = regionElementData.Id;
+            editButton.elementStatus = Enums.ElementStatus.Enabled;
 
-        editButton.DataElement.Data = SegmentController.DataController.Data;
+        } else {
+
+            editButton.elementStatus = Enums.ElementStatus.Locked;
+        }
+            
+
+        editButton.DataElement.Data = RegionDataController.Data;
         editButton.DataElement.Path = SegmentController.EditorController.PathController.route.path;
 
         buttonIcon.texture = Resources.Load<Texture2D>(ModelIconPath);
 
         editButton.InitializeElement();
-
-        editButton.elementStatus = regionData != null ? Enums.ElementStatus.Enabled : Enums.ElementStatus.Locked;
-
+        
         editButton.SetOverlay();
     }
 

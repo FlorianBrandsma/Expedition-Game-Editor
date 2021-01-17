@@ -26,11 +26,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         set { SceneEditor.RegionId = value; }
     }
 
-    private int PhaseId
-    {
-        get { return SceneEditor.PhaseId; }
-    }
-
     private string TileIconPath
     {
         get { return SceneEditor.TileIconPath; }
@@ -65,28 +60,40 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Region);
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
+        searchParameters.includeAddElement = SceneEditor.EditData.ExecuteType == Enums.ExecuteType.Add;
+
         searchParameters.id = new List<int>() { RegionId };
         searchParameters.type = Enums.RegionType.Scene;
 
         RegionDataController.GetData(searchProperties);
 
         var regionElementData = RegionDataController.Data.dataList.FirstOrDefault();
-        regionElementData.DataElement = regionButton.DataElement;
 
-        //Assign data
-        var regionData = new Data()
+        if(regionElementData != null)
         {
-            dataController = RegionDataController,
-            dataList = new List<IElementData>() { regionElementData },
-            searchProperties = RegionDataController.SearchProperties
-        };
+            regionElementData.DataElement = regionButton.DataElement;
 
-        regionElementData.DataElement.Data = regionData;
-        regionElementData.DataElement.Id = RegionId;
+            //Assign data
+            var regionData = new Data()
+            {
+                dataController = RegionDataController,
+                dataList = new List<IElementData>() { regionElementData },
+                searchProperties = RegionDataController.SearchProperties
+            };
 
-        regionElementData.DataElement.Path = SegmentController.EditorController.PathController.route.path;
+            regionElementData.DataElement.Data = regionData;
+            regionElementData.DataElement.Id = RegionId;
 
-        SetRegionData();
+            regionElementData.DataElement.Path = SegmentController.EditorController.PathController.route.path;
+
+            SetRegionData();
+
+            regionButton.elementStatus = Enums.ElementStatus.Enabled;
+
+        } else {
+
+            regionButton.elementStatus = Enums.ElementStatus.Locked;
+        }
 
         regionButton.DataElement.InitializeElement();
         regionButton.GetComponent<ExPanel>().InitializeChildElement();
@@ -94,9 +101,9 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     
     private void SetRegionData()
     {
-        RegionElementData.Id = RegionId;
-        RegionElementData.TileIconPath = TileIconPath;
-        RegionElementData.Name = RegionName;
+        RegionElementData.Id            = RegionId;
+        RegionElementData.TileIconPath  = TileIconPath;
+        RegionElementData.Name          = RegionName;
         
         regionButton.child.DataElement.Id = RegionId;
 
@@ -107,8 +114,18 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     {
         var searchParameters = RegionDataController.SearchProperties.searchParameters.Cast<Search.Region>().First();
 
-        searchParameters.excludeId  = new List<int>() { RegionId };
-        searchParameters.phaseId    = new List<int>() { PhaseId };
+        RegionDataController.SearchProperties.iconType = Enums.IconType.Base;
+
+        searchParameters.excludeId = new List<int>() { RegionId };
+
+        var phaseId = 0;
+
+        var phaseRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Phase);
+
+        if (phaseRoute != null)
+            phaseId = phaseRoute.id;
+        
+        searchParameters.phaseId = new List<int>() { phaseId };
     }
 
     public void OpenSegment()

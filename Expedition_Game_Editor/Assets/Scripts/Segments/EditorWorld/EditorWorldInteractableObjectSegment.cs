@@ -59,7 +59,7 @@ public class EditorWorldInteractableObjectSegment : MonoBehaviour, ISegment
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
-        if (mergedElementData.ExecuteType == Enums.ExecuteType.Add || resultElementData.Id == 0)
+        if (mergedElementData.ExecuteType == Enums.ExecuteType.Add || resultElementData.Id == -1)
             RenderManager.ResetPath(true);
     }
 

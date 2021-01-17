@@ -17,10 +17,18 @@ public class SceneSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Scene);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Scene>().First();
-        searchParameters.outcomeId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Outcome).ElementData.Id };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Scene>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.outcomeId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Outcome).ElementData.Id };
     }
 
     public void InitializeSegment()

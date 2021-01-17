@@ -178,9 +178,17 @@ public class ListManager : MonoBehaviour, IDisplayManager
         if (Organizer == null) return;
         
         if (Display.DataController.Data.dataList.Count == 0) return;
-
+        
         if (autoSelectId == 0)
-            autoSelectId = Display.DataController.Data.dataList.Where(x => x.Id > 0).ToList().First().Id;
+        {
+            var dataList = Display.DataController.Data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList();
+
+            //Only select the add element if it's the only available element
+            if (dataList.Count == 1 && dataList.First().ExecuteType == Enums.ExecuteType.Add)
+                autoSelectId = dataList.First().Id;
+            else
+                autoSelectId = dataList.Where(x => x.Id > 0).ToList().First().Id;
+        }
 
         var element = List.ElementList.Where(x => x.DataElement.ElementData.Id == autoSelectId).FirstOrDefault();
 

@@ -10,6 +10,9 @@ public static class TaskDataManager
     {
         GetTaskData(searchParameters);
 
+        if (searchParameters.includeAddElement)
+            taskDataList.Add(DefaultData(searchParameters.worldInteractableId.First(), searchParameters.objectiveId.FirstOrDefault()));
+
         if (taskDataList.Count == 0) return new List<IElementData>();
 
         var list = (from taskData in taskDataList
@@ -34,19 +37,32 @@ public static class TaskDataManager
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
     }
 
-    public static TaskElementData DefaultData(int worldInteractableId)
+    public static TaskElementData DefaultData(int worldInteractableId, int objectiveId)
     {
         return new TaskElementData()
         {
-            WorldInteractableId = worldInteractableId,
+            Id = -1,
 
-            Name = "Default description"
+            WorldInteractableId = worldInteractableId,
+            ObjectiveId = objectiveId
         };
+    }
+
+    public static void SetDefaultAddValues(List<TaskElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == -1).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetTaskData(Search.Task searchParameters)
@@ -56,8 +72,8 @@ public static class TaskDataManager
         foreach (TaskBaseData task in Fixtures.taskList)
         {
             if (searchParameters.id.Count                   > 0 && !searchParameters.id.Contains(task.Id))                                      continue;
-            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.ObjectiveId))                    continue;
             if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(task.WorldInteractableId))    continue;
+            if (searchParameters.objectiveId.Count          > 0 && !searchParameters.objectiveId.Contains(task.ObjectiveId))                    continue;
             
             taskDataList.Add(task);
         }

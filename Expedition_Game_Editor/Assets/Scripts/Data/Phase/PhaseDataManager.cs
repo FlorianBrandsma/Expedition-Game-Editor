@@ -107,15 +107,15 @@ public static class PhaseDataManager
     {
         return new PhaseElementData()
         {
-            ChapterId = chapterId,
+            Id = -1,
 
-            Name = "Default phase"
+            ChapterId = chapterId
         };
     }
 
     public static void SetDefaultAddValues(List<PhaseElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 

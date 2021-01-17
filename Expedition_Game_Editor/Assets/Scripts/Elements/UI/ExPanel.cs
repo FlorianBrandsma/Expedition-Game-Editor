@@ -241,14 +241,16 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType);  break;
         }
-        
-        SetId(id != 0);
-        SetHeader(id != 0);
-        SetDescription(description != null);
-        SetIcon(id != 0 && iconPath != null);
+
+        var enableContent = (id != -1 && id != 0);
+
+        SetId(enableContent);
+        SetHeader(enableContent);
+        SetDescription(enableContent && description != null);
+        SetIcon(enableContent && iconPath != null);
         SetInfoIcon(infoIconPath != null);
 
-        SetChild(childProperty != SelectionManager.Property.None && EditorElement.DataElement.Id != 0);
+        SetChild(childProperty != SelectionManager.Property.None && enableContent);
     }
 
     private void SetChapterElement()
@@ -391,8 +393,14 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (SceneElementData)EditorElement.DataElement.ElementData;
 
-        header = elementData.Name;
-        description = elementData.PublicNotes;
+        if (EditorElement.selectionProperty == SelectionManager.Property.Get)
+        {
+            header = elementData.Name;
+            description = elementData.PublicNotes;
+        } else {
+            header = elementData.OriginalData.Name;
+            description = elementData.OriginalData.PublicNotes;
+        }
     }
 
     private void SetSceneShotElement()
@@ -486,10 +494,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (SaveElementData)EditorElement.DataElement.ElementData;
 
-        header      = elementData.Name;
-        description = elementData.LocationName;
+        header          = elementData.Name;
+        description     = elementData.LocationName;
 
-        iconPath    = elementData.ModelIconPath;
+        iconPath        = elementData.ModelIconPath;
 
         timeText.text   = elementData.Time;
     }

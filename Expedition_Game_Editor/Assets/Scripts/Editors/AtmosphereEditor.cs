@@ -13,7 +13,8 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return !atmosphereData.Default; } }
 
     public List<IElementData> DataList
     {
@@ -171,8 +172,8 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
 
     private void UpdateAtmosphere(DataRequest dataRequest)
     {
-        var changedTime =   ((AtmosphereElementData)EditData).ChangedStartTime || 
-                            ((AtmosphereElementData)EditData).ChangedEndTime;
+        var changedTime = ((AtmosphereElementData)EditData).ChangedStartTime || 
+                          ((AtmosphereElementData)EditData).ChangedEndTime;
 
         EditData.Update(dataRequest);
         
@@ -218,13 +219,19 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
     {
         RenderManager.loadType = Enums.LoadType.Reload;
 
-        var defaultElement = Data.dataController.Data.dataList.Where(x => ((AtmosphereElementData)x).Default).First();
-        ((ListManager)EditData.DataElement.DisplayManager).AutoSelectElement(defaultElement.Id);
+        var autoSelectId = 0;
+
+        var defaultElement = Data.dataController.Data.dataList.Where(x => ((AtmosphereElementData)x).Default && x.ExecuteType != Enums.ExecuteType.Remove).FirstOrDefault();
+        
+        if (defaultElement != null)
+            autoSelectId = defaultElement.Id;
+
+        ((ListManager)EditData.DataElement.DisplayManager).AutoSelectElement(autoSelectId);
     }
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

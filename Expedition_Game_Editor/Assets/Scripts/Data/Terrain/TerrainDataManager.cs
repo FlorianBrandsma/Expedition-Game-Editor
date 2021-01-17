@@ -58,6 +58,8 @@ public static class TerrainDataManager
     {
         return new TerrainElementData()
         {
+            Id = -1,
+
             RegionId = regionId,
             IconId = 1,
 

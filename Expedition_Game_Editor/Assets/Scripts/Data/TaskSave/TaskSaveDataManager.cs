@@ -48,6 +48,8 @@ public static class TaskSaveDataManager
     {
         return new TaskSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             TaskId = taskId,
             WorldInteractableId = worldInteractableId

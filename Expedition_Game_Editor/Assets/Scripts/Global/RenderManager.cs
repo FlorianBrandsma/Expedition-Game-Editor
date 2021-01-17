@@ -137,9 +137,9 @@ static public class RenderManager
         for (int i = 0; i < path.routeList.Count; i++)
         {
             if (path.routeList[i].data != null)
-                str += path.routeList[i].data.dataController.DataType + "-" + path.routeList[i].id + "/";
+                str += path.routeList[i].data.dataController.DataType + ":" + path.routeList[i].id + "/";
             else
-                str += "Null-0/";
+                str += "Null:0/";
         }
 
         return str;

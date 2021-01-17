@@ -56,15 +56,21 @@ public static class EditorWorldDataManager
         
         GetInteractionDestinationData(searchParameters);
 
-        Debug.Log(searchParameters.includeAddInteractionDestinationElement);
+        if (searchParameters.includeAddInteractionDestinationElement)
+            interactionDestinationDataList.Add(InteractionDestinationDataManager.DefaultData(searchParameters.interactionId.First()));
 
         GetSceneData(searchParameters);
         GetOutcomeData();
 
         GetSceneActorData();
+
+        if (searchParameters.includeAddSceneActorElement)
+            sceneActorDataList.Add(SceneActorDataManager.DefaultData(searchParameters.sceneId.First()));
+
         GetScenePropData();
 
-        Debug.Log(searchParameters.includeAddScenePropElement);
+        if (searchParameters.includeAddScenePropElement)
+            scenePropDataList.Add(ScenePropDataManager.DefaultData(searchParameters.sceneId.First()));
 
         GetInteractionData();
         GetTaskData(searchParameters);
@@ -238,7 +244,7 @@ public static class EditorWorldDataManager
                     Patience = interactionDestinationData.Patience,
 
                     QuestId = objectiveData.FirstOrDefault()    != null ? objectiveData.FirstOrDefault().objectiveData.QuestId :
-                                questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
+                              questData.FirstOrDefault()        != null ? questData.FirstOrDefault().questData.Id : 0,
                     ObjectiveId = taskData.ObjectiveId,
                     WorldInteractableId = taskData.WorldInteractableId,
                     TaskId = interactionData.TaskId,
@@ -307,10 +313,11 @@ public static class EditorWorldDataManager
                 join interactionData        in interactionDataList          on outcomeData.InteractionId                equals interactionData.Id
                 join taskData               in taskDataList                 on interactionData.TaskId                   equals taskData.Id
 
-                join worldInteractableData  in worldInteractableDataList    on sceneActorData.WorldInteractableId       equals worldInteractableData.Id
-                join interactableData       in interactableDataList         on worldInteractableData.InteractableId     equals interactableData.Id
-                join modelData              in modelDataList                on interactableData.ModelId                 equals modelData.Id
-                join iconData               in iconDataList                 on modelData.IconId                         equals iconData.Id
+                join leftJoin in (from worldInteractableData    in worldInteractableDataList
+                                  join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
+                                  join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
+                                  join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
+                                  select new { worldInteractableData, interactableData, modelData, iconData }) on sceneActorData.WorldInteractableId equals leftJoin.worldInteractableData.Id into worldInteractableData
 
                 where sceneActorData.TerrainId == terrainData.Id
                 select new SceneActorElementData()
@@ -342,18 +349,18 @@ public static class EditorWorldDataManager
                         
                     InteractionId = interactionData.Id,
                     TaskId = taskData.Id,
-                    ModelId = modelData.Id,
+                    ModelId = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Id : 0,
 
-                    ModelPath = modelData.Path,
-                    ModelIconPath = iconData.Path,
+                    ModelPath = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Path : "",
+                    ModelIconPath = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().iconData.Path : "",
 
-                    InteractableName = interactableData.Name,
+                    InteractableName = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().interactableData.Name : "",
 
-                    Height = modelData.Height,
-                    Width = modelData.Width,
-                    Depth = modelData.Depth,
+                    Height = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Height : 0,
+                    Width = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Width : 0,
+                    Depth = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Depth : 0,
 
-                    Scale = interactableData.Scale,
+                    Scale = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().interactableData.Scale : 0,
 
                     Default = interactionData.Default,
 
@@ -459,6 +466,15 @@ public static class EditorWorldDataManager
 
         if (searchParameters.includeAddWorldObjectElement)
             WorldObjectDataManager.SetDefaultAddValues(list.SelectMany(x => x.TerrainDataList.SelectMany(y => y.WorldObjectDataList)).ToList());
+
+        if (searchParameters.includeAddInteractionDestinationElement)
+            InteractionDestinationDataManager.SetDefaultAddValues(list.SelectMany(x => x.TerrainDataList.SelectMany(y => y.InteractionDestinationDataList)).ToList());
+
+        if (searchParameters.includeAddSceneActorElement)
+            SceneActorDataManager.SetDefaultAddValues(list.SelectMany(x => x.TerrainDataList.SelectMany(y => y.SceneActorDataList)).ToList());
+
+        if (searchParameters.includeAddScenePropElement)
+            ScenePropDataManager.SetDefaultAddValues(list.SelectMany(x => x.TerrainDataList.SelectMany(y => y.ScenePropDataList)).ToList());
 
         list.ForEach(x => x.SetOriginalValues());
         

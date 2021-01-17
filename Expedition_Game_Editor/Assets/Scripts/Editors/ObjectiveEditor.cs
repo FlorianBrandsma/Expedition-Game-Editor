@@ -15,7 +15,8 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -100,7 +101,15 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        ApplyObjectiveChanges(dataRequest);
+        if (EditData.ExecuteType == Enums.ExecuteType.Add || EditData.ExecuteType == Enums.ExecuteType.Update)
+        {
+            ApplyObjectiveChanges(dataRequest);
+
+            ApplyWorldInteractableChanges(dataRequest);
+        }
+
+        if (EditData.ExecuteType == Enums.ExecuteType.Remove)
+            RemoveObjective(dataRequest);
     }
 
     private void ApplyObjectiveChanges(DataRequest dataRequest)
@@ -128,7 +137,11 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
         EditData.Add(dataRequest);
 
         if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
             objectiveData.Id = tempData.Id;
+
+            worldInteractableElementDataList.ForEach(x => x.ObjectiveId = objectiveData.Id);
+        }
     }
 
     private void UpdateObjective(DataRequest dataRequest)
@@ -139,6 +152,30 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
     private void RemoveObjective(DataRequest dataRequest)
     {
         EditData.Remove(dataRequest);
+    }
+
+    private void ApplyWorldInteractableChanges(DataRequest dataRequest)
+    {
+        foreach (WorldInteractableElementData worldInteractableElementData in worldInteractableElementDataList)
+        {
+            switch (worldInteractableElementData.ExecuteType)
+            {
+                case Enums.ExecuteType.Add:
+                    worldInteractableElementData.Add(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Update:
+                    worldInteractableElementData.Update(dataRequest);
+                    break;
+
+                case Enums.ExecuteType.Remove:
+                    worldInteractableElementData.Remove(dataRequest);
+                    break;
+            }
+        }
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            worldInteractableElementDataList.RemoveAll(x => x.ExecuteType == Enums.ExecuteType.Remove);
     }
 
     public void FinalizeChanges()
@@ -158,7 +195,7 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

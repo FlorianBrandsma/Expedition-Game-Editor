@@ -197,8 +197,6 @@ public class Search
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
-        public List<int> type = new List<int>();
-
         public List<int> regionId = new List<int>();
 
         public List<int> chapterInteractableId = new List<int>();
@@ -209,6 +207,8 @@ public class Search
         public List<int> objectiveId = new List<int>();
         public List<int> interactableId = new List<int>();
         public List<int> modelId = new List<int>();
+
+        public List<int> type = new List<int>();
 
         public List<int> interactionIndex = new List<int>();
 
@@ -376,13 +376,16 @@ public class Search
     {
         public bool includeAddWorldObjectElement;
         public bool includeAddInteractionDestinationElement;
+        public bool includeAddSceneActorElement;
         public bool includeAddScenePropElement;
 
         public List<int> id = new List<int>();
 
         public List<int> regionId = new List<int>();
-        public List<int> objectiveId = new List<int>();
         public List<int> phaseId = new List<int>();
+        public List<int> objectiveId = new List<int>();
+        public List<int> interactionId = new List<int>();
+        public List<int> sceneId = new List<int>();
 
         public Enums.RegionType regionType;
 

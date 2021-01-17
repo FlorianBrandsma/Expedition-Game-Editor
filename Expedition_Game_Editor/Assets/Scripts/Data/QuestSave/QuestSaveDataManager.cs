@@ -46,6 +46,8 @@ public static class QuestSaveDataManager
     {
         return new QuestSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             QuestId = questId
         };

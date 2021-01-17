@@ -139,44 +139,93 @@ public static class InteractionDestinationDataManager
 
     public static InteractionDestinationElementData DefaultData(int interactionId)
     {
-        var regionElementData = new RegionElementData();
+        var regionId = 0;
+        var terrainId = 0;
+        var terrainTileId = 0;
 
-        var regionRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Region);
+        var positionX = 0f;
+        var positionY = 0f;
+        var positionZ = 0f;
 
-        if (regionRoute != null)
+        //Interaction destination
+        var interactionDestinationSearchParameters = new Search.InteractionDestination()
         {
-            regionElementData = (RegionElementData)regionRoute.ElementData;
+            interactionId = new List<int>() { interactionId }
+        };
+
+        var interactionDestinationDataList = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        if (interactionDestinationDataList.Count > 0)
+        {
+            var lastInteractionDestinationData = interactionDestinationDataList.Last();
+
+            regionId        = lastInteractionDestinationData.RegionId;
+            terrainId       = lastInteractionDestinationData.TerrainId;
+            terrainTileId   = lastInteractionDestinationData.TerrainTileId;
+
+            positionX       = lastInteractionDestinationData.PositionX;
+            positionY       = lastInteractionDestinationData.PositionY;
+            positionZ       = lastInteractionDestinationData.PositionZ;
 
         } else {
 
-            //First region of the selected phase
+            var regionElementData = new RegionElementData();
+
+            var regionRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Region);
+
+            if (regionRoute != null)
+            {
+                regionElementData = (RegionElementData)regionRoute.ElementData;
+
+            } else {
+
+                //Get first region of the selected phase
+                var phaseRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Phase);
+
+                //Region
+                var regionSearchParameters = new Search.Region()
+                {
+                    phaseId = new List<int>() { phaseRoute.ElementData.Id }
+                };
+
+                regionElementData = (RegionElementData)RegionDataManager.GetData(regionSearchParameters).First();
+            }
+
+            var terrainSearchParameters = new Search.Terrain()
+            {
+                regionId = new List<int>() { regionElementData.Id }
+            };
+
+            var terrainDataList = DataManager.GetTerrainData(terrainSearchParameters);
+
+            positionX       = 0;
+            positionY       = 0;
+            positionZ       = 0;
+
+            regionId        = regionElementData.Id;
+            terrainId       = RegionManager.GetTerrainId(regionElementData, terrainDataList, regionElementData.TileSize, positionX, positionZ);
+            terrainTileId   = RegionManager.GetTerrainTileId(regionElementData, positionX, positionZ);
         }
-
-        var defaultPosition = new Vector3(0, 0, 0);
-
-        var terrainSearchParameters = new Search.Terrain()
-        {
-            regionId = new List<int>() { regionElementData.Id }
-        };
-
-        var terrainData = DataManager.GetTerrainData(terrainSearchParameters);
-
-        var terrainId = RegionManager.GetTerrainId(regionElementData, terrainData, regionElementData.TileSize, defaultPosition.x, defaultPosition.z);
-        var terrainTileId = RegionManager.GetTerrainTileId(regionElementData, defaultPosition.x, defaultPosition.z);
 
         return new InteractionDestinationElementData()
         {
+            Id = -1,
+
             InteractionId = interactionId,
 
-            RegionId = regionElementData.Id,
+            RegionId = regionId,
             TerrainId = terrainId,
             TerrainTileId = terrainTileId,
+
+            PositionX = positionX,
+            PositionY = positionY,
+            PositionZ = positionZ
         };
     }
 
     public static void SetDefaultAddValues(List<InteractionDestinationElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

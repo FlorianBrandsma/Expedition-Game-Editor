@@ -8,16 +8,17 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public CameraManager cameraManager;
 
-    public EditorWorldOrganizer EditorWorldOrganizer    { get { return (EditorWorldOrganizer)cameraManager.Organizer; } }
+    public EditorWorldOrganizer EditorWorldOrganizer { get { return (EditorWorldOrganizer)cameraManager.Organizer; } }
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == sceneActorData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == sceneActorData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -45,6 +46,17 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     public int SceneId
     {
         get { return sceneActorData.SceneId; }
+    }
+
+    public int WorldInteractableId
+    {
+        get { return sceneActorData.WorldInteractableId; }
+        set
+        {
+            sceneActorData.WorldInteractableId = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).WorldInteractableId = value);
+        }
     }
 
     public int TerrainId
@@ -222,15 +234,93 @@ public class SceneActorEditor : MonoBehaviour, IEditor
             DataList.ForEach(x => ((SceneActorElementData)x).RotationZ = value);
         }
     }
-
-    public string InteractableName
+    
+    public int ModelId
     {
-        get { return ((SceneActorData)EditData).InteractableName; }
+        get { return ((SceneActorData)EditData).ModelId; }
+        set
+        {
+            sceneActorData.ModelId = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).ModelId = value);
+        }
+    }
+
+    public string ModelPath
+    {
+        get { return ((SceneActorData)EditData).ModelPath; }
+        set
+        {
+            sceneActorData.ModelPath = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).ModelPath = value);
+        }
     }
 
     public string ModelIconPath
     {
         get { return ((SceneActorData)EditData).ModelIconPath; }
+        set
+        {
+            sceneActorData.ModelIconPath = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).ModelIconPath = value);
+        }
+    }
+
+    public string InteractableName
+    {
+        get { return ((SceneActorData)EditData).InteractableName; }
+        set
+        {
+            sceneActorData.InteractableName = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).InteractableName = value);
+        }
+    }
+
+    public float Height
+    {
+        get { return ((SceneActorData)EditData).Height; }
+        set
+        {
+            sceneActorData.Height = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).Height = value);
+        }
+    }
+
+    public float Width
+    {
+        get { return ((SceneActorData)EditData).Width; }
+        set
+        {
+            sceneActorData.Width = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).Width = value);
+        }
+    }
+
+    public float Depth
+    {
+        get { return ((SceneActorData)EditData).Depth; }
+        set
+        {
+            sceneActorData.Depth = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).Depth = value);
+        }
+    }
+
+    public float Scale
+    {
+        get { return ((SceneActorData)EditData).Scale; }
+        set
+        {
+            sceneActorData.Scale = value;
+
+            DataList.ForEach(x => ((SceneActorElementData)x).Scale = value);
+        }
     }
 
     public int SpeechTextLimit
@@ -275,16 +365,18 @@ public class SceneActorEditor : MonoBehaviour, IEditor
         RotationY           = sceneActorData.RotationY;
         RotationZ           = sceneActorData.RotationZ;
 
-        //ModelPath           = originalData.ModelPath;
-        //ModelIconPath       = originalData.ModelIconPath;
+        ModelId             = sceneActorData.ModelId;
 
-        //InteractableName    = originalData.InteractableName;
+        ModelPath           = sceneActorData.ModelPath;
+        ModelIconPath       = sceneActorData.ModelIconPath;
 
-        //Height              = originalData.Height;
-        //Width               = originalData.Width;
-        //Depth               = originalData.Depth;
+        InteractableName    = sceneActorData.InteractableName;
 
-        //Scale               = originalData.Scale;
+        Height              = sceneActorData.Height;
+        Width               = sceneActorData.Width;
+        Depth               = sceneActorData.Depth;
+
+        Scale               = sceneActorData.Scale;
 
         SpeechTextLimit     = sceneActorData.SpeechTextLimit;
     }
@@ -316,14 +408,45 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplySceneActorChanges(dataRequest);
+    }
+
+    private void ApplySceneActorChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddSceneActor(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateSceneActor(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveSceneActor(dataRequest);
+                break;
+        }
+    }
+
+    private void AddSceneActor(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            sceneActorData.Id = tempData.Id;
+    }
+
+    private void UpdateSceneActor(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+    private void RemoveSceneActor(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     public void FinalizeChanges()
@@ -335,6 +458,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
                 ResetExecuteType();
                 UpdateEditor();
                 break;
@@ -343,7 +467,7 @@ public class SceneActorEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

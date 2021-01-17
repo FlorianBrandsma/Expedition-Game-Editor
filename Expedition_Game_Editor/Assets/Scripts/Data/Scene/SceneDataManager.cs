@@ -17,6 +17,9 @@ public class SceneDataManager : MonoBehaviour
     {
         GetSceneData(searchParameters);
 
+        if (searchParameters.includeAddElement)
+            sceneDataList.Add(DefaultData(searchParameters.outcomeId.First()));
+
         if (sceneDataList.Count == 0) return new List<IElementData>();
         
         GetOutcomeData();
@@ -29,11 +32,15 @@ public class SceneDataManager : MonoBehaviour
         var list = (from sceneData      in sceneDataList
                     join outcomeData    in outcomeDataList  on sceneData.OutcomeId  equals outcomeData.Id
 
-                    join regionData     in regionDataList   on sceneData.RegionId   equals regionData.Id
-                    join tileSetData    in tileSetDataList  on regionData.TileSetId equals tileSetData.Id
+                    join leftJoin in (from regionData   in regionDataList
+                                      join tileSetData  in tileSetDataList on regionData.TileSetId equals tileSetData.Id
 
-                    join leftJoin in (from tileData in tileDataList
-                                      select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
+                                      join leftJoin in (from tileData in tileDataList
+                                                        select new { tileData }) on tileSetData.Id equals leftJoin.tileData.TileSetId into tileData
+
+                                      select new { regionData, tileSetData, tileData }) on sceneData.RegionId equals leftJoin.regionData.Id into regionData
+
+                    
 
                     select new SceneElementData()
                     {
@@ -57,17 +64,39 @@ public class SceneDataManager : MonoBehaviour
                         PrivateNotes = sceneData.PrivateNotes,
 
                         InteractionId = outcomeData.InteractionId,
-                        PhaseId = regionData.PhaseId,
 
-                        RegionName = regionData.Name,
+                        RegionName = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().regionData.Name : "",
 
-                        TileIconPath = tileData.First().tileData.IconPath
+                        TileIconPath = regionData.FirstOrDefault() != null ? regionData.FirstOrDefault().tileData.First().tileData.IconPath : ""
                         
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
+
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
 
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static SceneElementData DefaultData(int outcomeId)
+    {
+        return new SceneElementData()
+        {
+            Id = -1,
+
+            OutcomeId = outcomeId,         
+            RegionId = -1
+        };
+    }
+
+    public static void SetDefaultAddValues(List<SceneElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == -1).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
+
+        addElementData.Index = list.Count - 1;
     }
 
     private static void GetSceneData(Search.Scene searchParameters)
@@ -146,7 +175,11 @@ public class SceneDataManager : MonoBehaviour
 
     private static void AddSceneShotData(SceneElementData elementData, DataRequest dataRequest)
     {
-        //Add scene shots
+        var startSceneShotElementData = SceneShotDataManager.DefaultData(elementData.Id, Enums.SceneShotType.Start);
+        startSceneShotElementData.Add(dataRequest);
+
+        var startSceneEndElementData = SceneShotDataManager.DefaultData(elementData.Id, Enums.SceneShotType.End);
+        startSceneEndElementData.Add(dataRequest);
     }
 
     public static void UpdateData(SceneElementData elementData, DataRequest dataRequest)

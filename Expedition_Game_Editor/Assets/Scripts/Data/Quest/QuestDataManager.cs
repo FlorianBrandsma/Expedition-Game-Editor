@@ -42,13 +42,15 @@ public static class QuestDataManager
     {
         return new QuestElementData()
         {
+            Id = -1,
+
             PhaseId = phaseId
         };
     }
 
     public static void SetDefaultAddValues(List<QuestElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 
@@ -87,6 +89,8 @@ public static class QuestDataManager
         AddQuestSaveData(elementData, dataRequest);
 
         if (!dataRequest.includeDependencies) return;
+
+        AddObjectiveData(elementData, dataRequest);
     }
 
     private static void AddQuestSaveData(QuestElementData elementData, DataRequest dataRequest)
@@ -103,6 +107,15 @@ public static class QuestDataManager
             var questSaveElementData = QuestSaveDataManager.DefaultData(saveData.Id, elementData.Id);
             questSaveElementData.Add(dataRequest);
         });
+    }
+
+    private static void AddObjectiveData(QuestElementData elementData, DataRequest dataRequest)
+    {
+        var objectiveElementData = ObjectiveDataManager.DefaultData(elementData.Id);
+
+        objectiveElementData.Name = "Default description";
+
+        objectiveElementData.Add(dataRequest);
     }
 
     public static void UpdateData(QuestElementData elementData, DataRequest dataRequest)

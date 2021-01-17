@@ -78,7 +78,7 @@ public class ListProperties : MonoBehaviour, IDisplay
         if (DataController == null) return;
         
         listManager.CloseList();
-
+        
         DataController = null;
     }
 

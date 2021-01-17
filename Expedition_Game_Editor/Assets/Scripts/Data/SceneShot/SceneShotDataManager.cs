@@ -9,10 +9,13 @@ public static class SceneShotDataManager
     public static List<IElementData> GetData(Search.SceneShot searchParameters)
     {
         GetSceneShotData(searchParameters);
-
+        
         if (sceneShotDataList.Count == 0) return new List<IElementData>();
         
-        sceneShotDataList.Select(x => x.SceneId).Distinct().ToList().ForEach(x => AddDefaultShot(x));
+        sceneShotDataList.Select(x => x.SceneId).Distinct().ToList().ForEach(x =>
+        {
+            sceneShotDataList.Add(DefaultData(searchParameters.sceneId.First(), Enums.SceneShotType.Base));
+        });
 
         var list = (from sceneShotData in sceneShotDataList
                     select new SceneShotElementData()
@@ -48,6 +51,17 @@ public static class SceneShotDataManager
         return list.Cast<IElementData>().ToList();
     }
 
+    public static SceneShotElementData DefaultData(int sceneId, Enums.SceneShotType sceneShotType)
+    {
+        return new SceneShotElementData()
+        {
+            Id = -1,
+
+            SceneId = sceneId,
+            Type = (int)sceneShotType
+        };
+    }
+
     private static void GetSceneShotData(Search.SceneShot searchParameters)
     {
         sceneShotDataList = new List<SceneShotBaseData>();
@@ -59,16 +73,6 @@ public static class SceneShotDataManager
 
             sceneShotDataList.Add(sceneShot);
         }
-    }
-
-    private static void AddDefaultShot(int sceneId)
-    {
-        var sceneShotData = new SceneShotBaseData()
-        {
-            SceneId = sceneId
-        };
-
-        sceneShotDataList.Add(sceneShotData);
     }
 
     public static void AddData(SceneShotElementData elementData, DataRequest dataRequest)

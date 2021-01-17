@@ -31,6 +31,12 @@ public class ScenePropPositionCoordinateSegment : MonoBehaviour, ISegment
         set { ScenePropEditor.PositionZ = value; }
     }
 
+    private int TerrainId
+    {
+        get { return ScenePropEditor.TerrainId; }
+        set { ScenePropEditor.TerrainId = value; }
+    }
+
     private int TerrainTileId
     {
         get { return ScenePropEditor.TerrainTileId; }
@@ -65,6 +71,8 @@ public class ScenePropPositionCoordinateSegment : MonoBehaviour, ISegment
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
 
+        UpdateTile();
+
         gameObject.SetActive(true);
     }
 
@@ -97,6 +105,7 @@ public class ScenePropPositionCoordinateSegment : MonoBehaviour, ISegment
 
     private void UpdateTile()
     {
+        TerrainId = RegionManager.GetTerrainId(regionData, regionData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionData.TileSize, PositionX, PositionZ);
         TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
 
         DataEditor.UpdateEditor();

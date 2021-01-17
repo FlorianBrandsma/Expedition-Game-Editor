@@ -46,6 +46,8 @@ public static class PhaseSaveDataManager
     {
         return new PhaseSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             PhaseId = phaseId
         };

@@ -45,6 +45,8 @@ public static class ChapterSaveDataManager
     {
         return new ChapterSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             ChapterId = chapterId
         };

@@ -52,12 +52,15 @@ public static class ChapterInteractableDataManager
 
     public static ChapterInteractableElementData DefaultData()
     {
-        return new ChapterInteractableElementData();
+        return new ChapterInteractableElementData()
+        {
+            Id = -1
+        };
     }
 
     public static void SetDefaultAddValues(List<ChapterInteractableElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

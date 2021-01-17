@@ -20,6 +20,8 @@ public class EditorWorldInteractableAgentSegment : MonoBehaviour, ISegment
         InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+
+        SetSearchParameters();
     }
 
     private void InitializeSearchParameters(SearchProperties searchProperties)
@@ -43,8 +45,6 @@ public class EditorWorldInteractableAgentSegment : MonoBehaviour, ISegment
     
     public void OpenSegment()
     {
-        SetSearchParameters();
-
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }
@@ -55,6 +55,8 @@ public class EditorWorldInteractableAgentSegment : MonoBehaviour, ISegment
 
         searchParameters.includeRemoveElement = true;
         searchParameters.type = new List<int>() { (int)Enums.InteractableType.Agent };
+
+        //searchParameters.excludeId = SegmentController.DataController.Data.dataList.Select(x => ((WorldInteractableElementData)x).InteractableId).ToList();
     }
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)

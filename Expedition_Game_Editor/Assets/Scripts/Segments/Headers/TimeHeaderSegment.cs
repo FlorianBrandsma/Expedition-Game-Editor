@@ -192,7 +192,10 @@ public class TimeHeaderSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        idText.text = Id.ToString();
+        if (Id > 0)
+            idText.text = Id.ToString();
+        else
+            idText.text = "New";
 
         defaultHeader.SetActive(Default);
         timeInput.SetActive(!Default);

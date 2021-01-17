@@ -28,7 +28,7 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
         SegmentController.DataController.GetData(searchProperties);
 
         var chapterRegionList = SegmentController.DataController.Data.dataList.Cast<ChapterRegionElementData>().ToList();
-        ChapterEditor.chapterRegionElementDataList = chapterRegionList.Where(x => x.Id != 0).ToList();
+        ChapterEditor.chapterRegionElementDataList = chapterRegionList.Where(x => x.Id != -1).ToList();
     }
 
     private void InitializeSearchParameters(SearchProperties searchProperties)
@@ -73,13 +73,13 @@ public class ChapterRegionsRegionSegment : MonoBehaviour, ISegment
     {
         var searchElementData = (ChapterRegionElementData)SegmentController.DataController.Data.dataList.Where(x => x.Id == mergedElementData.Id).First();
 
-        if (searchElementData.Id == 0)
+        if (searchElementData.Id == -1)
         {
             searchElementData = (ChapterRegionElementData)searchElementData.Clone();
 
             searchElementData.ExecuteType = Enums.ExecuteType.Add;
 
-            searchElementData.Id = -(ChapterEditor.chapterRegionElementDataList.Count + 1);
+            searchElementData.Id = -(ChapterEditor.chapterRegionElementDataList.Count + 2);
 
             searchElementData.ChapterId     = ChapterEditor.EditData.Id;
 

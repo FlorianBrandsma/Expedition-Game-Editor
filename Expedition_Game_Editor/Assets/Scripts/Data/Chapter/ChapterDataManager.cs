@@ -40,12 +40,15 @@ public static class ChapterDataManager
 
     public static ChapterElementData DefaultData()
     {
-        return new ChapterElementData();
+        return new ChapterElementData()
+        {
+            Id = -1
+        };
     }
 
     public static void SetDefaultAddValues(List<ChapterElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 
@@ -111,6 +114,9 @@ public static class ChapterDataManager
     private static void AddPhaseData(ChapterElementData elementData, DataRequest dataRequest)
     {
         var phaseElementData = PhaseDataManager.DefaultData(elementData.Id);
+
+        phaseElementData.Name = "Default name";
+
         phaseElementData.Add(dataRequest);
     }
 

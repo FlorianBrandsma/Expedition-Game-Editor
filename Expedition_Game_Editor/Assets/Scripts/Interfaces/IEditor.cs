@@ -11,6 +11,7 @@ public interface IEditor
     List<IElementData> DataList             { get; }
     List<IElementData> ElementDataList      { get; }
     List<SegmentController> EditorSegments  { get; }
+    bool Removable                          { get; }
     bool Changed();
 
     void InitializeEditor();

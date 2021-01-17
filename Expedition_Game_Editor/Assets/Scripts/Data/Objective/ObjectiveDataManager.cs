@@ -45,13 +45,15 @@ public static class ObjectiveDataManager
     {
         return new ObjectiveElementData()
         {
+            Id = -1,
+
             QuestId = questId
         };
     }
 
     public static void SetDefaultAddValues(List<ObjectiveElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 

@@ -36,6 +36,16 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
         if (objectiveRoute == null)
             searchParameters.objectiveId = new List<int>() { 0 };
 
+        var interactionRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Interaction);
+
+        if (interactionRoute != null)
+            searchParameters.interactionId = new List<int>() { interactionRoute.id };
+
+        var sceneRoute = SegmentController.Path.FindLastRoute(Enums.DataType.Scene);
+
+        if (sceneRoute != null)
+            searchParameters.sceneId = new List<int>() { sceneRoute.id };
+
         switch(searchParameters.regionType)
         {
             case Enums.RegionType.Base:
@@ -46,6 +56,7 @@ public class EditorWorldSegment : MonoBehaviour, ISegment
                 searchParameters.includeAddInteractionDestinationElement = true;
                 break;
             case Enums.RegionType.Scene:
+                searchParameters.includeAddSceneActorElement = true;
                 searchParameters.includeAddScenePropElement = true;
                 break;
         }

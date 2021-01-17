@@ -6,7 +6,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 {
     private QuestData questData;
 
-    public List<WorldInteractableElementData> worldInteractableDataList = new List<WorldInteractableElementData>();
+    public List<WorldInteractableElementData> worldInteractableElementDataList = new List<WorldInteractableElementData>();
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
@@ -15,7 +15,8 @@ public class QuestEditor : MonoBehaviour, IEditor
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -30,7 +31,7 @@ public class QuestEditor : MonoBehaviour, IEditor
 
             DataList.ForEach(x => { if (x != null) list.Add(x); });
 
-            worldInteractableDataList.ForEach(x => list.Add(x));
+            worldInteractableElementDataList.ForEach(x => list.Add(x));
 
             return list;
         }
@@ -111,7 +112,15 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        ApplyQuestChanges(dataRequest);
+        if (EditData.ExecuteType == Enums.ExecuteType.Add || EditData.ExecuteType == Enums.ExecuteType.Update)
+        {
+            ApplyQuestChanges(dataRequest);
+
+            ApplyWorldInteractableChanges(dataRequest);
+        }
+
+        if (EditData.ExecuteType == Enums.ExecuteType.Remove)
+            RemoveQuest(dataRequest);
     }
 
     private void ApplyQuestChanges(DataRequest dataRequest)
@@ -139,6 +148,14 @@ public class QuestEditor : MonoBehaviour, IEditor
         EditData.Add(dataRequest);
 
         if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            questData.Id = tempData.Id;
+
+            //Apply new quest id to other enabled elements
+            worldInteractableElementDataList.Where(x => x.ElementStatus == Enums.ElementStatus.Enabled).ToList().ForEach(x => x.QuestId = questData.Id);
+        }
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
             questData.Id = tempData.Id;
     }
 
@@ -150,6 +167,15 @@ public class QuestEditor : MonoBehaviour, IEditor
     private void RemoveQuest(DataRequest dataRequest)
     {
         EditData.Remove(dataRequest);
+    }
+
+    private void ApplyWorldInteractableChanges(DataRequest dataRequest)
+    {
+        //World interactables can only be updated by the quest editor
+        foreach (WorldInteractableElementData worldInteractableElementData in worldInteractableElementDataList)
+        {
+            worldInteractableElementData.Update(dataRequest);
+        }
     }
 
     public void FinalizeChanges()
@@ -169,12 +195,12 @@ public class QuestEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()
     {
-        worldInteractableDataList.Clear();
+        worldInteractableElementDataList.Clear();
 
         ResetExecuteType();
 

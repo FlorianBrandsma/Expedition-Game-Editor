@@ -78,6 +78,7 @@ static public class DataManager
         {
             if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactable.Id))          continue;
             if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(interactable.Id))    continue;
+            if (searchParameters.type.Count         > 0 && !searchParameters.type.Contains(interactable.Type))      continue;
 
             dataList.Add(interactable);
         }

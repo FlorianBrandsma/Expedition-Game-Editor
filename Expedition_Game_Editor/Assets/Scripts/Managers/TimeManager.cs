@@ -425,7 +425,7 @@ public class TimeManager : MonoBehaviour
             case Enums.DataType.Atmosphere:
 
                 dataList = dataController.Data.dataList.Cast<AtmosphereElementData>()
-                                                       .Where(x => x.Id != 0 && x.Id != changedData.Id && !x.Default)
+                                                       .Where(x => x.Id != -1 && x.Id != changedData.Id && !x.Default)
                                                        .Select(x => new TimeFrame()
                                                        {
                                                            StartTime = x.StartTime,
@@ -442,7 +442,7 @@ public class TimeManager : MonoBehaviour
             case Enums.DataType.Interaction:
 
                 dataList = dataController.Data.dataList.Cast<InteractionElementData>()
-                                                       .Where(x => x.Id != 0 && x.Id != changedData.Id && !x.Default)
+                                                       .Where(x => x.Id != -1 && x.Id != changedData.Id && !x.Default)
                                                        .Select(x => new TimeFrame()
                                                        {
                                                            StartTime = x.StartTime,

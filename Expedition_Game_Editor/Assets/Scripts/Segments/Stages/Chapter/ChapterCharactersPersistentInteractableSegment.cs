@@ -30,7 +30,7 @@ public class ChapterCharactersPersistentInteractableSegment : MonoBehaviour, ISe
         SegmentController.DataController.GetData(searchProperties);
 
         var chapterInteractableList = SegmentController.DataController.Data.dataList.Cast<ChapterInteractableElementData>().ToList();
-        ChapterEditor.chapterInteractableElementDataList = chapterInteractableList.Where(x => x.Id != 0).ToList();
+        ChapterEditor.chapterInteractableElementDataList = chapterInteractableList.Where(x => x.Id != -1).ToList();
     }
 
     private void InitializeSearchParameters(SearchProperties searchProperties)
@@ -74,13 +74,13 @@ public class ChapterCharactersPersistentInteractableSegment : MonoBehaviour, ISe
     {
         var searchElementData = (ChapterInteractableElementData)SegmentController.DataController.Data.dataList.Where(x => x.Id == mergedElementData.Id).First();
 
-        if (searchElementData.Id == 0)
+        if (searchElementData.Id == -1)
         {
             searchElementData = (ChapterInteractableElementData)searchElementData.Clone();
 
             searchElementData.ExecuteType = Enums.ExecuteType.Add;
 
-            searchElementData.Id = -(ChapterEditor.chapterInteractableElementDataList.Count + 1);
+            searchElementData.Id = -(ChapterEditor.chapterInteractableElementDataList.Count + 2);
 
             searchElementData.ChapterId         = ChapterEditor.EditData.Id;
             searchElementData.InteractableId    = mergedElementData.InteractableId;

@@ -73,6 +73,8 @@ public static class OutcomeDataManager
     {
         return new OutcomeElementData()
         {
+            Id = -1,
+
             InteractionId = interactionId,
 
             Type = (int)Enums.OutcomeType.Positive

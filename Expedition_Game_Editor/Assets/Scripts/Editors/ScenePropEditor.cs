@@ -8,12 +8,13 @@ public class ScenePropEditor : MonoBehaviour, IEditor
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataList.Where(x => x.Id == scenePropData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == scenePropData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
-    public bool Loaded { get; set; }
+    public bool Loaded                              { get; set; }
+    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -265,14 +266,45 @@ public class ScenePropEditor : MonoBehaviour, IEditor
 
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyScenePropChanges(dataRequest);
+    }
+
+    private void ApplyScenePropChanges(DataRequest dataRequest)
+    {
+        switch (EditData.ExecuteType)
+        {
+            case Enums.ExecuteType.Add:
+                AddSceneProp(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Update:
+                UpdateSceneProp(dataRequest);
+                break;
+
+            case Enums.ExecuteType.Remove:
+                RemoveSceneProp(dataRequest);
+                break;
+        }
+    }
+
+    private void AddSceneProp(DataRequest dataRequest)
+    {
+        var tempData = EditData;
+
+        EditData.Add(dataRequest);
+
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+            scenePropData.Id = tempData.Id;
+    }
+
+    private void UpdateSceneProp(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
+    }
 
-        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
+    private void RemoveSceneProp(DataRequest dataRequest)
+    {
+        EditData.Remove(dataRequest);
     }
 
     public void FinalizeChanges()
@@ -284,6 +316,7 @@ public class ScenePropEditor : MonoBehaviour, IEditor
                 RenderManager.PreviousPath();
                 break;
             case Enums.ExecuteType.Update:
+                ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
                 ResetExecuteType();
                 UpdateEditor();
                 break;
@@ -292,7 +325,7 @@ public class ScenePropEditor : MonoBehaviour, IEditor
 
     private void ResetExecuteType()
     {
-        ElementDataList.Where(x => x.Id != 0).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
+        ElementDataList.Where(x => x.Id != -1).ToList().ForEach(x => x.ExecuteType = Enums.ExecuteType.Update);
     }
 
     public void CancelEdit()

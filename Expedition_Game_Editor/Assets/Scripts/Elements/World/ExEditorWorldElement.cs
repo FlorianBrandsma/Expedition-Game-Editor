@@ -58,9 +58,9 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.SceneActor:             SetSceneActorElement();             break;
             case Enums.DataType.SceneProp:              SetScenePropElement();              break;
 
-            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType);    break;
+            default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.ElementData.DataType); break;
         }
-
+        
         //Removed elements do not have a path and should not be set
         if (EditorElement.elementStatus != Enums.ElementStatus.Hidden && modelPath != "")
         {
@@ -160,7 +160,7 @@ public class ExEditorWorldElement : MonoBehaviour, IElement, IPoolable
 
         modelId = elementData.ModelId;
         modelPath = elementData.ModelPath;
-
+        
         position = new Vector3(elementData.PositionX, elementData.PositionY, -elementData.PositionZ);
         rotation = new Vector3(elementData.RotationX, elementData.RotationY, elementData.RotationZ);
 

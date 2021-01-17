@@ -56,12 +56,15 @@ public static class ChapterRegionDataManager
 
     public static ChapterRegionElementData DefaultData()
     {
-        return new ChapterRegionElementData();
+        return new ChapterRegionElementData()
+        {
+            Id = -1
+        };
     }
 
     public static void SetDefaultAddValues(List<ChapterRegionElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

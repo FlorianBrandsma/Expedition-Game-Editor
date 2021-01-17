@@ -34,7 +34,7 @@ public class InteractionInteractableBehaviourDestinationSegment : MonoBehaviour,
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
 
-        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.includeAddElement = InteractionEditor.ElementData.Id > 0 && ListProperties.AddProperty != SelectionManager.Property.None;
 
         searchParameters.interactionId = new List<int>() { InteractionEditor.Id };
     }

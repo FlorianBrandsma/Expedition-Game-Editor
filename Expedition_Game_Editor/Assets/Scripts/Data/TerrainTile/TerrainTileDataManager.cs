@@ -39,6 +39,8 @@ public static class TerrainTileDataManager
     {
         return new TerrainTileElementData()
         {
+            Id = -1,
+
             TerrainId = terrainId,
             TileId = tileId,
 

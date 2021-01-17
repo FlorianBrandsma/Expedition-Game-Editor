@@ -92,7 +92,7 @@ public static class InteractionDataManager
 
                         DefaultTimes = interactionData.Default ? DefaultTimes() : new List<int>(),
 
-                    }).OrderByDescending(x => x.Id == 0).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
+                    }).OrderByDescending(x => x.Id == -1).ThenBy(x => !x.Default).ThenBy(x => x.StartTime).ToList();
 
         if (searchParameters.includeAddElement)
             SetDefaultAddValues(list);
@@ -106,15 +106,19 @@ public static class InteractionDataManager
     {
         return new InteractionElementData()
         {
+            Id = -1,
+
             TaskId = taskId,
 
-            Default = isDefault
+            Default = isDefault,
+
+            EndTime = (TimeManager.secondsInHour - 1)
         };
     }
 
     public static void SetDefaultAddValues(List<InteractionElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

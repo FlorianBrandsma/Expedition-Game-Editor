@@ -12,6 +12,9 @@ public static class ScenePropDataManager
     {
         GetScenePropData(searchParameters);
 
+        if (searchParameters.includeAddElement)
+            scenePropDataList.Add(DefaultData(searchParameters.sceneId.First()));
+
         if (scenePropDataList.Count == 0) return new List<IElementData>();
         
         GetModelData();
@@ -48,9 +51,43 @@ public static class ScenePropDataManager
 
                     }).OrderBy(x => x.Id).ToList();
 
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static ScenePropElementData DefaultData(int sceneId)
+    {
+        var defaultPosition = Vector3.zero;
+
+        if (EditorWorldOrganizer.instance != null)
+        {
+            defaultPosition = EditorWorldOrganizer.instance.AddElementDefaultPosition();
+        }
+
+        return new ScenePropElementData()
+        {
+            Id = -1,
+
+            ModelId = 1,
+            SceneId = sceneId,
+            
+            Scale = 1,
+
+            PositionX = defaultPosition.x,
+            PositionY = defaultPosition.y,
+            PositionZ = defaultPosition.z
+        };
+    }
+
+    public static void SetDefaultAddValues(List<ScenePropElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == -1).First();
+
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetScenePropData(Search.SceneProp searchParameters)

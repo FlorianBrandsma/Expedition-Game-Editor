@@ -46,6 +46,8 @@ public static class ObjectiveSaveDataManager
     {
         return new ObjectiveSaveElementData()
         {
+            Id = -1,
+
             SaveId = saveId,
             ObjectiveId = objectiveId
         };

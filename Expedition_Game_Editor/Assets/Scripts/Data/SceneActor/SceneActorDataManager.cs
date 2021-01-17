@@ -14,12 +14,13 @@ public static class SceneActorDataManager
     {
         GetSceneActorData(searchParameters);
 
-        if (searchParameters.includeRemoveElement)
-            sceneActorDataList.Add(new SceneActorBaseData());
+        if (searchParameters.includeAddElement)
+            sceneActorDataList.Add(DefaultData(searchParameters.sceneId.First()));
 
         if (sceneActorDataList.Count == 0) return new List<IElementData>();
         
         GetWorldInteractableData();
+
         GetInteractableData();
         GetModelData();
         GetIconData();
@@ -30,7 +31,7 @@ public static class SceneActorDataManager
                                       join interactableData         in interactableDataList on worldInteractableData.InteractableId equals interactableData.Id
                                       join modelData                in modelDataList        on interactableData.ModelId             equals modelData.Id
                                       join iconData                 in iconDataList         on modelData.IconId                     equals iconData.Id
-                                      select new { worldInteractableData, interactableData, iconData }) on sceneActorData.WorldInteractableId equals leftJoin.worldInteractableData.Id into worldInteractableData
+                                      select new { worldInteractableData, interactableData, modelData, iconData }) on sceneActorData.WorldInteractableId equals leftJoin.worldInteractableData.Id into worldInteractableData
 
                     select new SceneActorElementData()
                     {
@@ -59,16 +60,62 @@ public static class SceneActorDataManager
                         RotationY = sceneActorData.RotationY,
                         RotationZ = sceneActorData.RotationZ,
 
+                        ModelId = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Id : 0,
+
+                        ModelPath = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Path : "",
                         ModelIconPath = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().iconData.Path : "",
+
                         InteractableName = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().interactableData.Name : "",
+
+                        Height = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Height : 0,
+                        Width = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Width : 0,
+                        Depth = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().modelData.Depth : 0,
+
+                        Scale = worldInteractableData.FirstOrDefault() != null ? worldInteractableData.FirstOrDefault().interactableData.Scale : 0,
 
                         SpeechTextLimit = ScenarioManager.SpeechCharacterLimit(sceneActorData.ShowTextBox)
 
                     }).OrderBy(x => x.Id).ToList();
 
+        if (searchParameters.includeAddElement)
+            SetDefaultAddValues(list);
+        
         list.ForEach(x => x.SetOriginalValues());
 
         return list.Cast<IElementData>().ToList();
+    }
+
+    public static SceneActorElementData DefaultData(int sceneId)
+    {
+        var defaultPosition = Vector3.zero;
+
+        if (EditorWorldOrganizer.instance != null)
+        {
+            defaultPosition = EditorWorldOrganizer.instance.AddElementDefaultPosition();
+        }
+
+        return new SceneActorElementData()
+        {
+            Id = -1,
+
+            WorldInteractableId = -1,
+            SceneId = sceneId,
+
+            Scale = 1,
+
+            PositionX = defaultPosition.x,
+            PositionY = defaultPosition.y,
+            PositionZ = defaultPosition.z,
+
+            SpeechText = ""
+        };
+    }
+
+    public static void SetDefaultAddValues(List<SceneActorElementData> list)
+    {
+        var addElementData = list.Where(x => x.Id == -1).First();
+        
+        addElementData.ExecuteType = Enums.ExecuteType.Add;
     }
 
     private static void GetSceneActorData(Search.SceneActor searchParameters)
@@ -139,6 +186,7 @@ public static class SceneActorDataManager
         {
             if (elementData.ChangedWorldInteractableId)
             {
+                Debug.Log(elementData.DataElement.GetComponent<UnityEngine.UI.Button>());
                 data.WorldInteractableId = elementData.WorldInteractableId;
             }
 

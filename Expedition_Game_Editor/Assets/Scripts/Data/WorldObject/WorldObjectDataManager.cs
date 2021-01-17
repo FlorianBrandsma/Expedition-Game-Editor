@@ -78,9 +78,13 @@ public static class WorldObjectDataManager
 
         return new WorldObjectElementData()
         {
+            Id = -1,
+
             ModelId = 1,
             RegionId = regionId,
+
             Scale = 1,
+
             PositionX = defaultPosition.x,
             PositionY = defaultPosition.y,
             PositionZ = defaultPosition.z
@@ -89,7 +93,7 @@ public static class WorldObjectDataManager
 
     public static void SetDefaultAddValues(List<WorldObjectElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
     }

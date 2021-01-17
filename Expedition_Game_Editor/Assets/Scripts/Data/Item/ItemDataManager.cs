@@ -52,14 +52,17 @@ public static class ItemDataManager
     {
         return new ItemElementData()
         {
-            Type = type,
-            ModelId = 1
+            Id = -1,
+
+            ModelId = 1,
+
+            Type = type
         };
     }
 
     public static void SetDefaultAddValues(List<ItemElementData> list)
     {
-        var addElementData = list.Where(x => x.Id == 0).First();
+        var addElementData = list.Where(x => x.Id == -1).First();
 
         addElementData.ExecuteType = Enums.ExecuteType.Add;
 

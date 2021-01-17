@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegment
 {
@@ -40,6 +41,12 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
         set { SceneActorEditor.PositionZ = value; }
     }
 
+    private int TerrainId
+    {
+        get { return SceneActorEditor.TerrainId; }
+        set { SceneActorEditor.TerrainId = value; }
+    }
+
     private int TerrainTileId
     {
         get { return SceneActorEditor.TerrainTileId; }
@@ -73,6 +80,8 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
         xInputField.Value = PositionX;
         yInputField.Value = PositionY;
         zInputField.Value = PositionZ;
+
+        UpdateTile();
 
         UpdateSegment();
 
@@ -108,6 +117,7 @@ public class SceneActorTransformPositionCoordinateSegment : MonoBehaviour, ISegm
 
     private void UpdateTile()
     {
+        TerrainId = RegionManager.GetTerrainId(regionData, regionData.TerrainDataList.Cast<TerrainBaseData>().ToList(), regionData.TileSize, PositionX, PositionZ);
         TerrainTileId = RegionManager.GetTerrainTileId(regionData, PositionX, PositionZ);
     }
 
