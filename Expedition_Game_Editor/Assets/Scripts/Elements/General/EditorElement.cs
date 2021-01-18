@@ -18,7 +18,8 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
             var activeProperty = selectionProperty;
 
-            if (addProperty != SelectionManager.Property.None && DataElement.Id == -1)
+            //"Add element" id is -1 for data that does not exist
+            if (addProperty != SelectionManager.Property.None && DataElement.Id <= 0)
                 activeProperty = addProperty;
 
             return activeProperty;

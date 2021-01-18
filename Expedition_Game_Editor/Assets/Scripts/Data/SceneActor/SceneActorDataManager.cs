@@ -17,6 +17,9 @@ public static class SceneActorDataManager
         if (searchParameters.includeAddElement)
             sceneActorDataList.Add(DefaultData(searchParameters.sceneId.First()));
 
+        if (searchParameters.includeRemoveElement)
+            sceneActorDataList.Add(new SceneActorBaseData());
+
         if (sceneActorDataList.Count == 0) return new List<IElementData>();
         
         GetWorldInteractableData();
