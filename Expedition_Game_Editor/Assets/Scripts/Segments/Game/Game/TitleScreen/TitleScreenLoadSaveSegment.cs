@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class TitleScreenLoadSaveSegment : MonoBehaviour, ISegment
 {
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -15,7 +16,18 @@ public class TitleScreenLoadSaveSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.Save);
 
+        InitializeSearchParameters(searchProperties);
+
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.Save>().First();
+
+        searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.gameId = new List<int>() { 0 };
     }
 
     public void InitializeSegment()

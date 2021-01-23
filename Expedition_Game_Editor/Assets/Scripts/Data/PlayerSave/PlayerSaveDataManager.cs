@@ -4,6 +4,61 @@ using System.Linq;
 
 public static class PlayerSaveDataManager
 {
+    public static PlayerSaveElementData DefaultData(int saveId, int gameId)
+    {
+        //Chapter
+        var chapterSearchParameters = new Search.Chapter()
+        {
+            //Game id
+        };
+
+        var chapterData = DataManager.GetChapterData(chapterSearchParameters).Where(x => x.Index == 0).First();
+
+        //Phase
+        var phaseSearchParameters = new Search.Phase()
+        {
+            chapterId = new List<int>() { chapterData.Id }
+        };
+
+        var phaseData = DataManager.GetPhaseData(phaseSearchParameters).Where(x => x.Index == 0).First();
+
+        //World interactable
+        var worldInteractableSearchParameters = new Search.WorldInteractable()
+        {
+            chapterId = new List<int>() { chapterData.Id }
+        };
+
+        var worldInteractableData = DataManager.GetWorldInteractableData(worldInteractableSearchParameters).First();
+
+        return new PlayerSaveElementData()
+        {
+            Id = -1,
+
+            SaveId = saveId,
+
+            RegionId = phaseData.DefaultRegionId,
+            WorldInteractableId = worldInteractableData.Id,
+
+            PositionX = phaseData.DefaultPositionX,
+            PositionY = phaseData.DefaultPositionY,
+            PositionZ = phaseData.DefaultPositionZ,
+
+            GameTime = phaseData.DefaultTime
+        };
+    }
+
+    public static void AddData(PlayerSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.playerSaveList.Count > 0 ? (Fixtures.playerSaveList[Fixtures.playerSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.playerSaveList.Add(((PlayerSaveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
+    }
+
     public static void UpdateData(PlayerSaveElementData elementData, DataRequest dataRequest)
     {
         if (!elementData.Changed) return;
@@ -51,17 +106,10 @@ public static class PlayerSaveDataManager
     {
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            RemoveDependencies(elementData, dataRequest);
-
             Fixtures.playerSaveList.RemoveAll(x => x.Id == elementData.Id);
             
-        } else {
-
-            RemoveDependencies(elementData, dataRequest);
-        }
+        } else { }
     }
-
-    private static void RemoveDependencies(PlayerSaveElementData elementData, DataRequest dataRequest) { }
     
     public static void UpdateReferences(DataRequest dataRequest)
     {

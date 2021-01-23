@@ -15,12 +15,20 @@ public class QuestSaveSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.QuestSave);
 
+        InitializeSearchParameters(searchProperties);
+
+        SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
         var searchParameters = searchProperties.searchParameters.Cast<Search.QuestSave>().First();
+
+        var saveElementData = SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData;
+        searchParameters.saveId = new List<int>() { saveElementData.Id };
 
         var phaseSaveElementData = (PhaseSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.PhaseSave).ElementData;
         searchParameters.phaseId = new List<int>() { phaseSaveElementData.PhaseId };
-
-        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void InitializeSegment()

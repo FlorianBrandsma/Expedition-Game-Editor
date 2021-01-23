@@ -9369,6 +9369,7 @@ GameObject:
   - component: {fileID: 220811744}
   - component: {fileID: 220811746}
   - component: {fileID: 220811745}
+  - component: {fileID: 220811747}
   m_Layer: 5
   m_Name: InteractionDestination
   m_TagString: Untagged
@@ -9422,6 +9423,21 @@ MonoBehaviour:
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 993477358}
+--- !u!114 &220811747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220811743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 75
 --- !u!114 &222089617 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114000011455358566, guid: fa7de6b5babac9f4aa25ee327b5c350d,
@@ -16091,6 +16107,7 @@ GameObject:
   - component: {fileID: 364541297}
   - component: {fileID: 364541299}
   - component: {fileID: 364541300}
+  - component: {fileID: 364541298}
   m_Layer: 5
   m_Name: Phase
   m_TagString: Untagged
@@ -16130,6 +16147,21 @@ MonoBehaviour:
   controllers:
   - {fileID: 1716053771}
   - {fileID: 1674366347}
+--- !u!114 &364541298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364541295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 75
 --- !u!114 &364541299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23495,6 +23527,7 @@ GameObject:
   - component: {fileID: 584159568}
   - component: {fileID: 584159570}
   - component: {fileID: 584159569}
+  - component: {fileID: 584159571}
   m_Layer: 5
   m_Name: Controllable
   m_TagString: Untagged
@@ -23548,6 +23581,21 @@ MonoBehaviour:
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 993477358}
+--- !u!114 &584159571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584159567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 75
 --- !u!1 &585262985
 GameObject:
   m_ObjectHideFlags: 0
@@ -42073,7 +42121,6 @@ GameObject:
   - component: {fileID: 993477357}
   - component: {fileID: 993477358}
   - component: {fileID: 993477356}
-  - component: {fileID: 993477355}
   m_Layer: 5
   m_Name: World (controller)
   m_TagString: Untagged
@@ -42096,22 +42143,6 @@ Transform:
   m_Father: {fileID: 848948710}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &993477355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 993477352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionProperties:
-    anchor: 0
-    width: 65
-  regionNavigationAction: {fileID: 220811745}
 --- !u!114 &993477356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54281,6 +54312,7 @@ GameObject:
   - component: {fileID: 1313446732}
   - component: {fileID: 1313446730}
   - component: {fileID: 1313446731}
+  - component: {fileID: 1313446733}
   m_Layer: 5
   m_Name: Scene
   m_TagString: Untagged
@@ -54349,6 +54381,21 @@ MonoBehaviour:
   subControllerManager: {fileID: 0}
   controllers:
   - {fileID: 448240963}
+--- !u!114 &1313446733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313446728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 75
 --- !u!1 &1315031493
 GameObject:
   m_ObjectHideFlags: 0
@@ -82903,7 +82950,6 @@ GameObject:
   - component: {fileID: 1986235832}
   - component: {fileID: 1986235835}
   - component: {fileID: 1986235833}
-  - component: {fileID: 1986235837}
   m_Layer: 5
   m_Name: Region (parent-layout)
   m_TagString: Untagged
@@ -82961,22 +83007,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutDependency: {fileID: 53844845}
---- !u!114 &1986235837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1986235831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionProperties:
-    anchor: 0
-    width: 75
-  regionNavigationAction: {fileID: 0}
 --- !u!224 &1986959732 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000012771355508, guid: 55a47ccb29ae8cc4aa09a406c50a9d2a,
@@ -87912,6 +87942,7 @@ GameObject:
   - component: {fileID: 2108299156}
   - component: {fileID: 2108299160}
   - component: {fileID: 2108299159}
+  - component: {fileID: 2108299157}
   m_Layer: 5
   m_Name: Base (controller)
   m_TagString: Untagged
@@ -87951,6 +87982,21 @@ MonoBehaviour:
   controllers:
   - {fileID: 1716053771}
   - {fileID: 1674366347}
+--- !u!114 &2108299157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108299154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00edbdf2ef75b4c4e9b2e494bf7cdd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionProperties:
+    anchor: 0
+    width: 75
 --- !u!114 &2108299159
 MonoBehaviour:
   m_ObjectHideFlags: 0

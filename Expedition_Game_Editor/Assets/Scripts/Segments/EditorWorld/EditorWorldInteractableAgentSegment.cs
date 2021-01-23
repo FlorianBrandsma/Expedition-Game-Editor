@@ -62,9 +62,7 @@ public class EditorWorldInteractableAgentSegment : MonoBehaviour, ISegment
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData)
     {
         if (mergedElementData.ExecuteType == Enums.ExecuteType.Add || resultElementData.Id == 0)
-        {
             RenderManager.ResetPath(true);
-        }
     }
     
     public void UpdateSegment() { }

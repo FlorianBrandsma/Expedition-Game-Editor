@@ -15,10 +15,18 @@ public class InteractableSaveAgentSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.InteractableSave);
 
-        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractableSave>().First();
-        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Agent };
+        InitializeSearchParameters(searchProperties);
 
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.InteractableSave>().First();
+
+        searchParameters.saveId = new List<int>() { RenderManager.layoutManager.forms.First().activePath.FindLastRoute(Enums.DataType.Save).ElementData.Id };
+
+        searchParameters.type = new List<int>() { (int)Enums.InteractableType.Agent };
     }
 
     public void InitializeSegment()

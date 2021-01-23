@@ -1726,7 +1726,6 @@ static public class Fixtures
         int id = saveList.Count > 0 ? (saveList[saveList.Count - 1].Id + 1) : 1;
 
         save.Id = id;
-        save.Index = saveList.Count;
 
         CreatePlayerSave(save);
         CreateInteractableSaves(save);
@@ -1755,8 +1754,6 @@ static public class Fixtures
         playerSave.PositionX = firstPhase.DefaultPositionX;
         playerSave.PositionY = firstPhase.DefaultPositionY;
         playerSave.PositionZ = firstPhase.DefaultPositionZ;
-
-        playerSave.Scale = 1;
 
         playerSave.GameTime = firstPhase.DefaultTime;
 
@@ -1790,7 +1787,7 @@ static public class Fixtures
     static private void CreateStageSaves(SaveBaseData save)
     {
         LoadChapterSaves(save);
-        LoadPhaseRegionWorldInteractableTasks();
+        LoadPhaseRegionWorldInteractableTasks(save);
     }
 
     static public void LoadChapterSaves(SaveBaseData save)
@@ -1806,13 +1803,13 @@ static public class Fixtures
             chapterSave.SaveId = save.Id;
             chapterSave.ChapterId = chapter.Id;
 
-            LoadPhaseSaves(chapter, chapterSave);
+            LoadPhaseSaves(chapter, save);
 
             chapterSaveList.Add(chapterSave);
         }
     }
 
-    static public void LoadPhaseSaves(ChapterBaseData chapter, ChapterSaveBaseData chapterSave)
+    static public void LoadPhaseSaves(ChapterBaseData chapter, SaveBaseData save)
     {
         foreach(PhaseBaseData phase in phaseList.Where(x => x.ChapterId == chapter.Id))
         {
@@ -1822,16 +1819,16 @@ static public class Fixtures
 
             phaseSave.Id = id;
 
-            phaseSave.SaveId = chapterSave.SaveId;
+            phaseSave.SaveId = save.Id;
             phaseSave.PhaseId = phase.Id;
 
-            LoadQuestSaves(phase, phaseSave);
+            LoadQuestSaves(phase, save);
 
             phaseSaveList.Add(phaseSave);
         }
     }
 
-    static private void LoadPhaseRegionWorldInteractableTasks()
+    static private void LoadPhaseRegionWorldInteractableTasks(SaveBaseData save)
     {
         foreach (PhaseSaveBaseData phaseSave in phaseSaveList)
         {
@@ -1839,20 +1836,20 @@ static public class Fixtures
 
             foreach (RegionBaseData phaseRegionSource in phaseRegionSourceList)
             {
-                var interactionIdList = interactionDestinationList.Where(x => x.RegionId == phaseRegionSource.Id).Select(x => x.InteractionId).ToList();
-                var taskIdList = interactionList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.TaskId).ToList();
-                var worldInteractableIdList = taskList.Where(x => taskIdList.Contains(x.Id)).Select(x => x.WorldInteractableId).ToList();
+                var interactionIdList           = interactionDestinationList.Where(x => x.RegionId == phaseRegionSource.Id).Select(x => x.InteractionId).ToList();
+                var taskIdList                  = interactionList.Where(x => interactionIdList.Contains(x.Id)).Select(x => x.TaskId).ToList();
+                var worldInteractableIdList     = taskList.Where(x => taskIdList.Contains(x.Id)).Select(x => x.WorldInteractableId).ToList();
                 var worldInteractableSourceList = worldInteractableList.Where(x => worldInteractableIdList.Contains(x.Id)).Distinct().ToList();
                 
                 foreach (WorldInteractableBaseData worldInteractableSource in worldInteractableSourceList)
                 {
-                    LoadWorldInteractableTaskSaves(worldInteractableSource, phaseSave);
+                    LoadWorldInteractableTaskSaves(worldInteractableSource, save);
                 }
             }
         }
     }
 
-    static public void LoadWorldInteractableTaskSaves(WorldInteractableBaseData worldInteractable, PhaseSaveBaseData phaseSave)
+    static public void LoadWorldInteractableTaskSaves(WorldInteractableBaseData worldInteractable, SaveBaseData save)
     {
         foreach (TaskBaseData task in taskList.Where(x => x.WorldInteractableId == worldInteractable.Id && x.ObjectiveId == 0))
         {
@@ -1862,17 +1859,17 @@ static public class Fixtures
 
             taskSave.Id = id;
 
-            taskSave.SaveId = phaseSave.SaveId;
+            taskSave.SaveId = save.Id;
             taskSave.WorldInteractableId = worldInteractable.Id;
             taskSave.TaskId = task.Id;
 
-            LoadInteractionSaves(task, taskSave);
+            LoadInteractionSaves(task, save);
 
             taskSaveList.Add(taskSave);
         }
     }
 
-    static public void LoadQuestSaves(PhaseBaseData phase, PhaseSaveBaseData phaseSave)
+    static public void LoadQuestSaves(PhaseBaseData phase, SaveBaseData save)
     {
         foreach (QuestBaseData quest in questList.Where(x => x.PhaseId == phase.Id))
         {
@@ -1882,16 +1879,16 @@ static public class Fixtures
 
             questSave.Id = id;
 
-            questSave.SaveId = phaseSave.SaveId;
+            questSave.SaveId = save.Id;
             questSave.QuestId = quest.Id;
 
-            LoadObjectiveSaves(quest, questSave);
+            LoadObjectiveSaves(quest, save);
 
             questSaveList.Add(questSave);
         }
     }
 
-    static public void LoadObjectiveSaves(QuestBaseData quest, QuestSaveBaseData questSave)
+    static public void LoadObjectiveSaves(QuestBaseData quest, SaveBaseData save)
     {
         foreach (ObjectiveBaseData objective in objectiveList.Where(x => x.QuestId == quest.Id))
         {
@@ -1901,16 +1898,16 @@ static public class Fixtures
 
             objectiveSave.Id = id;
 
-            objectiveSave.SaveId = questSave.SaveId;
+            objectiveSave.SaveId = save.Id;
             objectiveSave.ObjectiveId = objective.Id;
             
-            LoadObjectiveTaskSaves(objective, objectiveSave);
+            LoadObjectiveTaskSaves(objective, save);
 
             objectiveSaveList.Add(objectiveSave);
         }
     }
 
-    static public void LoadObjectiveTaskSaves(ObjectiveBaseData objective, ObjectiveSaveBaseData objectiveSave)
+    static public void LoadObjectiveTaskSaves(ObjectiveBaseData objective, SaveBaseData save)
     {
         foreach (TaskBaseData task in taskList.Where(x => x.ObjectiveId == objective.Id))
         {
@@ -1920,17 +1917,17 @@ static public class Fixtures
 
             taskSave.Id = id;
 
-            taskSave.SaveId = objectiveSave.SaveId;
+            taskSave.SaveId = save.Id;
             taskSave.WorldInteractableId = task.WorldInteractableId;
             taskSave.TaskId = task.Id;
 
-            LoadInteractionSaves(task, taskSave);
+            LoadInteractionSaves(task, save);
 
             taskSaveList.Add(taskSave);
         }
     }
     
-    static public void LoadInteractionSaves(TaskBaseData task, TaskSaveBaseData taskSave)
+    static public void LoadInteractionSaves(TaskBaseData task, SaveBaseData save)
     {
         foreach (InteractionBaseData interaction in interactionList.Where(x => x.TaskId == task.Id))
         {
@@ -1940,7 +1937,7 @@ static public class Fixtures
 
             interactionSave.Id = id;
 
-            interactionSave.SaveId = taskSave.SaveId;
+            interactionSave.SaveId = save.Id;
             interactionSave.InteractionId = interaction.Id;
 
             interactionSaveList.Add(interactionSave);

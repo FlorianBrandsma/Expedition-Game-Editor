@@ -15,12 +15,20 @@ public class PhaseSaveSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.PhaseSave);
 
+        InitializeSearchParameters(searchProperties);
+        
+        SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
         var searchParameters = searchProperties.searchParameters.Cast<Search.PhaseSave>().First();
+
+        var saveElementData = SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData;
+        searchParameters.saveId = new List<int>() { saveElementData.Id };
 
         var chapterSaveElementData = (ChapterSaveElementData)SegmentController.Path.FindLastRoute(Enums.DataType.ChapterSave).ElementData;
         searchParameters.chapterId = new List<int>() { chapterSaveElementData.ChapterId };
-
-        SegmentController.DataController.GetData(searchProperties);
     }
 
     public void InitializeSegment()

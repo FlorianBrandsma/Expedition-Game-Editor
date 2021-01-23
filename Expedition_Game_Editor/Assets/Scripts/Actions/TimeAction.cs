@@ -10,8 +10,7 @@ public class TimeAction : MonoBehaviour, IAction
 {
     public ActionProperties actionProperties;
 
-    //Can make "IAction linkedAction" if that would be useful elsewhere
-    public RegionNavigationAction regionNavigationAction;
+    public RegionNavigationAction RegionNavigationAction { get { return GetComponent<RegionNavigationAction>(); } }
 
     public void InitializeAction(Path path) { }
 
@@ -35,13 +34,13 @@ public class TimeAction : MonoBehaviour, IAction
     {
         //Time needs to be set here so it can be used to select the interaction
         TimeManager.instance.ActiveTime = selectedHour * TimeManager.secondsInHour;
-        
+
         //There might be an underlying issue with resetting the editor which should be addressed
         //if time-changing related issues continue to arise
-        if (RegionManager.regionType == Enums.RegionType.InteractionDestination)
-            regionNavigationAction.SelectInteraction();
+        if (RegionManager.regionType == Enums.RegionType.InteractionDestination || RegionManager.regionType == Enums.RegionType.Scene)
+            RegionNavigationAction.SelectInteraction();
         
-        TimeManager.instance.SetEditorTime(selectedHour * TimeManager.secondsInHour, RegionManager.regionType != Enums.RegionType.InteractionDestination);
+        TimeManager.instance.SetEditorTime(selectedHour * TimeManager.secondsInHour, RegionManager.regionType != Enums.RegionType.InteractionDestination && RegionManager.regionType != Enums.RegionType.Scene);
     }
 
     public void CloseAction() { }

@@ -200,13 +200,9 @@ public class LayoutSection : MonoBehaviour
 
             dataEditor.EditData.ExecuteType = Enums.ExecuteType.Remove;
 
-            //dataEditor.ElementDataList.ForEach(x => x.ExecuteType = Enums.ExecuteType.Remove);
-
         } else {
 
             dataEditor.EditData.ExecuteType = originalExecuteType;
-
-            //dataEditor.ElementDataList.ForEach(x => x.ExecuteType = originalExecuteType);
         }
 
         SetActionButtons();

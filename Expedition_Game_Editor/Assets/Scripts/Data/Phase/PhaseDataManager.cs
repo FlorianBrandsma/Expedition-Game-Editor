@@ -238,8 +238,6 @@ public static class PhaseDataManager
 
         var saveDataList = DataManager.GetSaveData(saveSearchParameters);
 
-        if (saveDataList.Count == 0) return;
-
         saveDataList.ForEach(saveData =>
         {
             var phaseSaveElementData = PhaseSaveDataManager.DefaultData(saveData.Id, elementData.Id);
@@ -441,11 +439,11 @@ public static class PhaseDataManager
         //World interactable, task, interaction & interaction destination
 
         //Id groups for elements which need to be re-assigned to other elements after everything has been created
-        var worldInteractableIdGroupList = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
-        var sceneActorIdGroupList = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
+        var worldInteractableIdGroupList    = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
+        var sceneActorIdGroupList           = new List<Tuple<int, int>>().Select(x => new { originalId = x.Item1, newId = x.Item2 }).ToList();
 
-        var sceneActorElementDataList = new List<SceneActorElementData>();
-        var sceneShotElementDataList = new List<SceneShotElementData>();
+        var sceneActorElementDataList   = new List<SceneActorElementData>();
+        var sceneShotElementDataList    = new List<SceneShotElementData>();
 
         //Get all world interactables belonging to this region source based on the interaction destinations
 

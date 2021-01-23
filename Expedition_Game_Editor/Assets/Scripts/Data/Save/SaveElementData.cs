@@ -22,7 +22,10 @@ public class SaveElementData : SaveData, IElementData
 
     public SaveElementData() { }
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        SaveDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest) { }
 

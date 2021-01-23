@@ -189,7 +189,6 @@ public static class SceneActorDataManager
         {
             if (elementData.ChangedWorldInteractableId)
             {
-                Debug.Log(elementData.DataElement.GetComponent<UnityEngine.UI.Button>());
                 data.WorldInteractableId = elementData.WorldInteractableId;
             }
 

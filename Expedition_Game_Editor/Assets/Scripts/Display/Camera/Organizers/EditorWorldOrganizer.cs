@@ -358,7 +358,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.SceneActorDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        //Create groups of scene props as interactions, using destination values that were taken from their parent interaction
+        //Create groups of scene actors as interactions, using scene actor values that were taken from their parent interaction
         var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.SceneActorDataList).GroupBy(y => y.InteractionId)
                                                                                                              .Select(grp => new
                                                                                                              {
@@ -378,7 +378,7 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
     {
         worldData.TerrainDataList.ForEach(x => x.ScenePropDataList.ForEach(y => y.ContainsActiveTime = false));
 
-        //Create groups of scene props as interactions, using destination values that were taken from their parent interaction
+        //Create groups of scene props as interactions, using scene prop values that were taken from their parent interaction
         var interactionGroup = worldData.TerrainDataList.SelectMany(x => x.ScenePropDataList).GroupBy(y => y.InteractionId)
                                                                                                             .Select(grp => new
                                                                                                             {

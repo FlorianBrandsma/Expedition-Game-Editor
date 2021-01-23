@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 public class ChapterSaveSegment : MonoBehaviour, ISegment
 {
@@ -13,7 +15,19 @@ public class ChapterSaveSegment : MonoBehaviour, ISegment
 
         var searchProperties = new SearchProperties(Enums.DataType.ChapterSave);
 
+        InitializeSearchParameters(searchProperties);
+
         SegmentController.DataController.GetData(searchProperties);
+    }
+
+    private void InitializeSearchParameters(SearchProperties searchProperties)
+    {
+        var searchParameters = searchProperties.searchParameters.Cast<Search.ChapterSave>().First();
+
+        var saveElementData = SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData;
+        searchParameters.saveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData.Id };
+
+        //Game id
     }
 
     public void InitializeSegment()

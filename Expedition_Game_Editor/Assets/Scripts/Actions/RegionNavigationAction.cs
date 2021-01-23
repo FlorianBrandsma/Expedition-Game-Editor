@@ -11,17 +11,28 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     //When changing selections, load data from every datacontroller AFTER the index of the selected tab
 
+    private List<ChapterBaseData> chapterDataFilter;
+    private List<PhaseBaseData> phaseDataFilter;
+    private List<QuestBaseData> questDataFilter;
+    private List<ObjectiveBaseData> objectiveDataFilter;
+    private List<WorldInteractableBaseData> worldInteractableDataFilter;
+    private List<TaskBaseData> taskDataFilter;
+    private List<InteractionBaseData> interactionDataFilter;
+    private List<InteractionDestinationBaseData> interactionDestinationDataFilter;
+    private List<OutcomeBaseData> outcomeDataFilter;
+    private List<SceneBaseData> sceneDataFilter;
+
     public ActionProperties actionProperties;
 
-    private List<Enums.DataType> navigationList;
+    private List<Enums.DataType> dataTypeList;
     private List<Route> routeList = new List<Route>();
 
     public PathController PathController { get { return GetComponent<PathController>(); } }
 
     public void InitializeAction(Path path)
     {
-        navigationList = path.routeList.Where(x => x.data != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
-                                       .Select(x => x.data.dataController.DataType).Distinct().ToList();
+        dataTypeList = path.routeList.Where(x => x.data != null && x.data.dataController.DataCategory == Enums.DataCategory.Navigation)
+                                     .Select(x => x.data.dataController.DataType).Distinct().ToList();
 
         var regionRouteSource = path.FindLastRoute(Enums.DataType.Region);
 
@@ -114,11 +125,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         routeList.Clear();
         
-        navigationList.ForEach(dataType =>
+        dataTypeList.ForEach(dataType =>
         {
             var route = PathController.route.path.FindLastRoute(dataType);
             routeList.Add(route);
         });
+
+        //Not relevant at the moment: fix when data can be added!
+        FilterData();
 
         var sceneRoute = FindRouteByDataType(Enums.DataType.Scene);
 
@@ -150,7 +164,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 route.data.dataList = mainRoute.data.dataList;
                 route.id = mainRoute.id;
 
-                ResetData(route);
+                ResetData(route.data);
 
             } else {
 
@@ -158,12 +172,156 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 //seems to mess with that. Below assigns the data of the main path to that saved by the controller
                 route.data = mainRoute.data;
 
+                //There is currently no reliable way to only load filter data on specific conditions,
+                //so filter data must be loaded every time the action is initialized
+                FilterData(route.data);
+                
                 if (route.data.dataController.DataType == Enums.DataType.Interaction)
                     CheckTime((InteractionElementData)route.ElementData);
 
                 SelectOption(dataType);
             }
         }
+    }
+
+    private void FilterData(Data data)
+    {
+        switch(data.dataController.DataType)
+        {
+            case Enums.DataType.Chapter:                GetChapterFilterData(data);                 break;
+            case Enums.DataType.Phase:                  GetPhaseFilterData(data);                   break;
+            case Enums.DataType.Quest:                  GetQuestFilterData(data);                   break;
+            case Enums.DataType.Objective:              GetObjectiveFilterData(data);               break;
+            case Enums.DataType.WorldInteractable:      GetWorldInteractableFilterData(data);       break;
+            case Enums.DataType.Task:                   GetTaskFilterData(data);                    break;
+            case Enums.DataType.Interaction:            GetInteractionFilterData(data);             break;
+            case Enums.DataType.InteractionDestination: GetInteractionDestinationFilterData(data);  break;
+            case Enums.DataType.Outcome:                GetOutcomeFilterData(data);                 break;
+            case Enums.DataType.Scene:                  GetSceneFilterData(data);                   break;
+        }
+    }
+
+    private void GetChapterFilterData(Data data)
+    {
+        var chapterSearchParameters = new Search.Chapter();
+        chapterSearchParameters.id = phaseDataFilter.Select(x => x.ChapterId).ToList();
+
+        chapterDataFilter = DataManager.GetChapterData(chapterSearchParameters);
+
+        data.dataList = data.dataList.Where(x => chapterDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetPhaseFilterData(Data data)
+    {
+        var phaseSearchParameters = new Search.Phase();
+
+        if (RegionManager.regionType == Enums.RegionType.Phase ||
+            RegionManager.regionType == Enums.RegionType.Controllable)
+        {
+            //Region
+            var regionDataList = DataManager.GetRegionData(new Search.Region());
+
+            phaseSearchParameters.id = regionDataList.Select(x => x.Id).ToList();
+
+        } else {
+
+            phaseSearchParameters.id = questDataFilter.Select(x => x.PhaseId).ToList();
+        }
+
+        phaseDataFilter = DataManager.GetPhaseData(phaseSearchParameters);
+
+        data.dataList = data.dataList.Where(x => phaseDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetQuestFilterData(Data data)
+    {
+        var questSearchParameters = new Search.Quest();
+        questSearchParameters.id = objectiveDataFilter.Select(x => x.QuestId).ToList();
+
+        questDataFilter = DataManager.GetQuestData(questSearchParameters);
+
+        data.dataList = data.dataList.Where(x => questDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetObjectiveFilterData(Data data)
+    {
+        var objectiveSearchParameters = new Search.Objective();
+        objectiveSearchParameters.id = worldInteractableDataFilter.Select(x => x.ObjectiveId).ToList();
+
+        objectiveDataFilter = DataManager.GetObjectiveData(objectiveSearchParameters);
+
+        data.dataList = data.dataList.Where(x => objectiveDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetWorldInteractableFilterData(Data data)
+    {
+        var worldInteractableSearchParameters = new Search.WorldInteractable();
+        worldInteractableSearchParameters.id = taskDataFilter.Select(x => x.WorldInteractableId).ToList();
+
+        worldInteractableDataFilter = DataManager.GetWorldInteractableData(worldInteractableSearchParameters);
+
+        data.dataList = data.dataList.Where(x => worldInteractableDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetTaskFilterData(Data data)
+    {
+        var taskSearchParameters = new Search.Task();
+        taskSearchParameters.id = interactionDataFilter.Select(x => x.TaskId).ToList();
+
+        taskDataFilter = DataManager.GetTaskData(taskSearchParameters);
+
+        data.dataList = data.dataList.Where(x => taskDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetInteractionFilterData(Data data)
+    {
+        var interactionSearchParameters = new Search.Interaction();
+
+        if(RegionManager.regionType == Enums.RegionType.Scene)
+            interactionSearchParameters.id = outcomeDataFilter.Select(x => x.InteractionId).ToList();
+
+        if (RegionManager.regionType == Enums.RegionType.InteractionDestination)
+            interactionSearchParameters.id = interactionDestinationDataFilter.Select(x => x.InteractionId).ToList();
+
+        interactionDataFilter = DataManager.GetInteractionData(interactionSearchParameters);
+
+        data.dataList = data.dataList.Where(x => interactionDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetInteractionDestinationFilterData(Data data)
+    {
+        //Region
+        var regionDataList = DataManager.GetRegionData(new Search.Region());
+
+        var interactionDestinationSearchParameters = new Search.InteractionDestination();
+        interactionDestinationSearchParameters.regionId = regionDataList.Select(x => x.Id).ToList();
+
+        interactionDestinationDataFilter = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
+
+        data.dataList = data.dataList.Where(x => interactionDestinationDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetOutcomeFilterData(Data data)
+    {
+        var outcomeSearchParameters = new Search.Outcome();
+        outcomeSearchParameters.id = sceneDataFilter.Select(x => x.OutcomeId).ToList();
+
+        outcomeDataFilter = DataManager.GetOutcomeData(outcomeSearchParameters);
+
+        data.dataList = data.dataList.Where(x => outcomeDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+    }
+
+    private void GetSceneFilterData(Data data)
+    {
+        //Region
+        var regionDataList = DataManager.GetRegionData(new Search.Region());
+
+        var sceneSearchParameters = new Search.Scene();
+        sceneSearchParameters.regionId = regionDataList.Select(x => x.Id).ToList();
+
+        sceneDataFilter = DataManager.GetSceneData(sceneSearchParameters);
+
+        data.dataList = data.dataList.Where(x => sceneDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
     }
 
     private bool ListContainsElement(Route route, int id)
@@ -182,14 +340,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             TimeManager.instance.SetEditorTime(startTime);
     }
     
-    private void ResetData(Route route)
+    private void ResetData(Data data)
     {
-        var dataType = route.data.dataController.DataType;
+        var dataType = data.dataController.DataType;
 
         if(dataType == Enums.DataType.InteractionDestination || dataType == Enums.DataType.Scene)
             GetDependencies(dataType);
 
-        GetData(route.data.dataController);
+        GetData(data.dataController);
     }
 
     private void GetDependencies(Enums.DataType dataType)
@@ -359,9 +517,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
     #region Data Filter
     //Remove all dead ends from data
-    /*
+    
     private void FilterData()
     {
+    /*
         if (structureList.Contains(Enums.DataType.WorldInteractable))
         {
             var worldInteractableData = Fixtures.worldInteractableList;
@@ -471,8 +630,8 @@ public class RegionNavigationAction : MonoBehaviour, IAction
                 regionAction.idFilter = regionData.Select(x => x.Id).Distinct().ToList();
             }
         }
+        */
     }
-    */
     #endregion
 
     public void SetAction(Path path)
@@ -500,7 +659,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             GetData(routeList[i].data.dataController);
         }
-
+        Debug.Log(PathController);
         RenderManager.loadType = Enums.LoadType.Reload;
         RenderManager.ResetPath(PathController.route.path);
     }

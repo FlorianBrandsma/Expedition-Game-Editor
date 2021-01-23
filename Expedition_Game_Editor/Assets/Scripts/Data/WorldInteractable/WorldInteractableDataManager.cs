@@ -126,7 +126,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    private static void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
+    public static void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 
@@ -150,7 +150,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    private static void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
+    public static void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 
@@ -165,7 +165,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    private static void GetSceneActorWorldInteractableData(Search.WorldInteractable searchParameters)
+    public static void GetSceneActorWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 

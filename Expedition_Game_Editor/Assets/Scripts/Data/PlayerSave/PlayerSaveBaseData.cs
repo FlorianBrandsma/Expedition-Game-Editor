@@ -12,8 +12,6 @@ public class PlayerSaveBaseData
     public float PositionY          { get; set; }
     public float PositionZ          { get; set; }
 
-    public float Scale              { get; set; }
-
     public int GameTime             { get; set; }
     public int PlayedTime           { get; set; }
 
@@ -28,8 +26,6 @@ public class PlayerSaveBaseData
         PositionX           = originalData.PositionX;
         PositionY           = originalData.PositionY;
         PositionZ           = originalData.PositionZ;
-
-        Scale               = originalData.Scale;
 
         GameTime            = originalData.GameTime;
         PlayedTime          = originalData.PlayedTime;
@@ -46,8 +42,6 @@ public class PlayerSaveBaseData
         data.PositionX              = PositionX;
         data.PositionY              = PositionY;
         data.PositionZ              = PositionZ;
-
-        data.Scale                  = Scale;
 
         data.GameTime               = GameTime;
         data.PlayedTime             = PlayedTime;

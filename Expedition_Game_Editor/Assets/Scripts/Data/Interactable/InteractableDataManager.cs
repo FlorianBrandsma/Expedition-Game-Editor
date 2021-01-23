@@ -128,7 +128,28 @@ public static class InteractableDataManager
 
             elementData.SetOriginalValues();
 
+            AddDependencies(elementData, dataRequest);
+
         } else { }
+    }
+
+    private static void AddDependencies(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        AddInteractableSaveData(elementData, dataRequest);
+    }
+
+    private static void AddInteractableSaveData(InteractableElementData elementData, DataRequest dataRequest)
+    {
+        //Save
+        var saveSearchParameters = new Search.Save();
+
+        var saveDataList = DataManager.GetSaveData(saveSearchParameters);
+
+        saveDataList.ForEach(saveData =>
+        {
+            var interactableSaveElementData = InteractableSaveDataManager.DefaultData(saveData.Id, elementData.Id);
+            interactableSaveElementData.Add(dataRequest);
+        });
     }
 
     public static void UpdateData(InteractableElementData elementData, DataRequest dataRequest)

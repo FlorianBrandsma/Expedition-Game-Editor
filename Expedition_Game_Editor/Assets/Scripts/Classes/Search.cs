@@ -497,6 +497,8 @@ public class Search
 
     public class Save
     {
+        public bool includeAddElement;
+
         public List<int> id = new List<int>();
 
         public List<int> gameId = new List<int>();

@@ -22,7 +22,10 @@ public class InteractableSaveElementData : InteractableSaveData, IElementData
 
     public InteractableSaveElementData() { }
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        InteractableSaveDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest) { }
 

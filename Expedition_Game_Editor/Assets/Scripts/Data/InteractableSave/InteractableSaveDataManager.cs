@@ -52,6 +52,17 @@ public static class InteractableSaveDataManager
         return list.Cast<IElementData>().ToList();
     }
 
+    public static InteractableSaveElementData DefaultData(int saveId, int interactableId)
+    {
+        return new InteractableSaveElementData()
+        {
+            Id = -1,
+
+            SaveId = saveId,
+            InteractableId = interactableId
+        };
+    }
+
     private static void GetInteractableSaveData(Search.InteractableSave searchParameters)
     {
         interactableSaveDataList = new List<InteractableSaveBaseData>();
@@ -90,6 +101,18 @@ public static class InteractableSaveDataManager
         searchParameters.id = modelDataList.Select(x => x.IconId).Distinct().ToList();
 
         iconDataList = DataManager.GetIconData(searchParameters);
+    }
+
+    public static void AddData(InteractableSaveElementData elementData, DataRequest dataRequest)
+    {
+        if (dataRequest.requestType == Enums.RequestType.Execute)
+        {
+            elementData.Id = Fixtures.interactableSaveList.Count > 0 ? (Fixtures.interactableSaveList[Fixtures.interactableSaveList.Count - 1].Id + 1) : 1;
+            Fixtures.interactableSaveList.Add(((InteractableSaveData)elementData).Clone());
+
+            elementData.SetOriginalValues();
+
+        } else { }
     }
 
     public static void RemoveData(InteractableSaveElementData elementData, DataRequest dataRequest)

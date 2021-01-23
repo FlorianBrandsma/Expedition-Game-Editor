@@ -14552,7 +14552,6 @@ MonoBehaviour:
   actionProperties:
     anchor: 0
     width: 65
-  regionNavigationAction: {fileID: 364541300}
 --- !u!114 &993477356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18154,12 +18153,12 @@ MonoBehaviour:
   listManager: {fileID: 46085798}
   selectionType: 1
   selectionProperty: 4
-  addProperty: 0
+  addProperty: 13
   uniqueSelection: 0
   elementSize: {x: 0, y: 65}
   horizontal: 0
   vertical: 1
-  enableAutoSave: 0
+  enableAutoSave: 1
   enableSliders: 1
   enableNumbers: 0
   enablePaging: 0

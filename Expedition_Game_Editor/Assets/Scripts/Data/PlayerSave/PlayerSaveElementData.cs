@@ -63,7 +63,10 @@ public class PlayerSaveElementData : PlayerSaveData, IElementData
 
     public PlayerSaveElementData() { }
 
-    public void Add(DataRequest dataRequest) { }
+    public void Add(DataRequest dataRequest)
+    {
+        PlayerSaveDataManager.AddData(this, dataRequest);
+    }
 
     public void Update(DataRequest dataRequest)
     {
