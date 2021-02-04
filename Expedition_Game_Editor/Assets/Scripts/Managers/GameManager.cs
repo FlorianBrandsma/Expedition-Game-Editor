@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     static public GameManager instance;
 
-    public GameSaveElementData gameSaveData;
+    public GameSaveElementData activeGameSaveElementData;
     public GameWorldElementData gameWorldData;
     public GameRegionElementData regionData;
     public GameWorldInteractableElementData worldInteractableControllableData;
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
             {
                 activeRegionId = value;
 
-                gameSaveData.PlayerSaveData.RegionId = value;
+                activeGameSaveElementData.SaveData.RegionId = value;
 
                 ChangeRegion();
             }
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
             {
                 activeWorldInteractableControllableId = value;
 
-                gameSaveData.PlayerSaveData.WorldInteractableId = value;
+                activeGameSaveElementData.SaveData.WorldInteractableId = value;
                 
                 ChangeControllable();
             }
@@ -138,15 +138,21 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Get save data");
         
-        //Get save data
+        activeGameSaveElementData = GetGameSaveData(saveElementData);
+    }
+
+    public GameSaveElementData GetGameSaveData(SaveElementData saveElementData)
+    {
         var searchProperties = new SearchProperties(Enums.DataType.GameSave);
 
         var searchParameters = searchProperties.searchParameters.Cast<Search.GameSave>().First();
         searchParameters.saveId = new List<int>() { saveElementData.Id };
 
         gameSaveController.GetData(searchProperties);
-        
-        gameSaveData = gameSaveController.Data.dataList.Cast<GameSaveElementData>().FirstOrDefault();
+
+        var gameSaveData = (GameSaveElementData)gameSaveController.Data.dataList.FirstOrDefault();
+
+        return gameSaveData;
     }
 
     public void OpenGame()
@@ -173,8 +179,8 @@ public class GameManager : MonoBehaviour
         //1. Find the first chapter that has not been completed
         //2. Find the first phase of that chapter that has not been completed
 
-        var activeChapterSave = gameSaveData.ChapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
-        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.ChapterId == activeChapterSave.ChapterId && !x.Complete).OrderBy(x => x.Index).First();
+        var activeChapterSave = activeGameSaveElementData.ChapterSaveDataList.Where(x => !x.Complete).OrderBy(x => x.Index).First();
+        var activePhaseSave = activeGameSaveElementData.PhaseSaveDataList.Where(x => x.ChapterId == activeChapterSave.ChapterId && !x.Complete).OrderBy(x => x.Index).First();
         
         ActivePhaseId = activePhaseSave.PhaseId;
 
@@ -198,7 +204,7 @@ public class GameManager : MonoBehaviour
         InitializeControllable();
 
         //Set the time based on the save data or else from the phase defaults, which is already set
-        TimeManager.instance.InitializeGameTime(gameSaveData.PlayerSaveData.GameTime);
+        TimeManager.instance.InitializeGameTime(activeGameSaveElementData.SaveData.GameTime);
 
         //Compare game data with save data to determine which task is active
         CheckProgress();
@@ -216,6 +222,11 @@ public class GameManager : MonoBehaviour
         gameWorldData = gameWorldController.Data.dataList.Cast<GameWorldElementData>().FirstOrDefault();
 
         SetDataControllers();
+    }
+
+    private void SaveGameData()
+    {
+        Debug.Log("Save " + 1);
     }
 
     private void SetDataControllers()
@@ -244,19 +255,19 @@ public class GameManager : MonoBehaviour
     private void InitializeRegion()
     {
         //Must be a new phase if the saved region is not listed
-        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.RegionId))
+        if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(activeGameSaveElementData.SaveData.RegionId))
         {
-            gameSaveData.PlayerSaveData.PositionX = gameWorldData.PhaseData.DefaultPositionX;
-            gameSaveData.PlayerSaveData.PositionY = gameWorldData.PhaseData.DefaultPositionY;
-            gameSaveData.PlayerSaveData.PositionZ = gameWorldData.PhaseData.DefaultPositionZ;
+            activeGameSaveElementData.SaveData.PositionX = gameWorldData.PhaseData.DefaultPositionX;
+            activeGameSaveElementData.SaveData.PositionY = gameWorldData.PhaseData.DefaultPositionY;
+            activeGameSaveElementData.SaveData.PositionZ = gameWorldData.PhaseData.DefaultPositionZ;
 
-            gameSaveData.PlayerSaveData.GameTime = gameWorldData.PhaseData.DefaultTime;
+            activeGameSaveElementData.SaveData.GameTime = gameWorldData.PhaseData.DefaultTime;
 
             ActiveRegionId = gameWorldData.PhaseData.DefaultRegionId;
 
         } else {
 
-            ActiveRegionId = gameSaveData.PlayerSaveData.RegionId;
+            ActiveRegionId = activeGameSaveElementData.SaveData.RegionId;
         }
     }
 
@@ -273,7 +284,7 @@ public class GameManager : MonoBehaviour
         //if (!gameWorldData.RegionDataList.Select(x => x.Id).Contains(gameSaveData.PlayerSaveData.WorldInteractableId))
 
         //ActiveWorldInteractableControllableId = WorldInteractableControllableDataController.Data.dataList.First().Id;
-        ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
+        ActiveWorldInteractableControllableId = activeGameSaveElementData.SaveData.WorldInteractableId;
 
         //else
         //ActiveWorldInteractableControllableId = gameSaveData.PlayerSaveData.WorldInteractableId;
@@ -281,7 +292,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeControllable()
     {
-        worldInteractableControllableData = gameWorldData.WorldInteractableDataList.Where(x => x.Id == gameSaveData.PlayerSaveData.WorldInteractableId).First();
+        worldInteractableControllableData = gameWorldData.WorldInteractableDataList.Where(x => x.Id == activeGameSaveElementData.SaveData.WorldInteractableId).First();
 
         PlayerControlManager.instance.SetPlayerCharacter();
     }
@@ -292,15 +303,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Check what game data has been completed");
 
         //Finds the phase save of the active phase
-        var activePhaseSave = gameSaveData.PhaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
+        var activePhaseSave = activeGameSaveElementData.PhaseSaveDataList.Where(x => x.PhaseId == ActivePhaseId).First();
 
         //Finds the quest saves of the quests belonging to the active phase
-        var activeQuestSaves = gameSaveData.QuestSaveDataList.Where(x => x.PhaseId == activePhaseSave.PhaseId).ToList();
+        var activeQuestSaves = activeGameSaveElementData.QuestSaveDataList.Where(x => x.PhaseId == activePhaseSave.PhaseId).ToList();
 
         //Finds the objectives belonging to the quests of the quest saves
         //Groups the objectives per quest and check if there are any uncompleted objectives left
         //Select the first uncompleted objective if there are any, else pick the last objective
-        var activeObjectiveSaves = gameSaveData.ObjectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.QuestId).Contains(x.QuestId)).OrderBy(x => x.Index)
+        var activeObjectiveSaves = activeGameSaveElementData.ObjectiveSaveDataList.Where(x => activeQuestSaves.Select(y => y.QuestId).Contains(x.QuestId)).OrderBy(x => x.Index)
                                                                      .GroupBy(x => x.QuestId)
                                                                      .Select(x => x.Any(y => !y.Complete) ? x.Where(y => !y.Complete).First() : x.Last()).ToList();
 
@@ -308,12 +319,12 @@ public class GameManager : MonoBehaviour
         var regionInteractions = gameWorldData.WorldInteractableDataList.SelectMany(x => x.InteractionDataList.Where(y => y.ObjectiveId == 0)).ToList();
 
         //Finds the tasks of the region interactions
-        var regionTasks = gameSaveData.TaskSaveDataList.Where(x => regionInteractions.Select(y => y.TaskId).Contains(x.TaskId)).Distinct().ToList();
+        var regionTasks = activeGameSaveElementData.TaskSaveDataList.Where(x => regionInteractions.Select(y => y.TaskId).Contains(x.TaskId)).Distinct().ToList();
 
         //Finds the task saves of the tasks belonging to the objective saves, combined with the region tasks
         //Groups the tasks by world interactable and by objective save, as some world interactables "belong" to multiple objectives and some to none
         //Selects the first uncompleted task if there are any, else pick the last task if it's repeatable
-        activeTaskSaveList = gameSaveData.TaskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.ObjectiveId).Contains(x.ObjectiveId))
+        activeTaskSaveList = activeGameSaveElementData.TaskSaveDataList.Where(x => activeObjectiveSaves.Select(y => y.ObjectiveId).Contains(x.ObjectiveId))
                                                           .Concat(regionTasks)
                                                           .GroupBy(x => new { x.WorldInteractableId, x.ObjectiveId })
                                                           .Select(x => x.ToList().OrderBy(y => y.Index))
@@ -403,11 +414,88 @@ public class GameManager : MonoBehaviour
         Organizer.UpdateWorldInteractable(worldInteractableElementData);
     }
     
-    public void SaveData()
+    public void SaveData(SaveElementData saveElementData)
     {
-        var dataRequest = new DataRequest();
+        var dataRequest = new DataRequest() { requestType = Enums.RequestType.Execute };
 
-        gameSaveData.Update(dataRequest);
+        //Create new save data if execute type is add
+        if (saveElementData.ExecuteType == Enums.ExecuteType.Add)
+        {
+            saveElementData.SaveTime = System.DateTime.Now;
+
+            saveElementData.Add(dataRequest);
+
+            saveElementData.SetOriginalValues();
+        }
+        
+        var gameSaveElementData = GetGameSaveData(saveElementData);
+
+        //Apply changes from the active game save to the selected
+
+        //Save
+        var saveDataSource = activeGameSaveElementData.SaveData;
+
+        gameSaveElementData.SaveData.RegionId = saveDataSource.RegionId;
+        gameSaveElementData.SaveData.WorldInteractableId = saveDataSource.WorldInteractableId;
+
+        gameSaveElementData.SaveData.PositionX = saveDataSource.PositionX;
+        gameSaveElementData.SaveData.PositionY = saveDataSource.PositionY;
+        gameSaveElementData.SaveData.PositionZ = saveDataSource.PositionZ;
+
+        gameSaveElementData.SaveData.GameTime = saveDataSource.GameTime;
+
+        gameSaveElementData.SaveData.PlayTime = saveDataSource.PlayTime;
+        gameSaveElementData.SaveData.SaveTime = saveDataSource.SaveTime;
+
+        //Chapter
+        gameSaveElementData.ChapterSaveDataList.ForEach(chapterSave =>
+        {
+            var chapterSaveDataSource = activeGameSaveElementData.ChapterSaveDataList.Where(chapterSaveSource => chapterSaveSource.ChapterId == chapterSave.ChapterId).First();
+
+            chapterSave.Complete = chapterSaveDataSource.Complete;
+        });
+
+        //Phase
+        gameSaveElementData.PhaseSaveDataList.ForEach(phaseSave =>
+        {
+            var phaseSaveDataSource = activeGameSaveElementData.PhaseSaveDataList.Where(phaseSaveSource => phaseSaveSource.PhaseId == phaseSave.PhaseId).First();
+
+            phaseSave.Complete = phaseSaveDataSource.Complete;
+        });
+
+        //Quest
+        gameSaveElementData.QuestSaveDataList.ForEach(questSave =>
+        {
+            var questSaveDataSource = activeGameSaveElementData.QuestSaveDataList.Where(questSaveSource => questSaveSource.QuestId == questSave.QuestId).First();
+
+            questSave.Complete = questSaveDataSource.Complete;
+        });
+
+        //Objective
+        gameSaveElementData.ObjectiveSaveDataList.ForEach(objectiveSave =>
+        {
+            var objectiveSaveDataSource = activeGameSaveElementData.ObjectiveSaveDataList.Where(objectiveSaveSource => objectiveSaveSource.ObjectiveId == objectiveSave.ObjectiveId).First();
+
+            objectiveSave.Complete = objectiveSaveDataSource.Complete;
+        });
+
+        //Task
+        gameSaveElementData.TaskSaveDataList.ForEach(taskSave =>
+        {
+            var taskSaveDataSource = activeGameSaveElementData.TaskSaveDataList.Where(taskSaveSource => taskSaveSource.TaskId == taskSave.TaskId).First();
+
+            taskSave.Complete = taskSaveDataSource.Complete;
+        });
+
+        //Interaction
+        gameSaveElementData.InteractionSaveDataList.ForEach(interactionSave =>
+        {
+            var interactionSaveDataSource = activeGameSaveElementData.InteractionSaveDataList.Where(interactionSaveSource => interactionSaveSource.InteractionId == interactionSave.InteractionId).First();
+
+            interactionSave.Complete = interactionSaveDataSource.Complete;
+        });
+
+        gameSaveElementData.Update(dataRequest);
     }
 
     public void PreviousPath()

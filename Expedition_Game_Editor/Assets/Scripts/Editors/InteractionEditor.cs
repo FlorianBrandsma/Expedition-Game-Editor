@@ -14,7 +14,6 @@ public class InteractionEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return !interactionData.Default; } }
 
     public List<IElementData> DataList
     {
@@ -288,9 +287,19 @@ public class InteractionEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed);
+    }
+
+    public bool Removable()
+    {
+        return !interactionData.Default;
     }
 
     public void ApplyChanges(DataRequest dataRequest)

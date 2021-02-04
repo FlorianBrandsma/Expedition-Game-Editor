@@ -4,7 +4,7 @@ using System.Linq;
 
 public static class GameSaveDataManager
 {
-    private static List<PlayerSaveBaseData> playerSaveDataList;
+    private static List<SaveBaseData> saveDataList;
 
     private static List<ChapterSaveBaseData> chapterSaveDataList;
     private static List<ChapterBaseData> chapterDataList;
@@ -25,9 +25,9 @@ public static class GameSaveDataManager
 
     public static List<IElementData> GetData(Search.GameSave searchParameters)
     {
-        GetPlayerSaveData(searchParameters);
+        GetSaveData(searchParameters);
         
-        if (playerSaveDataList.Count == 0) return new List<IElementData>();
+        if (saveDataList.Count == 0) return new List<IElementData>();
 
         GetChapterSaveData(searchParameters);
         GetChapterData();
@@ -48,23 +48,23 @@ public static class GameSaveDataManager
 
         var gameSaveDataElement = new GameSaveElementData()
         {
-            PlayerSaveData = (from playerSaveData in playerSaveDataList
-                              select new PlayerSaveElementData
-                              {
-                                  Id = playerSaveData.Id,
+            SaveData = (from saveData in saveDataList
+                        select new SaveElementData
+                        {
+                            Id = saveData.Id,
 
-                                  SaveId = playerSaveData.Id,
-                                  RegionId = playerSaveData.RegionId,
-                                  WorldInteractableId = playerSaveData.WorldInteractableId,
+                            RegionId = saveData.RegionId,
+                            WorldInteractableId = saveData.WorldInteractableId,
 
-                                  PositionX = playerSaveData.PositionX,
-                                  PositionY = playerSaveData.PositionY,
-                                  PositionZ = playerSaveData.PositionZ,
+                            PositionX = saveData.PositionX,
+                            PositionY = saveData.PositionY,
+                            PositionZ = saveData.PositionZ,
 
-                                  GameTime = playerSaveData.GameTime,
-                                  PlayedTime = playerSaveData.PlayedTime
+                            GameTime = saveData.GameTime,
+                            PlayTime = saveData.PlayTime,
+                            SaveTime = saveData.SaveTime
 
-                              }).First(),
+                        }).First(),
 
             ChapterSaveDataList = (from chapterSaveData in chapterSaveDataList
                                    join chapterData     in chapterDataList on chapterSaveData.ChapterId equals chapterData.Id
@@ -166,12 +166,12 @@ public static class GameSaveDataManager
         return new List<IElementData>() { gameSaveDataElement };
     }
 
-    private static void GetPlayerSaveData(Search.GameSave searchData)
+    private static void GetSaveData(Search.GameSave searchData)
     {
-        var searchParameters = new Search.PlayerSave();
-        searchParameters.saveId = searchData.saveId;
+        var searchParameters = new Search.Save();
+        searchParameters.id = searchData.saveId;
 
-        playerSaveDataList = DataManager.GetPlayerSaveData(searchParameters);
+        saveDataList = DataManager.GetSaveData(searchParameters);
     }
 
     private static void GetChapterSaveData(Search.GameSave searchData)

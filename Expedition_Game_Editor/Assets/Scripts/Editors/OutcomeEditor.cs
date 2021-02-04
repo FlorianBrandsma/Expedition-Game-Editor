@@ -14,7 +14,6 @@ public class OutcomeEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return false; } }
 
     public List<IElementData> DataList
     {
@@ -181,9 +180,19 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed);
+    }
+
+    public bool Removable()
+    {
+        return false;
     }
 
     public void ApplyChanges(DataRequest dataRequest)

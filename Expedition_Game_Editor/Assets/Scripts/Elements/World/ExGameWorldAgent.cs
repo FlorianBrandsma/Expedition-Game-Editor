@@ -124,7 +124,7 @@ public class ExGameWorldAgent : MonoBehaviour, IGameElement, IElement, IPoolable
 
         if (GameWorldInteractableElementData.Id == GameManager.instance.ActiveWorldInteractableControllableId)
         {
-            var playerData = GameManager.instance.gameSaveData.PlayerSaveData;
+            var playerData = GameManager.instance.activeGameSaveElementData.SaveData;
             
             position = new Vector3(playerData.PositionX, playerData.PositionY, playerData.PositionZ);
             rotation = Vector3.zero;

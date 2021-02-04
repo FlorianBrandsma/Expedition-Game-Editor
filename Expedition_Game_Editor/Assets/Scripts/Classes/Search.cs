@@ -503,6 +503,8 @@ public class Search
 
         public List<int> gameId = new List<int>();
 
+        public Enums.SaveType saveType;
+
         public enum RequestType
         {
             Custom
@@ -515,19 +517,6 @@ public class Search
     {
         public List<int> saveId = new List<int>();
         
-        public enum RequestType
-        {
-            Custom
-        }
-
-        public RequestType requestType;
-    }
-
-    public class PlayerSave
-    {
-        public List<int> saveId = new List<int>();
-        public List<int> worldInteractableId = new List<int>();
-
         public enum RequestType
         {
             Custom

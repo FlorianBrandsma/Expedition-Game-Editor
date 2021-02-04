@@ -123,6 +123,8 @@ public class RegionElementData : RegionData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         data.TerrainDataList = new List<TerrainElementData>(TerrainDataList.Select(x => (TerrainElementData)x.Clone()).ToList());
 
         base.Clone(data);

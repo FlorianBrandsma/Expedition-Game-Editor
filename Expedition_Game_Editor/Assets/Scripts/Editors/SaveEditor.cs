@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class TaskEditor : MonoBehaviour, IEditor
+public class SaveEditor : MonoBehaviour, IEditor
 {
-    private TaskData taskData;
+    private SaveData saveData;
 
     public Data Data                                { get { return PathController.route.data; } }
     public IElementData ElementData                 { get { return PathController.route.ElementData; } }
-    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == taskData.Id).FirstOrDefault(); } }
+    public IElementData EditData                    { get { return Data.dataController.Data.dataList.Where(x => x.Id == saveData.Id).FirstOrDefault(); } }
 
     private PathController PathController           { get { return GetComponent<PathController>(); } }
+    public LayoutSection LayoutSection              { get { return PathController.layoutSection; } }
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-
+    
     public List<IElementData> DataList
     {
         get { return new List<IElementData>() { EditData }; }
@@ -35,73 +36,43 @@ public class TaskEditor : MonoBehaviour, IEditor
     #region Data properties
     public int Id
     {
-        get { return taskData.Id; }
+        get { return saveData.Id; }
     }
 
     public int Index
     {
-        get { return taskData.Index; }
+        get { return saveData.Index; }
     }
 
-    public string Name
+    public Enums.SaveType SaveType
     {
-        get { return taskData.Name; }
-        set
-        {
-            taskData.Name = value;
-
-            DataList.ForEach(x => ((TaskElementData)x).Name = value);
-        }
+        get { return saveData.SaveType; }
     }
 
-    public bool CompleteObjective
+    public string InteractableName
     {
-        get { return taskData.CompleteObjective; }
-        set
-        {
-            taskData.CompleteObjective = value;
-
-            DataList.ForEach(x => ((TaskElementData)x).CompleteObjective = value);
-        }
+        get { return saveData.InteractableName; }
+    }
+    
+    public string ModelIconPath
+    {
+        get { return saveData.ModelIconPath; }
     }
 
-    public bool Repeatable
+    public string PhaseName
     {
-        get { return taskData.Repeatable; }
-        set
-        {
-            taskData.Repeatable = value;
-
-            DataList.ForEach(x => ((TaskElementData)x).Repeatable = value);
-        }
+        get { return saveData.PhaseName; }
     }
 
-    public string PublicNotes
+    public string PhaseGameNotes
     {
-        get { return taskData.PublicNotes; }
-        set
-        {
-            taskData.PublicNotes = value;
-
-            DataList.ForEach(x => ((TaskElementData)x).PublicNotes = value);
-        }
-    }
-
-    public string PrivateNotes
-    {
-        get { return taskData.PrivateNotes; }
-        set
-        {
-            taskData.PrivateNotes = value;
-
-            DataList.ForEach(x => ((TaskElementData)x).PrivateNotes = value);
-        }
+        get { return saveData.PhaseGameNotes; }
     }
     #endregion
 
     public void InitializeEditor()
     {
-        taskData = (TaskData)ElementData.Clone();
+        saveData = (SaveData)ElementData.Clone();
     }
 
     public void ResetEditor() { }
@@ -113,12 +84,12 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public void SetEditor()
     {
-        PathController.layoutSection.SetActionButtons();
+        LayoutSection.SetActionButtons();
     }
 
     public bool Addable()
     {
-        return true;
+        return false;
     }
 
     public bool Changed()
@@ -128,48 +99,52 @@ public class TaskEditor : MonoBehaviour, IEditor
 
     public bool Removable()
     {
-        return true;
+        return SaveType == Enums.SaveType.Load && saveData.Id > 0;
     }
 
     public void ApplyChanges(DataRequest dataRequest)
     {
-        ApplyTaskChanges(dataRequest);
+        ApplySaveChanges(dataRequest);
     }
 
-    private void ApplyTaskChanges(DataRequest dataRequest)
+    private void ApplySaveChanges(DataRequest dataRequest)
     {
         switch (EditData.ExecuteType)
         {
             case Enums.ExecuteType.Add:
-                AddTask(dataRequest);
+                AddSave(dataRequest);
                 break;
 
             case Enums.ExecuteType.Update:
-                UpdateTask(dataRequest);
+                UpdateSave(dataRequest);
                 break;
 
             case Enums.ExecuteType.Remove:
-                RemoveTask(dataRequest);
+                RemoveSave(dataRequest);
                 break;
         }
     }
 
-    private void AddTask(DataRequest dataRequest)
+    private void AddSave(DataRequest dataRequest)
     {
         var tempData = EditData;
 
-        EditData.Add(dataRequest);
+        var saveElementData = (SaveElementData)EditData;
+
+        saveElementData.SaveTime = System.DateTime.Now;
+
+        saveElementData.Add(dataRequest);
 
         if (dataRequest.requestType == Enums.RequestType.Execute)
-            taskData.Id = tempData.Id;
+            saveData.Id = tempData.Id;
     }
 
-    private void UpdateTask(DataRequest dataRequest)
+    private void UpdateSave(DataRequest dataRequest)
     {
         EditData.Update(dataRequest);
     }
 
-    private void RemoveTask(DataRequest dataRequest)
+    private void RemoveSave(DataRequest dataRequest)
     {
         EditData.Remove(dataRequest);
     }
@@ -178,15 +153,30 @@ public class TaskEditor : MonoBehaviour, IEditor
     {
         switch (EditData.ExecuteType)
         {
-            case Enums.ExecuteType.Add:
             case Enums.ExecuteType.Remove:
-                RenderManager.PreviousPath();
+                OpenDefault();
                 break;
             case Enums.ExecuteType.Update:
                 ResetExecuteType();
                 UpdateEditor();
                 break;
         }
+    }
+
+    private void OpenDefault()
+    {
+        RenderManager.loadType = Enums.LoadType.Reload;
+
+        var defaultElement = Data.dataController.Data.dataList.Where(x => x.Id > 0 && x.ExecuteType != Enums.ExecuteType.Remove).FirstOrDefault();
+
+        if (defaultElement != null)
+        {
+            ((ListManager)EditData.DataElement.DisplayManager).AutoSelectElement(defaultElement.Id);
+
+        } else {
+
+            RenderManager.PreviousPath();
+        }    
     }
 
     private void ResetExecuteType()

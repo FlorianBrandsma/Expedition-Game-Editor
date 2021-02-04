@@ -9,7 +9,7 @@ public class ExButton : MonoBehaviour, IElement, IPoolable
     public RawImage icon;
 
     public Button Button                    { get { return GetComponent<Button>(); } }
-    private EditorElement EditorElement     { get { return GetComponent<EditorElement>(); } }
+    public EditorElement EditorElement      { get { return GetComponent<EditorElement>(); } }
 
     public Color ElementColor               { set { } }
 

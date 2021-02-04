@@ -18,7 +18,6 @@ public class ChapterEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return true; } }
     
     public List<IElementData> DataList
     {
@@ -109,11 +108,21 @@ public class ChapterEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed);
     }
-    
+
+    public bool Removable()
+    {
+        return true;
+    } 
+
     public void ApplyChanges(DataRequest dataRequest)
     {
         if(EditData.ExecuteType == Enums.ExecuteType.Add || EditData.ExecuteType == Enums.ExecuteType.Update)

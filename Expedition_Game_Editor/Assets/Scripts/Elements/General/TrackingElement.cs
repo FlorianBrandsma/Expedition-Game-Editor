@@ -25,8 +25,8 @@ public class TrackingElement : MonoBehaviour
 
 	public RectTransform RectTransform  { get { return GetComponent<RectTransform>(); } }
 	
-    public ExSpeechBubble SpeechBubble  { get { return GetComponent<ExSpeechBubble>(); } }
-    
+	public ExSpeechBubble SpeechBubble  { get { return GetComponent<ExSpeechBubble>(); } }
+	
 	public void InitializeElement()
 	{
 		var cameraManager = TrackingElementOverlay.CameraManager;
@@ -57,7 +57,7 @@ public class TrackingElement : MonoBehaviour
 
 		InitializeData();
 
-        gameObject.SetActive(true);
+		gameObject.SetActive(true);
 	}
 
 	public void UpdateTrackingElement()
@@ -162,7 +162,7 @@ public class TrackingElement : MonoBehaviour
 	private void UpdateLimitedPosition()
 	{
 		var maxHeight = 12;
-		var heightOffset = 1;
+		var heightOffset = 0.5f;
 
 		var totalHeight = height + heightOffset;
 
@@ -184,40 +184,40 @@ public class TrackingElement : MonoBehaviour
 											  -VerticalOffset   + screenPos.y - (parentRect.rect.height / 2), 
 											  0);
 
-        if (SpeechBubble != null)
-            SpeechBubble.SetSpeechBubble(true);
+		if (SpeechBubble != null)
+			SpeechBubble.SetSpeechBubble(true);
 
-        if (transform.localPosition.x > widthCap - HorizontalOffset)
-        {
-            transform.localPosition = new Vector3(widthCap - HorizontalOffset, transform.localPosition.y, 0);
+		if (transform.localPosition.x > widthCap - HorizontalOffset)
+		{
+			transform.localPosition = new Vector3(widthCap - HorizontalOffset, transform.localPosition.y, 0);
 
-            if (SpeechBubble != null)
-                SpeechBubble.SetSpeechBubble(false);
-        }
+			if (SpeechBubble != null)
+				SpeechBubble.SetSpeechBubble(false);
+		}
 
 		if (transform.localPosition.x < -widthCap + HorizontalOffset)
-        {
-            transform.localPosition = new Vector3(-widthCap + HorizontalOffset, transform.localPosition.y, 0);
+		{
+			transform.localPosition = new Vector3(-widthCap + HorizontalOffset, transform.localPosition.y, 0);
 
-            if (SpeechBubble != null)
-                SpeechBubble.SetSpeechBubble(false);
-        }
+			if (SpeechBubble != null)
+				SpeechBubble.SetSpeechBubble(false);
+		}
 
 		if (transform.localPosition.y > heightCap - VerticalOffset)
-        {
-            transform.localPosition = new Vector3(transform.localPosition.x, heightCap - VerticalOffset, 0);
+		{
+			transform.localPosition = new Vector3(transform.localPosition.x, heightCap - VerticalOffset, 0);
 
-            if (SpeechBubble != null)
-                SpeechBubble.SetSpeechBubble(false);
-        }
+			if (SpeechBubble != null)
+				SpeechBubble.SetSpeechBubble(false);
+		}
 		
 		if (transform.localPosition.y < -heightCap - VerticalOffset)
-        {
-            transform.localPosition = new Vector3(transform.localPosition.x, -heightCap + VerticalOffset, 0);
+		{
+			transform.localPosition = new Vector3(transform.localPosition.x, -heightCap + VerticalOffset, 0);
 
-            if (SpeechBubble != null)
-                SpeechBubble.SetSpeechBubble(true);
-        }
+			if (SpeechBubble != null)
+				SpeechBubble.SetSpeechBubble(true);
+		}
 	}
 
 	private void UpdateFreePosition()

@@ -2,21 +2,39 @@
 
 public class SaveData : SaveBaseData
 {
-    public string ModelIconPath { get; set; }
+    public Enums.SaveType SaveType  { get; set; }
 
-    public string Name          { get; set; }
-    public string LocationName  { get; set; }
+    public string ChapterName       { get; set; }
+    public string LocationName      { get; set; }
 
-    public string Time          { get; set; }
+    public string InteractableName  { get; set; }
+    public string ModelIconPath     { get; set; }
+
+    public string PhaseName         { get; set; }
+    public string PhaseGameNotes    { get; set; }
+
+    ////public string interactableName;
+
+    //public DateTime SaveTime { get; set; }
+
+    ////Testing purposes
+    //public DateTime TestTime { get; set; }
+    //public TimeSpan PassedTime { get { return SaveTime - TestTime; } }
+    //public float PassedSeconds { get { return PassedTime.Seconds; } }
+    ////----------------
 
     public override void GetOriginalValues(SaveData originalData)
     {
-        ModelIconPath   = originalData.ModelIconPath;
+        SaveType            = originalData.SaveType;
 
-        Name            = originalData.Name;
-        LocationName    = originalData.LocationName;
+        ChapterName         = originalData.ChapterName;
+        LocationName        = originalData.LocationName;
 
-        Time            = originalData.Time;
+        InteractableName    = originalData.InteractableName;
+        ModelIconPath       = originalData.ModelIconPath;
+
+        PhaseName           = originalData.PhaseName;
+        PhaseGameNotes      = originalData.PhaseGameNotes;
 
         base.GetOriginalValues(originalData);
     }
@@ -24,13 +42,17 @@ public class SaveData : SaveBaseData
     public SaveData Clone()
     {
         var data = new SaveData();
-        
-        data.ModelIconPath  = ModelIconPath;
 
-        data.Name           = Name;
-        data.LocationName   = LocationName;
+        data.SaveType           = SaveType;
 
-        data.Time           = Time;
+        data.ChapterName        = ChapterName;
+        data.LocationName       = LocationName;
+
+        data.InteractableName   = InteractableName;
+        data.ModelIconPath      = ModelIconPath;
+
+        data.PhaseName          = PhaseName;
+        data.PhaseGameNotes     = PhaseGameNotes;
 
         base.Clone(data);
 
@@ -39,12 +61,16 @@ public class SaveData : SaveBaseData
 
     public virtual void Clone(SaveElementData elementData)
     {
-        elementData.ModelIconPath  = ModelIconPath;
+        elementData.SaveType            = SaveType;
 
-        elementData.Name            = Name;
-        elementData.LocationName   = LocationName;
+        elementData.ChapterName         = ChapterName;
+        elementData.LocationName        = LocationName;
 
-        elementData.Time           = Time;
+        elementData.InteractableName    = InteractableName;
+        elementData.ModelIconPath       = ModelIconPath;
+
+        elementData.PhaseName           = PhaseName;
+        elementData.PhaseGameNotes      = PhaseGameNotes;
 
         base.Clone(elementData);
     }

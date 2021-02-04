@@ -65,11 +65,12 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             {
                 var interactionDestinationRouteSource = path.FindLastRoute(Enums.DataType.InteractionDestination);
 
+                //DataController data is used so that the action data is also updated
                 var interactionDestinationRoute = new Route()
                 {
                     controllerIndex = (int)Enums.WorldSelectionType.InteractionDestination,
                     id = interactionDestinationRouteSource.id,
-                    data = interactionDestinationRouteSource.data,
+                    data = interactionDestinationRouteSource.data.dataController.Data,
                     path = interactionDestinationRouteSource.path,
                     selectionStatus = Enums.SelectionStatus.Main,
                     uniqueSelection = false
@@ -131,9 +132,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             routeList.Add(route);
         });
 
-        //Not relevant at the moment: fix when data can be added!
-        FilterData();
-
         var sceneRoute = FindRouteByDataType(Enums.DataType.Scene);
 
         if(sceneRoute != null)
@@ -188,6 +186,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         switch(data.dataController.DataType)
         {
+            case Enums.DataType.Region:                 GetRegionFilterData(data);                  break;
             case Enums.DataType.Chapter:                GetChapterFilterData(data);                 break;
             case Enums.DataType.Phase:                  GetPhaseFilterData(data);                   break;
             case Enums.DataType.Quest:                  GetQuestFilterData(data);                   break;
@@ -198,7 +197,14 @@ public class RegionNavigationAction : MonoBehaviour, IAction
             case Enums.DataType.InteractionDestination: GetInteractionDestinationFilterData(data);  break;
             case Enums.DataType.Outcome:                GetOutcomeFilterData(data);                 break;
             case Enums.DataType.Scene:                  GetSceneFilterData(data);                   break;
+
+            default: Debug.Log("CASE MISSING: " + data.dataController.DataType); break;
         }
+    }
+
+    private void GetRegionFilterData(Data data)
+    {
+        data.dataList = data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Add).ToList();
     }
 
     private void GetChapterFilterData(Data data)
@@ -298,7 +304,10 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         interactionDestinationDataFilter = DataManager.GetInteractionDestinationData(interactionDestinationSearchParameters);
 
-        data.dataList = data.dataList.Where(x => interactionDestinationDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
+        var interactionDestinationRoute = FindRouteByDataType(Enums.DataType.InteractionDestination);
+
+        if(interactionDestinationRoute.ElementData.ExecuteType != Enums.ExecuteType.Add)
+            data.dataList = data.dataList.Where(x => interactionDestinationDataFilter.Select(y => y.Id).Contains(x.Id)).ToList();
     }
 
     private void GetOutcomeFilterData(Data data)
@@ -468,7 +477,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     {
         var searchParameters = searchProperties.searchParameters.Cast<Search.InteractionDestination>().First();
         searchParameters.id = new List<int>() { FindRouteByDataType(Enums.DataType.InteractionDestination).id };
-        
+
         return Enums.DataType.Interaction;
     }
 
@@ -490,149 +499,6 @@ public class RegionNavigationAction : MonoBehaviour, IAction
 
         return Enums.DataType.Outcome;
     }
-
-    //private void GetInteractionDestinationDependencies(IElementData elementData)
-    //{
-    //    var interactionDestinationData = (InteractionDestinationElementData)elementData;
-
-    //    var interactionRoute = FindRouteByDataType(Enums.DataType.Interaction);
-    //    interactionRoute.id = interactionDestinationData.InteractionId;
-
-    //    var taskRoute = FindRouteByDataType(Enums.DataType.Task);
-    //    taskRoute.id = interactionDestinationData.TaskId;
-
-    //    var worldInteractableRoute = FindRouteByDataType(Enums.DataType.WorldInteractable);
-    //    worldInteractableRoute.id = interactionDestinationData.WorldInteractableId;
-
-    //    var questRoute = FindRouteByDataType(Enums.DataType.Quest);
-
-    //    if (questRoute != null)
-    //        questRoute.id = interactionDestinationData.QuestId;
-
-    //    var objectiveRoute = FindRouteByDataType(Enums.DataType.Objective);
-
-    //    if (objectiveRoute != null)
-    //        objectiveRoute.id = interactionDestinationData.ObjectiveId;
-    //}
-
-    #region Data Filter
-    //Remove all dead ends from data
-    
-    private void FilterData()
-    {
-    /*
-        if (structureList.Contains(Enums.DataType.WorldInteractable))
-        {
-            var worldInteractableData = Fixtures.worldInteractableList;
-            var worldInteractableAction = FindActionByDataType(Enums.DataType.WorldInteractable);
-            worldInteractableAction.idFilter = worldInteractableData.Select(x => x.Id).Distinct().ToList();
-        }
-
-        if (structureList.Contains(Enums.DataType.Task))
-        {
-            if (structureList.Contains(Enums.DataType.WorldInteractable))
-            {
-                var worldInteractableData = FindActionByDataType(Enums.DataType.WorldInteractable).idFilter;
-
-                var taskData = Fixtures.taskList.Where(x => worldInteractableData.Contains(x.worldInteractableId)).Distinct().ToList();
-                var taskAction = FindActionByDataType(Enums.DataType.Task);
-                taskAction.idFilter = taskData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-
-        if (structureList.Contains(Enums.DataType.Interaction))
-        {
-            //if (structureList.Contains(Enums.DataType.Interaction))
-            //{
-            //    var idList = FindActionByDataType(Enums.DataType.Interaction).idFilter;
-            //    var interactionData = Fixtures.interactionList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
-
-            //    var objectiveData = Fixtures.objectiveList.Where(x => interactionData.Select(y => y.objectiveId).Contains(x.Id)).Distinct().ToList();
-            //    var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
-            //    objectiveAction.idFilter = objectiveData.Select(x => x.Id).Distinct().ToList();
-            //}
-        }
-
-        if (structureList.Contains(Enums.DataType.Objective))
-        {
-            if (structureList.Contains(Enums.DataType.Task))
-            {
-                var idList = FindActionByDataType(Enums.DataType.Task).idFilter;
-                var taskData = Fixtures.taskList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
-
-                var objectiveData = Fixtures.objectiveList.Where(x => taskData.Select(y => y.objectiveId).Contains(x.Id)).Distinct().ToList();
-                var objectiveAction = FindActionByDataType(Enums.DataType.Objective);
-                objectiveAction.idFilter = objectiveData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-
-        if (structureList.Contains(Enums.DataType.Quest))
-        {
-            if (structureList.Contains(Enums.DataType.Objective))
-            {
-                var idList = FindActionByDataType(Enums.DataType.Objective).idFilter;
-                var objectiveData = Fixtures.objectiveList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
-
-                var questData = Fixtures.questList.Where(x => objectiveData.Select(y => y.questId).Contains(x.Id)).Distinct().ToList();
-                var questAction = FindActionByDataType(Enums.DataType.Quest);
-                questAction.idFilter = questData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-
-        if (structureList.Contains(Enums.DataType.Phase))
-        {
-            if (structureList.Contains(Enums.DataType.Quest))
-            {
-                var idList = FindActionByDataType(Enums.DataType.Quest).idFilter;
-                var questData = Fixtures.questList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
-
-                var phaseData = Fixtures.phaseList.Where(x => questData.Select(y => y.phaseId).Contains(x.Id)).Distinct().ToList();
-                var phaseAction = FindActionByDataType(Enums.DataType.Phase);
-                phaseAction.idFilter = phaseData.Select(x => x.Id).Distinct().ToList();
-
-            } else {
-
-                var phaseRegionIds = Fixtures.regionList.Where(x => x.phaseId != 0).Distinct().ToList();
-
-                var phaseData = Fixtures.phaseList.Where(x => phaseRegionIds.Select(y => y.phaseId).Contains(x.Id)).Distinct().ToList();
-                var phaseAction = FindActionByDataType(Enums.DataType.Phase);
-                phaseAction.idFilter = phaseData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-
-        if (structureList.Contains(Enums.DataType.Chapter))
-        {
-            if (structureList.Contains(Enums.DataType.Phase))
-            {
-                var idList = FindActionByDataType(Enums.DataType.Phase).idFilter;
-                var phaseData = Fixtures.phaseList.Where(x => idList.Contains(x.Id)).Distinct().ToList();
-
-                var chapterData = Fixtures.phaseList.Where(x => phaseData.Select(y => y.chapterId).Contains(x.Id)).Distinct().ToList();
-                var chapterAction = FindActionByDataType(Enums.DataType.Chapter);
-                chapterAction.idFilter = chapterData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-
-        if (structureList.Contains(Enums.DataType.Region))
-        {
-            if (structureList.Contains(Enums.DataType.Phase))
-            {
-                var phaseData = FindActionByDataType(Enums.DataType.Phase).idFilter;
-
-                var regionData = Fixtures.regionList.Where(x => phaseData.Contains(x.phaseId)).Distinct().ToList();
-                var regionAction = FindActionByDataType(Enums.DataType.Region);
-                regionAction.idFilter = regionData.Select(x => x.Id).Distinct().ToList();
-
-            } else {
-
-                var regionAction = FindActionByDataType(Enums.DataType.Region);
-                var regionData = Fixtures.regionList.Where(x => x.phaseId == 0).Distinct().ToList();
-                regionAction.idFilter = regionData.Select(x => x.Id).Distinct().ToList();
-            }
-        }
-        */
-    }
-    #endregion
 
     public void SetAction(Path path)
     {
@@ -659,7 +525,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         {
             GetData(routeList[i].data.dataController);
         }
-        Debug.Log(PathController);
+
         RenderManager.loadType = Enums.LoadType.Reload;
         RenderManager.ResetPath(PathController.route.path);
     }
@@ -885,7 +751,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void SetInteractionDestinationOptions(ExDropdown dropdown, Data data)
     {
         var elementDataList = data.dataList.Cast<InteractionDestinationElementData>().ToList();
-        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData("Destination " + x.Id)));
+        elementDataList.ForEach(x => dropdown.Dropdown.options.Add(new Dropdown.OptionData(x.ExecuteType == Enums.ExecuteType.Add ? "New" : "Destination " + x.Id)));
     }
 
     private void SetRegionOptions(ExDropdown dropdown, Data data)
@@ -930,7 +796,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
         } else {
 
             if (!route.data.dataList.Select(y => y.Id).ToList().Contains(route.id))
-                route.id = route.data.dataList.First().Id;
+                route.id = route.data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Add).First().Id;
         }
     }
 

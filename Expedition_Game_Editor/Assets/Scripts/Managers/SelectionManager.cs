@@ -24,8 +24,7 @@ static public class SelectionManager
         OpenPhaseSaveRegion,
         OpenPhaseSaveRegionWorldInteractable,
         OpenOutcomeScenes,
-        OpenSceneRegion,
-        AddNewSave
+        OpenSceneRegion
     }
 
     static public List<Route> routeList = new List<Route>();
@@ -66,6 +65,7 @@ static public class SelectionManager
                 if (DataManager.Equals(elementData, route.ElementData))
                 {
                     //Only select the element by which the route was opened if "unique selection" is true or when searching
+                    //Note! Selection happens before element data is assigned a data element, limiting the use cases
                     if (route.uniqueSelection)
                     {
                         if (elementData.DataElement != route.ElementData.DataElement)

@@ -60,7 +60,7 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
         var searchProperties = new SearchProperties(Enums.DataType.Region);
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
-        searchParameters.includeAddElement = SceneEditor.EditData.ExecuteType == Enums.ExecuteType.Add;
+        searchParameters.includeAddElement = (RegionId == -1);
 
         searchParameters.id = new List<int>() { RegionId };
         searchParameters.type = Enums.RegionType.Scene;
@@ -101,6 +101,8 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     
     private void SetRegionData()
     {
+        Debug.Log(regionButton.DataElement.Id + ":" + RegionId);
+
         RegionElementData.Id            = RegionId;
         RegionElementData.TileIconPath  = TileIconPath;
         RegionElementData.Name          = RegionName;

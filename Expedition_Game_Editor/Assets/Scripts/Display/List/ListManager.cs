@@ -176,13 +176,13 @@ public class ListManager : MonoBehaviour, IDisplayManager
     public void AutoSelectElement(int autoSelectId)
     {
         if (Organizer == null) return;
-        
-        if (Display.DataController.Data.dataList.Count == 0) return;
+
+        var dataList = Display.DataController.Data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList();
+
+        if (dataList.Count == 0) return;
         
         if (autoSelectId == 0)
         {
-            var dataList = Display.DataController.Data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList();
-
             //Only select the add element if it's the only available element
             if (dataList.Count == 1 && dataList.First().ExecuteType == Enums.ExecuteType.Add)
                 autoSelectId = dataList.First().Id;

@@ -877,6 +877,14 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
             return;
         }
 
+        //Hidden: Add elements when they are not selected
+        if (interactionDestinationElementData.ExecuteType == Enums.ExecuteType.Add &&
+            interactionDestinationElementData.Id != selectedInteractionDestination.Id)
+        {
+            element.elementStatus = Enums.ElementStatus.Hidden;
+            return;
+        }
+
         //Hidden: Interactions where the active time is not within its timeframe
         if (!interactionDestinationElementData.ContainsActiveTime)
         {

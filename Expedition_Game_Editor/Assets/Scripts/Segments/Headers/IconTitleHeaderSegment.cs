@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class IconTitleHeaderSegment : MonoBehaviour, ISegment
 {
+    public ExIndexSwitch indexSwitch;
     public RawImage icon;
     public Text headerText;
     public Text idText;
@@ -23,9 +24,26 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
                 case Enums.DataType.InteractionDestination:
                     return ((InteractionDestinationEditor)DataEditor).Id;
 
+                case Enums.DataType.Save:
+                    return ((SaveEditor)DataEditor).Id;
+
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).Id;
 
+                default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
+            }
+        }
+    }
+
+    public int Index
+    {
+        get
+        {
+            switch (DataEditor.Data.dataController.DataType)
+            {
+                case Enums.DataType.Save:
+                    return ((SaveEditor)DataEditor).Index;
+                    
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return 0; }
             }
         }
@@ -42,6 +60,9 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.InteractionDestination:
                     return ((InteractionDestinationEditor)DataEditor).InteractableName;
+
+                case Enums.DataType.Save:
+                    return ((SaveEditor)DataEditor).InteractableName;
 
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).InteractableName;
@@ -62,6 +83,9 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
 
                 case Enums.DataType.InteractionDestination:
                     return ((InteractionDestinationEditor)DataEditor).ModelIconPath;
+
+                case Enums.DataType.Save:
+                    return ((SaveEditor)DataEditor).ModelIconPath;
 
                 case Enums.DataType.InteractableSave:
                     return ((InteractableSaveEditor)DataEditor).ModelIconPath;
@@ -85,17 +109,28 @@ public class IconTitleHeaderSegment : MonoBehaviour, ISegment
         InitializeDependencies();
 
         if (DataEditor.Loaded) return;
+
+        if (indexSwitch != null)
+        {
+            var enabled = Id > 0;
+
+            indexSwitch.EnableElement(enabled);
+            indexSwitch.InitializeSwitch(this, enabled ? Index : DataEditor.Data.dataList.Count - 1);
+        }
     }
 
     public void InitializeSegment() { }
 
     public void OpenSegment()
     {
-        if (Id > 0)
-            idText.text = Id.ToString();
-        else
-            idText.text = "New";
-
+        if(idText != null)
+        {
+            if (Id > 0)
+                idText.text = Id.ToString();
+            else
+                idText.text = "New";
+        }
+        
         icon.texture = Resources.Load<Texture2D>(IconPath);
         headerText.text = Title;
         

@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameDataMenuSegment : MonoBehaviour, ISegment
 {
-    public SegmentController SegmentController { get { return GetComponent<SegmentController>(); } }
-    public IEditor DataEditor { get; set; }
+    public Text headerText;
 
     public Button titleScreenButton;
 
+    public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
+    public IEditor DataEditor                   { get; set; }
+    
     public void InitializeDependencies()
     {
         DataEditor = SegmentController.EditorController.PathController.DataEditor;
@@ -21,15 +21,29 @@ public class GameDataMenuSegment : MonoBehaviour, ISegment
 
     public void OpenSegment()
     {
-        InitializeGameButton();
+        headerText.text = "Options";
     }
 
-    private void InitializeGameButton()
+    public void ContinueGame()
     {
-        titleScreenButton.onClick.AddListener(delegate { OpenGame(); });
+        RenderManager.PreviousPath();
     }
 
-    private void OpenGame()
+    public void OpenSaveGame()
+    {
+        var gameMenu = new PathManager.GameMenu();
+
+        RenderManager.Render(gameMenu.OpenSaveMenu(Enums.SaveType.Save));
+    }
+
+    public void OpenLoadGame()
+    {
+        var gameMenu = new PathManager.GameMenu();
+
+        RenderManager.Render(gameMenu.OpenSaveMenu(Enums.SaveType.Load));
+    }
+
+    public void OpenTitleScreen()
     {
         GlobalManager.OpenScene(GlobalManager.Scenes.Game);
     }
@@ -38,8 +52,5 @@ public class GameDataMenuSegment : MonoBehaviour, ISegment
 
     public void UpdateSegment() { }
 
-    public void CloseSegment()
-    {
-        titleScreenButton.onClick.RemoveAllListeners();
-    }
+    public void CloseSegment() { }
 }

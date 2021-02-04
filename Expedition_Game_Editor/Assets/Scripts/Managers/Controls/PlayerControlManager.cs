@@ -28,7 +28,7 @@ public class PlayerControlManager : MonoBehaviour
     private CameraManager CameraManager                         { get { return GameManager.instance.Organizer.CameraManager; } }
     private TrackingElementOverlay TrackingElementOverlay       { get { return GameManager.instance.Organizer.OverlayManger.TrackingElementOverlay; } }
 
-    private PlayerSaveElementData PlayerData                    { get { return GameManager.instance.gameSaveData.PlayerSaveData; } }
+    private SaveElementData SaveData                            { get { return GameManager.instance.activeGameSaveElementData.SaveData; } }
     private GameWorldInteractableElementData ActiveCharacterData{ get { return GameManager.instance.worldInteractableControllableData; } }
     private GameElement ActiveCharacter                         { get { return ActiveCharacterData.DataElement.GetComponent<GameElement>(); } }
     private Animator ActiveAnimator                             { get { return ((ExGameWorldAgent)ActiveCharacterData.DataElement.SelectionElement.Element).Animator; } }
@@ -346,9 +346,9 @@ public class PlayerControlManager : MonoBehaviour
 
         if(ActiveCharacterData.DataElement != null)
         {
-            PlayerData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
-            PlayerData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
-            PlayerData.PositionZ = ActiveCharacterData.DataElement.transform.localPosition.z;
+            SaveData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
+            SaveData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
+            SaveData.PositionZ = ActiveCharacterData.DataElement.transform.localPosition.z;
         }
         
         ResetCamera();
@@ -356,7 +356,7 @@ public class PlayerControlManager : MonoBehaviour
 
     public void SetWorldInteractableControllableTerrainTileId(GameWorldInteractableElementData gameWorldInteractableElementData)
     {
-        var playerData = GameManager.instance.gameSaveData.PlayerSaveData;
+        var playerData = GameManager.instance.activeGameSaveElementData.SaveData;
         var regionData = GameManager.instance.gameWorldData.RegionDataList.Where(x => x.Id == playerData.RegionId).First();
         
         gameWorldInteractableElementData.TerrainTileId = RegionManager.GetGameTerrainTileId(regionData, playerData.PositionX, playerData.PositionZ);
@@ -371,16 +371,16 @@ public class PlayerControlManager : MonoBehaviour
         ActiveAnimator.SetBool("IsMoving", true);
         ActiveAnimator.SetFloat("MoveSpeedSensitivity", speed / ActiveCharacterData.Scale);
 
-        PlayerData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
-        PlayerData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
-        PlayerData.PositionZ = -ActiveCharacterData.DataElement.transform.localPosition.z;
+        SaveData.PositionX = ActiveCharacterData.DataElement.transform.localPosition.x;
+        SaveData.PositionY = ActiveCharacterData.DataElement.transform.localPosition.y;
+        SaveData.PositionZ = -ActiveCharacterData.DataElement.transform.localPosition.z;
         
         if(InteractionManager.interactionDelayTarget != null && InteractionManager.interactionDelayTarget.Interaction.CancelDelayOnMovement)
         {
             InteractionManager.CancelInteractionDelay();
         }
 
-        var cameraPosition = new Vector3(PlayerData.PositionX, defaultCameraPosition.y, -PlayerData.PositionZ + defaultCameraPosition.z);
+        var cameraPosition = new Vector3(SaveData.PositionX, defaultCameraPosition.y, -SaveData.PositionZ + defaultCameraPosition.z);
 
         if (DisableCameraMovement) return;
 
@@ -394,7 +394,7 @@ public class PlayerControlManager : MonoBehaviour
 
     public void ResetCamera()
     {
-        var cameraPosition = new Vector3(PlayerData.PositionX, defaultCameraPosition.y, -PlayerData.PositionZ + defaultCameraPosition.z);
+        var cameraPosition = new Vector3(SaveData.PositionX, defaultCameraPosition.y, -SaveData.PositionZ + defaultCameraPosition.z);
         CameraManager.cam.transform.eulerAngles = defaultCameraRotation;
 
         MoveCamera(cameraPosition);

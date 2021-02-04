@@ -93,7 +93,7 @@ public static class ChapterSaveDataManager
             {
                 data.Complete = elementData.Complete;
 
-                PlayerSaveDataManager.UpdateReferences(dataRequest);
+                SaveDataManager.UpdateReferences(dataRequest);
             }
 
             elementData.SetOriginalValues();

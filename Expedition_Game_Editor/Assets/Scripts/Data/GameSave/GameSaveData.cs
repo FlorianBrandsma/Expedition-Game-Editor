@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class GameSaveData
 {
-    public int Id                               { get; set; }
+    public int Id { get; set; }
 
-    public PlayerSaveElementData PlayerSaveData { get; set; }
+    public SaveElementData SaveData { get; set; }
 
     public List<ChapterSaveElementData> ChapterSaveDataList         { get; set; } = new List<ChapterSaveElementData>();
     public List<PhaseSaveElementData> PhaseSaveDataList             { get; set; } = new List<PhaseSaveElementData>();
@@ -16,26 +16,26 @@ public class GameSaveData
 
     public virtual void GetOriginalValues(GameSaveData originalData)
     {
-        Id              = originalData.Id;
+        Id          = originalData.Id;
 
-        PlayerSaveData  = originalData.PlayerSaveData;
+        SaveData    = originalData.SaveData;
     }
 
     public GameSaveData Clone()
     {
         var data = new GameSaveData();
         
-        data.Id             = Id;
+        data.Id         = Id;
 
-        data.PlayerSaveData = PlayerSaveData;
+        data.SaveData   = SaveData;
 
         return data;
     }
 
     public virtual void Clone(GameSaveElementData elementData)
     {
-        elementData.Id              = Id;
+        elementData.Id          = Id;
 
-        elementData.PlayerSaveData  = PlayerSaveData;
+        elementData.SaveData    = SaveData;
     }
 }

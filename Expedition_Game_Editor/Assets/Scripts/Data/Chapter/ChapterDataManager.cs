@@ -78,7 +78,7 @@ public static class ChapterDataManager
 
             AddDependencies(elementData, dataRequest);
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 
@@ -180,7 +180,7 @@ public static class ChapterDataManager
 
             elementData.OriginalData.Index = elementData.Index;
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else { }
     }
@@ -195,7 +195,7 @@ public static class ChapterDataManager
 
             elementData.RemoveIndex(dataRequest);
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 

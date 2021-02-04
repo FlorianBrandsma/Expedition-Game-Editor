@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System;
 using System.Linq;
+using System.Globalization;
 
 public class ExPanel : MonoBehaviour, IElement, IPoolable
 {
@@ -10,9 +11,11 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public SelectionManager.Property childProperty;
 
     public Text idText;
+    public Text indexText;
     public Text headerText;
     public Text descriptionText;
-    public Text timeText;
+    public Text playTimeText;
+    public Text saveTimeText;
     public RectTransform iconParent;
     public RawImage infoIcon;
     public RawImage icon;
@@ -21,8 +24,11 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public Image background;
 
     private int id;
+    private int index;
     private string header;
     private string description;
+    private int playTime;
+    private DateTime saveTime;
     private string infoIconPath;
     private string iconPath;
     private Texture iconTexture;
@@ -75,14 +81,26 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (idText == null) return;
 
         if(enable)
+            idText.text = id.ToString();
+        
+        idText.gameObject.SetActive(enable);
+    }
+
+    private void SetIndex(bool enable)
+    {
+        if (indexText == null) return;
+
+        if(enable)
         {
-            if (id < 0)
-                idText.text = "New";
-            else
-                idText.text = id.ToString();
+            indexText.text = (index + 1).ToString();
+            content.offsetMin = new Vector2(indexText.rectTransform.rect.width + 5, content.offsetMin.y);
+
+        } else {
+
+            content.offsetMin = new Vector2(5, content.offsetMin.y);
         }
 
-        idText.gameObject.SetActive(enable);
+        indexText.gameObject.SetActive(enable);
     }
 
     private void SetHeader(bool enable)
@@ -94,7 +112,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             if (ElementType == Enums.ElementType.CompactPanel)
                 HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, IdRectTransform.rect.height);
 
-            if (ElementType == Enums.ElementType.Panel)
+            if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel)
                 HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, DescriptionRectTransform.offsetMax.y);
 
             headerText.alignment = TextAnchor.UpperLeft;
@@ -104,7 +122,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             if (ElementType == Enums.ElementType.CompactPanel)
                 HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, 0);
 
-            if (ElementType == Enums.ElementType.Panel)
+            if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel)
                 HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, -content.rect.height);
 
             headerText.alignment = TextAnchor.MiddleCenter;
@@ -127,13 +145,31 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (descriptionText == null) return;
 
         if(enable)
-        {
             descriptionText.text = description;
-        }
-
+        
         descriptionText.gameObject.SetActive(enable);
     }
-    
+
+    private void SetPlayTime(bool enable)
+    {
+        if (playTimeText == null) return;
+
+        if (enable)
+            playTimeText.text = TimeManager.TimeFromSeconds(playTime);
+
+        playTimeText.gameObject.SetActive(enable);
+    }
+
+    private void SetSaveTime(bool enable)
+    {
+        if (saveTimeText == null) return;
+
+        if (enable)
+            saveTimeText.text = saveTime.ToString("H:mm:ss dd/MM/yyyy");
+        
+        saveTimeText.gameObject.SetActive(enable);
+    }
+
     private void SetIcon(bool enable)
     {
         if (iconParent == null) return;
@@ -170,7 +206,6 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if(enable)
         {
             var texture = Resources.Load<Texture2D>(infoIconPath);
-
             infoIcon.texture = texture;
         }
 
@@ -245,8 +280,11 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var enableContent = (id != -1 && id != 0);
 
         SetId(enableContent);
+        SetIndex(enableContent);
         SetHeader(enableContent);
         SetDescription(enableContent && description != null);
+        SetPlayTime(enableContent);
+        SetSaveTime(enableContent);
         SetIcon(enableContent && iconPath != null);
         SetInfoIcon(infoIconPath != null);
 
@@ -494,12 +532,15 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     {
         var elementData = (SaveElementData)EditorElement.DataElement.ElementData;
 
-        header          = elementData.Name;
+        index           = elementData.Index;
+
+        header          = elementData.ChapterName;
         description     = elementData.LocationName;
 
         iconPath        = elementData.ModelIconPath;
 
-        timeText.text   = elementData.Time;
+        playTime        = elementData.PlayTime;
+        saveTime        = elementData.SaveTime;
     }
 
     private void SetInteractableSaveElement()
@@ -568,8 +609,8 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         header = null;
         description = null;
 
-        if(timeText != null)
-            timeText.text = string.Empty;
+        if(playTimeText != null)
+            playTimeText.text = string.Empty;
     }
 
     public void ClosePoolable() { }

@@ -77,7 +77,7 @@ public class PathController : MonoBehaviour
         
         InitializeActions(mainPath);
 
-        if (EditorController != null)
+        if (EditorController != null)      
             layoutSection.TargetController = EditorController;
 
         if (step < mainPath.routeList.Count)
@@ -183,7 +183,7 @@ public class PathController : MonoBehaviour
 
         if (GetComponent<LayoutDependency>() != null)
             layoutSection.TargetView = GetComponent<LayoutDependency>();
-
+        
         if (step < path.routeList.Count)
         {
             controllers[path.routeList[step].controllerIndex].GetTargetLayout(path, layoutStep);

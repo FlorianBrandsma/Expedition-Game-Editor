@@ -471,21 +471,6 @@ static public class DataManager
         return dataList;
     }
 
-    static public List<PlayerSaveBaseData> GetPlayerSaveData(Search.PlayerSave searchParameters)
-    {
-        var dataList = new List<PlayerSaveBaseData>();
-
-        foreach(PlayerSaveBaseData playerSave in Fixtures.playerSaveList)
-        {
-            if (searchParameters.saveId.Count               > 0 && !searchParameters.saveId.Contains(playerSave.SaveId))                            continue;
-            if (searchParameters.worldInteractableId.Count  > 0 && !searchParameters.worldInteractableId.Contains(playerSave.WorldInteractableId))  continue;
-
-            dataList.Add(playerSave);
-        }
-
-        return dataList;
-    }
-
     static public List<InteractableSaveBaseData> GetInteractableSaveData(Search.InteractableSave searchParameters)
     {
         var dataList = new List<InteractableSaveBaseData>();

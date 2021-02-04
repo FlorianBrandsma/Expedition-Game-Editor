@@ -124,7 +124,7 @@ public static class ChapterRegionDataManager
 
             AddDependencies(elementData, dataRequest);
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else { }
     }
@@ -211,7 +211,7 @@ public static class ChapterRegionDataManager
 
             Fixtures.chapterRegionList.RemoveAll(x => x.Id == elementData.Id);
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 

@@ -120,7 +120,7 @@ static public class RenderManager
     {
         Render(path);
 
-        layoutManager.forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => Render(form.activePath));
+        //layoutManager.forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => Render(form.activePath));
 
         loadType = Enums.LoadType.Normal;
     }

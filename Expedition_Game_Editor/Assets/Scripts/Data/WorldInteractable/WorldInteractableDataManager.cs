@@ -126,7 +126,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    public static void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetRegionWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 
@@ -150,7 +150,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    public static void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetQuestAndObjectiveWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 
@@ -165,7 +165,7 @@ public static class WorldInteractableDataManager
         }
     }
 
-    public static void GetSceneActorWorldInteractableData(Search.WorldInteractable searchParameters)
+    private static void GetSceneActorWorldInteractableData(Search.WorldInteractable searchParameters)
     {
         worldInteractableDataList = new List<WorldInteractableBaseData>();
 
@@ -224,7 +224,7 @@ public static class WorldInteractableDataManager
             elementData.SetOriginalValues();
 
             if(elementData.Type == (int)Enums.InteractableType.Controllable)
-                PlayerSaveDataManager.UpdateReferences(dataRequest);
+                SaveDataManager.UpdateReferences(dataRequest);
             else
                 AddDependencies(elementData, dataRequest);
             
@@ -279,7 +279,7 @@ public static class WorldInteractableDataManager
             Fixtures.worldInteractableList.RemoveAll(x => x.Id == elementData.Id);
 
             if (elementData.Type == (int)Enums.InteractableType.Controllable)
-                PlayerSaveDataManager.UpdateReferences(dataRequest);
+                SaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 

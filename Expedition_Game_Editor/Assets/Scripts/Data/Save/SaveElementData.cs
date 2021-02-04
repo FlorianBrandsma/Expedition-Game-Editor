@@ -15,9 +15,55 @@ public class SaveElementData : SaveData, IElementData
     public bool UniqueSelection                     { get; set; }
 
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
-    
+
     #region Changed
-    public bool Changed { get { return false; } }
+    public bool ChangedRegionId
+    {
+        get { return RegionId != OriginalData.RegionId; }
+    }
+
+    public bool ChangedWorldInteractableId
+    {
+        get { return WorldInteractableId != OriginalData.WorldInteractableId; }
+    }
+
+    public bool ChangedIndex
+    {
+        get { return Index != OriginalData.Index; }
+    }
+
+    public bool ChangedPositionX
+    {
+        get { return !Mathf.Approximately(PositionX, OriginalData.PositionX); }
+    }
+
+    public bool ChangedPositionY
+    {
+        get { return !Mathf.Approximately(PositionY, OriginalData.PositionY); }
+    }
+
+    public bool ChangedPositionZ
+    {
+        get { return !Mathf.Approximately(PositionZ, OriginalData.PositionZ); }
+    }
+
+    public bool ChangedGameTime
+    {
+        get { return GameTime != OriginalData.GameTime; }
+    }
+
+    //public bool ChangedPlayedSeconds
+    //{
+    //    get { return PlayedSeconds != OriginalData.PlayedSeconds; }
+    //}
+
+    public bool Changed
+    {
+        get
+        {
+            return ChangedRegionId || ChangedWorldInteractableId || ChangedPositionX || ChangedPositionY || ChangedPositionZ || ChangedGameTime;
+        }
+    }
     #endregion
 
     public SaveElementData() { }
@@ -27,9 +73,25 @@ public class SaveElementData : SaveData, IElementData
         SaveDataManager.AddData(this, dataRequest);
     }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        SaveDataManager.UpdateData(this, dataRequest);
+    }
 
-    public void Remove(DataRequest dataRequest) { }
+    public void UpdateIndex(DataRequest dataRequest)
+    {
+        SaveDataManager.UpdateIndex(this, dataRequest);
+    }
+
+    public void Remove(DataRequest dataRequest)
+    {
+        SaveDataManager.RemoveData(this, dataRequest);
+    }
+
+    public void RemoveIndex(DataRequest dataRequest)
+    {
+        SaveDataManager.RemoveIndex(this, dataRequest);
+    }
 
     public void SetOriginalValues()
     {

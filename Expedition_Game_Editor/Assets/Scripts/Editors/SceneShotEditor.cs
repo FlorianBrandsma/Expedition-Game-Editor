@@ -16,7 +16,6 @@ public class SceneShotEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -195,21 +194,35 @@ public class SceneShotEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed);
     }
 
+    public bool Removable()
+    {
+        return true;
+    }
+
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplySceneShotChanges(dataRequest);
+    }
+
+    private void ApplySceneShotChanges(DataRequest dataRequest)
+    {
+        if (EditData.ExecuteType == Enums.ExecuteType.Update)
+            UpdateSceneShot(dataRequest);
+    }
+
+    private void UpdateSceneShot(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
-
-        ElementDataList.Where(x => x != EditData).ToList().ForEach(x => x.SetOriginalValues());
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
     }
 
     public void FinalizeChanges()

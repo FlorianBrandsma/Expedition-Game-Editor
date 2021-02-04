@@ -912,7 +912,7 @@ public static class PhaseDataManager
 
             elementData.OriginalData.Index = elementData.Index;
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else { }
     }
@@ -927,7 +927,7 @@ public static class PhaseDataManager
 
             elementData.RemoveIndex(dataRequest);
 
-            PlayerSaveDataManager.UpdateReferences(dataRequest);
+            SaveDataManager.UpdateReferences(dataRequest);
 
         } else {
 

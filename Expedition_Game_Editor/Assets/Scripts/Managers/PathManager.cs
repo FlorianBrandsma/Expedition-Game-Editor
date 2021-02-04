@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,17 +11,17 @@ public class PathManager
     {
         EditorForm form;
 
-        int controllerIndex;
+        List<int> controllerIndices;
 
-        public Form(EditorForm form, int controllerIndex)
+        public Form(EditorForm form, List<int> controllerIndices)
         {
             this.form = form;
-            this.controllerIndex = controllerIndex;
+            this.controllerIndices = controllerIndices;
         }
 
         public Path Initialize()
         {
-            return CreatePath(CreateRoutes(new List<int>() { controllerIndex }, form, Enums.SelectionStatus.Main, false), form);
+            return CreatePath(CreateRoutes(controllerIndices, form, Enums.SelectionStatus.Main, false), form);
         }
     }
     #endregion
@@ -808,10 +807,10 @@ public class PathManager
     {
         EditorForm form = RenderManager.layoutManager.forms[3];
         
-        List<int> source = new List<int>() { 0, 1 };
-        
-        public Path LoadSave()
+        public Path OpenSaveMenu(Enums.SaveType saveType)
         {
+            List<int> source = new List<int>() { 0, ((int)saveType + 1) };
+
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
         }
     }
@@ -819,30 +818,43 @@ public class PathManager
     public class Save
     {
         EditorElement editorElement;
-        Path path;
+        Path pathSource;
         Route route;
 
-        List<int> enter = new List<int>() { 0 };
-
-        EditorForm form = RenderManager.layoutManager.forms[0];
+        List<int> enter = new List<int>() { 0, 0 };
+        List<int> open  = new List<int>() { 0 };
 
         public Save(EditorElement editorElement, Route route)
         {
             this.editorElement = editorElement;
-
             this.route = route;
 
-            if (editorElement.DataElement.DisplayManager != null)
-                path = editorElement.DataElement.segmentController.Path;
+            pathSource = editorElement.DataElement.segmentController.Path;
         }
 
-        public Path EnterGame()
+        public Path Enter()
+        {
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection)),
+                form = RenderManager.layoutManager.forms[3],
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+            
+            return path;
+        }
+
+        public Path Open()
         {
             RenderManager.CloseForms();
 
             HistoryManager.ClearHistory();
-            
-            path = CreatePath(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
+
+            var form = RenderManager.layoutManager.forms[0];
+
+            var path = CreatePath(CreateRoutes(open, route, editorElement.selectionStatus, editorElement.uniqueSelection), form);
             path.type = Path.Type.New;
 
             return path;

@@ -80,14 +80,14 @@ public class Enums
         Goblin,
         Environment
     }
-
+    
     public enum IconType
     {
         None,
         Base,
         Icon
     }
-
+    
     public enum ItemType
     {
         Supplies,
@@ -132,6 +132,12 @@ public class Enums
         Shot,
         Actor,
         Prop
+    }
+
+    public enum SaveType
+    {
+        Save,
+        Load
     }
 
     public enum DisplayType
@@ -179,7 +185,8 @@ public class Enums
         TouchButton,
         SpeechBubble,
         SpeechTextBox,
-        CameraFilter
+        CameraFilter,
+        SavePanel
     }
 
     public enum SelectionIconType

@@ -24,13 +24,32 @@ public class GameSaveElementData : GameSaveData, IElementData
 
     public void Add(DataRequest dataRequest) { }
 
-    public void Update(DataRequest dataRequest) { }
+    public void Update(DataRequest dataRequest)
+    {
+        SaveData.Update(dataRequest);
+
+        ChapterSaveDataList.ForEach(x => x.Update(dataRequest));
+        PhaseSaveDataList.ForEach(x => x.Update(dataRequest));
+        QuestSaveDataList.ForEach(x => x.Update(dataRequest));
+        ObjectiveSaveDataList.ForEach(x => x.Update(dataRequest));
+        TaskSaveDataList.ForEach(x => x.Update(dataRequest));
+        InteractionSaveDataList.ForEach(x => x.Update(dataRequest));
+    }
 
     public void Remove(DataRequest dataRequest) { }
 
     public void SetOriginalValues()
     {
         OriginalData = base.Clone();
+
+        SaveData.SetOriginalValues();
+
+        ChapterSaveDataList.ForEach(x => x.SetOriginalValues());
+        PhaseSaveDataList.ForEach(x => x.SetOriginalValues());
+        QuestSaveDataList.ForEach(x => x.SetOriginalValues());
+        ObjectiveSaveDataList.ForEach(x => x.SetOriginalValues());
+        TaskSaveDataList.ForEach(x => x.SetOriginalValues());
+        InteractionSaveDataList.ForEach(x => x.SetOriginalValues());
 
         ClearChanges();
     }

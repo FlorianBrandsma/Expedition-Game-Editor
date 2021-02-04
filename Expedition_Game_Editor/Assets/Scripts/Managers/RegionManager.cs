@@ -129,7 +129,7 @@ static public class RegionManager
 
         var terrainData = terrainDataList.Where(x => x.RegionId == regionData.Id && x.Index == terrainIndex).FirstOrDefault();
 
-        return regionData.Name + ", " + terrainData.Name;
+        return regionData.Name + " - " + terrainData.Name;
     }
 
     static public void SetDisplay(int display, Path path)

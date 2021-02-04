@@ -37,7 +37,7 @@ public class InteractionDestinationBaseData
         TerrainId           = originalData.TerrainId;
         TerrainTileId       = originalData.TerrainTileId;
 
-        Default             = originalData.DefaultInteraction;
+        Default             = originalData.Default;
 
         PositionX           = originalData.PositionX;
         PositionY           = originalData.PositionY;
@@ -65,7 +65,7 @@ public class InteractionDestinationBaseData
         data.TerrainId          = TerrainId;
         data.TerrainTileId      = TerrainTileId;
 
-        data.DefaultInteraction            = Default;
+        data.Default            = Default;
 
         data.PositionX          = PositionX;
         data.PositionY          = PositionY;

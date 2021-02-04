@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public class TitleScreenLoadSaveSegment : MonoBehaviour, ISegment
+public class SaveSegment : MonoBehaviour, ISegment
 {
-    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
+    public Enums.SaveType saveType;
+    public Text headerText;
 
+    public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
@@ -29,6 +33,8 @@ public class TitleScreenLoadSaveSegment : MonoBehaviour, ISegment
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
 
         searchParameters.gameId = new List<int>() { 0 };
+
+        searchParameters.saveType = saveType;
     }
 
     public void InitializeSegment()
@@ -38,6 +44,8 @@ public class TitleScreenLoadSaveSegment : MonoBehaviour, ISegment
     
     public void OpenSegment()
     {
+        headerText.text = Enum.GetName(typeof(Enums.SaveType), saveType) + " Game";
+
         if (GetComponent<IDisplay>() != null)
             GetComponent<IDisplay>().DataController = SegmentController.DataController;
     }

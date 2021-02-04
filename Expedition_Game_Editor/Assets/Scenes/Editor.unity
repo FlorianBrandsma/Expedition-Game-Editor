@@ -12184,7 +12184,7 @@ MonoBehaviour:
   activeInPath: 0
   autoOpen: 1
   resetPath: 0
-  controllerIndex: 0
+  controllerIndices: 00000000
   editorForm: {fileID: 1374861249}
   openIcon: {fileID: 2800000, guid: 9ef93212c0d775146bea21440f367f6b, type: 3}
   closeIcon: {fileID: 2800000, guid: 73c260ff69ab81141b7de78c2177c98b, type: 3}
@@ -12224,7 +12224,7 @@ MonoBehaviour:
   activeInPath: 0
   autoOpen: 0
   resetPath: 0
-  controllerIndex: 0
+  controllerIndices: 00000000
   editorForm: {fileID: 778174905}
   openIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
   closeIcon: {fileID: 2800000, guid: 8c68ab5109475634590f8d7203e8635f, type: 3}
@@ -18949,7 +18949,7 @@ MonoBehaviour:
   activeInPath: 0
   autoOpen: 1
   resetPath: 0
-  controllerIndex: 1
+  controllerIndices: 01000000
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
   closeIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}
@@ -71439,7 +71439,7 @@ MonoBehaviour:
   activeInPath: 0
   autoOpen: 1
   resetPath: 0
-  controllerIndex: 0
+  controllerIndices: 00000000
   editorForm: {fileID: 1250721019}
   openIcon: {fileID: 2800000, guid: 42fa367a85788724ab38897d45512017, type: 3}
   closeIcon: {fileID: 2800000, guid: 2d1b79db182cce94fa68d0bb81276e3f, type: 3}

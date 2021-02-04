@@ -18,7 +18,6 @@ public class SceneActorEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -401,9 +400,19 @@ public class SceneActorEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed) && (SpeechText.Length <= SpeechTextLimit);
+    }
+    
+    public bool Removable()
+    {
+        return true;
     }
 
     public void ApplyChanges(DataRequest dataRequest)

@@ -61,7 +61,6 @@ static public class Fixtures
     static public List<ScenePropBaseData>               scenePropList               = new List<ScenePropBaseData>();
 
     static public List<SaveBaseData>                    saveList                    = new List<SaveBaseData>();
-    static public List<PlayerSaveBaseData>              playerSaveList              = new List<PlayerSaveBaseData>();
     static public List<InteractableSaveBaseData>        interactableSaveList        = new List<InteractableSaveBaseData>();
     static public List<ChapterSaveBaseData>             chapterSaveList             = new List<ChapterSaveBaseData>();
     static public List<PhaseSaveBaseData>               phaseSaveList               = new List<PhaseSaveBaseData>();
@@ -1727,36 +1726,20 @@ static public class Fixtures
 
         save.Id = id;
 
-        CreatePlayerSave(save);
-        CreateInteractableSaves(save);
-        CreateStageSaves(save);
+        var firstChapter = chapterList.OrderBy(x => x.Index).First();
+        var firstPhase = phaseList.Where(x => x.ChapterId == firstChapter.Id).OrderBy(x => x.Index).First();
+        var firstWorldInteractable = worldInteractableList.Where(x => x.ChapterId == firstChapter.Id).First();
 
-        saveList.Add(save);
-    }
+        save.RegionId = firstPhase.DefaultRegionId;
+        save.WorldInteractableId = firstWorldInteractable.Id;
 
-    static private void CreatePlayerSave(SaveBaseData save)
-    {
-        var playerSave = new PlayerSaveBaseData();
+        save.PositionX = firstPhase.DefaultPositionX;
+        save.PositionY = firstPhase.DefaultPositionY;
+        save.PositionZ = firstPhase.DefaultPositionZ;
 
-        int playerSaveId = playerSaveList.Count > 0 ? (playerSaveList[playerSaveList.Count - 1].Id + 1) : 1;
+        save.GameTime = firstPhase.DefaultTime;
 
-        playerSave.Id = playerSaveId;
-
-        playerSave.SaveId = save.Id;
-
-        var firstChapter            = chapterList.OrderBy(x => x.Index).First();
-        var firstPhase              = phaseList.Where(x => x.ChapterId == firstChapter.Id).OrderBy(x => x.Index).First();
-        var firstWorldInteractable  = worldInteractableList.Where(x => x.ChapterId == firstChapter.Id).First();
-
-        playerSave.RegionId = firstPhase.DefaultRegionId;
-        playerSave.WorldInteractableId = firstWorldInteractable.Id;
-
-        playerSave.PositionX = firstPhase.DefaultPositionX;
-        playerSave.PositionY = firstPhase.DefaultPositionY;
-        playerSave.PositionZ = firstPhase.DefaultPositionZ;
-
-        playerSave.GameTime = firstPhase.DefaultTime;
-
+        save.SaveTime = System.DateTime.Now;
         //Test
         //playerSave.playedSeconds = 123456;
         //34 hours
@@ -1764,7 +1747,10 @@ static public class Fixtures
         //36 seconds
         //----
 
-        playerSaveList.Add(playerSave);
+        CreateInteractableSaves(save);
+        CreateStageSaves(save);
+
+        saveList.Add(save);
     }
 
     static private void CreateInteractableSaves(SaveBaseData save)

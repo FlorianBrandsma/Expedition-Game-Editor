@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class FormAction : MonoBehaviour, IAction
 {
@@ -13,7 +12,8 @@ public class FormAction : MonoBehaviour, IAction
 
     public bool autoOpen;
     public bool resetPath;
-    public int controllerIndex;
+
+    public List<int> controllerIndices;
 
     private ExButton actionButton;
     public EditorForm editorForm;
@@ -46,7 +46,7 @@ public class FormAction : MonoBehaviour, IAction
         if (autoOpen)
         {
             if (!editorForm.activeInPath)
-                RenderManager.Render(new PathManager.Form(editorForm, controllerIndex).Initialize());
+                RenderManager.Render(new PathManager.Form(editorForm, controllerIndices).Initialize());
         }
 
         SetButton();
@@ -84,7 +84,7 @@ public class FormAction : MonoBehaviour, IAction
 
     public void OpenForm()
     {
-        Path path = (new PathManager.Form(editorForm, controllerIndex).Initialize());
+        Path path = (new PathManager.Form(editorForm, controllerIndices).Initialize());
         
         RenderManager.Render(path);
     }

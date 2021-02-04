@@ -150,7 +150,7 @@ public class EditorForm : MonoBehaviour
         foreach (LayoutSection editorSection in editorSections)
         {
             if (editorSection.dataEditor == null) continue;
-            Debug.Log(editorSection.dataEditor + ":" + editorSection.previousEditor);
+
             //If section is inactive or the section's editor doesn't match the previous editor
             if (!editorSection.Active || !MatchPrevious(editorSection))
                 editorSection.CancelEdit();

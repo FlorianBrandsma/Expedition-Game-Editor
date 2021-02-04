@@ -21,24 +21,24 @@ public class ButtonActionManager : MonoBehaviour
             closeButton.Button.onClick.AddListener(delegate { section.CloseEditor(); });    
     }
 
-    public void SetButtons(Enums.ExecuteType executionType, bool removable, bool changed)
+    public void SetButtons(Enums.ExecuteType executionType, IEditor dataEditor)
     {
         if (applyButton != null)
         {
             switch(executionType)
             {
                 case Enums.ExecuteType.Add:
-                    applyButton.Button.interactable = true;
+                    applyButton.Button.interactable = dataEditor.Addable();
                     applyButton.label.text = "Add";
                     break;
 
                 case Enums.ExecuteType.Update:
-                    applyButton.Button.interactable = changed;
+                    applyButton.Button.interactable = dataEditor.Changed();
                     applyButton.label.text = "Apply";
                     break;
 
                 case Enums.ExecuteType.Remove:
-                    applyButton.Button.interactable = removable;
+                    applyButton.Button.interactable = dataEditor.Removable();
                     applyButton.label.text = "Remove";
                     break;
             }

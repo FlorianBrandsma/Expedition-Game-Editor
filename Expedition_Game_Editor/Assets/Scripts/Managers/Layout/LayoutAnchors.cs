@@ -44,11 +44,8 @@ public class LayoutAnchors : MonoBehaviour
         if (!gameObject.activeInHierarchy) return;
 
         if (sibling_layout != null)
-        {
-            //anchorMin = new Vector2(RectTransform.anchorMin.x, RectTransform.anchorMin.y);
             anchorMax = new Vector2(anchor == Anchor.Left ? sibling_layout.anchorMin.x : anchorMax.x, anchorMax.y);
-        }
-
+        
         RectTransform.anchorMin = new Vector2(ScaledWidth(anchorMin.x), anchorMin.y);
         RectTransform.anchorMax = new Vector2(ScaledWidth(anchorMax.x), anchorMax.y);
     }

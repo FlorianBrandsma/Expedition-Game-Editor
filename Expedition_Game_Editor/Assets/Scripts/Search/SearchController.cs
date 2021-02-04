@@ -27,7 +27,7 @@ public class SearchController : MonoBehaviour
     {
         switch(searchParameters.elementType)
         {
-            case Enums.ElementType.Panel: case Enums.ElementType.CompactPanel:
+            case Enums.ElementType.Panel: case Enums.ElementType.CompactPanel: case Enums.ElementType.SavePanel:
 
                 PanelProperties panelProperties = gameObject.AddComponent<PanelProperties>();
                 panelProperties.elementType     = searchParameters.elementType;

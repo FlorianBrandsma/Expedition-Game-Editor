@@ -14,7 +14,6 @@ public class InteractableSaveEditor : MonoBehaviour, IEditor
     public List<SegmentController> EditorSegments   { get; } = new List<SegmentController>();
 
     public bool Loaded                              { get; set; }
-    public bool Removable                           { get { return true; } }
 
     public List<IElementData> DataList
     {
@@ -97,19 +96,35 @@ public class InteractableSaveEditor : MonoBehaviour, IEditor
         PathController.layoutSection.SetActionButtons();
     }
 
+    public bool Addable()
+    {
+        return true;
+    }
+
     public bool Changed()
     {
         return ElementDataList.Any(x => x.Changed);
     }
 
+    public bool Removable()
+    {
+        return true;
+    }
+
     public void ApplyChanges(DataRequest dataRequest)
     {
+        ApplyInteractableSaveChanges(dataRequest);
+    }
+
+    private void ApplyInteractableSaveChanges(DataRequest dataRequest)
+    {
+        if (EditData.ExecuteType == Enums.ExecuteType.Update)
+            UpdateInteractableSave(dataRequest);
+    }
+
+    private void UpdateInteractableSave(DataRequest dataRequest)
+    {
         EditData.Update(dataRequest);
-
-        if (SelectionElementManager.SelectionActive(EditData.DataElement))
-            EditData.DataElement.UpdateElement();
-
-        UpdateEditor();
     }
 
     public void FinalizeChanges()

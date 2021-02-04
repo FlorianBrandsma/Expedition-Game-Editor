@@ -138,6 +138,8 @@ public class InteractionDestinationElementData : InteractionDestinationData, IEl
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

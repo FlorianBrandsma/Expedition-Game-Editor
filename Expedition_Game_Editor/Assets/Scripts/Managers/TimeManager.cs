@@ -150,7 +150,7 @@ public class TimeManager : MonoBehaviour
                 ActiveTime -= ((hoursInDay * secondsInHour) - Mathf.FloorToInt(gameTimeCounter));
             }
 
-            GameManager.instance.gameSaveData.PlayerSaveData.GameTime = ActiveTime;
+            GameManager.instance.activeGameSaveElementData.SaveData.GameTime = ActiveTime;
 
             //Might be better suited in ActiveTime property
             if (GameManager.instance.gameTimeAction.Dropdown != null)

@@ -92,7 +92,9 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
 
                 case Enums.DataType.Scene:          UpdateSceneIndex(i, dataRequest);           break;
 
-                default: Debug.Log("CASE MISSING " + elementData.DataType); break;
+                case Enums.DataType.Save:           UpdateSaveIndex(i, dataRequest);            break;
+
+                default: Debug.Log("CASE MISSING: " + elementData.DataType); break;
             }
         }
         
@@ -177,6 +179,15 @@ public class ExIndexSwitch : MonoBehaviour, IEditorElement
     private void UpdateSceneIndex(int index, DataRequest dataRequest)
     {
         var elementData = (SceneElementData)dataList[index];
+
+        elementData.Index = index - extraRow;
+
+        elementData.UpdateIndex(dataRequest);
+    }
+
+    private void UpdateSaveIndex(int index, DataRequest dataRequest)
+    {
+        var elementData = (SaveElementData)dataList[index];
 
         elementData.Index = index - extraRow;
 

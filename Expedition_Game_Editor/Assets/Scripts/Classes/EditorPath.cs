@@ -272,7 +272,10 @@ public class EditorPath
                 PathManager.Save save = new PathManager.Save(editorElement, route);
 
                 if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
-                    path = save.EnterGame();
+                    path = save.Enter();
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
+                    path = save.Open();
 
                 break;
 

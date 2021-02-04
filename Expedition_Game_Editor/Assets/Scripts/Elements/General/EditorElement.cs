@@ -222,12 +222,6 @@ public class EditorElement : MonoBehaviour, ISelectionElement
                 RenderManager.Render(editorPath.path);
                 break;
 
-            //Placeholder
-            case SelectionManager.Property.AddNewSave:
-                DataElement.ElementData.Add(new DataRequest() { requestType = Enums.RequestType.Execute });
-                RenderManager.ResetPath(true);
-                break;
-
             default: Debug.Log("CASE MISSING: " + selectionProperty); break;
         }
     }
