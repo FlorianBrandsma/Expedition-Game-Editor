@@ -115,25 +115,25 @@ public class OutcomeEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return outcomeData.PublicNotes; }
+        get { return outcomeData.EditorNotes; }
         set
         {
-            outcomeData.PublicNotes = value;
+            outcomeData.EditorNotes = value;
 
-            DataList.ForEach(x => ((OutcomeElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((OutcomeElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return outcomeData.PrivateNotes; }
+        get { return outcomeData.GameNotes; }
         set
         {
-            outcomeData.PrivateNotes = value;
+            outcomeData.GameNotes = value;
 
-            DataList.ForEach(x => ((OutcomeElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((OutcomeElementData)x).GameNotes = value);
         }
     }
 

@@ -10,8 +10,8 @@ public class QuestBaseData
 
     public string Name          { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public virtual void GetOriginalValues(QuestData originalData)
     {
@@ -23,8 +23,8 @@ public class QuestBaseData
 
         Name            = originalData.Name;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
 }
 
     public virtual void Clone(QuestData data)
@@ -37,7 +37,7 @@ public class QuestBaseData
 
         data.Name           = Name;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
     }
 }

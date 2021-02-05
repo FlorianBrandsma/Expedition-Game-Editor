@@ -1,16 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class GeneralNotesSegment : MonoBehaviour, ISegment
 {
-    public enum NoteType
-    {
-        Public,
-        Private
-    }
-
-    public NoteType noteType;
+    public Enums.NoteType noteType;
 
     public InputField inputField;
 
@@ -19,49 +12,49 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
 
     public string Notes
     {
-        get { return noteType == NoteType.Public ? PublicNotes : PrivateNotes; }
+        get { return noteType == Enums.NoteType.Editor ? EditorNotes : GameNotes; }
         set
         {
-            if (noteType == NoteType.Public)
-                PublicNotes = value;
+            if (noteType == Enums.NoteType.Editor)
+                EditorNotes = value;
             else
-                PrivateNotes = value;
+                GameNotes = value;
         }
     }
 
     #region Data properties
-    public string PublicNotes
+    public string EditorNotes
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Atmosphere:
-                    return ((AtmosphereEditor)DataEditor).PublicNotes;
+                    return ((AtmosphereEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Chapter:
-                    return ((ChapterEditor)DataEditor).PublicNotes;
+                    return ((ChapterEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Phase:
-                    return ((PhaseEditor)DataEditor).PublicNotes;
+                    return ((PhaseEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Quest:
-                    return ((QuestEditor)DataEditor).PublicNotes;
+                    return ((QuestEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Objective:
-                    return ((ObjectiveEditor)DataEditor).PublicNotes;
+                    return ((ObjectiveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Task:
-                    return ((TaskEditor)DataEditor).PublicNotes;
+                    return ((TaskEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Interaction:
-                    return ((InteractionEditor)DataEditor).PublicNotes;
+                    return ((InteractionEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Outcome:
-                    return ((OutcomeEditor)DataEditor).PublicNotes;
+                    return ((OutcomeEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.Scene:
-                    return ((SceneEditor)DataEditor).PublicNotes;
+                    return ((SceneEditor)DataEditor).EditorNotes;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -73,63 +66,63 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Atmosphere:
 
                     var atmosphereEditor = (AtmosphereEditor)DataEditor;
-                    atmosphereEditor.PublicNotes = value;
+                    atmosphereEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Chapter:
 
                     var chapterEditor = (ChapterEditor)DataEditor;
-                    chapterEditor.PublicNotes = value;
+                    chapterEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
                     var phaseEditor = (PhaseEditor)DataEditor;
-                    phaseEditor.PublicNotes = value;
+                    phaseEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Quest:
 
                     var questEditor = (QuestEditor)DataEditor;
-                    questEditor.PublicNotes = value;
+                    questEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
                     var objectiveEditor = (ObjectiveEditor)DataEditor;
-                    objectiveEditor.PublicNotes = value;
+                    objectiveEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Task:
 
                     var taskEditor = (TaskEditor)DataEditor;
-                    taskEditor.PublicNotes = value;
+                    taskEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
                     var interactionEditor = (InteractionEditor)DataEditor;
-                    interactionEditor.PublicNotes = value;
+                    interactionEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Outcome:
 
                     var outcomeEditor = (OutcomeEditor)DataEditor;
-                    outcomeEditor.PublicNotes = value;
+                    outcomeEditor.EditorNotes = value;
 
                     break;
 
                 case Enums.DataType.Scene:
 
                     var sceneEditor = (SceneEditor)DataEditor;
-                    sceneEditor.PublicNotes = value;
+                    sceneEditor.EditorNotes = value;
 
                     break;
 
@@ -138,38 +131,38 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.Atmosphere:
-                    return ((AtmosphereEditor)DataEditor).PrivateNotes;
+                    return ((AtmosphereEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Chapter:
-                    return ((ChapterEditor)DataEditor).PrivateNotes;
+                    return ((ChapterEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Phase:
-                    return ((PhaseEditor)DataEditor).PrivateNotes;
+                    return ((PhaseEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Quest:
-                    return ((QuestEditor)DataEditor).PrivateNotes;
+                    return ((QuestEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Objective:
-                    return ((ObjectiveEditor)DataEditor).PrivateNotes;
+                    return ((ObjectiveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Task:
-                    return ((TaskEditor)DataEditor).PrivateNotes;
+                    return ((TaskEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Interaction:
-                    return ((InteractionEditor)DataEditor).PrivateNotes;
+                    return ((InteractionEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Outcome:
-                    return ((OutcomeEditor)DataEditor).PrivateNotes;
+                    return ((OutcomeEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.Scene:
-                    return ((SceneEditor)DataEditor).PrivateNotes;
+                    return ((SceneEditor)DataEditor).GameNotes;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
@@ -181,63 +174,63 @@ public class GeneralNotesSegment : MonoBehaviour, ISegment
                 case Enums.DataType.Atmosphere:
 
                     var atmosphereEditor = (AtmosphereEditor)DataEditor;
-                    atmosphereEditor.PrivateNotes = value;
+                    atmosphereEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Chapter:
 
                     var chapterEditor = (ChapterEditor)DataEditor;
-                    chapterEditor.PrivateNotes = value;
+                    chapterEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Phase:
 
                     var phaseEditor = (PhaseEditor)DataEditor;
-                    phaseEditor.PrivateNotes = value;
+                    phaseEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Quest:
 
                     var questEditor = (QuestEditor)DataEditor;
-                    questEditor.PrivateNotes = value;
+                    questEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Objective:
 
                     var objectiveEditor = (ObjectiveEditor)DataEditor;
-                    objectiveEditor.PrivateNotes = value;
+                    objectiveEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Task:
 
                     var taskEditor = (TaskEditor)DataEditor;
-                    taskEditor.PrivateNotes = value;
+                    taskEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Interaction:
 
                     var interactionEditor = (InteractionEditor)DataEditor;
-                    interactionEditor.PrivateNotes = value;
+                    interactionEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Outcome:
 
                     var outcomeEditor = (OutcomeEditor)DataEditor;
-                    outcomeEditor.PrivateNotes = value;
+                    outcomeEditor.GameNotes = value;
 
                     break;
 
                 case Enums.DataType.Scene:
 
                     var sceneEditor = (SceneEditor)DataEditor;
-                    sceneEditor.PrivateNotes = value;
+                    sceneEditor.GameNotes = value;
 
                     break;
 

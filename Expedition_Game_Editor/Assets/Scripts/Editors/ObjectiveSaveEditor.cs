@@ -54,14 +54,14 @@ public class ObjectiveSaveEditor : MonoBehaviour, IEditor
         get { return objectiveSaveData.Name; }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return objectiveSaveData.PublicNotes; }
+        get { return objectiveSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return objectiveSaveData.PrivateNotes; }
+        get { return objectiveSaveData.GameNotes; }
     }
     #endregion
     

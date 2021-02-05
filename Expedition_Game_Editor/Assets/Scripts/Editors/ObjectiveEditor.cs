@@ -58,25 +58,25 @@ public class ObjectiveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return objectiveData.PublicNotes; }
+        get { return objectiveData.EditorNotes; }
         set
         {
-            objectiveData.PublicNotes = value;
+            objectiveData.EditorNotes = value;
 
-            DataList.ForEach(x => ((ObjectiveElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((ObjectiveElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return objectiveData.PrivateNotes; }
+        get { return objectiveData.GameNotes; }
         set
         {
-            objectiveData.PrivateNotes = value;
+            objectiveData.GameNotes = value;
 
-            DataList.ForEach(x => ((ObjectiveElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((ObjectiveElementData)x).GameNotes = value);
         }
     }
     #endregion

@@ -25,8 +25,8 @@ public static class QuestDataManager
 
                         Name = questData.Name,
 
-                        PublicNotes = questData.PublicNotes,
-                        PrivateNotes = questData.PrivateNotes
+                        EditorNotes = questData.EditorNotes,
+                        GameNotes = questData.GameNotes
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
@@ -131,14 +131,14 @@ public static class QuestDataManager
                 data.Name = elementData.Name;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

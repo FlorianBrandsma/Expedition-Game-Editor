@@ -125,25 +125,25 @@ public class SceneEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return sceneData.PublicNotes; }
+        get { return sceneData.EditorNotes; }
         set
         {
-            sceneData.PublicNotes = value;
+            sceneData.EditorNotes = value;
 
-            DataList.ForEach(x => ((SceneElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((SceneElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return sceneData.PrivateNotes; }
+        get { return sceneData.GameNotes; }
         set
         {
-            sceneData.PrivateNotes = value;
+            sceneData.GameNotes = value;
 
-            DataList.ForEach(x => ((SceneElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((SceneElementData)x).GameNotes = value);
         }
     }
 

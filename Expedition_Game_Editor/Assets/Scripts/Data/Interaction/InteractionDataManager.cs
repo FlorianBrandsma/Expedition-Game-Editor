@@ -78,8 +78,8 @@ public static class InteractionDataManager
                         CancelDelayOnMovement = interactionData.CancelDelayOnMovement,
                         CancelDelayOnHit = interactionData.CancelDelayOnHit,
 
-                        PublicNotes = interactionData.PublicNotes,
-                        PrivateNotes = interactionData.PrivateNotes,
+                        EditorNotes = interactionData.EditorNotes,
+                        GameNotes = interactionData.GameNotes,
 
                         ModelIconPath = iconData.Path,
 
@@ -358,14 +358,14 @@ public static class InteractionDataManager
                 data.CancelDelayOnHit = elementData.CancelDelayOnHit;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

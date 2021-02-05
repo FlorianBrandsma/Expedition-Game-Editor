@@ -18,8 +18,8 @@ public class SceneBaseData
     public float SceneDuration      { get; set; }
     public float ShotDuration       { get; set; }
 
-    public string PublicNotes       { get; set; }
-    public string PrivateNotes      { get; set; }
+    public string EditorNotes       { get; set; }
+    public string GameNotes         { get; set; }
 
     public virtual void GetOriginalValues(SceneData originalData)
     {
@@ -39,8 +39,8 @@ public class SceneBaseData
         SceneDuration       = originalData.SceneDuration;
         ShotDuration        = originalData.ShotDuration;
         
-        PublicNotes         = originalData.PublicNotes;
-        PrivateNotes        = originalData.PrivateNotes;
+        EditorNotes         = originalData.EditorNotes;
+        GameNotes           = originalData.GameNotes;
     }
 
     public virtual void Clone(SceneData data)
@@ -61,7 +61,7 @@ public class SceneBaseData
         data.SceneDuration      = SceneDuration;
         data.ShotDuration       = ShotDuration;
         
-        data.PublicNotes        = PublicNotes;
-        data.PrivateNotes       = PrivateNotes;
+        data.EditorNotes        = EditorNotes;
+        data.GameNotes          = GameNotes;
     }
 }

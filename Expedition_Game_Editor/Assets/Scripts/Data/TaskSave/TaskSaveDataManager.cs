@@ -32,8 +32,8 @@ public static class TaskSaveDataManager
 
                         Repeatable = taskData.Repeatable,
                         
-                        PublicNotes = taskData.PublicNotes,
-                        PrivateNotes = taskData.PrivateNotes,
+                        EditorNotes = taskData.EditorNotes,
+                        GameNotes = taskData.GameNotes,
 
                         ObjectiveId = taskData.ObjectiveId
 

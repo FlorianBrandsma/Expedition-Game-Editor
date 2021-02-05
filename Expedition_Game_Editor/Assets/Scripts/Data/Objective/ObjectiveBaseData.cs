@@ -11,8 +11,8 @@ public class ObjectiveBaseData
     public string Name          { get; set; }
     public string Journal       { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public virtual void GetOriginalValues(ObjectiveData originalData)
     {
@@ -25,8 +25,8 @@ public class ObjectiveBaseData
         Name            = originalData.Name;
         Journal         = originalData.Journal;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
     }
 
     public virtual void Clone(ObjectiveData data)
@@ -40,7 +40,7 @@ public class ObjectiveBaseData
         data.Name           = Name;
         data.Journal        = Journal;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
     }
 }

@@ -21,8 +21,8 @@ public class PhaseBaseData
 
     public int DefaultTime          { get; set; }
 
-    public string PublicNotes       { get; set; }
-    public string PrivateNotes      { get; set; }
+    public string EditorNotes       { get; set; }
+    public string GameNotes         { get; set; }
 
     public virtual void GetOriginalValues(PhaseData originalData)
     {
@@ -45,8 +45,8 @@ public class PhaseBaseData
 
         DefaultTime         = originalData.DefaultTime;
 
-        PublicNotes         = originalData.PublicNotes;
-        PrivateNotes        = originalData.PrivateNotes;
+        EditorNotes         = originalData.EditorNotes;
+        GameNotes           = originalData.GameNotes;
     }
 
     public virtual void Clone(PhaseData data)
@@ -70,7 +70,7 @@ public class PhaseBaseData
 
         data.DefaultTime        = DefaultTime;
 
-        data.PublicNotes        = PublicNotes;
-        data.PrivateNotes       = PrivateNotes;
+        data.EditorNotes        = EditorNotes;
+        data.GameNotes          = GameNotes;
     }
 }

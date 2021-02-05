@@ -31,8 +31,8 @@ public static class ChapterSaveDataManager
 
                         Name = chapterData.Name,
 
-                        PublicNotes = chapterData.PublicNotes,
-                        PrivateNotes = chapterData.PrivateNotes
+                        EditorNotes = chapterData.EditorNotes,
+                        GameNotes = chapterData.PrivateNotes
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
         

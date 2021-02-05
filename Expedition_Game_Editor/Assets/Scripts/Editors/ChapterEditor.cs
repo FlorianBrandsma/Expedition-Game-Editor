@@ -73,18 +73,18 @@ public class ChapterEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return chapterData.PublicNotes; }
+        get { return chapterData.EditorNotes; }
         set
         {
-            chapterData.PublicNotes = value;
+            chapterData.EditorNotes = value;
 
-            DataList.ForEach(x => ((ChapterElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((ChapterElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
         get { return chapterData.PrivateNotes; }
         set

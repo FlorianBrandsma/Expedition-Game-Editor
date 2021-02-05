@@ -9,8 +9,8 @@ public class InteractionSaveData : InteractionSaveBaseData
     public int StartTime        { get; set; }
     public int EndTime          { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public override void GetOriginalValues(InteractionSaveData originalData)
     {
@@ -21,8 +21,8 @@ public class InteractionSaveData : InteractionSaveBaseData
         StartTime       = originalData.StartTime;
         EndTime         = originalData.EndTime;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
 
         base.GetOriginalValues(originalData);
     }
@@ -38,8 +38,8 @@ public class InteractionSaveData : InteractionSaveBaseData
         data.StartTime      = StartTime;
         data.EndTime        = EndTime;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
 
         base.Clone(data);
 
@@ -55,8 +55,8 @@ public class InteractionSaveData : InteractionSaveBaseData
         elementData.StartTime       = StartTime;
         elementData.EndTime         = EndTime;
 
-        elementData.PublicNotes     = PublicNotes;
-        elementData.PrivateNotes    = PrivateNotes;
+        elementData.EditorNotes     = EditorNotes;
+        elementData.GameNotes       = GameNotes;
 
         base.Clone(elementData);
     }

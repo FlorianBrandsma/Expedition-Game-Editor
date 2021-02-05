@@ -32,12 +32,12 @@ public class ChapterElementData : ChapterData, IElementData
         get { return !Mathf.Approximately(TimeSpeed, OriginalData.TimeSpeed); }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
         get { return PrivateNotes != OriginalData.PrivateNotes; }
     }
@@ -46,7 +46,7 @@ public class ChapterElementData : ChapterData, IElementData
     {
         get
         {
-            return ChangedName || ChangedTimeSpeed || ChangedPublicNotes || ChangedPrivateNotes;
+            return ChangedName || ChangedTimeSpeed || ChangedEditorNotes || ChangedGameNotes;
         }
     }
     #endregion

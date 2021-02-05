@@ -6,8 +6,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
     public string Name          { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public override void GetOriginalValues(ChapterSaveData originalData)
     {
@@ -15,8 +15,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
         Name            = originalData.Name;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
 
         base.GetOriginalValues(originalData);
     }
@@ -29,8 +29,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
         data.Name           = Name;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
 
         base.Clone(data);
 
@@ -43,8 +43,8 @@ public class ChapterSaveData : ChapterSaveBaseData
 
         elementData.Name            = Name;
 
-        elementData.PublicNotes     = PublicNotes;
-        elementData.PrivateNotes    = PrivateNotes;
+        elementData.EditorNotes     = EditorNotes;
+        elementData.GameNotes       = GameNotes;
 
         base.Clone(elementData);
     }

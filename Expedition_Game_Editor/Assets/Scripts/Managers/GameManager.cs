@@ -224,11 +224,6 @@ public class GameManager : MonoBehaviour
         SetDataControllers();
     }
 
-    private void SaveGameData()
-    {
-        Debug.Log("Save " + 1);
-    }
-
     private void SetDataControllers()
     {
         //Objects
@@ -416,22 +411,33 @@ public class GameManager : MonoBehaviour
     
     public void SaveData(SaveElementData saveElementData)
     {
-        var dataRequest = new DataRequest() { requestType = Enums.RequestType.Execute };
-
         //Create new save data if execute type is add
         if (saveElementData.ExecuteType == Enums.ExecuteType.Add)
         {
-            saveElementData.SaveTime = System.DateTime.Now;
-
-            saveElementData.Add(dataRequest);
-
-            saveElementData.SetOriginalValues();
+            AddSaveData(saveElementData);
         }
-        
-        var gameSaveElementData = GetGameSaveData(saveElementData);
+
+        UpdateSaveData(saveElementData);
+    }
+
+    private void AddSaveData(SaveElementData saveElementData)
+    {
+        var dataRequest = new DataRequest() { requestType = Enums.RequestType.Execute };
+
+        saveElementData.SaveTime = System.DateTime.Now;
+
+        saveElementData.Add(dataRequest);
+
+        saveElementData.SetOriginalValues();
+    }
+
+    private void UpdateSaveData(SaveElementData saveElementData)
+    {
+        var dataRequest = new DataRequest() { requestType = Enums.RequestType.Execute };
 
         //Apply changes from the active game save to the selected
-
+        var gameSaveElementData = GetGameSaveData(saveElementData);
+        
         //Save
         var saveDataSource = activeGameSaveElementData.SaveData;
 

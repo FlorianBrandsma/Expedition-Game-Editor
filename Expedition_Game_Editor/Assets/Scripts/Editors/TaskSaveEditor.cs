@@ -54,14 +54,14 @@ public class TaskSaveEditor : MonoBehaviour, IEditor
         get { return taskSaveData.Name; }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return taskSaveData.PublicNotes; }
+        get { return taskSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return taskSaveData.PrivateNotes; }
+        get { return taskSaveData.GameNotes; }
     }
     #endregion
     

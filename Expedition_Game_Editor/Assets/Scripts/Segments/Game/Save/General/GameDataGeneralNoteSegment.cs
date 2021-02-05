@@ -3,13 +3,7 @@ using UnityEngine.UI;
 
 public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
 {
-    public enum NoteType
-    {
-        Public,
-        Private
-    }
-
-    public NoteType noteType;
+    public Enums.NoteType noteType;
 
     public Text notesText;
 
@@ -18,62 +12,62 @@ public class GameDataGeneralNoteSegment : MonoBehaviour, ISegment
     
     public string Notes
     {
-        get { return noteType == NoteType.Public ? PublicNotes : PrivateNotes; }
+        get { return noteType == Enums.NoteType.Editor ? EditorNotes : GameNotes; }
     }
 
     #region Data properties
-    public string PublicNotes
+    public string EditorNotes
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.ChapterSave:
-                    return ((ChapterSaveEditor)DataEditor).PublicNotes;
+                    return ((ChapterSaveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.PhaseSave:
-                    return ((PhaseSaveEditor)DataEditor).PublicNotes;
+                    return ((PhaseSaveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.QuestSave:
-                    return ((QuestSaveEditor)DataEditor).PublicNotes;
+                    return ((QuestSaveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.ObjectiveSave:
-                    return ((ObjectiveSaveEditor)DataEditor).PublicNotes;
+                    return ((ObjectiveSaveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.TaskSave:
-                    return ((TaskSaveEditor)DataEditor).PublicNotes;
+                    return ((TaskSaveEditor)DataEditor).EditorNotes;
 
                 case Enums.DataType.InteractionSave:
-                    return ((InteractionSaveEditor)DataEditor).PublicNotes;
+                    return ((InteractionSaveEditor)DataEditor).EditorNotes;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
         get
         {
             switch (DataEditor.Data.dataController.DataType)
             {
                 case Enums.DataType.ChapterSave:
-                    return ((ChapterSaveEditor)DataEditor).PrivateNotes;
+                    return ((ChapterSaveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.PhaseSave:
-                    return ((PhaseSaveEditor)DataEditor).PrivateNotes;
+                    return ((PhaseSaveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.QuestSave:
-                    return ((QuestSaveEditor)DataEditor).PrivateNotes;
+                    return ((QuestSaveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.ObjectiveSave:
-                    return ((ObjectiveSaveEditor)DataEditor).PrivateNotes;
+                    return ((ObjectiveSaveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.TaskSave:
-                    return ((TaskSaveEditor)DataEditor).PrivateNotes;
+                    return ((TaskSaveEditor)DataEditor).GameNotes;
 
                 case Enums.DataType.InteractionSave:
-                    return ((InteractionSaveEditor)DataEditor).PrivateNotes;
+                    return ((InteractionSaveEditor)DataEditor).GameNotes;
 
                 default: { Debug.Log("CASE MISSING: " + DataEditor.Data.dataController.DataType); return ""; }
             }

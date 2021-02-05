@@ -57,14 +57,14 @@ public class SceneElementData : SceneData, IElementData
         get { return !Mathf.Approximately(ShotDuration, OriginalData.ShotDuration); }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
@@ -72,7 +72,7 @@ public class SceneElementData : SceneData, IElementData
         get
         {
             return  ChangedRegionId         || ChangedName          || ChangedFreezeTime    || ChangedAutoContinue || ChangedSetActorsInstantly ||
-                    ChangedSceneDuration    || ChangedShotDuration  || ChangedPublicNotes   || ChangedPrivateNotes;
+                    ChangedSceneDuration    || ChangedShotDuration  || ChangedEditorNotes   || ChangedGameNotes;
         }
     }
     #endregion

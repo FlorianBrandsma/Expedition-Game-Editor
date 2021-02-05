@@ -30,8 +30,8 @@ public static class QuestSaveDataManager
 
                         Index = questData.Index,
 
-                        PublicNotes = questData.PublicNotes,
-                        PrivateNotes = questData.PrivateNotes,
+                        EditorNotes = questData.EditorNotes,
+                        GameNotes = questData.GameNotes,
 
                         PhaseId = questData.PhaseId
 

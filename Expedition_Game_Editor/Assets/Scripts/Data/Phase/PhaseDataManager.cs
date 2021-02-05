@@ -74,8 +74,8 @@ public static class PhaseDataManager
 
                         DefaultTime = phaseData.DefaultTime,
 
-                        PublicNotes = phaseData.PublicNotes,
-                        PrivateNotes = phaseData.PrivateNotes,
+                        EditorNotes = phaseData.EditorNotes,
+                        GameNotes = phaseData.GameNotes,
 
                         TerrainTileId = regionData.FirstOrDefault() != null ? RegionManager.GetTerrainTileId(regionData.FirstOrDefault().regionData, terrainDataList, terrainTileDataList, regionData.FirstOrDefault().tileSetData.TileSize, phaseData.DefaultPositionX, phaseData.DefaultPositionZ) : 0,
 
@@ -538,8 +538,8 @@ public static class PhaseDataManager
                         CancelDelayOnMovement = interactionDataSource.CancelDelayOnMovement,
                         CancelDelayOnHit = interactionDataSource.CancelDelayOnHit,
 
-                        PublicNotes = interactionDataSource.PublicNotes,
-                        PrivateNotes = interactionDataSource.PrivateNotes
+                        EditorNotes = interactionDataSource.EditorNotes,
+                        GameNotes = interactionDataSource.GameNotes
                     };
 
                     interactionElementData.Add(dataRequest);
@@ -600,8 +600,8 @@ public static class PhaseDataManager
                             CancelScenarioOnRange = outcomeDataSource.CancelScenarioOnRange,
                             CancelScenarioOnHit = outcomeDataSource.CancelScenarioOnHit,
 
-                            PublicNotes = outcomeDataSource.PublicNotes,
-                            PrivateNotes = outcomeDataSource.PrivateNotes
+                            EditorNotes = outcomeDataSource.EditorNotes,
+                            GameNotes = outcomeDataSource.GameNotes
                         };
 
                         outcomeElementData.Add(dataRequest);
@@ -632,8 +632,8 @@ public static class PhaseDataManager
                                 SceneDuration = sceneDataSource.SceneDuration,
                                 ShotDuration = sceneDataSource.ShotDuration,
 
-                                PublicNotes = sceneDataSource.PublicNotes,
-                                PrivateNotes = sceneDataSource.PrivateNotes
+                                EditorNotes = sceneDataSource.EditorNotes,
+                                GameNotes = sceneDataSource.GameNotes
                             };
 
                             sceneElementData.Add(dataRequest);
@@ -885,14 +885,14 @@ public static class PhaseDataManager
                 data.DefaultTime = elementData.DefaultTime;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

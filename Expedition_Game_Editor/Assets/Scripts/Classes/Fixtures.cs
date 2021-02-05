@@ -689,7 +689,7 @@ static public class Fixtures
         
         task.Name = "Just a task" + (objectiveId == 0 ? "" : " with an objective " + task.ObjectiveId);
 
-        task.PublicNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
+        task.EditorNotes = "I belong to Interactable " + worldInteractable.Id + ". This is definitely a test";
 
         taskList.Add(task);
 
@@ -731,7 +731,7 @@ static public class Fixtures
         interaction.CancelDelayOnMovement = false;
         interaction.CancelDelayOnHit = false;
 
-        interaction.PublicNotes = "These are public interaction notes";
+        interaction.EditorNotes = "These are public interaction notes";
 
         interactionList.Add(interaction);
 
@@ -800,7 +800,7 @@ static public class Fixtures
         outcome.CancelScenarioOnRange = false;
         outcome.CancelScenarioOnHit = false;
 
-        outcome.PublicNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
+        outcome.EditorNotes = "Requirements" + (type == Enums.OutcomeType.Positive ? " passed" : " failed");
 
         outcomeList.Add(outcome);
 
@@ -832,8 +832,8 @@ static public class Fixtures
         scene.SceneDuration = 2f;
         scene.ShotDuration = 10;
         
-        scene.PublicNotes = "This is a scene which belongs to outcome " + outcome.Id;
-        scene.PrivateNotes = "";
+        scene.EditorNotes = "This is a scene which belongs to outcome " + outcome.Id;
+        scene.GameNotes = "";
 
         var shotStartCameraPosition = new Vector3(230f, 7.5f, 247.5f);
         var shotStartCameraRotation = new Vector3(30, 60, 0);
@@ -1005,7 +1005,7 @@ static public class Fixtures
 
             chapter.TimeSpeed = 240;
 
-            chapter.PublicNotes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
+            chapter.EditorNotes = "This is a pretty regular sentence. The structure is something you'd expect. Nothing too long though!";
             
             chapterList.Add(chapter);
         }
@@ -1246,8 +1246,8 @@ static public class Fixtures
                                 interaction.CancelDelayOnMovement = interactionSource.CancelDelayOnMovement;
                                 interaction.CancelDelayOnHit = interactionSource.CancelDelayOnHit;
 
-                                interaction.PublicNotes = interactionSource.PublicNotes;
-                                interaction.PrivateNotes = interactionSource.PrivateNotes;
+                                interaction.EditorNotes = interactionSource.EditorNotes;
+                                interaction.GameNotes = interactionSource.GameNotes;
 
                                 interactionList.Add(interaction);
 
@@ -1307,8 +1307,8 @@ static public class Fixtures
                                     outcome.CancelScenarioOnRange = outcomeSource.CancelScenarioOnRange;
                                     outcome.CancelScenarioOnHit = outcomeSource.CancelScenarioOnHit;
 
-                                    outcome.PublicNotes = outcomeSource.PublicNotes;
-                                    outcome.PrivateNotes = outcomeSource.PrivateNotes;
+                                    outcome.EditorNotes = outcomeSource.EditorNotes;
+                                    outcome.GameNotes = outcomeSource.GameNotes;
 
                                     outcomeList.Add(outcome);
 
@@ -1336,8 +1336,8 @@ static public class Fixtures
                                         scene.SceneDuration = sceneSource.SceneDuration;
                                         scene.ShotDuration = sceneSource.ShotDuration;
                                         
-                                        scene.PublicNotes = sceneSource.PublicNotes;
-                                        scene.PrivateNotes = sceneSource.PrivateNotes;
+                                        scene.EditorNotes = sceneSource.EditorNotes;
+                                        scene.GameNotes = sceneSource.GameNotes;
 
                                         sceneList.Add(scene);
 
@@ -1493,7 +1493,8 @@ static public class Fixtures
 
                 phase.DefaultTime = 7 * TimeManager.secondsInHour;
 
-                phase.PublicNotes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
+                phase.EditorNotes = "I belong to Chapter " + chapter.Id + ". This is definitely a test";
+                phase.GameNotes = "This is a description of the phase which belongs to Chapter " + chapter.Id + ".";
                 
                 phaseList.Add(phase);
             }
@@ -1515,7 +1516,7 @@ static public class Fixtures
 
                 quest.PhaseId = phase.Id;
                 quest.Name = "Quest " + (i + 1) + " Name";
-                quest.PublicNotes = "I belong to Phase " + phase.Id + ". This is definitely a test";
+                quest.EditorNotes = "I belong to Phase " + phase.Id + ". This is definitely a test";
                 
                 questList.Add(quest);
             }
@@ -1575,7 +1576,7 @@ static public class Fixtures
 
                 objective.QuestId = quest.Id;
                 objective.Name = "Objective " + (i + 1) + " Name";
-                objective.PublicNotes = "I belong to Quest " + quest.Id + ". This is definitely a test";
+                objective.EditorNotes = "I belong to Quest " + quest.Id + ". This is definitely a test";
                 
                 objectiveList.Add(objective);
             }

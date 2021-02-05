@@ -92,14 +92,14 @@ public class InteractionElementData : InteractionData, IElementData
         get { return CancelDelayOnHit != OriginalData.CancelDelayOnHit; }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
@@ -112,7 +112,7 @@ public class InteractionElementData : InteractionData, IElementData
                     ChangedDelayMethod          || ChangedDelayDuration             ||
                     ChangedHideDelayIndicator   || ChangedCancelDelayOnInput        || ChangedCancelDelayOnMovement ||
                     ChangedCancelDelayOnHit     ||
-                    ChangedPublicNotes          || ChangedPrivateNotes;
+                    ChangedEditorNotes          || ChangedGameNotes;
         }
     }
     #endregion

@@ -54,14 +54,14 @@ public class ChapterSaveEditor : MonoBehaviour, IEditor
         get { return chapterSaveData.Name; }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return chapterSaveData.PublicNotes; }
+        get { return chapterSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return chapterSaveData.PrivateNotes; }
+        get { return chapterSaveData.GameNotes; }
     }
     #endregion
 

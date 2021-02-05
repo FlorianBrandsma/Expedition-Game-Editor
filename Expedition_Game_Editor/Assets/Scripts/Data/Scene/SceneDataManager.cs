@@ -60,8 +60,8 @@ public class SceneDataManager : MonoBehaviour
                         SceneDuration = sceneData.SceneDuration,
                         ShotDuration = sceneData.ShotDuration,
 
-                        PublicNotes = sceneData.PublicNotes,
-                        PrivateNotes = sceneData.PrivateNotes,
+                        EditorNotes = sceneData.EditorNotes,
+                        GameNotes = sceneData.GameNotes,
 
                         InteractionId = outcomeData.InteractionId,
 
@@ -225,14 +225,14 @@ public class SceneDataManager : MonoBehaviour
                 data.ShotDuration = elementData.ShotDuration;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

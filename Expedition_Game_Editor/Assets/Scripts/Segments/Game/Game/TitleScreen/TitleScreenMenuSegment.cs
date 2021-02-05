@@ -80,12 +80,6 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
         editorButton.gameObject.SetActive(true);
     }
 
-    public void ContinueGame()
-    {
-        //var gameMenu = new PathManager.GameMenu();
-        //RenderManager.Render(gameMenu.OpenSaveMenu(Enums.SaveType.Main));
-    }
-
     public void NewGame()
     {
         var saveElementData = (SaveElementData)SegmentController.DataController.Data.dataList.Where(x => x.ExecuteType == Enums.ExecuteType.Add).First();

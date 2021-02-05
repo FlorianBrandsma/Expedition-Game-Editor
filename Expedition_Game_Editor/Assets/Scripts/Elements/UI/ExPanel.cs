@@ -298,10 +298,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if(EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -328,10 +328,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
     
@@ -342,10 +342,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -356,10 +356,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -380,10 +380,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
     
@@ -394,10 +394,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime) + " - " + TimeManager.FormatTime(elementData.EndTime);
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.OriginalData.StartTime) + " - " + TimeManager.FormatTime(elementData.OriginalData.EndTime);
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -424,7 +424,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (OutcomeElementData)EditorElement.DataElement.ElementData;
 
         header = Enum.GetName(typeof(Enums.OutcomeType), elementData.Type);
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     private void SetSceneElement()
@@ -434,10 +434,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header = elementData.Name;
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header = elementData.OriginalData.Name;
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -485,10 +485,10 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (EditorElement.selectionProperty == SelectionManager.Property.Get)
         {
             header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime) + " - " + TimeManager.FormatTime(elementData.EndTime);
-            description = elementData.PublicNotes;
+            description = elementData.EditorNotes;
         } else {
             header      = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.OriginalData.StartTime) + " - " + TimeManager.FormatTime(elementData.OriginalData.EndTime);
-            description = elementData.OriginalData.PublicNotes;
+            description = elementData.OriginalData.EditorNotes;
         }
     }
 
@@ -556,7 +556,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (ChapterSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Name;
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     private void SetPhaseSaveElement()
@@ -564,7 +564,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (PhaseSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Name;
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
 
         descriptionText.text = description;
     }
@@ -574,7 +574,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (QuestSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Name;
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     private void SetObjectiveSaveElement()
@@ -582,7 +582,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (ObjectiveSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Name;
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     private void SetTaskSaveElement()
@@ -590,7 +590,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (TaskSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Name;
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     private void SetInteractionSaveElement()
@@ -598,7 +598,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (InteractionSaveElementData)EditorElement.DataElement.ElementData;
 
         header = elementData.Default ? "Default" : TimeManager.FormatTime(elementData.StartTime) + " - " + TimeManager.FormatTime(elementData.EndTime);
-        description = elementData.PublicNotes;
+        description = elementData.EditorNotes;
     }
 
     public void CloseElement()

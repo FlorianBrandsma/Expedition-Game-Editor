@@ -102,6 +102,12 @@ public class Enums
         Controllable
     }
 
+    public enum NoteType
+    {
+        Editor,
+        Game
+    }
+
     public enum OutcomeType
     {
         Positive,

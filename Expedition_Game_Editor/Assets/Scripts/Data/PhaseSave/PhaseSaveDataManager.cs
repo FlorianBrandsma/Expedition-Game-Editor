@@ -30,8 +30,8 @@ public static class PhaseSaveDataManager
 
                         Name = phaseData.Name,
 
-                        PublicNotes = phaseData.PublicNotes,
-                        PrivateNotes = phaseData.PrivateNotes,
+                        EditorNotes = phaseData.EditorNotes,
+                        GameNotes = phaseData.GameNotes,
 
                         ChapterId = phaseData.ChapterId
 

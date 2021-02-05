@@ -101,8 +101,6 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
     
     private void SetRegionData()
     {
-        Debug.Log(regionButton.DataElement.Id + ":" + RegionId);
-
         RegionElementData.Id            = RegionId;
         RegionElementData.TileIconPath  = TileIconPath;
         RegionElementData.Name          = RegionName;

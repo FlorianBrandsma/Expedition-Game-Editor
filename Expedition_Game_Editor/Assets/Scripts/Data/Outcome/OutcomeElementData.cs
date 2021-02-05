@@ -52,14 +52,14 @@ public class OutcomeElementData : OutcomeData, IElementData
         get { return CancelScenarioOnHit != OriginalData.CancelScenarioOnHit; }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
@@ -68,7 +68,7 @@ public class OutcomeElementData : OutcomeData, IElementData
         {
             return  ChangedCompleteTask                 || ChangedResetObjective        || ChangedCancelScenarioType    ||
                     ChangedCancelScenarioOnInteraction  || ChangedCancelScenarioOnInput || ChangedCancelScenarioOnRange || ChangedCancelScenarioOnHit ||
-                    ChangedPublicNotes                  || ChangedPrivateNotes;
+                    ChangedEditorNotes                  || ChangedGameNotes;
         }
     }
     #endregion

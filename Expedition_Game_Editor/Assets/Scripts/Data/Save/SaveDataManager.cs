@@ -82,7 +82,7 @@ public static class SaveDataManager
                         ModelIconPath = iconData.Path,
 
                         PhaseName = phaseData.Name,
-                        PhaseGameNotes = phaseData.PublicNotes
+                        PhaseGameNotes = phaseData.GameNotes
 
                         //Time = playerSaveData.FirstOrDefault() != null ? TimeManager.TimeFromSeconds(playerSaveData.FirstOrDefault().playerSaveData.PlayedTime) : ""
 

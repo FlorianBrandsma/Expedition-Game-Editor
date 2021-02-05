@@ -142,25 +142,25 @@ public class PhaseEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return phaseData.PublicNotes; }
+        get { return phaseData.EditorNotes; }
         set
         {
-            phaseData.PublicNotes = value;
+            phaseData.EditorNotes = value;
 
-            DataList.ForEach(x => ((PhaseElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((PhaseElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return phaseData.PrivateNotes; }
+        get { return phaseData.GameNotes; }
         set
         {
-            phaseData.PrivateNotes = value;
+            phaseData.GameNotes = value;
 
-            DataList.ForEach(x => ((PhaseElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((PhaseElementData)x).GameNotes = value);
         }
     }
 

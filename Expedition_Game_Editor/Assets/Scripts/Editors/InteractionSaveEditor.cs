@@ -69,14 +69,14 @@ public class InteractionSaveEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return interactionSaveData.PublicNotes; }
+        get { return interactionSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return interactionSaveData.PrivateNotes; }
+        get { return interactionSaveData.GameNotes; }
     }
     #endregion
 

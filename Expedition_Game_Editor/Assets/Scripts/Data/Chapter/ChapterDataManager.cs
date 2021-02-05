@@ -25,7 +25,7 @@ public static class ChapterDataManager
 
                         TimeSpeed = chapterData.TimeSpeed,
 
-                        PublicNotes = chapterData.PublicNotes,
+                        EditorNotes = chapterData.EditorNotes,
                         PrivateNotes = chapterData.PrivateNotes
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
@@ -138,12 +138,12 @@ public static class ChapterDataManager
                 data.TimeSpeed = elementData.TimeSpeed;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
                 data.PrivateNotes = elementData.PrivateNotes;
             }

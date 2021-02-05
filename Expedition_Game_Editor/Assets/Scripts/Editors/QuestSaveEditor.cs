@@ -54,14 +54,14 @@ public class QuestSaveEditor : MonoBehaviour, IEditor
         get { return questSaveData.Name; }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return questSaveData.PublicNotes; }
+        get { return questSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return questSaveData.PrivateNotes; }
+        get { return questSaveData.GameNotes; }
     }
     #endregion
 

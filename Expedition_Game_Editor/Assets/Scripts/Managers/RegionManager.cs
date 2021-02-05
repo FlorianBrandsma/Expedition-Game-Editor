@@ -7,7 +7,7 @@ static public class RegionManager
     public enum Display
     {
         World,
-        Tiles,
+        Tiles
     }
 
     static public Display activeDisplay;

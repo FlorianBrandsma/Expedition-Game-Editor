@@ -50,8 +50,8 @@ public static class OutcomeDataManager
                         CancelScenarioOnRange = outcomeData.CancelScenarioOnRange,
                         CancelScenarioOnHit = outcomeData.CancelScenarioOnHit,
 
-                        PublicNotes = outcomeData.PublicNotes,
-                        PrivateNotes = outcomeData.PrivateNotes,
+                        EditorNotes = outcomeData.EditorNotes,
+                        GameNotes = outcomeData.GameNotes,
 
                         ModelIconPath = iconData.Path,
 
@@ -197,14 +197,14 @@ public static class OutcomeDataManager
                 data.CancelScenarioOnHit = elementData.CancelScenarioOnHit;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

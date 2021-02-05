@@ -69,23 +69,23 @@ public class QuestEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return questData.PublicNotes; }
+        get { return questData.EditorNotes; }
         set
         {
-            questData.PublicNotes = value;
+            questData.EditorNotes = value;
 
-            DataList.ForEach(x => ((ChapterElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((ChapterElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return questData.PrivateNotes; }
+        get { return questData.GameNotes; }
         set
         {
-            questData.PrivateNotes = value;
+            questData.GameNotes = value;
 
             DataList.ForEach(x => ((ChapterElementData)x).PrivateNotes = value);
         }

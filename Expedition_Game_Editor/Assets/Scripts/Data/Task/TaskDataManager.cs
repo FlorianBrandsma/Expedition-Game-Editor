@@ -32,8 +32,8 @@ public static class TaskDataManager
                         CompleteObjective = taskData.CompleteObjective,
                         Repeatable = taskData.Repeatable,
 
-                        PublicNotes = taskData.PublicNotes,
-                        PrivateNotes = taskData.PrivateNotes
+                        EditorNotes = taskData.EditorNotes,
+                        GameNotes = taskData.GameNotes
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
@@ -147,14 +147,14 @@ public static class TaskDataManager
                 data.Repeatable = elementData.Repeatable;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

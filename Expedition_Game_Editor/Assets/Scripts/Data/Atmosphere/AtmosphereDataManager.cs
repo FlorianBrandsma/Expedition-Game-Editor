@@ -53,8 +53,8 @@ public static class AtmosphereDataManager
                         StartTime = atmosphereData.StartTime,
                         EndTime = atmosphereData.EndTime,
 
-                        PublicNotes = atmosphereData.PublicNotes,
-                        PrivateNotes = atmosphereData.PrivateNotes,
+                        EditorNotes = atmosphereData.EditorNotes,
+                        GameNotes = atmosphereData.GameNotes,
 
                         RegionName = regionData.Name,
                         TerrainName = terrainData.Name,
@@ -179,14 +179,14 @@ public static class AtmosphereDataManager
                 data.EndTime = elementData.EndTime;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

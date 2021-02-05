@@ -17,8 +17,8 @@ public class OutcomeBaseData
     public bool CancelScenarioOnRange       { get; set; }
     public bool CancelScenarioOnHit         { get; set; }
 
-    public string PublicNotes               { get; set; }
-    public string PrivateNotes              { get; set; }
+    public string EditorNotes               { get; set; }
+    public string GameNotes                 { get; set; }
 
     public virtual void GetOriginalValues(OutcomeData originalData)
     {
@@ -37,8 +37,8 @@ public class OutcomeBaseData
         CancelScenarioOnRange       = originalData.CancelScenarioOnRange;
         CancelScenarioOnHit         = originalData.CancelScenarioOnHit;
 
-        PublicNotes                 = originalData.PublicNotes;
-        PrivateNotes                = originalData.PrivateNotes;
+        EditorNotes                 = originalData.EditorNotes;
+        GameNotes                   = originalData.GameNotes;
     }
 
     public virtual void Clone(OutcomeData data)
@@ -58,7 +58,7 @@ public class OutcomeBaseData
         data.CancelScenarioOnRange          = CancelScenarioOnRange;
         data.CancelScenarioOnHit            = CancelScenarioOnHit;
 
-        data.PublicNotes                    = PublicNotes;
-        data.PrivateNotes                   = PrivateNotes;
+        data.EditorNotes                    = EditorNotes;
+        data.GameNotes                      = GameNotes;
     }
 }

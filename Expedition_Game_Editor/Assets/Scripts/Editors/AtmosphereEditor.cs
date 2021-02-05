@@ -65,25 +65,25 @@ public class AtmosphereEditor : MonoBehaviour, IEditor
         }
     }
     
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return atmosphereData.PublicNotes; }
+        get { return atmosphereData.EditorNotes; }
         set
         {
-            atmosphereData.PublicNotes = value;
+            atmosphereData.EditorNotes = value;
 
-            DataList.ForEach(x => ((AtmosphereElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((AtmosphereElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return atmosphereData.PrivateNotes; }
+        get { return atmosphereData.GameNotes; }
         set
         {
-            atmosphereData.PrivateNotes = value;
+            atmosphereData.GameNotes = value;
 
-            DataList.ForEach(x => ((AtmosphereElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((AtmosphereElementData)x).GameNotes = value);
         }
     }
     

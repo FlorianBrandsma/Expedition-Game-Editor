@@ -29,8 +29,8 @@ public class InteractionBaseData
     public bool CancelDelayOnMovement       { get; set; }
     public bool CancelDelayOnHit            { get; set; }
 
-    public string PublicNotes               { get; set; }
-    public string PrivateNotes              { get; set; }
+    public string EditorNotes               { get; set; }
+    public string GameNotes              { get; set; }
 
     public virtual void GetOriginalValues(InteractionData originalData)
     {
@@ -61,8 +61,8 @@ public class InteractionBaseData
         CancelDelayOnMovement       = originalData.CancelDelayOnMovement;
         CancelDelayOnHit            = originalData.CancelDelayOnHit;
 
-        PublicNotes                 = originalData.PublicNotes;
-        PrivateNotes                = originalData.PrivateNotes;
+        EditorNotes                 = originalData.EditorNotes;
+        GameNotes                   = originalData.GameNotes;
     }
 
     public virtual void Clone(InteractionData data)
@@ -94,7 +94,7 @@ public class InteractionBaseData
         data.CancelDelayOnMovement      = CancelDelayOnMovement;
         data.CancelDelayOnHit           = CancelDelayOnHit;
 
-        data.PublicNotes                = PublicNotes;
-        data.PrivateNotes               = PrivateNotes;
+        data.EditorNotes                = EditorNotes;
+        data.GameNotes                  = GameNotes;
     }
 }

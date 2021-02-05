@@ -10,8 +10,8 @@ public class TaskSaveData : TaskSaveBaseData
 
     public bool Repeatable      { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public override void GetOriginalValues(TaskSaveData originalData)
     {
@@ -23,8 +23,8 @@ public class TaskSaveData : TaskSaveBaseData
 
         Repeatable      = originalData.Repeatable;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
 
         base.GetOriginalValues(originalData);
     }
@@ -41,8 +41,8 @@ public class TaskSaveData : TaskSaveBaseData
 
         data.Repeatable     = Repeatable;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
 
         base.Clone(data);
 
@@ -59,8 +59,8 @@ public class TaskSaveData : TaskSaveBaseData
 
         elementData.Repeatable      = Repeatable;
 
-        elementData.PublicNotes     = PublicNotes;
-        elementData.PrivateNotes    = PrivateNotes;
+        elementData.EditorNotes     = EditorNotes;
+        elementData.GameNotes       = GameNotes;
 
         base.Clone(elementData);
     }

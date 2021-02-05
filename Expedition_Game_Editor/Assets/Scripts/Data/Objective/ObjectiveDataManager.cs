@@ -28,8 +28,8 @@ public static class ObjectiveDataManager
 
                         Journal = objectiveData.Journal,
 
-                        PublicNotes = objectiveData.PublicNotes,
-                        PrivateNotes = objectiveData.PrivateNotes
+                        EditorNotes = objectiveData.EditorNotes,
+                        GameNotes = objectiveData.GameNotes
 
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
 
@@ -128,14 +128,14 @@ public static class ObjectiveDataManager
                 data.Journal = elementData.Journal;
             }
 
-            if (elementData.ChangedPublicNotes)
+            if (elementData.ChangedEditorNotes)
             {
-                data.PublicNotes = elementData.PublicNotes;
+                data.EditorNotes = elementData.EditorNotes;
             }
 
-            if (elementData.ChangedPrivateNotes)
+            if (elementData.ChangedGameNotes)
             {
-                data.PrivateNotes = elementData.PrivateNotes;
+                data.GameNotes = elementData.GameNotes;
             }
 
             elementData.SetOriginalValues();

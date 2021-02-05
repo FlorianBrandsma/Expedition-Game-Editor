@@ -59,14 +59,14 @@ public class PhaseSaveEditor : MonoBehaviour, IEditor
         get { return phaseSaveData.Name; }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return phaseSaveData.PublicNotes; }
+        get { return phaseSaveData.EditorNotes; }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return phaseSaveData.PrivateNotes; }
+        get { return phaseSaveData.GameNotes; }
     }
     #endregion
 

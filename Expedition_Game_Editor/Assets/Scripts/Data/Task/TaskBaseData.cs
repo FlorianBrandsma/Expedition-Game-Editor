@@ -16,8 +16,8 @@ public class TaskBaseData
     public bool CompleteObjective   { get; set; }
     public bool Repeatable          { get; set; }
 
-    public string PublicNotes       { get; set; }
-    public string PrivateNotes      { get; set; }
+    public string EditorNotes       { get; set; }
+    public string GameNotes         { get; set; }
 
     public virtual void GetOriginalValues(TaskData originalData)
     {
@@ -35,8 +35,8 @@ public class TaskBaseData
         CompleteObjective   = originalData.CompleteObjective;
         Repeatable          = originalData.Repeatable;
 
-        PublicNotes         = originalData.PublicNotes;
-        PrivateNotes        = originalData.PrivateNotes;
+        EditorNotes         = originalData.EditorNotes;
+        GameNotes           = originalData.GameNotes;
     }
 
     public virtual void Clone(TaskData data)
@@ -55,7 +55,7 @@ public class TaskBaseData
         data.CompleteObjective      = CompleteObjective;
         data.Repeatable             = Repeatable;
 
-        data.PublicNotes            = PublicNotes;
-        data.PrivateNotes           = PrivateNotes;
+        data.EditorNotes            = EditorNotes;
+        data.GameNotes              = GameNotes;
     }
 }

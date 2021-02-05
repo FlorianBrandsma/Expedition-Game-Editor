@@ -67,14 +67,14 @@ public class PhaseElementData : PhaseData, IElementData
         get { return DefaultTime != OriginalData.DefaultTime; }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
@@ -84,7 +84,7 @@ public class PhaseElementData : PhaseData, IElementData
             return  ChangedName             || ChangedDefaultRegionId   ||
                     ChangedDefaultPositionX || ChangedDefaultPositionY  || ChangedDefaultPositionZ ||
                     ChangedDefaultRotationX || ChangedDefaultRotationY  || ChangedDefaultRotationZ ||
-                    ChangedDefaultTime      || ChangedPublicNotes       || ChangedPrivateNotes;
+                    ChangedDefaultTime      || ChangedEditorNotes       || ChangedGameNotes;
         }
     }
     #endregion

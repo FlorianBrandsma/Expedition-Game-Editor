@@ -37,21 +37,21 @@ public class TaskElementData : TaskData, IElementData
         get { return Repeatable != OriginalData.Repeatable; }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
     {
         get
         {
-            return ChangedName || ChangedCompleteObjective || ChangedRepeatable || ChangedPublicNotes || ChangedPrivateNotes;
+            return ChangedName || ChangedCompleteObjective || ChangedRepeatable || ChangedEditorNotes || ChangedGameNotes;
         }
     }
     #endregion

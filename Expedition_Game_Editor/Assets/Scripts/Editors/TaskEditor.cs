@@ -76,25 +76,25 @@ public class TaskEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return taskData.PublicNotes; }
+        get { return taskData.EditorNotes; }
         set
         {
-            taskData.PublicNotes = value;
+            taskData.EditorNotes = value;
 
-            DataList.ForEach(x => ((TaskElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((TaskElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return taskData.PrivateNotes; }
+        get { return taskData.GameNotes; }
         set
         {
-            taskData.PrivateNotes = value;
+            taskData.GameNotes = value;
 
-            DataList.ForEach(x => ((TaskElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((TaskElementData)x).GameNotes = value);
         }
     }
     #endregion

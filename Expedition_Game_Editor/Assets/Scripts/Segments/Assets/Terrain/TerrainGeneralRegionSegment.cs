@@ -35,7 +35,7 @@ public class TerrainGeneralRegionSegment : MonoBehaviour, ISegment
         editButton.InitializeElement();
 
         var regionData = (RegionElementData)regionRoute.ElementData;
-        buttonText.text = "Tiles, " + regionData.Name;
+        buttonText.text = "Tiles - " + regionData.Name;
     }
 
     public void InitializeData() { }

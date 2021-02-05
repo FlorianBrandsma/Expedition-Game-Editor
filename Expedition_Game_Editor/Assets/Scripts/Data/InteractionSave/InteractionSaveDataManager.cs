@@ -31,8 +31,8 @@ public static class InteractionSaveDataManager
                         StartTime = interactionData.StartTime,
                         EndTime = interactionData.EndTime,
 
-                        PublicNotes = interactionData.PublicNotes,
-                        PrivateNotes = interactionData.PrivateNotes,
+                        EditorNotes = interactionData.EditorNotes,
+                        GameNotes = interactionData.GameNotes,
 
                         TaskId = interactionData.TaskId
 

@@ -208,25 +208,25 @@ public class InteractionEditor : MonoBehaviour, IEditor
         }
     }
 
-    public string PublicNotes
+    public string EditorNotes
     {
-        get { return interactionData.PublicNotes; }
+        get { return interactionData.EditorNotes; }
         set
         {
-            interactionData.PublicNotes = value;
+            interactionData.EditorNotes = value;
 
-            DataList.ForEach(x => ((InteractionElementData)x).PublicNotes = value);
+            DataList.ForEach(x => ((InteractionElementData)x).EditorNotes = value);
         }
     }
 
-    public string PrivateNotes
+    public string GameNotes
     {
-        get { return interactionData.PrivateNotes; }
+        get { return interactionData.GameNotes; }
         set
         {
-            interactionData.PrivateNotes = value;
+            interactionData.GameNotes = value;
 
-            DataList.ForEach(x => ((InteractionElementData)x).PrivateNotes = value);
+            DataList.ForEach(x => ((InteractionElementData)x).GameNotes = value);
         }
     }
 

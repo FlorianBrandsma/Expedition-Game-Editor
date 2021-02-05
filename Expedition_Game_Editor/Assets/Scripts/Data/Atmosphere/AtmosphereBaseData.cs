@@ -11,8 +11,8 @@ public class AtmosphereBaseData
     public int StartTime        { get; set; }
     public int EndTime          { get; set; }
 
-    public string PublicNotes   { get; set; }
-    public string PrivateNotes  { get; set; }
+    public string EditorNotes   { get; set; }
+    public string GameNotes     { get; set; }
 
     public virtual void GetOriginalValues(AtmosphereData originalData)
     {
@@ -25,8 +25,8 @@ public class AtmosphereBaseData
         StartTime       = originalData.StartTime;
         EndTime         = originalData.EndTime;
 
-        PublicNotes     = originalData.PublicNotes;
-        PrivateNotes    = originalData.PrivateNotes;
+        EditorNotes     = originalData.EditorNotes;
+        GameNotes       = originalData.GameNotes;
     }
 
     public virtual void Clone(AtmosphereData data)
@@ -40,7 +40,7 @@ public class AtmosphereBaseData
         data.StartTime      = StartTime;
         data.EndTime        = EndTime;
 
-        data.PublicNotes    = PublicNotes;
-        data.PrivateNotes   = PrivateNotes;
+        data.EditorNotes    = EditorNotes;
+        data.GameNotes      = GameNotes;
     }
 }

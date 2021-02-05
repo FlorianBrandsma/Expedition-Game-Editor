@@ -10,7 +10,7 @@ public class ChapterBaseData
 
     public float TimeSpeed      { get; set; }
 
-    public string PublicNotes   { get; set; }
+    public string EditorNotes   { get; set; }
     public string PrivateNotes  { get; set; }
 
     public virtual void GetOriginalValues(ChapterData originalData)
@@ -23,7 +23,7 @@ public class ChapterBaseData
 
         TimeSpeed       = originalData.TimeSpeed;
 
-        PublicNotes     = originalData.PublicNotes;
+        EditorNotes     = originalData.EditorNotes;
         PrivateNotes    = originalData.PrivateNotes;
     }
 
@@ -37,7 +37,7 @@ public class ChapterBaseData
 
         data.TimeSpeed      = TimeSpeed;
 
-        data.PublicNotes    = PublicNotes;
+        data.EditorNotes    = EditorNotes;
         data.PrivateNotes   = PrivateNotes;
     }
 }

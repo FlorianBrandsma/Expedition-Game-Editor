@@ -27,21 +27,21 @@ public class AtmosphereElementData : AtmosphereData, IElementData
         get { return EndTime != OriginalData.EndTime; }
     }
 
-    public bool ChangedPublicNotes
+    public bool ChangedEditorNotes
     {
-        get { return PublicNotes != OriginalData.PublicNotes; }
+        get { return EditorNotes != OriginalData.EditorNotes; }
     }
 
-    public bool ChangedPrivateNotes
+    public bool ChangedGameNotes
     {
-        get { return PrivateNotes != OriginalData.PrivateNotes; }
+        get { return GameNotes != OriginalData.GameNotes; }
     }
 
     public bool Changed
     {
         get
         {
-            return ChangedStartTime || ChangedEndTime || ChangedPublicNotes || ChangedPrivateNotes;
+            return ChangedStartTime || ChangedEndTime || ChangedEditorNotes || ChangedGameNotes;
         }
     }
     #endregion

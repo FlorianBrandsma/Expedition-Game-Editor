@@ -30,8 +30,8 @@ public static class ObjectiveSaveDataManager
 
                         Name = objectiveData.Name,
 
-                        PublicNotes = objectiveData.PublicNotes,
-                        PrivateNotes = objectiveData.PrivateNotes,
+                        EditorNotes = objectiveData.EditorNotes,
+                        GameNotes = objectiveData.GameNotes,
 
                         QuestId = objectiveData.QuestId
 
