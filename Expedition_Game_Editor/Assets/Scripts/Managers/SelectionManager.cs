@@ -114,9 +114,9 @@ static public class SelectionManager
         //Validate changes once
         //ApplyChanges(dataRequest, validationElement, resultElementData);
 
-        if (dataRequest.errorList.Count > 0)
+        if (dataRequest.notificationList.Count > 0)
         {
-            dataRequest.errorList.ForEach(x => Debug.Log(x));
+            dataRequest.notificationList.ForEach(x => Debug.Log(x));
 
         } else {
 

@@ -19,7 +19,7 @@ public class SegmentController : MonoBehaviour
     public ListProperties ListProperties { get { return GetComponent<ListProperties>(); } }
 
     public Path Path        { get { return EditorController.PathController.route.path; } }
-    public Path MainPath    { get { return EditorController.PathController.layoutSection.EditorForm.activePath; } }
+    public Path MainPath    { get { return EditorController.PathController.layoutSection.editorForm.activePath; } }
 
     public ISegment Segment { get { return GetComponent<ISegment>(); } }
 

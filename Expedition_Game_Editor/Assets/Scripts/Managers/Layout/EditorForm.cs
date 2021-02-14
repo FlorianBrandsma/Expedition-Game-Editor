@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class EditorForm : MonoBehaviour
 {
@@ -24,11 +25,10 @@ public class EditorForm : MonoBehaviour
 
     public Path activeViewPath = new Path();
 
+    public List<EditorForm> siblingFormList;
+
     public void InitializeForm()
     {
-        foreach (LayoutSection section in editorSections)
-            section.InitializeSection(this);
-
         baseController.InitializeDependencies();
 
         activePath.form = this;

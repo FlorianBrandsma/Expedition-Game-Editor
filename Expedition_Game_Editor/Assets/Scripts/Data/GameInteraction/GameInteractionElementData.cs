@@ -78,6 +78,8 @@ public class GameInteractionElementData : GameInteractionData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

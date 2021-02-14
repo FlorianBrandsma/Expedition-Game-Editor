@@ -192,7 +192,7 @@ public class SceneEditor : MonoBehaviour, IEditor
         return true;
     }
 
-    public bool Changed()
+    public bool Applicable()
     {
         return ElementDataList.Any(x => x.Changed);
     }
@@ -256,6 +256,7 @@ public class SceneEditor : MonoBehaviour, IEditor
             case Enums.ExecuteType.Update:
                 ResetExecuteType();
                 UpdateEditor();
+                EditorSegments.ForEach(x => x.UpdateSegment());
                 break;
         }
     }

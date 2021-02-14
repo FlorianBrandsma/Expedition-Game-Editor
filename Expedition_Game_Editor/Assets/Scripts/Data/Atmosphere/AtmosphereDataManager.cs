@@ -208,7 +208,7 @@ public static class AtmosphereDataManager
     private static void CheckTimeConflict(AtmosphereElementData elementData, DataRequest dataRequest)
     {
         if (elementData.TimeConflict)
-            dataRequest.errorList.Add("Time conflict");
+            dataRequest.AddNotification(Enums.NotificationType.Error, "Time conflict");
     }
 
     public static void RemoveData(AtmosphereElementData elementData, DataRequest dataRequest)

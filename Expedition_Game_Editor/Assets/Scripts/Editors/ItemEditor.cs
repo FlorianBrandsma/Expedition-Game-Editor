@@ -157,7 +157,7 @@ public class ItemEditor : MonoBehaviour, IEditor
         return true;
     }
 
-    public bool Changed()
+    public bool Applicable()
     {
         return ElementDataList.Any(x => x.Changed);
     }

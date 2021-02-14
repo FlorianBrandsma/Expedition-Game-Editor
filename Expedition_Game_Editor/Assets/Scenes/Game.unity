@@ -2093,6 +2093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 2082631209}
   buttonActionManager: {fileID: 0}
 --- !u!1 &97150319 stripped
 GameObject:
@@ -2777,6 +2778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 778174905}
   buttonActionManager: {fileID: 2132397095}
 --- !u!224 &155459492
 RectTransform:
@@ -7231,8 +7233,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SaveText
+      - m_Target: {fileID: 674646147}
+        m_MethodName: ClickApply
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7241,7 +7243,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
 --- !u!1 &448027365
 GameObject:
   m_ObjectHideFlags: 0
@@ -10147,9 +10149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518d20f7325a15c42831c7d9acbe3418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyButtonType: 0
+  closeButtonType: 2
   applyButton: {fileID: 446887344}
   closeButton: {fileID: 1213198746}
   trashToggle: {fileID: 0}
+  section: {fileID: 1685155425}
 --- !u!1 &680479530
 GameObject:
   m_ObjectHideFlags: 0
@@ -11013,8 +11018,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SaveText
+      - m_Target: {fileID: 2132397095}
+        m_MethodName: ClickClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11023,7 +11028,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
 --- !u!1 &754758118
 GameObject:
   m_ObjectHideFlags: 0
@@ -11353,6 +11358,7 @@ MonoBehaviour:
   editorSections:
   - {fileID: 794742818}
   - {fileID: 155459491}
+  siblingFormList: []
 --- !u!114 &778174906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11784,6 +11790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 778174905}
   buttonActionManager: {fileID: 0}
 --- !u!114 &794742820
 MonoBehaviour:
@@ -19231,8 +19238,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SaveText
+      - m_Target: {fileID: 674646147}
+        m_MethodName: ClickClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19241,7 +19248,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
 --- !u!1 &1229205253
 GameObject:
   m_ObjectHideFlags: 0
@@ -20133,6 +20140,7 @@ MonoBehaviour:
   baseController: {fileID: 565238295}
   editorSections:
   - {fileID: 1699825211}
+  siblingFormList: []
 --- !u!114 &1250721020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22627,6 +22635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 1374861249}
   buttonActionManager: {fileID: 0}
 --- !u!114 &1367463361
 MonoBehaviour:
@@ -23145,7 +23154,7 @@ GameObject:
   - component: {fileID: 1374861250}
   - component: {fileID: 1374861249}
   m_Layer: 5
-  m_Name: Assets (form-layoutSection)
+  m_Name: Assets (form)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23192,6 +23201,7 @@ MonoBehaviour:
   baseController: {fileID: 886924297}
   editorSections:
   - {fileID: 1367463360}
+  siblingFormList: []
 --- !u!114 &1374861250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23424,8 +23434,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SaveText
+      - m_Target: {fileID: 2132397095}
+        m_MethodName: ClickApply
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23434,7 +23444,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
 --- !u!114 &1390149750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28142,6 +28152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 2082631209}
   buttonActionManager: {fileID: 0}
 --- !u!1001 &1662432503
 PrefabInstance:
@@ -28702,6 +28713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 2082631209}
   buttonActionManager: {fileID: 674646147}
 --- !u!114 &1685155426
 MonoBehaviour:
@@ -28844,7 +28856,7 @@ GameObject:
   - component: {fileID: 1699825211}
   - component: {fileID: 1699825212}
   m_Layer: 5
-  m_Name: Section_A (B-section)
+  m_Name: Section_A (B-layoutSection)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28884,6 +28896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e3083dde142764e9a7edbc78a83c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorForm: {fileID: 2082631209}
   buttonActionManager: {fileID: 0}
 --- !u!114 &1699825212
 MonoBehaviour:
@@ -34753,7 +34766,7 @@ GameObject:
   - component: {fileID: 2082631209}
   - component: {fileID: 2082631211}
   m_Layer: 5
-  m_Name: Main (form-layoutSection)
+  m_Name: Main (form)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34804,6 +34817,7 @@ MonoBehaviour:
   - {fileID: 1658898469}
   - {fileID: 97059935}
   - {fileID: 1685155425}
+  siblingFormList: []
 --- !u!114 &2082631210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34979,7 +34993,18 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2132397095}
+        m_MethodName: ClickToggle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!222 &2087808910
 CanvasRenderer:
@@ -35117,9 +35142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518d20f7325a15c42831c7d9acbe3418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyButtonType: 0
+  closeButtonType: 2
   applyButton: {fileID: 1390149750}
   closeButton: {fileID: 742718107}
   trashToggle: {fileID: 2087808907}
+  section: {fileID: 155459491}
 --- !u!224 &2132397096
 RectTransform:
   m_ObjectHideFlags: 0

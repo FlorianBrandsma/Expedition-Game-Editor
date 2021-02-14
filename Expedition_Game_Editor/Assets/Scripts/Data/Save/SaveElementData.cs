@@ -52,16 +52,23 @@ public class SaveElementData : SaveData, IElementData
         get { return GameTime != OriginalData.GameTime; }
     }
 
-    //public bool ChangedPlayedSeconds
-    //{
-    //    get { return PlayedSeconds != OriginalData.PlayedSeconds; }
-    //}
+    public bool ChangedPlayTime
+    {
+        get { return PlayTime != OriginalData.PlayTime; }
+    }
+
+    public bool ChangedSaveTime
+    {
+        get { return SaveTime.CompareTo(OriginalData.SaveTime) != 0; }
+    }
 
     public bool Changed
     {
         get
         {
-            return ChangedRegionId || ChangedWorldInteractableId || ChangedPositionX || ChangedPositionY || ChangedPositionZ || ChangedGameTime;
+            return  ChangedRegionId     || ChangedWorldInteractableId   || 
+                    ChangedPositionX    || ChangedPositionY             || ChangedPositionZ || 
+                    ChangedGameTime     || ChangedPlayTime              || ChangedSaveTime;
         }
     }
     #endregion
@@ -119,6 +126,8 @@ public class SaveElementData : SaveData, IElementData
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
+
+        data.ExecuteType = ExecuteType;
 
         base.Clone(data);
 

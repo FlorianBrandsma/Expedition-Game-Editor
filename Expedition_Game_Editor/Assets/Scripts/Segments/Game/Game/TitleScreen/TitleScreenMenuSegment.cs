@@ -70,7 +70,7 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
 
     private void InitializeLoadButton()
     {
-        loadButton.Button.interactable = SegmentController.DataController.Data.dataList.Count > 0;
+        loadButton.Button.interactable = SegmentController.DataController.Data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Add).ToList().Count > 0;
     }
 
     private void InitializeEditorButton()

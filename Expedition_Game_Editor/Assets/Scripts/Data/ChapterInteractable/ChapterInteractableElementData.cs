@@ -74,7 +74,9 @@ public class ChapterInteractableElementData : ChapterInteractableData, IElementD
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
-        
+
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

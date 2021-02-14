@@ -143,6 +143,8 @@ public class PhaseElementData : PhaseData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

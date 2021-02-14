@@ -252,7 +252,7 @@ public class RegionNavigationAction : MonoBehaviour, IAction
     private void GetObjectiveFilterData(Data data)
     {
         var objectiveSearchParameters = new Search.Objective();
-        objectiveSearchParameters.id = worldInteractableDataFilter.Select(x => x.ObjectiveId).ToList();
+        objectiveSearchParameters.id = taskDataFilter.Select(x => x.ObjectiveId).ToList();
 
         objectiveDataFilter = DataManager.GetObjectiveData(objectiveSearchParameters);
 

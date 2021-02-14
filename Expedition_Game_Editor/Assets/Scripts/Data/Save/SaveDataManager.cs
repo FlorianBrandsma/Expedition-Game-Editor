@@ -422,10 +422,19 @@ public static class SaveDataManager
                 data.GameTime = elementData.GameTime;
             }
 
+            if (elementData.ChangedPlayTime)
+            {
+                data.PlayTime = elementData.PlayTime;
+            }
+
+            if (elementData.ChangedSaveTime)
+            {
+                data.SaveTime = elementData.SaveTime;
+            }
+
             elementData.SetOriginalValues();
 
-        }
-        else { }
+        } else { }
     }
 
     static public void UpdateIndex(SaveElementData elementData, DataRequest dataRequest)

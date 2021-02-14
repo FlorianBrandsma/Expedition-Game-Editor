@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -120,7 +118,7 @@ static public class RenderManager
     {
         Render(path);
 
-        //layoutManager.forms.Where(form => form != path.form && form.activeInPath).ToList().ForEach(form => Render(form.activePath));
+        path.form.siblingFormList.ForEach(form => Render(form.activePath));
 
         loadType = Enums.LoadType.Normal;
     }

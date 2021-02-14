@@ -97,7 +97,9 @@ public class TerrainElementData : TerrainData, IElementData
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
-        
+
+        data.ExecuteType = ExecuteType;
+
         data.AtmosphereDataList             = new List<AtmosphereElementData>(AtmosphereDataList.Select(x => (AtmosphereElementData)x.Clone()));
         data.TerrainTileDataList            = new List<TerrainTileElementData>(TerrainTileDataList.Select(x => (TerrainTileElementData)x.Clone()));
         data.WorldInteractableDataList      = new List<WorldInteractableElementData>(WorldInteractableDataList.Select(x => (WorldInteractableElementData)x.Clone()));

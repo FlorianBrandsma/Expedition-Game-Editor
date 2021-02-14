@@ -26,6 +26,7 @@ public class SearchProperties
         switch (dataType)
         {
             case Enums.DataType.None: return;
+            case Enums.DataType.Notification:           searchParameters = new[] { new Search.Notification() };             break;
             case Enums.DataType.Icon:                   searchParameters = new[] { new Search.Icon() };                     break;
             case Enums.DataType.Model:                  searchParameters = new[] { new Search.Model() };                    break;
             case Enums.DataType.Item:                   searchParameters = new[] { new Search.Item() };                     break;

@@ -92,7 +92,7 @@ public class SaveEditor : MonoBehaviour, IEditor
         return false;
     }
 
-    public bool Changed()
+    public bool Applicable()
     {
         return ElementDataList.Any(x => x.Changed);
     }

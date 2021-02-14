@@ -59,7 +59,8 @@ public class Enums
         QuestSave,
         ObjectiveSave,
         TaskSave,
-        InteractionSave
+        InteractionSave,
+        Notification
     }
 
     public enum DataCategory
@@ -192,7 +193,8 @@ public class Enums
         SpeechBubble,
         SpeechTextBox,
         CameraFilter,
-        SavePanel
+        SavePanel,
+        NotificationPanel
     }
 
     public enum SelectionIconType
@@ -305,7 +307,8 @@ public class Enums
         Menu,
         MenuSelection,
         Scene,
-        SceneSelection
+        SceneSelection,
+        Dialog
     }
 
     public enum RequestType
@@ -319,5 +322,27 @@ public class Enums
         Update,
         Add,
         Remove
+    }
+
+    public enum DialogType
+    {
+        Main,
+        Error,
+        Warning,
+        Notification
+    }
+
+    public enum NotificationType
+    {
+        Error,
+        Warning
+    }
+
+    public enum ButtonActionType
+    {
+        Apply,
+        Confirm,
+        Close,
+        Cancel
     }
 }

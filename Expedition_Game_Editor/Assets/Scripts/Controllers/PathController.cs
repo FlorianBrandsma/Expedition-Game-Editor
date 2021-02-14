@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 public class PathController : MonoBehaviour
@@ -60,7 +58,7 @@ public class PathController : MonoBehaviour
         } else {
             route = new Route(path);
         }
-        
+
         route.path = path;
 
         previousRoute = route;

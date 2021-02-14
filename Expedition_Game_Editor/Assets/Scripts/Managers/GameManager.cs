@@ -411,6 +411,8 @@ public class GameManager : MonoBehaviour
     
     public void SaveData(SaveElementData saveElementData)
     {
+        activeGameSaveElementData.SaveData.SaveTime = System.DateTime.Now;
+        
         //Create new save data if execute type is add
         if (saveElementData.ExecuteType == Enums.ExecuteType.Add)
         {
@@ -423,9 +425,7 @@ public class GameManager : MonoBehaviour
     private void AddSaveData(SaveElementData saveElementData)
     {
         var dataRequest = new DataRequest() { requestType = Enums.RequestType.Execute };
-
-        saveElementData.SaveTime = System.DateTime.Now;
-
+        
         saveElementData.Add(dataRequest);
 
         saveElementData.SetOriginalValues();

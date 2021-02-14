@@ -75,12 +75,12 @@ public class WorldInteractableElementData : WorldInteractableData, IElementData
     public new IElementData Clone()
     {
         var data = new WorldInteractableElementData();
-
-        data.ExecuteType = ExecuteType;
-
+        
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
+
+        data.ExecuteType = ExecuteType;
 
         base.Clone(data);
 

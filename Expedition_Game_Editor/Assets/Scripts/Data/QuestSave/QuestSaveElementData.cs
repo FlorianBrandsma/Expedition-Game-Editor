@@ -75,6 +75,8 @@ public class QuestSaveElementData : QuestSaveData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

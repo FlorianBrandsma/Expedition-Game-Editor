@@ -65,6 +65,8 @@ public class GameWorldElementData : GameWorldData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

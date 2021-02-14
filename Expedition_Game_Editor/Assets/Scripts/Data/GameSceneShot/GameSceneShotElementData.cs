@@ -66,6 +66,8 @@ public class GameSceneShotElementData : GameSceneShotData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

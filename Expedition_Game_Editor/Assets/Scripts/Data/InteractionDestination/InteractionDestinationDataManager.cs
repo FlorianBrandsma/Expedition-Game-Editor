@@ -179,13 +179,19 @@ public static class InteractionDestinationDataManager
 
             } else {
 
-                //Get first region of the selected phase
+                var phaseId = 0;
+
                 var phaseRoute = RenderManager.layoutManager.forms[0].activePath.FindLastRoute(Enums.DataType.Phase);
 
+                if(phaseRoute != null)
+                {
+                    phaseId = phaseRoute.id;
+                }
+                
                 //Region
                 var regionSearchParameters = new Search.Region()
                 {
-                    phaseId = new List<int>() { phaseRoute.ElementData.Id }
+                    phaseId = new List<int>() { phaseId }
                 };
 
                 regionElementData = (RegionElementData)RegionDataManager.GetData(regionSearchParameters).First();

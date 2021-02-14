@@ -54,7 +54,9 @@ public class IconElementData : IconData, IElementData
         data.DataElement = DataElement;
 
         data.OriginalData = OriginalData.Clone();
-        
+
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

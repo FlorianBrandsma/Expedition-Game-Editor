@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 public class Search
 {
+    public class Notification
+    {
+        public Enums.NotificationType notificationType;
+    }
+
     public class Icon
     {
         public List<int> id = new List<int>();

@@ -2,10 +2,10 @@
 
 public class LayoutSection : MonoBehaviour
 {
+    public EditorForm editorForm;
+
     public bool Active                                  { get; set; }
     
-    public EditorForm EditorForm                        { get; set; }
-
     public EditorController TargetController            { get; set; }
     public EditorController PreviousTargetController    { get; set; }
     public EditorController DisplayTargetController     { get; set; }
@@ -20,7 +20,7 @@ public class LayoutSection : MonoBehaviour
     {
         get
         {
-            if (!EditorForm.loaded)
+            if (!editorForm.loaded)
                 return false;
 
             if (RenderManager.loadType == Enums.LoadType.Reload || RenderManager.loadType == Enums.LoadType.Return)
@@ -48,14 +48,6 @@ public class LayoutSection : MonoBehaviour
     //
     
     public ButtonActionManager buttonActionManager;
-
-    public void InitializeSection(EditorForm editorForm)
-    {
-        EditorForm = editorForm;
-
-        if (buttonActionManager != null)
-            buttonActionManager.InitializeButtons(this);
-    }
 
     public void InitializeLayout()
     {
@@ -141,42 +133,7 @@ public class LayoutSection : MonoBehaviour
 
     public void ApplyChanges()
     {
-        if (dataEditor == null) return;
-
-        var dataRequest = new DataRequest()
-        {
-            includeDependencies = true
-        };
-
-        dataEditor.ApplyChanges(dataRequest);
-
-        if (dataRequest.errorList.Count > 0)
-        {
-            dataRequest.errorList.ForEach(x => Debug.Log(x));
-            return;
-        }
-
-        dataRequest.requestType = Enums.RequestType.Execute;
-
-        //Apply changes when there are no combined errors 
-        dataEditor.ApplyChanges(dataRequest);
-
-        dataEditor.ElementDataList.ForEach(x =>
-        {
-            if (SelectionElementManager.SelectionActive(x.DataElement))
-            {
-                var editorElement = (EditorElement)x.DataElement.SelectionElement;
-
-                x.DataElement.Id = x.Id;
-
-                if (editorElement.child != null)
-                    editorElement.child.DataElement.Id = x.Id;
-
-                x.DataElement.UpdateElement();
-            }
-        });
-        
-        dataEditor.FinalizeChanges();
+        DataRequestManager.CreateDataRequest(dataEditor, Enums.RequestType.Validate);
     }
 
     private void ResetExecutionType()

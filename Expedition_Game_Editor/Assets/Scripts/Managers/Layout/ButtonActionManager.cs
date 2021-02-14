@@ -1,24 +1,38 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
 public class ButtonActionManager : MonoBehaviour
 {
+    public Enums.ButtonActionType applyButtonType, 
+                                  closeButtonType;
+
     public ExButton applyButton,
                     closeButton;
 
     public ExToggle trashToggle;
 
-    public void InitializeButtons(LayoutSection section)
+    public LayoutSection section;
+
+    public void ClickApply()
     {
-        if (applyButton != null)
-            applyButton.Button.onClick.AddListener(delegate { section.ApplyChanges(); });
+        if (applyButtonType == Enums.ButtonActionType.Apply)
+            section.ApplyChanges();
 
-        if (trashToggle != null)
-            trashToggle.Toggle.onValueChanged.AddListener(delegate { section.ToggleRemoval(trashToggle.Toggle.isOn); });
+        if (applyButtonType == Enums.ButtonActionType.Confirm)
+            DialogManager.instance.confirmRequest = true;
+    }
 
-        if (closeButton != null)
-            closeButton.Button.onClick.AddListener(delegate { section.CloseEditor(); });    
+    public void ClickToggle()
+    {
+        section.ToggleRemoval(trashToggle.Toggle.isOn);
+    }
+
+    public void ClickClose()
+    {
+        if (closeButtonType == Enums.ButtonActionType.Close)
+            section.CloseEditor();
+
+        if (closeButtonType == Enums.ButtonActionType.Cancel)
+            DialogManager.instance.confirmRequest = false;
     }
 
     public void SetButtons(Enums.ExecuteType executionType, IEditor dataEditor)
@@ -33,7 +47,7 @@ public class ButtonActionManager : MonoBehaviour
                     break;
 
                 case Enums.ExecuteType.Update:
-                    applyButton.Button.interactable = dataEditor.Changed();
+                    applyButton.Button.interactable = dataEditor.Applicable();
                     applyButton.label.text = "Apply";
                     break;
 

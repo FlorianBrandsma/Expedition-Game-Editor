@@ -55,6 +55,8 @@ public class GameInteractionDestinationElementData : GameInteractionDestinationD
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

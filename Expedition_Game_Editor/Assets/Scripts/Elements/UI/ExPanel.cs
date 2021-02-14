@@ -81,8 +81,13 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         if (idText == null) return;
 
         if(enable)
-            idText.text = id.ToString();
-        
+        {
+            if (id > 0)
+                idText.text = id.ToString();
+            else
+                idText.text = "New";
+        }
+
         idText.gameObject.SetActive(enable);
     }
 
@@ -127,7 +132,13 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
             headerText.alignment = TextAnchor.MiddleCenter;
 
-            if(EditorElement.ActiveSelectionProperty == SelectionManager.Property.Set)
+            //if (EditorElement.DataElement.ElementData.ExecuteType == Enums.ExecuteType.Add)
+            //    header = "Add new";
+
+            //if (EditorElement.DataElement.ElementData.ExecuteType == Enums.ExecuteType.Remove)
+            //    header = "Remove selection";
+
+            if (EditorElement.ActiveSelectionProperty == SelectionManager.Property.Set)
             {
                 header = "Remove selection";
 
@@ -242,6 +253,8 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         
         switch (EditorElement.DataElement.Data.dataController.DataType)
         {
+            case Enums.DataType.Notification:           SetNotificationElement();           break;
+
             case Enums.DataType.Chapter:                SetChapterElement();                break;
             case Enums.DataType.ChapterInteractable:    SetChapterInteractableElement();    break;
             case Enums.DataType.ChapterRegion:          SetChapterRegionElement();          break;
@@ -289,6 +302,13 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         SetInfoIcon(infoIconPath != null);
 
         SetChild(childProperty != SelectionManager.Property.None && enableContent);
+    }
+
+    private void SetNotificationElement()
+    {
+        var elementData = (NotificationElementData)EditorElement.DataElement.ElementData;
+
+        description = elementData.Message;
     }
 
     private void SetChapterElement()

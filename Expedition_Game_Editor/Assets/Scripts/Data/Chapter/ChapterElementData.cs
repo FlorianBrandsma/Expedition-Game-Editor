@@ -105,6 +105,8 @@ public class ChapterElementData : ChapterData, IElementData
 
         data.OriginalData = OriginalData.Clone();
 
+        data.ExecuteType = ExecuteType;
+
         base.Clone(data);
 
         return data;

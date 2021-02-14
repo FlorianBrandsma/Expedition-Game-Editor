@@ -13,7 +13,7 @@ public interface IEditor
     List<SegmentController> EditorSegments  { get; }
 
     bool Addable();
-    bool Changed();
+    bool Applicable();
     bool Removable();
 
     void InitializeEditor();

@@ -24,6 +24,25 @@ public class PathManager
             return CreatePath(CreateRoutes(controllerIndices, form, Enums.SelectionStatus.Main, false), form);
         }
     }
+
+    public class Dialog
+    {
+        EditorForm form = RenderManager.layoutManager.forms[4];
+
+        Enums.DialogType dialogType;
+
+        public Dialog(Enums.DialogType dialogType)
+        {
+            this.dialogType = dialogType;
+        }
+
+        public Path Initialize()
+        {
+            var controllerIndices = new List<int>() { (int)dialogType };
+
+            return CreatePath(CreateRoutes(controllerIndices, form, Enums.SelectionStatus.Main, false), form);
+        }
+    }
     #endregion
 
     #region Editor

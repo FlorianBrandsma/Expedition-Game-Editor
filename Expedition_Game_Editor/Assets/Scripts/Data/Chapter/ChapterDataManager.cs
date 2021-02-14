@@ -165,7 +165,7 @@ public static class ChapterDataManager
         var chapterList = Fixtures.chapterList.Where(x => x.Id != elementData.Id).ToList();
 
         if (chapterList.Any(x => x.Name == elementData.Name))
-            dataRequest.errorList.Add("This name totally exists already");
+            dataRequest.AddNotification(Enums.NotificationType.Warning, "This name totally exists already");
     }
 
     static public void UpdateIndex(ChapterElementData elementData, DataRequest dataRequest)
