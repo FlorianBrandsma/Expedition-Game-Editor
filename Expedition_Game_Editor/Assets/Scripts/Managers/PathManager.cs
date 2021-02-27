@@ -45,13 +45,27 @@ public class PathManager
     }
     #endregion
 
+    #region Portal
+    public class Portal
+    {
+        EditorForm form = RenderManager.layoutManager.forms[1];
+
+        List<int> source = new List<int>() { 0, 0 };
+
+        public Path Initialize()
+        {
+            return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
+        }
+    }
+    #endregion
+
     #region Editor
     public class Editor
     {
         EditorForm form = RenderManager.layoutManager.forms[0];
 
         List<int> source = new List<int>() { 0, 0 };
-
+        
         public Path Initialize()
         {
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
@@ -812,13 +826,44 @@ public class PathManager
     #region Game
     public class Game
     {
-        EditorForm form = RenderManager.layoutManager.forms[3];
+        EditorElement editorElement;
+        Path pathSource;
+        Route route;
 
         List<int> source = new List<int>() { 0, 0 };
+        List<int> enter = new List<int>() { 0, 0 };
+
+        public Game() { }
+
+        public Game(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+            this.route = route;
+
+            pathSource = editorElement.DataElement.segmentController.Path;
+        }
 
         public Path Initialize()
         {
+            var form = RenderManager.layoutManager.forms[3];
+
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
+        }
+
+        public Path Enter()
+        {
+            var form = RenderManager.layoutManager.forms[1];
+
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection)),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
         }
     }
 

@@ -6,6 +6,8 @@ static public class Fixtures
 {
     static public int timeFrames = 2;
 
+    static public int projects = 1;
+
     static public int supplies = 4;
     static public int gear = 6;
     static public int spoils = 10;
@@ -34,6 +36,13 @@ static public class Fixtures
 
     static public List<IconBaseData>                    iconList                    = new List<IconBaseData>();
     static public List<ModelBaseData>                   modelList                   = new List<ModelBaseData>();
+
+    static public List<UserBaseData>                    userList                    = new List<UserBaseData>();
+    static public List<FavoriteUserBaseData>            favoriteUserList            = new List<FavoriteUserBaseData>();
+    static public List<TeamBaseData>                    teamList                    = new List<TeamBaseData>();
+    static public List<TeamUserBaseData>                teamUserList                = new List<TeamUserBaseData>();
+    static public List<ProjectBaseData>                 projectList                 = new List<ProjectBaseData>();
+    
     static public List<ItemBaseData>                    itemList                    = new List<ItemBaseData>();
     static public List<InteractableBaseData>            interactableList            = new List<InteractableBaseData>();
     static public List<TileSetBaseData>                 tileSetList                 = new List<TileSetBaseData>();
@@ -60,6 +69,8 @@ static public class Fixtures
     static public List<SceneActorBaseData>              sceneActorList              = new List<SceneActorBaseData>();
     static public List<ScenePropBaseData>               scenePropList               = new List<ScenePropBaseData>();
 
+    static public List<GameBaseData>                    gameList                    = new List<GameBaseData>();
+
     static public List<SaveBaseData>                    saveList                    = new List<SaveBaseData>();
     static public List<InteractableSaveBaseData>        interactableSaveList        = new List<InteractableSaveBaseData>();
     static public List<ChapterSaveBaseData>             chapterSaveList             = new List<ChapterSaveBaseData>();
@@ -76,23 +87,12 @@ static public class Fixtures
         LoadCameraFilters();
         LoadTileSets();
         LoadTiles();
-        LoadItems();
-        LoadInteractableCharacters();
-        LoadInteractableObjects();
-        LoadRegions();
-        LoadTerrains();
-        LoadTerrainTiles();
-        LoadWorldObjects();
-        LoadChapters();
-        LoadChapterWorldInteractables();
-        LoadChapterInteractables();
-        LoadChapterRegions();
-        LoadPhases();
-        LoadQuests();
-        LoadPhaseWorldInteractables();
-        LoadObjectives();
-        LoadObjectiveWorldInteractables();
-        LoadTasks();
+
+        LoadUsers();
+        LoadFavoriteUsers();
+        LoadTeams();
+
+        LoadProjects();
 
         Query();
     }
@@ -250,14 +250,164 @@ static public class Fixtures
         }
     }
 
-    static public void LoadItems()
+    static private void LoadUsers()
     {
-        LoadSupplies();
-        LoadGear();
-        LoadSpoils();
+        CreateUser("Florian", "florianbrandsma@hotmail.nl");
+        CreateUser("Yuuki", "yuuki@expedition.com");
     }
 
-    static public void LoadSupplies()
+    static private void CreateUser(string username, string email)
+    {
+        var user = new UserBaseData();
+
+        int id = userList.Count > 0 ? (userList[userList.Count - 1].Id + 1) : 1;
+
+        user.Id = id;
+
+        user.IconId = 10;
+
+        user.Username = username;
+        user.Email = email;
+        user.Password = "test";
+
+        userList.Add(user);
+    }
+
+    static private void LoadFavoriteUsers()
+    {
+        CreateFavoriteUser(userList.First().Id, userList.Last().Id);
+    }
+
+    static private void CreateFavoriteUser(int userId, int favoriteUserId)
+    {
+        var favoriteUser = new FavoriteUserBaseData();
+
+        int id = favoriteUserList.Count > 0 ? (favoriteUserList[favoriteUserList.Count - 1].Id + 1) : 1;
+
+        favoriteUser.Id = id;
+
+        favoriteUser.UserId = userId;
+        favoriteUser.FavoriteUserId = favoriteUserId;
+
+        favoriteUser.Note = "My favorite user";
+
+        favoriteUserList.Add(favoriteUser);
+    }
+
+    static private void LoadTeams()
+    {
+        CreateTeam("Team Zero");
+    }
+
+    static private void CreateTeam(string name)
+    {
+        var team = new TeamBaseData();
+
+        int id = teamList.Count > 0 ? (teamList[teamList.Count - 1].Id + 1) : 1;
+
+        team.Id = id;
+
+        team.IconId = 16;
+
+        team.Name = name;
+        team.Description = "Team description";
+
+        teamList.Add(team);
+
+        CreateTeamUser(id, userList.First().Id, Enums.UserRole.ProjectManager, Enums.UserStatus.Joined);
+        CreateTeamUser(id, userList.Last().Id, Enums.UserRole.Tester, Enums.UserStatus.Applied);
+    }
+    
+    static private void CreateTeamUser(int teamId, int userId, Enums.UserRole role, Enums.UserStatus status)
+    {
+        var teamUser = new TeamUserBaseData();
+
+        int id = teamUserList.Count > 0 ? (teamUserList[teamUserList.Count - 1].Id + 1) : 1;
+
+        teamUser.Id = id;
+
+        teamUser.TeamId = teamId;
+        teamUser.UserId = userId;
+
+        teamUser.Role = (int)role;
+
+        teamUser.Status = (int)status;
+
+        teamUserList.Add(teamUser);
+    }
+
+    static public void LoadProjects()
+    {
+        for (int i = 0; i < projects; i++)
+        {
+            int id = projectList.Count > 0 ? (projectList[projectList.Count - 1].Id + 1) : 1;
+
+            CreateProject(id);
+
+            LoadItems(id);
+            LoadInteractableCharacters(id);
+            LoadInteractableObjects(id);
+            LoadRegions(id);
+
+            LoadTerrains();
+            LoadTerrainTiles();
+            LoadWorldObjects();
+
+            LoadChapters(id);
+            LoadChapterWorldInteractables();
+            LoadChapterInteractables();
+            LoadChapterRegions();
+            LoadPhases();
+            LoadQuests();
+            LoadPhaseWorldInteractables();
+            LoadObjectives();
+            LoadObjectiveWorldInteractables();
+            LoadTasks();
+
+            CreateGame(id);
+        }
+    }
+
+    static private void CreateProject(int id)
+    {
+        var project = new ProjectBaseData();
+
+        project.Id = id;
+
+        project.TeamId = teamList.First().Id;
+        project.IconId = 10;
+
+        project.Name = "The Expedition";
+        project.Description = "My very first project!";
+
+        projectList.Add(project);
+    }
+
+    static private void CreateGame(int projectId)
+    {
+        var game = new GameBaseData();
+
+        int id = gameList.Count > 0 ? (gameList[gameList.Count - 1].Id + 1) : 1;
+
+        game.Id = id;
+
+        game.ProjectId = projectId;
+
+        game.Rating = 5;
+
+        gameList.Add(game);
+
+        LoadSaves(id);
+    }
+
+    static public void LoadItems(int projectId)
+    {
+        LoadSupplies(projectId);
+        LoadGear(projectId);
+        LoadSpoils(projectId);
+    }
+
+    static public void LoadSupplies(int projectId)
     {
         int index = 0;
 
@@ -268,12 +418,14 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-            item.Index = index;
 
-            item.Type = (int)Enums.ItemType.Supplies;
-            
+            item.ProjectId = projectId;
             item.ModelId = 1;
 
+            item.Type = (int)Enums.ItemType.Supplies;
+
+            item.Index = index;
+            
             item.Name = "Item " + id;
 
             itemList.Add(item);
@@ -282,7 +434,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadGear()
+    static public void LoadGear(int projectId)
     {
         int index = 0;
 
@@ -295,12 +447,14 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-            item.Index = index;
 
-            item.Type = (int)Enums.ItemType.Gear;
-            
+            item.ProjectId = projectId;
             item.ModelId = gearList[i];
 
+            item.Type = (int)Enums.ItemType.Gear;
+
+            item.Index = index;
+            
             item.Name = "Item " + id;
 
             itemList.Add(item);
@@ -309,7 +463,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadSpoils()
+    static public void LoadSpoils(int projectId)
     {
         int index = 0;
 
@@ -320,12 +474,14 @@ static public class Fixtures
             int id = itemList.Count > 0 ? (itemList[itemList.Count - 1].Id + 1) : 1;
 
             item.Id = id;
-            item.Index = index;
 
-            item.Type = (int)Enums.ItemType.Spoils;
-            
+            item.ProjectId = projectId;
             item.ModelId = 1;
 
+            item.Type = (int)Enums.ItemType.Spoils;
+
+            item.Index = index;
+            
             item.Name = "Item " + id;
 
             itemList.Add(item);
@@ -334,7 +490,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadInteractableCharacters()
+    static public void LoadInteractableCharacters(int projectId)
     {
         var objectList = new List<int> { 10, 11, 12, 13, 14, 15 };
 
@@ -345,12 +501,14 @@ static public class Fixtures
             int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
 
             interactable.Id = id;
-            interactable.Index = i;
+
+            interactable.ProjectId = projectId;        
+            interactable.ModelId = objectList[i];
 
             interactable.Type = (int)Enums.InteractableType.Agent;
 
-            interactable.ModelId = objectList[i];
-
+            interactable.Index = i;
+            
             interactable.Name = "Interactable " + id;
 
             interactable.Scale = 1;
@@ -367,7 +525,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadInteractableObjects()
+    static public void LoadInteractableObjects(int projectId)
     {
         var objectList = new List<int> { 20 };
 
@@ -378,12 +536,14 @@ static public class Fixtures
             int id = interactableList.Count > 0 ? (interactableList[interactableList.Count - 1].Id + 1) : 1;
 
             interactable.Id = id;
-            interactable.Index = i;
+
+            interactable.ProjectId = projectId;
+            interactable.ModelId = objectList[i];
 
             interactable.Type = (int)Enums.InteractableType.Object;
 
-            interactable.ModelId = objectList[i];
-
+            interactable.Index = i;
+            
             interactable.Name = "Interactable " + id;
 
             interactable.Scale = 1;
@@ -392,7 +552,7 @@ static public class Fixtures
         }
     }
 
-    static public void LoadRegions()
+    static public void LoadRegions(int projectId)
     {
         for (int i = 0; i < regions; i++)
         {
@@ -401,11 +561,14 @@ static public class Fixtures
             int id = regionList.Count > 0 ? (regionList[regionList.Count - 1].Id + 1) : 1;
 
             region.Id = id;
-            region.Index = i;
 
+            region.ProjectId = projectId;
             region.ChapterRegionId = 0;
             region.PhaseId = 0;
             region.TileSetId = (i % tileSetList.Count) + 1;
+
+            region.Index = i;
+            
             region.Name = "Region " + id;
             region.RegionSize = terrainsInRegions;
             region.TerrainSize = terrainTilesInTerrains;
@@ -425,10 +588,12 @@ static public class Fixtures
                 int id = terrainList.Count > 0 ? (terrainList[terrainList.Count - 1].Id + 1) : 1;
 
                 terrain.Id = id;
-                terrain.Index = i;
-
+                
                 terrain.RegionId = region.Id;
                 terrain.IconId = 1;
+
+                terrain.Index = i;
+
                 terrain.Name = "Terrain " + (i + 1);
 
                 CreateAtmosphere(terrain, true, 0, 0);
@@ -990,7 +1155,7 @@ static public class Fixtures
         worldObjectList.Add(worldObject);
     }
 
-    static public void LoadChapters()
+    static public void LoadChapters(int projectId)
     {
         for (int i = 0; i < chapters; i++)
         {
@@ -999,6 +1164,9 @@ static public class Fixtures
             int chapterId = (i + 1);
 
             chapter.Id = chapterId;
+
+            chapter.ProjectId = projectId;
+
             chapter.Index = i;
 
             chapter.Name = "Chapter " + chapterId + " Name";
@@ -1714,12 +1882,7 @@ static public class Fixtures
         return terrainTileId;
     }
 
-    static public void CreateSaveFile()
-    {
-        CreateSave();
-    }
-
-    static public void CreateSave()
+    static public void LoadSaves(int gameId)
     {
         var save = new SaveBaseData();
 
@@ -1727,10 +1890,13 @@ static public class Fixtures
 
         save.Id = id;
 
-        var firstChapter = chapterList.OrderBy(x => x.Index).First();
+        var game = gameList.Where(x => x.Id == gameId).First();
+        var project = projectList.Where(x => x.Id == game.ProjectId).First();    
+        var firstChapter = chapterList.Where(x => x.ProjectId == project.Id).OrderBy(x => x.Index).First();
         var firstPhase = phaseList.Where(x => x.ChapterId == firstChapter.Id).OrderBy(x => x.Index).First();
         var firstWorldInteractable = worldInteractableList.Where(x => x.ChapterId == firstChapter.Id).First();
 
+        save.GameId = gameId;
         save.RegionId = firstPhase.DefaultRegionId;
         save.WorldInteractableId = firstWorldInteractable.Id;
 

@@ -36,7 +36,7 @@ public static class ItemDataManager
                         Name = itemData.Name,
 
                         ModelPath = modelData.Path,
-                        ModelIconPath = iconData.Path,
+                        ModelIconPath = iconData.Path
                         
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Index).ToList();
         
@@ -75,8 +75,9 @@ public static class ItemDataManager
         
         foreach(ItemBaseData item in Fixtures.itemList)
         {
-            if (searchParameters.id.Count   > 0 && !searchParameters.id.Contains(item.Id)) continue;
-            if (searchParameters.type.Count > 0 && !searchParameters.type.Contains(item.Type)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(item.Id))                  continue;
+            if (searchParameters.projectId.Count    > 0 && !searchParameters.projectId.Contains(item.ProjectId))    continue;
+            if (searchParameters.type.Count         > 0 && !searchParameters.type.Contains(item.Type))              continue;
 
             itemDataList.Add(item);
         }

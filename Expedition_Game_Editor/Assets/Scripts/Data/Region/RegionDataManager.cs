@@ -121,6 +121,7 @@ public static class RegionDataManager
         {
             if (searchParameters.id.Count               > 0 && !searchParameters.id.Contains(region.Id))                    continue;
             if (searchParameters.excludeId.Count        > 0 && searchParameters.excludeId.Contains(region.Id))              continue;
+            if (searchParameters.projectId.Count        > 0 && !searchParameters.projectId.Contains(region.ProjectId))      continue;
             if (searchParameters.phaseId.Count          > 0 && !searchParameters.phaseId.Contains(region.PhaseId))          continue;
             if (searchParameters.excludePhaseId.Count   > 0 && searchParameters.excludePhaseId.Contains(region.PhaseId))    continue;
 

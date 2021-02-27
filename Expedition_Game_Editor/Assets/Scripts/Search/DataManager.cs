@@ -55,6 +55,77 @@ static public class DataManager
         return dataList;
     }
 
+    static public List<UserBaseData> GetUserData(Search.User searchParameters)
+    {
+        var dataList = new List<UserBaseData>();
+
+        foreach (UserBaseData user in Fixtures.userList)
+        {
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(user.Id))          continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(user.Id))    continue;
+
+            dataList.Add(user);
+        }
+
+        return dataList;
+    }
+
+    static public List<FavoriteUserBaseData> GetFavoriteUserData(Search.FavoriteUser searchParameters)
+    {
+        var dataList = new List<FavoriteUserBaseData>();
+
+        foreach (FavoriteUserBaseData favoriteUser in Fixtures.favoriteUserList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(favoriteUser.Id)) continue;
+
+            dataList.Add(favoriteUser);
+        }
+
+        return dataList;
+    }
+
+    static public List<TeamBaseData> GetTeamData(Search.Team searchParameters)
+    {
+        var dataList = new List<TeamBaseData>();
+
+        foreach (TeamBaseData team in Fixtures.teamList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(team.Id)) continue;
+
+            dataList.Add(team);
+        }
+
+        return dataList;
+    }
+
+    static public List<TeamUserBaseData> GetTeamUserData(Search.TeamUser searchParameters)
+    {
+        var dataList = new List<TeamUserBaseData>();
+
+        foreach (TeamUserBaseData teamUser in Fixtures.teamUserList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(teamUser.Id)) continue;
+
+            dataList.Add(teamUser);
+        }
+
+        return dataList;
+    }
+
+    static public List<ProjectBaseData> GetProjectData(Search.Project searchParameters)
+    {
+        var dataList = new List<ProjectBaseData>();
+
+        foreach (ProjectBaseData project in Fixtures.projectList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(project.Id)) continue;
+
+            dataList.Add(project);
+        }
+
+        return dataList;
+    }
+
     public static List<ItemBaseData> GetItemData(Search.Item searchParameters)
     {
         var dataList = new List<ItemBaseData>();
@@ -451,6 +522,20 @@ static public class DataManager
             if (searchParameters.regionId.Count > 0 && !searchParameters.regionId.Contains(worldObject.RegionId)) continue;
 
             dataList.Add(worldObject);
+        }
+
+        return dataList;
+    }
+
+    static public List<GameBaseData> GetGameData(Search.Game searchParameters)
+    {
+        var dataList = new List<GameBaseData>();
+
+        foreach (GameBaseData game in Fixtures.gameList)
+        {
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(game.Id)) continue;
+
+            dataList.Add(game);
         }
 
         return dataList;

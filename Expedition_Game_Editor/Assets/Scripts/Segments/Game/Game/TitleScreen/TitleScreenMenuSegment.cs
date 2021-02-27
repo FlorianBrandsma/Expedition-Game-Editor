@@ -35,7 +35,7 @@ public class TitleScreenMenuSegment : MonoBehaviour, ISegment
 
         searchParameters.includeAddElement = true;
 
-        searchParameters.gameId = new List<int>() { 0 };
+        searchParameters.gameId = new List<int>() { GameManager.gameElementData.Id };
     }
 
     public void InitializeSegment()

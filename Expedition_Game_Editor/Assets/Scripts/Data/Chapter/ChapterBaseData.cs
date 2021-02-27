@@ -4,6 +4,8 @@ public class ChapterBaseData
 {
     public int Id               { get; set; }
 
+    public int ProjectId        { get; set; }
+
     public int Index            { get; set; }
 
     public string Name          { get; set; }
@@ -16,6 +18,8 @@ public class ChapterBaseData
     public virtual void GetOriginalValues(ChapterData originalData)
     {
         Id              = originalData.Id;
+
+        ProjectId       = originalData.ProjectId;
 
         Index           = originalData.Index;
 
@@ -30,6 +34,8 @@ public class ChapterBaseData
     public virtual void Clone(ChapterData data)
     {
         data.Id             = Id;
+
+        data.ProjectId      = ProjectId;
 
         data.Index          = Index;
 

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Enums
 {
@@ -60,7 +59,13 @@ public class Enums
         ObjectiveSave,
         TaskSave,
         InteractionSave,
-        Notification
+        Notification,
+        User,
+        FavoriteUser,
+        Team,
+        TeamUser,
+        Project,
+        Placeholder
     }
 
     public enum DataCategory
@@ -101,6 +106,21 @@ public class Enums
         Agent,
         Object,
         Controllable
+    }
+
+    public enum UserRole
+    {
+        ProjectManager,
+        Developer,
+        Translator,
+        Tester
+    }
+
+    public enum UserStatus
+    {
+        Applied,
+        Invited,
+        Joined
     }
 
     public enum NoteType
@@ -194,7 +214,8 @@ public class Enums
         SpeechTextBox,
         CameraFilter,
         SavePanel,
-        NotificationPanel
+        NotificationPanel,
+        Placeholder
     }
 
     public enum SelectionIconType

@@ -109,7 +109,7 @@ public class EditorElement : MonoBehaviour, ISelectionElement
 
         //Kind of a band-aid fix, but it works (for now)
         //Cancelling selection after changing index cancels all selections
-        if (selectionStatus == DataElement.ElementData.SelectionStatus || DataElement.ElementData.SelectionStatus == Enums.SelectionStatus.Both)
+        if (selectionStatus == DataElement.ElementData.SelectionStatus /*|| DataElement.ElementData.SelectionStatus == Enums.SelectionStatus.Both*/)
         {
             glow.SetActive(true);
 

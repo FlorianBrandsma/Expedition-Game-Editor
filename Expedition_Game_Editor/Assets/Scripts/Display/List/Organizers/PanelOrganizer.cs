@@ -70,19 +70,22 @@ public class PanelOrganizer : MonoBehaviour, IOrganizer, IList
                 break;
 
             var panel = (ExPanel)PoolManager.SpawnObject(prefab);
+            panel.transform.SetParent(ListManager.listParent);
 
-            elementData.DataElement = panel.EditorElement.DataElement;
+            var dataElement = panel.EditorElement.DataElement;
 
-            panel.EditorElement.DataElement.Data    = DataController.Data;
-            panel.EditorElement.DataElement.Id      = elementData.Id;
-            panel.EditorElement.DataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+            elementData.DataElement = dataElement;
 
-            SelectionElementManager.InitializeElement(  panel.EditorElement.DataElement, ListManager.listParent,
-                                                        DisplayManager,
-                                                        DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty,
-                                                        DisplayManager.Display.AddProperty,
-                                                        DisplayManager.Display.UniqueSelection);
+            dataElement.Data    = DataController.Data;
+            dataElement.Id      = elementData.Id;
+            dataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+
+            dataElement.InitializeDisplayManager(DisplayManager);
+
+            dataElement.InitializeDisplayProperties(DisplayManager.Display.SelectionType,
+                                                    DisplayManager.Display.SelectionProperty,
+                                                    DisplayManager.Display.AddProperty,
+                                                    DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(panel.EditorElement);
             

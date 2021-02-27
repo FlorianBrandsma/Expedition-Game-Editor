@@ -186,7 +186,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private void ApplyWorldInteractableChanges(DataRequest dataRequest)
     {
-        if (worldInteractableElementDataList.Count == 0)
+        if (worldInteractableElementDataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList().Count == 0)
             dataRequest.AddNotification(Enums.NotificationType.Error, "A chapter must have at least one controllable character");
 
         foreach (WorldInteractableElementData worldInteractableElementData in worldInteractableElementDataList)
@@ -237,7 +237,7 @@ public class ChapterEditor : MonoBehaviour, IEditor
 
     private void ApplyRegionChanges(DataRequest dataRequest)
     {
-        if (chapterRegionElementDataList.Count == 0)
+        if (chapterRegionElementDataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList().Count == 0)
             dataRequest.AddNotification(Enums.NotificationType.Error, "A chapter must have at least one region");
 
         foreach (ChapterRegionElementData chapterRegionElementData in chapterRegionElementDataList)

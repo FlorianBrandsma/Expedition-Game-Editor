@@ -260,11 +260,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf54f2d93744642a18d3647506bc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionStatus: 0
+  selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
+  addProperty: 0
+  uniqueSelection: 0
   elementStatus: 0
-  enabledColor: {r: 0, g: 0, b: 0, a: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
   relatedColor: {r: 0, g: 0, b: 0, a: 0}
   unrelatedColor: {r: 0, g: 0, b: 0, a: 0}
@@ -272,7 +274,7 @@ MonoBehaviour:
   disableSpawn: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  glow: {fileID: 0}
+  glow: {fileID: 1000014283423072}
   lockIcon: {fileID: 0}
   OnSelection:
     m_PersistentCalls:

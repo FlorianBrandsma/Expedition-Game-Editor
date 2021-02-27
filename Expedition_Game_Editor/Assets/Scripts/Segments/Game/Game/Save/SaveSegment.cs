@@ -32,7 +32,7 @@ public class SaveSegment : MonoBehaviour, ISegment
 
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
 
-        searchParameters.gameId = new List<int>() { 0 };
+        searchParameters.gameId = new List<int>() { GameManager.gameElementData.Id };
 
         searchParameters.saveType = saveType;
     }

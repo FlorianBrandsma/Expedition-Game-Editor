@@ -27,6 +27,8 @@ public class RegionSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Region>().First();
 
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.projectId = new List<int>() { EditorManager.projectElementData.Id };
         searchParameters.phaseId = new List<int>() { 0 };
     }
 

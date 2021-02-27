@@ -56,22 +56,24 @@ public class PanelTileOrganizer : MonoBehaviour, IOrganizer, IList
                 break;
             
             var panelTile = (ExPanelTile)PoolManager.SpawnObject(prefab);
+            panelTile.transform.SetParent(ListManager.listParent);
 
-            SelectionElementManager.InitializeElement(  panelTile.EditorElement.DataElement, ListManager.listParent,
-                                                        DisplayManager,
-                                                        DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty,
-                                                        DisplayManager.Display.AddProperty,
-                                                        DisplayManager.Display.UniqueSelection);
+            var dataElement = panelTile.EditorElement.DataElement;
+
+            elementData.DataElement = dataElement;
+
+            dataElement.Data    = DataController.Data;
+            dataElement.Id      = elementData.Id;
+            dataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+
+            dataElement.InitializeDisplayManager(DisplayManager);
+            
+            dataElement.InitializeDisplayProperties(DisplayManager.Display.SelectionType,
+                                                    DisplayManager.Display.SelectionProperty,
+                                                    DisplayManager.Display.AddProperty,
+                                                    DisplayManager.Display.UniqueSelection);
 
             ElementList.Add(panelTile.EditorElement);
-
-            elementData.DataElement = panelTile.EditorElement.DataElement;
-
-            panelTile.EditorElement.DataElement.Data = DataController.Data;
-            panelTile.EditorElement.DataElement.Id = elementData.Id;
-
-            panelTile.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
 
             panelTile.GetComponent<ExPanelTile>().InitializeChildElement();
 

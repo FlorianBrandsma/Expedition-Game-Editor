@@ -4,6 +4,7 @@ public class RegionBaseData
 {
     public int Id               { get; set; }
     
+    public int ProjectId        { get; set; }
     public int ChapterRegionId  { get; set; }
     public int PhaseId          { get; set; }
     public int TileSetId        { get; set; }
@@ -19,6 +20,7 @@ public class RegionBaseData
     {
         Id              = originalData.Id;
 
+        ProjectId       = originalData.ProjectId;
         ChapterRegionId = originalData.ChapterRegionId;
         PhaseId         = originalData.PhaseId;
         TileSetId       = originalData.TileSetId;
@@ -35,6 +37,7 @@ public class RegionBaseData
     {
         data.Id                 = Id;
 
+        data.ProjectId          = ProjectId;
         data.ChapterRegionId    = ChapterRegionId;
         data.PhaseId            = PhaseId;
         data.TileSetId          = TileSetId;

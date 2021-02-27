@@ -6,14 +6,6 @@ static public class SelectionElementManager
 {
     static public List<EditorElement> elementPool = new List<EditorElement>();
     
-    static public void InitializeElement(DataElement dataElement, Transform parent, IDisplayManager displayManager, 
-                                         SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
-    {
-        dataElement.InitializeElement(displayManager, selectionType, selectionProperty, addProperty, uniqueSelection);
-
-        dataElement.transform.SetParent(parent, false);
-    }
-
     static public void Add(EditorElement element)
     {
         elementPool.Add(element);

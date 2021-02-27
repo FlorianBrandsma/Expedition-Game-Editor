@@ -26,8 +26,6 @@ public class ChapterSaveSegment : MonoBehaviour, ISegment
 
         var saveElementData = SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData;
         searchParameters.saveId = new List<int>() { SegmentController.Path.FindLastRoute(Enums.DataType.Save).ElementData.Id };
-
-        //Game id
     }
 
     public void InitializeSegment()

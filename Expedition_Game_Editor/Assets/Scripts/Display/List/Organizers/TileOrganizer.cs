@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 {
@@ -46,32 +47,59 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
     {
         string elementType = Enum.GetName(typeof(Enums.ElementType), TileProperties.elementType);
 
-        var prefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
+        var tilePrefab = Resources.Load<ExTile>("Elements/UI/" + elementType);
 
-        foreach (IElementData elementData in list)
+        foreach (IElementData elementData in list.Where(elementData => !(elementData is PlaceholderElementData)))
         {
-            var tile = (ExTile)PoolManager.SpawnObject(prefab);
-            
-            SelectionElementManager.InitializeElement(  tile.EditorElement.DataElement, ListManager.listParent,
-                                                        DisplayManager,
-                                                        DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty,
-                                                        DisplayManager.Display.AddProperty,
-                                                        DisplayManager.Display.UniqueSelection);
-            ElementList.Add(tile.EditorElement);
+            var tile = (ExTile)PoolManager.SpawnObject(tilePrefab);
+            tile.transform.SetParent(ListManager.listParent);
 
-            elementData.DataElement = tile.EditorElement.DataElement;
+            var dataElement = tile.EditorElement.DataElement;
 
-            tile.EditorElement.DataElement.Data = DataController.Data;
-            tile.EditorElement.DataElement.Id = elementData.Id;
+            dataElement.InitializeDisplayManager(DisplayManager);
 
-            tile.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+            dataElement.InitializeDisplayProperties(DisplayManager.Display.SelectionType,
+                                                    DisplayManager.Display.SelectionProperty,
+                                                    DisplayManager.Display.AddProperty,
+                                                    DisplayManager.Display.UniqueSelection);
 
-            //Debugging
-            tile.name = elementData.DebugName + elementData.Id;
-
-            SetElement(tile.EditorElement);
+            InitializeElement(elementData, tile.EditorElement);
         }
+
+        if (!ListProperties.enablePlaceholders) return;
+
+        var placeholderPrefab = Resources.Load<ExPlaceholder>("Elements/UI/Placeholder");
+
+        foreach (IElementData elementData in list.Where(elementData => (elementData is PlaceholderElementData)))
+        {
+            var placeholder = (ExPlaceholder)PoolManager.SpawnObject(placeholderPrefab);
+            placeholder.transform.SetParent(ListManager.listParent);
+
+            placeholder.RectTransform.anchorMin = ListProperties.anchorMin;
+            placeholder.RectTransform.anchorMax = ListProperties.anchorMax;
+
+            InitializeElement(elementData, placeholder.EditorElement);
+        }
+    }
+
+    private void InitializeElement(IElementData elementData, EditorElement editorElement)
+    {
+        ElementList.Add(editorElement);
+
+        var dataElement = editorElement.DataElement;
+
+        dataElement = editorElement.DataElement;
+
+        dataElement.Data    = DataController.Data;
+        dataElement.Id      = elementData.Id;
+        dataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+
+        dataElement.InitializeDisplayManager(DisplayManager);
+
+        //Debugging
+        editorElement.name = elementData.DebugName + elementData.Id;
+
+        SetElement(editorElement);
     }
 
     private void SetElement(EditorElement element)
@@ -80,7 +108,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
 
         int index = DataController.Data.dataList.FindIndex(x => x.Id == element.DataElement.ElementData.Id);
         element.transform.localPosition = GetElementPosition(index);
-        
+
         element.gameObject.SetActive(true);
 
         element.DataElement.SetElement();
@@ -110,8 +138,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
             var listWidth   = GetListWidth(elementCount);
             var listHeight  = GetListHeight(elementCount);
 
-            //No cases where a Tile only has a horizontal slider. Calculation will be added if or when necessary
-            gridSize = new Vector2( ListProperties.horizontal   ? 0                                                             : listWidth * ElementSize.x,
+            gridSize = new Vector2( ListProperties.horizontal   ? (Mathf.Ceil(elementCount / (float)listHeight) * ElementSize.x) : listWidth * ElementSize.x,
                                     ListProperties.vertical     ? (Mathf.Ceil(elementCount / (float)listWidth) * ElementSize.y) : listHeight * ElementSize.y);
         }
 
@@ -120,7 +147,7 @@ public class TileOrganizer : MonoBehaviour, IOrganizer, IList
         else
             return new Vector2(gridSize.x / ElementSize.x, gridSize.y / ElementSize.y);
     }
-
+    
     public int GetListWidth(int elementCount)
     {
         int x = 0;

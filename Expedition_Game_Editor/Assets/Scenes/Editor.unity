@@ -6813,9 +6813,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 157412610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98751137eaaf92645bc3df8db37fc845, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a35731df191c644d9bb20b936d3ee68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 1
 --- !u!224 &157919187 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000013995359626, guid: 1280af98e3595384ba80db985c15c225,
@@ -24379,9 +24380,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 546004828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85010af5355a448498b992850ef9920d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c514d5985e0d8f4b9624cd5f47f4e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactableType: 0
 --- !u!114 &546004834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29879,6 +29881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 680479532}
   - component: {fileID: 680479531}
+  - component: {fileID: 680479533}
   m_Layer: 0
   m_Name: EditorManager
   m_TagString: Untagged
@@ -29912,6 +29915,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &680479533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680479530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e616ce910276cae4d9692d6c738a57c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchProperties:
+    dataType: 0
+    elementType: 0
+    iconType: 0
+    autoUpdate: 0
 --- !u!1 &682258540
 GameObject:
   m_ObjectHideFlags: 0
@@ -34715,9 +34735,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 779831810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5bb8759a41d496439db8b667190061d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a35731df191c644d9bb20b936d3ee68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 0
 --- !u!114 &780164276 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114000011455358566, guid: fa7de6b5babac9f4aa25ee327b5c350d,
@@ -86148,9 +86169,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1853715624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3791bfb81c0073c48a21175d23447ac8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c514d5985e0d8f4b9624cd5f47f4e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactableType: 1
 --- !u!114 &1853715630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89481,9 +89503,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1919670058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76387574815d90646ae1e0525c2318af, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a35731df191c644d9bb20b936d3ee68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 2
 --- !u!1001 &1920461002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95814,7 +95837,7 @@ GameObject:
   - component: {fileID: 2072329127}
   - component: {fileID: 2072329125}
   m_Layer: 0
-  m_Name: Background_Cam
+  m_Name: BackgroundCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -60,7 +60,98 @@ public class Search
 
         public RequestType requestType;
     }
+    
+    public class User
+    {
+        public List<int> id = new List<int>();
+        public List<int> excludeId = new List<int>();
 
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class FavoriteUser
+    {
+        public bool includeAddElement;
+
+        public List<int> id = new List<int>();
+
+        public List<int> userId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class Team
+    {
+        public bool includeAddElement;
+
+        public List<int> id = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class TeamUser
+    {
+        public bool includeAddElement;
+
+        public List<int> id = new List<int>();
+        public List<int> teamId = new List<int>();
+
+        public int? status;
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class Project
+    {
+        public bool includeAddElement;
+
+        public List<int> id = new List<int>();
+        public List<int> teamId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+
+    public class Game
+    {
+        public bool includeAddElement;
+
+        public List<int> id = new List<int>();
+
+        public List<int> userId = new List<int>();
+
+        public enum RequestType
+        {
+            Custom
+        }
+
+        public RequestType requestType;
+    }
+    
     [System.Serializable]
     public class Interactable
     {
@@ -69,6 +160,8 @@ public class Search
 
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
+
+        public List<int> projectId = new List<int>();
 
         public List<int> type = new List<int>();
 
@@ -86,6 +179,8 @@ public class Search
 
         public List<int> id = new List<int>();
 
+        public List<int> projectId = new List<int>();
+
         public List<int> type = new List<int>();
 
         public enum RequestType
@@ -101,7 +196,9 @@ public class Search
         public bool includeAddElement;
 
         public List<int> id = new List<int>();
-        
+
+        public List<int> projectId = new List<int>();
+
         public enum RequestType
         {
             Custom
@@ -409,6 +506,8 @@ public class Search
 
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
+
+        public List<int> projectId = new List<int>();
 
         public List<int> chapterRegionId = new List<int>();
 

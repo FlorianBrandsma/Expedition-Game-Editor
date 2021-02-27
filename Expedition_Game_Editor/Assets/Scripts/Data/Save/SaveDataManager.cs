@@ -98,10 +98,26 @@ public static class SaveDataManager
 
     public static SaveElementData DefaultData(int gameId)
     {
+        //Game
+        var gameSearchParameters = new Search.Game()
+        {
+            id = new List<int>() { gameId }
+        };
+
+        var gameData = DataManager.GetGameData(gameSearchParameters).First();
+
+        //Project
+        var projectSearchParameters = new Search.Project()
+        {
+            id = new List<int>() { gameData.Id }
+        };
+
+        var projectData = DataManager.GetProjectData(projectSearchParameters).First();
+
         //Chapter
         var chapterSearchParameters = new Search.Chapter()
         {
-            //Game id
+            id = new List<int>() { projectData.Id }
         };
 
         var chapterData = DataManager.GetChapterData(chapterSearchParameters).Where(x => x.Index == 0).First();
@@ -246,10 +262,26 @@ public static class SaveDataManager
 
     private static void AddInteractableSaveData(SaveElementData elementData, DataRequest dataRequest)
     {
+        //Game
+        var gameSearchParameters = new Search.Game()
+        {
+            id = new List<int>() { elementData.GameId }
+        };
+
+        var gameData = DataManager.GetGameData(gameSearchParameters).First();
+
+        //Project
+        var projectSearchParameters = new Search.Project()
+        {
+            id = new List<int>() { gameData.Id }
+        };
+
+        var projectData = DataManager.GetProjectData(projectSearchParameters).First();
+
         //Interactable
         var interactableSearchParameters = new Search.Interactable()
         {
-            //gameId
+            projectId = new List<int>() { projectData.Id }
         };
 
         var interactableDataList = DataManager.GetInteractableData(interactableSearchParameters);
@@ -263,10 +295,26 @@ public static class SaveDataManager
 
     private static void AddChapterSaveData(SaveElementData elementData, DataRequest dataRequest)
     {
+        //Game
+        var gameSearchParameters = new Search.Game()
+        {
+            id = new List<int>() { elementData.GameId }
+        };
+
+        var gameData = DataManager.GetGameData(gameSearchParameters).First();
+
+        //Project
+        var projectSearchParameters = new Search.Project()
+        {
+            id = new List<int>() { gameData.Id }
+        };
+
+        var projectData = DataManager.GetProjectData(projectSearchParameters).First();
+
         //Chapter
         var chapterSearchParameters = new Search.Chapter()
         {
-            //gameId
+            projectId = new List<int>() { projectData.Id }
         };
 
         var chapterDataList = DataManager.GetChapterData(chapterSearchParameters);

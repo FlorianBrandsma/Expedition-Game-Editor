@@ -2,33 +2,36 @@
 
 public class ItemBaseData
 {
-    public int Id       { get; set; }
+    public int Id           { get; set; }
     
-    public int ModelId  { get; set; }
+    public int ProjectId    { get; set; }
+    public int ModelId      { get; set; }
 
-    public int Type     { get; set; }
+    public int Type         { get; set; }
 
-    public int Index    { get; set; }
+    public int Index        { get; set; }
 
-    public string Name  { get; set; }
+    public string Name      { get; set; }
  
     public virtual void GetOriginalValues(ItemData originalData)
     {
-        Id      = originalData.Id;
-        
-        ModelId = originalData.ModelId;
+        Id          = originalData.Id;
 
-        Type    = originalData.Type;
+        ProjectId   = originalData.ProjectId;
+        ModelId     = originalData.ModelId;
 
-        Index   = originalData.Index;
+        Type        = originalData.Type;
 
-        Name    = originalData.Name;
+        Index       = originalData.Index;
+
+        Name        = originalData.Name;
     }
 
     public virtual void Clone(ItemData data)
     {
         data.Id         = Id;
-        
+
+        data.ProjectId  = ProjectId;
         data.ModelId    = ModelId;
 
         data.Type       = Type;

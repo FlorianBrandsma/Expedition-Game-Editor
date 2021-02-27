@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
 
 public class ExTile : MonoBehaviour, IElement, IPoolable
 {
@@ -48,6 +46,8 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.TerrainTile:        SetTerrainTileElement();        break;
             case Enums.DataType.Model:              SetModelElement();              break;
             case Enums.DataType.WorldInteractable:  SetWorldInteractableElement();  break;
+
+            case Enums.DataType.Game:               SetGameElement();               break;
 
             default: Debug.Log("CASE MISSING: " + EditorElement.DataElement.Data.dataController.DataType); break;
         }
@@ -133,6 +133,15 @@ public class ExTile : MonoBehaviour, IElement, IPoolable
             iconPath = elementData.ModelIconPath;
         else
             iconPath = elementData.OriginalData.ModelIconPath;
+
+        icon.texture = Resources.Load<Texture2D>(iconPath);
+    }
+
+    private void SetGameElement()
+    {
+        var elementData = (GameElementData)EditorElement.DataElement.ElementData;
+
+        iconPath = elementData.IconPath;
 
         icon.texture = Resources.Load<Texture2D>(iconPath);
     }

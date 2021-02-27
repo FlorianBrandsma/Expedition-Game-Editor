@@ -785,19 +785,22 @@ public class EditorWorldOrganizer : MonoBehaviour, IOrganizer
         foreach (IElementData elementData in dataList)
         {
             var worldElement = (ExEditorWorldElement)PoolManager.SpawnObject(editorWorldElementPrefab);
+            worldElement.transform.SetParent(CameraManager.content);
 
-            elementData.DataElement = worldElement.EditorElement.DataElement;
-            
-            worldElement.EditorElement.DataElement.Data = dataController.Data;
-            worldElement.EditorElement.DataElement.Id   = elementData.Id;
-            worldElement.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+            var dataElement = worldElement.EditorElement.DataElement;
 
-            SelectionElementManager.InitializeElement(  worldElement.EditorElement.DataElement, CameraManager.content,
-                                                        DisplayManager,
-                                                        DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty,
-                                                        DisplayManager.Display.AddProperty,
-                                                        DisplayManager.Display.UniqueSelection);
+            elementData.DataElement = dataElement;
+
+            dataElement.Data    = dataController.Data;
+            dataElement.Id      = elementData.Id;
+            dataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
+
+            dataElement.InitializeDisplayManager(DisplayManager);
+
+            dataElement.InitializeDisplayProperties(DisplayManager.Display.SelectionType,
+                                                    DisplayManager.Display.SelectionProperty,
+                                                    DisplayManager.Display.AddProperty,
+                                                    DisplayManager.Display.UniqueSelection);
             
             //Debugging
             worldElement.name = elementData.DebugName + elementData.Id;

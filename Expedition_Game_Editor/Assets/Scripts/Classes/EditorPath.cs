@@ -267,6 +267,15 @@ public class EditorPath
 
             break;
 
+            case Enums.DataType.Game:
+
+                PathManager.Game game = new PathManager.Game(editorElement, route);
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
+                    path = game.Enter();
+
+                break;
+
             case Enums.DataType.Save:
 
                 PathManager.Save save = new PathManager.Save(editorElement, route);

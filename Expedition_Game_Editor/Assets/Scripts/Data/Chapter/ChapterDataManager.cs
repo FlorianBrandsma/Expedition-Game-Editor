@@ -61,7 +61,8 @@ public static class ChapterDataManager
 
         foreach(ChapterBaseData chapter in Fixtures.chapterList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(chapter.Id)) continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(chapter.Id))               continue;
+            if (searchParameters.projectId.Count    > 0 && !searchParameters.projectId.Contains(chapter.ProjectId)) continue;
 
             chapterDataList.Add(chapter);
         }

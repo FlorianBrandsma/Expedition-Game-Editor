@@ -95,9 +95,10 @@ public static class InteractableDataManager
         
         foreach(InteractableBaseData interactable in Fixtures.interactableList)
         {
-            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactable.Id))          continue;
-            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(interactable.Id))    continue;
-            if (searchParameters.type.Count         > 0 && !searchParameters.type.Contains(interactable.Type))      continue;
+            if (searchParameters.id.Count           > 0 && !searchParameters.id.Contains(interactable.Id))                  continue;
+            if (searchParameters.excludeId.Count    > 0 && searchParameters.excludeId.Contains(interactable.Id))            continue;
+            if (searchParameters.projectId.Count    > 0 && !searchParameters.projectId.Contains(interactable.ProjectId))    continue;
+            if (searchParameters.type.Count         > 0 && !searchParameters.type.Contains(interactable.Type))              continue;
 
             interactableDataList.Add(interactable);
         }

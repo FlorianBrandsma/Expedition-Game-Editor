@@ -61,22 +61,24 @@ public class MultiGridOrganizer : MonoBehaviour, IOrganizer, IList
         foreach (IElementData elementData in primaryList)
         {
             var multiGrid = (ExMultiGrid)PoolManager.SpawnObject(prefab);
+            multiGrid.transform.SetParent(ListManager.listParent);
 
-            SelectionElementManager.InitializeElement(  multiGrid.EditorElement.DataElement, ListManager.listParent,
-                                                        DisplayManager,
-                                                        DisplayManager.Display.SelectionType,
-                                                        DisplayManager.Display.SelectionProperty,
-                                                        DisplayManager.Display.AddProperty,
-                                                        DisplayManager.Display.UniqueSelection);
+            var dataElement = multiGrid.EditorElement.DataElement;
+
+            elementData.DataElement = dataElement;
 
             ElementList.Add(multiGrid.EditorElement);
+            
+            dataElement.Data    = PrimaryDataController.Data;
+            dataElement.Id      = elementData.Id;
+            dataElement.Path    = DisplayManager.Display.DataController.SegmentController.Path;
 
-            elementData.DataElement = multiGrid.EditorElement.DataElement;
+            dataElement.InitializeDisplayManager(DisplayManager);
 
-            multiGrid.EditorElement.DataElement.Data = PrimaryDataController.Data;
-            multiGrid.EditorElement.DataElement.Id = elementData.Id;
-
-            multiGrid.EditorElement.DataElement.Path = DisplayManager.Display.DataController.SegmentController.Path;
+            dataElement.InitializeDisplayProperties(DisplayManager.Display.SelectionType,
+                                                    DisplayManager.Display.SelectionProperty,
+                                                    DisplayManager.Display.AddProperty,
+                                                    DisplayManager.Display.UniqueSelection);
 
             //Debugging
             multiGrid.name = elementData.DebugName + elementData.Id;

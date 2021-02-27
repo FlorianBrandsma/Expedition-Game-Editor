@@ -4,6 +4,7 @@ public class InteractableBaseData
 {
     public int Id           { get; set; }
     
+    public int ProjectId    { get; set; }
     public int ModelId      { get; set; }
 
     public int Type         { get; set; }
@@ -24,31 +25,33 @@ public class InteractableBaseData
 
     public virtual void GetOriginalValues(InteractableData originalData)
     {
-        Id      = originalData.Id;
+        Id          = originalData.Id;
 
-        ModelId = originalData.ModelId;
+        ProjectId   = originalData.ProjectId;
+        ModelId     = originalData.ModelId;
 
-        Type    = originalData.Type;
+        Type        = originalData.Type;
 
-        Index   = originalData.Index;
+        Index       = originalData.Index;
 
-        Name    = originalData.Name;
+        Name        = originalData.Name;
 
-        Scale   = originalData.Scale;
+        Scale       = originalData.Scale;
 
-        Health  = originalData.Health;
-        Hunger  = originalData.Hunger;
-        Thirst  = originalData.Thirst;
+        Health      = originalData.Health;
+        Hunger      = originalData.Hunger;
+        Thirst      = originalData.Thirst;
 
-        Weight  = originalData.Weight;
-        Speed   = originalData.Speed;
-        Stamina = originalData.Stamina;
+        Weight      = originalData.Weight;
+        Speed       = originalData.Speed;
+        Stamina     = originalData.Stamina;
     }
 
     public virtual void Clone(InteractableData data)
     {
         data.Id         = Id;
 
+        data.ProjectId  = ProjectId;
         data.ModelId    = ModelId;
 
         data.Type       = Type;

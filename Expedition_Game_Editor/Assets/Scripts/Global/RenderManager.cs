@@ -93,6 +93,8 @@ static public class RenderManager
 
     static public void CloseForms()
     {
+        if (layoutManager == null) return;
+
         layoutManager.forms.ForEach(x => x.CloseForm());
     }
 

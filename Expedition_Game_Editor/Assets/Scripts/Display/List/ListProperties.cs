@@ -10,14 +10,17 @@ public class ListProperties : MonoBehaviour, IDisplay
     public bool uniqueSelection;
 
     public Vector2 elementSize;
+    public Vector2 anchorMin;
+    public Vector2 anchorMax;
 
     public bool horizontal, vertical;
 
-    public bool enableAutoSave;
+    public bool enableAutoSave; //Not used?
     public bool enableSliders;
     public bool enableNumbers;
     public bool enablePaging;
     public bool enablePositionCorrection;
+    public bool enablePlaceholders;
 
     public string headerText;
 

@@ -70,10 +70,14 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         
         ElementChild.DataElement.Data   = EditorElement.DataElement.Data;
         ElementChild.DataElement.Id     = EditorElement.DataElement.Id;
-
         ElementChild.DataElement.Path   = EditorElement.DataElement.Path;
 
-        ElementChild.DataElement.InitializeElement(EditorElement.DataElement.DisplayManager, ElementChild.selectionType, childProperty, SelectionManager.Property.None, ElementChild.uniqueSelection);     
+        ElementChild.DataElement.InitializeDisplayManager(EditorElement.DataElement.DisplayManager);
+
+        ElementChild.DataElement.InitializeDisplayProperties(ElementChild.selectionType, 
+                                                             childProperty, 
+                                                             SelectionManager.Property.None, 
+                                                             ElementChild.uniqueSelection);     
     }
 
     private void SetId(bool enable)

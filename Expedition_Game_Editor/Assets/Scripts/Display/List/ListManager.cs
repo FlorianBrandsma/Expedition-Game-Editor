@@ -66,9 +66,12 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         var dataList = Display.DataController.Data.dataList;
 
+        if (listProperties.enablePlaceholders)
+            SetPlaceholders(dataList);
+
         overlayManager.ActivateOverlay(Organizer);
         overlayManager.SetOverlaySize();
-
+        
         listParent.sizeDelta = List.GetListSize(true);
         listSize = List.GetListSize(false);
 
@@ -87,6 +90,30 @@ public class ListManager : MonoBehaviour, IDisplayManager
         }
 
         overlayManager.SetOverlay();
+    }
+
+    private void SetPlaceholders(List<IElementData> dataList)
+    {
+        var multiplier = 2;
+
+        var potentialWidth = Mathf.FloorToInt(RectTransform.rect.width / List.ElementSize.x);
+        var potentialHeight = Mathf.FloorToInt(RectTransform.rect.height / List.ElementSize.y);
+
+        var placeholders = (potentialWidth * potentialHeight) * multiplier;
+        
+        if(listProperties.vertical && !listProperties.horizontal)
+            placeholders += (potentialWidth - ((dataList.Count + placeholders) % potentialWidth));
+
+        if(listProperties.horizontal && !listProperties.vertical)
+        {
+            var actualWidth = Mathf.CeilToInt((dataList.Count + placeholders) / (float)potentialHeight);
+            placeholders += (actualWidth - ((dataList.Count + placeholders) % actualWidth));
+        }
+        
+        for (int i = 0; i < placeholders; i++)
+        {
+            dataList.Add(new PlaceholderElementData() { Id = -dataList.Count });
+        }
     }
 
     private void ResetListPosition()
@@ -204,7 +231,10 @@ public class ListManager : MonoBehaviour, IDisplayManager
 
         ScrollRect.horizontal = false;
         ScrollRect.vertical = false;
-        
+
+        //Remove placeholders
+        Display.DataController.Data.dataList.RemoveAll(x => x is PlaceholderElementData);
+
         overlayManager.CloseOverlay();
         Organizer.CloseOrganizer();
 

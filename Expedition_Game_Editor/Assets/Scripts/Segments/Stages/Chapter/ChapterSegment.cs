@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 public class ChapterSegment : MonoBehaviour, ISegment
@@ -26,6 +27,8 @@ public class ChapterSegment : MonoBehaviour, ISegment
         var searchParameters = searchProperties.searchParameters.Cast<Search.Chapter>().First();
 
         searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+
+        searchParameters.projectId = new List<int>() { EditorManager.projectElementData.Id };
     }
 
     public void InitializeSegment()

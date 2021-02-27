@@ -3,36 +3,39 @@ using System.Linq;
 
 public class DataElement : MonoBehaviour
 {
-    public Data Data    { get; set; }
-    public int Id       { get; set; }
+    public Data Data                            { get; set; }
+    public int Id                               { get; set; }
 
-    public IElementData ElementData { get { return Data.dataList.Where(x => x.Id == Id).FirstOrDefault(); } }
+    public IElementData ElementData             { get { return Data.dataList.Where(x => x.Id == Id).FirstOrDefault(); } }
 
-    public Path Path { get; set; }
+    public Path Path                            { get; set; }
+    public IDisplayManager DisplayManager       { get; set; }
+
+    public IElement Element                     { get { return GetComponent<IElement>(); } }
+    public ISelectionElement SelectionElement   { get { return GetComponent<ISelectionElement>(); } }
+    public IPoolable Poolable                   { get { return GetComponent<IPoolable>(); } }
 
     public SegmentController segmentController;
     public GameObject displayParent;
-    
-    public IDisplayManager DisplayManager       { get; set; }
 
-    public ISelectionElement SelectionElement   { get { return GetComponent<ISelectionElement>(); } }
-    public IPoolable Poolable                   { get { return GetComponent<IPoolable>(); } }
+    public void InitializeDisplayManager(IDisplayManager displayManager)
+    {
+        DisplayManager = displayManager;
+
+        if (DisplayManager != null)
+            segmentController = DisplayManager.Display.DataController.SegmentController;
+    }
 
     public void InitializeElement()
     {
         SelectionElement.InitializeElement();
     }
 
-    public void InitializeElement(IDisplayManager displayManager, SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
+    public void InitializeDisplayProperties(SelectionManager.Type selectionType, SelectionManager.Property selectionProperty, SelectionManager.Property addProperty, bool uniqueSelection)
     {
-        DisplayManager = displayManager;
-        
-        if(DisplayManager != null)
-            segmentController = DisplayManager.Display.DataController.SegmentController;
-
         SelectionElement.InitializeElement(selectionType, selectionProperty, addProperty, uniqueSelection);
     }
-
+    
     public void UpdateElement()
     {
         SelectionElement.UpdateElement();
@@ -40,7 +43,7 @@ public class DataElement : MonoBehaviour
 
     public void SetElement()
     {
-        GetComponent<IElement>().SetElement();
+        Element?.SetElement();
 
         if (displayParent != null)
             displayParent.GetComponent<IDisplay>().DataController = Data.dataController;

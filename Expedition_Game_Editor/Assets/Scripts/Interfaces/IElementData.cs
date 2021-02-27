@@ -8,11 +8,11 @@ public interface IElementData
 
     Enums.ExecuteType ExecuteType           { get; set; }
 
-    Enums.DataType DataType { get; }
+    Enums.DataType DataType                 { get; }
 
-    string DebugName { get; }
+    string DebugName    { get; }
 
-    int Id { get; set; }
+    int Id              { get; set; }
 
     void Add(DataRequest dataRequest);
     void Update(DataRequest dataRequest);

@@ -131,25 +131,27 @@ public class ExMultiGrid : MonoBehaviour, IElement, IPoolable
         foreach (IElementData elementData in list)
         {
             var innerElement = (ExTile)PoolManager.SpawnObject(prefab);
+            innerElement.transform.SetParent(innerGrid);
 
-            SelectionElementManager.InitializeElement(  innerElement.EditorElement.DataElement, innerGrid,
-                                                        EditorElement.DataElement.DisplayManager,
-                                                        multiGridProperties.innerSelectionType,
-                                                        multiGridProperties.innerSelectionProperty,
-                                                        SelectionManager.Property.None,
-                                                        multiGridProperties.innerUniqueSelection);
-
+            var dataElement = innerElement.EditorElement.DataElement;
             innerElement.EditorElement.parent = EditorElement;
 
+            elementData.DataElement = dataElement;
+
+            dataElement.Data    = multiGridProperties.SecondaryDataController.Data;
+            dataElement.Id      = elementData.Id;
+
+            dataElement.InitializeDisplayManager(EditorElement.DataElement.DisplayManager);
+
+            dataElement.InitializeDisplayProperties(multiGridProperties.innerSelectionType,
+                                                    multiGridProperties.innerSelectionProperty,
+                                                    SelectionManager.Property.None,
+                                                    multiGridProperties.innerUniqueSelection);
+            
             elementList.Add(innerElement.EditorElement);
 
-            elementData.DataElement = innerElement.EditorElement.DataElement;
-
-            innerElement.EditorElement.DataElement.Data = multiGridProperties.SecondaryDataController.Data; /*, elementData, searchProperties);*/
-            innerElement.EditorElement.DataElement.Id = elementData.Id;
-
             //Overwrites dataController set by initialization
-            innerElement.EditorElement.DataElement.Data.dataController = multiGridProperties.SecondaryDataController;
+            dataElement.Data.dataController = multiGridProperties.SecondaryDataController;
 
             //Debugging
             innerElement.name = elementData.DebugName + elementData.Id;
