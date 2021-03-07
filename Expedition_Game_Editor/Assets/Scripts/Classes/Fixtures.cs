@@ -252,11 +252,12 @@ static public class Fixtures
 
     static private void LoadUsers()
     {
-        CreateUser("Florian", "florianbrandsma@hotmail.nl");
-        CreateUser("Yuuki", "yuuki@expedition.com");
+        CreateUser("Florian", "florian@expedition.com", 15);
+        CreateUser("Nobody", "nobody@expedition.com", 11);
+        CreateUser("Yuuki", "yuuki@expedition.com", 12);
     }
 
-    static private void CreateUser(string username, string email)
+    static private void CreateUser(string username, string email, int iconId)
     {
         var user = new UserBaseData();
 
@@ -264,7 +265,7 @@ static public class Fixtures
 
         user.Id = id;
 
-        user.IconId = 10;
+        user.IconId = iconId;
 
         user.Username = username;
         user.Email = email;
@@ -296,10 +297,18 @@ static public class Fixtures
 
     static private void LoadTeams()
     {
-        CreateTeam("Team Zero");
+        var teamId = CreateTeam("Team Zero", 16);
+
+        CreateTeamUser(teamId, userList.First().Id, Enums.UserRole.ProjectManager, Enums.UserStatus.Joined);
+        CreateTeamUser(teamId, userList.Last().Id, Enums.UserRole.Tester, Enums.UserStatus.Applied);
+
+        var otherTeamId = CreateTeam("Cool Guy Club", 18);
+        CreateTeamUser(otherTeamId, userList.First().Id, Enums.UserRole.Developer, Enums.UserStatus.Applied);
+
+        CreateTeam("Dead Gang", 17);   
     }
 
-    static private void CreateTeam(string name)
+    static private int CreateTeam(string name, int iconId)
     {
         var team = new TeamBaseData();
 
@@ -307,15 +316,14 @@ static public class Fixtures
 
         team.Id = id;
 
-        team.IconId = 16;
+        team.IconId = iconId;
 
         team.Name = name;
-        team.Description = "Team description";
+        team.Description = "Team " + name + " description";
 
         teamList.Add(team);
 
-        CreateTeamUser(id, userList.First().Id, Enums.UserRole.ProjectManager, Enums.UserStatus.Joined);
-        CreateTeamUser(id, userList.Last().Id, Enums.UserRole.Tester, Enums.UserStatus.Applied);
+        return id;      
     }
     
     static private void CreateTeamUser(int teamId, int userId, Enums.UserRole role, Enums.UserStatus status)

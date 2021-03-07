@@ -23,7 +23,10 @@ public class ProjectDataManager
 
         var list = (from projectData    in projectDataList
                     join teamData       in teamDataList on projectData.TeamId equals teamData.Id
-                    join iconData       in iconDataList on projectData.IconId equals iconData.Id
+
+                    join leftJoin in (from iconData in iconDataList
+                                      select new { iconData }) on projectData.IconId equals leftJoin.iconData.Id into iconData
+
                     select new ProjectElementData()
                     {
                         Id = projectData.Id,
@@ -35,7 +38,7 @@ public class ProjectDataManager
 
                         TeamName = teamData.Name,
 
-                        IconPath = iconData.Path
+                        IconPath = iconData.FirstOrDefault()?.iconData.Path
                         
                     }).OrderBy(x => x.Id > 0).ThenBy(x => x.Name).ToList();
 

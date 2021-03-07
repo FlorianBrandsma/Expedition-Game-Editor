@@ -104,7 +104,9 @@ static public class DataManager
 
         foreach (TeamUserBaseData teamUser in Fixtures.teamUserList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(teamUser.Id)) continue;
+            if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(teamUser.Id))          continue;
+            if (searchParameters.teamId.Count   > 0 && !searchParameters.teamId.Contains(teamUser.TeamId))  continue;
+            if (searchParameters.userId.Count   > 0 && !searchParameters.userId.Contains(teamUser.UserId))  continue;
 
             dataList.Add(teamUser);
         }

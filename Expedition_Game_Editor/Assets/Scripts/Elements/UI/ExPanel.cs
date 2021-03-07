@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Linq;
-using System.Globalization;
+using System.Collections.Generic;
 
 public class ExPanel : MonoBehaviour, IElement, IPoolable
 {
@@ -22,6 +21,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
     public RawImage iconBase;
     public RectTransform content;
     public Image background;
+    public List<ExRatingStar> ratingStarList;
 
     private int id;
     private int index;
@@ -118,29 +118,11 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         if(enable)
         {
-            if (ElementType == Enums.ElementType.CompactPanel)
-                HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, IdRectTransform.rect.height);
-
-            if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel)
-                HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, DescriptionRectTransform.offsetMax.y);
-
-            headerText.alignment = TextAnchor.UpperLeft;
+            AnchorHeaderUpperLeft();
 
         } else {
 
-            if (ElementType == Enums.ElementType.CompactPanel)
-                HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, 0);
-
-            if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel)
-                HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, -content.rect.height);
-
-            headerText.alignment = TextAnchor.MiddleCenter;
-
-            //if (EditorElement.DataElement.ElementData.ExecuteType == Enums.ExecuteType.Add)
-            //    header = "Add new";
-
-            //if (EditorElement.DataElement.ElementData.ExecuteType == Enums.ExecuteType.Remove)
-            //    header = "Remove selection";
+            AnchorHeaderMiddleCenter();
 
             if (EditorElement.ActiveSelectionProperty == SelectionManager.Property.Set)
             {
@@ -153,6 +135,28 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         }
 
         headerText.text = header;
+    }
+
+    private void AnchorHeaderUpperLeft()
+    {
+        if (ElementType == Enums.ElementType.CompactPanel)
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, IdRectTransform.rect.height);
+
+        if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel || ElementType == Enums.ElementType.GamePanel)
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, DescriptionRectTransform.offsetMax.y);
+
+        headerText.alignment = TextAnchor.UpperLeft;
+    }
+
+    private void AnchorHeaderMiddleCenter()
+    {
+        if (ElementType == Enums.ElementType.CompactPanel)
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, 0);
+
+        if (ElementType == Enums.ElementType.Panel || ElementType == Enums.ElementType.SavePanel || ElementType == Enums.ElementType.GamePanel)
+            HeaderRectTransform.offsetMin = new Vector2(HeaderRectTransform.offsetMin.x, -content.rect.height);
+
+        headerText.alignment = TextAnchor.MiddleCenter;
     }
 
     private void SetDescription(bool enable)
@@ -208,7 +212,7 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
 
         } else {
 
-            content.offsetMin = new Vector2(10, content.offsetMin.y);
+            content.offsetMin = new Vector2(5, content.offsetMin.y);
         }
 
         iconParent.gameObject.SetActive(enable);
@@ -259,6 +263,12 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         {
             case Enums.DataType.Notification:           SetNotificationElement();           break;
 
+            case Enums.DataType.User:                   SetUserElement();                   break;
+            case Enums.DataType.FavoriteUser:           SetFavoriteUserElement();           break;
+            case Enums.DataType.Team:                   SetTeamElement();                   break;
+            case Enums.DataType.TeamUser:               SetTeamUserElement();               break;
+            case Enums.DataType.Project:                SetProjectElement();                break;
+
             case Enums.DataType.Chapter:                SetChapterElement();                break;
             case Enums.DataType.ChapterInteractable:    SetChapterInteractableElement();    break;
             case Enums.DataType.ChapterRegion:          SetChapterRegionElement();          break;
@@ -281,6 +291,8 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
             case Enums.DataType.Model:                  SetModelElement();                  break;
             case Enums.DataType.Item:                   SetItemElement();                   break;
             case Enums.DataType.Interactable:           SetInteractableElement();           break;
+
+            case Enums.DataType.Game:                   SetGameElement();                   break;
 
             case Enums.DataType.Save:                   SetSaveElement();                   break;
             case Enums.DataType.InteractableSave:       SetInteractableSaveElement();       break;
@@ -313,6 +325,50 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         var elementData = (NotificationElementData)EditorElement.DataElement.ElementData;
 
         description = elementData.Message;
+    }
+
+    private void SetUserElement()
+    {
+        var elementData = (UserElementData)EditorElement.DataElement.ElementData;
+
+        iconPath    = elementData.IconPath;
+        header      = elementData.Username;
+    }
+
+    private void SetFavoriteUserElement()
+    {
+        var elementData = (FavoriteUserElementData)EditorElement.DataElement.ElementData;
+
+        iconPath    = elementData.IconPath;
+        header      = elementData.Username;
+        description = elementData.Note;
+    }
+
+    private void SetTeamElement()
+    {
+        var elementData = (TeamElementData)EditorElement.DataElement.ElementData;
+
+        iconPath    = elementData.IconPath;
+        header      = elementData.Name;
+        description = "Members: " + elementData.MemberCount;
+    }
+
+    private void SetTeamUserElement()
+    {
+        var elementData = (TeamUserElementData)EditorElement.DataElement.ElementData;
+
+        iconPath    = elementData.IconPath;
+        header      = elementData.Username;
+        description = Enum.GetName(typeof(Enums.UserRole), elementData.Role);
+    }
+
+    private void SetProjectElement()
+    {
+        var elementData = (ProjectElementData)EditorElement.DataElement.ElementData;
+
+        iconPath    = elementData.IconPath;
+        header      = elementData.Name;
+        description = elementData.TeamName;
     }
 
     private void SetChapterElement()
@@ -549,6 +605,22 @@ public class ExPanel : MonoBehaviour, IElement, IPoolable
         } else {
             header      = elementData.OriginalData.Name;
             iconPath    = elementData.OriginalData.ModelIconPath;
+        }
+    }
+
+    private void SetGameElement()
+    {
+        var elementData = (GameElementData)EditorElement.DataElement.ElementData;
+        
+        header = elementData.Name;
+        
+        iconPath = elementData.IconPath;
+
+        for (int i = 0; i < ratingStarList.Count; i++)
+        {
+            var ratingStar = ratingStarList[i];
+
+            ratingStar.SetStar((elementData.Rating - i));
         }
     }
 

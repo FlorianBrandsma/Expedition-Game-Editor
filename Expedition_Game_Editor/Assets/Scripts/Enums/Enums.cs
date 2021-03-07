@@ -215,7 +215,9 @@ public class Enums
         CameraFilter,
         SavePanel,
         NotificationPanel,
-        Placeholder
+        Placeholder,
+        RatingPanel,
+        GamePanel
     }
 
     public enum SelectionIconType
@@ -329,7 +331,11 @@ public class Enums
         MenuSelection,
         Scene,
         SceneSelection,
-        Dialog
+        Dialog,
+        Launch,
+        Game,
+        Profile,
+        Team
     }
 
     public enum RequestType
@@ -365,5 +371,12 @@ public class Enums
         Confirm,
         Close,
         Cancel
+    }
+
+    public enum PortalGroupType
+    {
+        Current,
+        Discover,
+        Pending
     }
 }

@@ -24,6 +24,39 @@ public class EditorPath
 
         switch (editorElement.DataElement.ElementData.DataType)
         {
+            case Enums.DataType.User:
+
+                PathManager.User user = new PathManager.User(editorElement, route);
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
+                    path = user.Enter();
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
+                    path = user.Open();
+
+                break;
+
+            case Enums.DataType.FavoriteUser:
+
+                PathManager.FavoriteUser favoriteUser = new PathManager.FavoriteUser(editorElement, route);
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
+                    path = favoriteUser.Enter();
+
+                break;
+
+            case Enums.DataType.Team:
+
+                PathManager.Team team = new PathManager.Team(editorElement, route);
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Enter)
+                    path = team.Enter();
+
+                if (editorElement.ActiveSelectionProperty == SelectionManager.Property.Open)
+                    path = team.Open();
+
+                break;
+
             case Enums.DataType.Chapter:
 
                 PathManager.Structure chapter = new PathManager.Structure(editorElement, route);

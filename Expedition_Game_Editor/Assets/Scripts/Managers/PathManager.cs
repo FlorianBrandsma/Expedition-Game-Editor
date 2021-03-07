@@ -57,6 +57,122 @@ public class PathManager
             return CreatePath(CreateRoutes(source, form, Enums.SelectionStatus.Main, false), form);
         }
     }
+
+    public class User
+    {
+        EditorElement editorElement;
+        Path pathSource;
+        Route route;
+
+        List<int> open = new List<int>() { 1, 0 };
+        List<int> enter = new List<int>() { 0, 0 };
+
+        public User(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+            this.route = route;
+        }
+
+        public Path Enter()
+        {
+            var form = RenderManager.layoutManager.forms[1];
+            pathSource = editorElement.DataElement.segmentController.Path;
+
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection)),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
+        }
+
+        public Path Open()
+        {
+            var routes = CreateRoutes(open, route, editorElement.selectionStatus, editorElement.uniqueSelection);
+            var path = ExtendPath(route.path, routes);
+            
+            return path;
+        }
+    }
+
+    public class FavoriteUser
+    {
+        EditorElement editorElement;
+        Path pathSource;
+        Route route;
+
+        List<int> enter = new List<int>() { 0, 0 };
+
+        public FavoriteUser(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+            this.route = route;
+
+            pathSource = editorElement.DataElement.segmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            var form = RenderManager.layoutManager.forms[1];
+
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection)),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
+        }
+    }
+
+    public class Team
+    {
+        EditorElement editorElement;
+        Path pathSource;
+        Route route;
+
+        List<int> enter = new List<int>() { 0, 0 };
+        List<int> open = new List<int>() { 2, 0 };
+
+        public Team(EditorElement editorElement, Route route)
+        {
+            this.editorElement = editorElement;
+            this.route = route;
+
+            pathSource = editorElement.DataElement.segmentController.Path;
+        }
+
+        public Path Enter()
+        {
+            var form = RenderManager.layoutManager.forms[1];
+
+            Path path = new Path()
+            {
+                routeList = pathSource.CombineRoute(CreateRoutes(enter, route, editorElement.selectionStatus, editorElement.uniqueSelection)),
+                form = form,
+                start = pathSource.start
+            };
+
+            path.routeList.ForEach(x => x.path = path);
+
+            return path;
+        }
+
+        public Path Open()
+        {
+            var routes = CreateRoutes(open, route, editorElement.selectionStatus, editorElement.uniqueSelection);
+            var path = ExtendPath(route.path, routes);
+
+            return path;
+        }
+    }
     #endregion
 
     #region Editor

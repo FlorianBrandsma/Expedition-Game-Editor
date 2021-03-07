@@ -14,7 +14,22 @@ public class SaveGameSegment : MonoBehaviour, ISegment
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
     public IEditor DataEditor                   { get; set; }
 
-    private SaveEditor SaveEditor { get { return (SaveEditor)DataEditor; } }
+    #region Data properties
+    private Enums.SaveType SaveType
+    {
+        get { return ((SaveEditor)DataEditor).SaveType; }
+    }
+
+    private string PhaseName
+    {
+        get { return ((SaveEditor)DataEditor).PhaseName; }
+    }
+
+    private string PhaseGameNotes
+    {
+        get { return ((SaveEditor)DataEditor).PhaseGameNotes; }
+    }
+    #endregion
 
     public void InitializeDependencies()
     {
@@ -33,23 +48,16 @@ public class SaveGameSegment : MonoBehaviour, ISegment
 
     private void InitializeStartButton()
     {
-        //Assign data
-        SetStartButtonData();
-
-        startButton.DataElement.Path = SegmentController.EditorController.PathController.route.path;
+        startButton.DataElement.Id      = DataEditor.EditData.Id;
+        startButton.DataElement.Data    = DataEditor.Data.dataController.Data;
+        startButton.DataElement.Path    = SegmentController.EditorController.PathController.route.path;
 
         startButton.InitializeElement();
     }
 
-    private void SetStartButtonData()
-    {
-        startButton.DataElement.Id = DataEditor.EditData.Id;
-        startButton.DataElement.Data = DataEditor.Data.dataController.Data;
-    }
-
     public void SelectButton()
     {
-        switch(SaveEditor.SaveType)
+        switch(SaveType)
         {
             case Enums.SaveType.Save: SaveGame(); break;
             case Enums.SaveType.Load: LoadGame(); break;
@@ -63,17 +71,17 @@ public class SaveGameSegment : MonoBehaviour, ISegment
 
     private void SaveGame()
     {
-        GameManager.instance.SaveData((SaveElementData)SaveEditor.EditData);
+        GameManager.instance.SaveData((SaveElementData)DataEditor.EditData);
 
         RenderManager.PreviousPath();
     }
 
     public void OpenSegment()
     {
-        phaseNameText.text = SaveEditor.PhaseName;
-        phaseGameNotesText.text = SaveEditor.PhaseGameNotes;
+        phaseNameText.text = PhaseName;
+        phaseGameNotesText.text = PhaseGameNotes;
 
-        startButtonText.text = Enum.GetName(typeof(Enums.SaveType), SaveEditor.SaveType) + " Game";
+        startButtonText.text = Enum.GetName(typeof(Enums.SaveType), SaveType) + " Game";
     }
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }

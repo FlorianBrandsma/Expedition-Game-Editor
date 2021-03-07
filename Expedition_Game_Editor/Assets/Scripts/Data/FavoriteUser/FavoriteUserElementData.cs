@@ -17,14 +17,14 @@ public class FavoriteUserElementData : FavoriteUserData, IElementData
     public string DebugName { get { return Enum.GetName(typeof(Enums.DataType), DataType); } }
 
     #region Changed
-    public bool ChangedAccepted
+    public bool ChangedNote
     {
         get { return Note != OriginalData.Note; }
     }
     
     public bool Changed
     {
-        get { return ChangedAccepted; }
+        get { return ChangedNote; }
     }
     #endregion
 

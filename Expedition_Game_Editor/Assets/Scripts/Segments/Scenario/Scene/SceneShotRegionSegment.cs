@@ -81,10 +81,9 @@ public class SceneShotRegionSegment : MonoBehaviour, ISegment
                 searchProperties = RegionDataController.SearchProperties
             };
 
-            regionElementData.DataElement.Data = regionData;
-            regionElementData.DataElement.Id = RegionId;
-
-            regionElementData.DataElement.Path = SegmentController.EditorController.PathController.route.path;
+            regionElementData.DataElement.Id    = RegionId;
+            regionElementData.DataElement.Data  = regionData;
+            regionElementData.DataElement.Path  = SegmentController.EditorController.PathController.route.path;
 
             SetRegionData();
 

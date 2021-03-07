@@ -38,6 +38,22 @@ public class GameEditor : MonoBehaviour, IEditor
     {
         get { return gameData.Id; }
     }
+    
+    public float Rating
+    {
+        get { return gameData.Rating; }
+        set
+        {
+            gameData.Rating = value;
+
+            DataList.ForEach(x => ((GameElementData)x).Rating = value);
+        }
+    }
+
+    public bool Installed
+    {
+        get { return gameData.Installed; }
+    }
 
     public string IconPath
     {
@@ -47,17 +63,6 @@ public class GameEditor : MonoBehaviour, IEditor
     public string Name
     {
         get { return gameData.Name; }
-    }
-    
-    public int Rating
-    {
-        get { return gameData.Rating; }
-        set
-        {
-            gameData.Rating = value;
-
-            DataList.ForEach(x => ((GameElementData)x).Rating = value);
-        }
     }
 
     public string Description

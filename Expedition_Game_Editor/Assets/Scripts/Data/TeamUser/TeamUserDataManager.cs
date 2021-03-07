@@ -68,7 +68,7 @@ public class TeamUserDataManager
         {
             if (searchParameters.id.Count       > 0 && !searchParameters.id.Contains(teamUser.Id))          continue;
             if (searchParameters.teamId.Count   > 0 && !searchParameters.teamId.Contains(teamUser.TeamId))  continue;
-            if (searchParameters.status     != null && searchParameters.status != teamUser.Status)          continue;
+            if ((teamUser.Status == (int)Enums.UserStatus.Joined) != searchParameters.joined)               continue;
 
             teamUserDataList.Add(teamUser);
         }

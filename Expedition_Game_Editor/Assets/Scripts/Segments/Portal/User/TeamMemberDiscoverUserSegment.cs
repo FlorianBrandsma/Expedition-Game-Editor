@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
-public class GameSegment : MonoBehaviour, ISegment
+public class TeamMemberDiscoverUserSegment : MonoBehaviour, ISegment
 {
+    public Enums.PortalGroupType portalGroupType;
+
     public ListProperties ListProperties        { get { return GetComponent<ListProperties>(); } }
 
     public SegmentController SegmentController  { get { return GetComponent<SegmentController>(); } }
@@ -15,18 +17,20 @@ public class GameSegment : MonoBehaviour, ISegment
     {
         if (SegmentController.Loaded) return;
 
-        var searchProperties = new SearchProperties(Enums.DataType.Game);
+        var searchProperties = new SearchProperties(Enums.DataType.User);
 
         InitializeSearchParameters(searchProperties);
-
+        
         SegmentController.DataController.GetData(searchProperties);
     }
 
     private void InitializeSearchParameters(SearchProperties searchProperties)
     {
-        var searchParameters = searchProperties.searchParameters.Cast<Search.Game>().First();
+        var searchParameters = searchProperties.searchParameters.Cast<Search.User>().First();
 
-        //searchParameters.includeAddElement = ListProperties.AddProperty != SelectionManager.Property.None;
+        searchParameters.teamId = SegmentController.Path.FindLastRoute(Enums.DataType.Team).ElementData.Id;
+
+        searchParameters.requestType = Search.User.RequestType.GetPotentialTeamUsers;
     }
 
     public void InitializeSegment()
@@ -36,8 +40,8 @@ public class GameSegment : MonoBehaviour, ISegment
     
     public void OpenSegment()
     {
-        if (GetComponent<IDisplay>() != null)
-            GetComponent<IDisplay>().DataController = SegmentController.DataController;
+        if(ListProperties != null)
+            ListProperties.DataController = SegmentController.DataController;
     }
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }

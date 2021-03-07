@@ -99,15 +99,12 @@ public class PhaseGeneralDefaultValuesSegment : MonoBehaviour, ISegment
 
             editButton.elementStatus = Enums.ElementStatus.Locked;
         }
-            
 
         editButton.DataElement.Data = RegionDataController.Data;
         editButton.DataElement.Path = SegmentController.EditorController.PathController.route.path;
 
         buttonIcon.texture = Resources.Load<Texture2D>(ModelIconPath);
 
-        editButton.InitializeElement();
-        
         editButton.SetOverlay();
     }
 

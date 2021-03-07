@@ -66,9 +66,17 @@ public class Search
         public List<int> id = new List<int>();
         public List<int> excludeId = new List<int>();
 
+        public int userId;
+        public int teamId;
+
+        public string username;
+        public string password;
+
         public enum RequestType
         {
-            Custom
+            Custom,
+            GetPotentialFavoriteUsers,
+            GetPotentialTeamUsers
         }
 
         public RequestType requestType;
@@ -80,7 +88,7 @@ public class Search
 
         public List<int> id = new List<int>();
 
-        public List<int> userId = new List<int>();
+        public int userId;
 
         public enum RequestType
         {
@@ -96,9 +104,15 @@ public class Search
 
         public List<int> id = new List<int>();
 
+        public int userId;
+
+        public bool associated;
+        public bool joined;
+
         public enum RequestType
         {
-            Custom
+            Custom,
+            GetUserTeams
         }
 
         public RequestType requestType;
@@ -110,8 +124,9 @@ public class Search
 
         public List<int> id = new List<int>();
         public List<int> teamId = new List<int>();
+        public List<int> userId = new List<int>();
 
-        public int? status;
+        public bool joined;
 
         public enum RequestType
         {
@@ -127,7 +142,7 @@ public class Search
 
         public List<int> id = new List<int>();
         public List<int> teamId = new List<int>();
-
+        
         public enum RequestType
         {
             Custom
@@ -143,6 +158,9 @@ public class Search
         public List<int> id = new List<int>();
 
         public List<int> userId = new List<int>();
+
+        public bool preview;
+        public bool installed;
 
         public enum RequestType
         {

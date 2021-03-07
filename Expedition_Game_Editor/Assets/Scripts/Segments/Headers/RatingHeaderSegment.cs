@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class GameHeaderSegment : MonoBehaviour, ISegment
+public class RatingHeaderSegment : MonoBehaviour, ISegment
 {
     public RawImage icon;
     public Text headerText;
@@ -13,17 +13,7 @@ public class GameHeaderSegment : MonoBehaviour, ISegment
     public IEditor DataEditor                   { get; set; }
 
     #region Data properties
-    private string Title
-    {
-        get { return ((GameEditor)DataEditor).Name; }
-    }
-
-    private string IconPath
-    {
-        get { return ((GameEditor)DataEditor).IconPath; }
-    }
-
-    private int Rating
+    private float Rating
     {
         get { return ((GameEditor)DataEditor).Rating; }
         set
@@ -31,6 +21,21 @@ public class GameHeaderSegment : MonoBehaviour, ISegment
             var gameEditor = (GameEditor)DataEditor;
             gameEditor.Rating = value;
         }
+    }
+
+    private bool Installed
+    {
+        get { return ((GameEditor)DataEditor).Installed; }
+    }
+
+    private string IconPath
+    {
+        get { return ((GameEditor)DataEditor).IconPath; }
+    }
+
+    private string Title
+    {
+        get { return ((GameEditor)DataEditor).Name; }
     }
     #endregion
 
@@ -47,7 +52,10 @@ public class GameHeaderSegment : MonoBehaviour, ISegment
         InitializeDependencies();
     }
 
-    public void InitializeSegment() { }
+    public void InitializeSegment()
+    {
+        SetStars();
+    }
 
     public void OpenSegment()
     {
@@ -59,13 +67,21 @@ public class GameHeaderSegment : MonoBehaviour, ISegment
 
     public void RateGame(int value)
     {
+        if (!Installed) return;
 
-        //Set stars
+        Rating = value;
+        
+        SetStars();
     }
 
     private void SetStars()
     {
+        for (int i = 0; i < ratingStarList.Count; i++)
+        {
+            var ratingStar = ratingStarList[i];
 
+            ratingStar.SetStar((Rating - i));
+        }
     }
 
     public void SetSearchResult(IElementData mergedElementData, IElementData resultElementData) { }
@@ -77,4 +93,3 @@ public class GameHeaderSegment : MonoBehaviour, ISegment
         gameObject.SetActive(false);
     }
 }
-

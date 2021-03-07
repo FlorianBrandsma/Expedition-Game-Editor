@@ -10,8 +10,24 @@ public class UserDataManager
 
     public static List<IElementData> GetData(Search.User searchParameters)
     {
-        GetUserData(searchParameters);
+        switch (searchParameters.requestType)
+        {
+            case Search.User.RequestType.Custom:
 
+                GetUserData(searchParameters);
+                break;
+
+            case Search.User.RequestType.GetPotentialFavoriteUsers:
+
+                GetPotentialFavoriteUserData(searchParameters);
+                break;
+
+            case Search.User.RequestType.GetPotentialTeamUsers:
+
+                GetPotentialTeamUserData(searchParameters);
+                break;
+        }
+        
         if (userDataList.Count == 0) return new List<IElementData>();
         
         GetIconData();
@@ -41,6 +57,38 @@ public class UserDataManager
         foreach (UserBaseData user in Fixtures.userList)
         {
             if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(user.Id)) continue;
+            if (searchParameters.username != user.Username) continue;
+            if (searchParameters.username == user.Username && searchParameters.password != user.Password) continue;
+
+            userDataList.Add(user);
+        }
+    }
+
+    private static void GetPotentialFavoriteUserData(Search.User searchParameters)
+    {
+        userDataList = new List<UserBaseData>();
+
+        var favoriteUserList = Fixtures.favoriteUserList.Where(x => x.UserId == searchParameters.userId).ToList();
+
+        foreach (UserBaseData user in Fixtures.userList)
+        {
+            if (user.Id == searchParameters.userId)                                 continue;
+            if (favoriteUserList.Select(x => x.FavoriteUserId).Contains(user.Id))   continue;
+
+            userDataList.Add(user);
+        }
+    }
+
+    private static void GetPotentialTeamUserData(Search.User searchParameters)
+    {
+        userDataList = new List<UserBaseData>();
+
+        var teamUserList = Fixtures.teamUserList.Where(x => x.TeamId == searchParameters.teamId).ToList();
+
+        foreach (UserBaseData user in Fixtures.userList)
+        {
+            if (user.Id == searchParameters.userId) continue;
+            if (teamUserList.Select(x => x.UserId).Contains(user.Id)) continue;
 
             userDataList.Add(user);
         }

@@ -4,9 +4,13 @@ public class TeamData : TeamBaseData
 {
     public string IconPath { get; set; }
 
+    public int MemberCount { get; set; }
+
     public override void GetOriginalValues(TeamData originalData)
     {
-        IconPath = originalData.IconPath;
+        IconPath    = originalData.IconPath;
+
+        MemberCount = originalData.MemberCount;
 
         base.GetOriginalValues(originalData);
     }
@@ -15,7 +19,9 @@ public class TeamData : TeamBaseData
     {
         var data = new TeamData();
 
-        data.IconPath = IconPath;
+        data.IconPath       = IconPath;
+
+        data.MemberCount    = MemberCount;
 
         base.Clone(data);
 
@@ -24,7 +30,9 @@ public class TeamData : TeamBaseData
 
     public virtual void Clone(TeamElementData elementData)
     {
-        elementData.IconPath = IconPath;
+        elementData.IconPath    = IconPath;
+
+        elementData.MemberCount = MemberCount;
 
         base.Clone(elementData);
     }

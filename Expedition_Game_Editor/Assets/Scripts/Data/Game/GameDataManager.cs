@@ -31,6 +31,8 @@ public static class GameDataManager
                         ProjectId = gameData.ProjectId,
 
                         Rating = gameData.Rating,
+                        
+                        Installed = searchParameters.installed,
 
                         IconPath = iconData.Path,
 
@@ -68,7 +70,8 @@ public static class GameDataManager
 
         foreach (GameBaseData game in Fixtures.gameList)
         {
-            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(game.Id)) continue;
+            if (searchParameters.id.Count > 0 && !searchParameters.id.Contains(game.Id))    continue;
+            if (searchParameters.preview      && !game.Preview)                             continue;
 
             gameDataList.Add(game);
         }

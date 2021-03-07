@@ -204,7 +204,8 @@ public class ListManager : MonoBehaviour, IDisplayManager
     {
         if (Organizer == null) return;
 
-        var dataList = Display.DataController.Data.dataList.Where(x => x.ExecuteType != Enums.ExecuteType.Remove).ToList();
+        var dataList = Display.DataController.Data.dataList.Where(x => !(x is PlaceholderElementData) && 
+                                                                       x.ExecuteType != Enums.ExecuteType.Remove).ToList();
 
         if (dataList.Count == 0) return;
         

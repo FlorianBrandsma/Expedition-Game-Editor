@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -10}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1000011159633976
 GameObject:
@@ -297,7 +297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000005722046}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222000013465330800
@@ -848,6 +848,7 @@ MonoBehaviour:
   selectionStatus: 2
   selectionType: 1
   selectionProperty: 0
+  addProperty: 0
   uniqueSelection: 0
   elementStatus: 0
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1003,6 +1004,7 @@ MonoBehaviour:
   selectionStatus: 1
   selectionType: 0
   selectionProperty: 0
+  addProperty: 0
   uniqueSelection: 0
   elementStatus: 0
   enabledColor: {r: 0.86274517, g: 0.86274517, b: 0.76470596, a: 1}
@@ -1034,15 +1036,18 @@ MonoBehaviour:
   iconType: 0
   childProperty: 0
   idText: {fileID: 114000013826848850}
+  indexText: {fileID: 0}
   headerText: {fileID: 114000013248316850}
   descriptionText: {fileID: 0}
-  timeText: {fileID: 0}
+  playTimeText: {fileID: 0}
+  saveTimeText: {fileID: 0}
   iconParent: {fileID: 224000013606383780}
   infoIcon: {fileID: 0}
   icon: {fileID: 114000010748202120}
   iconBase: {fileID: 114000010591439638}
   content: {fileID: 224000011588913382}
   background: {fileID: 114000013446646226}
+  ratingStarList: []
 --- !u!1 &1000014272121678
 GameObject:
   m_ObjectHideFlags: 0

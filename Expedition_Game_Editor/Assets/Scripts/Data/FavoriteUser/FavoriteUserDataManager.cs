@@ -14,7 +14,7 @@ public class FavoriteUserDataManager
         GetFavoriteUserData(searchParameters);
 
         if (searchParameters.includeAddElement)
-            favoriteUserDataList.Add(DefaultData(searchParameters.userId.First()));
+            favoriteUserDataList.Add(DefaultData(searchParameters.userId));
 
         if (favoriteUserDataList.Count == 0) return new List<IElementData>();
 
@@ -113,7 +113,7 @@ public class FavoriteUserDataManager
 
         if (dataRequest.requestType == Enums.RequestType.Execute)
         {
-            if (elementData.ChangedAccepted)
+            if (elementData.ChangedNote)
             {
                 data.Note = elementData.Note;
             }

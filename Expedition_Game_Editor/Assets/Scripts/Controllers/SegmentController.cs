@@ -79,7 +79,7 @@ public class SegmentController : MonoBehaviour
         
         if (GetComponent<SearchController>() != null)
             GetComponent<SearchController>().InitializeController();
-
+        
         if (Segment != null)
             Segment.InitializeSegment();
     }
